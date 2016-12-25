@@ -1,0 +1,15 @@
+# This is the configuration file used by SkeletonDancer to execute generators.
+# And allows to automate most of the work for you.
+#
+# See for more information: https://github.com/rollerworks/SkeletonDancer/blob/master/Resources/Templates/dancer.yml.twig
+
+# Import the shared base configuration.
+import: [ 'base.yml' ]
+
+variables:
+    # Vendor specfic values
+    vendor_name: Park-Manager
+    vendor_prefix: ParkManager
+    namespace_prefix: 'ParkManager'
+    license: 'MPL-2.0'
+    homepage: 'http://www.park-manager.com' # NB. Not really used at the moment.
