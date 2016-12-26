@@ -2,6 +2,7 @@ Park-Manager - Your friend in hosting software
 ==============================================
 
 [![Join the chat at https://gitter.im/park-manager/support](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/park-manager/support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/140cb98b-3c87-42d9-b0e7-ad63817ab6f0/mini.png)](https://insight.sensiolabs.com/projects/140cb98b-3c87-42d9-b0e7-ad63817ab6f0)
 
 Park the Manager (Park-Manager) brings you the power to set-up your own Hosting solution.
 Whether you're an advanced sysadmin or just getting started with Linux.
