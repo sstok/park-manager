@@ -1,0 +1,72 @@
+# This is the configuration file used by SkeletonDancer to execute generators.
+# And allows to automate most of the work for you.
+#
+# See for more information: https://github.com/rollerworks/SkeletonDancer/blob/master/Resources/Templates/dancer.yml.twig
+
+overwrite: ask
+
+profile-resolver:
+    '%/([a-zA-Z]+/)Action(/[a-zA-Z]+$|$)%s': 'park-manager:module:action'
+    '%.%s': 'park-manager:module'
+
+variables:
+    # Vendor specific values, must be defined to ensure proper overwriting order.
+    vendor_name:      Park-Manager
+    namespace_prefix: ParkManager
+
+defaults:
+    # Park-manager specific
+    vendor_prefix: ParkManager
+    module_name:   '@nth_dirname(get_config("current_dir_relative"), 2)' # (src[0]/Module[1/Webhosting[2])/WebBundle[3]
+    # Various
+    namespace:    '@variables["namespace_prefix"] ~ "\\"'
+    package_name: '@lowercase(variables["vendor_name"]) ~ "/" ~ answers["module_name"]'
+    license:      'MPL-2.0'
+    doc_format:   'none'
+    php_min:      '7.1'
+    # TestingConfigurator
+    enable_phpunit: true
+    enable_phpspec: false
+    enable_behat:   false
+    enable_mink:    false
+
+profiles:
+
+    'park-manager:module':
+        description: Generates the directory structure of a Park-Manager module.
+        variables:
+            namespace_prefix: 'ParkManager\Module'
+        defaults:
+            name:          '@variables["vendor_name"] ~ " " ~ camelize(answers["module_name"]) ~ "Module"' # Package/Module name
+            package_name:  '@lowercase(variables["vendor_name"] ~ "/" ~ answers["module_name"] ~ "-module")'
+            composer_type: 'park-manager-module'
+            src_dir: '.'
+        generators:
+            - 'Rollerworks\Tools\SkeletonDancer\Generator\GitConfigGenerator'
+            - 'Rollerworks\Tools\SkeletonDancer\Generator\ReadMeGenerator'
+            - 'Rollerworks\Tools\SkeletonDancer\Generator\LicenseGenerator'
+            - 'Rollerworks\Tools\SkeletonDancer\Generator\ComposerGenerator'
+            - 'Rollerworks\Tools\SkeletonDancer\Generator\TestingGenerator'
+            - 'ParkManager\SkeletonDancer\Generator\ModuleGenerator'
+
+    'park-manager:module:action':
+        description: Generates an HTTP Action class.
+        defaults:
+            namespace: '@variables["namespace_prefix"] ~ "\\" ~ replace("/", "\\", substr(get_config("current_dir_relative"), 4))'
+            # (src[0]/Module[1/Webhosting[2])/UI[3]/WebBundle[4]/Action[5]/Ftp[6]
+            module_section: '@nth_dirname(get_config("current_dir_relative"), -1) == "Action" ? "" : nth_dirname(get_config("current_dir_relative"), 6)'
+        generators:
+            - 'ParkManager\SkeletonDancer\Generator\HttpActionGenerator'
+
+autoloading:
+    psr-4:
+        'ParkManager\SkeletonDancer\Generator\': '.dancer/Generator'
+        'ParkManager\SkeletonDancer\Configurator\': '.dancer/Configurator'
+
+# Register additional expression-language function providers.
+# Each value of the `expression_language.function_providers` array
+# must be a fully qualified class-name (as shown in the example).
+#
+# expression_language:
+#     function_providers:
+#         - 'Rollerworks\Tools\SkeletonDancer\ExpressionLanguage\StringProvider'

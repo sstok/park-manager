@@ -18,7 +18,11 @@
     "autoload": {
         "psr-4": {
             "ParkManager\\": "src/"
-        }
+        },
+        "exclude-from-classmap": [
+            "**/Tests/",
+            ".dancer/"
+        ]
     },
     "autoload-dev": {
         "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
