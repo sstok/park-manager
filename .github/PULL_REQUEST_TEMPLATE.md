@@ -5,7 +5,6 @@
 | New feature?  | yes/no
 | BC breaks?    | yes/no
 | Deprecations? | yes/no
-| Tests pass?   | yes/no
 | Fixed tickets | #... <!-- #-prefixed issue number(s), if any -->
 | License       | MPL-v2.0
 | Doc PR        | park-manager/park-manager-docs#... <!--highly recommended for new features-->

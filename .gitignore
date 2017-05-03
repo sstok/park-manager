@@ -1,17 +1,7 @@
-/web/bundles/
-/web/assets/
-/app/config/parameters.yml
-/var/*
-!var/.gitkeep
-!var/cache/.gitkeep
-!var/logs/.gitkeep
+###> symfony/framework-bundle ###
+.env
+/var/
 /vendor/
-/bin/*
-!bin/console
-
-*.phar
-phpunit.xml
+/web/bundles/
+###< symfony/framework-bundle ###
 .php_cs.cache
-
-# ignore composer.lock as this will change very often
-/composer.lock
