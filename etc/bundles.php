@@ -8,4 +8,5 @@ return [
     'Symfony\Bundle\MonologBundle\MonologBundle' => ['all' => true],
     'Symfony\Bundle\WebProfilerBundle\WebProfilerBundle' => ['dev' => true, 'test' => true],
     'Symfony\Bundle\SecurityBundle\SecurityBundle' => ['all' => true],
+    'Symfony\Bundle\WebServerBundle\WebServerBundle' => ['dev' => true],
 ];
