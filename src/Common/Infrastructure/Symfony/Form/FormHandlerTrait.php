@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\SharedKernel\Infrastructure\Symfony\Form;
+namespace ParkManager\Common\Infrastructure\Symfony\Form;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
