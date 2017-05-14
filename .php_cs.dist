@@ -160,7 +160,7 @@ return PhpCsFixer\Config::create()
         PhpCsFixer\Finder::create()
             ->exclude('Fixtures')
             ->notPath('var/')
-            ->notPath('app/autoload.php')
+            ->notPath('etc/bundles.php')
             ->in(__DIR__)
     )
 ;
