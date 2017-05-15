@@ -160,9 +160,10 @@ return PhpCsFixer\Config::create()
         PhpCsFixer\Finder::create()
             ->exclude('Fixtures')
             ->notPath('var/')
+            ->notPath('etc/')
             ->notPath('etc/bundles.php')
             ->notName('*Spec.php')
-            ->in(__DIR__)
+            ->in([__DIR__.'/src', __DIR__.'/bin', __DIR__.'/web'])
     )
 ;
 

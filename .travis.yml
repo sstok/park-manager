@@ -9,8 +9,7 @@ branches:
 matrix:
     include:
         - php: '7.1'
-        - php: '7.1'
-          env: deps='low'
+          env: lint=1
     fast_finish: true
 
 cache:
@@ -19,6 +18,9 @@ cache:
 
 before_install:
     - phpenv config-rm xdebug.ini || echo "xdebug not available"
+    - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+    - if [[ $lint = 1 ]]; then wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.3.1/php-cs-fixer.phar; fi
+    - export PATH="$PATH:$HOME/.composer/vendor/bin:./vendor/bin"
 
 install:
     - if [[ ! $deps ]]; then composer update --prefer-source --no-progress --no-suggest --ansi; fi
@@ -27,3 +29,5 @@ install:
 
 script:
     - make tests
+    - if [[ $lint = 1 ]]; then php php-cs-fixer.phar fix --dry-run --diff --no-ansi; fi
+    - if [[ $lint = 1 ]]; then phpstan analyse -c phpstan.neon -l5 --ansi src web bin; fi
