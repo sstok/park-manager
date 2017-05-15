@@ -35,7 +35,7 @@ trait HoldsIdentity
         $this->stringValue = (string) $value;
     }
 
-    public static function create(): self
+    public static function create()
     {
         return new static(Uuid::uuid4());
     }
