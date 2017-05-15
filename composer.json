@@ -18,6 +18,8 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.1",
+        "beberlei/assert": "^2.7.6",
+        "ramsey/uuid": "^3.6.1",
         "symfony/console": "^3.3@dev",
         "symfony/flex": "^1.0",
         "symfony/form": "^3.3@dev",
@@ -31,6 +33,9 @@
     },
     "require-dev": {
         "matthiasnoback/symfony-dependency-injection-test": "^2.1.0",
+        "phpspec/phpspec": "^3.0@dev",
+        "phpunit/phpunit": "^6.1@dev",
+        "ramsey/uuid-console": "^1.1.1",
         "symfony/dotenv": "^3.3",
         "symfony/phpunit-bridge": "^3.3",
         "symfony/web-profiler-bundle": "^3.3@dev",

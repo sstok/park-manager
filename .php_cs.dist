@@ -161,6 +161,7 @@ return PhpCsFixer\Config::create()
             ->exclude('Fixtures')
             ->notPath('var/')
             ->notPath('etc/bundles.php')
+            ->notName('*Spec.php')
             ->in(__DIR__)
     )
 ;

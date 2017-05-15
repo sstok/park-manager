@@ -32,3 +32,14 @@ serve:
 	@${MAKE} serve_as_sf
 .PHONY: sf_console serve serve_as_sf serve_as_php
 ###< symfony/framework-bundle ###
+
+phpspec:
+	vendor/bin/phpspec run -v
+.PHONY: phpspec
+
+phpunit:
+	COMPOSER_ROOT_VERSION=dev-master SYMFONY_PHPUNIT_REMOVE="symfony/yaml" SYMFONY_PHPUNIT_VERSION=6.1.3 vendor/bin/simple-phpunit --verbose
+.PHONY: phpunit
+
+tests: phpspec phpunit
+.PHONY: tests
