@@ -1,0 +1,2 @@
+suites:
+    Common: { namespace: 'ParkManager\Common', psr4_prefix: 'ParkManager\Common', spec_path: 'src/Common', src_path: 'src/Common' }

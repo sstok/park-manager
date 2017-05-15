@@ -46,7 +46,7 @@ abstract class ConstraintFailed extends \InvalidArgumentException
      * @param string   $messageId  Message-id for rendering
      * @param array    $parameters Parameters for message-id
      * @param int|null $plural     Indicates whether the message is plural
-     *                             and what the plural count is.
+     *                             and what the plural count is
      */
     public function __construct(string $messageId, array $parameters = [], int $plural = null)
     {
