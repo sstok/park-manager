@@ -19,7 +19,11 @@
     "require": {
         "php": "^7.1",
         "beberlei/assert": "^2.7.6",
-        "ramsey/uuid": "^3.6.1",
+        "prooph/event-sourcing": "^5.0.1",
+        "prooph/event-store-bus-bridge": "^3.0.0",
+        "prooph/event-store-symfony-bundle": "^1.0@dev",
+        "prooph/pdo-event-store": "^1.0.1",
+        "prooph/service-bus-symfony-bundle": "^0.4.1",
         "symfony/console": "^3.3@dev",
         "symfony/flex": "^1.0",
         "symfony/form": "^3.3@dev",

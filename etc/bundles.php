@@ -9,4 +9,6 @@ return [
     'Symfony\Bundle\WebProfilerBundle\WebProfilerBundle' => ['dev' => true, 'test' => true],
     'Symfony\Bundle\SecurityBundle\SecurityBundle' => ['all' => true],
     'Symfony\Bundle\WebServerBundle\WebServerBundle' => ['dev' => true],
+    'Prooph\Bundle\ServiceBus\ProophServiceBusBundle' => ['all' => true],
+    'Prooph\Bundle\EventStore\ProophEventStoreBundle' => ['all' => true],
 ];
