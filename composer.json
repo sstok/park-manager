@@ -19,6 +19,8 @@
     "require": {
         "php": "^7.1",
         "beberlei/assert": "^2.7.6",
+        "doctrine/dbal": "^2.6@dev",
+        "doctrine/doctrine-bundle": "^1.6@dev",
         "prooph/event-sourcing": "^5.0.1",
         "prooph/event-store-bus-bridge": "^3.0.0",
         "prooph/event-store-symfony-bundle": "^1.0@dev",
@@ -29,7 +31,6 @@
         "symfony/form": "^3.3@dev",
         "symfony/framework-bundle": "^3.3@dev",
         "symfony/monolog-bundle": "^3.1",
-        "symfony/orm-pack": "^2.4@dev",
         "symfony/security-bundle": "^3.3@dev",
         "symfony/twig-bundle": "^3.3@dev",
         "symfony/validator": "^3.3@dev",
