@@ -15,7 +15,7 @@
     </testsuites>
 
     <php>
-        <server name="KERNEL_DIR" value="src/" />
+        <server name="KERNEL_CLASS" value="App\Kernel" />
     </php>
 
     <filter>
@@ -30,6 +30,10 @@
                 <directory>src/*/*Bundle/templates</directory>
                 <directory>src/*/*Bundle/translations</directory>
                 <directory>src/*/*Bundle/Tests</directory>
+                <directory>src/Common/Tests</directory>
+                <directory>src/Common/spec</directory>
+                <directory>src/Common/Infrastructure/templates</directory>
+                <directory>src/Common/Infrastructure/translations</directory>
                 <directory>src/Module/*/templates</directory>
                 <directory>src/Module/*/translations</directory>
                 <directory>src/Module/*/Tests</directory>
