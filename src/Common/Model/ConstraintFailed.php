@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Common\Domain;
+namespace ParkManager\Common\Model;
 
 /**
  * A ConstraintFailed is thrown when a single domain constraint

@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Common\Domain;
+namespace ParkManager\Common\Model;
 
 use Assert\Assertion;
 
@@ -25,6 +25,7 @@ final class EmailAddress
 {
     private $name;
     private $host;
+    private $address;
 
     public function __construct(string $address)
     {
@@ -33,6 +34,7 @@ final class EmailAddress
         $atPosition = mb_strpos($address, '@');
         $this->name = mb_substr($address, 0, $atPosition);
         $this->host = mb_substr($address, $atPosition + 1);
+        $this->address = $address;
     }
 
     public function getName(): string
@@ -43,5 +45,15 @@ final class EmailAddress
     public function getHost(): string
     {
         return $this->host;
+    }
+
+    public function __toString(): string
+    {
+        return $this->address;
+    }
+
+    public function toString(): string
+    {
+        return $this->address;
     }
 }

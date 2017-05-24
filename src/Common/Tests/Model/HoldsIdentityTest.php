@@ -12,9 +12,9 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Common\Tests\Domain;
+namespace ParkManager\Common\Tests\Model;
 
-use ParkManager\Common\Domain\HoldsIdentity;
+use ParkManager\Common\Model\HoldsIdentity;
 use PHPUnit\Framework\TestCase;
 
 final class HoldsIdentityTest extends TestCase
@@ -71,6 +71,7 @@ final class HoldsIdentityTest extends TestCase
     }
 }
 
+/** @ignore */
 class MockIndentity implements \Serializable, \JsonSerializable
 {
     use HoldsIdentity;

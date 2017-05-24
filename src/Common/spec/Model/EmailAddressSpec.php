@@ -12,11 +12,11 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace spec\ParkManager\Common\Domain;
+namespace spec\ParkManager\Common\Model;
 
 use Assert\Assertion;
 use Assert\InvalidArgumentException;
-use ParkManager\Common\Domain\EmailAddress;
+use ParkManager\Common\Model\EmailAddress;
 use PhpSpec\ObjectBehavior;
 
 final class EmailAddressSpec extends ObjectBehavior
@@ -52,5 +52,10 @@ final class EmailAddressSpec extends ObjectBehavior
     function it_holds_a_host()
     {
         $this->getHost()->shouldReturn('example.com');
+    }
+
+    function it_can_be_casted_to_string()
+    {
+        $this->__toString()->shouldReturn('admin@example.com');
     }
 }
