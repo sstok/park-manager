@@ -1,0 +1,12 @@
+park_manager:
+    sections:
+        admin:
+            prefix: /admin
+            host: null
+            requirements: ~
+            defaults: ~
+        client:
+            prefix: /
+            host: null
+            requirements: ~
+            defaults: ~

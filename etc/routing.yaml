@@ -1,3 +1,16 @@
-#index:
-#    path: /
-#    defaults: { _controller: "App\\Controller\\DefaultController::index" }
+# The routing system of Park-Manager uses the Rollerworks RouteAutowiringBundle
+# To register routing information into slot. See https://github.com/rollerworks/RouteAutowiringBundle
+
+# On top of that the Rollerworks AppSectioningBundle provides the section specific loading
+# of routing information from a autowired routing-slot.
+#
+# Avoid registering routes here directly but instead use the RouteAutowiringBundle
+# and/or Symfony Flex to ensure bundle removal doesn't break the application.
+
+_admin:
+    resource: 'admin:rollerworks_autowiring#park_manager.admin_section.root'
+    type: app_section
+
+_client:
+    resource: 'client:rollerworks_autowiring#park_manager.client_section.root'
+    type: app_section
