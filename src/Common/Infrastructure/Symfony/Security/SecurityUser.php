@@ -35,11 +35,11 @@ class SecurityUser implements UserInterface, EquatableInterface, \Serializable
     {
         $this->authentication = $user->authenticationInfo();
         $this->enabled = $user->isAccessEnabled();
-        $this->username = (string) $user->id();
+        $this->username = $user->id();
         $this->roles = ['ROLE_USER'];
 
         if ($this->authentication instanceof EmailAddressAndPasswordAuthentication) {
-            $this->password = (string) $this->authentication->password();
+            $this->password = $this->authentication->password();
         }
     }
 
