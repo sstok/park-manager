@@ -46,6 +46,6 @@ final class MockAuthentication implements AuthenticationInfo
 
     public static function fromArray(array $information): MockAuthentication
     {
-        return new MockAuthentication($information);
+        return new self($information);
     }
 }

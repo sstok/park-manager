@@ -77,7 +77,7 @@ abstract class AggregateRootTestCase extends TestCase
     {
         foreach ((new \ReflectionObject($event))->getMethods(\ReflectionMethod::IS_PUBLIC) as $methodReflection) {
             if ($methodReflection->isStatic() || $methodReflection->getNumberOfRequiredParameters() > 0) {
-                 continue;
+                continue;
             }
 
             if (0 === strpos($methodReflection->getDeclaringClass()->getNamespaceName(), 'Prooph\\')) {
