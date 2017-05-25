@@ -22,22 +22,22 @@ final class HoldsIdentityTest extends TestCase
     /** @test */
     public function it_allows_creating_new_instance()
     {
-        $id = MockIndentity::create();
+        $id = MockIdentity::create();
 
-        self::assertInstanceOf(MockIndentity::class, $id);
+        self::assertInstanceOf(MockIdentity::class, $id);
     }
 
     /** @test */
     public function it_allows_comparing()
     {
-        $id = MockIndentity::create();
-        $id2 = MockIndentity::create();
+        $id = MockIdentity::create();
+        $id2 = MockIdentity::create();
 
         self::assertTrue($id->equals($id));
         self::assertFalse($id->equals($id2));
         self::assertFalse($id->equals(false));
 
-        $id = MockIndentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
+        $id = MockIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
 
         self::assertTrue($id->equals($id));
         self::assertFalse($id->equals($id2));
@@ -47,7 +47,7 @@ final class HoldsIdentityTest extends TestCase
     /** @test */
     public function it_can_be_cast_to_string()
     {
-        $id = MockIndentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
+        $id = MockIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
 
         self::assertEquals('56253090-3960-11e7-94fd-acbc32b58315', (string) $id);
     }
@@ -55,7 +55,7 @@ final class HoldsIdentityTest extends TestCase
     /** @test */
     public function its_serializable()
     {
-        $id = MockIndentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
+        $id = MockIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
         $serialized = serialize($id);
 
         self::assertEquals($id, unserialize($serialized, []));
@@ -64,7 +64,7 @@ final class HoldsIdentityTest extends TestCase
     /** @test */
     public function its_json_serializable()
     {
-        $id = MockIndentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
+        $id = MockIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
         $serialized = json_encode($id);
 
         self::assertEquals('56253090-3960-11e7-94fd-acbc32b58315', json_decode($serialized, true));
@@ -72,7 +72,7 @@ final class HoldsIdentityTest extends TestCase
 }
 
 /** @ignore */
-class MockIndentity implements \Serializable, \JsonSerializable
+class MockIdentity implements \Serializable, \JsonSerializable
 {
     use HoldsIdentity;
 }
