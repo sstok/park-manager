@@ -16,7 +16,11 @@ namespace ParkManager\Bundle\CoreBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use ParkManager\Bridge\Doctrine\Type\ArrayCollectionType;
+use ParkManager\Bundle\CoreBundle\Cli\Command\RegisterAdministratorCommand;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\DependencyExtension;
+use ParkManager\Bundle\UserBundle\DependencyInjection\Compiler\UserFormHandlerPass;
+use Symfony\Component\Console\Application;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -32,6 +36,27 @@ class ParkManagerCoreBundle extends Bundle
         }
 
         return $this->extension;
+    }
+
+    public function build(ContainerBuilder $container)
+    {
+        $dirname = dirname((new \ReflectionClass(ArrayCollectionType::class))->getFileName(), 2);
+
+        $container->addCompilerPass(
+            new UserFormHandlerPass('park_manager.form_handler.administrator.handler_registry', 'admin_form.handler'),
+            PassConfig::TYPE_BEFORE_REMOVING
+        );
+        $container->addCompilerPass(
+            DoctrineOrmMappingsPass::createXmlMappingDriver([
+                realpath($dirname.'/Resources/Mapping/Security') => 'ParkManager\\Component\\Security',
+                realpath(__DIR__.'/Resources/config/Doctrine/Core') => 'ParkManager\\Component\\Core\\Model',
+            ])
+        );
+    }
+
+    public function registerCommands(Application $application)
+    {
+        $application->add(new RegisterAdministratorCommand());
     }
 
     protected function getContainerExtensionClass(): string

@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="park_manager.command_handler.register_administrator" class="ParkManager\Component\Core\Model\Handler\RegisterAdministratorHandler">
+            <argument id="park_manager.repository.administrator" type="service" />
+        </service>
+        <service id="park_manager.command_handler.request_administrator_password_reset" class="ParkManager\Component\User\Model\Handler\RequestUserPasswordResetHandler">
+            <argument id="park_manager.repository.administrator" type="service" />
+            <argument id="ParkManager\Component\User\Canonicalizer\SimpleEmailCanonicalizer" type="service" />
+            <argument id="park_manager.mailer.administrator.password_reset" type="service" />
+        </service>
+        <service id="park_manager.command_handler.confirm_administrator_password_reset" class="ParkManager\Component\User\Model\Handler\ConfirmUserPasswordResetHandler">
+            <argument id="park_manager.repository.administrator" type="service" />
+        </service>
+
+        <service id="park_manager.query_handler.get_administrator_by_password_reset_token" class="ParkManager\Component\User\Model\Handler\GetUserWithPasswordResetTokenHandler">
+            <argument id="park_manager.read_model.administrator_finder" type="service" />
+        </service>
+
+        <service id="park_manager.read_model.administrator_finder" class="ParkManager\Bundle\UserBundle\ReadModel\DbalUserFinder" public="false">
+            <argument id="doctrine.dbal.default_connection" type="service" />
+            <argument type="string">public.administrator</argument>
+        </service>
+    </services>
+</container>

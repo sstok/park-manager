@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults public="true" />
+
+        <service id="park_manager.web_action.security.administrator.login" class="ParkManager\Bundle\UserBundle\Action\LoginAction">
+            <argument id="twig" type="service" />
+            <argument id="security.authentication_utils" type="service" />
+            <argument type="string">park_manager.administrator.security_login</argument>
+            <argument type="string">@ParkManager/web/security/login.html.twig</argument>
+        </service>
+        <service id="park_manager.web_action.security.administrator.request_password_reset" class="ParkManager\Bundle\UserBundle\Action\RequestPasswordResetAction">
+            <argument id="twig" type="service" />
+            <argument id="park_manager.form_handler.administrator.handler_factory" type="service" />
+            <argument type="string">@ParkManager/web/security/password_reset.html.twig</argument>
+            <argument type="string">park_manager.administrator.security_login</argument>
+        </service>
+        <service id="park_manager.web_action.security.administrator.confirm_password_reset" class="ParkManager\Bundle\UserBundle\Action\ConfirmPasswordResetAction">
+            <argument id="prooph_service_bus.administrator.query_bus" type="service" />
+            <argument id="twig" type="service" />
+            <argument id="park_manager.form_handler.administrator.handler_factory" type="service" />
+            <argument type="string">@ParkManager/web/security/password_reset_confirm.html.twig</argument>
+            <argument type="string">park_manager.administrator.security_login</argument>
+        </service>
+    </services>
+</container>

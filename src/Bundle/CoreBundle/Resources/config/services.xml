@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <imports>
+        <import resource="services/action.xml" />
+        <import resource="services/model.xml" />
+        <import resource="services/form.xml" />
+    </imports>
+
+    <services>
+        <service id="park_manager.repository.administrator" class="ParkManager\Bundle\CoreBundle\Model\DoctrineOrmAdministratorRepository">
+            <argument id="doctrine.orm.entity_manager" type="service" />
+            <argument id="prooph_service_bus.administrator.event_bus" type="service" />
+        </service>
+
+        <service id="park_manager.security.user_provider.administrator" class="ParkManager\Bundle\UserBundle\Security\DbalUserProvider" public="false">
+            <argument id="doctrine.dbal.default_connection" type="service" />
+            <argument id="ParkManager\Component\User\Canonicalizer\SimpleEmailCanonicalizer" type="service" />
+            <argument>public.administrator</argument>
+            <argument>\ParkManager\Bundle\CoreBundle\Security\AdministratorSecurityUser</argument>
+        </service>
+        <service id="park_manager.security.guard.form.administrator" class="ParkManager\Bundle\UserBundle\Security\FormAuthenticator" public="false">
+            <argument id="security.csrf.token_manager" type="service" />
+            <argument id="security.password_encoder" type="service" />
+            <argument id="Symfony\Component\Routing\Generator\UrlGeneratorInterface" type="service" />
+            <argument type="string">park_manager.administrator.security_login</argument>
+            <argument type="string">admin_home</argument>
+        </service>
+
+        <service id="park_manager.mailer.administrator.password_reset" class="ParkManager\Bundle\UserBundle\Service\PasswordResetSwiftMailer" public="false">
+            <argument id="sylius.email_sender" type="service" />
+            <argument id="router" type="service" />
+            <argument>park_manager.administrator.confirm_password_reset</argument>
+        </service>
+    </services>
+</container>

@@ -1,0 +1,33 @@
+{% extends '@ParkManager/web/security/layout.html.twig' %}
+
+{% set page_heading = 'login.admin_heading'|trans %}
+{% if error is defined and error is not empty %}
+    {% set error = error.messageKey|trans(error.messageData, 'security')|e %}
+{% endif %}
+
+{% block content %}
+<form class="ui large form" action="{{ path(route) }}" method="post">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+    <div class="ui stacked segment">
+        <div class="field">
+            <div class="ui left icon input">
+                <i class="user icon"></i>
+                <input type="text" name="_email" placeholder="{{ 'label.email'|trans }}" value="{{ last_username }}" required="required">
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui left icon input">
+                <i class="lock icon"></i>
+                <input type="password" name="_password" placeholder="{{ 'label.password'|trans }}" required="required">
+            </div>
+        </div>
+        <button type="submit" name="_submit" class="ui fluid large teal submit button">{{ 'button.login'|trans }}</button>
+    </div>
+
+    <div class="ui error message" id="validation-errors"></div>
+    <div class="ui message">
+        <a href="{{ path('park_manager.administrator.request_password_reset') }}">{{ 'login.forgot_password'|trans }}</a>
+    </div>
+</form>
+{% endblock content %}

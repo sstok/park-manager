@@ -4,11 +4,20 @@ parameters:
     excludes_analyse:
         - config/bundles.php
     ignoreErrors:
+        - '#Method ParkManager\\Bundle\\UserBundle\\Security\\[^:]+\:\:getUser\(\) should return ParkManager\\Component\\User\\Security\\SecurityUser\|null but returns Symfony\\Component\\Security\\Core\\User\\UserInterface#'
+        - '#Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:isEnabled\(\)#'
         - '#__construct\(\) does not call parent constructor from .+#'
+        - '#\$_(em|class) \([^)]+\) does not accept [^\s]+#'
+
+        # Tests
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[a-zA-Z0-9_]+\(\)#'
         #- '#Access to an undefined property Prophecy\\Prophecy\\ObjectProphecy::\$[a-zA-Z0-9_]+#'
         #- '#Call to an undefined method PHPUnit_Framework_MockObject_MockObject::[a-zA-Z0-9_]+\(\)#'
-        - '#expects\s+[^\s]+, PHPUnit_Framework_MockObject_MockObject given#'
+        #- '#expects\s+[^\s]+, PHPUnit_Framework_MockObject_MockObject given#'
+
+        # Pomm related
+        #- '#Method ParkManager\\Module\\\w+\\Infrastructure\\Repository\\Pomm(\w+)Repository\:\:getModel\(\) should return ParkManager\\Module\\\w+\\Infrastructure\\Pomm\\ParkManager\\\w+Schema\\\w+Model but returns PommProject\\ModelManager\\Model\\Model#'
+        #- '#Call to an undefined method PommProject\\ModelManager\\Model\\Model\:\:findByPK\(\)#'
 
         # Sodium
         - '#Function sodium_[^\s]+ not found.#'

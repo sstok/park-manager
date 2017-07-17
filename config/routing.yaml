@@ -14,3 +14,15 @@ _admin:
 _client:
     resource: 'client:rollerworks_autowiring#park_manager.client_section.root'
     type: app_section
+
+home:
+    path: /
+    defaults: { _controller: ParkManager\Bundle\CoreBundle\Action\HomepageAction }
+
+admin_home:
+    path: /admin/
+    defaults: { _controller: ParkManager\Bundle\CoreBundle\Action\HomepageAction }
+
+#admin_login:
+#    path: /admin/login
+#    defaults: { _controller: 'park_manager.web_action.security.login.administrator' }

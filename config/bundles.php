@@ -12,7 +12,6 @@ return [
     'ParkManager\Bundle\CoreBundle\ParkManagerCoreBundle' => ['all' => true],
     'ParkManager\Bundle\UserBundle\ParkManagerUserBundle' => ['all' => true],
     'Prooph\Bundle\ServiceBus\ProophServiceBusBundle' => ['all' => true],
-    'PommProject\PommBundle\PommBundle' => ['all' => true],
     'Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle' => ['all' => true],
     'Doctrine\Bundle\DoctrineBundle\DoctrineBundle' => ['all' => true],
     'Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle' => ['all' => true],

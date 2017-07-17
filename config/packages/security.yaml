@@ -1,12 +1,79 @@
 security:
     encoders:
+        'ParkManager\Bundle\CoreBundle\Security\AdministratorSecurityUser':
+            id: 'ParkManager\Component\User\Security\Argon2iPasswordEncoder'
+
+    providers:
+        administrator:
+            id: 'park_manager.security.user_provider.administrator'
+
     firewalls:
         dev:
             pattern: '^/(_(profiler|wdt)|css|images|js)/'
             security: false
 
+        admin:
+            pattern: '^/admin'
+            #request_matcher: park_manager.section.admin.request_matcher
+            provider: administrator
+            context: admin
+            anonymous: ~
 
+            logout:
+                csrf_parameter:       _csrf_token
+                csrf_token_generator: security.csrf.token_manager
+                csrf_token_id:        logout_admin
+                path:                 '/admin/logout'
+                target:               '/admin/'
+            guard:
+                authenticators:
+                    - park_manager.security.guard.form.administrator
+
+            remember_me:
+                secret:               '%kernel.secret%'
+                token_provider:       ~
+                catch_exceptions:     true
+                name:                 ADMIN_REMEMBERME
+                lifetime:             604800 # one week
+                path:                 'admin/'
+                domain:               null # cannot be configured due to host-patterns
+                secure:               false
+                httponly:             true
+                always_remember_me:   false
+
+#        client:
+#            pattern: '^/'
+#            #request_matcher: park_manager.section.admin.request_matcher
+#            provider: administrator
+#            #context: admin
+#            anonymous: ~
+#
+#            logout:
+#                csrf_parameter:       _csrf_token
+#                csrf_token_generator: security.csrf.token_manager
+#                csrf_token_id:        logout_admin
+#                path:                 '/logout'
+#                target:               '/'
+#            guard:
+#                authenticators:
+#                    - park_manager.security.guard.form.administrator
+#
+#            remember_me:
+#                secret:               '%kernel.secret%'
+#                token_provider:       ~
+#                catch_exceptions:     true
+#                name:                 ADMIN_REMEMBERME
+#                lifetime:             604800 # one week
+#                path:                 '/'
+#                domain:               null # cannot be configured due to host-patterns
+#                secure:               false
+#                httponly:             true
+#                always_remember_me:   false
 
     access_control:
+        # Admin
+        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: ROLE_ADMIN }
 
         - { path: ^/, role: ROLE_USER }
