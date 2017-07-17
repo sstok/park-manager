@@ -2,10 +2,11 @@ parameters:
     autoload_files:
         - vendor/autoload.php
     excludes_analyse:
-        - etc/bundles.php
         - /*/spec/*
+        - config/bundles.php
     ignoreErrors:
         #- '#Call to an undefined method Symfony\\Component\\Routing\\Exception\\ExceptionInterface::getCode()#'
+        - '#__construct\(\) does not call parent constructor from .+#'
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[a-zA-Z0-9_]+\(\)#'
         #- '#Access to an undefined property Prophecy\\Prophecy\\ObjectProphecy::\$[a-zA-Z0-9_]+#'
         #- '#Call to an undefined method PHPUnit_Framework_MockObject_MockObject::[a-zA-Z0-9_]+\(\)#'

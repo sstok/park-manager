@@ -15,12 +15,9 @@
             "homepage": "https://github.com/park-manager/park-manager/contributors"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "php": "^7.1",
         "beberlei/assert": "^2.7.6",
-        "doctrine/dbal": "^2.6@dev",
-        "doctrine/doctrine-bundle": "^1.6@dev",
         "prooph/event-sourcing": "^5.0.1",
         "prooph/event-store-bus-bridge": "^3.0.0",
         "prooph/event-store-symfony-bundle": "^1.0@dev",
@@ -28,26 +25,33 @@
         "prooph/service-bus-symfony-bundle": "^0.4.1",
         "rollerworks/app-sectioning-bundle": "^0.4.0@dev",
         "rollerworks/route-autowiring-bundle": "^0.2.0@dev",
-        "symfony/console": "^3.3@dev",
-        "symfony/flex": "^1.0",
-        "symfony/form": "^3.3@dev",
-        "symfony/framework-bundle": "^3.3@dev",
+        "sylius/mailer": "^1.0@dev",
+        "sylius/mailer-bundle": "^1.0@dev",
+        "symfony/asset": "^3.3",
+        "symfony/browser-kit": "^3.3",
+        "symfony/console": "^3.3.2",
+        "symfony/expression-language": "^3.3",
+        "symfony/flex": "^1.0@dev",
+        "symfony/form": "^3.3.2",
+        "symfony/framework-bundle": "^3.3.2",
         "symfony/monolog-bundle": "^3.1",
-        "symfony/security-bundle": "^3.3@dev",
-        "symfony/twig-bundle": "^3.3@dev",
-        "symfony/validator": "^3.3@dev",
-        "symfony/yaml": "^3.3@dev"
+        "symfony/orm-pack": "^1.0",
+        "symfony/security-bundle": "^3.3.2",
+        "symfony/swiftmailer-bundle": "^3.0",
+        "symfony/twig-bundle": "^3.3.2",
+        "symfony/validator": "^3.3.2",
+        "symfony/yaml": "^3.3.2"
     },
     "require-dev": {
         "johnkary/phpunit-speedtrap": "v2.0.0-BETA1",
         "matthiasnoback/symfony-dependency-injection-test": "^2.1.0",
-        "phpspec/phpspec": "^3.0@dev",
-        "phpunit/phpunit": "^6.1@dev",
+        "phpspec/phpspec": "^3.0",
+        "phpunit/phpunit": "^6.1",
         "ramsey/uuid-console": "^1.1.1",
         "symfony/dotenv": "^3.3",
         "symfony/phpunit-bridge": "^3.3",
-        "symfony/web-profiler-bundle": "^3.3@dev",
-        "symfony/web-server-bundle": "^3.3@dev"
+        "symfony/web-profiler-bundle": "^3.3",
+        "symfony/web-server-bundle": "^3.3"
     },
     "config": {
         "platform": {
@@ -67,7 +71,7 @@
     "scripts": {
         "auto-scripts": {
             "make cache-warmup": "script",
-            "assets:install --symlink --relative %WEB_DIR%": "symfony-cmd"
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -78,7 +82,6 @@
     },
     "conflict": {
         "symfony/symfony": "<3.3",
-        "symfony/twig-bundle": "<3.3",
         "symfony/debug": "<3.3"
     },
     "extra": {

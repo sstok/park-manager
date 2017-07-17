@@ -136,7 +136,7 @@ return PhpCsFixer\Config::create()
             'single_blank_line_at_eof' => true,
             'single_blank_line_before_namespace' => true,
             'single_class_element_per_statement' => true,
-            'single_import_per_statement' => true,
+            'single_import_per_statement' => false,
             'single_line_after_imports' => true,
             'single_quote' => true,
             'space_after_semicolon' => true,
@@ -159,11 +159,13 @@ return PhpCsFixer\Config::create()
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->exclude('Fixtures')
+            ->exclude('AutoStructure')
             ->notPath('var/')
-            ->notPath('etc/')
-            ->notPath('etc/bundles.php')
+            //->notPath('config/')
+            ->notPath('config/bundles.php')
+            //->notPath('%/src/Module/[^/]+/Infrastructure/Pomm/ParkManager/[^/]+/AutoStructure/%')
             ->notName('*Spec.php')
-            ->in([__DIR__.'/src', __DIR__.'/bin', __DIR__.'/web'])
+            ->in([__DIR__.'/src', __DIR__.'/bin', __DIR__.'/public'])
     )
 ;
 

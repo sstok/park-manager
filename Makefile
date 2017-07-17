@@ -18,7 +18,7 @@ sf_console:
 
 serve_as_sf: sf_console
 	@test -f $(CONSOLE) && $(CONSOLE)|grep server:start > /dev/null || ${MAKE} serve_as_php
-	@$(CONSOLE) server:start || exit 0
+	@$(CONSOLE) server:start --docroot=public/ || exit 0
 
 	@printf "Quit the server with \033[32;49mbin/console server:stop.\033[39m\n"
 
@@ -26,7 +26,7 @@ serve_as_php:
 	@printf "\033[32;49mServer listening on http://127.0.0.1:8000\033[39m\n";
 	@printf "Quit the server with CTRL-C.\n"
 	@printf "Run \033[32mcomposer require symfony/web-server-bundle\033[39m for a better web server\n"
-	php -S 127.0.0.1:8000 -t web
+	php -S 127.0.0.1:8000 -t public
 
 serve:
 	@${MAKE} serve_as_sf

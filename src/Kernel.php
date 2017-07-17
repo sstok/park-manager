@@ -41,7 +41,7 @@ final class Kernel extends BaseKernel
 
     public function registerBundles(): iterable
     {
-        $contents = require dirname(__DIR__).'/etc/bundles.php';
+        $contents = require dirname(__DIR__).'/config/bundles.php';
         foreach ($contents as $class => $envs) {
             if (isset($envs['all']) || isset($envs[$this->getEnvironment()])) {
                 yield new $class();
@@ -51,7 +51,7 @@ final class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        $confDir = dirname(__DIR__).'/etc';
+        $confDir = dirname(__DIR__).'/config';
         $loader->load($confDir.'/packages/*'.self::CONFIG_EXTS, 'glob');
         if (is_dir($confDir.'/packages/'.$this->getEnvironment())) {
             $loader->load($confDir.'/packages/'.$this->getEnvironment().'/**/*'.self::CONFIG_EXTS, 'glob');
@@ -61,7 +61,7 @@ final class Kernel extends BaseKernel
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
-        $confDir = dirname(__DIR__).'/etc';
+        $confDir = dirname(__DIR__).'/config';
         if (is_dir($confDir.'/routing/')) {
             $routes->import($confDir.'/routing/*'.self::CONFIG_EXTS, '/', 'glob');
         }
