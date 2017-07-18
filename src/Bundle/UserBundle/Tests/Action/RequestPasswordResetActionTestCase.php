@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\UserBundle\Tests\Action;
 
-use ParkManager\Bundle\UserBundle\Action\ConfirmPasswordResetAction;
-use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**

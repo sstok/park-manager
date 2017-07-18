@@ -16,7 +16,6 @@ namespace ParkManager\Bundle\UserBundle\Service;
 
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Model\Service\EmailAddressChangeConfirmationMailer;
-use ParkManager\Component\User\Model\Service\PasswordResetMailer;
 use Sylius\Component\Mailer\Sender\SenderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
