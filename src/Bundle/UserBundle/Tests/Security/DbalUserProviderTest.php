@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 /**
  * @internal
  *
- * @functional
+ * @group functional
  */
 final class DbalUserProviderTest extends WebTestCase
 {

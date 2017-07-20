@@ -18,6 +18,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * @internal
+ *
+ * @group functional
  */
 abstract class RequestPasswordResetActionTestCase extends WebTestCase
 {

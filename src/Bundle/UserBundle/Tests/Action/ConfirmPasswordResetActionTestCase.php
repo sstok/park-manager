@@ -20,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * @internal
+ * @group functional
  */
 abstract class ConfirmPasswordResetActionTestCase extends WebTestCase
 {
