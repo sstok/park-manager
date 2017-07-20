@@ -50,6 +50,3 @@ jobs:
             - /composer/cache
             - ./php-cs-fixer.phar
           key: v1-dependencies-{{ checksum "composer.json" }}
-
-      # run tests!
-      - run: make tests
