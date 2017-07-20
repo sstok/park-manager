@@ -20,7 +20,6 @@ use ParkManager\Bundle\UserBundle\Form\Type\RequestPasswordResetType;
 use ParkManager\Component\User\Model\Command\RequestUserPasswordReset;
 use Prooph\ServiceBus\CommandBus;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -35,13 +34,11 @@ final class RequestPasswordResetFormHandler implements HandlerTypeInterface
     private $translator;
     private $urlGenerator;
     private $loginRoute;
-    private $requestStack;
 
     public function __construct(
         FlashBagInterface $flashBag,
         TranslatorInterface $translator,
         UrlGeneratorInterface $urlGenerator,
-        RequestStack $requestStack,
         CommandBus $commandBus,
         string $loginRoute
     ) {
@@ -49,7 +46,6 @@ final class RequestPasswordResetFormHandler implements HandlerTypeInterface
         $this->flashBag = $flashBag;
         $this->translator = $translator;
         $this->urlGenerator = $urlGenerator;
-        $this->requestStack = $requestStack;
         $this->loginRoute = $loginRoute;
     }
 

@@ -24,9 +24,9 @@ use PHPUnit\Framework\TestCase;
  */
 final class SplitTokenValueHolderTest extends TestCase
 {
-    const VERIFIER = '$argon2i$v=19$m=32768,t=4,p=1$LU0TzgT8jcnYpqRGzPFVbA$ik1q480aF9RGRxP2hxyVjAyDBkuE/SyO7+joMzpiqEY';
-    const SELECTOR = 'ZcqcqWqW-YAhgmLobo6tps0Xiyq678Di';
-    const TOKEN = 'ZcqcqWqW-YAhgmLobo6tps0Xiyq678DiLgRZaJvbTI2QxGEzD2a7swBs';
+    public const VERIFIER = '$argon2i$v=19$m=32768,t=4,p=1$LU0TzgT8jcnYpqRGzPFVbA$ik1q480aF9RGRxP2hxyVjAyDBkuE/SyO7+joMzpiqEY';
+    public const SELECTOR = 'ZcqcqWqW-YAhgmLobo6tps0Xiyq678Di';
+    public const TOKEN = 'ZcqcqWqW-YAhgmLobo6tps0Xiyq678DiLgRZaJvbTI2QxGEzD2a7swBs';
 
     /** @test */
     public function it_constructable()

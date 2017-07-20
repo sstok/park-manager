@@ -33,7 +33,7 @@ use ParkManager\Component\Security\Token\SplitTokenValueHolder;
  */
 abstract class User extends EventsRecordingAggregateRoot
 {
-    const DEFAULT_ROLE = 'ROLE_USER';
+    public const DEFAULT_ROLE = 'ROLE_USER';
 
     /**
      * @var string

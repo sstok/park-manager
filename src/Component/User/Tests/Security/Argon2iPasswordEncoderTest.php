@@ -26,7 +26,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class Argon2iPasswordEncoderTest extends TestCase
 {
-    const PASSWORD = 'password';
+    public const PASSWORD = 'password';
 
     public function setUp()
     {

@@ -49,6 +49,24 @@ class Argon2iPasswordEncoder extends BasePasswordEncoder
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function isPasswordValid($encoded, $raw, $salt)
+    {
+        $valid = false;
+
+        if (function_exists('sodium_crypto_pwhash_str_verify')) {
+            $valid = !$this->isPasswordTooLong($raw) && sodium_crypto_pwhash_str_verify($encoded, $raw);
+            \sodium_memzero($raw);
+        } elseif (extension_loaded('libsodium')) {
+            $valid = !$this->isPasswordTooLong($raw) && \Sodium\crypto_pwhash_str_verify($encoded, $raw);
+            \Sodium\memzero($raw);
+        }
+
+        return $valid;
+    }
+
     private function encodePasswordNative($raw)
     {
         $hash = \sodium_crypto_pwhash_str(
@@ -71,23 +89,5 @@ class Argon2iPasswordEncoder extends BasePasswordEncoder
         \Sodium\memzero($raw);
 
         return $hash;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isPasswordValid($encoded, $raw, $salt)
-    {
-        $valid = false;
-
-        if (function_exists('sodium_crypto_pwhash_str_verify')) {
-            $valid = !$this->isPasswordTooLong($raw) && sodium_crypto_pwhash_str_verify($encoded, $raw);
-            \sodium_memzero($raw);
-        } elseif (extension_loaded('libsodium')) {
-            $valid = !$this->isPasswordTooLong($raw) && \Sodium\crypto_pwhash_str_verify($encoded, $raw);
-            \Sodium\memzero($raw);
-        }
-
-        return $valid;
     }
 }

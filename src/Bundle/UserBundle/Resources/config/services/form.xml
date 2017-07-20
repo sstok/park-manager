@@ -7,7 +7,6 @@
             <argument id="session.flash_bag" type="service" />
             <argument id="translator" type="service" />
             <argument id="router" type="service" />
-            <argument id="request_stack" type="service" />
         </service>
         <service id="park_manager.form_handler.security.confirm_password_reset" class="ParkManager\Bundle\UserBundle\Form\Handler\ConfirmPasswordResetFormHandler" abstract="true">
             <argument id="request_stack" type="service" />

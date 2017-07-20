@@ -28,10 +28,10 @@ use PHPUnit\Framework\TestCase;
  */
 final class UserTest extends TestCase
 {
-    private const ID1 = '930c3fd0-3bd1-11e7-bb9b-acdc32b58315';
-
     use EventsRecordingAggregateRootAssertionTrait;
     use ObjectHydrationAssertTrait;
+
+    private const ID1 = '930c3fd0-3bd1-11e7-bb9b-acdc32b58315';
 
     /** @test */
     public function its_constructable()
