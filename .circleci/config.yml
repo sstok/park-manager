@@ -1,0 +1,44 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: sstok/park-manager-docker-and-compose:0.2
+
+    working_directory: /park-manager
+
+    steps:
+      - setup_remote_docker: { reusable: true, exclusive: false }
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "composer.json" }}
+
+      - run:
+          name: Testing PHP service
+          command: |
+            set -e
+            curl -i -X POST -H "Accept: application/json" https://security.sensiolabs.org/check_lock -F lock=@./composer.lock | grep X-Alerts | cut -c 11
+
+            cp .env.dist .env
+            composer install --no-progress --no-interaction --no-suggest --optimize-autoloader --prefer-dist --ansi
+
+            make tests
+
+            cd /park-manager
+            wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.3.2/php-cs-fixer.phar -O php-cs-fixer.phar
+            composer global require --no-progress --no-interaction --no-suggest --optimize-autoloader --prefer-dist --ansi phpstan/phpstan
+
+            cd /park-manager
+            export PATH="$PATH:./vendor/bin"
+            php php-cs-fixer.phar fix --dry-run --diff
+            phpstan analyse -c phpstan.neon --no-progress -l5 --ansi src public config bin
+
+      - save_cache:
+          paths:
+            - /composer/cache
+            - ./php-cs-fixer.phar
+          key: v1-dependencies-{{ checksum "composer.json" }}
+
+      # run tests!
+      - run: make tests
