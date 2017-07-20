@@ -164,7 +164,6 @@ return PhpCsFixer\Config::create()
             //->notPath('config/')
             ->notPath('config/bundles.php')
             //->notPath('%/src/Module/[^/]+/Infrastructure/Pomm/ParkManager/[^/]+/AutoStructure/%')
-            ->notName('*Spec.php')
             ->in([__DIR__.'/src', __DIR__.'/bin', __DIR__.'/public'])
     )
 ;

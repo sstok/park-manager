@@ -45,7 +45,6 @@
     "require-dev": {
         "johnkary/phpunit-speedtrap": "v2.0.0-BETA1",
         "matthiasnoback/symfony-dependency-injection-test": "^2.1.0",
-        "phpspec/phpspec": "^3.0",
         "phpunit/phpunit": "^6.1",
         "ramsey/uuid-console": "^1.1.1",
         "symfony/dotenv": "^3.3",
