@@ -166,7 +166,7 @@ final class UserTest extends TestCase
     public function it_sets_emailAddress_confirmation_token()
     {
         $token = SplitToken::generate(self::ID1);
-        $expiration = new \DateTimeImmutable('+ 5 minutes CET');
+        $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
         $user = $this->createUser();
 
         $tokenWasSet = $user->setConfirmationOfEmailAddressChange(
@@ -184,7 +184,7 @@ final class UserTest extends TestCase
     public function it_does_not_set_emailAddress_confirmation_token_when_already_set_with_same_information()
     {
         $token = SplitToken::generate(self::ID1);
-        $expiration = new \DateTimeImmutable('+ 5 minutes CET');
+        $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
         $user = $this->createUser();
 
         $user->setConfirmationOfEmailAddressChange(
@@ -208,7 +208,7 @@ final class UserTest extends TestCase
     public function it_changes_emailAddress_when_confirmation_token_is_correct()
     {
         $token = SplitToken::generate(self::ID1);
-        $expiration = new \DateTimeImmutable('+ 5 minutes CET');
+        $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
         $user = $this->createUser();
         $user->setConfirmationOfEmailAddressChange(
             'Doh@example.com',
@@ -231,7 +231,7 @@ final class UserTest extends TestCase
     {
         $token = SplitToken::generate(self::ID1);
         $token2 = SplitToken::generate('930c3fd0-3bd1-11e7-bb9b-acdc32b58320');
-        $expiration = new \DateTimeImmutable('+ 5 minutes CET');
+        $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
         $user = $this->createUser();
         $user->setConfirmationOfEmailAddressChange(
             'Doh@example.com',
@@ -285,7 +285,7 @@ final class UserTest extends TestCase
     public function it_sets_passwordReset_confirmation_token()
     {
         $token = SplitToken::generate(self::ID1);
-        $expiration = new \DateTimeImmutable('+ 5 minutes CET');
+        $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
         $user = $this->createUser('pass-my-word');
 
         $tokenWasSet = $user->setPasswordResetToken(
@@ -299,7 +299,7 @@ final class UserTest extends TestCase
     public function it_does_not_set_passwordReset_confirmation_token_when_already_set_with_and_not_expired()
     {
         $token = SplitToken::generate(self::ID1);
-        $expiration = new \DateTimeImmutable('+ 5 minutes CET');
+        $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
         $user = $this->createUser('pass-my-word');
 
         $user->setPasswordResetToken($token->toValueHolder($expiration));
@@ -312,7 +312,7 @@ final class UserTest extends TestCase
     public function it_changes_password_when_reset_confirmation_token_is_correct()
     {
         $token = SplitToken::generate(self::ID1);
-        $expiration = new \DateTimeImmutable('+ 5 minutes CET');
+        $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
         $user = $this->createUser('pass-my-word');
         $user->setPasswordResetToken($tokenHolder = $token->toValueHolder($expiration));
 
@@ -334,7 +334,7 @@ final class UserTest extends TestCase
     {
         $token = SplitToken::generate(self::ID1);
         $token2 = SplitToken::generate('930c3fd0-3bd1-11e7-bb9b-acdc32b58320');
-        $expiration = new \DateTimeImmutable('+ 5 minutes CET');
+        $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
         $user = $this->createUser('pass-my-word');
         $user->setPasswordResetToken($token->toValueHolder($expiration));
 

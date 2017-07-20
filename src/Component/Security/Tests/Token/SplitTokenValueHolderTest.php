@@ -57,7 +57,7 @@ final class SplitTokenValueHolderTest extends TestCase
     public function its_expiration_is_compared_by_timestamp()
     {
         $date = new \DateTimeImmutable('+5 minutes', new \DateTimeZone('Europe/Amsterdam')); // 1 hour difference
-        $date2 = new \DateTimeImmutable('+5 minutes', new \DateTimeZone('CET'));
+        $date2 = new \DateTimeImmutable('+5 minutes', new \DateTimeZone('UTC'));
 
         $value = new SplitTokenValueHolder(self::SELECTOR, self::VERIFIER, $date);
 

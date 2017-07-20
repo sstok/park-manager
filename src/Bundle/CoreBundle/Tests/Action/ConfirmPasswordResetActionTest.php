@@ -18,7 +18,7 @@ use ParkManager\Bundle\UserBundle\Tests\Action\ConfirmPasswordResetActionTestCas
 
 /**
  * @internal
- * @functional
+ * @group functional
  */
 class ConfirmPasswordResetActionTest extends ConfirmPasswordResetActionTestCase
 {

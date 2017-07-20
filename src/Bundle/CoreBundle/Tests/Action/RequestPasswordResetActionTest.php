@@ -18,7 +18,7 @@ use ParkManager\Bundle\UserBundle\Tests\Action\RequestPasswordResetActionTestCas
 
 /**
  * @internal
- * @functional
+ * @group functional
  */
 final class RequestPasswordResetActionTest extends RequestPasswordResetActionTestCase
 {
