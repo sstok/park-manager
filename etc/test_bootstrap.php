@@ -23,9 +23,3 @@ if (!getenv('APP_ENV')) {
     $dotEnv->populate(['APP_ENV' => 'test', 'APP_DEBUG' => '1']);
     $dotEnv->load(__DIR__.'/../.env');
 }
-
-// Try to set-up the database.
-// ....
-//$pomm = new \PommProject\Foundation\Pomm(['park_manager' => ['dns' => getenv('DATABASE_URL')]]);
-//$pomm->setDefaultBuilder('park_manager');
-//$pomm->getDefaultSession()->getAllClientForType('query')->query();
