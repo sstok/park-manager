@@ -4,6 +4,11 @@ jobs:
     docker:
       - image: parkmanager/docker-and-compose:latest
 
+      - image: postgres:9.6
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: park_manager
+
     working_directory: /park-manager
 
     steps:
@@ -21,9 +26,15 @@ jobs:
             curl -i -X POST -H "Accept: application/json" https://security.sensiolabs.org/check_lock -F lock=@./composer.lock | grep X-Alerts | cut -c 11
 
             cp .env.dist .env
+            export DATABASE_URL="pgsql://root@localhost:5432/park_manager"
+
             composer install --no-progress --no-interaction --no-suggest --optimize-autoloader --prefer-dist --ansi
 
-            make tests
+            bin/console doctrine:schema:update --force
+            bin/console doctrine:schema:validate || true
+            psql -U root -h localhost -d park_manager -w -a -f ./etc/fixture.sql
+
+            vendor/bin/phpunit --exclude-group "" --verbose
 
             cd /park-manager
             wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.4.0/php-cs-fixer.phar -O php-cs-fixer.phar
