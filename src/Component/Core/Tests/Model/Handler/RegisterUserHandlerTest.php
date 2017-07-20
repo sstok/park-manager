@@ -72,7 +72,7 @@ final class RegisterUserHandlerTest extends TestCase
         $repository->save(Argument::that(function (Administrator $user) use ($command) {
             self::assertTrue($command->id()->equals($user->id()));
             self::assertEquals($command->email(), $user->email());
-            self::assertEquals(strtolower($command->email()), $user->canonicalEmail());
+            self::assertEquals(mb_strtolower($command->email()), $user->canonicalEmail());
             self::assertEquals($command->password(), $user->password());
             self::assertEquals($command->firstName(), $user->firstName());
             self::assertEquals($command->lastName(), $user->lastName());

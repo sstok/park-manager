@@ -29,12 +29,8 @@ final class ChangeUserPassword extends Command
     use PayloadTrait;
     use UserIdTrait;
 
-    private $password;
-
     public function __construct(string $id, ?string $password)
     {
-        $this->password = $password;
-
         $this->init();
         $this->setPayload(['id' => $id, 'password' => $password]);
     }

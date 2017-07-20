@@ -74,7 +74,7 @@ final class DomainMessageAssertion
                 continue;
             }
 
-            if (0 === strpos($methodReflection->getDeclaringClass()->getNamespaceName(), 'Prooph\\')) {
+            if (0 === mb_strpos($methodReflection->getDeclaringClass()->getNamespaceName(), 'Prooph\\')) {
                 continue;
             }
 

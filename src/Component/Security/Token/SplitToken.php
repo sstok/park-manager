@@ -89,6 +89,29 @@ final class SplitToken
     private $token;
 
     /**
+     * Wipe it from memory after it's been used.
+     */
+    public function __destruct()
+    {
+        \Sodium\memzero($this->token);
+        \Sodium\memzero($this->verifier);
+
+        if (null !== $this->verifierHash) {
+            \Sodium\memzero($this->verifierHash);
+        }
+    }
+
+    /**
+     * Returns the token as base64 URI-safe encoded string.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->token();
+    }
+
+    /**
      * Generate a new SplitToken instance.
      *
      * Caution: The token should not be stored! Store the selector and verifier-hash
@@ -169,7 +192,7 @@ final class SplitToken
         $instance->selector = Binary::safeSubstr($token, 0, 32);
         $instance->verifier = Binary::safeSubstr($token, 32);
 
-         // Don't (re)generate as this needs the salt of the stored hash.
+        // Don't (re)generate as this needs the salt of the stored hash.
         $instance->verifierHash = null;
 
         return $instance;
@@ -214,28 +237,5 @@ final class SplitToken
     public function toValueHolder(?\DateTimeImmutable $expiresAt = null, array $metadata = []): SplitTokenValueHolder
     {
         return new SplitTokenValueHolder($this->selector(), $this->verifierHash(), $expiresAt, $metadata);
-    }
-
-    /**
-     * Returns the token as base64 URI-safe encoded string.
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->token();
-    }
-
-    /**
-     * Wipe it from memory after it's been used.
-     */
-    public function __destruct()
-    {
-        \Sodium\memzero($this->token);
-        \Sodium\memzero($this->verifier);
-
-        if (null !== $this->verifierHash) {
-            \Sodium\memzero($this->verifierHash);
-        }
     }
 }

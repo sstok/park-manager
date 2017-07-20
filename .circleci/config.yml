@@ -26,7 +26,7 @@ jobs:
             make tests
 
             cd /park-manager
-            wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.3.2/php-cs-fixer.phar -O php-cs-fixer.phar
+            wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.4.0/php-cs-fixer.phar -O php-cs-fixer.phar
             composer global require --no-progress --no-interaction --no-suggest --optimize-autoloader --prefer-dist --ansi phpstan/phpstan
 
             cd /park-manager

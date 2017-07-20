@@ -30,12 +30,10 @@ final class ConfirmUserPasswordReset extends Command
     use PayloadTrait;
 
     private $token;
-    private $password;
 
     public function __construct(SplitToken $token, string $password)
     {
         $this->token = $token;
-        $this->password = $password;
 
         $this->init();
         $this->setPayload(['token' => $token->token(), 'password' => $password]);

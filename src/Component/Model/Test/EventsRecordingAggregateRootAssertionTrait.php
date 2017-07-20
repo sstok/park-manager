@@ -25,6 +25,7 @@ trait EventsRecordingAggregateRootAssertionTrait
 {
     /**
      * @param EventsRecordingAggregateRoot $aggregateRoot
+     * @param string|int                   $expectedId
      * @param DomainEvent[]                $expectedEvents
      */
     protected static function assertDomainEvents(EventsRecordingAggregateRoot $aggregateRoot, $expectedId, array $expectedEvents): void
