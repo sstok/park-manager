@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: sstok/park-manager-docker-and-compose:0.2
+      - image: parkmanager/docker-and-compose:latest
 
     working_directory: /park-manager
 
