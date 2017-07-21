@@ -56,18 +56,18 @@ final class Kernel extends BaseKernel
         if (is_dir($confDir.'/packages/'.$this->getEnvironment())) {
             $loader->load($confDir.'/packages/'.$this->getEnvironment().'/**/*'.self::CONFIG_EXTS, 'glob');
         }
-        $loader->load($confDir.'/container'.self::CONFIG_EXTS, 'glob');
+        $loader->load($confDir.'/services'.self::CONFIG_EXTS, 'glob');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
         $confDir = dirname(__DIR__).'/config';
-        if (is_dir($confDir.'/routing/')) {
-            $routes->import($confDir.'/routing/*'.self::CONFIG_EXTS, '/', 'glob');
+        if (is_dir($confDir.'/routes/')) {
+            $routes->import($confDir.'/routes/*'.self::CONFIG_EXTS, '/', 'glob');
         }
-        if (is_dir($confDir.'/routing/'.$this->getEnvironment())) {
-            $routes->import($confDir.'/routing/'.$this->getEnvironment().'/**/*'.self::CONFIG_EXTS, '/', 'glob');
+        if (is_dir($confDir.'/routes/'.$this->getEnvironment())) {
+            $routes->import($confDir.'/routes/'.$this->getEnvironment().'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         }
-        $routes->import($confDir.'/routing'.self::CONFIG_EXTS, '/', 'glob');
+        $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
     }
 }
