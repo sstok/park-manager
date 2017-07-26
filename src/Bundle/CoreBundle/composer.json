@@ -1,0 +1,48 @@
+{
+    "name": "park-manager/core-bundle",
+    "type": "symfony-bundle",
+    "description": "Park-Manager CoreBundle",
+    "homepage": "http://www.park-manager.com/",
+    "license": "MPL-2.0",
+    "authors": [
+        {
+            "name": "Sebastiaan Stok",
+            "email": "s.stok@rollerscapes.net"
+        },
+        {
+            "name": "Community contributions",
+            "homepage": "https://github.com/park-manager/park-manager/contributors"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "park-manager/doctrine-bridge": "^1.0",
+        "park-manager/user-bundle": "^1.0",
+        "rollerworks/app-sectioning-bundle": "^0.4.0@dev",
+        "rollerworks/route-autowiring-bundle": "^0.2.0@dev",
+        "symfony/console": "^3.3.2",
+        "symfony/expression-language": "^3.3",
+        "symfony/framework-bundle": "^3.3.2",
+        "symfony/security-bundle": "^3.3.2",
+        "symfony/validator": "^3.3.2",
+        "symfony/yaml": "^3.3.2"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "ParkManager\\Bundle\\CoreBundle\\": ""
+        },
+        "exclude-from-classmap": [
+            "Tests/",
+            "Resources/"
+        ]
+    },
+    "autoload-dev": {
+        "ParkManager\\Bundle\\CoreBundle\\Tests\\": "Tests"
+    }
+}
