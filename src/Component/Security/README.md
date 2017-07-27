@@ -1,7 +1,7 @@
 Park-Manager Security Component
 ===============================
 
-The Park-Manager Security Component of the Park-Manager platform.
+The Security Component of the Park-Manager platform.
 
 See resources for more information.
 

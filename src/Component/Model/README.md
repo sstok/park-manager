@@ -1,7 +1,7 @@
 Park-Manager Model Component
 ============================
 
-The Park-Manager Model Component of the Park-Manager platform.
+The Model Component of the Park-Manager platform.
 
 See resources for more information.
 

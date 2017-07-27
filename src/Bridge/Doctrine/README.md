@@ -1,7 +1,7 @@
 Park-Manager Doctrine Bridge
 ============================
 
-The Park-Manager Doctrine Bridge of the Park-Manager platform.
+The Doctrine Bridge of the Park-Manager platform.
 
 See resources for more information.
 

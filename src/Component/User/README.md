@@ -1,7 +1,7 @@
 Park-Manager User Component
 ===========================
 
-The Park-Manager User Component of the Park-Manager platform.
+The User Component of the Park-Manager platform.
 
 See resources for more information.
 
