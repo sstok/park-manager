@@ -34,5 +34,10 @@
     },
     "autoload-dev": {
         "ParkManager\\Component\\Security\\Tests\\": "Tests"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
     }
 }

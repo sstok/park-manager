@@ -44,5 +44,10 @@
     },
     "autoload-dev": {
         "ParkManager\\Bundle\\CoreBundle\\Tests\\": "Tests"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
     }
 }

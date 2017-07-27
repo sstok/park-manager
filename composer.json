@@ -84,6 +84,9 @@
         "symfony/debug": "<3.3"
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        },
         "symfony": {
             "id": "01BF6RBYGY5V4S3FDMBNKXVVNS",
             "allow-contrib": true
