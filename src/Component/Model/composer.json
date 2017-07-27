@@ -1,0 +1,40 @@
+{
+    "name": "park-manager/model",
+    "type": "library",
+    "description": "Park-Manager Model Component",
+    "homepage": "http://www.park-manager.com/",
+    "license": "MPL-2.0",
+    "authors": [
+        {
+            "name": "Sebastiaan Stok",
+            "email": "s.stok@rollerscapes.net"
+        },
+        {
+            "name": "Community contributions",
+            "homepage": "https://github.com/park-manager/park-manager/contributors"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "beberlei/assert": "^2.7.6",
+        "prooph/service-bus": "~6.0",
+        "react/promise": "^2.5"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "ParkManager\\Component\\Model\\": ""
+        },
+        "exclude-from-classmap": [
+            "Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "ParkManager\\Component\\Model\\Tests\\": "Tests"
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "name": "park-manager/core",
+    "type": "library",
+    "description": "Park-Manager Core Component",
+    "homepage": "http://www.park-manager.com/",
+    "license": "MPL-2.0",
+    "authors": [
+        {
+            "name": "Sebastiaan Stok",
+            "email": "s.stok@rollerscapes.net"
+        },
+        {
+            "name": "Community contributions",
+            "homepage": "https://github.com/park-manager/park-manager/contributors"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "park-manager/model": "^1.0",
+        "park-manager/user": "^1.0"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "ParkManager\\Component\\Core\\": ""
+        },
+        "exclude-from-classmap": [
+            "Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "ParkManager\\Component\\Core\\Tests\\": "Tests"
+    }
+}
