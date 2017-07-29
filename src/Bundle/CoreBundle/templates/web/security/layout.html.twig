@@ -3,55 +3,21 @@
 <head>
     <meta charset="UTF-8"/>
     <title>{{ page_heading }} | Park-Manager</title>
-
-    <link rel="stylesheet" href="{{ asset('css/semantic.css') }}">
-    <style type="text/css">
-        body {
-            background-color: #DADADA;
-        }
-
-        body > .grid {
-            height: 100%;
-        }
-
-        .image {
-            margin-top: -100px;
-        }
-
-        .column, .row {
-            max-width: 450px;
-        }
-    </style>
 </head>
 
 <body>
+<h1>Park-Manager<br>{{ page_heading }}</h1>
 
-<div class="ui middle aligned center aligned grid">
-    <div class="column">
-        <h1 class="ui teal image header">
-            <div class="content">
-                Park-Manager<br>{{ page_heading }}
-            </div>
-        </h1>
+{% if error|default('') is not empty %}
+<div>{{ error|raw }}</div>
+{% endif %}
 
-        {% if error|default('') is not empty %}
-        <div class="ui error message">
-            {{ error|raw }}
-        </div>
-        {% endif %}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div>{{ message|raw }}</div>
+    {% endfor %}
+{% endfor %}
 
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="row">
-                    <div class="ui {{ label }} message">
-                        {{ message|raw }}
-                    </div>
-                </div>
-            {% endfor %}
-        {% endfor %}
-
-        {% block content %}{% endblock content %}
-    </div>
-</div>
+{% block content %}{% endblock content %}
 </body>
 </html>

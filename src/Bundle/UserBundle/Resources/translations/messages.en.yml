@@ -40,8 +40,8 @@ password_reset:
     admin_heading: Administrator Password reset
     paragraph.html: |
         <p>To reset your password provide the (main) e-mail address associated with your account.</p>
-        <p>Please note that <b>no more then one a reset request is accepted</b> within a reasonable time,
-            if you did not receive an e-mail <b>check your spam folder or try again later.</b></p>
+        <p>Please note that <b>no more then one reset request is accepted</b> within a reasonable time,
+            if you didn't receive an e-mail <b>check your spam folder or try again later.</b></p>
     confirm.html: |
         <p>Provide your new password (twice to prevent typing errors).</p>
         <p>You can safely remove the e-mail message with the reset link as this link can only be used once.</p>
