@@ -8,6 +8,7 @@
 
 label:
     email: E-mail address
+    current_password: Current Password
     password: Password
     password2: Repeat Password
     login_remember_me: Remember me
@@ -17,6 +18,7 @@ button:
 
 flash:
     password_reset_accepted: Password reset accepted. Please try to login with your new password.
+    user_password_changed: Password changed.
     password_reset_send: |
         If this e-mail address is valid (opted into account recovery), and no reset was requested recently,
         <em>then</em> you should receive an e-mail. Otherwise check your spam-folder or try again.
@@ -51,3 +53,9 @@ password_reset:
         invalid_token: Invalid token provided, please copy the reset URL in the received e-mail (in full) and try again.
         no_token: |
             Sorry but no results were found with this token.<br><a href="%reset_url%">Please try again</a>
+
+change_password:
+    heading: Change your Password
+    paragraph.html: |
+        <p>Please provide your current password for verification. Note that your new password needs to follow
+            some basic security rules.</p>

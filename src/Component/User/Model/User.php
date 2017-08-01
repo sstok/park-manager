@@ -20,6 +20,7 @@ use Doctrine\Common\Collections\Collection;
 use ParkManager\Component\Model\EventsRecordingAggregateRoot;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\Security\Token\SplitTokenValueHolder;
+use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
 
 /**
  * A User is a uniquely identifiable identity of one person.
@@ -157,7 +158,11 @@ abstract class User extends EventsRecordingAggregateRoot
             Assertion::notEmpty($password, 'Password can only null or a non-empty string.');
         }
 
-        $this->password = $password;
+        if ($this->password !== $password) {
+            $this->password = $password;
+
+            $this->recordThat(UserPasswordWasChanged::withData($this->id()));
+        }
     }
 
     /**

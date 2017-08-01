@@ -23,5 +23,10 @@
             <argument type="string">@ParkManager/web/security/password_reset_confirm.html.twig</argument>
             <argument type="string">park_manager.administrator.security_login</argument>
         </service>
+        <service id="park_manager.web_action.security.administrator.change_password" class="ParkManager\Bundle\UserBundle\Action\ChangePasswordAction">
+            <argument id="twig" type="service" />
+            <argument id="park_manager.form_handler.administrator.handler_factory" type="service" />
+            <argument type="string">@ParkManager/web/security/change_password.html.twig</argument>
+        </service>
     </services>
 </container>

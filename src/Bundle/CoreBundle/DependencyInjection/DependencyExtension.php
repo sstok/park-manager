@@ -18,9 +18,11 @@ use ParkManager\Bridge\Doctrine\Type\ArrayCollectionType;
 use ParkManager\Bridge\Doctrine\Type\DateTimeImmutableType;
 use ParkManager\Component\Core\Model\Command\RegisterAdministrator;
 use ParkManager\Component\User\Model\Command\{
+    ChangeUserPassword,
     ConfirmUserPasswordReset,
     RequestUserPasswordReset
 };
+use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
 use ParkManager\Component\User\Model\Query\GetUserByPasswordResetToken;
 use Rollerworks\Bundle\AppSectioningBundle\DependencyInjection\SectioningFactory;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
@@ -86,6 +88,7 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
                         'routes' => [
                             RequestUserPasswordReset::class => 'park_manager.command_handler.request_administrator_password_reset',
                             ConfirmUserPasswordReset::class => 'park_manager.command_handler.confirm_administrator_password_reset',
+                            ChangeUserPassword::class => 'park_manager.command_handler.change_administrator_password',
                             RegisterAdministrator::class => 'park_manager.command_handler.register_administrator',
                         ],
                     ],
@@ -104,7 +107,12 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
             'event_buses' => [
                 'administrator.event_bus' => [
                     'plugins' => ['prooph_service_bus.on_event_invoke_strategy'],
-                    'router' => ['type' => 'prooph_service_bus.event_bus_router'],
+                    'router' => [
+                        'type' => 'prooph_service_bus.event_bus_router',
+                        'routes' => [
+                            UserPasswordWasChanged::class => ['park_manager.domain_event_listener.update_auth_token_when_password_was_changed.administrator'],
+                        ],
+                    ],
                 ],
             ],
         ]);
