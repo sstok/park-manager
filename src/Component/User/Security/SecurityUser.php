@@ -132,10 +132,6 @@ abstract class SecurityUser implements UserInterface, EquatableInterface, \Seria
             return false;
         }
 
-        if ($user->getRoles() !== $this->getRoles()) {
-            return false;
-        }
-
         if (!hash_equals($user->getPassword(), $this->getPassword())) {
             return false;
         }

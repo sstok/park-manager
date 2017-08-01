@@ -13,7 +13,7 @@ parameters:
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[a-zA-Z0-9_]+\(\)#'
         #- '#Access to an undefined property Prophecy\\Prophecy\\ObjectProphecy::\$[a-zA-Z0-9_]+#'
         #- '#Call to an undefined method PHPUnit_Framework_MockObject_MockObject::[a-zA-Z0-9_]+\(\)#'
-        #- '#expects\s+[^\s]+, PHPUnit_Framework_MockObject_MockObject given#'
+        - '#expects\s+[^\s]+, PHPUnit_Framework_MockObject_MockObject given#'
 
         # Pomm related
         #- '#Method ParkManager\\Module\\\w+\\Infrastructure\\Repository\\Pomm(\w+)Repository\:\:getModel\(\) should return ParkManager\\Module\\\w+\\Infrastructure\\Pomm\\ParkManager\\\w+Schema\\\w+Model but returns PommProject\\ModelManager\\Model\\Model#'

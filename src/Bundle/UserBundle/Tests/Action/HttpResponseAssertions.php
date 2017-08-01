@@ -51,19 +51,20 @@ final class HttpResponseAssertions
         Assert::assertTrue(true);
     }
 
-    public static function assertRequestWasRedirected(Client $client, string $expectedUrl): void
+    public static function assertRequestWasRedirected(Client $client, string ...$expectedUrls): void
     {
-        if (!$client->getResponse()->isRedirect($expectedUrl)) {
-            Assert::fail(
-                'Last request was not a redirect to: '.$expectedUrl.
-                VarDumper::dump($client->getInternalRequest()).
-                VarDumper::dump($client->getInternalResponse())
-            );
+        foreach ($expectedUrls as $expectedUrl) {
+            if (!$client->getResponse()->isRedirect($expectedUrl)) {
+                Assert::fail(
+                    'Last request was not a redirect to: '.$expectedUrl.
+                    VarDumper::dump($client->getInternalRequest()).
+                    VarDumper::dump($client->getInternalResponse())
+                );
+            }
+
+            $client->followRedirect();
         }
 
-        $client->followRedirect();
         self::assertRequestWasSuccessful($client);
-
-        Assert::assertTrue(true);
     }
 }

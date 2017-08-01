@@ -83,8 +83,8 @@ final class SecurityUserTest extends TestCase
         self::assertFalse($securityUser1->isEqualTo($securityUser2), 'ID should must mismatch');
         self::assertFalse($securityUser1->isEqualTo($securityUser3), 'Password should must mismatch');
         self::assertFalse($securityUser1->isEqualTo($securityUser4), 'Class should be of same instance');
-        self::assertFalse($securityUser1->isEqualTo($securityUser5), 'Roles should should mismatch');
         self::assertFalse($securityUser1->isEqualTo($securityUser6), 'Enabled status should should mismatch');
+        self::assertTrue($securityUser1->isEqualTo($securityUser5), 'Roles should should not mismatch');
     }
 
     /** @test */

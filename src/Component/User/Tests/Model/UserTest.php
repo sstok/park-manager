@@ -19,6 +19,7 @@ use ParkManager\Component\Model\Test\EventsRecordingAggregateRootAssertionTrait;
 use ParkManager\Component\Model\Tests\ObjectHydrationAssertTrait;
 use ParkManager\Component\Model\Util\EventsExtractor;
 use ParkManager\Component\Security\Token\SplitToken;
+use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
 use ParkManager\Component\User\Model\User;
 use ParkManager\Component\User\Model\UserId;
 use PHPUnit\Framework\TestCase;
@@ -97,19 +98,17 @@ final class UserTest extends TestCase
         $user->changePassword('security-is-null');
 
         self::assertEquals('security-is-null', $user->password());
-        self::assertNoDomainEvents($user);
+        self::assertDomainEvents($user, $user->id()->toString(), [UserPasswordWasChanged::withData($user->id())]);
     }
 
     /** @test */
     public function it_allows_setting_password_to_null()
     {
-        $user = $this->createUser();
-        $user->changePassword('security-is-null');
-
+        $user = $this->createUser('security-is-null');
         $user->changePassword(null);
 
         self::assertNull($user->password());
-        self::assertNoDomainEvents($user);
+        self::assertDomainEvents($user, $user->id()->toString(), [UserPasswordWasChanged::withData($user->id())]);
     }
 
     /** @test */
@@ -327,6 +326,7 @@ final class UserTest extends TestCase
         self::assertEquals($tokenHolder, $currentToken);
         self::assertNull($tokenAfter);
         self::assertEquals('new-password', $user->password());
+        self::assertDomainEvents($user, $user->id()->toString(), [UserPasswordWasChanged::withData($user->id())]);
     }
 
     /** @test */

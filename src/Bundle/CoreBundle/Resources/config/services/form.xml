@@ -23,5 +23,10 @@
             <argument id="prooph_service_bus.administrator.command_bus" type="service" />
             <argument type="string">park_manager.administrator.security_login</argument>
         </service>
+        <service id="park_manager.form_handler.security.administrator.change_password" parent="park_manager.form_handler.security.change_password" public="true">
+            <tag name="admin_form.handler" />
+            <argument id="prooph_service_bus.administrator.command_bus" type="service" />
+            <argument type="string">admin_home</argument>
+        </service>
     </services>
 </container>

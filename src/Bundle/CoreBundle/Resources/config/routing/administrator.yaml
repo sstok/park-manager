@@ -19,3 +19,8 @@ park_manager.administrator.confirm_password_reset:
     methods: 'GET|POST'
     requirements:
         token: '.+' # Token can contain slashes
+
+park_manager.administrator.change_password:
+    path: /change-password
+    defaults: { _controller: park_manager.web_action.security.administrator.change_password }
+    methods: 'GET|POST'
