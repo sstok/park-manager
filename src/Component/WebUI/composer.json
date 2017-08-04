@@ -1,0 +1,41 @@
+{
+    "name": "park-manager/web-ui",
+    "type": "library",
+    "description": "Park-Manager WebUI Component",
+    "homepage": "http://www.park-manager.com/",
+    "license": "MPL-2.0",
+    "authors": [
+        {
+            "name": "Sebastiaan Stok",
+            "email": "s.stok@rollerscapes.net"
+        },
+        {
+            "name": "Community contributions",
+            "homepage": "https://github.com/park-manager/park-manager/contributors"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "symfony/form": "^3.3",
+        "symfony/http-kernel": "^3.3"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "ParkManager\\Component\\WebUI\\": ""
+        },
+        "exclude-from-classmap": [
+            "Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ParkManager\\Component\\WebUI\\Tests\\": "Tests"
+        }
+    }
+}
