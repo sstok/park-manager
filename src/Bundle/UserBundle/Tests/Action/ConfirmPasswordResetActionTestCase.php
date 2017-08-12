@@ -15,7 +15,9 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\UserBundle\Tests\Action;
 
 use ParkManager\Component\Security\Token\SplitToken;
+use ParkManager\Component\User\Model\User;
 use ParkManager\Component\User\Model\UserId;
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -31,15 +33,8 @@ abstract class ConfirmPasswordResetActionTestCase extends WebTestCase
     public function its_accessible_by_anonymous()
     {
         $client = self::createClient();
-
-        $repository = $client->getContainer()->get($this->getRepositoryServiceId());
-        $user = $repository->get(UserId::fromString($this->getUserId()));
         $token = SplitToken::generate($this->getUserId());
-        // First reset then set a new token.
-        $user->confirmPasswordReset(SplitToken::fromString('H46VaCeI-DtDoW7i_ZhtTzx39ObsQJjADCUbQhSMw1cn3sHQamoDfFY3'), 'wrong');
-        $user->setPasswordResetToken($token->toValueHolder(new \DateTimeImmutable('+ 10 minutes')));
-        $user->changePassword('impossible-to-use');
-        $repository->save($user);
+        $user = $this->givenUserExistsAndHasToken($client, $token);
 
         $crawler = $client->request('GET', $this->getEntryUri($token->token()));
         HttpResponseAssertions::assertRequestWasSuccessful($client);
@@ -104,4 +99,22 @@ abstract class ConfirmPasswordResetActionTestCase extends WebTestCase
     abstract protected function getUserId(): string;
 
     abstract protected function getOnSuccessUri(): string;
+
+    private function givenUserExistsAndHasToken(Client $client, SplitToken $token): User
+    {
+        $repository = $client->getContainer()->get($this->getRepositoryServiceId());
+        /** @var User $user */
+        $user = $repository->get(UserId::fromString($this->getUserId()));
+        // First reset (with an invalid token to ensure a new token is accepted)
+        // then set a new token.
+        $user->confirmPasswordReset(
+            SplitToken::fromString('H46VaCeI-DtDoW7i_ZhtTzx39ObsQJjADCUbQhSMw1cn3sHQamoDfFY3'),
+            'wrong'
+        );
+        $user->setPasswordResetToken($token->toValueHolder(new \DateTimeImmutable('+ 10 minutes')));
+        $user->changePassword('impossible-to-use');
+        $repository->save($user);
+
+        return $user;
+    }
 }
