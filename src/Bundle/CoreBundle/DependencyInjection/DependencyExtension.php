@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\DependencyInjection;
 
 use ParkManager\Bridge\Doctrine\Type\ArrayCollectionType;
-use ParkManager\Bridge\Doctrine\Type\DateTimeImmutableType;
 use ParkManager\Component\Core\Model\Command\RegisterAdministrator;
 use ParkManager\Component\User\Model\Command\{
     ChangeUserPassword,
@@ -66,14 +65,9 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
 
     private function prependDoctrineConfig(ContainerBuilder $container): void
     {
-        $types = ['array_collection' => ['class' => ArrayCollectionType::class, 'commented' => true]];
-        if (!class_exists('Doctrine\DBAL\Types\DateTimeImmutableType')) {
-            $types['datetime_immutable'] = ['class' => DateTimeImmutableType::class, 'commented' => true];
-        }
-
         $container->prependExtensionConfig('doctrine', [
             'dbal' => [
-                'types' => $types,
+                'types' => ['array_collection' => ['class' => ArrayCollectionType::class, 'commented' => true]],
             ],
         ]);
     }
