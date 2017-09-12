@@ -56,7 +56,7 @@ final class SplitTokenValueHolder
      */
     public static function isEmpty(?self $valueHolder): bool
     {
-        if ($valueHolder === null) {
+        if (null === $valueHolder) {
             return true;
         }
 
