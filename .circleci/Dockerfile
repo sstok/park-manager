@@ -9,6 +9,7 @@ RUN set -xe \
         postgresql-client \
         make \
         git \
+        openssh-client \
     && apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         postgresql-dev \
