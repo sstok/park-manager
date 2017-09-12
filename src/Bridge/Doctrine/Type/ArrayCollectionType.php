@@ -41,7 +41,7 @@ final class ArrayCollectionType extends JsonArrayType
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ArrayCollection
     {
-        if ($value === null || $value === '') {
+        if (null === $value || '' === $value) {
             return new ArrayCollection();
         }
 

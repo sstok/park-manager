@@ -81,7 +81,7 @@ final class CheckedConfirmationHandler extends BaseConfirmationHandler
         $reqVal = mb_strtolower(trim($this->templateContext['required_value']));
         $val = mb_strtolower(trim($val));
 
-        if ($val === '' || substr_compare($val, $reqVal, -mb_strlen($reqVal, '8bit')) !== 0) {
+        if ('' === $val || substr_compare($val, $reqVal, -mb_strlen($reqVal, '8bit')) !== 0) {
             $this->templateContext['error'] = 'Value does not match expected "{{ value }}".';
 
             return false;
