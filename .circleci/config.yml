@@ -27,6 +27,7 @@ jobs:
 
             cp .env.dist .env
             export DATABASE_URL="pgsql://root@localhost:5432/park_manager?charset=utf8"
+            export SYMFONY_DEPRECATIONS_HELPER=weak
 
             composer install --no-progress --no-interaction --no-suggest --optimize-autoloader --prefer-dist --ansi
 
