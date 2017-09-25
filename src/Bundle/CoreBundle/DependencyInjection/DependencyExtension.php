@@ -29,7 +29,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
@@ -49,8 +49,8 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
         $this->registerApplicationSections($container, $config);
         $this->registerRoutes($container);
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.php');
     }
 
     public function prepend(ContainerBuilder $container): void
@@ -112,7 +112,7 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
         ]);
     }
 
-    private function registerApplicationSections(ContainerBuilder $container, $config): void
+    private function registerApplicationSections(ContainerBuilder $container, array $config): void
     {
         $factory = new SectioningFactory($container, 'park_manager.section');
 

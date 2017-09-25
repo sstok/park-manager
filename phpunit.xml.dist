@@ -27,6 +27,14 @@
 
     <php>
         <server name="KERNEL_CLASS" value="App\Kernel" />
+
+        <server name="APP_ENV" value="test" />
+        <server name="APP_DEBUG" value="1" />
+        <server name="APP_SECRET" value="8b3b0c85daa39eadd88abd547b370997" />
+        <server name="APP_LOCALE" value="en" />
+
+        <server name="DATABASE_URL" value="pgsql://root@localhost:5432/park_manager?charset=utf8" />
+        <server name="MAILER_URL" value="null://localhost" />
     </php>
 
     <filter>
@@ -38,6 +46,7 @@
                 <directory>web/</directory>
                 <directory>var/</directory>
                 <directory>etc/</directory>
+                <directory>config/</directory>
                 <directory>src/Component/*/Tests</directory>
                 <directory>src/*/*Bundle/templates</directory>
                 <directory>src/*/*Bundle/translations</directory>

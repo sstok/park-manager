@@ -12,6 +12,8 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-umask(0000);
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-require __DIR__.'/../vendor/autoload.php';
+return function (ContainerConfigurator $c) {
+    $c->import('services/administrator.php');
+};
