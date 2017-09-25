@@ -29,30 +29,30 @@
         "rollerworks/app-sectioning-bundle": "^0.4.0@dev",
         "rollerworks/route-autowiring-bundle": "^1.0.0",
         "sylius/mailer-bundle": "^1.0.0",
-        "symfony/asset": "^3.3",
-        "symfony/console": "^3.3.2",
-        "symfony/expression-language": "^3.3",
-        "symfony/flex": "^1.0@dev",
-        "symfony/form": "^3.3.2",
-        "symfony/framework-bundle": "^3.3.2",
+        "symfony/asset": "^3.4",
+        "symfony/console": "^3.4",
+        "symfony/expression-language": "^3.4",
+        "symfony/flex": "^1.0@dev,>1.0.20",
+        "symfony/form": "^3.4",
+        "symfony/framework-bundle": "^3.4",
         "symfony/monolog-bundle": "^3.1",
         "symfony/orm-pack": "^1.0",
-        "symfony/security-bundle": "^3.3.2",
+        "symfony/security-bundle": "^3.4",
         "symfony/swiftmailer-bundle": "^3.0",
-        "symfony/twig-bundle": "^3.3.2",
-        "symfony/validator": "^3.3.2",
-        "symfony/yaml": "^3.3.2"
+        "symfony/twig-bundle": "^3.4",
+        "symfony/validator": "^3.4",
+        "symfony/yaml": "^3.4"
     },
     "require-dev": {
         "johnkary/phpunit-speedtrap": "v2.0.0-BETA1",
         "matthiasnoback/symfony-dependency-injection-test": "^2.1.0",
         "phpunit/phpunit": "^6.1",
         "ramsey/uuid-console": "^1.1.1",
-        "symfony/browser-kit": "^3.3",
-        "symfony/dotenv": "^3.3",
-        "symfony/phpunit-bridge": "^3.3",
-        "symfony/web-profiler-bundle": "^3.3",
-        "symfony/web-server-bundle": "^3.3"
+        "symfony/browser-kit": "^3.4",
+        "symfony/dotenv": "^3.4",
+        "symfony/phpunit-bridge": "^3.4",
+        "symfony/web-profiler-bundle": "^3.4",
+        "symfony/web-server-bundle": "^3.4"
     },
     "replace": {
         "symfony/polyfill-mbstring": "1.4.0",
@@ -98,5 +98,7 @@
             "id": "01BF6RBYGY5V4S3FDMBNKXVVNS",
             "allow-contrib": true
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

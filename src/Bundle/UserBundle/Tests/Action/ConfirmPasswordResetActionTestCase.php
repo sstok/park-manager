@@ -60,9 +60,9 @@ abstract class ConfirmPasswordResetActionTestCase extends WebTestCase
         $client->submit($form);
         HttpResponseAssertions::assertRequestWasRedirected($client, $this->getOnSuccessUri());
 
-        $token = $client->getContainer()->get('security.token_storage')->getToken();
-        self::assertNotNull($token);
-        self::assertTrue($token->isAuthenticated());
+        $authToken = $client->getContainer()->get('security.token_storage')->getToken();
+        self::assertNotNull($authToken);
+        self::assertTrue($authToken->isAuthenticated());
     }
 
     /** @test */

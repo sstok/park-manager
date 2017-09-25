@@ -8,3 +8,6 @@
 ###> symfony/web-server-bundle ###
 .web-server-pid
 ###< symfony/web-server-bundle ###
+phpunit.xml
+.php_cs.cache
+.php_cs
