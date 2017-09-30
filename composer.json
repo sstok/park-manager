@@ -24,7 +24,7 @@
         "egulias/email-validator": "^2.1",
         "hostnet/form-handler-bundle": "^1.3",
         "paragonie/constant_time_encoding": "^2.0",
-        "prooph/service-bus-symfony-bundle": "^0.4.1",
+        "prooph/service-bus-symfony-bundle": "^1.0dev",
         "react/promise": "^2.5",
         "rollerworks/app-sectioning-bundle": "^0.4.0@dev",
         "rollerworks/route-autowiring-bundle": "^1.0.0",
