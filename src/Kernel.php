@@ -43,7 +43,7 @@ class Kernel extends BaseKernel
     {
         $contents = require dirname(__DIR__).'/config/bundles.php';
         foreach ($contents as $class => $envs) {
-            if (isset($envs['all']) || isset($envs[$this->getEnvironment()])) {
+            if (isset($envs['all']) || isset($envs[$this->environment])) {
                 yield new $class();
             }
         }
@@ -53,10 +53,11 @@ class Kernel extends BaseKernel
     {
         $confDir = dirname(__DIR__).'/config';
         $loader->load($confDir.'/packages/*'.self::CONFIG_EXTS, 'glob');
-        if (is_dir($confDir.'/packages/'.$this->getEnvironment())) {
-            $loader->load($confDir.'/packages/'.$this->getEnvironment().'/**/*'.self::CONFIG_EXTS, 'glob');
+        if (is_dir($confDir.'/packages/'.$this->environment)) {
+            $loader->load($confDir.'/packages/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
         }
         $loader->load($confDir.'/services'.self::CONFIG_EXTS, 'glob');
+        $loader->load($confDir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
@@ -65,8 +66,8 @@ class Kernel extends BaseKernel
         if (is_dir($confDir.'/routes/')) {
             $routes->import($confDir.'/routes/*'.self::CONFIG_EXTS, '/', 'glob');
         }
-        if (is_dir($confDir.'/routes/'.$this->getEnvironment())) {
-            $routes->import($confDir.'/routes/'.$this->getEnvironment().'/**/*'.self::CONFIG_EXTS, '/', 'glob');
+        if (is_dir($confDir.'/routes/'.$this->environment)) {
+            $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         }
         $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
     }
