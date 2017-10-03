@@ -3,7 +3,7 @@ ifndef APP_ENV
 endif
 
 ###> symfony/framework-bundle ###
-CONSOLE := $(shell printf %q "`which bin/console`")
+CONSOLE := $(shell which bin/console)
 sf_console:
 ifeq ($(CONSOLE), '')
 	@printf "Run \033[32mcomposer require cli\033[39m to install the Symfony console.\n"
