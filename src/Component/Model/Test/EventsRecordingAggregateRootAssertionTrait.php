@@ -56,4 +56,13 @@ trait EventsRecordingAggregateRootAssertionTrait
 
         self::assertCount(0, $events, sprintf('Expected exactly no events.'));
     }
+
+    protected static function resetDomainEvents(EventsRecordingAggregateRoot ...$aggregateRoots): void
+    {
+        $extractor = EventsExtractor::newInstance();
+
+        foreach ($aggregateRoots as $aggregateRoot) {
+            $extractor->extractDomainEvents($aggregateRoot);
+        }
+    }
 }
