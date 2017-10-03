@@ -12,6 +12,7 @@ return [
     'ParkManager\Bundle\CoreBundle\ParkManagerCoreBundle' => ['all' => true],
     'ParkManager\Bundle\UserBundle\ParkManagerUserBundle' => ['all' => true],
     'ParkManager\Bundle\TestBundle\ParkManagerTestBundle' => ['test' => true],
+    'ParkManager\Module\Webhosting\ParkManagerWebhostingBundle' => ['all' => true],
     'Prooph\Bundle\ServiceBus\ProophServiceBusBundle' => ['all' => true],
     'Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle' => ['all' => true],
     'Doctrine\Bundle\DoctrineBundle\DoctrineBundle' => ['all' => true],
