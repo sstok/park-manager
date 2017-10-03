@@ -26,15 +26,13 @@ jobs:
             curl -i -X POST -H "Accept: application/json" https://security.sensiolabs.org/check_lock -F lock=@./composer.lock | grep X-Alerts | cut -c 11
 
             cp .env.dist .env
-            export DATABASE_URL="pgsql://root@localhost:5432/park_manager?charset=utf8"
-            export SYMFONY_DEPRECATIONS_HELPER=weak
-
             composer install --no-progress --no-interaction --no-suggest --optimize-autoloader --prefer-dist --ansi
 
             bin/console doctrine:schema:update --force
             bin/console doctrine:schema:validate || true
             psql -U root -h localhost -d park_manager -w -a -f ./etc/fixture.sql
 
+            export SYMFONY_DEPRECATIONS_HELPER=weak
             vendor/bin/phpunit --exclude-group "" --verbose
 
             cd /park-manager
