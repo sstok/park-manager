@@ -14,7 +14,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting;
 
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Doctrine\DBAL\Types\Type;
+use ParkManager\Module\Webhosting\Infrastructure\Doctrine\Type\WebhostingCapabilitiesType;
 use ParkManager\Module\Webhosting\Infrastructure\Symfony\DependencyInjection\DependencyExtension;
+use ParkManager\Module\Webhosting\Model\Package\CapabilitiesFactory;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -29,5 +34,34 @@ final class ParkManagerWebhostingBundle extends Bundle
         }
 
         return $this->extension;
+    }
+
+    public function build(ContainerBuilder $container): void
+    {
+        $mappings = [
+            realpath(__DIR__.'/Infrastructure/Doctrine/mapping') => 'ParkManager\Module\Webhosting\Model',
+        ];
+
+        $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings));
+    }
+
+    public function boot(): void
+    {
+        if (!Type::hasType('webhosting_capabilities')) {
+            Type::addType('webhosting_capabilities', WebhostingCapabilitiesType::class);
+        }
+
+        /** @var WebhostingCapabilitiesType $type */
+        $type = Type::getType('webhosting_capabilities');
+        $type->setCapabilitiesFactory($this->container->get(CapabilitiesFactory::class));
+    }
+
+    public function shutdown(): void
+    {
+        if (Type::hasType('webhosting_capabilities')) {
+            /** @var WebhostingCapabilitiesType $type */
+            $type = Type::getType('webhosting_capabilities');
+            $type->setCapabilitiesFactory(null);
+        }
     }
 }

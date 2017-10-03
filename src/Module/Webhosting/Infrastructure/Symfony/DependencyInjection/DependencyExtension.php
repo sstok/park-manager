@@ -14,9 +14,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Infrastructure\Symfony\DependencyInjection;
 
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
@@ -27,6 +29,8 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
 
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/services/'));
+        $loader->load('core.php');
     }
 
     public function getAlias(): string
