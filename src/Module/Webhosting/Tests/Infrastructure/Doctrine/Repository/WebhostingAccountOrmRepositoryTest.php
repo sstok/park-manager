@@ -99,7 +99,6 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         $this->setUpAccount2($repository);
 
         $id = WebhostingAccountId::fromString(self::ACCOUNT_ID1);
-        $id2 = WebhostingAccountId::fromString(self::ACCOUNT_ID2);
         $account = $repository->get($id);
 
         // Mark for removal, then store this status.
