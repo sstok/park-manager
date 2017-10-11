@@ -21,9 +21,11 @@ use ParkManager\Module\Webhosting\Infrastructure\Doctrine\Repository\{
 use ParkManager\Module\Webhosting\Model\{
     Account\WebhostingAccountRepository,
     DomainName\WebhostingDomainNameRepository,
-    Package\CapabilitiesFactory
+    Package\CapabilitiesFactory,
+    Package\CapabilitiesGuard
 };
-use ParkManager\Module\Webhosting\Service\Package\CapabilitiesManager;
+use ParkManager\Module\Webhosting\Service\Package\AccountCapabilitiesGuard;
+use ParkManager\Module\Webhosting\Service\Package\CapabilitiesRegistry;
 use Prooph\ServiceBus\EventBus;
 
 return function (ContainerConfigurator $c) {
@@ -35,9 +37,12 @@ return function (ContainerConfigurator $c) {
         ->bind(EntityManagerInterface::class, ref('doctrine.orm.entity_manager'))
     ;
 
-    // alias needs to be public for Doctrine type in ParkManagerWebhostingBundle::boot()
-    $di->set(CapabilitiesManager::class)
-        ->alias(CapabilitiesFactory::class, CapabilitiesManager::class)->public();
+    // CapabilitiesFactory alias needs to be public for Doctrine type in ParkManagerWebhostingBundle::boot()
+    $di->set(CapabilitiesRegistry::class)
+        ->alias(CapabilitiesFactory::class, CapabilitiesRegistry::class)->public();
+
+    $di->set(AccountCapabilitiesGuard::class)
+        ->alias(CapabilitiesGuard::class, AccountCapabilitiesGuard::class);
 
     $di->set(WebhostingDomainNameOrmRepository::class)
         ->alias(WebhostingDomainNameRepository::class, WebhostingDomainNameOrmRepository::class);
@@ -49,4 +54,8 @@ return function (ContainerConfigurator $c) {
     $di->load('ParkManager\Module\Webhosting\Model\\', __DIR__.'/../../../../Model/{Account,DomainName,Package}/Handler')
         ->tag('prooph_service_bus.webhosting.command_bus.route_target', ['message_detection' => true])
         ->public();
+
+    $di->load('ParkManager\Module\Webhosting\Infrastructure\\Package\\Capability\\', __DIR__.'/../../../../Infrastructure/Package/Capability');
+    $di->load('ParkManager\Module\Webhosting\Model\\Package\\Capability\\', __DIR__.'/../../../../Model/Package/Capability')
+        ->tag('park_manager.webhosting_capability');
 };
