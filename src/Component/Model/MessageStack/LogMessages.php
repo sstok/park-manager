@@ -12,14 +12,20 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Module\Webhosting\Model\Package;
+namespace ParkManager\Component\Model\MessageStack;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-interface CapabilitiesFactory
+final class LogMessages extends \ArrayObject
 {
-    public function createById(string $id, array $options): Capability;
+    public function hasErrors(): bool
+    {
+        return false;
+    }
 
-    public function createByName(string $capabilityName, array $options): Capability;
+    public function add(LogMessage $message): void
+    {
+        $this->append($message);
+    }
 }

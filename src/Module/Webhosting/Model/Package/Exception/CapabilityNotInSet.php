@@ -12,14 +12,15 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Module\Webhosting\Model\Package;
+namespace ParkManager\Module\Webhosting\Model\Package\Exception;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-interface CapabilitiesFactory
+final class CapabilityNotInSet extends \InvalidArgumentException
 {
-    public function createById(string $id, array $options): Capability;
-
-    public function createByName(string $capabilityName, array $options): Capability;
+    public static function withName(string $name): self
+    {
+        return new self(sprintf('Webhosting Package Capability %s cannot be found in Capabilities set.', $name));
+    }
 }

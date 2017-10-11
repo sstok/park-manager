@@ -12,14 +12,8 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Module\Webhosting\Model\Package;
+namespace ParkManager\Component\Model\MessageStack;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
-interface CapabilitiesFactory
+final class PluralMessage
 {
-    public function createById(string $id, array $options): Capability;
-
-    public function createByName(string $capabilityName, array $options): Capability;
 }
