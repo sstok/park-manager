@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Model\Package;
 
+use ParkManager\Module\Webhosting\Model\Package\Exception\CapabilityNotInSet;
+
 /**
  * Capabilities holds a immutable set of unique Capability objects.
  *
@@ -64,6 +66,15 @@ final class Capabilities implements \IteratorAggregate
     public function has(string $capability): bool
     {
         return isset($this->capabilities[$capability]);
+    }
+
+    public function get(string $capability): Capability
+    {
+        if (!isset($this->capabilities[$capability])) {
+            throw CapabilityNotInSet::withName($capability);
+        }
+
+        return $this->capabilities[$capability];
     }
 
     public function toArray(): array

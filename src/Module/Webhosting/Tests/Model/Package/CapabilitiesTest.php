@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Tests\Model\Package;
 
 use ParkManager\Module\Webhosting\Model\Package\Capabilities;
+use ParkManager\Module\Webhosting\Model\Package\Exception\CapabilityNotInSet;
 use ParkManager\Module\Webhosting\Tests\Fixtures\Capability\MonthlyTrafficQuota;
 use ParkManager\Module\Webhosting\Tests\Fixtures\Capability\StorageSpaceQuota;
 use PHPUnit\Framework\TestCase;
@@ -24,9 +25,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class CapabilitiesTest extends TestCase
 {
-    private const ID1 = '90ecb7de-9635-11e7-82db-acbc32b58315';
-    private const ID2 = '52c7d220-9637-11e7-8140-acbc32b58315';
-
     /** @test */
     public function its_constructable()
     {
@@ -37,6 +35,19 @@ final class CapabilitiesTest extends TestCase
         self::assertCapabilitiesEquals([$capability], $capabilities);
         self::assertTrue($capabilities->has(get_class($capability)));
         self::assertFalse($capabilities->has(get_class($capability2)));
+        self::assertEquals($capability, $capabilities->get(StorageSpaceQuota::class));
+    }
+
+    /** @test */
+    public function it_throws_when_getting_unset_capability()
+    {
+        $capability = new StorageSpaceQuota('9B');
+        $capabilities = new Capabilities($capability);
+
+        $this->expectException(CapabilityNotInSet::class);
+        $this->expectExceptionMessage(CapabilityNotInSet::withName(MonthlyTrafficQuota::class)->getMessage());
+
+        $capabilities->get(MonthlyTrafficQuota::class);
     }
 
     /** @test */
