@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\MessageStack;
+namespace ParkManager\Component\Model\LogMessage;
 
 final class PluralMessage
 {

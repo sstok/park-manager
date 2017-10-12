@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Model\Package;
 
-use ParkManager\Component\Model\MessageStack\LogMessages;
+use ParkManager\Component\Model\LogMessage\LogMessages;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 
 /**

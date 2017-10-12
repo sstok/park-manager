@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Service\Package;
 
-use ParkManager\Component\Model\MessageStack\LogMessage;
-use ParkManager\Component\Model\MessageStack\LogMessages;
+use ParkManager\Component\Model\LogMessage\LogMessage;
+use ParkManager\Component\Model\LogMessage\LogMessages;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountRepository;
@@ -111,6 +111,6 @@ final class AccountCapabilitiesGuardTest extends TestCase
         );
 
         self::assertCount(1, $messages);
-        self::assertEquals([LogMessage::error('It failed 50')], $messages->getArrayCopy());
+        self::assertEquals(['error' => [LogMessage::error('It failed 50')]], $messages->all());
     }
 }

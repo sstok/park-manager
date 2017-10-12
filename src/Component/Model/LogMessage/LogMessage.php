@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\MessageStack;
+namespace ParkManager\Component\Model\LogMessage;
 
 /**
  * A LogMessage contains an informational message for upper layers.
@@ -26,7 +26,7 @@ namespace ParkManager\Component\Model\MessageStack;
  * Eg. A LogMessage can be used to inform a sub-operation was skipped and why.
  *
  * Tip: The messageTemplate is rendered by the UI layer.
- * But the systemMessage property can contain technical details.
+ * But the systemMessage property however may contain technical details.
  *
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
@@ -61,10 +61,10 @@ class LogMessage
     /**
      * @var string[]
      */
-    public $translatedParameters;
+    public $translatedParameters = [];
 
     /**
-     * @var string
+     * @var string|null
      */
     public $systemMessage;
 
@@ -73,9 +73,9 @@ class LogMessage
      * @param string|null $messageTemplate   The template for the message
      * @param array       $messageParameters The parameters that should be
      *                                       substituted in the message template
-     * @param string      $systemMessage     The (translated) message
+     * @param string|null $systemMessage     Untranslated information about the system (mainly for troubleshooting)
      */
-    public function __construct(string $type, string $messageTemplate, array $messageParameters = [], ?string $systemMessage = null)
+    protected function __construct(string $type, string $messageTemplate, array $messageParameters = [], ?string $systemMessage = null)
     {
         $this->type = $type;
         $this->messageTemplate = $messageTemplate;
@@ -110,7 +110,7 @@ class LogMessage
 
     public function __toString(): string
     {
-        return $this->systemMessage;
+        return $this->systemMessage ?? '';
     }
 
     public static function notice(string $messageTemplate, array $messageParameters = [], ?string $systemMessage = null)
