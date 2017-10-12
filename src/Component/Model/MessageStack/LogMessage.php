@@ -15,7 +15,9 @@ declare(strict_types=1);
 namespace ParkManager\Component\Model\MessageStack;
 
 /**
- * A LogMessage contains informational information for upper layers.
+ * A LogMessage contains an informational message for upper layers.
+ *
+ * This is not to be confused with Domain Messages (for a message bus).
  *
  * This information is intended to be shared with the UI layer and
  * MUST NOT contain any sensitive information about the inner system.
@@ -24,7 +26,7 @@ namespace ParkManager\Component\Model\MessageStack;
  * Eg. A LogMessage can be used to inform a sub-operation was skipped and why.
  *
  * Tip: The messageTemplate is rendered by the UI layer.
- * But the message property can contain
+ * But the systemMessage property can contain technical details.
  *
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
