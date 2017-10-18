@@ -30,11 +30,15 @@ if (!getenv('APP_ENV')) {
 }
 
 $input = new ArgvInput();
-$env = $input->getParameterOption(['--env', '-e'], getenv('APP_ENV') ?: 'dev');
-$debug = getenv('APP_DEBUG') !== '0' && !$input->hasParameterOption(['--no-debug', '']);
+$env = $input->getParameterOption(['--env', '-e'], $_SERVER['APP_ENV'] ?? 'dev');
+$debug = ($_SERVER['APP_DEBUG'] ?? true) !== '0' && !$input->hasParameterOption(['--no-debug', '']);
 
-if ($debug && class_exists(Debug::class)) {
-    Debug::enable();
+if ($debug) {
+    umask(0000);
+
+    if (class_exists(Debug::class)) {
+        Debug::enable();
+    }
 }
 
 $kernel = new Kernel($env, $debug);

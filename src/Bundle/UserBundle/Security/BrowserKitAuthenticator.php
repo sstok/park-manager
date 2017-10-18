@@ -40,12 +40,8 @@ final class BrowserKitAuthenticator extends AbstractGuardAuthenticator
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function getCredentials(Request $request): ?array
+    public function getCredentials(Request $request): array
     {
-        if (!$request->server->has('TEST_AUTH_USERNAME')) {
-            return null;
-        }
-
         return [
             'username' => $request->server->get('TEST_AUTH_USERNAME'),
             'password' => $request->server->get('TEST_AUTH_PASSWORD'),
@@ -101,5 +97,10 @@ final class BrowserKitAuthenticator extends AbstractGuardAuthenticator
     public function supportsRememberMe()
     {
         return false;
+    }
+
+    public function supports(Request $request)
+    {
+        return $request->server->has('TEST_AUTH_USERNAME');
     }
 }

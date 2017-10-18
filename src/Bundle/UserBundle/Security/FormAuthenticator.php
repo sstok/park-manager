@@ -59,25 +59,21 @@ final class FormAuthenticator extends AbstractFormLoginAuthenticator
         $this->defaultSuccessRoute = $defaultSuccessRoute;
     }
 
-    public function getCredentials(Request $request): ?array
+    public function getCredentials(Request $request): array
     {
-        if ($request->request->has('_email')) {
-            $csrfToken = $request->request->get('_csrf_token');
+        $csrfToken = $request->request->get('_csrf_token');
 
-            if (false === $this->csrfTokenManager->isTokenValid(new CsrfToken('authenticate', $csrfToken))) {
-                throw new InvalidCsrfTokenException('Invalid CSRF token.');
-            }
-
-            $email = $request->request->get('_email');
-            $request->getSession()->set(Security::LAST_USERNAME, $email);
-
-            return [
-                'email' => $email,
-                'password' => $request->request->get('_password'),
-            ];
+        if (false === $this->csrfTokenManager->isTokenValid(new CsrfToken('authenticate', $csrfToken))) {
+            throw new InvalidCsrfTokenException('Invalid CSRF token.');
         }
 
-        return null;
+        $email = $request->request->get('_email');
+        $request->getSession()->set(Security::LAST_USERNAME, $email);
+
+        return [
+            'email' => $email,
+            'password' => $request->request->get('_password'),
+        ];
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider): ?SecurityUser
@@ -116,6 +112,11 @@ final class FormAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         return new RedirectResponse($targetPath);
+    }
+
+    public function supports(Request $request)
+    {
+        return $request->request->has('_email');
     }
 
     protected function getLoginUrl(): string

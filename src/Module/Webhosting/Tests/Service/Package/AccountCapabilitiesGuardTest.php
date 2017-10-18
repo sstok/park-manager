@@ -103,7 +103,7 @@ final class AccountCapabilitiesGuardTest extends TestCase
     }
 
     /** @test */
-    public function it_it_asks_guard_for_provided_capabilities_is_present_on_account()
+    public function it_asks_guard_for_provided_capabilities_is_present_on_account()
     {
         $messages = $this->capabilitiesGuard->allowedTo(
             WebhostingAccountId::fromString(self::ACCOUNT_ID),
