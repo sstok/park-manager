@@ -24,8 +24,11 @@ use ParkManager\Module\Webhosting\Model\{
     Package\CapabilitiesFactory,
     Package\CapabilitiesGuard
 };
-use ParkManager\Module\Webhosting\Service\Package\AccountCapabilitiesGuard;
-use ParkManager\Module\Webhosting\Service\Package\CapabilitiesRegistry;
+use ParkManager\Module\Webhosting\Service\Package\{
+    AccountCapabilitiesGuard,
+    CapabilitiesRegistry,
+    CommandToCapabilitiesGuard
+};
 use Prooph\ServiceBus\EventBus;
 
 return function (ContainerConfigurator $c) {
@@ -43,6 +46,7 @@ return function (ContainerConfigurator $c) {
 
     $di->set(AccountCapabilitiesGuard::class)
         ->alias(CapabilitiesGuard::class, AccountCapabilitiesGuard::class);
+    $di->set(CommandToCapabilitiesGuard::class)->arg('$commandToCapabilitiesMapping', []);
 
     $di->set(WebhostingDomainNameOrmRepository::class)
         ->alias(WebhostingDomainNameRepository::class, WebhostingDomainNameOrmRepository::class);

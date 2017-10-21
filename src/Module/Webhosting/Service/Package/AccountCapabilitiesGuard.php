@@ -33,7 +33,7 @@ final class AccountCapabilitiesGuard implements CapabilitiesGuard
         $this->capabilitiesManager = $capabilitiesManager;
     }
 
-    public function allowedTo(WebhostingAccountId $accountId, string ...$capabilityNames): LogMessages
+    public function allowedTo(WebhostingAccountId $accountId, array $context, string ...$capabilityNames): LogMessages
     {
         $account = $this->accountRepository->get($accountId);
         $capabilities = $account->capabilities();
@@ -45,8 +45,9 @@ final class AccountCapabilitiesGuard implements CapabilitiesGuard
             }
 
             if (null !== $this->capabilitiesManager->getConfig($capabilityName)['guard']) {
-                $this->capabilitiesManager->getGuard($capabilityName)->can(
+                $this->capabilitiesManager->getGuard($capabilityName)->isAllowed(
                     $capabilities->get($capabilityName),
+                    $context,
                     $account,
                     $messages
                 );

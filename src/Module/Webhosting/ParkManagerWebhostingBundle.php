@@ -17,7 +17,9 @@ namespace ParkManager\Module\Webhosting;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Doctrine\DBAL\Types\Type;
 use ParkManager\Module\Webhosting\Infrastructure\Doctrine\Type\WebhostingCapabilitiesType;
-use ParkManager\Module\Webhosting\Infrastructure\Symfony\DependencyInjection\Compiler\CapabilitiesRegistryPass;
+use ParkManager\Module\Webhosting\Infrastructure\Symfony\DependencyInjection\Compiler\{
+    CapabilitiesRegistryPass, CommandToCapabilitiesGuardPass
+};
 use ParkManager\Module\Webhosting\Infrastructure\Symfony\DependencyInjection\DependencyExtension;
 use ParkManager\Module\Webhosting\Model\Package\CapabilitiesFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -44,6 +46,7 @@ final class ParkManagerWebhostingBundle extends Bundle
         ];
 
         $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings));
+        $container->addCompilerPass(new CommandToCapabilitiesGuardPass());
         $container->addCompilerPass(new CapabilitiesRegistryPass());
     }
 

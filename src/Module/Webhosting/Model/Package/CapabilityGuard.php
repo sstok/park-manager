@@ -36,5 +36,16 @@ use ParkManager\Module\Webhosting\Model\Account\WebhostingAccount;
  */
 interface CapabilityGuard
 {
-    public function can(Capability $configuration, WebhostingAccount $account, LogMessages $messages): bool;
+    /**
+     * @param Capability        $configuration Current Capability configuration
+     * @param array             $context       Additional information about the operation
+     *                                         (implement dependent - not required)
+     * @param WebhostingAccount $account
+     * @param LogMessages       $messages      The LogMessages allows to "log" messages for
+     *                                         extra information about the failure or a warning
+     *                                         about reaching the limits of the account's capabilities
+     *
+     * @return bool
+     */
+    public function isAllowed(Capability $configuration, array $context, WebhostingAccount $account, LogMessages $messages): bool;
 }

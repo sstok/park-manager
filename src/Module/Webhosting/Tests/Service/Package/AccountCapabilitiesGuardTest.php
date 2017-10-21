@@ -72,11 +72,11 @@ final class AccountCapabilitiesGuardTest extends TestCase
                 [
                     MonthlyTrafficQuota::class => function () use ($capability, $account1, $account2) {
                         $capabilitiesGuard = $this->prophesize(CapabilityGuard::class);
-                        $capabilitiesGuard->can($capability, $account2, Argument::any())->willReturn(true);
-                        $capabilitiesGuard->can($capability, $account1, Argument::any())->will(function ($args) {
+                        $capabilitiesGuard->isAllowed($capability, ['bing' => 'bong'], $account2, Argument::any())->willReturn(true);
+                        $capabilitiesGuard->isAllowed($capability, [], $account1, Argument::any())->will(function ($args) {
                             /** @var MonthlyTrafficQuota $args[0] */
                             /** @var LogMessages $args[3] */
-                            $args[2]->add(LogMessage::error('It failed '.$args[0]->configuration()['limit']));
+                            $args[3]->add(LogMessage::error('It failed '.$args[0]->configuration()['limit']));
 
                             return false;
                         });
@@ -96,6 +96,7 @@ final class AccountCapabilitiesGuardTest extends TestCase
     {
         $messages = $this->capabilitiesGuard->allowedTo(
             WebhostingAccountId::fromString(self::ACCOUNT_ID2),
+            ['bing' => 'bong'],
             MonthlyTrafficQuota::class
         );
 
@@ -107,6 +108,7 @@ final class AccountCapabilitiesGuardTest extends TestCase
     {
         $messages = $this->capabilitiesGuard->allowedTo(
             WebhostingAccountId::fromString(self::ACCOUNT_ID),
+            [],
             MonthlyTrafficQuota::class
         );
 

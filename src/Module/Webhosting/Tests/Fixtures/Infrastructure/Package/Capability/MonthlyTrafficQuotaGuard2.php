@@ -21,7 +21,7 @@ use ParkManager\Module\Webhosting\Model\Package\CapabilityGuard;
 
 final class MonthlyTrafficQuotaGuard2 implements CapabilityGuard
 {
-    public function can(Capability $configuration, WebhostingAccount $account, LogMessages $messages): bool
+    public function isAllowed(Capability $configuration, array $context, WebhostingAccount $account, LogMessages $messages): bool
     {
         return true;
     }

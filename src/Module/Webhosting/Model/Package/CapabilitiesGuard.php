@@ -37,10 +37,11 @@ interface CapabilitiesGuard
      * the package limitations for the given capabilities.
      *
      * @param WebhostingAccountId $accountId
+     * @param array               $context        Additional information about the operation
      * @param string|string[]     $capabilityName One or more capability names
      *                                            to extract from the webhosting account
      *
      * @return LogMessages
      */
-    public function allowedTo(WebhostingAccountId $accountId, string ...$capabilityName): LogMessages;
+    public function allowedTo(WebhostingAccountId $accountId, array $context, string ...$capabilityName): LogMessages;
 }
