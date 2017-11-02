@@ -62,7 +62,7 @@ abstract class User extends EventsRecordingAggregateRoot
     protected $enabled = true;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $password;
 

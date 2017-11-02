@@ -19,5 +19,5 @@ namespace ParkManager\Component\User\Canonicalizer;
  */
 interface Canonicalizer
 {
-    public function canonicalize(string $string): ?string;
+    public function canonicalize(string $string): string;
 }

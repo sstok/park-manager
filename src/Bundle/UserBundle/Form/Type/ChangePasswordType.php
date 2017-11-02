@@ -65,7 +65,7 @@ class ChangePasswordType extends AbstractType
     {
         $resolver
             ->setDefault('password_constraints', [])
-            ->setAllowedTypes('password_constraints', ['array', Constraint::class, null])
+            ->setAllowedTypes('password_constraints', ['array', Constraint::class, 'null'])
         ;
     }
 

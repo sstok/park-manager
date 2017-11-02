@@ -98,11 +98,11 @@ final class SecurityUserTest extends TestCase
 
     private function createSecurityUser(?string $id = self::ID1, ?string $password = self::PASSWORD): SecurityUser
     {
-        return new SecurityUserExtended($id, (string) $password, true, ['ROLE_USER']);
+        return new SecurityUserExtended($id ?? self::ID1, (string) $password, true, ['ROLE_USER']);
     }
 
     private function createSecurityUserSecond(?string $id = self::ID1, ?string $password = self::PASSWORD): SecurityUser
     {
-        return new SecurityUserSecond($id, (string) $password, true, ['ROLE_USER']);
+        return new SecurityUserSecond($id ?? self::ID1, (string) $password, true, ['ROLE_USER']);
     }
 }

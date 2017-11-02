@@ -19,8 +19,8 @@ namespace ParkManager\Component\User\Canonicalizer;
  */
 final class SimpleEmailCanonicalizer implements Canonicalizer
 {
-    public function canonicalize(string $string): ?string
+    public function canonicalize(string $string): string
     {
-        return null === $string ? null : mb_convert_case($string, MB_CASE_LOWER, mb_detect_encoding($string, mb_detect_order(), true));
+        return mb_convert_case($string, MB_CASE_LOWER, mb_detect_encoding($string, mb_detect_order(), true));
     }
 }

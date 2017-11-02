@@ -38,6 +38,11 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
             ->setArgument(1, $config['capability']['command_mapping']);
     }
 
+    public function getConfiguration(array $config, ContainerBuilder $container)
+    {
+        return new Configuration();
+    }
+
     public function getAlias(): string
     {
         return self::EXTENSION_ALIAS;

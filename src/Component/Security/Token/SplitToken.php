@@ -230,7 +230,7 @@ final class SplitToken
      * Note: This method doesn't work when reconstructed from a string.
      *
      * @param \DateTimeImmutable|null $expiresAt
-     * @param array|null              $metadata
+     * @param array                   $metadata
      *
      * @return SplitTokenValueHolder
      */

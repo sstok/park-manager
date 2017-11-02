@@ -2,16 +2,31 @@ parameters:
     autoload_files:
         - vendor/autoload.php
     excludes_analyse:
-        - config/bundles.php
+        - %rootDir%/config/bundles.php
+        - %rootDir%/var/*
+        - %rootDir%/templates/*
+        - %rootDir%/translations/*
     ignoreErrors:
         - '#Method ParkManager\\Bundle\\UserBundle\\Security\\[^:]+\:\:getUser\(\) should return ParkManager\\Component\\User\\Security\\SecurityUser\|null but returns Symfony\\Component\\Security\\Core\\User\\UserInterface#'
         - '#Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:isEnabled\(\)#'
         - '#__construct\(\) does not call parent constructor from .+#'
         - '#\$_(em|class) \([^)]+\) does not accept [^\s]+#'
 
+        - '#Calling method [a-z]+\(\) on possibly null value of type (Psr\\Container|Symfony\\Component\\DependencyInjection)\\(ContainerInterface|ContainerBuilder)\|null#i'
+        - '#Calling method [a-z]+\(\) on possibly null value of type ParkManager\\Component\\Security\\Token\\SplitTokenValueHolder\|null#i'
+        - '#Calling method [a-z]+\(\) on possibly null value of type Symfony\\Component\\BrowserKit\\Response\|null#i'
+        - '#Calling method [a-z]+\(\) on possibly null value of type Symfony\\Component\\DependencyInjection\\ParameterBag\\ParameterBagInterface\|null#i'
+        - '#Calling method set\(\) on possibly null value of type Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\|null#'
+        - '#registerWithCustomCapabilities\(\) expects ParkManager\\Module\\Webhosting\\Model\\Package\\Capabilities#'
+        - '#Calling method equals\(\) on possibly null value of type ParkManager\\Module\\Webhosting\\Model\\Account\\WebhostingAccountOwner\|null#'
+        - '#Parameter \#2 \$oldOwner of static method ParkManager\\Module\\Webhosting\\Model\\Account\\Event\\WebhostingAccountOwnerWasSwitched\:\:withData\(\) expects ParkManager\\Module\\Webhosting\\Model\\Account\\WebhostingAccountOwner, ParkManager\\Module\\Webhosting\\Model\\Account\\WebhostingAccountOwner\|null given#'
+
+        - '#Parameter \#1 \$id of static method [^:]+\:\:[a-z]+\(\) expects ([a-z_\\]+Id), ([a-z_\\]+Id)\|null given#i'
+
         # Tests
         - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[a-zA-Z0-9_]+\(\)#'
         - '#Method [a-zA-Z0-9_()\\:]+ should return [a-zA-Z0-9_\\]+ but returns PHPUnit_Framework_MockObject_MockObject#'
+        - '#Parameter \#2 \$actualJson of static method PHPUnit\\Framework\\Assert\:\:assertJsonStringEqualsJsonString\(\) expects string, string\|null given#'
 
         #- '#Access to an undefined property Prophecy\\Prophecy\\ObjectProphecy::\$[a-zA-Z0-9_]+#'
         #- '#Call to an undefined method PHPUnit_Framework_MockObject_MockObject::[a-zA-Z0-9_]+\(\)#'
@@ -28,3 +43,7 @@ parameters:
 
         # False positive https://github.com/phpstan/phpstan/issues/207
         - '#Undefined variable: \$valid#'
+
+        # False positives (guarded by TypeHint)
+        - '#Parameter \#1 \$domainName of static method ParkManager\\Module\\Webhosting\\Model\\DomainName\\Exception\\CannotTransferPrimaryDomainName\:\:of\(\) expects ParkManager\\Module\\Webhosting\\Model\\DomainName\\WebhostingDomainNameId, ParkManager\\Module\\Webhosting\\Model\\DomainName\\WebhostingDomainNameId\|null given#'
+        - '#Calling method id\(\) on possibly null value of type#'

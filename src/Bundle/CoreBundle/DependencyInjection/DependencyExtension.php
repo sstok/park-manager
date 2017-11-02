@@ -53,6 +53,11 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
         $loader->load('services.php');
     }
 
+    public function getConfiguration(array $config, ContainerBuilder $container)
+    {
+        return new Configuration();
+    }
+
     public function prepend(ContainerBuilder $container): void
     {
         $this->prependDoctrineConfig($container);

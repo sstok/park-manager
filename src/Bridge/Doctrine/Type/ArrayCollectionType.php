@@ -25,7 +25,7 @@ use Doctrine\DBAL\Types\JsonType;
 final class ArrayCollectionType extends JsonType
 {
     /**
-     * @param Collection       $value
+     * @param Collection|null  $value
      * @param AbstractPlatform $platform
      *
      * @return null|string
