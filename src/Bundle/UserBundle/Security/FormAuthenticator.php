@@ -68,7 +68,10 @@ final class FormAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         $email = $request->request->get('_email');
-        $request->getSession()->set(Security::LAST_USERNAME, $email);
+
+        if (null !== $session = $request->getSession()) {
+            $session->set(Security::LAST_USERNAME, $email);
+        }
 
         return [
             'email' => $email,

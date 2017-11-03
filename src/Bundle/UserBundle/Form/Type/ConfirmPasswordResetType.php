@@ -58,7 +58,7 @@ class ConfirmPasswordResetType extends AbstractType
             ->setRequired('token')
             ->setDefault('password_constraints', [])
             ->setAllowedTypes('token', [SplitToken::class])
-            ->setAllowedTypes('password_constraints', ['array', Constraint::class, null])
+            ->setAllowedTypes('password_constraints', ['array', Constraint::class, 'null'])
         ;
     }
 

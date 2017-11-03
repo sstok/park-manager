@@ -56,7 +56,7 @@ return function (ContainerConfigurator $c) {
         // --
         ->bind('$loginRoute', 'park_manager.administrator.security_login')
         ->bind('$emailCanonicalizer', ref(SimpleEmailCanonicalizer::class))
-    ;
+        ->bind('$sender', ref('sylius.email_sender'));
 
     $di->set(SimpleEmailCanonicalizer::class)->private();
 
@@ -68,7 +68,8 @@ return function (ContainerConfigurator $c) {
     // CommandHandler
     $di->set('park_manager.command_handler.register_administrator', RegisterAdministratorHandler::class);
     $di->set('park_manager.command_handler.change_administrator_password', ChangeUserPasswordHandler::class);
-    $di->set('park_manager.command_handler.request_administrator_password_reset', RequestUserPasswordResetHandler::class);
+    $di->set('park_manager.command_handler.request_administrator_password_reset', RequestUserPasswordResetHandler::class)
+        ->arg('$passwordResetMailer', ref('park_manager.mailer.administrator.password_reset'));
     $di->set('park_manager.command_handler.confirm_administrator_password_reset', ConfirmUserPasswordResetHandler::class);
 
     // QueryHandler

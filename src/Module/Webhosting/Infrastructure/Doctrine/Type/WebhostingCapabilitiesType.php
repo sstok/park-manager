@@ -57,6 +57,10 @@ final class WebhostingCapabilitiesType extends JsonType
     {
         $val = parent::convertToPHPValue($value, $platform) ?? [];
 
+        if (!isset($this->capabilitiesFactory)) {
+            throw new \RuntimeException('setCapabilitiesFactory() needs to be called before this type can be used.');
+        }
+
         return Capabilities::reconstituteFromStorage($this->capabilitiesFactory, $val);
     }
 

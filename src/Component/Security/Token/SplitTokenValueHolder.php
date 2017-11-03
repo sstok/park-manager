@@ -83,7 +83,7 @@ final class SplitTokenValueHolder
         return $this->verifierHash;
     }
 
-    public function withMetadata(?array $metadata): self
+    public function withMetadata(array $metadata): self
     {
         return new self($this->selector, $this->verifierHash, $this->expiresAt, $metadata);
     }

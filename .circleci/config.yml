@@ -42,7 +42,7 @@ jobs:
             cd /park-manager
             export PATH="$PATH:./vendor/bin"
             php php-cs-fixer.phar fix --dry-run --diff
-            phpstan analyse -c phpstan.neon --no-progress -l5 --ansi src public config bin
+            phpstan analyse -c phpstan.neon --no-progress --level=max --ansi src public config bin
 
       - save_cache:
           paths:

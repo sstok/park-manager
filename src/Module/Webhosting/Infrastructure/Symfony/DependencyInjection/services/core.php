@@ -22,7 +22,8 @@ use ParkManager\Module\Webhosting\Model\{
     Account\WebhostingAccountRepository,
     DomainName\WebhostingDomainNameRepository,
     Package\CapabilitiesFactory,
-    Package\CapabilitiesGuard
+    Package\CapabilitiesGuard,
+    Package\WebhostingPackageRepository
 };
 use ParkManager\Module\Webhosting\Service\Package\{
     AccountCapabilitiesGuard,
@@ -53,7 +54,7 @@ return function (ContainerConfigurator $c) {
     $di->set(WebhostingAccountOrmRepository::class)
         ->alias(WebhostingAccountRepository::class, WebhostingAccountOrmRepository::class);
     $di->set(WebhostingPackageOrmRepository::class)
-        ->alias(WebhostingAccountRepository::class, WebhostingAccountOrmRepository::class);
+        ->alias(WebhostingPackageRepository::class, WebhostingPackageOrmRepository::class);
 
     $di->load('ParkManager\Module\Webhosting\Model\\', __DIR__.'/../../../../Model/{Account,DomainName,Package}/Handler')
         ->tag('prooph_service_bus.webhosting.command_bus.route_target', ['message_detection' => true])
