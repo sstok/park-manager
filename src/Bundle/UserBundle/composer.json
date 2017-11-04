@@ -16,18 +16,19 @@
     ],
     "require": {
         "php": "^7.1",
-        "park-manager/doctrine-bridge": "^1.0",
-        "park-manager/user": "^1.0",
-        "hostnet/form-handler-bundle": "^1.3",
-        "prooph/service-bus-symfony-bundle": "^0.4.1",
-        "sylius/mailer": "^1.0@dev",
-        "sylius/mailer-bundle": "^1.0@dev",
-        "symfony/form": "^3.3.2",
-        "symfony/framework-bundle": "^3.3.2",
-        "symfony/security-bundle": "^3.3.2",
+        "hostnet/form-handler-bundle": "^1.4.1",
+        "park-manager/doctrine-bridge": "^0.1",
+        "park-manager/user": "^0.1",
+        "prooph/service-bus-symfony-bundle": "^1.0",
+        "sylius/mailer": "^1.0",
+        "sylius/mailer-bundle": "^1.0",
+        "symfony/dependency-injection": "^3.4 || ^4.0",
+        "symfony/form": "^3.4 || ^4.0",
+        "symfony/framework-bundle": "^3.4 || ^4.0",
+        "symfony/security-bundle": "^3.4 || ^4.0",
         "symfony/swiftmailer-bundle": "^3.0",
-        "symfony/twig-bundle": "^3.3.2",
-        "symfony/validator": "^3.3.2"
+        "symfony/twig-bundle": "^3.4 || ^4.0",
+        "symfony/validator": "^3.4 || ^4.0"
     },
     "config": {
         "preferred-install": {

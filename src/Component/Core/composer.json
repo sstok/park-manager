@@ -16,8 +16,8 @@
     ],
     "require": {
         "php": "^7.1",
-        "park-manager/model": "^1.0",
-        "park-manager/user": "^1.0"
+        "park-manager/model": "^0.1",
+        "park-manager/user": "^0.1"
     },
     "config": {
         "preferred-install": {

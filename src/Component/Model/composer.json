@@ -17,7 +17,7 @@
     "require": {
         "php": "^7.1",
         "beberlei/assert": "^2.7.6",
-        "prooph/service-bus": "~6.0",
+        "prooph/service-bus": "^6.1.1",
         "react/promise": "^2.5"
     },
     "config": {

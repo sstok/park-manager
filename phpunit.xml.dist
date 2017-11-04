@@ -26,15 +26,24 @@
     </groups>
 
     <php>
-        <server name="KERNEL_CLASS" value="App\Kernel" />
+        <env name="KERNEL_CLASS" value="App\Kernel" />
 
-        <server name="APP_ENV" value="test" />
-        <server name="APP_DEBUG" value="1" />
-        <server name="APP_SECRET" value="8b3b0c85daa39eadd88abd547b370997" />
-        <server name="APP_LOCALE" value="en" />
+        <!-- ###+ framework-bundle ### -->
+        <env name="APP_ENV" value="test" />
+        <env name="APP_DEBUG" value="1" />
+        <env name="APP_SECRET" value="8b3b0c85daa39eadd88abd547b370997" />
+        <env name="APP_LOCALE" value="en" />
+        <!-- ###- framework-bundle ### -->
 
-        <server name="DATABASE_URL" value="pgsql://root@localhost:5432/park_manager?charset=utf8" />
-        <server name="MAILER_URL" value="null://localhost" />
+        <!-- ###+ doctrine/doctrine-bundle ### -->
+        <!-- Format described at http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url -->
+        <!-- Note that Park-Manger only supports PostgreSQL -->
+        <env name="DATABASE_URL" value="pgsql://root@localhost:5432/park_manager?charset=utf8&amp;serverVersion=9.6" />
+        <!-- ###- doctrine/doctrine-bundle ### -->
+
+        <!-- ###+ symfony/swiftmailer-bundle ### -->
+        <env name="MAILER_URL" value="null://localhost"/>
+        <!-- ###- symfony/swiftmailer-bundle ### -->
     </php>
 
     <filter>
@@ -43,6 +52,7 @@
             <exclude>
                 <directory>vendor/</directory>
                 <directory>templates/</directory>
+                <directory>translations/</directory>
                 <directory>web/</directory>
                 <directory>var/</directory>
                 <directory>etc/</directory>

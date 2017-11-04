@@ -32,7 +32,6 @@ final class ParkManagerTestBundle extends Bundle
 
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new RemoveServiceResetListener());
         $container->addCompilerPass(new MakeServicesPublic());
     }
 

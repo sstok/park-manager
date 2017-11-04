@@ -2,7 +2,6 @@ parameters:
     autoload_files:
         - vendor/autoload.php
     excludes_analyse:
-        - %rootDir%/config/bundles.php
         - %rootDir%/var/*
         - %rootDir%/templates/*
         - %rootDir%/translations/*

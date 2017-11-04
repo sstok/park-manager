@@ -16,16 +16,17 @@
     ],
     "require": {
         "php": "^7.1",
-        "park-manager/doctrine-bridge": "^1.0",
-        "park-manager/user-bundle": "^1.0",
-        "rollerworks/app-sectioning-bundle": "^0.4.0@dev",
-        "rollerworks/route-autowiring-bundle": "^0.2.0@dev",
-        "symfony/console": "^3.3.2",
-        "symfony/expression-language": "^3.3",
-        "symfony/framework-bundle": "^3.3.2",
-        "symfony/security-bundle": "^3.3.2",
-        "symfony/validator": "^3.3.2",
-        "symfony/yaml": "^3.3.2"
+        "park-manager/doctrine-bridge": "^0.1",
+        "park-manager/user-bundle": "^0.1",
+        "rollerworks/app-sectioning-bundle": "^0.4.1@dev",
+        "rollerworks/route-autowiring-bundle": "^1.0.1",
+        "symfony/console": "^3.4 || ^4.0",
+        "symfony/dependency-injection": "^3.4 || ^4.0",
+        "symfony/expression-language": "^3.4 || ^4.0",
+        "symfony/framework-bundle": "^3.4 || ^4.0",
+        "symfony/security-bundle": "^3.4 || ^4.0",
+        "symfony/validator": "^3.4 || ^4.0",
+        "symfony/yaml": "^3.4 || ^4.0"
     },
     "config": {
         "preferred-install": {
