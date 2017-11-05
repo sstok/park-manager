@@ -17,21 +17,48 @@ namespace ParkManager\Bundle\CoreBundle\Cli\Command;
 use ParkManager\Component\Core\Model\Command\RegisterAdministrator;
 use ParkManager\Component\User\Model\UserId;
 use ParkManager\Component\User\Security\Argon2iPasswordEncoder;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Prooph\ServiceBus\CommandBus;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Validator\Constraints\{Email, NotBlank};
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class RegisterAdministratorCommand extends ContainerAwareCommand
+final class RegisterAdministratorCommand extends Command
 {
+    protected static $defaultName = 'park-manager:administrator:register';
+
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    /**
+     * @var Argon2iPasswordEncoder
+     */
+    private $passwordEncoder;
+
+    /**
+     * @var CommandBus
+     */
+    private $commandBus;
+
+    public function __construct(ValidatorInterface $validator, Argon2iPasswordEncoder $passwordEncoder, CommandBus $commandBus)
+    {
+        parent::__construct();
+
+        $this->validator = $validator;
+        $this->passwordEncoder = $passwordEncoder;
+        $this->commandBus = $commandBus;
+    }
+
     protected function configure()
     {
         $this
-            ->setName('park-manager:administrator:register')
             ->setDescription('Registers a new Administrator user')
             ->setHelp(<<<'EOT'
 The <info>%command.name%</info> command registers a new Administrator user.
@@ -41,14 +68,12 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $container = $this->getContainer();
-        $validator = $container->get('validator');
         $io = new SymfonyStyle($input, $output);
 
         $firstName = $io->ask('First name');
         $lastName = $io->ask('Last name');
-        $email = $io->ask('E-mail address', null, function ($value) use ($validator) {
-            $violationList = $validator->validate($value, [new NotBlank(), new Email()]);
+        $email = $io->ask('E-mail address', null, function ($value) {
+            $violationList = $this->validator->validate($value, [new NotBlank(), new Email()]);
 
             if ($violationList->count() > 0) {
                 throw new \InvalidArgumentException((string) $violationList);
@@ -57,8 +82,8 @@ EOT
             return $value;
         });
 
-        $password = $container->get(Argon2iPasswordEncoder::class)->encodePassword($io->askHidden('Password'), '');
-        $container->get('prooph_service_bus.administrator.command_bus')->dispatch(
+        $password = $this->passwordEncoder->encodePassword($io->askHidden('Password'), '');
+        $this->commandBus->dispatch(
             new RegisterAdministrator(UserId::create()->toString(), $email, $firstName, $lastName, $password)
         );
 

@@ -17,6 +17,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Doctrine\ORM\EntityManagerInterface;
 use Hostnet\Component\FormHandler\HandlerFactory;
 use Hostnet\Component\FormHandler\HandlerFactoryInterface;
+use ParkManager\Bundle\CoreBundle\Cli\Command\RegisterAdministratorCommand;
 use ParkManager\Bundle\CoreBundle\Model\DoctrineOrmAdministratorRepository;
 use ParkManager\Bundle\CoreBundle\Security\AdministratorSecurityUser;
 use ParkManager\Bundle\UserBundle\Action\{
@@ -136,4 +137,9 @@ return function (ContainerConfigurator $c) {
     $di->set('park_manager.security.guard.form.administrator', FormAuthenticator::class)
         ->arg('$loginRoute', 'park_manager.administrator.security_login')
         ->arg('$defaultSuccessRoute', 'admin_home');
+
+    // CliCommands
+    $di->set(RegisterAdministratorCommand::class)
+        ->arg('$commandBus', ref('prooph_service_bus.administrator.command_bus'))
+        ->tag('console.command', ['command' => 'park-manager:administrator:register']);
 };

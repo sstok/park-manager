@@ -16,7 +16,6 @@ namespace ParkManager\Bundle\CoreBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use ParkManager\Bridge\Doctrine\Type\ArrayCollectionType;
-use ParkManager\Bundle\CoreBundle\Cli\Command\RegisterAdministratorCommand;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\DependencyExtension;
 use ParkManager\Bundle\UserBundle\DependencyInjection\Compiler\UserFormHandlerPass;
 use Symfony\Component\Console\Application;
@@ -56,7 +55,7 @@ class ParkManagerCoreBundle extends Bundle
 
     public function registerCommands(Application $application)
     {
-        $application->add(new RegisterAdministratorCommand());
+        // Noop
     }
 
     protected function getContainerExtensionClass(): string
