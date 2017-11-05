@@ -16,9 +16,9 @@
     ],
     "require": {
         "php": "^7.1",
-        "park-manager/model": "^1.0",
-        "park-manager/security": "^1.0",
-        "symfony/security-core": "^3.3.2"
+        "park-manager/model": "^0.1",
+        "park-manager/security": "^0.1",
+        "symfony/security-core": "^3.4 || ^4.0"
     },
     "config": {
         "preferred-install": {

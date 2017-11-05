@@ -1,8 +1,5 @@
 framework:
     secret: "%env(APP_SECRET)%"
-    translator:
-        fallbacks: ["en"]
-    default_locale: "%env(APP_LOCALE)%"
     csrf_protection: null
     # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
     session:
@@ -11,5 +8,3 @@ framework:
     #fragments: ~
     php_errors:
         log: true
-    router:
-        strict_requirements: null

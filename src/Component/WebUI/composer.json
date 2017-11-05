@@ -16,8 +16,8 @@
     ],
     "require": {
         "php": "^7.1",
-        "symfony/form": "^3.3",
-        "symfony/http-kernel": "^3.3"
+        "symfony/form": "^3.4 || ^4.0",
+        "symfony/http-kernel": "^3.4 || ^4.0"
     },
     "config": {
         "preferred-install": {
