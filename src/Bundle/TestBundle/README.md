@@ -1,5 +1,5 @@
-Park-Manager Test
-=================Bundle
+Park-Manager TestBundle
+=======================
 
 The Test Symfony-Bundle for Park-Manager, see resources for more information.
 
