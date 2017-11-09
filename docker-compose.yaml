@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+    php:
+        image: parkmanager/ci-dev:latest
+        depends_on:
+            - db
+        env_file:
+          - .env.dist
+        environment:
+          - DATABASE_URL=pgsql://root@db:5432/park_manager?charset=utf8&serverVersion=9.6
+
+        volumes:
+            - .:/srv/www:rw
+            - /srv/www/var/
+            - /srv/www/var/cache/
+            - /srv/www/var/logs/
+            - /srv/www/var/sessions/
+
+    db:
+        image: postgres:9.6-alpine
+        environment:
+            - POSTGRES_DB=park_manager
+            - POSTGRES_USER=root
+        volumes:
+            # Use virtual volume as this is only for testing
+            - db-data:/var/lib/postgresql/data:rw
+        ports:
+            - "5432:5433"
+
+volumes:
+    db-data: {}
