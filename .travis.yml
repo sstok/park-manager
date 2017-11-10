@@ -1,0 +1,32 @@
+language: php
+
+sudo: true
+
+services:
+    - docker
+
+addons:
+    apt:
+        packages:
+            - docker-ce
+
+branches:
+    only:
+        - master
+
+matrix:
+    include:
+        - php: '7.1'
+          env: coverage=1 lint=1
+
+before_install:
+    - sudo service postgresql stop
+    # wait for postgresql to shutdown
+    - while sudo lsof -Pi :5432 -sTCP:LISTEN -t; do sleep 1; done
+
+install:
+    #- docker-compose up --build -d # Don't unless you want to wait for an hour...
+    - docker-compose run --rm php make install fixtures
+
+script:
+    - make cs-full-check phpstan test-isolated
