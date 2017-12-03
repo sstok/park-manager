@@ -19,16 +19,16 @@ RUN set -xe \
 		postgresql-dev \
 		zlib-dev \
 	&& docker-php-ext-install \
-        pdo_pgsql \
-        pgsql \
-        bcmath \
-        intl \
-        zip \
+        	pdo_pgsql \
+	        pgsql \
+        	bcmath \
+	        intl \
+	        zip \
 	&& pecl install \
 		apcu-${APCU_VERSION} \
 		libsodium-1.0.6 \
 	&& docker-php-ext-enable --ini-name 20-apcu.ini apcu \
-    && docker-php-ext-enable libsodium \
+    	&& docker-php-ext-enable libsodium \
 	&& apk del .build-deps
 
 COPY --from=0 /usr/bin/composer /usr/bin/composer
