@@ -87,7 +87,7 @@ final class Capabilities implements \IteratorAggregate
         return $this->capabilitiesIndexedArray;
     }
 
-    public function equals(Capabilities $other): bool
+    public function equals(self $other): bool
     {
         if ($this === $other) {
             return true;
