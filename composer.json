@@ -2,7 +2,12 @@
     "name": "park-manager/park-manager",
     "type": "project",
     "description": "Open-source hosting solution",
-    "keywords": ["ftp", "mail", "server", "hosting"],
+    "keywords": [
+        "ftp",
+        "mail",
+        "server",
+        "hosting"
+    ],
     "homepage": "http://www.park-manager.com/",
     "license": "MPL-2.0",
     "authors": [
