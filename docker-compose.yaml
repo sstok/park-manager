@@ -12,8 +12,6 @@ services:
 
         volumes:
             - .:/srv/www:rw
-            - /srv/www/var/
-            - /srv/www/var/cache/
             - /srv/www/var/logs/
             - /srv/www/var/sessions/
 

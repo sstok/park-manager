@@ -102,6 +102,7 @@ abstract class ConfirmPasswordResetActionTestCase extends WebTestCase
 
     private function givenUserExistsAndHasToken(Client $client, SplitToken $token): User
     {
+        /** @var \ParkManager\Component\User\Model\UserCollection $repository */
         $repository = $client->getContainer()->get($this->getRepositoryServiceId());
         /** @var User $user */
         $user = $repository->get(UserId::fromString($this->getUserId()));

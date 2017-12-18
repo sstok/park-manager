@@ -34,7 +34,11 @@ security-check:
 	sh -c "${QA_DOCKER_COMMAND} security-checker security:check ./composer.lock"
 
 phpstan:
-	sh -c "${QA_DOCKER_COMMAND} phpstan analyse --configuration phpstan.neon --level max src public bin"
+	docker-compose run --rm php make in-docker-phpstan
+
+in-docker-phpstan:
+	composer bin phpstan install --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
+	vendor/bin/phpstan analyse --configuration phpstan.neon --level max src public bin
 
 cs:
 	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --diff"
