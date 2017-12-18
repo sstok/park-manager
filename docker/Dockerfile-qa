@@ -18,11 +18,11 @@ RUN set -xe \
         pgsql \
         bcmath \
         intl \
+        sodium \
     && pecl install apcu \
     && pecl install redis-3.1.2 \
-    && pecl install libsodium-1.0.6 \
     \
-    && docker-php-ext-enable apcu redis libsodium \
+    && docker-php-ext-enable apcu redis sodium \
     && { find /usr/local/lib -type f -print0 | xargs -0r  --strip-all -p 2>/dev/null || true; } \
     && apk del .build-deps \
     && rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/*

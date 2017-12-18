@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "park-manager/doctrine-bridge": "^0.1",
         "park-manager/user-bundle": "^0.1",
         "rollerworks/app-sectioning-bundle": "^0.4.1@dev",

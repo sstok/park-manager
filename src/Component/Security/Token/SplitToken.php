@@ -93,11 +93,11 @@ final class SplitToken
      */
     public function __destruct()
     {
-        \Sodium\memzero($this->token);
-        \Sodium\memzero($this->verifier);
+        \sodium_memzero($this->token);
+        \sodium_memzero($this->verifier);
 
         if (null !== $this->verifierHash) {
-            \Sodium\memzero($this->verifierHash);
+            \sodium_memzero($this->verifierHash);
         }
     }
 
@@ -130,10 +130,10 @@ final class SplitToken
         $instance->selector = $selector;
         $instance->verifier = $verifier;
         $instance->token = $selector.$verifier;
-        $instance->verifierHash = \Sodium\crypto_pwhash_str(
+        $instance->verifierHash = \sodium_crypto_pwhash_str(
             $verifier.':'.($id ?? '\0'),
-            \Sodium\CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
-            \Sodium\CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
+            \SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
+            \SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
         );
 
         return $instance;
@@ -217,7 +217,7 @@ final class SplitToken
             return false;
         }
 
-        if (\Sodium\crypto_pwhash_str_verify($verifierHash, $this->verifier.':'.($id ?? '\0'))) {
+        if (\sodium_crypto_pwhash_str_verify($verifierHash, $this->verifier.':'.($id ?? '\0'))) {
             return true;
         }
 
