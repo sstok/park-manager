@@ -1,35 +1,29 @@
 QA_DOCKER_IMAGE=parkmanager/phpqa:latest
 QA_DOCKER_COMMAND=docker run -it --rm -v "$(shell pwd):/project" -w /project ${QA_DOCKER_IMAGE}
 
-dist: install cs-full phpstan test-full
-lint: install security-check cs-full phpstan
-check: docker-compose.yml cs-full-check phpstan test-isolated
+dist: install security-check cs-full phpstan test
+ci: install security-check cs-full-check phpstan test
+lint: security-check cs-full-check phpstan
 
-# Development set-up
 install:
-	composer.phar install --no-progress --no-interaction --no-suggest --optimize-autoloader --prefer-dist --ansi
+	docker-compose run --rm php make in-docker-install in-docker-clean-vendor
 
-# Don't run unless you know what your doing.
-fixtures:
-	bin/console doctrine:schema:drop --force
-	bin/console doctrine:schema:update --force
-	bin/console doctrine:schema:validate || true
-	psql -U root -h db -d park_manager -w -a -f ./etc/fixture.sql
+install-dev:
+	docker-compose run --rm php make in-docker-install-dev in-docker-clean-vendor
 
-test:
-	vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --exclude-group functional,performance
+test: docker-up
+	docker-compose run --rm php make in-docker-test
+	@$(MAKE) docker-down
 
-test-full:
-	vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --exclude-group ""
+test-coverage: docker-up
+	mkdir -p build/logs build/cov
+	docker-compose run --rm php make in-docker-test-coverage
+	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr /usr/local/bin/phpcov merge --clover build/logs/clover.xml build/cov"
+	@$(MAKE) docker-down
 
-docker-compose.yml:
-	docker-compose up --build -d
-	docker-compose run --rm php make install fixtures
-
-test-isolated: docker-compose.yml
-	docker-compose run --rm php make test-full
-
+##
 # Linting tools
+##
 security-check:
 	sh -c "${QA_DOCKER_COMMAND} security-checker security:check ./composer.lock"
 
@@ -49,4 +43,51 @@ cs-full:
 cs-full-check:
 	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=false --diff --dry-run"
 
-.PHONY: install test test-full test-isolated security-check phpstan cs cs-full cs-full-check
+##
+# Special operations
+##
+
+docker-up:
+	docker-compose up -d
+	# wait for ES to boot
+	until curl -s -X GET "http://localhost:59200/" > /dev/null; do sleep 1; done
+
+docker-down:
+	docker-compose down
+
+##
+# Private targets
+##
+in-docker-install:
+	rm -f composer.lock
+	composer.phar install --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
+
+in-docker-install-dev:
+	rm -f composer.lock
+	cp composer.json _composer.json
+	composer.phar config minimum-stability dev
+	composer.phar update --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
+	mv _composer.json composer.json
+
+in-docker-install-fixtures:
+	bin/console doctrine:schema:drop --force
+	bin/console doctrine:schema:update --force
+	bin/console doctrine:schema:validate || true
+	psql -U root -h db -d park_manager -w -a -f ./etc/fixture.sql
+
+in-docker-test: in-docker-install-fixtures
+	vendor/bin/phpunit --verbose
+
+in-docker-test-coverage: in-docker-install-fixtures
+	phpdbg -qrr vendor/bin/phpunit --verbose --coverage-php build/cov/coverage-phpunit.cov
+
+in-docker-clean-vendor:
+	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/Tests" }' | xargs rm -rf
+	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/LICENSE" }' | xargs rm -f
+	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/README.md" }' | xargs rm -f
+	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/.gitignore" }' | xargs rm -f
+	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/phpunit.xml.dist" }' | xargs rm -f
+	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/CHANGELOG.md" }' | xargs rm -f
+
+.PHONY: install install-dev security-check phpstan cs cs-full cs-full-checks docker-up down-down
+.PHONY: in-docker-install in-docker-install-dev in-docker-install-lowest in-docker-test in-docker-test-coverage in-docker-clean-vendor
