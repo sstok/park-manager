@@ -237,7 +237,20 @@ final class CapabilitiesRegistryPass implements CompilerPassInterface
 
     private function resolveClassService(string $capabilityName, string $className, string $expectedInterface): string
     {
-        $className = $this->parameters->resolveValue($className);
+        $classNameResolved = $this->parameters->resolveValue($className);
+
+        if (!is_string($className)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Webhosting Capability %s is incorrectly configured. Class %s is not a string parameter.',
+                    $capabilityName,
+                    $className
+                )
+            );
+        }
+
+        /** @var string $className */
+        $className = $classNameResolved;
 
         if (!class_exists($className)) {
             throw new InvalidArgumentException(

@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "ext-mbstring": "*",
         "beberlei/assert": "^2.7.6",
         "doctrine/dbal": "^2.6.1",
@@ -47,6 +47,7 @@
         "symfony/yaml": "v4.0.0 as 3.4.0"
     },
     "require-dev": {
+        "bamarni/composer-bin-plugin": "^1.2",
         "johnkary/phpunit-speedtrap": "v2.0.0-BETA1",
         "matthiasnoback/symfony-dependency-injection-test": "^2.1.0",
         "phpunit/phpunit": "^6.1",

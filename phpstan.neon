@@ -1,48 +1,32 @@
+includes:
+	- vendor-bin/phpstan/vendor/lookyman/phpstan-symfony/extension.neon
+	- vendor-bin/phpstan/vendor/phpstan/phpstan-doctrine/extension.neon
+	- vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
+	- vendor-bin/phpstan/vendor/jangregor/phpstan-prophecy/src/extension.neon
+
 parameters:
     autoload_files:
+        - vendor-bin/phpstan/vendor/autoload.php
         - vendor/autoload.php
     excludes_analyse:
-        - %rootDir%/var/*
-        - %rootDir%/templates/*
-        - %rootDir%/translations/*
+        - var/*
+        - templates/*
+        - translations/*
+
+    symfony:
+        srcDevDebugProjectContainerXml: var/cache/dev/srcDevDebugProjectContainer.xml
+
     ignoreErrors:
-        - '#Method ParkManager\\Bundle\\UserBundle\\Security\\[^:]+\:\:getUser\(\) should return ParkManager\\Component\\User\\Security\\SecurityUser\|null but returns Symfony\\Component\\Security\\Core\\User\\UserInterface#'
-        - '#Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:isEnabled\(\)#'
-        - '#__construct\(\) does not call parent constructor from .+#'
-        - '#\$_(em|class) \([^)]+\) does not accept [^\s]+#'
+        - '# on possibly null value #' # Late initialization - CompilerPass, Tests, etc.
+        - '#\|null given#' # Late initialization - property value-object
+        - '#__construct\(\) does not call parent constructor from .+#' # Perfectly valid reason.
 
-        - '#Calling method [a-z]+\(\) on possibly null value of type (Psr\\Container|Symfony\\Component\\DependencyInjection)\\(ContainerInterface|ContainerBuilder)\|null#i'
-        - '#Calling method [a-z]+\(\) on possibly null value of type ParkManager\\Component\\Security\\Token\\SplitTokenValueHolder\|null#i'
-        - '#Calling method [a-z]+\(\) on possibly null value of type Symfony\\Component\\BrowserKit\\Response\|null#i'
-        - '#Calling method [a-z]+\(\) on possibly null value of type Symfony\\Component\\DependencyInjection\\ParameterBag\\ParameterBagInterface\|null#i'
-        - '#Calling method set\(\) on possibly null value of type Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\|null#'
-        - '#registerWithCustomCapabilities\(\) expects ParkManager\\Module\\Webhosting\\Model\\Package\\Capabilities#'
-        - '#Calling method equals\(\) on possibly null value of type ParkManager\\Module\\Webhosting\\Model\\Account\\WebhostingAccountOwner\|null#'
-        - '#Parameter \#2 \$oldOwner of static method ParkManager\\Module\\Webhosting\\Model\\Account\\Event\\WebhostingAccountOwnerWasSwitched\:\:withData\(\) expects ParkManager\\Module\\Webhosting\\Model\\Account\\WebhostingAccountOwner, ParkManager\\Module\\Webhosting\\Model\\Account\\WebhostingAccountOwner\|null given#'
+        # Symfony
+        - '#Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:isEnabled\(\)#' # Guarded by isEqualTo() and tests
+        - '#Method ParkManager\\Bundle\\UserBundle\\Security\\[^:]+\:\:getUser\(\) should return ParkManager\\Component\\User\\Security\\SecurityUser\|null but returns Symfony\\Component\\Security\\Core\\User\\UserInterface#' # Authenticator
+        - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:#' # XXX Needs Custom ReflectionProvider
 
-        - '#Parameter \#1 \$id of static method [^:]+\:\:[a-z]+\(\) expects ([a-z_\\]+Id), ([a-z_\\]+Id)\|null given#i'
-
-        # Tests
-        - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[a-zA-Z0-9_]+\(\)#'
-        - '#Method [a-zA-Z0-9_()\\:]+ should return [a-zA-Z0-9_\\]+ but returns PHPUnit_Framework_MockObject_MockObject#'
-        - '#Parameter \#2 \$actualJson of static method PHPUnit\\Framework\\Assert\:\:assertJsonStringEqualsJsonString\(\) expects string, string\|null given#'
-
-        #- '#Access to an undefined property Prophecy\\Prophecy\\ObjectProphecy::\$[a-zA-Z0-9_]+#'
-        #- '#Call to an undefined method PHPUnit_Framework_MockObject_MockObject::[a-zA-Z0-9_]+\(\)#'
-        - '#expects\s+[^\s]+, PHPUnit_Framework_MockObject_MockObject given#'
-
-        # Pomm related
-        #- '#Method ParkManager\\Module\\\w+\\Infrastructure\\Repository\\Pomm(\w+)Repository\:\:getModel\(\) should return ParkManager\\Module\\\w+\\Infrastructure\\Pomm\\ParkManager\\\w+Schema\\\w+Model but returns PommProject\\ModelManager\\Model\\Model#'
-        #- '#Call to an undefined method PommProject\\ModelManager\\Model\\Model\:\:findByPK\(\)#'
-
-        # Sodium
-        - '#Function sodium_[^\s]+ not found.#'
-        - '#(Function|Constant) (SODIUM|sodium)_[^\s]+ not found.#'
-        - '#Function Sodium\\memzero invoked with 1 parameter, 2 required#' # No idea why this is reported.
-
-        # False positive https://github.com/phpstan/phpstan/issues/207
-        - '#Undefined variable: \$valid#'
-
-        # False positives (guarded by TypeHint)
-        - '#Parameter \#1 \$domainName of static method ParkManager\\Module\\Webhosting\\Model\\DomainName\\Exception\\CannotTransferPrimaryDomainName\:\:of\(\) expects ParkManager\\Module\\Webhosting\\Model\\DomainName\\WebhostingDomainNameId, ParkManager\\Module\\Webhosting\\Model\\DomainName\\WebhostingDomainNameId\|null given#'
-        - '#Calling method id\(\) on possibly null value of type#'
+        ## False positive
+        - '#Function sodium_memzero invoked with 1 parameter, 2 required#' # No idea why this is reported.
+        - '#Call to an undefined method object\:\:equals\(\)#' # https://github.com/phpstan/phpstan/issues/323
+        - '#Property Doctrine\\ORM\\EntityRepository\:\:\$_em \(Doctrine\\ORM\\EntityManager\) does not accept Doctrine\\ORM\\EntityManagerInterface#' # Doctrine PHPDoc bug

@@ -37,7 +37,7 @@ final class SplitTokenTest extends TestCase
         self::assertNotNull($verifier = $splitToken->verifierHash());
         self::assertStringStartsWith($selector, $token);
         self::assertStringEndsNotWith($selector, $verifier);
-        self::assertStringStartsWith('$argon2i$', $verifier);
+        self::assertStringStartsWith('$argon2i', $verifier);
     }
 
     /**
@@ -53,7 +53,7 @@ final class SplitTokenTest extends TestCase
         self::assertNotNull($verifier = $splitToken->verifierHash());
         self::assertStringStartsWith($selector, $token);
         self::assertStringEndsNotWith($selector, $verifier);
-        self::assertStringStartsWith('$argon2i$', $verifier);
+        self::assertStringStartsWith('$argon2i', $verifier);
     }
 
     /**

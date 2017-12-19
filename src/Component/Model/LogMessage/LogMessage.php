@@ -75,7 +75,7 @@ class LogMessage
      *                                       substituted in the message template
      * @param string|null $systemMessage     Untranslated information about the system (mainly for troubleshooting)
      */
-    protected function __construct(string $type, string $messageTemplate, array $messageParameters = [], ?string $systemMessage = null)
+    protected function __construct(string $type, ?string $messageTemplate, array $messageParameters = [], ?string $systemMessage = null)
     {
         $this->type = $type;
         $this->messageTemplate = $messageTemplate;

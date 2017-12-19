@@ -1,5 +1,5 @@
 FROM composer:1.5
-FROM php:7.1-alpine
+FROM php:7.2-alpine
 
 RUN apk add --no-cache --virtual .persistent-deps \
 		git \
@@ -24,11 +24,11 @@ RUN set -xe \
         	bcmath \
 	        intl \
 	        zip \
+	        sodium \
 	&& pecl install \
 		apcu-${APCU_VERSION} \
-		libsodium-1.0.6 \
 	&& docker-php-ext-enable --ini-name 20-apcu.ini apcu \
-    	&& docker-php-ext-enable libsodium \
+    	&& docker-php-ext-enable sodium \
 	&& apk del .build-deps
 
 COPY --from=0 /usr/bin/composer /usr/bin/composer
