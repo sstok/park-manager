@@ -49,8 +49,6 @@ cs-full-check:
 
 docker-up:
 	docker-compose up -d
-	# wait for ES to boot
-	until curl -s -X GET "http://localhost:59200/" > /dev/null; do sleep 1; done
 
 docker-down:
 	docker-compose down

@@ -26,7 +26,7 @@ before_install:
 
 install:
     #- docker-compose up --build -d # Don't unless you want to wait for an hour...
-    - docker-compose run --rm php make install fixtures
+    - make install
 
 script:
-    - make cs-full-check phpstan test-isolated
+    - make lint test
