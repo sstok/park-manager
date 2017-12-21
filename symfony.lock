@@ -95,9 +95,6 @@
     "paragonie/constant_time_encoding": {
         "version": "v2.2.0"
     },
-    "paragonie/random_compat": {
-        "version": "v2.0.11"
-    },
     "patchwork/utf8": {
         "version": "v1.3.1"
     },
@@ -340,12 +337,6 @@
             "version": "3.3",
             "ref": "0a66a0097def4db1cd03bcb3d4a268440ae4cb47"
         }
-    },
-    "symfony/polyfill-intl-icu": {
-        "version": "v1.6.0"
-    },
-    "symfony/polyfill-php72": {
-        "version": "v1.6.0"
     },
     "symfony/process": {
         "version": "v4.0.0-beta2"
