@@ -32,7 +32,7 @@ final class CapabilitiesRegistry implements CapabilitiesFactory
     private $applierServices;
 
     /**
-     * @param array[]            $capabilities     Capabilities and there configuration
+     * @param array[]            $capabilities     Capabilities and their configuration
      * @param string[]           $capabilitiesById Map Capability ID to Capability name
      * @param ContainerInterface $guardServices    Service container for lazy loading guard services
      * @param ContainerInterface $applierServices  Service container for lazy loading applier services

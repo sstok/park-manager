@@ -17,7 +17,7 @@ namespace ParkManager\Module\Webhosting\Model\Package;
 use ParkManager\Module\Webhosting\Model\Package\Exception\CapabilityNotInSet;
 
 /**
- * Capabilities holds a immutable set of unique Capability objects.
+ * Capabilities holds an immutable set of unique Capability objects.
  *
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
@@ -108,6 +108,17 @@ final class Capabilities implements \IteratorAggregate
         return new self(...$capabilitiesInstances);
     }
 
+    /**
+     * Reconstitutes a Capabilities set from storage.
+     *
+     * Unlike reconstituteFromArray() this expects the capabilites
+     * are provided by their id (not their name).
+     *
+     * @param CapabilitiesFactory $factory
+     * @param array               $capabilities
+     *
+     * @return Capabilities
+     */
     public static function reconstituteFromStorage(CapabilitiesFactory $factory, array $capabilities): self
     {
         $capabilitiesInstances = [];

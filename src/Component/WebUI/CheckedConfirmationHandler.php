@@ -23,7 +23,7 @@ namespace ParkManager\Component\WebUI;
  * a specific value like the name of the account they wish to delete.
  * Otherwise the confirmation is rejected.
  *
- * Typing the name forces the user to think if what there about to do is correct
+ * Typing the name forces the user to think if what their about to do is correct
  * (instead of blindly pressing YES), and reduces "small-screen area mistakes".
  *
  * @author Sebastiaan Stok <s.stok@rollerworks.net>

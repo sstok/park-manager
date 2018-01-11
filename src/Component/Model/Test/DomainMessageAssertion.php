@@ -24,7 +24,7 @@ use Prooph\Common\Messaging\Message;
 final class DomainMessageAssertion
 {
     /**
-     * Compare the result of getter methods to ensure there payload produced a correct result.
+     * Compare the result of getter methods to ensure their payload produced a correct result.
      *
      * For objects check if they are equatable, if not use assertEquals to help with debugging.
      *

@@ -27,10 +27,10 @@ use ParkManager\Module\Webhosting\Model\Account\WebhostingAccount;
  *
  * Caution: An account's Capabilities can be updated any moment, so when
  * the account already has 10 mailboxes and the Capability was updated
- * to only allow 8 the guard still MUST return false.
+ * to only allow 8 the guard still MUST return false - allow the operation.
  *
  * When a Capability has more then one attribute it's recommend to "log" a
- * message to inform the UI layer about the specific reason.
+ * message to inform higher layers about the specific reason.
  *
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */

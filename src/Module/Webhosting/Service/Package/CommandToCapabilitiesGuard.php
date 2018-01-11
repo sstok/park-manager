@@ -22,7 +22,7 @@ use Prooph\Common\Messaging\Command;
 
 /**
  * The CommandToCapabilitiesGuard maps a Domain Command to
- * a (set of) capabilities and run these through there Guards
+ * a (set of) capabilities and run these through their Guards
  * (using the AccountCapabilitiesGuard).
  *
  * Based on the result of all CapabilityGuards this service

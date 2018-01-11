@@ -15,10 +15,30 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Model\Package;
 
 /**
+ * A Capabilities indicate what a webhosting package supports.
+ *
+ * A Capability may cover a single subject like support for MySQL
+ * (indicating a maximum number of databases), or a combined subject
+ * like mail (max mailboxes, max forwards, max aliases).
+ *
+ * It works like a Constraint, holds a specific configuration
+ * and unware of the package it's used in.
+ *
+ * A Capability is immutable and sharable.
+ *
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 interface Capability
 {
+    /**
+     * Returns a unique id (UUID) for storage mapping.
+     *
+     * This must never change! Moving/renaming the
+     * Capability class should not require updating
+     * the databse.
+     *
+     * @return string
+     */
     public static function id(): string;
 
     /**
@@ -32,6 +52,11 @@ interface Capability
     public function configuration(): array;
 
     /**
+     * Reconstitute this Capability from an array.
+     *
+     * Note: the provided values come directly from
+     * storage and are not transformed yet.
+     *
      * @param array $from
      *
      * @return static
