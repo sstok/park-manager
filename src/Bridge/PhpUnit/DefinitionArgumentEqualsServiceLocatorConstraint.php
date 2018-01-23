@@ -134,6 +134,10 @@ final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
             );
         }
 
+        if (isset($serviceLocatorDef->getFactory()[1])) {
+            $serviceLocatorDef = $this->container->findDefinition((string) $serviceLocatorDef->getFactory()[0]);
+        }
+
         $actualValue = $serviceLocatorDef->getArgument(0);
         $constraint = new IsEqual($this->expectedValue);
 
