@@ -50,6 +50,7 @@
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.2",
         "johnkary/phpunit-speedtrap": "v2.0.0",
+        "matthiasnoback/symfony-config-test": "^3.1",
         "matthiasnoback/symfony-dependency-injection-test": "^2.1.0",
         "phpunit/phpunit": "^6.1",
         "ramsey/uuid-console": "^1.1.1",
@@ -79,7 +80,10 @@
         "psr-4": {
             "App\\": "src/",
             "ParkManager\\": "src/"
-        }
+        },
+        "exclude-from-classmap": [
+            ".dances/"
+        ]
     },
     "scripts": {
         "auto-scripts": {
