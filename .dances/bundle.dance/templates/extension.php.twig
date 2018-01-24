@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * Copyright (c) the Contributors as noted in the AUTHORS file.
+ *
+ * This file is part of the Park-Manager project.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+namespace {{ php_namespace }}\DependencyInjection;
+
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+
+final class DependencyExtension extends Extension
+{
+    public const EXTENSION_ALIAS = '{{ extension_name|underscore }}';
+
+    public function load(array $configs, ContainerBuilder $container): void
+    {
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.php');
+    }
+
+    public function getAlias(): string
+    {
+        return self::EXTENSION_ALIAS;
+    }
+}

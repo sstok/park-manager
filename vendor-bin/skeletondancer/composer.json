@@ -1,0 +1,6 @@
+{
+    "require-dev": {
+        "skeleton-dancer/skeleton-dancer": "^0.4.1",
+        "webmozart/console": "dev-master@dev"
+    }
+}
