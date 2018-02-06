@@ -32,7 +32,7 @@ phpstan:
 
 in-docker-phpstan:
 	composer bin phpstan install --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
-	vendor/bin/phpstan analyse --configuration phpstan.neon --level max src public bin
+	php -d memory_limit=1G vendor/bin/phpstan analyse --configuration phpstan.neon --level max src public bin
 
 cs:
 	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --diff"

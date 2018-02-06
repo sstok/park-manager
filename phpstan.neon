@@ -30,3 +30,6 @@ parameters:
         - '#Function sodium_memzero invoked with 1 parameter, 2 required#' # No idea why this is reported.
         - '#Call to an undefined method object\:\:equals\(\)#' # https://github.com/phpstan/phpstan/issues/323
         - '#Property Doctrine\\ORM\\EntityRepository\:\:\$_em \(Doctrine\\ORM\\EntityManager\) does not accept Doctrine\\ORM\\EntityManagerInterface#' # Doctrine PHPDoc bug
+
+        - '#Call to an undefined method Exception\:\:getMessageName\(\)#'
+        - '#Call to an undefined method ParkManager\\Bridge\\ServiceBus\\DependencyInjection\\Configurator\\MiddlewaresConfigurator\:\:#' # Magic call
