@@ -74,6 +74,15 @@
     "johnkary/phpunit-speedtrap": {
         "version": "v2.0.0-beta1"
     },
+    "league/tactician": {
+        "version": "v1.0.3"
+    },
+    "league/tactician-container": {
+        "version": "2.0.0"
+    },
+    "league/tactician-doctrine": {
+        "version": "v1.1"
+    },
     "matthiasnoback/symfony-config-test": {
         "version": "v3.0.1"
     },
