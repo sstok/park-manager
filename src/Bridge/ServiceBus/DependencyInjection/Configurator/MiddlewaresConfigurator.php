@@ -50,10 +50,10 @@ class MiddlewaresConfigurator
      */
     public function __call(string $name, array $arguments): object
     {
-        $className = __NAMESPACE__.'\\Plugin\\'.ucfirst($name).'MiddlewaresConfigurator';
+        $className = __NAMESPACE__.'\\Middleware\\'.ucfirst($name).'MiddlewareConfigurator';
 
         if (!class_exists($className)) {
-            throw new \InvalidArgumentException(sprintf('Cannot locate class "%s" for plugin %s.', $className, $name));
+            throw new \InvalidArgumentException(sprintf('Cannot locate class "%s" for middleware %s.', $className, $name));
         }
 
         if (!is_a($className, MiddlewareConfigurator::class, true)) {

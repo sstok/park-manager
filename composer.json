@@ -90,7 +90,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "ParkManager\\Bridge\\ServiceBus\\DependencyInjection\\Configurator\\Plugin\\": "src/Bridge/ServiceBus/Tests/DependencyInjection/Fixture"
+            "ParkManager\\Bridge\\ServiceBus\\DependencyInjection\\Configurator\\Middleware\\": "src/Bridge/ServiceBus/Tests/DependencyInjection/Fixture"
         }
     },
     "scripts": {
