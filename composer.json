@@ -64,14 +64,17 @@
         "symfony/web-server-bundle": "^4.0"
     },
     "replace": {
-        "symfony/polyfill-iconv": "*",
+        "paragonie/random_compat": "*",
+        "park-manager/service-bus": "self.version",
+        "park-manager/service-bus-bridge": "self.version",
+        "park-manager/service-bus-bundle": "self.version",
         "symfony/polyfill-intl-icu": "*",
         "symfony/polyfill-mbstring": "*",
         "symfony/polyfill-php56": "*",
         "symfony/polyfill-php70": "*",
         "symfony/polyfill-php71": "*",
         "symfony/polyfill-php72": "*",
-        "paragonie/random_compat": "*"
+        "symfony/polyfill-iconv": "*"
     },
     "config": {
         "preferred-install": {
