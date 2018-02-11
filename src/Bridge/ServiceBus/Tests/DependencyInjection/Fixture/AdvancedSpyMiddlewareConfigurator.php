@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\Plugin;
+namespace ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\Middleware;
 
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\AdvancedMiddlewareConfigurator;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MiddlewaresConfigurator;
@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceCon
  *
  * @internal
  */
-final class AdvancedSpyMiddlewaresConfigurator implements AdvancedMiddlewareConfigurator
+final class AdvancedSpyMiddlewareConfigurator implements AdvancedMiddlewareConfigurator
 {
     public static $arguments;
     private $parent;
