@@ -14,12 +14,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Model\Account;
 
-use Prooph\Common\Messaging\HasMessageName;
-
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-interface AccountIdAwareCommand extends HasMessageName
+interface AccountIdAwareCommand
 {
     public function account(): WebhostingAccountId;
 }

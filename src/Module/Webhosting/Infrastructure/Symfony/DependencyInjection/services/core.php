@@ -15,6 +15,9 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\ORM\EntityManagerInterface;
+use League\Tactician\Plugins\LockingMiddleware;
+use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MessageBusConfigurator;
+use ParkManager\Component\Model\Event\EventEmitter;
 use ParkManager\Module\Webhosting\Infrastructure\Doctrine\Repository\{
     WebhostingAccountOrmRepository, WebhostingDomainNameOrmRepository, WebhostingPackageOrmRepository
 };
@@ -30,16 +33,25 @@ use ParkManager\Module\Webhosting\Service\Package\{
     CapabilitiesRegistry,
     CommandToCapabilitiesGuard
 };
-use Prooph\ServiceBus\EventBus;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
         ->autowire()
         ->autoconfigure()
         // Bindings
-        ->bind(EventBus::class, ref('prooph_service_bus.webhosting.event_bus'))
-        ->bind(EntityManagerInterface::class, ref('doctrine.orm.entity_manager'))
-    ;
+        ->bind(EventEmitter::class, ref('park_manager.command_bus.webhosting.domain_event_emitter'))
+        ->bind(EntityManagerInterface::class, ref('doctrine.orm.entity_manager'));
+
+    MessageBusConfigurator::register($di, 'park_manager.command_bus.webhosting')
+        ->middlewares()
+            ->register(LockingMiddleware::class)
+            ->doctrineOrmTransaction('default')
+            ->domainEvents()
+            ->end()
+        ->end()
+        ->handlers(__DIR__.'/../../../../Model/')
+            ->load('ParkManager\Module\Webhosting\Model\\', '{Account,DomainName,Package}/Handler')
+        ->end();
 
     // CapabilitiesFactory alias needs to be public for Doctrine type in ParkManagerWebhostingBundle::boot()
     $di->set(CapabilitiesRegistry::class)
@@ -55,10 +67,6 @@ return function (ContainerConfigurator $c) {
         ->alias(WebhostingAccountRepository::class, WebhostingAccountOrmRepository::class);
     $di->set(WebhostingPackageOrmRepository::class)
         ->alias(WebhostingPackageRepository::class, WebhostingPackageOrmRepository::class);
-
-    $di->load('ParkManager\Module\Webhosting\Model\\', __DIR__.'/../../../../Model/{Account,DomainName,Package}/Handler')
-        ->tag('prooph_service_bus.webhosting.command_bus.route_target', ['message_detection' => true])
-        ->public();
 
     $di->load('ParkManager\Module\Webhosting\Infrastructure\\Package\\Capability\\', __DIR__.'/../../../../Infrastructure/Package/Capability');
     $di->load('ParkManager\Module\Webhosting\Model\\Package\\Capability\\', __DIR__.'/../../../../Model/Package/Capability')

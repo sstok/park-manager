@@ -14,8 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Core\Model\Event;
 
-use ParkManager\Component\Model\DomainEvent;
-use ParkManager\Component\User\Model\Command\UserIdTrait;
+use ParkManager\Component\Model\Event\DomainEvent;
 use ParkManager\Component\User\Model\UserId;
 
 /**
@@ -23,33 +22,36 @@ use ParkManager\Component\User\Model\UserId;
  */
 final class AdministratorWasRegistered extends DomainEvent
 {
-    use UserIdTrait;
+    private $id;
+    private $email;
+    private $firstName;
+    private $lastName;
 
-    public static function withData(UserId $id, string $email, string $firstName, string $lastName): self
+    public function __construct(UserId $id, string $email, string $firstName, string $lastName)
     {
-        /** @var self $event */
-        $event = self::occur($id->toString(), [
-            'email' => $email,
-            'firstName' => $firstName,
-            'lastName' => $lastName,
-        ]);
-        $event->id = $id;
+        $this->id = $id;
+        $this->email = $email;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+    }
 
-        return $event;
+    public function id(): UserId
+    {
+        return $this->id;
     }
 
     public function email(): string
     {
-        return $this->payload['email'];
+        return $this->email;
     }
 
     public function firstName(): string
     {
-        return $this->payload['firstName'];
+        return $this->firstName;
     }
 
     public function lastName(): string
     {
-        return $this->payload['lastName'];
+        return $this->lastName;
     }
 }

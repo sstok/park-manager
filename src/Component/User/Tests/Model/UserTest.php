@@ -15,9 +15,8 @@ declare(strict_types=1);
 namespace ParkManager\Component\User\Tests\Model;
 
 use Assert\AssertionFailedException;
-use ParkManager\Component\Model\Test\EventsRecordingAggregateRootAssertionTrait;
+use ParkManager\Component\Model\Test\EventsRecordingEntityAssertionTrait;
 use ParkManager\Component\Model\Tests\ObjectHydrationAssertTrait;
-use ParkManager\Component\Model\Util\EventsExtractor;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
 use ParkManager\Component\User\Model\User;
@@ -29,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class UserTest extends TestCase
 {
-    use EventsRecordingAggregateRootAssertionTrait;
+    use EventsRecordingEntityAssertionTrait;
     use ObjectHydrationAssertTrait;
 
     private const ID1 = '930c3fd0-3bd1-11e7-bb9b-acdc32b58315';
@@ -98,7 +97,7 @@ final class UserTest extends TestCase
         $user->changePassword('security-is-null');
 
         self::assertEquals('security-is-null', $user->password());
-        self::assertDomainEvents($user, $user->id()->toString(), [UserPasswordWasChanged::withData($user->id())]);
+        self::assertDomainEvents($user, [new UserPasswordWasChanged($user->id())]);
     }
 
     /** @test */
@@ -108,7 +107,7 @@ final class UserTest extends TestCase
         $user->changePassword(null);
 
         self::assertNull($user->password());
-        self::assertDomainEvents($user, $user->id()->toString(), [UserPasswordWasChanged::withData($user->id())]);
+        self::assertDomainEvents($user, [new UserPasswordWasChanged($user->id())]);
     }
 
     /** @test */
@@ -326,7 +325,7 @@ final class UserTest extends TestCase
         self::assertEquals($tokenHolder, $currentToken);
         self::assertNull($tokenAfter);
         self::assertEquals('new-password', $user->password());
-        self::assertDomainEvents($user, $user->id()->toString(), [UserPasswordWasChanged::withData($user->id())]);
+        self::assertDomainEvents($user, [new UserPasswordWasChanged($user->id())]);
     }
 
     /** @test */
@@ -378,7 +377,8 @@ final class UserTest extends TestCase
         $user = new UserImplementation(UserId::fromString(self::ID1), 'john@example.com', 'john@example.com');
         $user->changePassword($password);
 
-        EventsExtractor::newInstance()->extractDomainEvents($user);
+        // Clear events.
+        $user->releaseEvents();
 
         return $user;
     }

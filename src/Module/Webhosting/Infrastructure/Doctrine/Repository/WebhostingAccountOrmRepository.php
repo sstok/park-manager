@@ -16,21 +16,21 @@ namespace ParkManager\Module\Webhosting\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Bridge\Doctrine\EventSourcedEntityRepository;
+use ParkManager\Component\Model\Event\EventEmitter;
 use ParkManager\Module\Webhosting\Model\Account\Exception\CannotRemoveActiveWebhostingAccount;
 use ParkManager\Module\Webhosting\Model\Account\Exception\WebhostingAccountNotFound;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountRepository;
-use Prooph\ServiceBus\EventBus;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class WebhostingAccountOrmRepository extends EventSourcedEntityRepository implements WebhostingAccountRepository
 {
-    public function __construct(EntityManagerInterface $entityManager, EventBus $eventBus, string $className = WebhostingAccount::class)
+    public function __construct(EntityManagerInterface $entityManager, EventEmitter $eventEmitter, string $className = WebhostingAccount::class)
     {
-        parent::__construct($entityManager, $eventBus, $className);
+        parent::__construct($entityManager, $eventEmitter, $className);
     }
 
     public function get(WebhostingAccountId $id): WebhostingAccount

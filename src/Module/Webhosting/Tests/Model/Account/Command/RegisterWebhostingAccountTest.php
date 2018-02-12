@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Model\Account\Command;
 
-use ParkManager\Component\Model\Test\DomainMessageAssertion;
 use ParkManager\Module\Webhosting\Model\Account\Command\RegisterWebhostingAccount;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountOwner;
@@ -48,8 +47,6 @@ final class RegisterWebhostingAccountTest extends TestCase
         self::assertEquals(WebhostingPackageId::fromString(self::PACKAGE_ID), $command->package());
         self::assertEquals($domainName, $command->domainName());
         self::assertNull($command->customCapabilities());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($command);
     }
 
     /** @test */
@@ -67,7 +64,5 @@ final class RegisterWebhostingAccountTest extends TestCase
         self::assertEquals($capabilities, $command->customCapabilities());
         self::assertEquals($domainName, $command->domainName());
         self::assertNull($command->package());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($command);
     }
 }

@@ -14,15 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Fixtures\Model\Package\Command;
 
-use Prooph\Common\Messaging\Command;
-use Prooph\Common\Messaging\PayloadTrait;
-
-final class CreatePackage extends Command
+final class CreatePackage
 {
-    use PayloadTrait;
-
-    public function __construct()
-    {
-        $this->init();
-    }
 }

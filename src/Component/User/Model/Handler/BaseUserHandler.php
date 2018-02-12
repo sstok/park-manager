@@ -14,13 +14,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model\Handler;
 
-use ParkManager\Component\Model\CommandHandler;
 use ParkManager\Component\User\Model\UserCollection;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-abstract class BaseUserHandler implements CommandHandler
+abstract class BaseUserHandler
 {
     protected $repository;
 

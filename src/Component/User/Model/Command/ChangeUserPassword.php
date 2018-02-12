@@ -14,8 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model\Command;
 
-use Prooph\Common\Messaging\Command;
-use Prooph\Common\Messaging\PayloadTrait;
+use ParkManager\Component\User\Model\UserId;
 
 /**
  * ChangeUserPassword (with encoded-password).
@@ -24,19 +23,24 @@ use Prooph\Common\Messaging\PayloadTrait;
  *
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class ChangeUserPassword extends Command
+final class ChangeUserPassword
 {
-    use PayloadTrait;
-    use UserIdTrait;
+    private $id;
+    private $password;
 
     public function __construct(string $id, ?string $password)
     {
-        $this->init();
-        $this->setPayload(['id' => $id, 'password' => $password]);
+        $this->id = UserId::fromString($id);
+        $this->password = $password;
+    }
+
+    public function id(): UserId
+    {
+        return $this->id;
     }
 
     public function password(): ?string
     {
-        return $this->payload['password'];
+        return $this->password;
     }
 }

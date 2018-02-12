@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Cli\Command;
 
+use League\Tactician\CommandBus;
 use ParkManager\Component\Core\Model\Command\RegisterAdministrator;
 use ParkManager\Component\User\Model\UserId;
-use Prooph\ServiceBus\CommandBus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -83,7 +83,7 @@ EOT
         });
 
         $password = $this->passwordEncoder->encodePassword($io->askHidden('Password'), '');
-        $this->commandBus->dispatch(
+        $this->commandBus->handle(
             new RegisterAdministrator(UserId::create()->toString(), $email, $firstName, $lastName, $password)
         );
 

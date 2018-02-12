@@ -48,7 +48,7 @@ class Administrator extends User
         $user->firstName = $firstName;
         $user->lastName = $lastName;
 
-        $user->recordThat(AdministratorWasRegistered::withData($id, $email, $firstName, $lastName));
+        $user->recordThat(new AdministratorWasRegistered($id, $email, $firstName, $lastName));
         $user->changePassword($password);
 
         return $user;
@@ -58,7 +58,7 @@ class Administrator extends User
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->recordThat(AdministratorNameWasChanged::withData($this->id(), $firstName, $lastName));
+        $this->recordThat(new AdministratorNameWasChanged($this->id(), $firstName, $lastName));
     }
 
     public function firstName(): string

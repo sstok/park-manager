@@ -14,15 +14,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model\Handler;
 
-use ParkManager\Component\Model\CommandHandler;
 use ParkManager\Component\User\Model\Query\GetUserByPasswordResetToken;
+use ParkManager\Component\User\ReadModel\User;
 use ParkManager\Component\User\ReadModel\UserFinder;
-use React\Promise\Deferred;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class GetUserWithPasswordResetTokenHandler implements CommandHandler
+final class GetUserWithPasswordResetTokenHandler
 {
     private $userFinder;
 
@@ -31,14 +30,8 @@ final class GetUserWithPasswordResetTokenHandler implements CommandHandler
         $this->userFinder = $userFinder;
     }
 
-    public function __invoke(GetUserByPasswordResetToken $query, Deferred $deferred = null)
+    public function __invoke(GetUserByPasswordResetToken $query): ?User
     {
-        $user = $this->userFinder->findByPasswordResetToken($query->token()->selector());
-
-        if (null === $deferred) {
-            return $user;
-        }
-
-        $deferred->resolve($user);
+        return $this->userFinder->findByPasswordResetToken($query->token()->selector());
     }
 }

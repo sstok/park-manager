@@ -18,7 +18,6 @@ use ParkManager\Component\Model\LogMessage\LogMessages;
 use ParkManager\Module\Webhosting\Model\Account\AccountIdAwareCommand;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Model\Package\CapabilitiesGuard;
-use Prooph\Common\Messaging\Command;
 
 /**
  * The CommandToCapabilitiesGuard maps a Domain Command to
@@ -49,9 +48,9 @@ final class CommandToCapabilitiesGuard
         $this->contextProvider = $contextProvider;
     }
 
-    public function commandAllowedFor(Command $command, WebhostingAccountId $account): LogMessages
+    public function commandAllowedFor(object $command, WebhostingAccountId $account): LogMessages
     {
-        $commandName = $command->messageName();
+        $commandName = get_class($command);
 
         if (!$command instanceof AccountIdAwareCommand || !isset($this->commandToCapabilitiesMapping[$commandName])) {
             return new LogMessages();

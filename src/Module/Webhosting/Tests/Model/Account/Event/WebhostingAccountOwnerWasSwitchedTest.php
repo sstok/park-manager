@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Model\Account\Event;
 
-use ParkManager\Component\Model\Test\DomainMessageAssertion;
 use ParkManager\Module\Webhosting\Model\Account\Event\WebhostingAccountOwnerWasSwitched;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountOwner;
@@ -28,7 +27,7 @@ final class WebhostingAccountOwnerWasSwitchedTest extends TestCase
     /** @test */
     public function its_constructable()
     {
-        $event = WebhostingAccountOwnerWasSwitched::withData(
+        $event = new WebhostingAccountOwnerWasSwitched(
             $id = WebhostingAccountId::fromString('b288e23c-97c5-11e7-b51a-acbc32b58315'),
             $oldOwner = WebhostingAccountOwner::fromString('2a9cd25c-97ca-11e7-9683-acbc32b58315'),
             $newOwner = WebhostingAccountOwner::fromString('ce18c388-9ba2-11e7-b15f-acbc32b58315')
@@ -37,7 +36,5 @@ final class WebhostingAccountOwnerWasSwitchedTest extends TestCase
         self::assertTrue($id->equals($event->id()));
         self::assertEquals($oldOwner, $event->oldOwner());
         self::assertEquals($newOwner, $event->newOwner());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($event);
     }
 }

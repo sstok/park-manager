@@ -16,7 +16,6 @@ namespace ParkManager\Component\User\Tests\Model\Handler;
 
 use ParkManager\Component\User\Exception\UserNotFound;
 use ParkManager\Component\User\Model\UserCollection;
-use Prooph\Common\Messaging\Command;
 
 /**
  * @internal
@@ -25,7 +24,7 @@ trait UserCommandHandlerMissingUserTrait
 {
     abstract public function it_fails_for_not_existing_user();
 
-    protected function expectUserNotFoundWith(\Closure $handlerCreator, Command $command): void
+    protected function expectUserNotFoundWith(\Closure $handlerCreator, object $command): void
     {
         $repositoryProphecy = $this->prophesize(UserCollection::class);
         $repositoryProphecy->getById($command->id())->willReturn(null);

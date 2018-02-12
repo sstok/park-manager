@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model\Handler;
 
-use ParkManager\Component\Model\CommandHandler;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Model\Command\RequestConfirmationOfEmailAddressChange;
 use ParkManager\Component\User\Model\Service\EmailAddressChangeConfirmationMailer;
@@ -23,7 +22,7 @@ use ParkManager\Component\User\Model\UserCollection;
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class RequestConfirmationOfEmailAddressChangeHandler implements CommandHandler
+final class RequestConfirmationOfEmailAddressChangeHandler
 {
     private $userCollection;
     private $confirmationMailer;

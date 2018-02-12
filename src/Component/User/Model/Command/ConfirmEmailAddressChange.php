@@ -15,30 +15,21 @@ declare(strict_types=1);
 namespace ParkManager\Component\User\Model\Command;
 
 use ParkManager\Component\Security\Token\SplitToken;
-use Prooph\Common\Messaging\Command;
-use Prooph\Common\Messaging\PayloadTrait;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class ConfirmEmailAddressChange extends Command
+final class ConfirmEmailAddressChange
 {
-    use PayloadTrait;
-
     private $token;
 
     public function __construct(string $token)
     {
-        $this->init();
-        $this->setPayload(['token' => $token]);
+        $this->token = SplitToken::fromString($token);
     }
 
     public function token(): SplitToken
     {
-        if (null === $this->token) {
-            $this->token = SplitToken::fromString($this->payload['token']);
-        }
-
         return $this->token;
     }
 }

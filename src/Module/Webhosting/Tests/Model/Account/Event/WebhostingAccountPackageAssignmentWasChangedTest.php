@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Model\Account\Event;
 
-use ParkManager\Component\Model\Test\DomainMessageAssertion;
 use ParkManager\Module\Webhosting\Model\Account\Event\WebhostingAccountPackageAssignmentWasChanged;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Model\Package\Capabilities;
@@ -35,7 +34,7 @@ final class WebhostingAccountPackageAssignmentWasChangedTest extends TestCase
     /** @test */
     public function its_constructable()
     {
-        $event = WebhostingAccountPackageAssignmentWasChanged::withData(
+        $event = new WebhostingAccountPackageAssignmentWasChanged(
             $id = $this->createAccountId(),
             $package = $this->createWebhostingPackage()
         );
@@ -43,8 +42,6 @@ final class WebhostingAccountPackageAssignmentWasChangedTest extends TestCase
         self::assertTrue($id->equals($event->id()));
         self::assertEquals($package->id(), $event->package());
         self::assertNull($event->capabilities());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($event);
     }
 
     /** @test */
@@ -58,8 +55,6 @@ final class WebhostingAccountPackageAssignmentWasChangedTest extends TestCase
         self::assertTrue($id->equals($event->id()));
         self::assertEquals($package->id(), $event->package());
         self::assertEquals($package->capabilities(), $event->capabilities());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($event);
     }
 
     private function createWebhostingPackage(): WebhostingPackage

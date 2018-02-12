@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Model\Package\Event;
 
-use ParkManager\Component\Model\Test\DomainMessageAssertion;
 use ParkManager\Module\Webhosting\Model\Package\Capabilities;
 use ParkManager\Module\Webhosting\Model\Package\Event\WebhostingPackageCapabilitiesWasChanged;
 use ParkManager\Module\Webhosting\Model\Package\WebhostingPackageId;
@@ -32,14 +31,12 @@ final class WebhostingPackageCapabilitiesWasChangedTest extends TestCase
     /** @test */
     public function its_constructable()
     {
-        $event = WebhostingPackageCapabilitiesWasChanged::withData(
+        $event = new WebhostingPackageCapabilitiesWasChanged(
             $id = WebhostingPackageId::fromString(self::PACKAGE_ID),
             $capabilities = new Capabilities(new StorageSpaceQuota('5G'), new MonthlyTrafficQuota(50))
         );
 
         self::assertTrue($id->equals($event->id()));
         self::assertEquals($capabilities, $event->capabilities());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($event);
     }
 }

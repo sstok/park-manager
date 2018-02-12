@@ -14,30 +14,36 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model\Command;
 
-use Prooph\Common\Messaging\Command;
-use Prooph\Common\Messaging\PayloadTrait;
+use ParkManager\Component\User\Model\UserId;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class RequestConfirmationOfEmailAddressChange extends Command
+final class RequestConfirmationOfEmailAddressChange
 {
-    use PayloadTrait;
-    use UserIdTrait;
+    private $id;
+    private $email;
+    private $canonicalEmail;
 
     public function __construct(string $id, string $email, string $canonicalEmail)
     {
-        $this->init();
-        $this->setPayload(['id' => $id, 'email' => $email, 'canonical_email' => $canonicalEmail]);
+        $this->id = UserId::fromString($id);
+        $this->email = $email;
+        $this->canonicalEmail = $canonicalEmail;
+    }
+
+    public function id(): UserId
+    {
+        return $this->id;
     }
 
     public function email(): string
     {
-        return $this->payload['email'];
+        return $this->email;
     }
 
     public function canonicalEmail(): string
     {
-        return $this->payload['canonical_email'];
+        return $this->canonicalEmail;
     }
 }

@@ -14,8 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Model\Account\Event;
 
-use ParkManager\Component\Model\DomainEvent;
-use ParkManager\Module\Webhosting\Model\Account\HasWebhostingAccountId;
+use ParkManager\Component\Model\Event\DomainEvent;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountOwner;
 
@@ -24,29 +23,22 @@ use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountOwner;
  */
 final class WebhostingAccountWasRegistered extends DomainEvent
 {
-    use HasWebhostingAccountId;
+    private $accountId;
+    private $owner;
 
-    /**
-     * @var WebhostingAccountOwner|null
-     */
-    protected $owner;
-
-    public static function withData(WebhostingAccountId $id, WebhostingAccountOwner $owner): self
+    public function __construct(WebhostingAccountId $id, WebhostingAccountOwner $owner)
     {
-        /** @var self $event */
-        $event = self::occur($id->toString(), ['owner' => $owner->toString()]);
-        $event->id = $id;
-        $event->owner = $owner;
+        $this->accountId = $id;
+        $this->owner = $owner;
+    }
 
-        return $event;
+    public function id(): WebhostingAccountId
+    {
+        return $this->accountId;
     }
 
     public function owner(): WebhostingAccountOwner
     {
-        if (null === $this->owner) {
-            $this->owner = WebhostingAccountOwner::fromString($this->payload['owner']);
-        }
-
         return $this->owner;
     }
 }

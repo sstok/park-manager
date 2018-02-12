@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Tests\Model\Account;
 
 use ParkManager\Component\Model\Test\EntityHydrator;
-use ParkManager\Component\Model\Test\EventsRecordingAggregateRootAssertionTrait;
+use ParkManager\Component\Model\Test\EventsRecordingEntityAssertionTrait;
 use ParkManager\Module\Webhosting\Model\Account\Event\{
     WebhostingAccountCapabilitiesWasChanged,
     WebhostingAccountOwnerWasSwitched,
@@ -41,7 +41,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class WebhostingAccountTest extends TestCase
 {
-    use EventsRecordingAggregateRootAssertionTrait;
+    use EventsRecordingEntityAssertionTrait;
 
     private const ACCOUNT_ID = '374dd50e-9b9f-11e7-9730-acbc32b58315';
 
@@ -64,7 +64,7 @@ final class WebhostingAccountTest extends TestCase
         self::assertEquals($owner, $account->owner());
         self::assertSame($package, $account->package());
         self::assertSame($capabilities, $account->capabilities());
-        self::assertDomainEvents($account, $id->toString(), [WebhostingAccountWasRegistered::withData($id, $owner)]);
+        self::assertDomainEvents($account, [new WebhostingAccountWasRegistered($id, $owner)]);
     }
 
     /** @test */
@@ -93,7 +93,7 @@ final class WebhostingAccountTest extends TestCase
         self::assertEquals($owner, $account->owner());
         self::assertSame($capabilities, $account->capabilities());
         self::assertNull($account->package());
-        self::assertDomainEvents($account, $id->toString(), [WebhostingAccountWasRegistered::withData($id, $owner)]);
+        self::assertDomainEvents($account, [new WebhostingAccountWasRegistered($id, $owner)]);
     }
 
     /** @test */
@@ -117,7 +117,7 @@ final class WebhostingAccountTest extends TestCase
 
         self::assertSame($package2, $account2->package());
         self::assertSame($package1->capabilities(), $account2->capabilities());
-        self::assertDomainEvents($account2, $id2->toString(), [WebhostingAccountPackageAssignmentWasChanged::withData($id2, $package2)]);
+        self::assertDomainEvents($account2, [new WebhostingAccountPackageAssignmentWasChanged($id2, $package2)]);
     }
 
     /** @test */
@@ -141,7 +141,10 @@ final class WebhostingAccountTest extends TestCase
 
         self::assertSame($package2, $account2->package());
         self::assertSame($package2->capabilities(), $account2->capabilities());
-        self::assertDomainEvents($account2, $id2->toString(), [WebhostingAccountPackageAssignmentWasChanged::withCapabilities($id2, $package2)]);
+        self::assertDomainEvents(
+            $account2,
+            [WebhostingAccountPackageAssignmentWasChanged::withCapabilities($id2, $package2)]
+        );
     }
 
     /** @test */
@@ -157,7 +160,10 @@ final class WebhostingAccountTest extends TestCase
 
         self::assertSame($package, $account->package());
         self::assertSame($package->capabilities(), $account->capabilities());
-        self::assertDomainEvents($account, $id->toString(), [WebhostingAccountPackageAssignmentWasChanged::withCapabilities($id, $package)]);
+        self::assertDomainEvents(
+            $account,
+            [WebhostingAccountPackageAssignmentWasChanged::withCapabilities($id, $package)]
+        );
     }
 
     /** @test */
@@ -172,7 +178,7 @@ final class WebhostingAccountTest extends TestCase
 
         self::assertNull($account->package());
         self::assertSame($newCapabilities, $account->capabilities());
-        self::assertDomainEvents($account, $id->toString(), [WebhostingAccountCapabilitiesWasChanged::withData($id, $newCapabilities)]);
+        self::assertDomainEvents($account, [new WebhostingAccountCapabilitiesWasChanged($id, $newCapabilities)]);
     }
 
     /** @test */
@@ -212,7 +218,7 @@ final class WebhostingAccountTest extends TestCase
         self::assertNoDomainEvents($account1);
 
         self::assertEquals($owner2, $account2->owner());
-        self::assertDomainEvents($account2, $id2->toString(), [WebhostingAccountOwnerWasSwitched::withData($id2, $owner1, $owner2)]);
+        self::assertDomainEvents($account2, [new WebhostingAccountOwnerWasSwitched($id2, $owner1, $owner2)]);
     }
 
     /** @test */
@@ -235,7 +241,7 @@ final class WebhostingAccountTest extends TestCase
 
         self::assertFalse($account1->isMarkedForRemoval());
         self::assertTrue($account2->isMarkedForRemoval());
-        self::assertDomainEvents($account2, $id2->toString(), [WebhostingAccountWasMarkedForRemoval::withData($id2)]);
+        self::assertDomainEvents($account2, [new WebhostingAccountWasMarkedForRemoval($id2)]);
     }
 
     /** @test */

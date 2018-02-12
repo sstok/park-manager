@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Model\Tests\Mock;
 
-use ParkManager\Component\Model\EventsRecordingAggregateRoot;
+use ParkManager\Component\Model\EventsRecordingEntity;
 use ParkManager\Component\Model\Tests\Mock\Event\UserWasRegistered;
 
-final class User extends EventsRecordingAggregateRoot
+final class User extends EventsRecordingEntity
 {
     /**
      * @var string
@@ -27,7 +27,7 @@ final class User extends EventsRecordingAggregateRoot
     public static function register(string $name): self
     {
         $instance = new self();
-        $instance->recordThat(UserWasRegistered::occur('1', ['name' => $name]));
+        $instance->recordThat(new UserWasRegistered(1, $name));
         $instance->name = $name;
 
         return $instance;

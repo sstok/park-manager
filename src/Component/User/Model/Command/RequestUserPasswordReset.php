@@ -14,24 +14,20 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model\Command;
 
-use Prooph\Common\Messaging\Command;
-use Prooph\Common\Messaging\PayloadTrait;
-
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class RequestUserPasswordReset extends Command
+final class RequestUserPasswordReset
 {
-    use PayloadTrait;
+    private $email;
 
     public function __construct(string $email)
     {
-        $this->init();
-        $this->setPayload(['email' => $email]);
+        $this->email = $email;
     }
 
     public function email(): string
     {
-        return $this->payload['email'];
+        return $this->email;
     }
 }

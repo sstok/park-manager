@@ -16,9 +16,9 @@ namespace ParkManager\Bundle\UserBundle\Form\Handler;
 
 use Hostnet\Component\FormHandler\HandlerConfigInterface;
 use Hostnet\Component\FormHandler\HandlerTypeInterface;
+use League\Tactician\CommandBus;
 use ParkManager\Bundle\UserBundle\Form\Type\ChangePasswordType;
 use ParkManager\Component\User\Model\Command\ChangeUserPassword;
-use Prooph\ServiceBus\CommandBus;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -67,7 +67,7 @@ final class ChangePasswordFormHandler implements HandlerTypeInterface
         $config->setOptions(['action' => $this->requestStack->getCurrentRequest()->getRequestUri()]);
 
         $config->onSuccess(function (array $data) {
-            $this->commandBus->dispatch(
+            $this->commandBus->handle(
                 new ChangeUserPassword(
                     $this->tokenStorage->getToken()->getUsername(),
                     $this->passwordEncoder->encodePassword($data['new_password'], '')

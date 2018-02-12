@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace ParkManager\Component\Core\Tests\Model\Event;
 
 use ParkManager\Component\Core\Model\Event\AdministratorNameWasChanged;
-use ParkManager\Component\Model\Test\DomainMessageAssertion;
 use ParkManager\Component\User\Model\UserId;
 use PHPUnit\Framework\TestCase;
 
@@ -29,13 +28,11 @@ final class AdministratorNameWasChangedTest extends TestCase
     /** @test */
     public function its_constructable()
     {
-        $command = AdministratorNameWasChanged::withData($id = UserId::fromString(self::USER_ID), 'First', 'Named');
+        $command = new AdministratorNameWasChanged($id = UserId::fromString(self::USER_ID), 'First', 'Named');
 
         self::assertEquals(UserId::fromString(self::USER_ID), $command->id());
         self::assertTrue($id->equals($command->id()));
         self::assertEquals('Named', $command->lastName());
         self::assertEquals('First', $command->firstName());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($command);
     }
 }

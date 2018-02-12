@@ -16,9 +16,6 @@
     ],
     "require": {
         "php": "^7.2",
-        "beberlei/assert": "^2.7.6",
-        "prooph/service-bus": "^6.1.1",
-        "react/promise": "^2.5",
         "symfony/event-dispatcher": "^4.0.4"
     },
     "config": {

@@ -17,7 +17,6 @@ namespace ParkManager\Component\Core\Model\Handler;
 use ParkManager\Component\Core\Exception\AdministratorEmailAddressAlreadyInUse;
 use ParkManager\Component\Core\Model\Administrator;
 use ParkManager\Component\Core\Model\Command\RegisterAdministrator;
-use ParkManager\Component\Model\CommandHandler;
 use ParkManager\Component\User\Canonicalizer\Canonicalizer;
 use ParkManager\Component\User\Canonicalizer\SimpleEmailCanonicalizer;
 use ParkManager\Component\User\Model\UserCollection;
@@ -25,7 +24,7 @@ use ParkManager\Component\User\Model\UserCollection;
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class RegisterAdministratorHandler implements CommandHandler
+final class RegisterAdministratorHandler
 {
     private $repository;
     private $emailCanonicalizer;
