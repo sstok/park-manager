@@ -14,11 +14,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\ServiceBusBundle;
 
+use ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler\DomainEventsEmitterPass;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler\MessageBusPass;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler\MessageGuardPass;
+use ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler\TracingDomainEventsEmitterPass;
+use ParkManager\Bundle\ServiceBusBundle\DependecyInjection\DependencyExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -26,14 +28,28 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class ParkManagerServiceBusBundleBundle extends Bundle
 {
-    public function getContainerExtension(): ?ExtensionInterface
+    public function getContainerExtension(): DependencyExtension
     {
-        return null;
+        if (null === $this->extension) {
+            $this->extension = new DependencyExtension();
+        }
+
+        return $this->extension;
     }
 
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new MessageBusPass());
+        $container->addCompilerPass(new DomainEventsEmitterPass(), PassConfig::TYPE_BEFORE_REMOVING, 1);
         $container->addCompilerPass(new MessageGuardPass(), PassConfig::TYPE_BEFORE_REMOVING, 1);
+        $container->addCompilerPass(new MessageBusPass());
+
+        if ($container->getParameter('kernel.debug')) {
+            $container->addCompilerPass(new TracingDomainEventsEmitterPass());
+        }
+    }
+
+    protected function getContainerExtensionClass(): string
+    {
+        return DependencyExtension::class;
     }
 }
