@@ -152,15 +152,6 @@
     "phpunit/phpunit-mock-objects": {
         "version": "4.0.4"
     },
-    "prooph/common": {
-        "version": "v4.1.0"
-    },
-    "prooph/service-bus": {
-        "version": "v6.1.1"
-    },
-    "prooph/service-bus-symfony-bundle": {
-        "version": "1.0-dev"
-    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -178,9 +169,6 @@
     },
     "ramsey/uuid-console": {
         "version": "1.1.1"
-    },
-    "react/promise": {
-        "version": "v2.5.1"
     },
     "rollerworks/app-sectioning-bundle": {
         "version": "v0.4.1"

@@ -14,20 +14,22 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model\Command;
 
-use Prooph\Common\Messaging\Command;
-use Prooph\Common\Messaging\PayloadTrait;
+use ParkManager\Component\User\Model\UserId;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class DeleteUserRegistration extends Command
+final class DeleteUserRegistration
 {
-    use PayloadTrait;
-    use UserIdTrait;
+    private $id;
 
     public function __construct(string $id)
     {
-        $this->init();
-        $this->setPayload(['id' => $id]);
+        $this->id = UserId::fromString($id);
+    }
+
+    public function id(): UserId
+    {
+        return $this->id;
     }
 }

@@ -14,8 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model\Event;
 
-use ParkManager\Component\Model\DomainEvent;
-use ParkManager\Component\User\Model\Command\UserIdTrait;
+use ParkManager\Component\Model\Event\DomainEvent;
 use ParkManager\Component\User\Model\UserId;
 
 /**
@@ -23,14 +22,15 @@ use ParkManager\Component\User\Model\UserId;
  */
 final class UserPasswordWasChanged extends DomainEvent
 {
-    use UserIdTrait;
+    private $id;
 
-    public static function withData(UserId $id): self
+    public function __construct(UserId $id)
     {
-        /** @var self $event */
-        $event = self::occur($id->toString());
-        $event->id = $id;
+        $this->id = $id;
+    }
 
-        return $event;
+    public function id(): UserId
+    {
+        return $this->id;
     }
 }

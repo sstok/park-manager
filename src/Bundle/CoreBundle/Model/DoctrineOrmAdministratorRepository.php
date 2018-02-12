@@ -18,15 +18,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Bundle\UserBundle\Model\DoctrineOrmUserCollection;
 use ParkManager\Component\Core\Model\Administrator;
 use ParkManager\Component\Core\Model\AdministratorRepository;
-use Prooph\ServiceBus\EventBus;
+use ParkManager\Component\Model\Event\EventEmitter;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class DoctrineOrmAdministratorRepository extends DoctrineOrmUserCollection implements AdministratorRepository
 {
-    public function __construct(EntityManagerInterface $entityManager, EventBus $eventBus)
+    public function __construct(EntityManagerInterface $entityManager, EventEmitter $eventEmitter)
     {
-        parent::__construct($entityManager, $eventBus, Administrator::class);
+        parent::__construct($entityManager, $eventEmitter, Administrator::class);
     }
 }

@@ -17,7 +17,7 @@ namespace ParkManager\Component\User\Model;
 use Assert\Assertion;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use ParkManager\Component\Model\EventsRecordingAggregateRoot;
+use ParkManager\Component\Model\EventsRecordingEntity;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\Security\Token\SplitTokenValueHolder;
 use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
@@ -32,7 +32,7 @@ use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
  *
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-abstract class User extends EventsRecordingAggregateRoot
+abstract class User extends EventsRecordingEntity
 {
     public const DEFAULT_ROLE = 'ROLE_USER';
 
@@ -161,7 +161,7 @@ abstract class User extends EventsRecordingAggregateRoot
         if ($this->password !== $password) {
             $this->password = $password;
 
-            $this->recordThat(UserPasswordWasChanged::withData($this->id()));
+            $this->recordThat(new UserPasswordWasChanged($this->id()));
         }
     }
 

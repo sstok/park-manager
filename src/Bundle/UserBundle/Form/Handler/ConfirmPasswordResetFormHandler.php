@@ -16,9 +16,9 @@ namespace ParkManager\Bundle\UserBundle\Form\Handler;
 
 use Hostnet\Component\FormHandler\HandlerConfigInterface;
 use Hostnet\Component\FormHandler\HandlerTypeInterface;
+use League\Tactician\CommandBus;
 use ParkManager\Bundle\UserBundle\Form\Type\ConfirmPasswordResetType;
 use ParkManager\Component\User\Model\Command\ConfirmUserPasswordReset;
-use Prooph\ServiceBus\CommandBus;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -66,7 +66,7 @@ final class ConfirmPasswordResetFormHandler implements HandlerTypeInterface
         });
 
         $config->onSuccess(function (array $data, FormInterface $form) {
-            $this->commandBus->dispatch(
+            $this->commandBus->handle(
                 new ConfirmUserPasswordReset(
                     $data['token'],
                     $this->passwordEncoder->encodePassword($form->get('password')->getData(), '')

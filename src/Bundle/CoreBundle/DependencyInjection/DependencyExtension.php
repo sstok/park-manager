@@ -15,14 +15,6 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\DependencyInjection;
 
 use ParkManager\Bridge\Doctrine\Type\ArrayCollectionType;
-use ParkManager\Component\Core\Model\Command\RegisterAdministrator;
-use ParkManager\Component\User\Model\Command\{
-    ChangeUserPassword,
-    ConfirmUserPasswordReset,
-    RequestUserPasswordReset
-};
-use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
-use ParkManager\Component\User\Model\Query\GetUserByPasswordResetToken;
 use Rollerworks\Bundle\AppSectioningBundle\DependencyInjection\SectioningFactory;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Symfony\Component\Config\FileLocator;
@@ -61,7 +53,6 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
     public function prepend(ContainerBuilder $container): void
     {
         $this->prependDoctrineConfig($container);
-        $this->prependProophConfig($container);
 
         $container->prependExtensionConfig('twig', [
             'paths' => [realpath(dirname(__DIR__).'/templates') => 'ParkManager'],
@@ -73,46 +64,6 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
         $container->prependExtensionConfig('doctrine', [
             'dbal' => [
                 'types' => ['array_collection' => ['class' => ArrayCollectionType::class, 'commented' => true]],
-            ],
-        ]);
-    }
-
-    private function prependProophConfig(ContainerBuilder $container): void
-    {
-        $container->prependExtensionConfig('prooph_service_bus', [
-            'command_buses' => [
-                'administrator.command_bus' => [
-                    'router' => [
-                        'type' => 'prooph_service_bus.command_bus_router',
-                        'routes' => [
-                            RequestUserPasswordReset::class => 'park_manager.command_handler.request_administrator_password_reset',
-                            ConfirmUserPasswordReset::class => 'park_manager.command_handler.confirm_administrator_password_reset',
-                            ChangeUserPassword::class => 'park_manager.command_handler.change_administrator_password',
-                            RegisterAdministrator::class => 'park_manager.command_handler.register_administrator',
-                        ],
-                    ],
-                ],
-            ],
-            'query_buses' => [
-                'administrator.query_bus' => [
-                    'router' => [
-                        'type' => 'prooph_service_bus.query_bus_router',
-                        'routes' => [
-                            GetUserByPasswordResetToken::class => 'park_manager.query_handler.get_administrator_by_password_reset_token',
-                        ],
-                    ],
-                ],
-            ],
-            'event_buses' => [
-                'administrator.event_bus' => [
-                    'plugins' => ['prooph_service_bus.on_event_invoke_strategy'],
-                    'router' => [
-                        'type' => 'prooph_service_bus.event_bus_router',
-                        'routes' => [
-                            UserPasswordWasChanged::class => ['park_manager.domain_event_listener.update_auth_token_when_password_was_changed.administrator'],
-                        ],
-                    ],
-                ],
             ],
         ]);
     }

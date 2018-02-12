@@ -16,19 +16,14 @@ namespace ParkManager\Module\Webhosting\Tests\Fixtures\Model\Mailbox;
 
 use ParkManager\Module\Webhosting\Model\Account\AccountIdAwareCommand;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
-use Prooph\Common\Messaging\Command;
-use Prooph\Common\Messaging\PayloadTrait;
 
-final class RemoveMailbox extends Command implements AccountIdAwareCommand
+final class RemoveMailbox implements AccountIdAwareCommand
 {
-    use PayloadTrait;
-
     private $accountId;
 
     public function __construct(WebhostingAccountId $accountId)
     {
         $this->accountId = $accountId;
-        $this->init();
     }
 
     public function account(): WebhostingAccountId

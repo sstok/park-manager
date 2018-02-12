@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Tests\Model\Command;
 
-use ParkManager\Component\Model\Test\DomainMessageAssertion;
 use ParkManager\Component\User\Model\Command\RequestUserPasswordReset;
 use PHPUnit\Framework\TestCase;
 
@@ -29,7 +28,5 @@ final class RequestUserPasswordResetTest extends TestCase
         $command = new RequestUserPasswordReset('jane@example.com');
 
         self::assertEquals('jane@example.com', $command->email());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($command);
     }
 }

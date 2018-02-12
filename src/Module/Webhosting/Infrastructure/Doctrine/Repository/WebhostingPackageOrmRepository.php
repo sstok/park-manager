@@ -16,22 +16,22 @@ namespace ParkManager\Module\Webhosting\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Bridge\Doctrine\EventSourcedEntityRepository;
+use ParkManager\Component\Model\Event\EventEmitter;
 use ParkManager\Module\Webhosting\Model\Package\Exception\WebhostingPackageNotFound;
 use ParkManager\Module\Webhosting\Model\Package\{
     WebhostingPackage,
     WebhostingPackageId,
     WebhostingPackageRepository
 };
-use Prooph\ServiceBus\EventBus;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class WebhostingPackageOrmRepository extends EventSourcedEntityRepository implements WebhostingPackageRepository
 {
-    public function __construct(EntityManagerInterface $entityManager, EventBus $eventBus, string $className = WebhostingPackage::class)
+    public function __construct(EntityManagerInterface $entityManager, EventEmitter $eventEmitter, string $className = WebhostingPackage::class)
     {
-        parent::__construct($entityManager, $eventBus, $className);
+        parent::__construct($entityManager, $eventEmitter, $className);
     }
 
     public function get(WebhostingPackageId $id): WebhostingPackage

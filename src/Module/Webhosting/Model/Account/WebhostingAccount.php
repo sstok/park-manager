@@ -14,14 +14,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Model\Account;
 
-use ParkManager\Component\Model\EventsRecordingAggregateRoot;
+use ParkManager\Component\Model\EventsRecordingEntity;
 use ParkManager\Module\Webhosting\Model\Package\Capabilities;
 use ParkManager\Module\Webhosting\Model\Package\WebhostingPackage;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-class WebhostingAccount extends EventsRecordingAggregateRoot
+class WebhostingAccount extends EventsRecordingEntity
 {
     /**
      * The WebhostingPackage is null for an exclusive webhosting package.
@@ -83,7 +83,7 @@ class WebhostingAccount extends EventsRecordingAggregateRoot
         // The package can be changed at any time, but the capabilities are immutable.
         $account->capabilities = $package->capabilities();
         $account->package = $package;
-        $account->recordThat(Event\WebhostingAccountWasRegistered::withData($id, $owner));
+        $account->recordThat(new Event\WebhostingAccountWasRegistered($id, $owner));
 
         return $account;
     }
@@ -92,7 +92,7 @@ class WebhostingAccount extends EventsRecordingAggregateRoot
     {
         $account = new static($id, $owner);
         $account->capabilities = $capabilities;
-        $account->recordThat(Event\WebhostingAccountWasRegistered::withData($id, $owner));
+        $account->recordThat(new Event\WebhostingAccountWasRegistered($id, $owner));
 
         return $account;
     }
@@ -136,7 +136,7 @@ class WebhostingAccount extends EventsRecordingAggregateRoot
         }
 
         $this->package = $package;
-        $this->recordThat(Event\WebhostingAccountPackageAssignmentWasChanged::withData($this->id, $package));
+        $this->recordThat(new Event\WebhostingAccountPackageAssignmentWasChanged($this->id, $package));
     }
 
     /**
@@ -168,7 +168,7 @@ class WebhostingAccount extends EventsRecordingAggregateRoot
 
         $this->package = null;
         $this->capabilities = $capabilities;
-        $this->recordThat(Event\WebhostingAccountCapabilitiesWasChanged::withData($this->id, $capabilities));
+        $this->recordThat(new Event\WebhostingAccountCapabilitiesWasChanged($this->id, $capabilities));
     }
 
     public function switchOwner(WebhostingAccountOwner $owner): void
@@ -177,7 +177,7 @@ class WebhostingAccount extends EventsRecordingAggregateRoot
             return;
         }
 
-        $this->recordThat(Event\WebhostingAccountOwnerWasSwitched::withData($this->id, $this->owner, $owner));
+        $this->recordThat(new Event\WebhostingAccountOwnerWasSwitched($this->id, $this->owner, $owner));
         $this->owner = $owner;
     }
 
@@ -220,7 +220,7 @@ class WebhostingAccount extends EventsRecordingAggregateRoot
         }
 
         $this->markedForRemoval = true;
-        $this->recordThat(Event\WebhostingAccountWasMarkedForRemoval::withData($this->id));
+        $this->recordThat(new Event\WebhostingAccountWasMarkedForRemoval($this->id));
     }
 
     public function isMarkedForRemoval(): bool

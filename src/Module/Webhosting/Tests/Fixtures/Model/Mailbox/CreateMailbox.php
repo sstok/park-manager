@@ -16,13 +16,9 @@ namespace ParkManager\Module\Webhosting\Tests\Fixtures\Model\Mailbox;
 
 use ParkManager\Module\Webhosting\Model\Account\AccountIdAwareCommand;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
-use Prooph\Common\Messaging\Command;
-use Prooph\Common\Messaging\PayloadTrait;
 
-final class CreateMailbox extends Command implements AccountIdAwareCommand
+final class CreateMailbox implements AccountIdAwareCommand
 {
-    use PayloadTrait;
-
     private $accountId;
     private $size;
 
@@ -30,7 +26,6 @@ final class CreateMailbox extends Command implements AccountIdAwareCommand
     {
         $this->accountId = $accountId;
         $this->size = $size;
-        $this->init();
     }
 
     public function account(): WebhostingAccountId

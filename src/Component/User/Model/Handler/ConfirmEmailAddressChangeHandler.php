@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model\Handler;
 
-use ParkManager\Component\Model\CommandHandler;
 use ParkManager\Component\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Component\User\Model\Command\ConfirmEmailAddressChange;
 use ParkManager\Component\User\Model\UserCollection;
@@ -22,7 +21,7 @@ use ParkManager\Component\User\Model\UserCollection;
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class ConfirmEmailAddressChangeHandler implements CommandHandler
+final class ConfirmEmailAddressChangeHandler
 {
     private $userCollection;
 

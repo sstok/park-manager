@@ -14,8 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Model\Account\Event;
 
-use ParkManager\Component\Model\DomainEvent;
-use ParkManager\Module\Webhosting\Model\Account\HasWebhostingAccountId;
+use ParkManager\Component\Model\Event\DomainEvent;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 
 /**
@@ -23,14 +22,15 @@ use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
  */
 final class WebhostingAccountWasMarkedForRemoval extends DomainEvent
 {
-    use HasWebhostingAccountId;
+    private $id;
 
-    public static function withData(WebhostingAccountId $id): self
+    public function __construct(WebhostingAccountId $id)
     {
-        /** @var self $event */
-        $event = self::occur($id->toString());
-        $event->id = $id;
+        $this->id = $id;
+    }
 
-        return $event;
+    public function id(): WebhostingAccountId
+    {
+        return $this->id;
     }
 }

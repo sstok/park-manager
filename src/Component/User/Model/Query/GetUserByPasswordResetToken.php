@@ -15,32 +15,21 @@ declare(strict_types=1);
 namespace ParkManager\Component\User\Model\Query;
 
 use ParkManager\Component\Security\Token\SplitToken;
-use Prooph\Common\Messaging\PayloadTrait;
-use Prooph\Common\Messaging\Query;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class GetUserByPasswordResetToken extends Query
+final class GetUserByPasswordResetToken
 {
-    use PayloadTrait;
-
     private $token;
 
     public function __construct(SplitToken $splitToken)
     {
         $this->token = $splitToken;
-
-        $this->init();
-        $this->setPayload(['token' => $splitToken->token()]);
     }
 
     public function token(): SplitToken
     {
-        if (null === $this->token) {
-            $this->token = SplitToken::fromString($this->payload['token']);
-        }
-
         return $this->token;
     }
 }

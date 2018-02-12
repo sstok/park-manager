@@ -14,8 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Model\Account\Event;
 
-use ParkManager\Component\Model\DomainEvent;
-use ParkManager\Module\Webhosting\Model\Account\HasWebhostingAccountId;
+use ParkManager\Component\Model\Event\DomainEvent;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountOwner;
 
@@ -24,47 +23,29 @@ use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountOwner;
  */
 final class WebhostingAccountOwnerWasSwitched extends DomainEvent
 {
-    use HasWebhostingAccountId;
-
-    /**
-     * @var WebhostingAccountOwner|null
-     */
+    private $id;
     private $oldOwner;
-
-    /**
-     * @var WebhostingAccountOwner|null
-     */
     private $newOwner;
 
-    public static function withData(WebhostingAccountId $id, WebhostingAccountOwner $oldOwner, WebhostingAccountOwner $newOwner): self
+    public function __construct(WebhostingAccountId $id, WebhostingAccountOwner $oldOwner, WebhostingAccountOwner $newOwner)
     {
-        /** @var self $event */
-        $event = self::occur($id->toString(), [
-            'old_owner' => $oldOwner->toString(),
-            'new_owner' => $newOwner->toString(),
-        ]);
-        $event->newOwner = $newOwner;
-        $event->oldOwner = $oldOwner;
-        $event->id = $id;
+        $this->newOwner = $newOwner;
+        $this->oldOwner = $oldOwner;
+        $this->id = $id;
+    }
 
-        return $event;
+    public function id(): WebhostingAccountId
+    {
+        return $this->id;
     }
 
     public function oldOwner(): WebhostingAccountOwner
     {
-        if (null === $this->oldOwner) {
-            $this->oldOwner = WebhostingAccountOwner::fromString($this->payload['old_owner']);
-        }
-
         return $this->oldOwner;
     }
 
     public function newOwner(): WebhostingAccountOwner
     {
-        if (null === $this->newOwner) {
-            $this->newOwner = WebhostingAccountOwner::fromString($this->payload['new_owner']);
-        }
-
         return $this->newOwner;
     }
 }

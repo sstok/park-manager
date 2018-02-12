@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Tests\Model\Query;
 
-use ParkManager\Component\Model\Test\DomainMessageAssertion;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Model\Query\GetUserByPasswordResetToken;
 use PHPUnit\Framework\TestCase;
@@ -32,7 +31,5 @@ final class GetUserByPasswordResetTokenTest extends TestCase
         );
 
         self::assertEquals($token, $message->token());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($message);
     }
 }

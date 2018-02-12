@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Tests\Model\Package;
 
 use ParkManager\Component\Model\Test\EntityHydrator;
-use ParkManager\Component\Model\Test\EventsRecordingAggregateRootAssertionTrait;
+use ParkManager\Component\Model\Test\EventsRecordingEntityAssertionTrait;
 use ParkManager\Module\Webhosting\Model\Package\Capabilities;
 use ParkManager\Module\Webhosting\Model\Package\Event\WebhostingPackageCapabilitiesWasChanged;
 use ParkManager\Module\Webhosting\Model\Package\Event\WebhostingPackageWasCreated;
@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class WebhostingPackageTest extends TestCase
 {
-    use EventsRecordingAggregateRootAssertionTrait;
+    use EventsRecordingEntityAssertionTrait;
 
     private const ID1 = '654665ea-9869-11e7-9563-acbc32b58315';
 
@@ -43,7 +43,7 @@ final class WebhostingPackageTest extends TestCase
         );
 
         self::assertEquals($capabilities, $package->capabilities());
-        self::assertDomainEvents($package, $id->toString(), [WebhostingPackageWasCreated::withData($id, $capabilities)]);
+        self::assertDomainEvents($package, [new WebhostingPackageWasCreated($id, $capabilities)]);
         self::assertEquals([], $package->metadata());
     }
 
@@ -74,8 +74,7 @@ final class WebhostingPackageTest extends TestCase
         self::assertEquals($capabilities, $package->capabilities());
         self::assertDomainEvents(
             $package,
-            $id->toString(),
-            [WebhostingPackageCapabilitiesWasChanged::withData($id, $capabilities)]
+            [new WebhostingPackageCapabilitiesWasChanged($id, $capabilities)]
         );
         self::assertNoDomainEvents($package2);
     }

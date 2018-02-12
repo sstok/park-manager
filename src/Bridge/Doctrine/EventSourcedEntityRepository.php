@@ -16,9 +16,8 @@ namespace ParkManager\Bridge\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use ParkManager\Component\Model\EventsRecordingAggregateRoot;
-use ParkManager\Component\Model\Util\EventsExtractor;
-use Prooph\ServiceBus\EventBus;
+use ParkManager\Component\Model\Event\EventEmitter;
+use ParkManager\Component\Model\EventsRecordingEntity;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
@@ -27,7 +26,7 @@ abstract class EventSourcedEntityRepository extends EntityRepository
 {
     protected $eventBus;
 
-    public function __construct(EntityManagerInterface $entityManager, EventBus $eventBus, string $className)
+    public function __construct(EntityManagerInterface $entityManager, EventEmitter $eventBus, string $className)
     {
         $this->_em = $entityManager;
         $this->_class = $entityManager->getClassMetadata($className);
@@ -54,10 +53,10 @@ abstract class EventSourcedEntityRepository extends EntityRepository
         });
     }
 
-    protected function doDispatchEvents(EventsRecordingAggregateRoot $aggregateRoot): void
+    protected function doDispatchEvents(EventsRecordingEntity $aggregateRoot): void
     {
-        foreach (EventsExtractor::newInstance()->extractDomainEvents($aggregateRoot) as $event) {
-            $this->eventBus->dispatch($event);
+        foreach ($aggregateRoot->releaseEvents() as $event) {
+            $this->eventBus->emit($event);
         }
     }
 }

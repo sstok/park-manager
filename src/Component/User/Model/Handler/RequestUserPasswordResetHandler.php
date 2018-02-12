@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model\Handler;
 
-use ParkManager\Component\Model\CommandHandler;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Canonicalizer\Canonicalizer;
 use ParkManager\Component\User\Model\Command\RequestUserPasswordReset;
@@ -24,7 +23,7 @@ use ParkManager\Component\User\Model\UserCollection;
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class RequestUserPasswordResetHandler implements CommandHandler
+final class RequestUserPasswordResetHandler
 {
     private $userCollection;
     private $emailCanonicalizer;

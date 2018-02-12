@@ -14,28 +14,28 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Model\Test;
 
-use Prooph\ServiceBus\EventBus;
+use ParkManager\Component\Model\Event\EventEmitter;
 use Prophecy\Argument;
 
 trait EventSourcedRepositoryTestHelper
 {
-    protected function createEventsExpectingEventBus(int $expectedEventsCount = -1): EventBus
+    protected function createEventsExpectingEventBus(int $expectedEventsCount = -1): EventEmitter
     {
-        $eventBusProphecy = $this->prophesize(EventBus::class);
+        $eventBusProphecy = $this->prophesize(EventEmitter::class);
 
         if (-1 === $expectedEventsCount) {
-            $eventBusProphecy->dispatch(Argument::any())->shouldBeCalled();
+            $eventBusProphecy->emit(Argument::any())->shouldBeCalled();
         } else {
-            $eventBusProphecy->dispatch(Argument::any())->shouldBeCalledTimes($expectedEventsCount);
+            $eventBusProphecy->emit(Argument::any())->shouldBeCalledTimes($expectedEventsCount);
         }
 
         return $eventBusProphecy->reveal();
     }
 
-    protected function createNoExpectedEventsDispatchedEventBus(): EventBus
+    protected function createNoExpectedEventsDispatchedEventBus(): EventEmitter
     {
-        $eventBusProphecy = $this->prophesize(EventBus::class);
-        $eventBusProphecy->dispatch(Argument::any())->shouldNotBeCalled();
+        $eventBusProphecy = $this->prophesize(EventEmitter::class);
+        $eventBusProphecy->emit(Argument::any())->shouldNotBeCalled();
 
         return $eventBusProphecy->reveal();
     }

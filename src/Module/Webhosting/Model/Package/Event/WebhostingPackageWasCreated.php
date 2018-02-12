@@ -14,9 +14,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Model\Package\Event;
 
-use ParkManager\Component\Model\DomainEvent;
+use ParkManager\Component\Model\Event\DomainEvent;
 use ParkManager\Module\Webhosting\Model\Package\Capabilities;
-use ParkManager\Module\Webhosting\Model\Package\HasWebhostingPackageId;
 use ParkManager\Module\Webhosting\Model\Package\WebhostingPackageId;
 
 /**
@@ -24,29 +23,22 @@ use ParkManager\Module\Webhosting\Model\Package\WebhostingPackageId;
  */
 final class WebhostingPackageWasCreated extends DomainEvent
 {
-    use HasWebhostingPackageId;
-
-    /**
-     * @var Capabilities|null
-     */
+    private $packageId;
     private $capabilities;
 
-    public static function withData(WebhostingPackageId $id, Capabilities $capabilities): self
+    public function __construct(WebhostingPackageId $id, Capabilities $capabilities)
     {
-        /** @var self $event */
-        $event = self::occur($id->toString(), ['capabilities' => $capabilities->toArray()]);
-        $event->capabilities = $capabilities;
-        $event->id = $id;
+        $this->packageId = $id;
+        $this->capabilities = $capabilities;
+    }
 
-        return $event;
+    public function id(): WebhostingPackageId
+    {
+        return $this->packageId;
     }
 
     public function capabilities(): Capabilities
     {
-        if (null === $this->capabilities) {
-            $this->capabilities = Capabilities::reconstituteFromArray($this->payload['capabilities']);
-        }
-
         return $this->capabilities;
     }
 }

@@ -16,9 +16,9 @@ namespace ParkManager\Bundle\UserBundle\Form\Handler;
 
 use Hostnet\Component\FormHandler\HandlerConfigInterface;
 use Hostnet\Component\FormHandler\HandlerTypeInterface;
+use League\Tactician\CommandBus;
 use ParkManager\Bundle\UserBundle\Form\Type\RequestPasswordResetType;
 use ParkManager\Component\User\Model\Command\RequestUserPasswordReset;
-use Prooph\ServiceBus\CommandBus;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -53,7 +53,7 @@ final class RequestPasswordResetFormHandler implements HandlerTypeInterface
     {
         $config->setType(RequestPasswordResetType::class);
         $config->onSuccess(function (array $data) {
-            $this->commandBus->dispatch(new RequestUserPasswordReset($data['email']));
+            $this->commandBus->handle(new RequestUserPasswordReset($data['email']));
             $this->flashBag->add('info', $this->translator->trans('flash.password_reset_send'));
 
             return new RedirectResponse($this->urlGenerator->generate($this->loginRoute));

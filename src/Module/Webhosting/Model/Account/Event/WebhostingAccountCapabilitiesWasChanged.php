@@ -14,8 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Model\Account\Event;
 
-use ParkManager\Component\Model\DomainEvent;
-use ParkManager\Module\Webhosting\Model\Account\HasWebhostingAccountId;
+use ParkManager\Component\Model\Event\DomainEvent;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Model\Package\Capabilities;
 
@@ -24,29 +23,22 @@ use ParkManager\Module\Webhosting\Model\Package\Capabilities;
  */
 final class WebhostingAccountCapabilitiesWasChanged extends DomainEvent
 {
-    use HasWebhostingAccountId;
-
-    /**
-     * @var Capabilities|null
-     */
+    private $id;
     private $capabilities;
 
-    public static function withData(WebhostingAccountId $id, Capabilities $capabilities): self
+    public function __construct(WebhostingAccountId $id, Capabilities $capabilities)
     {
-        /** @var self $event */
-        $event = self::occur($id->toString(), ['capabilities' => $capabilities->toArray()]);
-        $event->capabilities = $capabilities;
-        $event->id = $id;
+        $this->id = $id;
+        $this->capabilities = $capabilities;
+    }
 
-        return $event;
+    public function id(): WebhostingAccountId
+    {
+        return $this->id;
     }
 
     public function capabilities(): Capabilities
     {
-        if (null === $this->capabilities) {
-            $this->capabilities = Capabilities::reconstituteFromArray($this->payload['capabilities']);
-        }
-
         return $this->capabilities;
     }
 }

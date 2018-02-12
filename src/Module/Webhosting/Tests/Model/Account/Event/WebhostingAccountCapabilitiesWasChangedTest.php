@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Model\Account\Event;
 
-use ParkManager\Component\Model\Test\DomainMessageAssertion;
 use ParkManager\Module\Webhosting\Model\Account\Event\WebhostingAccountCapabilitiesWasChanged;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Model\Package\Capabilities;
@@ -32,14 +31,12 @@ final class WebhostingAccountCapabilitiesWasChangedTest extends TestCase
     {
         $capabilities = new Capabilities();
 
-        $event = WebhostingAccountCapabilitiesWasChanged::withData(
+        $event = new WebhostingAccountCapabilitiesWasChanged(
             $id = WebhostingAccountId::fromString(self::ACCOUNT_ID),
             $capabilities
         );
 
         self::assertTrue($id->equals($event->id()));
         self::assertEquals($capabilities, $event->capabilities());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($event);
     }
 }

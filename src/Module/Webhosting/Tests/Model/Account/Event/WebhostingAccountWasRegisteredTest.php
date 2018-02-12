@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Model\Account\Event;
 
-use ParkManager\Component\Model\Test\DomainMessageAssertion;
 use ParkManager\Module\Webhosting\Model\Account\Event\WebhostingAccountWasRegistered;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountOwner;
@@ -31,14 +30,12 @@ final class WebhostingAccountWasRegisteredTest extends TestCase
     /** @test */
     public function its_constructable()
     {
-        $event = WebhostingAccountWasRegistered::withData(
+        $event = new WebhostingAccountWasRegistered(
             $id = WebhostingAccountId::fromString(self::ACCOUNT_ID),
             $owner = WebhostingAccountOwner::fromString(self::OWNER_ID)
         );
 
         self::assertTrue($id->equals($event->id()));
         self::assertEquals($owner, $event->owner());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($event);
     }
 }

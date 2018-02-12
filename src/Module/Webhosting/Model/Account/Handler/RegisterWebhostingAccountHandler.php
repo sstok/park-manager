@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Model\Account\Handler;
 
-use ParkManager\Component\Model\CommandHandler;
 use ParkManager\Module\Webhosting\Model\Account\Command\RegisterWebhostingAccount;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountRepository;
@@ -26,7 +25,7 @@ use ParkManager\Module\Webhosting\Model\Package\WebhostingPackageRepository;
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class RegisterWebhostingAccountHandler implements CommandHandler
+final class RegisterWebhostingAccountHandler
 {
     private $accountRepository;
     private $packageRepository;

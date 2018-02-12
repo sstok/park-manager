@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace ParkManager\Component\Core\Tests\Model\Event;
 
 use ParkManager\Component\Core\Model\Event\AdministratorWasRegistered;
-use ParkManager\Component\Model\Test\DomainMessageAssertion;
 use ParkManager\Component\User\Model\UserId;
 use PHPUnit\Framework\TestCase;
 
@@ -29,14 +28,12 @@ final class AdministratorWasRegisteredTest extends TestCase
     /** @test */
     public function its_constructable()
     {
-        $command = AdministratorWasRegistered::withData($id = UserId::fromString(self::USER_ID), 'Jane@example.com', 'First', 'Named');
+        $command = new AdministratorWasRegistered($id = UserId::fromString(self::USER_ID), 'Jane@example.com', 'First', 'Named');
 
         self::assertEquals(UserId::fromString(self::USER_ID), $command->id());
         self::assertTrue($id->equals($command->id()));
         self::assertEquals('Jane@example.com', $command->email());
         self::assertEquals('Named', $command->lastName());
         self::assertEquals('First', $command->firstName());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($command);
     }
 }

@@ -19,7 +19,7 @@
         "hostnet/form-handler-bundle": "^1.4.1",
         "park-manager/doctrine-bridge": "^0.1",
         "park-manager/user": "^0.1",
-        "prooph/service-bus-symfony-bundle": "^1.0",
+        "park-manager/service-bus-bundle": "^0.2",
         "sylius/mailer": "^1.0",
         "sylius/mailer-bundle": "^1.0",
         "symfony/dependency-injection": "^3.4 || ^4.0",

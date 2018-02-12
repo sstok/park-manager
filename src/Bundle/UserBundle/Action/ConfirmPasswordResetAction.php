@@ -16,10 +16,9 @@ namespace ParkManager\Bundle\UserBundle\Action;
 
 use Hostnet\Component\FormHandler\HandlerFactoryInterface;
 use ParkManager\Bundle\UserBundle\Form\Handler\ConfirmPasswordResetFormHandler;
-use ParkManager\Component\Model\QueryResponseNegotiator;
 use ParkManager\Component\Security\Token\SplitToken;
+use ParkManager\Component\ServiceBus\QueryBus;
 use ParkManager\Component\User\Model\Query\GetUserByPasswordResetToken;
-use Prooph\ServiceBus\QueryBus;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,7 +50,7 @@ final class ConfirmPasswordResetAction
             return $this->newErrorResponse('password_reset.error.invalid_token');
         }
 
-        $user = QueryResponseNegotiator::handle($this->queryBus, new GetUserByPasswordResetToken($splitToken));
+        $user = $this->queryBus->handle(new GetUserByPasswordResetToken($splitToken));
         if (null === $user) {
             return $this->newErrorResponse('password_reset.error.no_token');
         }

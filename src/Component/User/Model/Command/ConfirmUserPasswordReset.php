@@ -15,8 +15,6 @@ declare(strict_types=1);
 namespace ParkManager\Component\User\Model\Command;
 
 use ParkManager\Component\Security\Token\SplitToken;
-use Prooph\Common\Messaging\Command;
-use Prooph\Common\Messaging\PayloadTrait;
 
 /**
  * ConfirmUserPasswordReset (with encoded-password).
@@ -25,31 +23,24 @@ use Prooph\Common\Messaging\PayloadTrait;
  *
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class ConfirmUserPasswordReset extends Command
+final class ConfirmUserPasswordReset
 {
-    use PayloadTrait;
-
     private $token;
+    private $password;
 
     public function __construct(SplitToken $token, string $password)
     {
         $this->token = $token;
-
-        $this->init();
-        $this->setPayload(['token' => $token->token(), 'password' => $password]);
+        $this->password = $password;
     }
 
     public function token(): SplitToken
     {
-        if (null === $this->token) {
-            $this->token = SplitToken::fromString($this->payload['token']);
-        }
-
         return $this->token;
     }
 
     public function password(): string
     {
-        return $this->payload['password'];
+        return $this->password;
     }
 }

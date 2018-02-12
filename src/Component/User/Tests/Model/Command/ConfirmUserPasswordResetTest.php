@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Tests\Model\Command;
 
-use ParkManager\Component\Model\Test\DomainMessageAssertion;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Model\Command\ConfirmUserPasswordReset;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +35,5 @@ final class ConfirmUserPasswordResetTest extends TestCase
 
         self::assertEquals($token, $command->token());
         self::assertEquals('my-password-I-forgot', $command->password());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($command);
     }
 }

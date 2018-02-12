@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace ParkManager\Component\Core\Tests\Model\Command;
 
 use ParkManager\Component\Core\Model\Command\RegisterAdministrator;
-use ParkManager\Component\Model\Test\DomainMessageAssertion;
 use ParkManager\Component\User\Model\UserId;
 use PHPUnit\Framework\TestCase;
 
@@ -36,8 +35,6 @@ final class RegisterAdministratorTest extends TestCase
         self::assertEquals('First', $command->firstName());
         self::assertEquals('Last', $command->lastName());
         self::assertEquals('empty', $command->password());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($command);
     }
 
     /** @test */
@@ -50,7 +47,5 @@ final class RegisterAdministratorTest extends TestCase
         self::assertEquals('First', $command->firstName());
         self::assertEquals('Last', $command->lastName());
         self::assertNull($command->password());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($command);
     }
 }

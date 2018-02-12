@@ -14,14 +14,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Model\Package;
 
-use ParkManager\Component\Model\EventsRecordingAggregateRoot;
+use ParkManager\Component\Model\EventsRecordingEntity;
 use ParkManager\Module\Webhosting\Model\Package\Event\WebhostingPackageCapabilitiesWasChanged;
 use ParkManager\Module\Webhosting\Model\Package\Event\WebhostingPackageWasCreated;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-class WebhostingPackage extends EventsRecordingAggregateRoot
+class WebhostingPackage extends EventsRecordingEntity
 {
     /**
      * @var Capabilities
@@ -60,7 +60,7 @@ class WebhostingPackage extends EventsRecordingAggregateRoot
     public static function create(WebhostingPackageId $id, Capabilities $capabilities)
     {
         $instance = new static($id, $capabilities);
-        $instance->recordThat(WebhostingPackageWasCreated::withData($id, $capabilities));
+        $instance->recordThat(new WebhostingPackageWasCreated($id, $capabilities));
 
         return $instance;
     }
@@ -86,7 +86,7 @@ class WebhostingPackage extends EventsRecordingAggregateRoot
         }
 
         $this->capabilities = $capabilities;
-        $this->recordThat(WebhostingPackageCapabilitiesWasChanged::withData($this->id, $capabilities));
+        $this->recordThat(new WebhostingPackageCapabilitiesWasChanged($this->id, $capabilities));
     }
 
     /**

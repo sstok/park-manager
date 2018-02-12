@@ -14,8 +14,26 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Model\Tests\Mock\Event;
 
-use ParkManager\Component\Model\DomainEvent;
+use ParkManager\Component\Model\Event\DomainEvent;
 
 final class UserWasRegistered extends DomainEvent
 {
+    private $id;
+    private $name;
+
+    public function __construct(int $id, string $name)
+    {
+        $this->id = $id;
+        $this->name = $name;
+    }
+
+    public function id(): int
+    {
+        return $this->id;
+    }
+
+    public function name(): string
+    {
+        return $this->name;
+    }
 }

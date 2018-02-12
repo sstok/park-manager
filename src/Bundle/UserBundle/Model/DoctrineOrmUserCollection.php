@@ -16,33 +16,25 @@ namespace ParkManager\Bundle\UserBundle\Model;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use ParkManager\Component\Model\Util\EventsExtractor;
+use ParkManager\Component\Model\Event\EventEmitter;
 use ParkManager\Component\User\Exception\UserNotFound;
 use ParkManager\Component\User\Model\User;
 use ParkManager\Component\User\Model\UserCollection;
 use ParkManager\Component\User\Model\UserId;
-use Prooph\ServiceBus\EventBus;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 class DoctrineOrmUserCollection extends EntityRepository implements UserCollection
 {
-    protected $eventBus;
+    protected $eventEmitter;
 
-    /**
-     * Constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param EventBus               $eventBus
-     * @param string                 $className
-     */
-    public function __construct(EntityManagerInterface $entityManager, EventBus $eventBus, string $className)
+    public function __construct(EntityManagerInterface $entityManager, EventEmitter $eventEmitter, string $className)
     {
         $this->_em = $entityManager;
         $this->_class = $entityManager->getClassMetadata($className);
         $this->_entityName = $className;
-        $this->eventBus = $eventBus;
+        $this->eventEmitter = $eventEmitter;
     }
 
     public function get(UserId $id): User
@@ -61,8 +53,8 @@ class DoctrineOrmUserCollection extends EntityRepository implements UserCollecti
             $this->_em->persist($user);
         });
 
-        foreach (EventsExtractor::newInstance()->extractDomainEvents($user) as $event) {
-            $this->eventBus->dispatch($event);
+        foreach ($user->releaseEvents() as $event) {
+            $this->eventEmitter->emit($event);
         }
     }
 

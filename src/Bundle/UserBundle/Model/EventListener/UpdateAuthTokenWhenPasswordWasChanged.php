@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\UserBundle\Model\EventListener;
 
+use ParkManager\Component\Model\Event\EventSubscriber;
 use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
 use ParkManager\Component\User\Model\UserId;
 use ParkManager\Component\User\Security\SecurityUser;
@@ -23,7 +24,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class UpdateAuthTokenWhenPasswordWasChanged
+final class UpdateAuthTokenWhenPasswordWasChanged implements EventSubscriber
 {
     private $userProvider;
     private $tokenStorage;
@@ -34,7 +35,7 @@ final class UpdateAuthTokenWhenPasswordWasChanged
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function onEvent(UserPasswordWasChanged $event): void
+    public function onUserPasswordWasChanged(UserPasswordWasChanged $event): void
     {
         $token = $this->tokenStorage->getToken();
 
@@ -57,5 +58,10 @@ final class UpdateAuthTokenWhenPasswordWasChanged
         $token->setAuthenticated(true); // User was changed, so re-mark authenticated.
 
         $this->tokenStorage->setToken($token);
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [UserPasswordWasChanged::class => 'onUserPasswordWasChanged'];
     }
 }

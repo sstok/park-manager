@@ -14,17 +14,18 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Core\Model\Command;
 
-use ParkManager\Component\User\Model\Command\UserIdTrait;
-use Prooph\Common\Messaging\Command;
-use Prooph\Common\Messaging\PayloadTrait;
+use ParkManager\Component\User\Model\UserId;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class RegisterAdministrator extends Command
+final class RegisterAdministrator
 {
-    use PayloadTrait;
-    use UserIdTrait;
+    private $id;
+    private $email;
+    private $firstName;
+    private $lastName;
+    private $password;
 
     /**
      * Constructor.
@@ -33,38 +34,39 @@ final class RegisterAdministrator extends Command
      * @param string      $email
      * @param string      $firstName
      * @param string      $lastName
-     * @param null|string $password  Null (no password) or
-     *                               an encoded password string (not plain)
+     * @param null|string $password  Null (no password) or an encoded password string (not plain)
      */
     public function __construct(string $id, string $email, string $firstName, string $lastName, ?string $password = null)
     {
-        $this->init();
-        $this->setPayload([
-            'id' => $id,
-            'email' => $email,
-            'first_name' => $firstName,
-            'last_name' => $lastName,
-            'password' => $password,
-        ]);
+        $this->id = UserId::fromString($id);
+        $this->email = $email;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->password = $password;
+    }
+
+    public function id(): UserId
+    {
+        return $this->id;
     }
 
     public function email(): string
     {
-        return $this->payload['email'];
+        return $this->email;
     }
 
     public function firstName(): string
     {
-        return $this->payload['first_name'];
+        return $this->firstName;
     }
 
     public function lastName(): string
     {
-        return $this->payload['last_name'];
+        return $this->lastName;
     }
 
     public function password(): ?string
     {
-        return $this->payload['password'];
+        return $this->password;
     }
 }

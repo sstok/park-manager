@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Tests\Model\Command;
 
-use ParkManager\Component\Model\Test\DomainMessageAssertion;
 use ParkManager\Component\User\Model\Command\ChangeUserPassword;
 use ParkManager\Component\User\Model\UserId;
 use PHPUnit\Framework\TestCase;
@@ -33,8 +32,6 @@ final class ChangeUserPasswordTest extends TestCase
 
         self::assertEquals(UserId::fromString(self::USER_ID), $command->id());
         self::assertEquals('empty', $command->password());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($command);
     }
 
     /** @test */
@@ -44,7 +41,5 @@ final class ChangeUserPasswordTest extends TestCase
 
         self::assertEquals(UserId::fromString(self::USER_ID), $command->id());
         self::assertNull($command->password());
-
-        DomainMessageAssertion::assertGettersEqualAfterEncoding($command);
     }
 }
