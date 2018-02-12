@@ -44,10 +44,10 @@ final class HandlersConfiguratorTest extends TestCase
         $configurator = new HandlersConfigurator($busConfigurator, $containerConfigurator->defaults(), 'park_manager.command_bus.users', __DIR__.'/../../Fixtures/Handler');
         $configurator
             ->register(RegisterUserHandler::class)
-            ->register(CancelUserHandler::class, 'CancelUser', ['foo']);
+            ->registerFor(CancelUserHandler::class, 'CancelUser', ['foo']);
 
         $expectedDef = new Definition(RegisterUserHandler::class);
-        $expectedDef->addTag('park_manager.command_bus.users.handler', ['message' => null]);
+        $expectedDef->addTag('park_manager.command_bus.users.handler');
         $expectedDef->setPublic(false);
 
         $expectedDef2 = new Definition(CancelUserHandler::class);

@@ -44,11 +44,29 @@ final class HandlersConfigurator
      * Register a single handler service.
      *
      * @param string $handlerClass
+     * @param array  $arguments
+     *
+     * @return $this
+     */
+    public function register(string $handlerClass, array $arguments = []): self
+    {
+        $this->di->set($this->serviceId.'.handler.'.$handlerClass, $handlerClass)
+            ->tag($this->serviceId.'.handler')
+            ->args($arguments)
+            ->private();
+
+        return $this;
+    }
+
+    /**
+     * Register a single handler service.
+     *
+     * @param string $handlerClass
      * @param string $messageName  (automatically detected if omitted)
      *
      * @return $this
      */
-    public function register(string $handlerClass, string $messageName = null, array $arguments = []): self
+    public function registerFor(string $handlerClass, string $messageName, array $arguments = []): self
     {
         $this->di->set($this->serviceId.'.handler.'.$handlerClass, $handlerClass)
             ->tag($this->serviceId.'.handler', ['message' => $messageName])
