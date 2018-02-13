@@ -16,8 +16,8 @@
     ],
     "require": {
         "php": "^7.2",
-        "park-manager/model": "^0.1",
-        "park-manager/user": "^0.1"
+        "park-manager/model": "^0.2",
+        "park-manager/user": "^0.2"
     },
     "config": {
         "preferred-install": {
@@ -38,7 +38,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.1-dev"
+            "dev-master": "0.2-dev"
         }
     }
 }

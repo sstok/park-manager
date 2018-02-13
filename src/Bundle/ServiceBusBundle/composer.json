@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "park-manager/service-bus-bridge": "^0.1",
+        "park-manager/service-bus-bridge": "^0.2",
         "symfony/framework-bundle": "^4.0"
     },
     "config": {

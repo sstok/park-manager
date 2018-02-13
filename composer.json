@@ -112,7 +112,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.1-dev"
+            "dev-master": "0.2-dev"
         },
         "symfony": {
             "id": "01BF6RBYGY5V4S3FDMBNKXVVNS",

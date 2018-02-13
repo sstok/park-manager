@@ -17,8 +17,8 @@
     "require": {
         "php": "^7.2",
         "hostnet/form-handler-bundle": "^1.4.1",
-        "park-manager/doctrine-bridge": "^0.1",
-        "park-manager/user": "^0.1",
+        "park-manager/doctrine-bridge": "^0.2",
+        "park-manager/user": "^0.2",
         "park-manager/service-bus-bundle": "^0.2",
         "sylius/mailer": "^1.0",
         "sylius/mailer-bundle": "^1.0",
@@ -50,7 +50,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.1-dev"
+            "dev-master": "0.2-dev"
         }
     }
 }
