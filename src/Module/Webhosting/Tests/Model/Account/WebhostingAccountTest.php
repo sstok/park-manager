@@ -167,11 +167,25 @@ final class WebhostingAccountTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_changing_custom_specification()
+    public function it_allows_assigning_custom_specification()
     {
         $id = WebhostingAccountId::create();
         $package = $this->createWebhostingPackage(new Capabilities());
         $account = WebhostingAccount::register($id, WebhostingAccountOwner::fromString(self::OWNER_ID1), $package);
+        self::resetDomainEvents($account);
+
+        $account->assignCustomCapabilities($newCapabilities = new Capabilities(new MonthlyTrafficQuota(50)));
+
+        self::assertNull($account->package());
+        self::assertSame($newCapabilities, $account->capabilities());
+        self::assertDomainEvents($account, [new WebhostingAccountCapabilitiesWasChanged($id, $newCapabilities)]);
+    }
+
+    /** @test */
+    public function it_allows_changing_custom_specification()
+    {
+        $id = WebhostingAccountId::create();
+        $account = WebhostingAccount::registerWithCustomCapabilities($id, WebhostingAccountOwner::fromString(self::OWNER_ID1), new Capabilities());
         self::resetDomainEvents($account);
 
         $account->assignCustomCapabilities($newCapabilities = new Capabilities(new MonthlyTrafficQuota(50)));
