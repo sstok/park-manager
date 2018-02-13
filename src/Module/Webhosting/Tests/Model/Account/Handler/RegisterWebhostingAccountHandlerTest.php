@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Model\Account\Handler;
 
+use ParkManager\Component\Model\RootEntityOwner;
 use ParkManager\Module\Webhosting\Model\Account\Command\RegisterWebhostingAccount;
 use ParkManager\Module\Webhosting\Model\Account\Handler\RegisterWebhostingAccountHandler;
 use ParkManager\Module\Webhosting\Model\Account\{
     WebhostingAccount,
     WebhostingAccountId,
-    WebhostingAccountOwner,
     WebhostingAccountRepository
 };
 use ParkManager\Module\Webhosting\Model\DomainName;
@@ -121,7 +121,7 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
             Argument::that(
                 function (WebhostingAccount $account) use ($capabilities, $id, $owner, $package) {
                     self::assertEquals(WebhostingAccountId::fromString($id), $account->id());
-                    self::assertEquals(WebhostingAccountOwner::fromString($owner), $account->owner());
+                    self::assertEquals(RootEntityOwner::fromString($owner), $account->owner());
                     self::assertEquals($capabilities, $account->capabilities());
                     self::assertEquals($package, $account->package());
 

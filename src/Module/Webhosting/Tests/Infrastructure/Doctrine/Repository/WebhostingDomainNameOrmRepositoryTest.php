@@ -16,11 +16,11 @@ namespace ParkManager\Module\Webhosting\Tests\Infrastructure\Doctrine\Repository
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Bridge\Doctrine\Test\EntityRepositoryTestCase;
+use ParkManager\Component\Model\RootEntityOwner;
 use ParkManager\Module\Webhosting\Infrastructure\Doctrine\Repository\WebhostingDomainNameOrmRepository;
 use ParkManager\Module\Webhosting\Model\Account\Exception\WebhostingAccountNotFound;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
-use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountOwner;
 use ParkManager\Module\Webhosting\Model\DomainName;
 use ParkManager\Module\Webhosting\Model\DomainName\Exception\CannotRemovePrimaryDomainName;
 use ParkManager\Module\Webhosting\Model\DomainName\Exception\WebhostingDomainNameNotFound;
@@ -76,13 +76,13 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
 
         $this->account1 = WebhostingAccount::registerWithCustomCapabilities(
             WebhostingAccountId::fromString(self::ACCOUNT_ID1),
-            WebhostingAccountOwner::fromString(self::OWNER_ID1),
+            RootEntityOwner::fromString(self::OWNER_ID1),
             new Capabilities()
         );
 
         $this->account2 = WebhostingAccount::registerWithCustomCapabilities(
             WebhostingAccountId::fromString(self::ACCOUNT_ID2),
-            WebhostingAccountOwner::fromString(self::OWNER_ID1),
+            RootEntityOwner::fromString(self::OWNER_ID1),
             new Capabilities()
         );
 

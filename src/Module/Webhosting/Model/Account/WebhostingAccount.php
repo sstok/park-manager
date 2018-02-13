@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Model\Account;
 
 use ParkManager\Component\Model\EventsRecordingEntity;
+use ParkManager\Component\Model\RootEntityOwner;
 use ParkManager\Module\Webhosting\Model\Package\Capabilities;
 use ParkManager\Module\Webhosting\Model\Package\WebhostingPackage;
 
@@ -41,7 +42,7 @@ class WebhostingAccount extends EventsRecordingEntity
     protected $id;
 
     /**
-     * @var WebhostingAccountOwner|null
+     * @var RootEntityOwner|null
      */
     protected $owner;
 
@@ -66,7 +67,7 @@ class WebhostingAccount extends EventsRecordingEntity
 
     private $markedForRemoval = false;
 
-    protected function __construct(WebhostingAccountId $id, WebhostingAccountOwner $owner)
+    protected function __construct(WebhostingAccountId $id, RootEntityOwner $owner)
     {
         $this->id = $id;
         $this->idString = $id->toString();
@@ -76,7 +77,7 @@ class WebhostingAccount extends EventsRecordingEntity
         $this->owner = $owner;
     }
 
-    public static function register(WebhostingAccountId $id, WebhostingAccountOwner $owner, WebhostingPackage $package): self
+    public static function register(WebhostingAccountId $id, RootEntityOwner $owner, WebhostingPackage $package): self
     {
         $account = new static($id, $owner);
         // Store the capabilities as part of the webhosting account
@@ -88,7 +89,7 @@ class WebhostingAccount extends EventsRecordingEntity
         return $account;
     }
 
-    public static function registerWithCustomCapabilities(WebhostingAccountId $id, WebhostingAccountOwner $owner, Capabilities $capabilities): self
+    public static function registerWithCustomCapabilities(WebhostingAccountId $id, RootEntityOwner $owner, Capabilities $capabilities): self
     {
         $account = new static($id, $owner);
         $account->capabilities = $capabilities;
@@ -106,10 +107,10 @@ class WebhostingAccount extends EventsRecordingEntity
         return $this->id;
     }
 
-    public function owner(): WebhostingAccountOwner
+    public function owner(): RootEntityOwner
     {
         if (null === $this->owner) {
-            $this->owner = WebhostingAccountOwner::fromString($this->ownerIdString);
+            $this->owner = RootEntityOwner::fromString($this->ownerIdString);
         }
 
         return $this->owner;
@@ -171,7 +172,7 @@ class WebhostingAccount extends EventsRecordingEntity
         $this->recordThat(new Event\WebhostingAccountCapabilitiesWasChanged($this->id, $capabilities));
     }
 
-    public function switchOwner(WebhostingAccountOwner $owner): void
+    public function switchOwner(RootEntityOwner $owner): void
     {
         if ($this->owner->equals($owner)) {
             return;
