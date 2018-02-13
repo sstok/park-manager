@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Model\Account;
 
+use ParkManager\Component\Model\RootEntityOwner;
 use ParkManager\Component\Model\Test\EntityHydrator;
 use ParkManager\Component\Model\Test\EventsRecordingEntityAssertionTrait;
 use ParkManager\Module\Webhosting\Model\Account\Event\{
@@ -25,8 +26,7 @@ use ParkManager\Module\Webhosting\Model\Account\Event\{
 };
 use ParkManager\Module\Webhosting\Model\Account\{
     WebhostingAccount,
-    WebhostingAccountId,
-    WebhostingAccountOwner
+    WebhostingAccountId
 };
 use ParkManager\Module\Webhosting\Model\Package\{
     Capabilities,
@@ -58,7 +58,7 @@ final class WebhostingAccountTest extends TestCase
         $capabilities = new Capabilities();
         $package = $this->createWebhostingPackage($capabilities);
 
-        $account = WebhostingAccount::register($id, $owner = WebhostingAccountOwner::fromString(self::OWNER_ID1), $package);
+        $account = WebhostingAccount::register($id, $owner = RootEntityOwner::fromString(self::OWNER_ID1), $package);
 
         self::assertEquals($id, $account->id());
         self::assertEquals($owner, $account->owner());
@@ -78,7 +78,7 @@ final class WebhostingAccountTest extends TestCase
         ;
 
         self::assertEquals(WebhostingAccountId::fromString(self::ACCOUNT_ID), $account->id());
-        self::assertEquals(WebhostingAccountOwner::fromString(self::OWNER_ID1), $account->owner());
+        self::assertEquals(RootEntityOwner::fromString(self::OWNER_ID1), $account->owner());
     }
 
     /** @test */
@@ -87,7 +87,7 @@ final class WebhostingAccountTest extends TestCase
         $id = WebhostingAccountId::create();
         $capabilities = new Capabilities();
 
-        $account = WebhostingAccount::registerWithCustomCapabilities($id, $owner = WebhostingAccountOwner::fromString(self::OWNER_ID1), $capabilities);
+        $account = WebhostingAccount::registerWithCustomCapabilities($id, $owner = RootEntityOwner::fromString(self::OWNER_ID1), $capabilities);
 
         self::assertEquals($id, $account->id());
         self::assertEquals($owner, $account->owner());
@@ -104,8 +104,8 @@ final class WebhostingAccountTest extends TestCase
         $capabilities2 = new Capabilities(new MonthlyTrafficQuota(50));
         $package1 = $this->createWebhostingPackage($capabilities1);
         $package2 = $this->createWebhostingPackage($capabilities2, self::PACKAGE_ID_2);
-        $account1 = WebhostingAccount::register(WebhostingAccountId::create(), WebhostingAccountOwner::fromString(self::OWNER_ID1), $package1);
-        $account2 = WebhostingAccount::register($id2, WebhostingAccountOwner::fromString(self::OWNER_ID1), $package1);
+        $account1 = WebhostingAccount::register(WebhostingAccountId::create(), RootEntityOwner::fromString(self::OWNER_ID1), $package1);
+        $account2 = WebhostingAccount::register($id2, RootEntityOwner::fromString(self::OWNER_ID1), $package1);
         self::resetDomainEvents($account1, $account2);
 
         $account1->assignPackage($package1);
@@ -128,8 +128,8 @@ final class WebhostingAccountTest extends TestCase
         $capabilities2 = new Capabilities(new MonthlyTrafficQuota(50));
         $package1 = $this->createWebhostingPackage($capabilities1);
         $package2 = $this->createWebhostingPackage($capabilities2, self::PACKAGE_ID_2);
-        $account1 = WebhostingAccount::register(WebhostingAccountId::create(), WebhostingAccountOwner::fromString(self::OWNER_ID1), $package1);
-        $account2 = WebhostingAccount::register($id2, WebhostingAccountOwner::fromString(self::OWNER_ID1), $package1);
+        $account1 = WebhostingAccount::register(WebhostingAccountId::create(), RootEntityOwner::fromString(self::OWNER_ID1), $package1);
+        $account2 = WebhostingAccount::register($id2, RootEntityOwner::fromString(self::OWNER_ID1), $package1);
         self::resetDomainEvents($account1, $account2);
 
         $account1->assignPackageWithCapabilities($package1);
@@ -152,7 +152,7 @@ final class WebhostingAccountTest extends TestCase
     {
         $id = WebhostingAccountId::create();
         $package = $this->createWebhostingPackage(new Capabilities());
-        $account = WebhostingAccount::register($id, WebhostingAccountOwner::fromString(self::OWNER_ID1), $package);
+        $account = WebhostingAccount::register($id, RootEntityOwner::fromString(self::OWNER_ID1), $package);
         self::resetDomainEvents($account);
 
         $package->changeCapabilities($newCapabilities = new Capabilities(new MonthlyTrafficQuota(50)));
@@ -171,7 +171,7 @@ final class WebhostingAccountTest extends TestCase
     {
         $id = WebhostingAccountId::create();
         $package = $this->createWebhostingPackage(new Capabilities());
-        $account = WebhostingAccount::register($id, WebhostingAccountOwner::fromString(self::OWNER_ID1), $package);
+        $account = WebhostingAccount::register($id, RootEntityOwner::fromString(self::OWNER_ID1), $package);
         self::resetDomainEvents($account);
 
         $account->assignCustomCapabilities($newCapabilities = new Capabilities(new MonthlyTrafficQuota(50)));
@@ -185,7 +185,7 @@ final class WebhostingAccountTest extends TestCase
     public function it_allows_changing_custom_specification()
     {
         $id = WebhostingAccountId::create();
-        $account = WebhostingAccount::registerWithCustomCapabilities($id, WebhostingAccountOwner::fromString(self::OWNER_ID1), new Capabilities());
+        $account = WebhostingAccount::registerWithCustomCapabilities($id, RootEntityOwner::fromString(self::OWNER_ID1), new Capabilities());
         self::resetDomainEvents($account);
 
         $account->assignCustomCapabilities($newCapabilities = new Capabilities(new MonthlyTrafficQuota(50)));
@@ -200,7 +200,7 @@ final class WebhostingAccountTest extends TestCase
     {
         $id = WebhostingAccountId::create();
         $capabilities = new Capabilities();
-        $account = WebhostingAccount::registerWithCustomCapabilities($id, WebhostingAccountOwner::fromString(self::OWNER_ID1), $capabilities);
+        $account = WebhostingAccount::registerWithCustomCapabilities($id, RootEntityOwner::fromString(self::OWNER_ID1), $capabilities);
         self::resetDomainEvents($account);
 
         $account->assignCustomCapabilities($capabilities);
@@ -215,18 +215,18 @@ final class WebhostingAccountTest extends TestCase
     {
         $account1 = WebhostingAccount::register(
             WebhostingAccountId::fromString(self::ACCOUNT_ID),
-            WebhostingAccountOwner::fromString(self::OWNER_ID1),
+            RootEntityOwner::fromString(self::OWNER_ID1),
             $this->createWebhostingPackage(new Capabilities())
         );
         $account2 = WebhostingAccount::register(
             $id2 = WebhostingAccountId::fromString(self::ACCOUNT_ID),
-            WebhostingAccountOwner::fromString(self::OWNER_ID1),
+            RootEntityOwner::fromString(self::OWNER_ID1),
             $this->createWebhostingPackage(new Capabilities())
         );
         self::resetDomainEvents($account1, $account2);
 
-        $account1->switchOwner($owner1 = WebhostingAccountOwner::fromString(self::OWNER_ID1));
-        $account2->switchOwner($owner2 = WebhostingAccountOwner::fromString(self::OWNER_ID2));
+        $account1->switchOwner($owner1 = RootEntityOwner::fromString(self::OWNER_ID1));
+        $account2->switchOwner($owner2 = RootEntityOwner::fromString(self::OWNER_ID2));
 
         self::assertEquals($owner1, $account1->owner());
         self::assertNoDomainEvents($account1);
@@ -240,12 +240,12 @@ final class WebhostingAccountTest extends TestCase
     {
         $account1 = WebhostingAccount::register(
             WebhostingAccountId::fromString(self::ACCOUNT_ID),
-            WebhostingAccountOwner::fromString(self::OWNER_ID1),
+            RootEntityOwner::fromString(self::OWNER_ID1),
             $this->createWebhostingPackage(new Capabilities())
         );
         $account2 = WebhostingAccount::register(
             $id2 = WebhostingAccountId::fromString(self::ACCOUNT_ID),
-            WebhostingAccountOwner::fromString(self::OWNER_ID1),
+            RootEntityOwner::fromString(self::OWNER_ID1),
             $this->createWebhostingPackage(new Capabilities())
         );
         self::resetDomainEvents($account1, $account2);
@@ -263,12 +263,12 @@ final class WebhostingAccountTest extends TestCase
     {
         $account1 = WebhostingAccount::register(
             WebhostingAccountId::fromString(self::ACCOUNT_ID),
-            WebhostingAccountOwner::fromString(self::OWNER_ID1),
+            RootEntityOwner::fromString(self::OWNER_ID1),
             $this->createWebhostingPackage(new Capabilities())
         );
         $account2 = WebhostingAccount::register(
             $id2 = WebhostingAccountId::fromString(self::ACCOUNT_ID),
-            WebhostingAccountOwner::fromString(self::OWNER_ID1),
+            RootEntityOwner::fromString(self::OWNER_ID1),
             $this->createWebhostingPackage(new Capabilities())
         );
         self::resetDomainEvents($account1, $account2);

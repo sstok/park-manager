@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Model\Account\Command;
 
+use ParkManager\Component\Model\RootEntityOwner;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
-use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountOwner;
 use ParkManager\Module\Webhosting\Model\DomainName;
 use ParkManager\Module\Webhosting\Model\Package\Capabilities;
 use ParkManager\Module\Webhosting\Model\Package\WebhostingPackageId;
@@ -36,7 +36,7 @@ final class RegisterWebhostingAccount
         $this->id = WebhostingAccountId::fromString($id);
         $this->domainName = $domainName;
         $this->capabilities = $capabilities;
-        $this->owner = WebhostingAccountOwner::fromString($owner);
+        $this->owner = RootEntityOwner::fromString($owner);
 
         if (null !== $package) {
             $this->package = WebhostingPackageId::fromString($package);
@@ -58,7 +58,7 @@ final class RegisterWebhostingAccount
         return $this->id;
     }
 
-    public function owner(): WebhostingAccountOwner
+    public function owner(): RootEntityOwner
     {
         return $this->owner;
     }

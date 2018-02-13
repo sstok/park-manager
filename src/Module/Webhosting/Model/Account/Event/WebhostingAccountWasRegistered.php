@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Model\Account\Event;
 
 use ParkManager\Component\Model\Event\DomainEvent;
+use ParkManager\Component\Model\RootEntityOwner;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
-use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountOwner;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
@@ -26,7 +26,7 @@ final class WebhostingAccountWasRegistered extends DomainEvent
     private $accountId;
     private $owner;
 
-    public function __construct(WebhostingAccountId $id, WebhostingAccountOwner $owner)
+    public function __construct(WebhostingAccountId $id, RootEntityOwner $owner)
     {
         $this->accountId = $id;
         $this->owner = $owner;
@@ -37,7 +37,7 @@ final class WebhostingAccountWasRegistered extends DomainEvent
         return $this->accountId;
     }
 
-    public function owner(): WebhostingAccountOwner
+    public function owner(): RootEntityOwner
     {
         return $this->owner;
     }
