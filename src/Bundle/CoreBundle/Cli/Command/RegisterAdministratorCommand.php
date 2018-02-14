@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Cli\Command;
 
 use League\Tactician\CommandBus;
-use ParkManager\Component\Core\Model\Command\RegisterAdministrator;
+use ParkManager\Component\Core\Model\Administrator\Command\RegisterAdministrator;
 use ParkManager\Component\User\Model\UserId;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

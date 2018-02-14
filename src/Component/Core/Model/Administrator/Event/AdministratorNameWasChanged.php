@@ -12,47 +12,30 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Core\Model\Command;
+namespace ParkManager\Component\Core\Model\Administrator\Event;
 
+use ParkManager\Component\Model\Event\DomainEvent;
 use ParkManager\Component\User\Model\UserId;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class RegisterAdministrator
+class AdministratorNameWasChanged extends DomainEvent
 {
     private $id;
-    private $email;
     private $firstName;
     private $lastName;
-    private $password;
 
-    /**
-     * Constructor.
-     *
-     * @param string      $id
-     * @param string      $email
-     * @param string      $firstName
-     * @param string      $lastName
-     * @param null|string $password  Null (no password) or an encoded password string (not plain)
-     */
-    public function __construct(string $id, string $email, string $firstName, string $lastName, ?string $password = null)
+    public function __construct(UserId $id, string $firstName, string $lastName)
     {
-        $this->id = UserId::fromString($id);
-        $this->email = $email;
+        $this->id = $id;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->password = $password;
     }
 
     public function id(): UserId
     {
         return $this->id;
-    }
-
-    public function email(): string
-    {
-        return $this->email;
     }
 
     public function firstName(): string
@@ -63,10 +46,5 @@ final class RegisterAdministrator
     public function lastName(): string
     {
         return $this->lastName;
-    }
-
-    public function password(): ?string
-    {
-        return $this->password;
     }
 }
