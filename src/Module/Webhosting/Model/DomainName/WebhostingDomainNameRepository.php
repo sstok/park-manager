@@ -42,9 +42,9 @@ interface WebhostingDomainNameRepository
     public function getPrimaryOf(WebhostingAccountId $id): WebhostingDomainName;
 
     /**
-     * Get the WebhostingDomainName registration by it's full name.
+     * Finds a WebhostingDomainName registration by it's full name.
      */
-    public function getByFullName(DomainName $name): ?WebhostingDomainName;
+    public function findByFullName(DomainName $name): ?WebhostingDomainName;
 
     /**
      * Save the WebhostingDomainName in the repository.

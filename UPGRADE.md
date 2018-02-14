@@ -1,6 +1,27 @@
 UPGRADE
 =======
 
+## Upgrade FROM 0.2.0 to 0.3.0
+
+### User
+
+ * The `UserCollection::getByEmailAddress()` method has been renamed 
+   to `findByEmailAddress`.
+
+ * The `UserCollection::getByEmailAddressChangeToken()` method has been renamed 
+   to `findByEmailAddressChangeToken`.
+
+ * The `UserCollection::getByPasswordResetToken()` method has been renamed 
+   to `findByPasswordResetToken`.
+  
+### Webhosting
+
+* The `WebhostingAccountOwner` class has been replaced by `RootEntityOwner` 
+  of the Model Component.
+  
+* The `Model\DomainName\WebhostingDomainNameRepository::getByFullName()` method has
+  been renamed to `findByFullName`.
+
 ## Upgrade FROM 0.1.0 to 0.2.0
 
 ### Model

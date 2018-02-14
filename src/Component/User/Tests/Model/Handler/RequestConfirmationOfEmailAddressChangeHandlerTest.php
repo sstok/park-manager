@@ -76,7 +76,7 @@ final class RequestConfirmationOfEmailAddressChangeHandlerTest extends TestCase
         $userProphecy->id()->willReturn($this->existingId());
 
         $repositoryProphecy = $this->prophesize(UserCollection::class);
-        $repositoryProphecy->getByEmailAddress($email)->willReturn($userProphecy->reveal());
+        $repositoryProphecy->findByEmailAddress($email)->willReturn($userProphecy->reveal());
         $repositoryProphecy->save(Argument::any())->shouldNotBeCalled();
 
         return $repositoryProphecy->reveal();
@@ -85,7 +85,7 @@ final class RequestConfirmationOfEmailAddressChangeHandlerTest extends TestCase
     private function expectUserSaved(string $email, User $user): UserCollection
     {
         $repositoryProphecy = $this->prophesize(UserCollection::class);
-        $repositoryProphecy->getByEmailAddress($email)->willReturn(null);
+        $repositoryProphecy->findByEmailAddress($email)->willReturn(null);
         $repositoryProphecy->get($user->id())->willReturn($user);
         $repositoryProphecy->save($user)->shouldBeCalledTimes(1);
 

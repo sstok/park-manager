@@ -79,7 +79,7 @@ final class ConfirmEmailAddressChangeHandlerTest extends TestCase
     private function expectUserSaved(string $selector, User $user): UserCollection
     {
         $repositoryProphecy = $this->prophesize(UserCollection::class);
-        $repositoryProphecy->getsByEmailAddressChangeToken($selector)->willReturn($user);
+        $repositoryProphecy->findByEmailAddressChangeToken($selector)->willReturn($user);
         $repositoryProphecy->save($user)->shouldBeCalledTimes(1);
 
         return $repositoryProphecy->reveal();
@@ -88,7 +88,7 @@ final class ConfirmEmailAddressChangeHandlerTest extends TestCase
     private function expectUserNotSaved(): UserCollection
     {
         $repositoryProphecy = $this->prophesize(UserCollection::class);
-        $repositoryProphecy->getsByEmailAddressChangeToken(Argument::any())->willReturn(null);
+        $repositoryProphecy->findByEmailAddressChangeToken(Argument::any())->willReturn(null);
         $repositoryProphecy->save(Argument::any())->shouldNotBeCalled();
 
         return $repositoryProphecy->reveal();

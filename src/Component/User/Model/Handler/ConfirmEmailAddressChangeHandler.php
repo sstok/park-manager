@@ -35,7 +35,7 @@ final class ConfirmEmailAddressChangeHandler
         $token = $command->token();
         $success = false;
 
-        if (null !== ($user = $this->userCollection->getsByEmailAddressChangeToken($token->selector()))) {
+        if (null !== ($user = $this->userCollection->findByEmailAddressChangeToken($token->selector()))) {
             $success = $user->confirmEmailAddressChange($token);
 
             // Always save, as the token is cleared.

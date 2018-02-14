@@ -49,7 +49,7 @@ final class RequestConfirmationOfEmailAddressChangeHandler
     {
         $canonicalEmail = $command->canonicalEmail();
 
-        if (null !== $this->userCollection->getByEmailAddress($canonicalEmail)) {
+        if (null !== $this->userCollection->findByEmailAddress($canonicalEmail)) {
             // E-mail address is already in use by (another) user. To prevent exposing existence simply do nothing.
             // This also covers when the e-mail address was not actually changed.
             return;

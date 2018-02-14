@@ -37,21 +37,21 @@ interface UserCollection
      *
      * @return User|null
      */
-    public function getByEmailAddress(string $email);
+    public function findByEmailAddress(string $email);
 
     /**
      * @param string $selector
      *
      * @return User|null
      */
-    public function getsByEmailAddressChangeToken(string $selector);
+    public function findByEmailAddressChangeToken(string $selector);
 
     /**
      * @param string $selector
      *
      * @return User|null
      */
-    public function getByPasswordResetToken(string $selector);
+    public function findByPasswordResetToken(string $selector);
 
     /**
      * Save the User in the repository.

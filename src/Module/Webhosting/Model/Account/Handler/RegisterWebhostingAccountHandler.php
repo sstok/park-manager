@@ -47,7 +47,7 @@ final class RegisterWebhostingAccountHandler
         $className = $this->accountRepository->getModelClass();
         $domainName = $command->domainName();
 
-        if (null !== $currentRegistration = $this->domainNameRepository->getByFullName($domainName)) {
+        if (null !== $currentRegistration = $this->domainNameRepository->findByFullName($domainName)) {
             throw DomainNameAlreadyInUse::byAccountId($domainName, $currentRegistration->account()->id());
         }
 

@@ -109,7 +109,7 @@ abstract class ChangePasswordActionTestCase extends WebTestCase
         /** @var \ParkManager\Component\User\Model\UserCollection $repository */
         $repository = $client->getContainer()->get($this->getRepositoryServiceId());
 
-        if (!$user = $repository->getByEmailAddress($this->getUsername())) {
+        if (!$user = $repository->findByEmailAddress($this->getUsername())) {
             $this->fail(sprintf('User with e-mail address %s is not registered. Are fixtures loaded?', $this->getUsername()));
         }
 

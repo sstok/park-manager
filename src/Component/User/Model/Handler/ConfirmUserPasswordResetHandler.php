@@ -35,7 +35,7 @@ final class ConfirmUserPasswordResetHandler
         $token = $command->token();
         $success = false;
 
-        if (null !== ($user = $this->userCollection->getByPasswordResetToken($token->selector()))) {
+        if (null !== ($user = $this->userCollection->findByPasswordResetToken($token->selector()))) {
             $success = $user->confirmPasswordReset($token, $command->password());
 
             // Always save, as the token is cleared.

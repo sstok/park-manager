@@ -149,10 +149,10 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     /** @test */
     public function it_gets_by_name()
     {
-        $domainName1 = $this->repository->getByFullName(new DomainName('example', 'com'));
-        $domainName2 = $this->repository->getByFullName(new DomainName('example', 'net'));
-        $domainName3 = $this->repository->getByFullName(new DomainName('example', 'co.uk'));
-        $domainName4 = $this->repository->getByFullName(new DomainName('example', 'noop'));
+        $domainName1 = $this->repository->findByFullName(new DomainName('example', 'com'));
+        $domainName2 = $this->repository->findByFullName(new DomainName('example', 'net'));
+        $domainName3 = $this->repository->findByFullName(new DomainName('example', 'co.uk'));
+        $domainName4 = $this->repository->findByFullName(new DomainName('example', 'noop'));
 
         self::assertNotNull($domainName1);
         self::assertNotNull($domainName2);
