@@ -12,9 +12,9 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Core\Tests\Model\Command;
+namespace ParkManager\Component\Core\Tests\Model\Administrator\Command;
 
-use ParkManager\Component\Core\Model\Command\RegisterAdministrator;
+use ParkManager\Component\Core\Model\Administrator\Command\RegisterAdministrator;
 use ParkManager\Component\User\Model\UserId;
 use PHPUnit\Framework\TestCase;
 

@@ -48,7 +48,7 @@ class ParkManagerCoreBundle extends Bundle
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createXmlMappingDriver([
                 realpath($dirname.'/Resources/Mapping/Security') => 'ParkManager\\Component\\Security',
-                realpath(__DIR__.'/Resources/config/Doctrine/Core') => 'ParkManager\\Component\\Core\\Model',
+                realpath(__DIR__.'/Resources/config/Doctrine/Administrator') => 'ParkManager\\Component\\Core\\Model\\Administrator',
             ])
         );
     }

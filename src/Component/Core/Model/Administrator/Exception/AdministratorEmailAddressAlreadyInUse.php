@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Core\Exception;
+namespace ParkManager\Component\Core\Model\Administrator\Exception;
 
 final class AdministratorEmailAddressAlreadyInUse extends \InvalidArgumentException
 {

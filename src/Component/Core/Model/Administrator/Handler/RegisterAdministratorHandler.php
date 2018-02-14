@@ -12,11 +12,11 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Core\Model\Handler;
+namespace ParkManager\Component\Core\Model\Administrator\Handler;
 
-use ParkManager\Component\Core\Exception\AdministratorEmailAddressAlreadyInUse;
-use ParkManager\Component\Core\Model\Administrator;
-use ParkManager\Component\Core\Model\Command\RegisterAdministrator;
+use ParkManager\Component\Core\Model\Administrator\Administrator;
+use ParkManager\Component\Core\Model\Administrator\Command\RegisterAdministrator;
+use ParkManager\Component\Core\Model\Administrator\Exception\AdministratorEmailAddressAlreadyInUse;
 use ParkManager\Component\User\Canonicalizer\Canonicalizer;
 use ParkManager\Component\User\Canonicalizer\SimpleEmailCanonicalizer;
 use ParkManager\Component\User\Model\UserCollection;

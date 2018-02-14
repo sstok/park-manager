@@ -12,10 +12,10 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Core\Model;
+namespace ParkManager\Component\Core\Model\Administrator;
 
-use ParkManager\Component\Core\Model\Event\AdministratorNameWasChanged;
-use ParkManager\Component\Core\Model\Event\AdministratorWasRegistered;
+use ParkManager\Component\Core\Model\Administrator\Event\AdministratorNameWasChanged;
+use ParkManager\Component\Core\Model\Administrator\Event\AdministratorWasRegistered;
 use ParkManager\Component\User\Model\User;
 use ParkManager\Component\User\Model\UserId;
 
