@@ -24,9 +24,9 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceCon
  *
  * @internal
  *
- * @method self doctrineOrmTransaction(string $managerName)
- * @method self doctrineDbalTransaction(string $managerName)
- * @method self messageGuard(...$guards)
+ * @method self                               doctrineOrmTransaction(string $managerName)
+ * @method self                               doctrineDbalTransaction(string $managerName)
+ * @method self                               messageGuard(...$guards)
  * @method DomainEventsMiddlewareConfigurator domainEvents()
  *
  * @final
