@@ -55,7 +55,7 @@ final class RequestUserPasswordResetHandler
         $email = $command->email();
         $canonicalEmail = $this->emailCanonicalizer->canonicalize($email);
 
-        if (null === ($user = $this->userCollection->getByEmailAddress($canonicalEmail))) {
+        if (null === ($user = $this->userCollection->findByEmailAddress($canonicalEmail))) {
             // No account with this e-mail address. To prevent exposing existence simply do nothing.
             return;
         }

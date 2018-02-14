@@ -159,7 +159,7 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     {
         $domainNameRepositoryProphecy = $this->prophesize(WebhostingDomainNameRepository::class);
         $domainNameRepositoryProphecy->getModelClass()->willReturn(WebhostingDomainName::class);
-        $domainNameRepositoryProphecy->getByFullName($expectedDomain)->willReturn(null);
+        $domainNameRepositoryProphecy->findByFullName($expectedDomain)->willReturn(null);
         $domainNameRepositoryProphecy->save(
             Argument::that(
                 function (WebhostingDomainName $domain) use ($expectedDomain, $accountId) {
@@ -190,7 +190,7 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
 
         $domainNameRepositoryProphecy = $this->prophesize(WebhostingDomainNameRepository::class);
         $domainNameRepositoryProphecy->getModelClass()->willReturn(WebhostingDomainName::class);
-        $domainNameRepositoryProphecy->getByFullName($expectedDomain)->willReturn($existingDomain);
+        $domainNameRepositoryProphecy->findByFullName($expectedDomain)->willReturn($existingDomain);
         $domainNameRepositoryProphecy->save(Argument::any())->shouldNotBeCalled();
 
         return $domainNameRepositoryProphecy->reveal();

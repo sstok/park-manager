@@ -104,7 +104,7 @@ final class WebhostingDomainNameOrmRepository extends EntityRepository implement
         }
     }
 
-    public function getByFullName(DomainName $name): ?WebhostingDomainName
+    public function findByFullName(DomainName $name): ?WebhostingDomainName
     {
         return $this->createQueryBuilder('d')
             ->where('d.domainName.name = :name AND d.domainName.tld = :tld')

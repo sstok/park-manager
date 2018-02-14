@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Model\Package;
 
-use ParkManager\Module\Webhosting\Model\Account\Exception\WebhostingAccountNotFound;
+use ParkManager\Module\Webhosting\Model\Package\Exception\WebhostingPackageNotFound;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
@@ -29,7 +29,7 @@ interface WebhostingPackageRepository
     public function getModelClass(): string;
 
     /**
-     * @throws WebhostingAccountNotFound when no account was found with the id
+     * @throws WebhostingPackageNotFound when no package was found with the id
      */
     public function get(WebhostingPackageId $id): WebhostingPackage;
 

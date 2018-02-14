@@ -68,7 +68,7 @@ final class RegisterUserHandlerTest extends TestCase
     private function expectUserSaved(RegisterAdministrator $command): UserCollection
     {
         $repository = $this->prophesize(UserCollection::class);
-        $repository->getByEmailAddress(Argument::any())->willReturn(null);
+        $repository->findByEmailAddress(Argument::any())->willReturn(null);
         $repository->save(Argument::that(function (Administrator $user) use ($command) {
             self::assertTrue($command->id()->equals($user->id()));
             self::assertEquals($command->email(), $user->email());
@@ -89,7 +89,7 @@ final class RegisterUserHandlerTest extends TestCase
         $userProphecy->id()->willReturn($this->existingId());
 
         $repositoryProphecy = $this->prophesize(UserCollection::class);
-        $repositoryProphecy->getByEmailAddress($email)->willReturn($userProphecy->reveal());
+        $repositoryProphecy->findByEmailAddress($email)->willReturn($userProphecy->reveal());
         $repositoryProphecy->save(Argument::any())->shouldNotBeCalled();
 
         return $repositoryProphecy->reveal();

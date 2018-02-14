@@ -21,8 +21,8 @@ use ParkManager\Component\User\Model\UserId;
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  *
  * @method get(UserId $id): Administrator
- * @method getByEmailAddress(string $email): Administrator
- * @method getsByEmailAddressChangeToken(string $selector): Administrator
+ * @method findByEmailAddress(string $email): Administrator
+ * @method findByEmailAddressChangeToken(string $selector): Administrator
  */
 interface AdministratorRepository extends UserCollection
 {

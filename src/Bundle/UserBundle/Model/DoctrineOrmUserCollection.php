@@ -24,6 +24,8 @@ use ParkManager\Component\User\Model\UserId;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
+ *
+ * @method User findOneBy(array $criteria, array $orderBy = null)
  */
 class DoctrineOrmUserCollection extends EntityRepository implements UserCollection
 {
@@ -65,12 +67,12 @@ class DoctrineOrmUserCollection extends EntityRepository implements UserCollecti
         });
     }
 
-    public function getByEmailAddress(string $email): ?User
+    public function findByEmailAddress(string $email): ?User
     {
         return $this->findOneBy(['canonicalEmail' => $email]);
     }
 
-    public function getsByEmailAddressChangeToken(string $selector): ?User
+    public function findByEmailAddressChangeToken(string $selector): ?User
     {
         return $this->createQueryBuilder('u')
             ->where('u.emailAddressChangeToken.selector = :selector')
@@ -80,7 +82,7 @@ class DoctrineOrmUserCollection extends EntityRepository implements UserCollecti
         ;
     }
 
-    public function getByPasswordResetToken(string $selector): ?User
+    public function findByPasswordResetToken(string $selector): ?User
     {
         return $this->createQueryBuilder('u')
             ->where('u.passwordResetToken.selector = :selector')

@@ -39,7 +39,7 @@ final class RegisterAdministratorHandler
     {
         $canonicalEmail = $this->emailCanonicalizer->canonicalize($email = $command->email());
 
-        if (null !== $this->repository->getByEmailAddress($canonicalEmail)) {
+        if (null !== $this->repository->findByEmailAddress($canonicalEmail)) {
             throw new AdministratorEmailAddressAlreadyInUse();
         }
 

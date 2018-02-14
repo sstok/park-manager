@@ -97,7 +97,7 @@ final class RequestUserPasswordResetHandlerTest extends TestCase
     private function expectUserNotSaved(string $email, ?User $user): UserCollection
     {
         $repositoryProphecy = $this->prophesize(UserCollection::class);
-        $repositoryProphecy->getByEmailAddress($email)->willReturn($user);
+        $repositoryProphecy->findByEmailAddress($email)->willReturn($user);
         $repositoryProphecy->save(Argument::any())->shouldNotBeCalled();
 
         return $repositoryProphecy->reveal();
@@ -106,7 +106,7 @@ final class RequestUserPasswordResetHandlerTest extends TestCase
     private function expectUserSaved(string $email, User $user): UserCollection
     {
         $repositoryProphecy = $this->prophesize(UserCollection::class);
-        $repositoryProphecy->getByEmailAddress($email)->willReturn($user);
+        $repositoryProphecy->findByEmailAddress($email)->willReturn($user);
         $repositoryProphecy->save($user)->shouldBeCalledTimes(1);
 
         return $repositoryProphecy->reveal();
