@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-class ParkManagerServiceBusBundleBundle extends Bundle
+class ParkManagerServiceBusBundle extends Bundle
 {
     public function getContainerExtension(): DependencyExtension
     {

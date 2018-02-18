@@ -38,7 +38,7 @@ final class MessageGuardMiddlewareConfigurator implements MiddlewareConfigurator
         $this->serviceId = $serviceId;
 
         $di->set($serviceId.'.middleware.message_guard', MessageGuardMiddleware::class)
-            ->tag($serviceId.'.middleware', ['priority' => 5000])->private();
+            ->tag($serviceId.'.middleware', ['priority' => 5000])->autowire(false)->private();
 
         foreach ($guards as $guard) {
             if (is_array($guard)) {
