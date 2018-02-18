@@ -83,7 +83,10 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "ParkManager\\": "src/"
+            "ParkManager\\": "src/",
+            "ParkManager\\Bridge\\ServiceBus\\DependencyInjection\\Configurator\\Middleware\\": [
+                "src/Bundle/ServiceBusPolicyGuardBundle/DependencyInjection/MiddlewareConfigurator"
+            ]
         },
         "exclude-from-classmap": [
             ".dances/"

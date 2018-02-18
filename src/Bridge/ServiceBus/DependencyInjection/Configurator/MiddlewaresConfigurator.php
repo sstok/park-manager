@@ -17,6 +17,7 @@ namespace ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Middleware;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\Middleware\DomainEventsMiddlewareConfigurator;
+use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\Middleware\PolicyGuardMiddlewareConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceConfigurator;
 
 /**
@@ -28,6 +29,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceCon
  * @method self                               doctrineDbalTransaction(string $managerName)
  * @method self                               messageGuard(...$guards)
  * @method DomainEventsMiddlewareConfigurator domainEvents()
+ * @method PolicyGuardMiddlewareConfigurator  policyGuard(?string $namespacePrefix = '', ?int $priority = -10)
  *
  * @final
  */
