@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "59d8c73157b88cc764dd85d5d58aebbd",
+    "content-hash": "90d6fb422d6f32d7faaebb3448daf676",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2012,16 +2012,16 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v5.1.5",
+            "version": "v5.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "93ae48d5f4b567105bcc058c3a8ba506176eca8a"
+                "reference": "bf4940572e43af679aaa13be98f3446a1c237bd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/93ae48d5f4b567105bcc058c3a8ba506176eca8a",
-                "reference": "93ae48d5f4b567105bcc058c3a8ba506176eca8a",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/bf4940572e43af679aaa13be98f3446a1c237bd8",
+                "reference": "bf4940572e43af679aaa13be98f3446a1c237bd8",
                 "shasum": ""
             },
             "require": {
@@ -2077,7 +2077,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2018-02-06T19:53:10+00:00"
+            "time": "2018-02-14T08:40:54+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2195,37 +2195,37 @@
         },
         {
             "name": "sylius/mailer-bundle",
-            "version": "v1.0.9",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Sylius/SyliusMailerBundle.git",
-                "reference": "ffd9a5c49f56a23230390f80648ae3ca762284f9"
+                "reference": "f4f5f225decb6e3af2eb8e776dca548ef0619b4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Sylius/SyliusMailerBundle/zipball/ffd9a5c49f56a23230390f80648ae3ca762284f9",
-                "reference": "ffd9a5c49f56a23230390f80648ae3ca762284f9",
+                "url": "https://api.github.com/repos/Sylius/SyliusMailerBundle/zipball/f4f5f225decb6e3af2eb8e776dca548ef0619b4f",
+                "reference": "f4f5f225decb6e3af2eb8e776dca548ef0619b4f",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1",
                 "sylius/mailer": "^1.0",
-                "symfony/framework-bundle": "^3.2"
+                "symfony/framework-bundle": "^3.4"
             },
             "require-dev": {
                 "phpspec/phpspec": "^4.0",
                 "phpunit/phpunit": "^5.6",
                 "polishsymfonycommunity/symfony-mocker-container": "^1.0",
-                "symfony/browser-kit": "^3.2",
-                "symfony/dependency-injection": "^3.2",
-                "symfony/swiftmailer-bundle": "^3.0",
-                "symfony/templating": "^3.2",
-                "symfony/twig-bundle": "^3.2"
+                "symfony/browser-kit": "^3.4",
+                "symfony/dependency-injection": "^3.4",
+                "symfony/swiftmailer-bundle": "^3.1",
+                "symfony/templating": "^3.4",
+                "symfony/twig-bundle": "^3.4"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 },
                 "incenteev-parameters": {
                     "file": "test/app/config/parameters.yml"
@@ -2242,26 +2242,26 @@
             ],
             "authors": [
                 {
-                    "name": "Sylius project",
-                    "homepage": "http://sylius.org"
-                },
-                {
                     "name": "Community contributions",
                     "homepage": "http://github.com/Sylius/Sylius/contributors"
                 },
                 {
                     "name": "Paweł Jędrzejewski",
                     "homepage": "http://pjedrzejewski.com"
+                },
+                {
+                    "name": "Sylius project",
+                    "homepage": "http://sylius.com"
                 }
             ],
             "description": "Mailers and e-mail template management for Symfony2 projects.",
-            "homepage": "http://sylius.org",
+            "homepage": "http://sylius.com",
             "keywords": [
                 "email",
                 "mailer",
                 "swiftmailer"
             ],
-            "time": "2018-01-31T09:00:56+00:00"
+            "time": "2018-02-08T16:38:47+00:00"
         },
         {
             "name": "symfony/asset",
@@ -4008,16 +4008,16 @@
         },
         {
             "name": "symfony/swiftmailer-bundle",
-            "version": "v3.1.6",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/swiftmailer-bundle.git",
-                "reference": "9728097df87e76e2db71fc41fd7d211c06daea3e"
+                "reference": "7756867d9b21231ae0ce746a6b861b7e293cc885"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/9728097df87e76e2db71fc41fd7d211c06daea3e",
-                "reference": "9728097df87e76e2db71fc41fd7d211c06daea3e",
+                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/7756867d9b21231ae0ce746a6b861b7e293cc885",
+                "reference": "7756867d9b21231ae0ce746a6b861b7e293cc885",
                 "shasum": ""
             },
             "require": {
@@ -4039,7 +4039,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1-dev"
+                    "dev-master": "3.2-dev"
                 }
             },
             "autoload": {
@@ -4066,7 +4066,7 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2017-10-23T15:15:11+00:00"
+            "time": "2018-02-14T08:09:24+00:00"
         },
         {
             "name": "symfony/translation",
@@ -5200,16 +5200,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.7.4",
+            "version": "1.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "9f901e29c93dae4aa77c0bb161df4276f9c9a1be"
+                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/9f901e29c93dae4aa77c0bb161df4276f9c9a1be",
-                "reference": "9f901e29c93dae4aa77c0bb161df4276f9c9a1be",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/dfd6be44111a7c41c2e884a336cc4f461b3b2401",
+                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401",
                 "shasum": ""
             },
             "require": {
@@ -5259,7 +5259,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2018-02-11T18:49:29+00:00"
+            "time": "2018-02-19T10:16:54+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
