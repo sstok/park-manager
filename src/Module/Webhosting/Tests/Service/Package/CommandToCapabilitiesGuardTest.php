@@ -36,10 +36,7 @@ final class CommandToCapabilitiesGuardTest extends TestCase
     /** @test */
     public function it_ignores_unsupported_commands()
     {
-        $commandGuard = new CommandToCapabilitiesGuard(
-            $this->createUnusedCapabilitiesGuard(),
-            [CreateMailbox::class => [StorageSpaceQuota::class, MailboxCountCount::class]]
-        );
+        $commandGuard = new CommandToCapabilitiesGuard($this->createUnusedCapabilitiesGuard());
 
         self::assertEquals(new LogMessages(), $commandGuard->commandAllowedFor(
             new CreatePackage(),
@@ -53,10 +50,7 @@ final class CommandToCapabilitiesGuardTest extends TestCase
         $logMessages = new LogMessages();
         $logMessages->add(LogMessage::error('Cannot let you do this John, your mailbox limit is reached.'));
 
-        $commandGuard = new CommandToCapabilitiesGuard(
-            $this->createCapabilitiesGuard($logMessages, []),
-            [CreateMailbox::class => [StorageSpaceQuota::class, MailboxCountCount::class]]
-        );
+        $commandGuard = new CommandToCapabilitiesGuard($this->createCapabilitiesGuard($logMessages, []));
 
         self::assertEquals($logMessages, $commandGuard->commandAllowedFor(
             new CreateMailbox(WebhostingAccountId::fromString(self::ACCOUNT_ID), 500),
@@ -77,7 +71,6 @@ final class CommandToCapabilitiesGuardTest extends TestCase
 
         $commandGuard = new CommandToCapabilitiesGuard(
             $this->createCapabilitiesGuard($logMessages, ['account' => self::ACCOUNT_ID]),
-            [CreateMailbox::class => [StorageSpaceQuota::class, MailboxCountCount::class]],
             function ($command, $account) {
                 return ['account' => (string) $account];
             }
@@ -100,7 +93,7 @@ final class CommandToCapabilitiesGuardTest extends TestCase
         $guardProphecy->allowedTo(
             WebhostingAccountId::fromString(self::ACCOUNT_ID),
             $context,
-            ...[StorageSpaceQuota::class, MailboxCountCount::class]
+            MailboxCountCount::class
         )->willReturn($logMessages);
 
         return $guardProphecy->reveal();

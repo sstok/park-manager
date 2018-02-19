@@ -56,29 +56,11 @@ final class CapabilitiesRegistryPass implements CompilerPassInterface
         $this->parameters = $container->getParameterBag();
 
         foreach ($container->findTaggedServiceIds('park_manager.webhosting_capability') as $serviceId => $tags) {
-            $def = $container->findDefinition($serviceId);
-            $def->setAutowired(false);
+            $def = $container->findDefinition($serviceId)->setAutowired(false);
 
-            $capabilityName = $class = $this->parameters->resolveValue($def->getClass());
-            $this->validateCapabilityClass($class);
-
-            if (empty($tags[0]) || ($tags[0]['auto-configure'] ?? false)) {
-                $config = $this->autoconfigureCapability($class);
-            } else {
-                unset($tags[0]['auto-configure']);
-                $config = $this->processConfiguration($class, $tags[0]);
-            }
-
-            $this->capabilities[$capabilityName] = $config;
-            $this->capabilitiesById[$capabilityName::id()] = $capabilityName;
-
-            if (isset($config['guard'])) {
-                $this->guardServices[$capabilityName] = new Reference($config['guard']);
-            }
-
-            if (isset($config['applier'])) {
-                $this->applierServices[$capabilityName] = new Reference($config['applier']);
-            }
+            $class = $this->parameters->resolveValue($def->getClass());
+            $class = $this->resolveClassService($class, $class, Capability::class);
+            $this->processCapability($class, $tags[0]);
         }
 
         $managerService = $container->findDefinition(CapabilitiesRegistry::class);
@@ -95,149 +77,41 @@ final class CapabilitiesRegistryPass implements CompilerPassInterface
         $this->capabilities = $this->guardServices = $this->applierServices = [];
     }
 
-    private function processConfiguration(string $capabilityName, array $config): array
+    private function processCapability(string $capabilityName, array $config): void
     {
         $config = $this->parameters->resolveValue($config);
 
-        if (!isset($config['guard']) && !isset($config['applier'])) {
-            throw new InvalidArgumentException(sprintf('Webhosting Capability %s is incorrectly configured. Missing a required Guard and/or Applier.', $capabilityName));
-        }
+        $namespaceParts = explode('\\', $capabilityName);
+        $capabilityNameUnderscored = Container::underscore($namespaceParts[\count($namespaceParts) - 1]);
+        $this->validateCapabilityConfig($capabilityName, $config);
 
         $config['guard'] = isset($config['guard']) ? $this->resolveClassService($capabilityName, (string) $config['guard'], CapabilityGuard::class) : null;
         $config['applier'] = isset($config['applier']) ? $this->resolveClassService($capabilityName, (string) $config['applier'], ConfigurationApplier::class) : null;
-        $config['form'] = $this->resolveFormConfig($capabilityName, $config);
         $config['twig'] = [
-            'edit' => $this->resolveTemplateConfig($capabilityName, $config['twig']['edit'] ?? null, 'twig.edit'),
-            'show' => $this->resolveTemplateConfig($capabilityName, $config['twig']['show'] ?? null, 'twig.show'),
+            'edit' => sprintf('@Webhosting/capabilities/edit_%s.html.twig', $capabilityNameUnderscored),
+            'show' => sprintf('@Webhosting/capabilities/show_%s.html.twig', $capabilityNameUnderscored),
         ];
         $config['jsx'] = [
-            'edit' => $this->resolveTemplateConfig($capabilityName, $config['jsx']['edit'] ?? null, 'jsx.edit'),
-            'show' => $this->resolveTemplateConfig($capabilityName, $config['jsx']['show'] ?? null, 'jsx.show'),
+            'edit' => sprintf('@Webhosting/capabilities/edit_%s.html.jsx', $capabilityNameUnderscored),
+            'show' => sprintf('@Webhosting/capabilities/show_%s.html.jsx', $capabilityNameUnderscored),
         ];
 
-        $this->validateSupportedKeys($capabilityName, $config, ['guard', 'applier', 'form', 'twig', 'jsx']);
-        $this->log(
-            sprintf(
-                'Capability %s is resolved with the following attributes: %s',
-                $capabilityName,
-                var_export($config, true)
-            )
-        );
+        $this->capabilities[$capabilityName] = $config;
+        $this->capabilitiesById[$capabilityName::id()] = $capabilityName;
 
-        return $config;
-    }
-
-    private function autoconfigureCapability(string $className): array
-    {
-        $this->log(sprintf('Capability %s has no configuration, starting auto-configure.', $className));
-
-        $namespaceParts = explode('\\', $className);
-        $c = count($namespaceParts);
-
-        if (($namespaceParts[$c - 4] ?? '') !== 'Model') {
-            throw new \RuntimeException(
-                sprintf(
-                    'Unable to autoconfigure Webhosting Capability %s. '.
-                    'Class does not follow expected convention. Configure service manually.',
-                    $className
-                )
-            );
+        if (isset($config['guard'])) {
+            $this->guardServices[$capabilityName] = new Reference($config['guard']);
         }
 
-        $capabilityName = array_slice($namespaceParts, -1)[0];
-        $namespace = implode(array_slice($namespaceParts, 0, -4), '\\');
-        $capabilityNameUnderscored = Container::underscore($capabilityName);
-
-        $guardClass = sprintf('%s\\Infrastructure\Package\\Capability\\%sGuard', $namespace, $capabilityName);
-        $applierClass = sprintf('%s\\Infrastructure\Package\\Capability\\%sApplier', $namespace, $capabilityName);
-        $formType = sprintf('%s\\UI\\Web\\Form\\Package\\Capability\\%sType', $namespace, $capabilityName);
-
-        $config = [];
-        $config['guard'] = $this->findClassService($guardClass, CapabilityGuard::class);
-        $config['applier'] = $this->findClassService($applierClass, ConfigurationApplier::class);
-        $config['form'] = ['type' => class_exists($formType) ? $formType : null, 'options' => []];
-        $config['twig'] = [
-            'edit' => [
-                'file' => sprintf('@Webhosting/capabilities/edit_%s.html.twig', $capabilityNameUnderscored),
-                'context' => [],
-            ],
-            'show' => [
-                'file' => sprintf('@Webhosting/capabilities/show_%s.html.twig', $capabilityNameUnderscored),
-                'context' => [],
-            ],
-        ];
-        $config['jsx'] = [
-            'edit' => [
-                'file' => sprintf('@Webhosting/capabilities/edit_%s.html.jsx', $capabilityNameUnderscored),
-                'context' => [],
-            ],
-            'show' => [
-                'file' => sprintf('@Webhosting/capabilities/show_%s.html.jsx', $capabilityNameUnderscored),
-                'context' => [],
-            ],
-        ];
-
-        if (!isset($config['guard']) && !isset($config['applier'])) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Unable to auto-configure Webhosting Capability %s. '.
-                    'Guard (%s) and/or Applier (%s) was expected but could not be located.'.
-                    'Configure the service manually.',
-                    $className,
-                    $guardClass,
-                    $applierClass
-                )
-            );
+        if (isset($config['applier'])) {
+            $this->applierServices[$capabilityName] = new Reference($config['applier']);
         }
-
-        $this->log(
-            sprintf(
-                'Capability %s is auto-configured with the following attributes: %s',
-                $className,
-                var_export($config, true)
-            )
-        );
-
-        return $config;
-    }
-
-    private function findClassService(string $className, string $expectedInterface): ?string
-    {
-        if (!class_exists($className)) {
-            $this->log(sprintf('Unable to load class %s for auto auto-configure.', $className));
-
-            return null;
-        }
-
-        if (!is_a($className, $expectedInterface, true)) {
-            $this->log(
-                sprintf(
-                    'Class %s does not implement expected interface %s. Ignoring for auto-configure.',
-                    $className,
-                    $expectedInterface
-                )
-            );
-
-            return null;
-        }
-
-        if (!$this->container->has($className)) {
-            $this->log(
-                sprintf(
-                    'Class %s is not (correctly) registered in the service container. Ignoring for auto-configure.',
-                    $className
-                )
-            );
-
-            return null;
-        }
-
-        return $className;
     }
 
     private function resolveClassService(string $capabilityName, string $className, string $expectedInterface): string
     {
-        $classNameResolved = $this->parameters->resolveValue($className);
+        /** @var string $className */
+        $className = $this->parameters->resolveValue($className);
 
         if (!is_string($className)) {
             throw new InvalidArgumentException(
@@ -248,9 +122,6 @@ final class CapabilitiesRegistryPass implements CompilerPassInterface
                 )
             );
         }
-
-        /** @var string $className */
-        $className = $classNameResolved;
 
         if (!class_exists($className)) {
             throw new InvalidArgumentException(
@@ -286,85 +157,26 @@ final class CapabilitiesRegistryPass implements CompilerPassInterface
         return $className;
     }
 
-    private function resolveFormConfig(string $capabilityName, array $configuration): array
+    private function validateCapabilityConfig(string $capabilityName, array $config): void
     {
-        if (!isset($configuration['form'])) {
-            return ['type' => null, 'options' => []];
-        }
-
-        if (is_string($configuration['form'])) {
-            return ['type' => $configuration['form'], 'options' => []];
-        }
-
-        if (isset($configuration['form']['options']) && !is_array($configuration['form']['options'])) {
+        $allowed = ['guard', 'applier', 'form-type'];
+        if (\count($unknown = array_diff(array_keys($config), $allowed))) {
             throw new InvalidArgumentException(
                 sprintf(
-                    'Webhosting Capability %s is incorrectly configured with attribute "form". "options" must be an array.',
-                    $capabilityName
-                )
-            );
-        }
-
-        $this->validateSupportedKeys($capabilityName, $configuration['form'], ['type', 'options'], 'form');
-
-        return $configuration['form'];
-    }
-
-    private function resolveTemplateConfig(string $capabilityName, $configuration, string $path): array
-    {
-        if (null === $configuration) {
-            return ['file' => null, 'context' => []];
-        }
-
-        if (is_string($configuration)) {
-            return ['file' => $configuration, 'context' => []];
-        }
-
-        if (isset($configuration['context']) && !is_array($configuration['context'])) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Webhosting Capability %s is incorrectly configured with attribute "%s". "context" must be an array.',
+                    'Webhosting Capability %s is incorrectly configured. Unexpected attribute(s): %s. Supported: %s',
                     $capabilityName,
-                    $path
-                )
-            );
-        }
-
-        $this->validateSupportedKeys($capabilityName, $configuration, ['file', 'context'], $path);
-
-        return $configuration;
-    }
-
-    private function validateSupportedKeys(string $capabilityName, array $config, array $allowed, ?string $path = null): void
-    {
-        if (count($unknown = array_diff(array_keys($config), $allowed))) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Webhosting Capability %s is incorrectly configured%s. Unexpected option(s): %s. Supported: %s',
-                    $capabilityName,
-                    $path ? ' with attribute "'.$path.'"' : '',
                     implode(', ', $unknown),
                     implode(', ', $allowed)
                 )
             );
         }
-    }
 
-    private function log(string $message): void
-    {
-        $this->container->log($this, $message);
-    }
+        if (!isset($config['guard']) && !isset($config['applier'])) {
+            throw new InvalidArgumentException(sprintf('Webhosting Capability %s is incorrectly configured. Requires a "guard" and/or "applier".', $capabilityName));
+        }
 
-    private function validateCapabilityClass(string $class): void
-    {
-        if (!is_a($class, Capability::class, true)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Webhosting Capability %s is invalid. Class must implement interface %s',
-                    $class,
-                    Capability::class
-                )
-            );
+        if (!isset($config['form-type'])) {
+            throw new InvalidArgumentException(sprintf('Webhosting Capability %s is incorrectly configured. Requires a "form-type".', $capabilityName));
         }
     }
 }

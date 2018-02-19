@@ -15,14 +15,13 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Service\Package;
 
 use ParkManager\Component\Model\LogMessage\LogMessages;
-use ParkManager\Module\Webhosting\Model\Account\AccountIdAwareCommand;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Model\Package\CapabilitiesGuard;
+use ParkManager\Module\Webhosting\Model\Package\CapabilityCoveringCommand;
 
 /**
- * The CommandToCapabilitiesGuard maps a Domain Command to
- * a (set of) capabilities and run these through their Guards
- * (using the AccountCapabilitiesGuard).
+ * The CommandToCapabilitiesGuard maps a Command to a capability and runs
+ * its Guard (using the AccountCapabilitiesGuard).
  *
  * Based on the result of all CapabilityGuards this service
  * returns whether the Command is "allowed" to pass trough.
@@ -35,33 +34,22 @@ use ParkManager\Module\Webhosting\Model\Package\CapabilitiesGuard;
 final class CommandToCapabilitiesGuard
 {
     private $accountCapabilitiesGuard;
-    private $commandToCapabilitiesMapping;
     private $contextProvider;
 
-    public function __construct(
-        CapabilitiesGuard $accountCapabilitiesGuard,
-        array $commandToCapabilitiesMapping,
-        ?callable $contextProvider = null
-    ) {
+    public function __construct(CapabilitiesGuard $accountCapabilitiesGuard, ?callable $contextProvider = null)
+    {
         $this->accountCapabilitiesGuard = $accountCapabilitiesGuard;
-        $this->commandToCapabilitiesMapping = $commandToCapabilitiesMapping;
         $this->contextProvider = $contextProvider;
     }
 
     public function commandAllowedFor(object $command, WebhostingAccountId $account): LogMessages
     {
-        $commandName = get_class($command);
-
-        if (!$command instanceof AccountIdAwareCommand || !isset($this->commandToCapabilitiesMapping[$commandName])) {
+        if (!$command instanceof CapabilityCoveringCommand) {
             return new LogMessages();
         }
 
         $context = null !== $this->contextProvider ? ($this->contextProvider)($command, $account) : [];
 
-        return $this->accountCapabilitiesGuard->allowedTo(
-            $account,
-            $context,
-            ...$this->commandToCapabilitiesMapping[$commandName]
-        );
+        return $this->accountCapabilitiesGuard->allowedTo($account, $context, $command::getCapability());
     }
 }
