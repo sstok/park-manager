@@ -27,9 +27,9 @@ use ParkManager\Module\Webhosting\Model\{
 };
 use ParkManager\Module\Webhosting\Service\Package\{
     AccountCapabilitiesGuard,
-    CapabilitiesRegistry,
-    CommandToCapabilitiesGuard
+    CapabilitiesRegistry
 };
+use ParkManager\Module\Webhosting\ServiceBus\Package\CapabilityCoveringCommandValidator;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 return function (ContainerConfigurator $c) {
@@ -46,6 +46,7 @@ return function (ContainerConfigurator $c) {
             ->doctrineOrmTransaction('default')
             ->domainEvents()
             ->end()
+            ->register(CapabilityCoveringCommandValidator::class, -100)
         ->end()
         ->handlers(__DIR__.'/../../../../Model/')
             ->load('ParkManager\Module\Webhosting\Model\\', '{Account,DomainName,Package}/Handler')
@@ -57,7 +58,6 @@ return function (ContainerConfigurator $c) {
 
     $di->set(AccountCapabilitiesGuard::class)
         ->alias(CapabilitiesGuard::class, AccountCapabilitiesGuard::class);
-    $di->set(CommandToCapabilitiesGuard::class);
 
     $di->set(WebhostingDomainNameOrmRepository::class)
         ->alias(WebhostingDomainNameRepository::class, WebhostingDomainNameOrmRepository::class);

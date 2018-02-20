@@ -14,6 +14,15 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use ParkManager\Component\Model\LogMessage\LogMessages;
+
 return function (ContainerConfigurator $c) {
+    $di = $c->services();
+
+    // ServiceBus LogMessages allow the service-bus to communicate non-critical messages
+    // back to higher layers.
+    $di->set('park_manager.service_bus.log_messages', LogMessages::class)
+        ->alias(LogMessages::class, 'park_manager.service_bus.log_messages');
+
     $c->import('services/administrator.php');
 };

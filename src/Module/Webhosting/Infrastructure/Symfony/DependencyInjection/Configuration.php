@@ -36,15 +36,6 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('capability')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('command_mapping')
-                            ->useAttributeAsKey('name')
-                            ->prototype('array')->end()
-                        ->end()
-                    ->end()
-                ->end()
             ->end()
         ;
 

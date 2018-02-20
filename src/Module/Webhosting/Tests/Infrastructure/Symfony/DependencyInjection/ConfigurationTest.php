@@ -28,21 +28,7 @@ final class ConfigurationTest extends TestCase
     /** @test */
     public function it_works_with_empty_config()
     {
-        $this->assertProcessedConfigurationEquals([[]], ['capability' => ['command_mapping' => []]]);
-    }
-
-    /** @test */
-    public function it_checks_capability_command_mapping_values_are_only_arrays()
-    {
-        $this->assertConfigurationIsInvalid(
-            [['capability' => ['command_mapping' => ['']]]],
-            'Invalid type for path "webhosting.capability.command_mapping.0". Expected array, but got string'
-        );
-
-        $this->assertConfigurationIsInvalid(
-            [['capability' => ['command_mapping' => ['he' => 'nope']]]],
-            'webhosting.capability.command_mapping.he". Expected array, but got string'
-        );
+        $this->assertProcessedConfigurationEquals([[]], []);
     }
 
     protected function getConfiguration(): Configuration

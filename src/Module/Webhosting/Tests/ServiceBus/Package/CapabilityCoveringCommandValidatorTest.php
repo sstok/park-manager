@@ -12,16 +12,15 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Module\Webhosting\Tests\Service\Package;
+namespace ParkManager\Module\Webhosting\Tests\ServiceBus\Package;
 
 use ParkManager\Component\Model\LogMessage\LogMessage;
 use ParkManager\Component\Model\LogMessage\LogMessages;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Model\Package\CapabilitiesGuard;
-use ParkManager\Module\Webhosting\Service\Package\CommandToCapabilitiesGuard;
-use ParkManager\Module\Webhosting\Tests\Fixtures\Capability\{MailboxCountCount, StorageSpaceQuota};
-use ParkManager\Module\Webhosting\Tests\Fixtures\Model\Mailbox\CreateMailbox;
-use ParkManager\Module\Webhosting\Tests\Fixtures\Model\Mailbox\RemoveMailbox;
+use ParkManager\Module\Webhosting\ServiceBus\Package\CapabilityCoveringCommandValidator;
+use ParkManager\Module\Webhosting\Tests\Fixtures\Capability\MailboxCountCount;
+use ParkManager\Module\Webhosting\Tests\Fixtures\Model\Mailbox\{CreateMailbox, RemoveMailbox};
 use ParkManager\Module\Webhosting\Tests\Fixtures\Model\Package\Command\CreatePackage;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -29,19 +28,20 @@ use Prophecy\Argument;
 /**
  * @internal
  */
-final class CommandToCapabilitiesGuardTest extends TestCase
+final class CapabilityCoveringCommandValidatorTest extends TestCase
 {
     private const ACCOUNT_ID = '2d3fb900-a528-11e7-a027-acbc32b58315';
 
     /** @test */
     public function it_ignores_unsupported_commands()
     {
-        $commandGuard = new CommandToCapabilitiesGuard($this->createUnusedCapabilitiesGuard());
+        $commandGuard = new CapabilityCoveringCommandValidator($this->createUnusedCapabilitiesGuard(), $logStack = new LogMessages());
 
-        self::assertEquals(new LogMessages(), $commandGuard->commandAllowedFor(
-            new CreatePackage(),
-            WebhostingAccountId::fromString(self::ACCOUNT_ID)
+        self::assertTrue($commandGuard->execute(
+            $command = new CreatePackage(),
+            function () { return true; }
         ));
+        self::assertEquals(new LogMessages(), $logStack);
     }
 
     /** @test */
@@ -50,17 +50,29 @@ final class CommandToCapabilitiesGuardTest extends TestCase
         $logMessages = new LogMessages();
         $logMessages->add(LogMessage::error('Cannot let you do this John, your mailbox limit is reached.'));
 
-        $commandGuard = new CommandToCapabilitiesGuard($this->createCapabilitiesGuard($logMessages, []));
+        $commandGuard = new CapabilityCoveringCommandValidator($this->createCapabilitiesGuard($logMessages, []), $logStack = new LogMessages());
 
-        self::assertEquals($logMessages, $commandGuard->commandAllowedFor(
-            new CreateMailbox(WebhostingAccountId::fromString(self::ACCOUNT_ID), 500),
-            WebhostingAccountId::fromString(self::ACCOUNT_ID)
+        self::assertFalse($commandGuard->execute(
+            $command = new CreateMailbox(WebhostingAccountId::fromString(self::ACCOUNT_ID), 500),
+            function () { return true; }
         ));
+        self::assertEquals($logMessages, $logStack);
+    }
 
-        self::assertEquals(new LogMessages(), $commandGuard->commandAllowedFor(
-            new RemoveMailbox(WebhostingAccountId::fromString(self::ACCOUNT_ID)),
-            WebhostingAccountId::fromString(self::ACCOUNT_ID)
+    /** @test */
+    public function it_continues_execution_when_guard_approves()
+    {
+        $commandGuard = new CapabilityCoveringCommandValidator($this->createCapabilitiesGuard(new LogMessages(), []), $logStack = new LogMessages());
+
+        self::assertEquals('it-worked', $commandGuard->execute(
+            $command = new CreateMailbox(WebhostingAccountId::fromString(self::ACCOUNT_ID), 500),
+            function ($passedCommand) use ($command) {
+                self::assertSame($command, $passedCommand);
+
+                return 'it-worked';
+            }
         ));
+        self::assertEquals(new LogMessages(), $logStack);
     }
 
     /** @test */
@@ -69,21 +81,23 @@ final class CommandToCapabilitiesGuardTest extends TestCase
         $logMessages = new LogMessages();
         $logMessages->add(LogMessage::error('Cannot let you do this John, your mailbox limit is reached.'));
 
-        $commandGuard = new CommandToCapabilitiesGuard(
+        $commandGuard = new CapabilityCoveringCommandValidator(
             $this->createCapabilitiesGuard($logMessages, ['account' => self::ACCOUNT_ID]),
+            $logStack = new LogMessages(),
             function ($command, $account) {
                 return ['account' => (string) $account];
             }
         );
 
-        self::assertEquals($logMessages, $commandGuard->commandAllowedFor(
-            new CreateMailbox(WebhostingAccountId::fromString(self::ACCOUNT_ID), 500),
-            WebhostingAccountId::fromString(self::ACCOUNT_ID)
+        self::assertFalse($commandGuard->execute(
+            $command = new CreateMailbox(WebhostingAccountId::fromString(self::ACCOUNT_ID), 500),
+            function () { return true; }
         ));
+        self::assertEquals($logMessages, $logStack);
 
-        self::assertEquals(new LogMessages(), $commandGuard->commandAllowedFor(
-            new RemoveMailbox(WebhostingAccountId::fromString(self::ACCOUNT_ID)),
-            WebhostingAccountId::fromString(self::ACCOUNT_ID)
+        self::assertTrue($commandGuard->execute(
+            $command = new RemoveMailbox(WebhostingAccountId::fromString(self::ACCOUNT_ID)),
+            function () { return true; }
         ));
     }
 
