@@ -52,6 +52,12 @@ final class LogMessages implements \Countable
         return $this->messages;
     }
 
+    public function clear(): void
+    {
+        $this->messages = [];
+        $this->count = 0;
+    }
+
     /**
      * @param string $type
      *
@@ -62,8 +68,17 @@ final class LogMessages implements \Countable
         return $this->messages[$type] ?? [];
     }
 
-    public function count()
+    public function count(): int
     {
         return $this->count;
+    }
+
+    public function merge(self $messages): void
+    {
+        $this->messages = array_merge_recursive($this->messages, $messages->messages);
+
+        foreach ($messages->messages as $type => $messagesByType) {
+            $this->count += \count($messagesByType);
+        }
     }
 }

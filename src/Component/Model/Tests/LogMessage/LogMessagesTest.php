@@ -48,4 +48,43 @@ final class LogMessagesTest extends TestCase
         self::assertEquals([$message3], $messages->allOf('notice'));
         self::assertTrue($messages->hasErrors());
     }
+
+    /** @test */
+    public function it_merges_messages_from_another_list()
+    {
+        $messages = new LogMessages();
+        $messages->add($message1 = LogMessage::error('Whoops'));
+        $messages->add($message2 = LogMessage::error('Whoops again'));
+        $messages->add($message3 = LogMessage::notice('Whoops again'));
+
+        $messages2 = new LogMessages();
+        $messages2->add($message4 = LogMessage::error('Whoops2'));
+        $messages2->add($message5 = LogMessage::warning('Whoops again2'));
+        $messages2->add($message6 = LogMessage::notice('Whoops again2'));
+        $messages->merge($messages2);
+
+        self::assertCount(6, $messages);
+        self::assertEquals(
+            [
+                'error' => [$message1, $message2, $message4],
+                'notice' => [$message3, $message6],
+                'warning' => [$message5],
+            ],
+            $messages->all()
+        );
+    }
+
+    /** @test */
+    public function it_clears_messages()
+    {
+        $messages = new LogMessages();
+        $messages->add($message1 = LogMessage::error('Whoops'));
+        $messages->add($message2 = LogMessage::error('Whoops again'));
+        $messages->add($message3 = LogMessage::notice('Whoops again'));
+        $messages->clear();
+
+        self::assertCount(0, $messages);
+        self::assertEquals([], $messages->all());
+        self::assertFalse($messages->hasErrors());
+    }
 }

@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Infrastructure\Symfony\DependencyInjection;
 
-use ParkManager\Module\Webhosting\Service\Package\CommandToCapabilitiesGuard;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -31,10 +30,6 @@ final class DependencyExtension extends Extension
     {
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/services/'));
         $loader->load('core.php');
-
-        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
-        $container->findDefinition(CommandToCapabilitiesGuard::class)
-            ->setArgument(1, $config['capability']['command_mapping']);
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container)
