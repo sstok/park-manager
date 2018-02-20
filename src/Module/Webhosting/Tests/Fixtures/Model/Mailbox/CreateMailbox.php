@@ -14,10 +14,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Fixtures\Model\Mailbox;
 
-use ParkManager\Module\Webhosting\Model\Account\AccountIdAwareCommand;
 use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
+use ParkManager\Module\Webhosting\Model\Package\CapabilityCoveringCommand;
+use ParkManager\Module\Webhosting\Tests\Fixtures\Capability\MailboxCountCount;
 
-final class CreateMailbox implements AccountIdAwareCommand
+final class CreateMailbox implements CapabilityCoveringCommand
 {
     private $accountId;
     private $size;
@@ -36,5 +37,10 @@ final class CreateMailbox implements AccountIdAwareCommand
     public function sizeInBytes()
     {
         return $this->size;
+    }
+
+    public static function getCapability(): string
+    {
+        return MailboxCountCount::class;
     }
 }

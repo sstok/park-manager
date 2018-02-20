@@ -46,7 +46,6 @@ final class ParkManagerWebhostingBundle extends Bundle
         ];
 
         $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings));
-        $container->addCompilerPass(new CommandToCapabilitiesGuardPass());
         $container->addCompilerPass(new CapabilitiesRegistryPass());
     }
 

@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Fixtures\Capability;
 
-use ParkManager\Module\Webhosting\Model\Package\CommandSubscribingCapability;
+use ParkManager\Module\Webhosting\Model\Package\CapabilityCoveringCommand;
 use ParkManager\Module\Webhosting\Tests\Fixtures\Model\Mailbox\CreateMailbox;
 
-final class MailboxCountCount implements CommandSubscribingCapability
+final class MailboxCountCount
 {
     private $limit;
 
@@ -39,10 +39,5 @@ final class MailboxCountCount implements CommandSubscribingCapability
     public static function reconstituteFromArray(array $from): self
     {
         return new self($from['limit']);
-    }
-
-    public static function subscribedCommands(): array
-    {
-        return [CreateMailbox::class];
     }
 }

@@ -24,7 +24,6 @@ use ParkManager\Module\Webhosting\Tests\Fixtures\Infrastructure\Package\Capabili
 use ParkManager\Module\Webhosting\Tests\Fixtures\Infrastructure\Package\Capability\MonthlyTrafficQuotaGuard2;
 use ParkManager\Module\Webhosting\Tests\Fixtures\Infrastructure\Package\Capability\StorageSpaceQuotaApplier;
 use ParkManager\Module\Webhosting\Tests\Fixtures\Model\Package\Capability\MonthlyTrafficQuota;
-use ParkManager\Module\Webhosting\Tests\Fixtures\Model\Package\Capability\StorageSpaceQuota;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
@@ -46,99 +45,17 @@ final class CapabilitiesRegistryPassTest extends AbstractCompilerPassTestCase
     /**
      * @test
      */
-    public function it_processes_auto_configuration_of_capabilities()
-    {
-        $this->registerService(MonthlyTrafficQuotaGuard::class, MonthlyTrafficQuotaGuard::class);
-        $this->registerService(StorageSpaceQuotaApplier::class, StorageSpaceQuotaApplier::class);
-        $this->registerService(MonthlyTrafficQuota::class, MonthlyTrafficQuota::class)->addTag('park_manager.webhosting_capability', ['auto-configure' => true]);
-        $this->registerService(StorageSpaceQuota::class, StorageSpaceQuota::class)->addTag('park_manager.webhosting_capability');
-
-        $this->compileForManager();
-        $this->assertManagerServiceConfigEquals(
-            [
-                MonthlyTrafficQuota::class => [
-                    'guard' => MonthlyTrafficQuotaGuard::class,
-                    'applier' => null,
-                    'form' => ['type' => null, 'options' => []],
-                    'twig' => [
-                        'edit' => [
-                            'file' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.twig',
-                            'context' => [],
-                        ],
-                        'show' => [
-                            'file' => '@Webhosting/capabilities/show_monthly_traffic_quota.html.twig',
-                            'context' => [],
-                        ],
-                    ],
-                    'jsx' => [
-                        'edit' => [
-                            'file' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.jsx',
-                            'context' => [],
-                        ],
-                        'show' => [
-                            'file' => '@Webhosting/capabilities/show_monthly_traffic_quota.html.jsx',
-                            'context' => [],
-                        ],
-                    ],
-                ],
-                StorageSpaceQuota::class => [
-                    'guard' => null,
-                    'applier' => StorageSpaceQuotaApplier::class,
-                    'form' => ['type' => null, 'options' => []],
-                    'twig' => [
-                        'edit' => [
-                            'file' => '@Webhosting/capabilities/edit_storage_space_quota.html.twig',
-                            'context' => [],
-                        ],
-                        'show' => [
-                            'file' => '@Webhosting/capabilities/show_storage_space_quota.html.twig',
-                            'context' => [],
-                        ],
-                    ],
-                    'jsx' => [
-                        'edit' => [
-                            'file' => '@Webhosting/capabilities/edit_storage_space_quota.html.jsx',
-                            'context' => [],
-                        ],
-                        'show' => [
-                            'file' => '@Webhosting/capabilities/show_storage_space_quota.html.jsx',
-                            'context' => [],
-                        ],
-                    ],
-                ],
-            ],
-            [
-                MonthlyTrafficQuota::id() => MonthlyTrafficQuota::class,
-                StorageSpaceQuota::id() => StorageSpaceQuota::class,
-            ],
-            [MonthlyTrafficQuota::class => MonthlyTrafficQuotaGuard::class],
-            [StorageSpaceQuota::class => StorageSpaceQuotaApplier::class]
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_processes_manual_configuration_of_capabilities()
+    public function it_processes_capabilities()
     {
         $this->setParameter('bar', 'beer');
 
         $this->registerService(MonthlyTrafficQuotaGuard2::class, MonthlyTrafficQuotaGuard2::class);
-
         $this->registerService(MonthlyTrafficQuota::class, MonthlyTrafficQuota::class)->addTag(
             'park_manager.webhosting_capability',
             [
-                'auto-configure' => false,
                 'guard' => MonthlyTrafficQuotaGuard2::class,
                 'applier' => null,
-                'form' => ['type' => null, 'options' => ['foo' => '%bar%']],
-                'twig' => [
-                    'edit' => [
-                        'file' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.twig',
-                        'context' => [],
-                    ],
-                    'show' => '@Webhosting/capabilities/show_monthly_traffic_quota.html.twig',
-                ],
+                'form-type' => 'foo',
             ]
         );
 
@@ -148,26 +65,14 @@ final class CapabilitiesRegistryPassTest extends AbstractCompilerPassTestCase
                 MonthlyTrafficQuota::class => [
                     'guard' => MonthlyTrafficQuotaGuard2::class,
                     'applier' => null,
-                    'form' => ['type' => null, 'options' => ['foo' => 'beer']],
+                    'form-type' => 'foo',
                     'twig' => [
-                        'edit' => [
-                            'file' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.twig',
-                            'context' => [],
-                        ],
-                        'show' => [
-                            'file' => '@Webhosting/capabilities/show_monthly_traffic_quota.html.twig',
-                            'context' => [],
-                        ],
+                        'edit' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.twig',
+                        'show' => '@Webhosting/capabilities/show_monthly_traffic_quota.html.twig',
                     ],
                     'jsx' => [
-                        'edit' => [
-                            'file' => null,
-                            'context' => [],
-                        ],
-                        'show' => [
-                            'file' => null,
-                            'context' => [],
-                        ],
+                        'edit' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.jsx',
+                        'show' => '@Webhosting/capabilities/show_monthly_traffic_quota.html.jsx',
                     ],
                 ],
             ],
@@ -181,7 +86,7 @@ final class CapabilitiesRegistryPassTest extends AbstractCompilerPassTestCase
      * @test
      * @dataProvider provideInvalidConfiguration
      */
-    public function it_validates_manual_configuration(array $config, string $message)
+    public function it_validates_configuration(array $config, string $message)
     {
         $this->registerService(MonthlyTrafficQuotaGuard::class, MonthlyTrafficQuotaGuard::class);
         $this->registerService(StorageSpaceQuotaApplier::class, StorageSpaceQuotaApplier::class);
@@ -201,27 +106,15 @@ final class CapabilitiesRegistryPassTest extends AbstractCompilerPassTestCase
                 [
                     'guard' => null,
                     'applier' => null,
-                    'form' => ['type' => null, 'options' => ['foo' => '']],
-                    'twig' => [
-                        'edit' => [
-                            'file' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.twig',
-                            'context' => [],
-                        ],
-                    ],
+                    'form-type' => 'foo',
                 ],
-                'Webhosting Capability '.MonthlyTrafficQuota::class.' is incorrectly configured. Missing a required Guard and/or Applier.',
+                'Webhosting Capability '.MonthlyTrafficQuota::class.' is incorrectly configured. Requires a "guard" and/or "applier".',
             ],
             [
                 [
                     'guard' => null,
                     'applier' => MonthlyTrafficQuotaGuard::class,
-                    'form' => ['type' => null, 'options' => ['foo' => '']],
-                    'twig' => [
-                        'edit' => [
-                            'file' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.twig',
-                            'context' => [],
-                        ],
-                    ],
+                    'form-type' => 'foo',
                 ],
                 'Webhosting Capability '.MonthlyTrafficQuota::class.' is incorrectly configured. Class '.
                 MonthlyTrafficQuotaGuard::class.' does not implement interface '.ConfigurationApplier::class.'.',
@@ -230,13 +123,7 @@ final class CapabilitiesRegistryPassTest extends AbstractCompilerPassTestCase
                 [
                     'guard' => StorageSpaceQuotaApplier::class,
                     'applier' => null,
-                    'form' => ['type' => null, 'options' => ['foo' => '']],
-                    'twig' => [
-                        'edit' => [
-                            'file' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.twig',
-                            'context' => [],
-                        ],
-                    ],
+                    'form-type' => 'foo',
                 ],
                 'Webhosting Capability '.MonthlyTrafficQuota::class.' is incorrectly configured. Class '.
                 StorageSpaceQuotaApplier::class.' does not implement interface '.CapabilityGuard::class.'.',
@@ -245,13 +132,7 @@ final class CapabilitiesRegistryPassTest extends AbstractCompilerPassTestCase
                 [
                     'guard' => MonthlyTrafficQuotaGuard2::class,
                     'applier' => null,
-                    'form' => ['type' => null, 'options' => ['foo' => '']],
-                    'twig' => [
-                        'edit' => [
-                            'file' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.twig',
-                            'context' => [],
-                        ],
-                    ],
+                    'form-type' => 'foo',
                 ],
                 'Webhosting Capability '.MonthlyTrafficQuota::class.' is incorrectly configured. Class '.
                 MonthlyTrafficQuotaGuard2::class.' is not (correctly) registered in the service container.',
@@ -260,13 +141,7 @@ final class CapabilitiesRegistryPassTest extends AbstractCompilerPassTestCase
                 [
                     'guard' => 'NopeNopeNopeAcmeGuard',
                     'applier' => null,
-                    'form' => ['type' => null, 'options' => ['foo' => '']],
-                    'twig' => [
-                        'edit' => [
-                            'file' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.twig',
-                            'context' => [],
-                        ],
-                    ],
+                    'form-type' => 'foo',
                 ],
                 'Webhosting Capability '.MonthlyTrafficQuota::class.' is incorrectly configured. Class NopeNopeNopeAcmeGuard cannot be found.',
             ],
@@ -274,58 +149,9 @@ final class CapabilitiesRegistryPassTest extends AbstractCompilerPassTestCase
                 [
                     'guard' => MonthlyTrafficQuotaGuard::class,
                     'applier' => null,
-                    'form' => ['type' => null, 'options' => ['foo' => ''], 'foo' => 'nope'],
+                    'foo' => '',
                 ],
-                'Webhosting Capability '.MonthlyTrafficQuota::class.' is incorrectly configured with attribute "form". Unexpected option(s): foo. Supported: type, options',
-            ],
-            [
-                [
-                    'guard' => MonthlyTrafficQuotaGuard::class,
-                    'applier' => null,
-                    'form' => ['options' => 'not-supported'],
-                ],
-                'Webhosting Capability '.MonthlyTrafficQuota::class.' is incorrectly configured with attribute "form". "options" must be an array.',
-            ],
-            [
-                [
-                    'guard' => MonthlyTrafficQuotaGuard::class,
-                    'applier' => null,
-                    'twig' => [
-                        'edit' => [
-                            'file' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.twig',
-                            'context' => [],
-                            'options' => 'not-supported',
-                        ],
-                    ],
-                ],
-                'Webhosting Capability '.MonthlyTrafficQuota::class.' is incorrectly configured with attribute "twig.edit". Unexpected option(s): options. Supported: file, context',
-            ],
-            [
-                [
-                    'guard' => MonthlyTrafficQuotaGuard::class,
-                    'applier' => null,
-                    'twig' => [
-                        'edit' => [
-                            'file' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.twig',
-                            'context' => 'not-supported',
-                        ],
-                    ],
-                ],
-                'Webhosting Capability '.MonthlyTrafficQuota::class.' is incorrectly configured with attribute "twig.edit". "context" must be an array.',
-            ],
-            [
-                [
-                    'guard' => MonthlyTrafficQuotaGuard::class,
-                    'applier' => null,
-                    'jsx' => [
-                        'edit' => [
-                            'file' => '@Webhosting/capabilities/edit_monthly_traffic_quota.html.jsx',
-                            'context' => [],
-                            'options' => 'not-supported',
-                        ],
-                    ],
-                ],
-                'Webhosting Capability '.MonthlyTrafficQuota::class.' is incorrectly configured with attribute "jsx.edit". Unexpected option(s): options. Supported: file, context',
+                'Webhosting Capability '.MonthlyTrafficQuota::class.' is incorrectly configured. Unexpected attribute(s): foo. Supported: guard, applier, form-type',
             ],
         ];
     }

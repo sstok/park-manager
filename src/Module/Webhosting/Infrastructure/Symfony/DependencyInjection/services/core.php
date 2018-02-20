@@ -21,18 +21,16 @@ use ParkManager\Component\Model\Event\EventEmitter;
 use ParkManager\Module\Webhosting\Infrastructure\Doctrine\Repository\{
     WebhostingAccountOrmRepository, WebhostingDomainNameOrmRepository, WebhostingPackageOrmRepository
 };
+use ParkManager\Module\Webhosting\Infrastructure\Package\Capability\MonthlyTrafficQuotaApplier;
 use ParkManager\Module\Webhosting\Model\{
-    Account\WebhostingAccountRepository,
-    DomainName\WebhostingDomainNameRepository,
-    Package\CapabilitiesFactory,
-    Package\CapabilitiesGuard,
-    Package\WebhostingPackageRepository
+    Account\WebhostingAccountRepository, DomainName\WebhostingDomainNameRepository, Package\CapabilitiesFactory, Package\CapabilitiesGuard, Package\Capability\MonthlyTrafficQuota, Package\WebhostingPackageRepository
 };
 use ParkManager\Module\Webhosting\Service\Package\{
     AccountCapabilitiesGuard,
     CapabilitiesRegistry,
     CommandToCapabilitiesGuard
 };
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
@@ -59,7 +57,7 @@ return function (ContainerConfigurator $c) {
 
     $di->set(AccountCapabilitiesGuard::class)
         ->alias(CapabilitiesGuard::class, AccountCapabilitiesGuard::class);
-    $di->set(CommandToCapabilitiesGuard::class)->arg('$commandToCapabilitiesMapping', []);
+    $di->set(CommandToCapabilitiesGuard::class);
 
     $di->set(WebhostingDomainNameOrmRepository::class)
         ->alias(WebhostingDomainNameRepository::class, WebhostingDomainNameOrmRepository::class);
@@ -69,6 +67,9 @@ return function (ContainerConfigurator $c) {
         ->alias(WebhostingPackageRepository::class, WebhostingPackageOrmRepository::class);
 
     $di->load('ParkManager\Module\Webhosting\Infrastructure\\Package\\Capability\\', __DIR__.'/../../../../Infrastructure/Package/Capability');
-    $di->load('ParkManager\Module\Webhosting\Model\\Package\\Capability\\', __DIR__.'/../../../../Model/Package/Capability')
-        ->tag('park_manager.webhosting_capability');
+
+    $di->set(MonthlyTrafficQuota::class)->tag('park_manager.webhosting_capability', [
+        'applier' => MonthlyTrafficQuotaApplier::class,
+        'form-type' => IntegerType::class,
+    ]);
 };
