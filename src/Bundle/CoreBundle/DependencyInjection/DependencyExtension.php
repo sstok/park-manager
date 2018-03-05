@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\DependencyInjection;
 
 use ParkManager\Bridge\Doctrine\Type\ArrayCollectionType;
-use Rollerworks\Bundle\AppSectioningBundle\DependencyInjection\SectioningFactory;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -37,8 +36,7 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
 
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
-        $this->registerApplicationSections($container, $config);
+        //$config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $this->registerRoutes($container);
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -66,15 +64,6 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
                 'types' => ['array_collection' => ['class' => ArrayCollectionType::class, 'commented' => true]],
             ],
         ]);
-    }
-
-    private function registerApplicationSections(ContainerBuilder $container, array $config): void
-    {
-        $factory = new SectioningFactory($container, 'park_manager.section');
-
-        foreach ($config['sections'] as $section => $sectionConfig) {
-            $factory->set($section, $sectionConfig);
-        }
     }
 
     private function registerRoutes(ContainerBuilder $container): void
