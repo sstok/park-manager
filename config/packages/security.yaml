@@ -13,8 +13,7 @@ security:
             security: false
 
         admin:
-            pattern: '^/admin'
-            #request_matcher: park_manager.section.admin.request_matcher
+            request_matcher: park_manager.section.admin.request_matcher
             provider: administrator
             context: admin
             anonymous: ~
@@ -23,57 +22,80 @@ security:
                 csrf_parameter:       _csrf_token
                 csrf_token_generator: security.csrf.token_manager
                 csrf_token_id:        logout_admin
-                path:                 '/admin/logout'
-                target:               '/admin/'
+                path:                 '%park_manager.section.admin.prefix%logout'
+                target:               '%park_manager.section.admin.prefix%'
             guard:
                 authenticators:
                     - park_manager.security.guard.form.administrator
 
             remember_me:
-                secret:               '%kernel.secret%'
+                secret:               "%env(APP_SECRET)%"
                 token_provider:       ~
                 catch_exceptions:     true
                 name:                 ADMIN_REMEMBERME
                 lifetime:             604800 # one week
-                path:                 'admin/'
-                domain:               null # cannot be configured due to host-patterns
-                secure:               false
+                path:                 '%park_manager.section.admin.prefix%'
+                domain:               '%park_manager.section.admin.domain%'
+                secure:               '%park_manager.section.admin.is_secure%'
                 httponly:             true
                 always_remember_me:   false
 
-#        client:
-#            pattern: '^/'
-#            #request_matcher: park_manager.section.admin.request_matcher
-#            provider: administrator
-#            #context: admin
-#            anonymous: ~
-#
-#            logout:
-#                csrf_parameter:       _csrf_token
-#                csrf_token_generator: security.csrf.token_manager
-#                csrf_token_id:        logout_admin
-#                path:                 '/logout'
-#                target:               '/'
-#            guard:
-#                authenticators:
-#                    - park_manager.security.guard.form.administrator
-#
-#            remember_me:
-#                secret:               '%kernel.secret%'
-#                token_provider:       ~
-#                catch_exceptions:     true
-#                name:                 ADMIN_REMEMBERME
-#                lifetime:             604800 # one week
-#                path:                 '/'
-#                domain:               null # cannot be configured due to host-patterns
-#                secure:               false
-#                httponly:             true
-#                always_remember_me:   false
+        client:
+            request_matcher: park_manager.section.admin.request_matcher
+            provider: administrator
+            anonymous: ~
+
+            logout:
+                csrf_parameter:       _csrf_token
+                csrf_token_generator: security.csrf.token_manager
+                csrf_token_id:        logout_admin
+                path:                 '%park_manager.section.client.prefix%logout'
+                target:               '%park_manager.section.client.prefix%'
+            guard:
+                authenticators:
+                    - park_manager.security.guard.form.administrator
+
+            remember_me:
+                secret:               "%env(APP_SECRET)%"
+                token_provider:       ~
+                catch_exceptions:     true
+                name:                 ADMIN_REMEMBERME
+                lifetime:             604800 # one week
+                path:                 '%park_manager.section.client.prefix%'
+                domain:               '%park_manager.section.client.domain%'
+                secure:               '%park_manager.section.client.is_secure%'
+                httponly:             true
+                always_remember_me:   false
 
     access_control:
-        # Admin
-        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
+        # Notice. Path always ends with a /
 
-        - { path: ^/, role: ROLE_USER }
+        # Admin
+        -
+            path: '%park_manager.section.admin.path%login$'
+            host: '%park_manager.section.admin.host_pattern%'
+            requires_channel: '%park_manager.section.admin.channel%'
+
+            role: IS_AUTHENTICATED_ANONYMOUSLY
+
+        -
+            path: '%park_manager.section.admin.path%resetting'
+            host: '%park_manager.section.admin.host_pattern%'
+            requires_channel: '%park_manager.section.admin.channel%'
+
+            role: IS_AUTHENTICATED_ANONYMOUSLY
+
+        -
+            path: '%park_manager.section.admin.path%'
+            host: '%park_manager.section.admin.host_pattern%'
+            requires_channel: '%park_manager.section.admin.channel%'
+
+            role: ROLE_ADMIN
+
+        # Client
+        -
+            path: '%park_manager.section.client.path%'
+            host: '%park_manager.section.client.host_pattern%'
+            requires_channel: '%park_manager.section.client.channel%'
+
+            role: ROLE_USER

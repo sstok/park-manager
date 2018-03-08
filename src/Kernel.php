@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use Rollerworks\Component\AppSectioning\SectioningFactory;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -51,6 +52,12 @@ class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
+        (new SectioningFactory($container, 'park_manager.section'))
+            ->set('admin', $_ENV['APP_ADMIN_SECTION'] ?? '/admin')
+            ->set('client', $_ENV['APP_CLIENT_SECTION'] ?? '/')
+            ->set('api', $_ENV['APP_API_SECTION'] ?? '/api')
+            ->register();
+
         $confDir = dirname(__DIR__).'/config';
         $loader->load($confDir.'/packages/*'.self::CONFIG_EXTS, 'glob');
         if (is_dir($confDir.'/packages/'.$this->environment)) {

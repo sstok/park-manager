@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\DependencyInjection;
 
-use Rollerworks\Bundle\AppSectioningBundle\DependencyInjection\SectioningConfigurator;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -37,12 +36,6 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('sections')
-                    ->children()
-                        ->append(SectioningConfigurator::createSection('admin'))
-                        ->append(SectioningConfigurator::createSection('client'))
-                    ->end()
-                ->end()
             ->end()
         ;
 

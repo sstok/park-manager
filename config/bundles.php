@@ -8,7 +8,6 @@ return [
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['dev' => true],
     Rollerworks\Bundle\RouteAutowiringBundle\RollerworksRouteAutowiringBundle::class => ['all' => true],
-    Rollerworks\Bundle\AppSectioningBundle\RollerworksAppSectioningBundle::class => ['all' => true],
     ParkManager\Bundle\ServiceBusBundle\ParkManagerServiceBusBundle::class => ['all' => true],
     ParkManager\Bundle\ServiceBusPolicyGuardBundle\ParkManagerServiceBusPolicyGuardBundle::class => ['all' => true],
     ParkManager\Bundle\CoreBundle\ParkManagerCoreBundle::class => ['all' => true],
