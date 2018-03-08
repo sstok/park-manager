@@ -24,6 +24,13 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\DefaultsConfigurat
  */
 class MessageBusConfigurator
 {
+    // Priorities the higher the sooner.
+    // --
+    public const MIDDLEWARE_PRIORITY_GUARD = 10000;
+    public const MIDDLEWARE_PRIORITY_TRANSACTION = 8000;
+    public const MIDDLEWARE_PRIORITY_HANDLE = -10000;
+    // --
+
     private $di;
     private $serviceId;
 

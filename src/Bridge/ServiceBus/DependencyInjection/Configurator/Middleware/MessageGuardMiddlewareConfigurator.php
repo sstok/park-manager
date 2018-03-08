@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\Middleware;
 
+use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MessageBusConfigurator;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MiddlewareConfigurator;
 use ParkManager\Component\ServiceBus\MessageGuard\MessageGuardMiddleware;
 use ParkManager\Component\ServiceBus\MessageGuard\PermissionGuard;
@@ -38,7 +39,7 @@ final class MessageGuardMiddlewareConfigurator implements MiddlewareConfigurator
         $this->serviceId = $serviceId;
 
         $di->set($serviceId.'.middleware.message_guard', MessageGuardMiddleware::class)
-            ->tag($serviceId.'.middleware', ['priority' => 5000])->autowire(false)->private();
+            ->tag($serviceId.'.middleware', ['priority' => MessageBusConfigurator::MIDDLEWARE_PRIORITY_GUARD])->autowire(false)->private();
 
         foreach ($guards as $guard) {
             if (is_array($guard)) {

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\Middleware;
 
 use League\Tactician\Doctrine\ORM\TransactionMiddleware;
+use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MessageBusConfigurator;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MiddlewareConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
@@ -28,7 +29,7 @@ final class DoctrineOrmTransactionMiddlewareConfigurator implements MiddlewareCo
     {
         $di->set($serviceId.'.middleware.doctrine_transaction', TransactionMiddleware::class)
             ->args([new Reference('doctrine.orm.'.$managerName.'_entity_manager')])
-            ->tag($serviceId.'.middleware', ['priority' => 4999])
+            ->tag($serviceId.'.middleware', ['priority' => MessageBusConfigurator::MIDDLEWARE_PRIORITY_TRANSACTION])
             ->private();
     }
 }

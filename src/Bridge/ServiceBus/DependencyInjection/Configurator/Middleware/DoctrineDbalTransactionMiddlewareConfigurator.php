@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\Middleware;
 
 use League\Tactician\Doctrine\DBAL\TransactionMiddleware;
+use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MessageBusConfigurator;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MiddlewareConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
@@ -28,7 +29,7 @@ final class DoctrineDbalTransactionMiddlewareConfigurator implements MiddlewareC
     {
         $di->set($serviceId.'.middleware.doctrine_transaction', TransactionMiddleware::class)
             ->args([new Reference('doctrine.dbal.default'.$managerName.'_connection')])
-            ->tag($serviceId.'.middleware', ['priority' => 4999])
+            ->tag($serviceId.'.middleware', ['priority' => MessageBusConfigurator::MIDDLEWARE_PRIORITY_TRANSACTION])
             ->private();
     }
 }

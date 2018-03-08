@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bridge\ServiceBus\Tests\DependencyInjection\Configurator\Middleware;
 
+use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MessageBusConfigurator;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\Middleware\MessageGuardMiddlewareConfigurator;
 use ParkManager\Bridge\ServiceBus\Guard\CliGuard;
 use ParkManager\Bridge\ServiceBus\Guard\SymfonyGuard;
@@ -39,7 +40,7 @@ final class MessageGuardMiddlewareConfiguratorTest extends MiddlewareConfigurato
         $this->assertContainerBuilderHasServiceDefinitionWithTag(
             $serviceId,
             'park_manager.command_bus.users.middleware',
-            ['priority' => 5000]
+            ['priority' => MessageBusConfigurator::MIDDLEWARE_PRIORITY_GUARD]
         );
     }
 
@@ -59,7 +60,7 @@ final class MessageGuardMiddlewareConfiguratorTest extends MiddlewareConfigurato
         $this->assertContainerBuilderHasServiceDefinitionWithTag(
             $serviceId,
             'park_manager.command_bus.users.middleware',
-            ['priority' => 5000]
+            ['priority' => MessageBusConfigurator::MIDDLEWARE_PRIORITY_GUARD]
         );
 
         $serviceId = 'park_manager.command_bus.users.message_guard.'.CliGuard::class;
