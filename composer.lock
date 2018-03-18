@@ -1800,16 +1800,16 @@
         },
         {
             "name": "rollerworks/app-sectioning",
-            "version": "v0.6.0",
+            "version": "v0.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rollerworks/app-sectioning.git",
-                "reference": "d6eaa8d0d2a2b699beb2cff943f716e3882dc284"
+                "reference": "9b269c8c8eadca49c3b038e0a90ac88e7a41b049"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rollerworks/app-sectioning/zipball/d6eaa8d0d2a2b699beb2cff943f716e3882dc284",
-                "reference": "d6eaa8d0d2a2b699beb2cff943f716e3882dc284",
+                "url": "https://api.github.com/repos/rollerworks/app-sectioning/zipball/9b269c8c8eadca49c3b038e0a90ac88e7a41b049",
+                "reference": "9b269c8c8eadca49c3b038e0a90ac88e7a41b049",
                 "shasum": ""
             },
             "require": {
@@ -1829,7 +1829,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.5-dev"
+                    "dev-master": "0.6-dev"
                 }
             },
             "autoload": {
@@ -1851,7 +1851,7 @@
                 }
             ],
             "description": "Configuration helper for separating your Symfony application into multiple sections",
-            "time": "2018-03-07T19:02:48+00:00"
+            "time": "2018-03-18T14:46:51+00:00"
         },
         {
             "name": "rollerworks/route-autowiring-bundle",
