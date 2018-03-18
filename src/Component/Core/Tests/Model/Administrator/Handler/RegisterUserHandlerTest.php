@@ -15,12 +15,12 @@ declare(strict_types=1);
 namespace ParkManager\Component\Core\Tests\Model\Administrator\Handler;
 
 use ParkManager\Component\Core\Model\Administrator\Administrator;
+use ParkManager\Component\Core\Model\Administrator\AdministratorId;
 use ParkManager\Component\Core\Model\Administrator\Command\RegisterAdministrator;
 use ParkManager\Component\Core\Model\Administrator\Exception\AdministratorEmailAddressAlreadyInUse;
 use ParkManager\Component\Core\Model\Administrator\Handler\RegisterAdministratorHandler;
 use ParkManager\Component\User\Model\User;
 use ParkManager\Component\User\Model\UserCollection;
-use ParkManager\Component\User\Model\UserId;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
@@ -60,9 +60,9 @@ final class RegisterUserHandlerTest extends TestCase
         $handler(new RegisterAdministrator(self::ID_NEW, 'John@example.com', 'My', 'name', null));
     }
 
-    private function existingId(): UserId
+    private function existingId(): AdministratorId
     {
-        return UserId::fromString(self::ID_EXISTING);
+        return AdministratorId::fromString(self::ID_EXISTING);
     }
 
     private function expectUserSaved(RegisterAdministrator $command): UserCollection

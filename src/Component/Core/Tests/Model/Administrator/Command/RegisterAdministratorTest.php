@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Core\Tests\Model\Administrator\Command;
 
+use ParkManager\Component\Core\Model\Administrator\AdministratorId;
 use ParkManager\Component\Core\Model\Administrator\Command\RegisterAdministrator;
-use ParkManager\Component\User\Model\UserId;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -30,7 +30,7 @@ final class RegisterAdministratorTest extends TestCase
     {
         $command = new RegisterAdministrator(self::USER_ID, 'John@example.com', 'First', 'Last', 'empty');
 
-        self::assertEquals(UserId::fromString(self::USER_ID), $command->id());
+        self::assertEquals(AdministratorId::fromString(self::USER_ID), $command->id());
         self::assertEquals('John@example.com', $command->email());
         self::assertEquals('First', $command->firstName());
         self::assertEquals('Last', $command->lastName());
@@ -42,7 +42,7 @@ final class RegisterAdministratorTest extends TestCase
     {
         $command = new RegisterAdministrator(self::USER_ID, 'John@example.com', 'First', 'Last');
 
-        self::assertEquals(UserId::fromString(self::USER_ID), $command->id());
+        self::assertEquals(AdministratorId::fromString(self::USER_ID), $command->id());
         self::assertEquals('John@example.com', $command->email());
         self::assertEquals('First', $command->firstName());
         self::assertEquals('Last', $command->lastName());

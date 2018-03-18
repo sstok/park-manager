@@ -42,7 +42,7 @@ class DoctrineOrmUserCollection extends EntityRepository implements UserCollecti
     public function get(UserId $id): User
     {
         /** @var User $user */
-        if (null === $user = $this->find($id->toString())) {
+        if (null === $user = $this->find($id)) {
             throw UserNotFound::withUserId($id);
         }
 

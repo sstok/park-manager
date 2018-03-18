@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Core\Model\Administrator\Event;
 
+use ParkManager\Component\Core\Model\Administrator\AdministratorId;
 use ParkManager\Component\Model\Event\DomainEvent;
-use ParkManager\Component\User\Model\UserId;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
@@ -27,7 +27,7 @@ final class AdministratorWasRegistered extends DomainEvent
     private $firstName;
     private $lastName;
 
-    public function __construct(UserId $id, string $email, string $firstName, string $lastName)
+    public function __construct(AdministratorId $id, string $email, string $firstName, string $lastName)
     {
         $this->id = $id;
         $this->email = $email;
@@ -35,7 +35,7 @@ final class AdministratorWasRegistered extends DomainEvent
         $this->lastName = $lastName;
     }
 
-    public function id(): UserId
+    public function id(): AdministratorId
     {
         return $this->id;
     }

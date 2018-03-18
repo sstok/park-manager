@@ -37,14 +37,9 @@ abstract class User extends EventsRecordingEntity
     public const DEFAULT_ROLE = 'ROLE_USER';
 
     /**
-     * @var string
-     */
-    protected $id;
-
-    /**
      * @var UserId
      */
-    protected $idObj;
+    protected $id;
 
     /**
      * @var string
@@ -83,25 +78,15 @@ abstract class User extends EventsRecordingEntity
 
     protected function __construct(UserId $id, string $email, string $canonicalEmail)
     {
-        $this->id = $id->toString();
-        $this->idObj = $id;
+        $this->id = $id;
         $this->email = $email;
         $this->canonicalEmail = $canonicalEmail;
         $this->roles = new ArrayCollection(static::getDefaultRoles());
     }
 
-    /**
-     * Returns the id of the user.
-     *
-     * @return UserId
-     */
     public function id(): UserId
     {
-        if (null === $this->idObj) {
-            $this->idObj = UserId::fromString($this->id);
-        }
-
-        return $this->idObj;
+        return $this->id;
     }
 
     /**

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Core\Model\Administrator\Command;
 
-use ParkManager\Component\User\Model\UserId;
+use ParkManager\Component\Core\Model\Administrator\AdministratorId;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
@@ -38,14 +38,14 @@ final class RegisterAdministrator
      */
     public function __construct(string $id, string $email, string $firstName, string $lastName, ?string $password = null)
     {
-        $this->id = UserId::fromString($id);
+        $this->id = AdministratorId::fromString($id);
         $this->email = $email;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->password = $password;
     }
 
-    public function id(): UserId
+    public function id(): AdministratorId
     {
         return $this->id;
     }

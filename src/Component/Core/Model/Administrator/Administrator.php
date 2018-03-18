@@ -17,12 +17,13 @@ namespace ParkManager\Component\Core\Model\Administrator;
 use ParkManager\Component\Core\Model\Administrator\Event\AdministratorNameWasChanged;
 use ParkManager\Component\Core\Model\Administrator\Event\AdministratorWasRegistered;
 use ParkManager\Component\User\Model\User;
-use ParkManager\Component\User\Model\UserId;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  *
  * @final
+ *
+ * @method id(): AdministratorId
  */
 class Administrator extends User
 {
@@ -37,7 +38,7 @@ class Administrator extends User
     private $lastName;
 
     public static function registerWith(
-        UserId $id,
+        AdministratorId $id,
         string $email,
         string $canonicalEmail,
         string $firstName,
@@ -58,7 +59,7 @@ class Administrator extends User
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->recordThat(new AdministratorNameWasChanged($this->id(), $firstName, $lastName));
+        $this->recordThat(new AdministratorNameWasChanged($this->id, $firstName, $lastName));
     }
 
     public function firstName(): string
