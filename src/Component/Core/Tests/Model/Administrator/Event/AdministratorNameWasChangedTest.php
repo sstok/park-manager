@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Core\Tests\Model\Administrator\Event;
 
+use ParkManager\Component\Core\Model\Administrator\AdministratorId;
 use ParkManager\Component\Core\Model\Administrator\Event\AdministratorNameWasChanged;
-use ParkManager\Component\User\Model\UserId;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,9 +28,9 @@ final class AdministratorNameWasChangedTest extends TestCase
     /** @test */
     public function its_constructable()
     {
-        $command = new AdministratorNameWasChanged($id = UserId::fromString(self::USER_ID), 'First', 'Named');
+        $command = new AdministratorNameWasChanged($id = AdministratorId::fromString(self::USER_ID), 'First', 'Named');
 
-        self::assertEquals(UserId::fromString(self::USER_ID), $command->id());
+        self::assertEquals(AdministratorId::fromString(self::USER_ID), $command->id());
         self::assertTrue($id->equals($command->id()));
         self::assertEquals('Named', $command->lastName());
         self::assertEquals('First', $command->firstName());

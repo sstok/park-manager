@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\DependencyInjection;
 
 use ParkManager\Bridge\Doctrine\Type\ArrayCollectionType;
+use ParkManager\Bundle\CoreBundle\Doctrine\Type\AdministratorIdType;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -61,7 +62,10 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
     {
         $container->prependExtensionConfig('doctrine', [
             'dbal' => [
-                'types' => ['array_collection' => ['class' => ArrayCollectionType::class, 'commented' => true]],
+                'types' => [
+                    'array_collection' => ['class' => ArrayCollectionType::class, 'commented' => true],
+                    AdministratorIdType::NAME => ['class' => AdministratorIdType::class, 'commented' => true],
+                ],
             ],
         ]);
     }

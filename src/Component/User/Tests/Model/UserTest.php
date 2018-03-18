@@ -49,12 +49,6 @@ final class UserTest extends TestCase
     }
 
     /** @test */
-    public function its_id_is_correct_after_hydration()
-    {
-        self::assertHydratedObjectValueEquals(UserImplementation::class, self::ID1, UserId::fromString(self::ID1));
-    }
-
-    /** @test */
     public function it_can_changes_email()
     {
         $user = $this->createUser();
