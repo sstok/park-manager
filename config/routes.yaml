@@ -17,11 +17,11 @@ _client:
 
 home:
     path: /
-    defaults: { _controller: ParkManager\Bundle\CoreBundle\Action\HomepageAction }
+    controller: ParkManager\Core\Infrastructure\Web\Action\HomepageAction
 
 admin_home:
     path: /admin/
-    defaults: { _controller: ParkManager\Bundle\CoreBundle\Action\HomepageAction }
+    controller: ParkManager\Core\Infrastructure\Web\Action\HomepageAction
 
 #admin_login:
 #    path: /admin/login

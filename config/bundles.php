@@ -10,7 +10,7 @@ return [
     Rollerworks\Bundle\RouteAutowiringBundle\RollerworksRouteAutowiringBundle::class => ['all' => true],
     ParkManager\Bundle\ServiceBusBundle\ParkManagerServiceBusBundle::class => ['all' => true],
     ParkManager\Bundle\ServiceBusPolicyGuardBundle\ParkManagerServiceBusPolicyGuardBundle::class => ['all' => true],
-    ParkManager\Bundle\CoreBundle\ParkManagerCoreBundle::class => ['all' => true],
+    \ParkManager\Core\ParkManagerCore::class => ['all' => true],
     ParkManager\Bundle\UserBundle\ParkManagerUserBundle::class => ['all' => true],
     ParkManager\Bundle\TestBundle\ParkManagerTestBundle::class => ['test' => true],
     ParkManager\Module\Webhosting\ParkManagerWebhostingBundle::class => ['all' => true],
