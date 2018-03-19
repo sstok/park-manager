@@ -1,6 +1,6 @@
 security:
     encoders:
-        'ParkManager\Bundle\CoreBundle\Security\AdministratorSecurityUser':
+        'ParkManager\Core\Infrastructure\Security\AdministratorSecurityUser':
             algorithm: argon2i
 
     providers:
