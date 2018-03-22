@@ -16,12 +16,12 @@ namespace ParkManager\Module\Webhosting;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Doctrine\DBAL\Types\Type;
-use ParkManager\Module\Webhosting\Infrastructure\Doctrine\Type\WebhostingCapabilitiesType;
-use ParkManager\Module\Webhosting\Infrastructure\Symfony\DependencyInjection\Compiler\{
+use ParkManager\Module\Webhosting\Domain\Package\CapabilitiesFactory;
+use ParkManager\Module\Webhosting\Infrastructure\DependencyInjection\Compiler\{
     CapabilitiesRegistryPass, CommandToCapabilitiesGuardPass
 };
-use ParkManager\Module\Webhosting\Infrastructure\Symfony\DependencyInjection\DependencyExtension;
-use ParkManager\Module\Webhosting\Model\Package\CapabilitiesFactory;
+use ParkManager\Module\Webhosting\Infrastructure\DependencyInjection\DependencyExtension;
+use ParkManager\Module\Webhosting\Infrastructure\Doctrine\Package\WebhostingCapabilitiesType;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -42,7 +42,10 @@ final class ParkManagerWebhostingBundle extends Bundle
     public function build(ContainerBuilder $container): void
     {
         $mappings = [
-            realpath(__DIR__.'/Infrastructure/Doctrine/mapping') => 'ParkManager\Module\Webhosting\Model',
+            realpath(__DIR__.'/Infrastructure/Doctrine/Account/Mapping') => 'ParkManager\Module\Webhosting\Domain\Account',
+            realpath(__DIR__.'/Infrastructure/Doctrine/DomainName/Mapping') => 'ParkManager\Module\Webhosting\Domain\DomainName',
+            realpath(__DIR__.'/Infrastructure/Doctrine/Package/Mapping') => 'ParkManager\Module\Webhosting\Domain\Package',
+            realpath(__DIR__.'/Infrastructure/Doctrine/RootMapping') => 'ParkManager\Module\Webhosting\Domain',
         ];
 
         $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings));

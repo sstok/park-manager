@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="ParkManager\Module\Webhosting\Domain\DomainName\WebhostingDomainName" table="domain_name" schema="webhosting">
+        <indexes>
+            <index columns="account,is_primary" name="domain_name_primary_marking_idx" />
+        </indexes>
+
+        <id name="idString" column="id" type="guid">
+            <generator strategy="NONE" />
+        </id>
+
+        <field name="primary" column="is_primary" type="boolean" nullable="false" />
+        <embedded name="domainName" class="ParkManager\Module\Webhosting\Domain\DomainName" column-prefix="domain_" />
+
+        <many-to-one target-entity="ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount" field="account">
+            <join-column on-delete="CASCADE" name="account" referenced-column-name="id" />
+        </many-to-one>
+    </entity>
+
+</doctrine-mapping>

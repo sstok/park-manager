@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Service\Package;
 
 use ParkManager\Component\Model\LogMessage\LogMessages;
-use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountId;
-use ParkManager\Module\Webhosting\Model\Account\WebhostingAccountRepository;
-use ParkManager\Module\Webhosting\Model\Package\CapabilitiesGuard;
+use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
+use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountRepository;
+use ParkManager\Module\Webhosting\Domain\Package\CapabilitiesGuard;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>

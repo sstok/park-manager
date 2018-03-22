@@ -14,11 +14,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Service\Package;
 
-use ParkManager\Module\Webhosting\Model\Package\CapabilitiesFactory;
-use ParkManager\Module\Webhosting\Model\Package\Capability;
-use ParkManager\Module\Webhosting\Model\Package\CapabilityGuard;
-use ParkManager\Module\Webhosting\Model\Package\ConfigurationApplier;
-use ParkManager\Module\Webhosting\Model\Package\Exception\CapabilityNotRegistered;
+use ParkManager\Module\Webhosting\Domain\Package\CapabilitiesFactory;
+use ParkManager\Module\Webhosting\Domain\Package\Capability;
+use ParkManager\Module\Webhosting\Domain\Package\CapabilityGuard;
+use ParkManager\Module\Webhosting\Domain\Package\ConfigurationApplier;
+use ParkManager\Module\Webhosting\Domain\Package\Exception\CapabilityNotRegistered;
 use Psr\Container\ContainerInterface;
 
 /**
