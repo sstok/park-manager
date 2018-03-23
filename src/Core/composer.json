@@ -16,9 +16,9 @@
     ],
     "require": {
         "php": "^7.2",
-        "park-manager/doctrine-bridge": "^0.2",
-        "park-manager/model": "^0.2",
-        "park-manager/user-bundle": "^0.2",
+        "park-manager/doctrine-bridge": "^0.3",
+        "park-manager/model": "^0.3",
+        "park-manager/user-bundle": "^0.3",
         "rollerworks/app-sectioning-bundle": "^0.4.1@dev",
         "rollerworks/route-autowiring-bundle": "^1.0.1",
         "symfony/console": "^3.4 || ^4.0",
@@ -49,7 +49,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.2-dev"
+            "dev-master": "0.3-dev"
         }
     }
 }
