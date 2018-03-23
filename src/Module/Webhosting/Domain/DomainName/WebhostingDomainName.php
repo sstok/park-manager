@@ -39,22 +39,15 @@ class WebhostingDomainName
     protected $primary = false;
 
     /**
-     * @var WebhostingDomainNameId|null
+     * @var WebhostingDomainNameId
      */
     protected $id;
-
-    /**
-     * ID for storage (do not use directly).
-     *
-     * @var string
-     */
-    private $idString;
 
     public function __construct(WebhostingAccount $account, DomainName $domainName)
     {
         $this->account = $account;
         $this->domainName = $domainName;
-        $this->generateId();
+        $this->id = WebhostingDomainNameId::create();
     }
 
     /**
@@ -84,10 +77,6 @@ class WebhostingDomainName
 
     public function id(): WebhostingDomainNameId
     {
-        if (null === $this->id) {
-            $this->id = WebhostingDomainNameId::fromString($this->idString);
-        }
-
         return $this->id;
     }
 
@@ -126,11 +115,5 @@ class WebhostingDomainName
     public function changeName(DomainName $domainName): void
     {
         $this->domainName = $domainName;
-    }
-
-    final protected function generateId(): void
-    {
-        $this->id = WebhostingDomainNameId::create();
-        $this->idString = $this->id->toString();
     }
 }

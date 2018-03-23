@@ -6,7 +6,7 @@
                                       http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <entity name="ParkManager\Module\Webhosting\Domain\Package\WebhostingPackage" table="package" schema="webhosting">
-        <id name="idString" column="id" type="guid">
+        <id name="id" column="id" type="park_manager_webhosting_package_id">
             <generator strategy="NONE" />
         </id>
 

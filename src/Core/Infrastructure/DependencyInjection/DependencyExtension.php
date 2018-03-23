@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Core\Infrastructure\DependencyInjection;
 
 use ParkManager\Bridge\Doctrine\Type\ArrayCollectionType;
+use ParkManager\Bridge\Doctrine\Type\RootEntityOwnerType;
 use ParkManager\Core\Infrastructure\DependencyInjection\Module\ParkManagerModuleDependencyExtension;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -48,6 +49,7 @@ final class DependencyExtension extends ParkManagerModuleDependencyExtension
             'dbal' => [
                 'types' => [
                     'array_collection' => ['class' => ArrayCollectionType::class, 'commented' => true],
+                    RootEntityOwnerType::NAME => ['class' => RootEntityOwnerType::class, 'commented' => true],
                 ],
             ],
         ]);

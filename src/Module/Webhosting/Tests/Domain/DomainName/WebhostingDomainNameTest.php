@@ -14,13 +14,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Domain\DomainName;
 
-use ParkManager\Component\Model\Test\EntityHydrator;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Domain\DomainName;
 use ParkManager\Module\Webhosting\Domain\DomainName\Exception\CannotTransferPrimaryDomainName;
 use ParkManager\Module\Webhosting\Domain\DomainName\WebhostingDomainName;
-use ParkManager\Module\Webhosting\Domain\DomainName\WebhostingDomainNameId;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -64,17 +62,6 @@ final class WebhostingDomainNameTest extends TestCase
         self::assertEquals($domainName2, $webhostingDomainName->domainName());
         self::assertEquals($account, $webhostingDomainName->account());
         self::assertFalse($webhostingDomainName->isPrimary());
-    }
-
-    /** @test */
-    public function it_produces_a_correct_id_after_hydration()
-    {
-        /** @var WebhostingDomainName $webhostingDomainName */
-        $webhostingDomainName = EntityHydrator::hydrateEntity(WebhostingDomainName::class)
-            ->set('idString', self::ID1)
-            ->getEntity();
-
-        self::assertEquals(WebhostingDomainNameId::fromString(self::ID1), $webhostingDomainName->id());
     }
 
     /** @test */

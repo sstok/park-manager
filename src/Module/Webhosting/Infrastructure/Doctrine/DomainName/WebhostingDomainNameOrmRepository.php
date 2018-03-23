@@ -64,7 +64,7 @@ final class WebhostingDomainNameOrmRepository extends EntityRepository implement
                     $this->_em->createQueryBuilder()
                         ->update($this->_entityName, 'd')
                         ->set('d.primary', 'false')
-                        ->where('d.idString = :id')
+                        ->where('d.id = :id')
                         ->getQuery()
                         ->execute(['id' => $primaryDomainName->id()]);
 

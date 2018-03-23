@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Tests\Domain\Account;
 
 use ParkManager\Component\Model\RootEntityOwner;
-use ParkManager\Component\Model\Test\EntityHydrator;
 use ParkManager\Component\Model\Test\EventsRecordingEntityAssertionTrait;
 use ParkManager\Module\Webhosting\Domain\Account\Event\{
     WebhostingAccountCapabilitiesWasChanged,
@@ -65,20 +64,6 @@ final class WebhostingAccountTest extends TestCase
         self::assertSame($package, $account->package());
         self::assertSame($capabilities, $account->capabilities());
         self::assertDomainEvents($account, [new WebhostingAccountWasRegistered($id, $owner)]);
-    }
-
-    /** @test */
-    public function it_produces_a_correct_id_after_hydration()
-    {
-        /** @var WebhostingAccount $account */
-        $account = EntityHydrator::hydrateEntity(WebhostingAccount::class)
-            ->set('idString', self::ACCOUNT_ID)
-            ->set('ownerIdString', self::OWNER_ID1)
-            ->getEntity()
-        ;
-
-        self::assertEquals(WebhostingAccountId::fromString(self::ACCOUNT_ID), $account->id());
-        self::assertEquals(RootEntityOwner::fromString(self::OWNER_ID1), $account->owner());
     }
 
     /** @test */

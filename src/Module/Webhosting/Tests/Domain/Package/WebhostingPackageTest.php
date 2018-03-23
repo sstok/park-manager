@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Domain\Package;
 
-use ParkManager\Component\Model\Test\EntityHydrator;
 use ParkManager\Component\Model\Test\EventsRecordingEntityAssertionTrait;
 use ParkManager\Module\Webhosting\Domain\Package\Capabilities;
 use ParkManager\Module\Webhosting\Domain\Package\Event\WebhostingPackageCapabilitiesWasChanged;
@@ -45,18 +44,6 @@ final class WebhostingPackageTest extends TestCase
         self::assertEquals($capabilities, $package->capabilities());
         self::assertDomainEvents($package, [new WebhostingPackageWasCreated($id, $capabilities)]);
         self::assertEquals([], $package->metadata());
-    }
-
-    /** @test */
-    public function it_produces_a_correct_id_after_hydration()
-    {
-        /** @var WebhostingPackage $package */
-        $package = EntityHydrator::hydrateEntity(WebhostingPackage::class)
-            ->set('idString', self::ID1)
-            ->getEntity()
-        ;
-
-        self::assertEquals(WebhostingPackageId::fromString(self::ID1), $package->id());
     }
 
     /** @test */
