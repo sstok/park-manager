@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "park-manager/service-bus": "^0.2",
+        "park-manager/service-bus": "^0.3",
         "symfony/dependency-injection": "^4.0",
         "league/tactician-container": "^2.0.0"
     },

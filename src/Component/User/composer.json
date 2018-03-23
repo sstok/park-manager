@@ -16,8 +16,8 @@
     ],
     "require": {
         "php": "^7.2",
-        "park-manager/model": "^0.2",
-        "park-manager/security": "^0.2",
+        "park-manager/model": "^0.3",
+        "park-manager/security": "^0.3",
         "symfony/security-core": "^3.4 || ^4.0"
     },
     "config": {
@@ -39,7 +39,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.2-dev"
+            "dev-master": "0.3-dev"
         }
     }
 }

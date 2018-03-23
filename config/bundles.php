@@ -13,7 +13,7 @@ return [
     \ParkManager\Core\ParkManagerCore::class => ['all' => true],
     ParkManager\Bundle\UserBundle\ParkManagerUserBundle::class => ['all' => true],
     ParkManager\Bundle\TestBundle\ParkManagerTestBundle::class => ['test' => true],
-    ParkManager\Module\Webhosting\ParkManagerWebhostingBundle::class => ['all' => true],
+    ParkManager\Module\Webhosting\ParkManagerWebhostingModule::class => ['all' => true],
     Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle::class => ['all' => true],
     Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
     Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],

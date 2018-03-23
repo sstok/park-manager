@@ -35,7 +35,7 @@ return function (ContainerConfigurator $c) {
         ->bind(EventEmitter::class, ref('park_manager.command_bus.webhosting.domain_event_emitter'))
         ->bind(EntityManagerInterface::class, ref('doctrine.orm.entity_manager'));
 
-    // CapabilitiesFactory alias needs to be public for Doctrine type in ParkManagerWebhostingBundle::boot()
+    // CapabilitiesFactory alias needs to be public for Doctrine type in ParkManagerWebhostingModule::boot()
     $di->set(CapabilitiesRegistry::class)
         ->alias(CapabilitiesFactory::class, CapabilitiesRegistry::class)->public();
 
