@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "park-manager/service-bus-bundle": "^0.2",
+        "park-manager/service-bus-bundle": "^0.3",
         "symfony/expression-language": "^4.0",
         "symfony/framework-bundle": "^4.0",
         "symfony/security-bundle": "^4.0"

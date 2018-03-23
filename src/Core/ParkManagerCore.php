@@ -14,18 +14,17 @@ declare(strict_types=1);
 
 namespace ParkManager\Core;
 
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use ParkManager\Bridge\Doctrine\Type\ArrayCollectionType;
 use ParkManager\Bundle\UserBundle\DependencyInjection\Compiler\UserFormHandlerPass;
 use ParkManager\Core\Infrastructure\DependencyInjection\DependencyExtension;
+use ParkManager\Core\Infrastructure\DependencyInjection\Module\AbstractParkManagerModule;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-class ParkManagerCore extends Bundle
+class ParkManagerCore extends AbstractParkManagerModule
 {
     public function getContainerExtension(): DependencyExtension
     {
@@ -38,20 +37,23 @@ class ParkManagerCore extends Bundle
 
     public function build(ContainerBuilder $container)
     {
-        $dirname = dirname((new \ReflectionClass(ArrayCollectionType::class))->getFileName(), 2);
+        parent::build($container);
 
         $container->addCompilerPass(
             new UserFormHandlerPass('park_manager.form_handler.administrator.handler_registry', 'admin_form.handler'),
             PassConfig::TYPE_BEFORE_REMOVING
         );
-        $container->addCompilerPass(
-            DoctrineOrmMappingsPass::createXmlMappingDriver([
-                realpath($dirname.'/Resources/Mapping/Security') => 'ParkManager\\Component\\Security',
-                realpath(
-                    __DIR__.'/Infrastructure/Doctrine/Administrator/Mapping'
-                ) => 'ParkManager\\Core\\Domain\\Administrator',
-            ])
-        );
+    }
+
+    protected function getDoctrineMappings(): array
+    {
+        $mapping = parent::getDoctrineMappings();
+        $mapping[realpath(
+            \dirname((new \ReflectionClass(ArrayCollectionType::class))->getFileName(), 2).
+            '/Resources/Mapping/Security'
+        )] = 'ParkManager\\Component\\Security';
+
+        return $mapping;
     }
 
     protected function getContainerExtensionClass(): string

@@ -14,34 +14,29 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Infrastructure\DependencyInjection;
 
-use Symfony\Component\Config\FileLocator;
+use ParkManager\Core\Infrastructure\DependencyInjection\Module\ParkManagerModuleDependencyExtension;
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-final class DependencyExtension extends Extension
+final class DependencyExtension extends ParkManagerModuleDependencyExtension
 {
-    public const EXTENSION_ALIAS = 'webhosting';
+    public const EXTENSION_ALIAS = 'park_manager_webhosting';
 
-    public function load(array $configs, ContainerBuilder $container): void
+    protected function loadModule(array $configs, ContainerBuilder $container, LoaderInterface $loader): void
     {
-        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
-        $loader->load('core.php');
-        $loader->load('account.php');
-        $loader->load('domain_name.php');
-        $loader->load('package.php');
-    }
-
-    public function getConfiguration(array $config, ContainerBuilder $container)
-    {
-        return new Configuration();
+        $loader->load('*.php', 'glob');
     }
 
     public function getAlias(): string
     {
         return self::EXTENSION_ALIAS;
+    }
+
+    public function getModuleName(): string
+    {
+        return 'ParkManagerWebhosting';
     }
 }
