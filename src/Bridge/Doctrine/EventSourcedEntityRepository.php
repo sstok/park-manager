@@ -39,20 +39,6 @@ abstract class EventSourcedEntityRepository extends EntityRepository
         return $this->_entityName;
     }
 
-    protected function doTransactionalPersist($entity): void
-    {
-        $this->_em->transactional(function () use ($entity) {
-            $this->_em->persist($entity);
-        });
-    }
-
-    protected function doTransactionalRemove($entity): void
-    {
-        $this->_em->transactional(function () use ($entity) {
-            $this->_em->remove($entity);
-        });
-    }
-
     protected function doDispatchEvents(EventsRecordingEntity $aggregateRoot): void
     {
         foreach ($aggregateRoot->releaseEvents() as $event) {

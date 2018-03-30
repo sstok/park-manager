@@ -1,6 +1,11 @@
 UPGRADE
 =======
 
+## Upgrade FROM 0.2.0 to 0.3.0
+
+* The `EntityHydrator` is removed, use [`php-cs-fixer/accessible-object`](https://github.com/PHP-CS-Fixer/AccessibleObject) 
+  instead.
+
 ## Upgrade FROM 0.1.0 to 0.2.0
 
 * Usage of Prooph is dropped, Command/Query and Handlers no longer need to extend

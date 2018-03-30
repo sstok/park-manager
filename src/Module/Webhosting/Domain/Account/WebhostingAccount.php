@@ -37,12 +37,12 @@ class WebhostingAccount extends EventsRecordingEntity
     protected $capabilities;
 
     /**
-     * @var WebhostingAccountId|null
+     * @var WebhostingAccountId
      */
     protected $id;
 
     /**
-     * @var RootEntityOwner|null
+     * @var RootEntityOwner
      */
     protected $owner;
 
@@ -51,29 +51,11 @@ class WebhostingAccount extends EventsRecordingEntity
      */
     protected $expirationDate;
 
-    /**
-     * ID for storage (do not use directly).
-     *
-     * @var string
-     */
-    private $idString;
-
-    /**
-     * ID for storage (do not use directly).
-     *
-     * @var string
-     */
-    private $ownerIdString;
-
     private $markedForRemoval = false;
 
     protected function __construct(WebhostingAccountId $id, RootEntityOwner $owner)
     {
         $this->id = $id;
-        $this->idString = $id->toString();
-
-        $this->owner = $owner;
-        $this->ownerIdString = $owner->toString();
         $this->owner = $owner;
     }
 
@@ -100,19 +82,11 @@ class WebhostingAccount extends EventsRecordingEntity
 
     public function id(): WebhostingAccountId
     {
-        if (null === $this->id) {
-            $this->id = WebhostingAccountId::fromString($this->idString);
-        }
-
         return $this->id;
     }
 
     public function owner(): RootEntityOwner
     {
-        if (null === $this->owner) {
-            $this->owner = RootEntityOwner::fromString($this->ownerIdString);
-        }
-
         return $this->owner;
     }
 

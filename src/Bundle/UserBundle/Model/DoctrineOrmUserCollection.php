@@ -51,9 +51,7 @@ class DoctrineOrmUserCollection extends EntityRepository implements UserCollecti
 
     public function save(User $user): void
     {
-        $this->_em->transactional(function () use ($user) {
-            $this->_em->persist($user);
-        });
+        $this->_em->persist($user);
 
         foreach ($user->releaseEvents() as $event) {
             $this->eventEmitter->emit($event);
@@ -62,9 +60,7 @@ class DoctrineOrmUserCollection extends EntityRepository implements UserCollecti
 
     public function remove(User $user): void
     {
-        $this->_em->transactional(function () use ($user) {
-            $this->_em->remove($user);
-        });
+        $this->_em->remove($user);
     }
 
     public function findByEmailAddress(string $email): ?User

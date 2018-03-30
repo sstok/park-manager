@@ -47,7 +47,7 @@ final class WebhostingAccountOrmRepository extends EventSourcedEntityRepository 
 
     public function save(WebhostingAccount $account): void
     {
-        $this->doTransactionalPersist($account);
+        $this->_em->persist($account);
         $this->doDispatchEvents($account);
     }
 
@@ -57,7 +57,7 @@ final class WebhostingAccountOrmRepository extends EventSourcedEntityRepository 
             throw CannotRemoveActiveWebhostingAccount::withId($account->id());
         }
 
-        $this->doTransactionalRemove($account);
+        $this->_em->remove($account);
         $this->doDispatchEvents($account);
     }
 }

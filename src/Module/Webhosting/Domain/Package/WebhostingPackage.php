@@ -34,13 +34,6 @@ class WebhostingPackage extends EventsRecordingEntity
     protected $id;
 
     /**
-     * ID for storage (do not use directly).
-     *
-     * @var string
-     */
-    private $idString;
-
-    /**
      * @var array
      */
     private $metadata = [];
@@ -48,7 +41,6 @@ class WebhostingPackage extends EventsRecordingEntity
     protected function __construct(WebhostingPackageId $id, Capabilities $capabilities)
     {
         $this->id = $id;
-        $this->idString = $id->toString();
         $this->capabilities = $capabilities;
     }
 
@@ -67,10 +59,6 @@ class WebhostingPackage extends EventsRecordingEntity
 
     public function id(): WebhostingPackageId
     {
-        if (null === $this->id) {
-            $this->id = WebhostingPackageId::fromString($this->idString);
-        }
-
         return $this->id;
     }
 

@@ -105,6 +105,9 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
         $this->repository->save($webhostingDomainName1);
         $this->repository->save($webhostingDomainName2);
         $this->repository->save($webhostingDomainName3);
+
+        // Must be done explicit, normally handled by a transaction script.
+        $em->flush();
     }
 
     /** @test */
@@ -169,6 +172,7 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
         $webhostingDomainName = $this->repository->get($this->id3);
 
         $this->repository->remove($webhostingDomainName);
+        $this->getEntityManager()->flush();
 
         $this->expectException(WebhostingDomainNameNotFound::class);
         $this->expectExceptionMessage(WebhostingDomainNameNotFound::withId($this->id3)->getMessage());

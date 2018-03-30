@@ -48,13 +48,13 @@ final class WebhostingPackageOrmRepository extends EventSourcedEntityRepository 
 
     public function save(WebhostingPackage $package): void
     {
-        $this->doTransactionalPersist($package);
+        $this->_em->persist($package);
         $this->doDispatchEvents($package);
     }
 
     public function remove(WebhostingPackage $package): void
     {
-        $this->doTransactionalRemove($package);
+        $this->_em->remove($package);
         $this->doDispatchEvents($package);
     }
 }
