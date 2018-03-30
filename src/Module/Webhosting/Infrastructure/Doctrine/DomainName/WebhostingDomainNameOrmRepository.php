@@ -76,7 +76,7 @@ final class WebhostingDomainNameOrmRepository extends EntityRepository implement
             }
         }
 
-        $this->doTransactionalPersist($domainName);
+        $this->_em->persist($domainName);
     }
 
     public function remove(WebhostingDomainName $domainName): void
@@ -88,7 +88,7 @@ final class WebhostingDomainNameOrmRepository extends EntityRepository implement
             );
         }
 
-        $this->doTransactionalRemove($domainName);
+        $this->_em->remove($domainName);
     }
 
     public function getPrimaryOf(WebhostingAccountId $id): WebhostingDomainName
