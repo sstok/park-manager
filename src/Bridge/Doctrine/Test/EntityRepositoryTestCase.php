@@ -14,9 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bridge\Doctrine\Test;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -24,17 +22,10 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class EntityRepositoryTestCase extends KernelTestCase
 {
-    /**
-     * @var ContainerInterface|null
-     */
-    protected $container;
-
     protected function setUp()
     {
         parent::setUp();
-
-        $kernel = self::bootKernel();
-        $this->container = $kernel->getContainer();
+        self::bootKernel();
 
         $this->setUpDatabaseTransaction();
     }
@@ -42,7 +33,6 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
     protected function tearDown()
     {
         $this->tearDownDatabaseTransaction();
-        $this->container = null;
         parent::tearDown();
     }
 
@@ -71,8 +61,7 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
 
     protected function getEntityManager(?string $manager = 'doctrine.orm.default_entity_manager'): EntityManagerInterface
     {
-        /** @var EntityManager $em */
-        return $this->container->get($manager ?? $this->getDefaultManagerName());
+        return self::$container->get($manager ?? $this->getDefaultManagerName());
     }
 
     protected function getDefaultManagerName(): string

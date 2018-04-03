@@ -29,24 +29,21 @@
         "league/tactician-doctrine": "^1.1",
         "paragonie/constant_time_encoding": "^2.0",
         "rollerworks/app-sectioning": "^0.6.0",
-        "rollerworks/route-autowiring-bundle": "^1.0.0",
+        "rollerworks/route-autowiring-bundle": "^1.0.2",
         "sensio/framework-extra-bundle": "^5.0",
-        "sylius/mailer-bundle": "^1.0.0",
-        "symfony/asset": "^4.0",
-        "symfony/console": "v4.0.4 as 3.4.0",
-        "symfony/dependency-injection": "v4.0.4 as 3.4.0",
-        "symfony/expression-language": "v4.0.4 as 3.4.0",
+        "symfony/asset": "^4.1",
+        "symfony/console": "^4.1",
+        "symfony/expression-language": "^4.1",
         "symfony/flex": "^1.0.39",
-        "symfony/form": "v4.0.4 as 3.4.0",
-        "symfony/framework-bundle": "v4.0.4 as 3.4.0",
+        "symfony/form": "^4.1",
+        "symfony/framework-bundle": "^4.1",
         "symfony/monolog-bundle": "^3.1",
         "symfony/orm-pack": "^1.0",
-        "symfony/security-bundle": "^4.0",
-        "symfony/stopwatch": "v4.0.4 as 3.4.0",
+        "symfony/security-bundle": "^4.1",
         "symfony/swiftmailer-bundle": "^3.0",
-        "symfony/twig-bundle": "^4.0",
-        "symfony/validator": "^4.0",
-        "symfony/yaml": "v4.0.4 as 3.4.0"
+        "symfony/twig-bundle": "^4.1",
+        "symfony/validator": "^4.1",
+        "symfony/yaml": "^4.1"
     },
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.2",
@@ -55,11 +52,12 @@
         "matthiasnoback/symfony-dependency-injection-test": "^2.1.0",
         "phpunit/phpunit": "^6.1",
         "ramsey/uuid-console": "^1.1.1",
-        "symfony/browser-kit": "^4.0",
-        "symfony/dotenv": "^4.0",
-        "symfony/phpunit-bridge": "^4.0",
-        "symfony/web-profiler-bundle": "^4.0",
-        "symfony/web-server-bundle": "^4.0"
+        "symfony/browser-kit": "^4.1",
+        "symfony/debug-pack": "^1.0.5",
+        "symfony/dotenv": "^4.1",
+        "symfony/phpunit-bridge": "^4.1",
+        "symfony/profiler-pack": "^1.0.3",
+        "symfony/web-server-bundle": "^4.1"
     },
     "replace": {
         "paragonie/random_compat": "*",
@@ -122,6 +120,5 @@
             "allow-contrib": true
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "minimum-stability": "dev"
 }

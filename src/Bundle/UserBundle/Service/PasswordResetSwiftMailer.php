@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\UserBundle\Service;
 
+use ParkManager\Component\Mailer\Sender;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Model\Service\PasswordResetMailer;
-use Sylius\Component\Mailer\Sender\SenderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -28,7 +28,7 @@ final class PasswordResetSwiftMailer implements PasswordResetMailer
     private $urlGenerator;
     private $confirmResetRoute;
 
-    public function __construct(SenderInterface $sender, UrlGeneratorInterface $urlGenerator, string $confirmResetRoute)
+    public function __construct(Sender $sender, UrlGeneratorInterface $urlGenerator, string $confirmResetRoute)
     {
         $this->sender = $sender;
         $this->urlGenerator = $urlGenerator;
@@ -38,7 +38,7 @@ final class PasswordResetSwiftMailer implements PasswordResetMailer
     public function send(string $emailAddress, SplitToken $splitToken, \DateTimeImmutable $tokenExpiration): void
     {
         $this->sender->send(
-            'park_manager.user.reset_password',
+            '@UserBundle\email\password_reset.twig',
             [$emailAddress],
             [
                 'url' => $this->urlGenerator->generate($this->confirmResetRoute, ['token' => $splitToken->token()], UrlGeneratorInterface::ABSOLUTE_URL),

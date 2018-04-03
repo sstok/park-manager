@@ -74,10 +74,10 @@ in-docker-install-fixtures:
 	psql -U root -h db -d park_manager -w -a -f ./etc/fixture.sql
 
 in-docker-test: in-docker-install-fixtures
-	vendor/bin/phpunit --verbose
+	vendor/bin/phpunit --exclude-group "" --verbose
 
 in-docker-test-coverage: in-docker-install-fixtures
-	phpdbg -qrr vendor/bin/phpunit --verbose --coverage-php build/cov/coverage-phpunit.cov
+	phpdbg -qrr vendor/bin/phpunit --verbose --exclude-group "" --coverage-php build/cov/coverage-phpunit.cov
 
 in-docker-clean-vendor:
 	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/Tests" }' | xargs rm -rf

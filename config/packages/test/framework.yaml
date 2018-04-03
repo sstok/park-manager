@@ -1,5 +1,5 @@
 framework:
-    test: null
+    test: true
     session:
         storage_id: session.storage.mock_file
     translator: false
