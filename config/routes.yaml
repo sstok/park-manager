@@ -23,6 +23,6 @@ admin_home:
     path: /admin/
     controller: ParkManager\Core\Infrastructure\Web\Action\HomepageAction
 
-#admin_login:
-#    path: /admin/login
-#    defaults: { _controller: 'park_manager.web_action.security.login.administrator' }
+admin_login:
+    path: /admin/login
+    defaults: { _controller: 'park_manager.web_action.security.login.administrator' }

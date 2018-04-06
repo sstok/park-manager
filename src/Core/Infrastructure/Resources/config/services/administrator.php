@@ -32,6 +32,7 @@ use ParkManager\Bundle\UserBundle\ReadModel\DbalUserFinder;
 use ParkManager\Bundle\UserBundle\Security\DbalUserProvider;
 use ParkManager\Bundle\UserBundle\Security\FormAuthenticator;
 use ParkManager\Bundle\UserBundle\Service\PasswordResetSwiftMailer;
+use ParkManager\Component\Mailer\Sender;
 use ParkManager\Component\Model\Event\EventEmitter;
 use ParkManager\Component\ServiceBus\QueryBus;
 use ParkManager\Component\User\Canonicalizer\SimpleEmailCanonicalizer;
@@ -60,7 +61,7 @@ return function (ContainerConfigurator $c) {
         // --
         ->bind('$loginRoute', 'park_manager.administrator.security_login')
         ->bind('$emailCanonicalizer', ref(SimpleEmailCanonicalizer::class))
-        ->bind('$sender', ref('sylius.email_sender'));
+        ->bind('$sender', ref(Sender::class));
 
     MessageBusConfigurator::register($di, 'park_manager.command_bus.administrator')
         ->middlewares()

@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use ParkManager\Component\Mailer\NullSender;
+use ParkManager\Component\Mailer\Sender;
 use ParkManager\Component\Model\LogMessage\LogMessages;
 
 return function (ContainerConfigurator $c) {
@@ -23,4 +25,6 @@ return function (ContainerConfigurator $c) {
     // back to higher layers.
     $di->set('park_manager.service_bus.log_messages', LogMessages::class)
         ->alias(LogMessages::class, 'park_manager.service_bus.log_messages');
+
+    $di->set(NullSender::class)->alias(Sender::class, NullSender::class);
 };

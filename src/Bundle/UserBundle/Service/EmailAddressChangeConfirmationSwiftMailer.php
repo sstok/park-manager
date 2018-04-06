@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\UserBundle\Service;
 
+use ParkManager\Component\Mailer\Sender;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Model\Service\EmailAddressChangeConfirmationMailer;
-use Sylius\Component\Mailer\Sender\SenderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -28,9 +28,9 @@ final class EmailAddressChangeConfirmationSwiftMailer implements EmailAddressCha
     private $urlGenerator;
     private $confirmChangeRoute;
 
-    public function __construct(SenderInterface $sender, UrlGeneratorInterface $urlGenerator, string $confirmChangeRoute)
+    public function __construct(Sender $mailer, UrlGeneratorInterface $urlGenerator, string $confirmChangeRoute)
     {
-        $this->sender = $sender;
+        $this->sender = $mailer;
         $this->urlGenerator = $urlGenerator;
         $this->confirmChangeRoute = $confirmChangeRoute;
     }
@@ -38,7 +38,7 @@ final class EmailAddressChangeConfirmationSwiftMailer implements EmailAddressCha
     public function send(string $emailAddress, SplitToken $splitToken, \DateTimeImmutable $tokenExpiration): void
     {
         $this->sender->send(
-            'park_manager.user.confirm_email_address_change',
+            '@UserBundle\email\confirm_email_address_change.twig',
             [$emailAddress],
             [
                 'url' => $this->urlGenerator->generate($this->confirmChangeRoute, ['token' => $splitToken->token()], UrlGeneratorInterface::ABSOLUTE_URL),
