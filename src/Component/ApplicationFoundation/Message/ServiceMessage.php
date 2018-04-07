@@ -12,25 +12,21 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\LogMessage;
+namespace ParkManager\Component\ApplicationFoundation\Message;
 
 /**
- * A LogMessage contains an informational message for upper layers.
+ * A ServiceMessage contains an informational message for the UI
+ * and Infrastructure layers.
  *
- * This is not to be confused with Domain Messages (for a message bus).
+ * This is not to be confused with Domain Messages.
  *
- * This information is intended to be shared with the UI layer and
- * MUST NOT contain any sensitive information about the inner system.
- * LogMessages are not system exceptions, they are informational messages.
+ * Caution: The message is intended to be displayed in the UI layer,
+ * avoid disclosing hidden system details (like exception stacks).
  *
- * Eg. A LogMessage can be used to inform a sub-operation was skipped and why.
- *
- * Tip: The messageTemplate is rendered by the UI layer.
- * But the systemMessage property however may contain technical details.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
+ * ServiceMessages are not system exceptions, they are informational messages.
+ * Use the `systemMessage` property to share details for debugging.
  */
-class LogMessage
+class ServiceMessage
 {
     /**
      * @var string
@@ -73,7 +69,7 @@ class LogMessage
      * @param string|null $messageTemplate   The template for the message
      * @param array       $messageParameters The parameters that should be
      *                                       substituted in the message template
-     * @param string|null $systemMessage     Untranslated information about the system (mainly for troubleshooting)
+     * @param string|null $systemMessage     Untranslated information about the system (mainly for debugging)
      */
     protected function __construct(string $type, ?string $messageTemplate, array $messageParameters = [], ?string $systemMessage = null)
     {

@@ -12,21 +12,21 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\Tests\LogMessage;
+namespace ParkManager\Component\ApplicationFoundation\Tests\Message;
 
-use ParkManager\Component\Model\LogMessage\LogMessage;
-use ParkManager\Component\Model\LogMessage\LogMessages;
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessage;
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class LogMessagesTest extends TestCase
+final class ServiceMessagesTest extends TestCase
 {
     /** @test */
     public function its_constructable()
     {
-        $messages = new LogMessages();
+        $messages = new ServiceMessages();
 
         self::assertCount(0, $messages);
         self::assertEquals([], $messages->all());
@@ -37,10 +37,10 @@ final class LogMessagesTest extends TestCase
     /** @test */
     public function it_supports_adding_messages()
     {
-        $messages = new LogMessages();
-        $messages->add($message1 = LogMessage::error('Whoops'));
-        $messages->add($message2 = LogMessage::error('Whoops again'));
-        $messages->add($message3 = LogMessage::notice('Whoops again'));
+        $messages = new ServiceMessages();
+        $messages->add($message1 = ServiceMessage::error('Whoops'));
+        $messages->add($message2 = ServiceMessage::error('Whoops again'));
+        $messages->add($message3 = ServiceMessage::notice('Whoops again'));
 
         self::assertCount(3, $messages);
         self::assertEquals(['error' => [$message1, $message2], 'notice' => [$message3]], $messages->all());
@@ -52,15 +52,15 @@ final class LogMessagesTest extends TestCase
     /** @test */
     public function it_merges_messages_from_another_list()
     {
-        $messages = new LogMessages();
-        $messages->add($message1 = LogMessage::error('Whoops'));
-        $messages->add($message2 = LogMessage::error('Whoops again'));
-        $messages->add($message3 = LogMessage::notice('Whoops again'));
+        $messages = new ServiceMessages();
+        $messages->add($message1 = ServiceMessage::error('Whoops'));
+        $messages->add($message2 = ServiceMessage::error('Whoops again'));
+        $messages->add($message3 = ServiceMessage::notice('Whoops again'));
 
-        $messages2 = new LogMessages();
-        $messages2->add($message4 = LogMessage::error('Whoops2'));
-        $messages2->add($message5 = LogMessage::warning('Whoops again2'));
-        $messages2->add($message6 = LogMessage::notice('Whoops again2'));
+        $messages2 = new ServiceMessages();
+        $messages2->add($message4 = ServiceMessage::error('Whoops2'));
+        $messages2->add($message5 = ServiceMessage::warning('Whoops again2'));
+        $messages2->add($message6 = ServiceMessage::notice('Whoops again2'));
         $messages->merge($messages2);
 
         self::assertCount(6, $messages);
@@ -77,10 +77,10 @@ final class LogMessagesTest extends TestCase
     /** @test */
     public function it_clears_messages()
     {
-        $messages = new LogMessages();
-        $messages->add($message1 = LogMessage::error('Whoops'));
-        $messages->add($message2 = LogMessage::error('Whoops again'));
-        $messages->add($message3 = LogMessage::notice('Whoops again'));
+        $messages = new ServiceMessages();
+        $messages->add($message1 = ServiceMessage::error('Whoops'));
+        $messages->add($message2 = ServiceMessage::error('Whoops again'));
+        $messages->add($message3 = ServiceMessage::notice('Whoops again'));
         $messages->clear();
 
         self::assertCount(0, $messages);

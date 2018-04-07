@@ -14,14 +14,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Fixtures\Infrastructure\PackageCapability;
 
-use ParkManager\Component\Model\LogMessage\LogMessages;
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Package\Capability;
 use ParkManager\Module\Webhosting\Domain\Package\CapabilityGuard;
 
 final class MonthlyTrafficQuotaGuard2 implements CapabilityGuard
 {
-    public function isAllowed(Capability $configuration, array $context, WebhostingAccount $account, LogMessages $messages): bool
+    public function isAllowed(Capability $configuration, array $context, WebhostingAccount $account, ServiceMessages $messages): bool
     {
         return true;
     }

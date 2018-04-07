@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Domain\Package;
 
-use ParkManager\Component\Model\LogMessage\LogMessages;
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 
 /**
@@ -41,7 +41,7 @@ interface CapabilitiesGuard
      * @param string              ...$capabilityName One or more capability names
      *                                               to extract from the webhosting account
      *
-     * @return LogMessages
+     * @return ServiceMessages
      */
-    public function allowedTo(WebhostingAccountId $accountId, array $context, string ...$capabilityName): LogMessages;
+    public function allowedTo(WebhostingAccountId $accountId, array $context, string ...$capabilityName): ServiceMessages;
 }

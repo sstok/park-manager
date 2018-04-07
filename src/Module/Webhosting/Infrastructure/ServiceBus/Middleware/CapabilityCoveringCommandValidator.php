@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Infrastructure\ServiceBus\Middleware;
 
 use League\Tactician\Middleware;
-use ParkManager\Component\Model\LogMessage\LogMessages;
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 use ParkManager\Module\Webhosting\Domain\Package\CapabilitiesGuard;
 use ParkManager\Module\Webhosting\Domain\Package\CapabilityCoveringCommand;
 
@@ -36,7 +36,7 @@ final class CapabilityCoveringCommandValidator implements Middleware
     private $contextProvider;
     private $logMessages;
 
-    public function __construct(CapabilitiesGuard $accountCapabilitiesGuard, LogMessages $logMessages, ?callable $contextProvider = null)
+    public function __construct(CapabilitiesGuard $accountCapabilitiesGuard, ServiceMessages $logMessages, ?callable $contextProvider = null)
     {
         $this->accountCapabilitiesGuard = $accountCapabilitiesGuard;
         $this->contextProvider = $contextProvider;

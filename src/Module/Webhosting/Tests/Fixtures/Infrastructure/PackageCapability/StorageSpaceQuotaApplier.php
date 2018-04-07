@@ -14,14 +14,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Fixtures\Infrastructure\PackageCapability;
 
-use ParkManager\Component\Model\LogMessage\LogMessages;
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Package\Capability;
 use ParkManager\Module\Webhosting\Domain\Package\ConfigurationApplier;
 
 final class StorageSpaceQuotaApplier implements ConfigurationApplier
 {
-    public function apply(Capability $configuration, WebhostingAccount $account, LogMessages $messages): void
+    public function apply(Capability $configuration, WebhostingAccount $account, ServiceMessages $messages): void
     {
     }
 }
