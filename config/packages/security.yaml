@@ -29,7 +29,7 @@ security:
                     - park_manager.security.guard.form.administrator
 
             remember_me:
-                secret:               'Doh' # '%env(APP_SECRET)%'
+                secret:               '%env(APP_SECRET)%'
                 token_provider:       ~
                 catch_exceptions:     true
                 name:                 ADMIN_REMEMBERME
@@ -56,7 +56,7 @@ security:
                     - park_manager.security.guard.form.administrator
 
             remember_me:
-                secret:               'Doh' # '%env(APP_SECRET)%'
+                secret:               '%env(APP_SECRET)%'
                 token_provider:       ~
                 catch_exceptions:     true
                 name:                 ADMIN_REMEMBERME
