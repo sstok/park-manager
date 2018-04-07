@@ -16,7 +16,8 @@ namespace ParkManager\Core\Infrastructure\DependencyInjection;
 
 use ParkManager\Bridge\Doctrine\Type\ArrayCollectionType;
 use ParkManager\Bridge\Doctrine\Type\RootEntityOwnerType;
-use ParkManager\Core\Infrastructure\DependencyInjection\Module\ParkManagerModuleDependencyExtension;
+use ParkManager\Component\Module\ParkManagerModuleDependencyExtension;
+use ParkManager\Component\Module\Traits\DoctrineDbalTypesConfiguratorTrait;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,6 +27,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 final class DependencyExtension extends ParkManagerModuleDependencyExtension
 {
+    use DoctrineDbalTypesConfiguratorTrait;
+
     public const EXTENSION_ALIAS = 'park_manager';
 
     public function getAlias(): string

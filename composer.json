@@ -61,6 +61,7 @@
     },
     "replace": {
         "paragonie/random_compat": "*",
+        "park-manager/module": "self.version",
         "park-manager/service-bus": "self.version",
         "park-manager/service-bus-bridge": "self.version",
         "park-manager/service-bus-bundle": "self.version",

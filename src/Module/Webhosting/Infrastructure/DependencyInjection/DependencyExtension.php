@@ -14,7 +14,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Infrastructure\DependencyInjection;
 
-use ParkManager\Core\Infrastructure\DependencyInjection\Module\ParkManagerModuleDependencyExtension;
+use ParkManager\Component\Module\ParkManagerModuleDependencyExtension;
+use ParkManager\Component\Module\Traits\DoctrineDbalTypesConfiguratorTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -23,6 +24,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 final class DependencyExtension extends ParkManagerModuleDependencyExtension
 {
+    use DoctrineDbalTypesConfiguratorTrait;
+
     public const EXTENSION_ALIAS = 'park_manager_webhosting';
 
     protected function loadModule(array $configs, ContainerBuilder $container, LoaderInterface $loader): void

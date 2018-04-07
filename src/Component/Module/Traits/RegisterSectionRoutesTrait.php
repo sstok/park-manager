@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Core\Infrastructure\DependencyInjection\Module\Traits;
+namespace ParkManager\Component\Module\Traits;
 
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 

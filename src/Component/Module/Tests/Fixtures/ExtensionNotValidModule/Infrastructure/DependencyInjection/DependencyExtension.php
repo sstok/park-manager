@@ -12,13 +12,12 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Core\Infrastructure\DependencyInjection\Module;
+namespace ParkManager\Component\Module\Tests\Fixtures\ExtensionNotValidModule\Infrastructure\DependencyInjection;
 
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
-interface ParkManagerModule extends BundleInterface
+class DependencyExtension
 {
+    public function getAlias()
+    {
+        return 'extension_not_valid';
+    }
 }

@@ -16,8 +16,8 @@ namespace ParkManager\Core;
 
 use ParkManager\Bridge\Doctrine\Type\ArrayCollectionType;
 use ParkManager\Bundle\UserBundle\DependencyInjection\Compiler\UserFormHandlerPass;
+use ParkManager\Component\Module\AbstractParkManagerModule;
 use ParkManager\Core\Infrastructure\DependencyInjection\DependencyExtension;
-use ParkManager\Core\Infrastructure\DependencyInjection\Module\AbstractParkManagerModule;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

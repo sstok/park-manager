@@ -12,10 +12,9 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Core\Infrastructure\DependencyInjection\Module;
+namespace ParkManager\Component\Module;
 
-use ParkManager\Core\Infrastructure\DependencyInjection\Module\Traits\DoctrineDbalTypesConfiguratorTrait;
-use ParkManager\Core\Infrastructure\DependencyInjection\Module\Traits\ServiceLoaderTrait;
+use ParkManager\Component\Module\Traits\ServiceLoaderTrait;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,11 +22,22 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
+ * The ParkManagerModuleDependencyExtension provides an addition
+ * to the DependencyInjection Extension by wiring some
+ * configurations automatically.
+ *
+ * This extension loads Routes, templates, translations,
+ * and Doctrine DBAL Types (if DoctrineDbalTypesConfiguratorTrait is imported).
+ *
+ * Templates: Infrastructure/Resources/templates and UI/Web/Resources/templates
+ * Translations: Infrastructure/Resources/translations and UI/Web/Resources/translations
+ * Services: Infrastructure/Resources/config/services/
+ * Routes: Infrastructure/Resources/config
+ *
+ * Use the ServiceLoaderTrait if you only need the Services loader.
  */
 abstract class ParkManagerModuleDependencyExtension extends Extension implements PrependExtensionInterface
 {
-    use DoctrineDbalTypesConfiguratorTrait;
     use ServiceLoaderTrait;
 
     protected $moduleDir;
@@ -64,6 +74,8 @@ abstract class ParkManagerModuleDependencyExtension extends Extension implements
      * Configures the translator paths, templates paths, and DomainId
      * DBAL types. Use prependExtra() to prepend extension configurations.
      *
+     * Note: Registers only when directory or methods exist.
+     *
      * @param ContainerBuilder $container
      *
      * @internal
@@ -87,7 +99,10 @@ abstract class ParkManagerModuleDependencyExtension extends Extension implements
             ]);
         }
 
-        $this->registerDoctrineDbalTypes($container, $this->moduleDir);
+        if (method_exists($this, 'registerDoctrineDbalTypes')) {
+            $this->registerDoctrineDbalTypes($container, $this->moduleDir);
+        }
+
         $this->prependExtra($container);
     }
 

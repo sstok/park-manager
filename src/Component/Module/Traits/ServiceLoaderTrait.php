@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Core\Infrastructure\DependencyInjection\Module\Traits;
+namespace ParkManager\Component\Module\Traits;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\DelegatingLoader;
@@ -28,12 +28,9 @@ use Symfony\Component\DependencyInjection\Loader\{
     YamlFileLoader
 };
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 trait ServiceLoaderTrait
 {
-    protected function getServiceLoader(ContainerBuilder $container, $servicesPath): DelegatingLoader
+    protected function getServiceLoader(ContainerBuilder $container, ...$servicesPath): DelegatingLoader
     {
         $locator = new FileLocator($servicesPath);
         $resolver = new LoaderResolver([

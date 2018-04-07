@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting;
 
 use Doctrine\DBAL\Types\Type;
-use ParkManager\Core\Infrastructure\DependencyInjection\Module\AbstractParkManagerModule;
+use ParkManager\Component\Module\AbstractParkManagerModule;
 use ParkManager\Module\Webhosting\Domain\Package\CapabilitiesFactory;
 use ParkManager\Module\Webhosting\Infrastructure\DependencyInjection\Compiler\{
     CapabilitiesRegistryPass, CommandToCapabilitiesGuardPass

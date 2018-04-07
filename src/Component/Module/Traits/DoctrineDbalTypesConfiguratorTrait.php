@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Core\Infrastructure\DependencyInjection\Module\Traits;
+namespace ParkManager\Component\Module\Traits;
 
 use Doctrine\DBAL\Types\Type as DbalType;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,6 +32,7 @@ trait DoctrineDbalTypesConfiguratorTrait
      * All types are assumed to be commented.
      *
      * @param ContainerBuilder $container
+     * @param string           $moduleDirectory
      */
     protected function registerDoctrineDbalTypes(ContainerBuilder $container, string $moduleDirectory): void
     {
