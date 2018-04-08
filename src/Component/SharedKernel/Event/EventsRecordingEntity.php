@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\SharedKernel\Event;
 
-use ParkManager\Component\SharedKernel\Event\DomainEventsCollectionTrait;
-
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */

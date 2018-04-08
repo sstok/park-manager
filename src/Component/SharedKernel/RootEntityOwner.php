@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\SharedKernel;
 
-use ParkManager\Component\SharedKernel\UuidTrait;
-
 /**
  * The RootEntityOwner reference is used to link an owner (eg. user or system entity)
  * to a root Entity (Account, Domain registration, Mailbox etc).

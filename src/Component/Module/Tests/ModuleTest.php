@@ -128,7 +128,7 @@ class ModuleTest extends TestCase
 
         self::assertContains(
             DoctrineOrmMappingsPass::createXmlMappingDriver([
-                $module->getPath().'/Infrastructure/Doctrine/Account/Mapping' => $module->getNamespace().'\\Domain\\Account'
+                $module->getPath().'/Infrastructure/Doctrine/Account/Mapping' => $module->getNamespace().'\\Domain\\Account',
             ]),
             $containerBuilder->getCompilerPassConfig()->getPasses(),
             '',

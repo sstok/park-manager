@@ -15,7 +15,9 @@
         }
     ],
     "require": {
-        "php": "^7.2"
+        "php": "^7.2",
+        "ramsey/uuid": "^3.0",
+        "symfony/event-dispatcher": "^4.0.4"
     },
     "config": {
         "preferred-install": {

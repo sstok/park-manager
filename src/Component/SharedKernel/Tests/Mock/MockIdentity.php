@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace ParkManager\Component\SharedKernel\Tests\Mock;
 
 use ParkManager\Component\SharedKernel\UuidTrait;
-use PHPUnit\Framework\TestCase;
 
 /** @ignore */
 class MockIdentity implements \Serializable, \JsonSerializable

@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 use ParkManager\Component\Mailer\NullSender;
 use ParkManager\Component\Mailer\Sender;
-use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services();

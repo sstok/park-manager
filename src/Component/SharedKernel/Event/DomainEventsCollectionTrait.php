@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\SharedKernel\Event;
 
-use ParkManager\Component\SharedKernel\Event\DomainEvent;
-
 /**
  * The DomainEventsCollectionTrait keeps track of recorded events.
  */

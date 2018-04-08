@@ -15,9 +15,8 @@ declare(strict_types=1);
 namespace ParkManager\Component\User\Tests\Model;
 
 use Assert\AssertionFailedException;
-use ParkManager\Component\SharedKernel\Test\Event\EventsRecordingEntityAssertionTrait;
-use ParkManager\Component\Model\Tests\ObjectHydrationAssertTrait;
 use ParkManager\Component\Security\Token\SplitToken;
+use ParkManager\Component\SharedKernel\Test\Event\EventsRecordingEntityAssertionTrait;
 use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
 use ParkManager\Component\User\Model\User;
 use ParkManager\Component\User\Model\UserId;
