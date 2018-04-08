@@ -16,7 +16,7 @@ namespace ParkManager\Bundle\UserBundle\Model;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use ParkManager\Component\Model\Event\EventEmitter;
+use ParkManager\Component\SharedKernel\Event\EventEmitter;
 use ParkManager\Component\User\Exception\UserNotFound;
 use ParkManager\Component\User\Model\User;
 use ParkManager\Component\User\Model\UserCollection;

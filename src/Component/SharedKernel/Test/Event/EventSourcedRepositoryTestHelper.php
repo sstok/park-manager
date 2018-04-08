@@ -12,9 +12,9 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\Test;
+namespace ParkManager\Component\SharedKernel\Test\Event;
 
-use ParkManager\Component\Model\Event\EventEmitter;
+use ParkManager\Component\SharedKernel\Event\EventEmitter;
 use Prophecy\Argument;
 
 trait EventSourcedRepositoryTestHelper

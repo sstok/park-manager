@@ -16,8 +16,8 @@ namespace ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\Middlew
 
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\AdvancedMiddlewareConfigurator;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MiddlewaresConfigurator;
-use ParkManager\Component\Model\Event\EventSubscriber;
-use ParkManager\Component\Model\Event\SymfonyEventEmitter;
+use ParkManager\Component\SharedKernel\Event\EventSubscriber;
+use ParkManager\Component\SharedKernel\Event\SymfonyEventEmitter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\EventDispatcher\EventDispatcher;
