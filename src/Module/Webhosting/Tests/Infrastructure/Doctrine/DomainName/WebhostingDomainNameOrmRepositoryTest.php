@@ -16,7 +16,7 @@ namespace ParkManager\Module\Webhosting\Tests\Infrastructure\Doctrine\DomainName
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Bridge\Doctrine\Test\EntityRepositoryTestCase;
-use ParkManager\Component\Model\RootEntityOwner;
+use ParkManager\Component\SharedKernel\RootEntityOwner;
 use ParkManager\Module\Webhosting\Domain\Account\Exception\WebhostingAccountNotFound;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;

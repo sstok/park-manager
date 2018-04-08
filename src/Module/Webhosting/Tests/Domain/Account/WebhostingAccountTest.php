@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Domain\Account;
 
-use ParkManager\Component\Model\RootEntityOwner;
+use ParkManager\Component\SharedKernel\RootEntityOwner;
 use ParkManager\Component\SharedKernel\Test\Event\EventsRecordingEntityAssertionTrait;
 use ParkManager\Module\Webhosting\Domain\Account\Event\{
     WebhostingAccountCapabilitiesWasChanged,

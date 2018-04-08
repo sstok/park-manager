@@ -12,15 +12,13 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bridge\Doctrine\Type;
+namespace ParkManager\Component\SharedKernel\Tests\Mock;
 
-use ParkManager\Component\SharedKernel\RootEntityOwner;
+use ParkManager\Component\SharedKernel\UuidTrait;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
-final class RootEntityOwnerType extends DomainIdType
+/** @ignore */
+class MockIdentity implements \Serializable, \JsonSerializable
 {
-    public const NAME = 'park_manager_root_entity_owner';
-    public const OBJECT_CLASS = RootEntityOwner::class;
+    use UuidTrait;
 }

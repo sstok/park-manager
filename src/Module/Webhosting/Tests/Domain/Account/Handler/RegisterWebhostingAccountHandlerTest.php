@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Domain\Account\Handler;
 
-use ParkManager\Component\Model\RootEntityOwner;
+use ParkManager\Component\SharedKernel\RootEntityOwner;
 use ParkManager\Module\Webhosting\Application\Account\RegisterWebhostingAccount;
 use ParkManager\Module\Webhosting\Application\Account\RegisterWebhostingAccountHandler;
 use ParkManager\Module\Webhosting\Domain\Account\{

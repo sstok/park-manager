@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Domain\Account;
 
 use ParkManager\Component\SharedKernel\Event\EventsRecordingEntity;
-use ParkManager\Component\Model\RootEntityOwner;
+use ParkManager\Component\SharedKernel\RootEntityOwner;
 use ParkManager\Module\Webhosting\Domain\Package\Capabilities;
 use ParkManager\Module\Webhosting\Domain\Package\WebhostingPackage;
 
