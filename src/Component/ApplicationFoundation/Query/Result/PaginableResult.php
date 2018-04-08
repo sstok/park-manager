@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\Result;
+namespace ParkManager\Component\ApplicationFoundation\Query\Result;
 
 /**
  * The PaginableResult is implemented by a provider to limit
