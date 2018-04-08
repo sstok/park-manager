@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator;
 
-use League\Tactician\CommandBus;
+use ParkManager\Component\ServiceBus\TacticianCommandBus;
 use Symfony\Component\DependencyInjection\Loader\Configurator\DefaultsConfigurator;
 
 /**
@@ -36,7 +36,7 @@ class MessageBusConfigurator
 
     public static function register(DefaultsConfigurator $di, string $serviceId): self
     {
-        $serviceBus = $di->set($serviceId, CommandBus::class)->private();
+        $serviceBus = $di->set($serviceId, TacticianCommandBus::class)->private();
         $serviceBus->tag('park_manager.service_bus');
 
         return new static($di, $serviceId);

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler;
 
+use League\Tactician\CommandBus;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
@@ -33,8 +34,6 @@ use Symfony\Component\DependencyInjection\Reference;
  * **Note:** Because this CompilerPass set-up all message-bus configurations
  * it's not possible to register other message-buses and middlewares after
  * this pass is executed.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class MessageBusPass implements CompilerPassInterface
 {
@@ -66,7 +65,8 @@ final class MessageBusPass implements CompilerPassInterface
             $middlewares = $this->findAndSortTaggedServices($busId.'.middleware', $container);
             $middlewares[] = $commandHandlerDef;
 
-            $container->findDefinition($busId)->setArgument(0, $middlewares);
+            $container->register($busId.'.__executor', CommandBus::class)->setPrivate(true)->addArgument($middlewares);
+            $container->findDefinition($busId)->setArgument(0, new Reference($busId.'.__executor'));
         }
 
         $this->container = null;

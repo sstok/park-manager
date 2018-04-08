@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator;
 
-use ParkManager\Component\ServiceBus\QueryBus;
+use ParkManager\Component\ServiceBus\TacticianQueryBus;
 use Symfony\Component\DependencyInjection\Loader\Configurator\DefaultsConfigurator;
 
 /**
@@ -26,7 +26,7 @@ class QueryBusConfigurator extends MessageBusConfigurator
 {
     public static function register(DefaultsConfigurator $di, string $serviceId): MessageBusConfigurator
     {
-        $serviceBus = $di->set($serviceId, QueryBus::class)->private();
+        $serviceBus = $di->set($serviceId, TacticianQueryBus::class)->private();
         $serviceBus->tag('park_manager.service_bus');
 
         return new static($di, $serviceId);

@@ -16,8 +16,8 @@ namespace ParkManager\Bundle\UserBundle\Action;
 
 use Hostnet\Component\FormHandler\HandlerFactoryInterface;
 use ParkManager\Bundle\UserBundle\Form\Handler\ConfirmPasswordResetFormHandler;
+use ParkManager\Component\ApplicationFoundation\Query\QueryBus;
 use ParkManager\Component\Security\Token\SplitToken;
-use ParkManager\Component\ServiceBus\QueryBus;
 use ParkManager\Component\User\Model\Query\GetUserByPasswordResetToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
