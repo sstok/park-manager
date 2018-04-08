@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Domain\Package;
 
-use ParkManager\Component\Model\LogMessage\LogMessages;
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 
 /**
@@ -41,11 +41,11 @@ interface CapabilityGuard
      * @param array             $context       Additional information about the operation
      *                                         (implement dependent - not required)
      * @param WebhostingAccount $account
-     * @param LogMessages       $messages      The LogMessages allows to "log" messages for
+     * @param ServiceMessages   $messages      The ServiceMessages allows to "log" messages for
      *                                         extra information about the failure or a warning
      *                                         about reaching the limits of the account's capabilities
      *
      * @return bool
      */
-    public function isAllowed(Capability $configuration, array $context, WebhostingAccount $account, LogMessages $messages): bool;
+    public function isAllowed(Capability $configuration, array $context, WebhostingAccount $account, ServiceMessages $messages): bool;
 }

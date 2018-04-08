@@ -12,12 +12,9 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\LogMessage;
+namespace ParkManager\Component\ApplicationFoundation\Message;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
-final class LogMessages implements \Countable
+final class ServiceMessages implements \Countable
 {
     /**
      * Messages per type.
@@ -38,7 +35,7 @@ final class LogMessages implements \Countable
         return isset($this->messages['error']);
     }
 
-    public function add(LogMessage $message): void
+    public function add(ServiceMessage $message): void
     {
         $this->messages[$message->type][] = $message;
         ++$this->count;
@@ -58,11 +55,6 @@ final class LogMessages implements \Countable
         $this->count = 0;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return array
-     */
     public function allOf(string $type): array
     {
         return $this->messages[$type] ?? [];
@@ -76,9 +68,6 @@ final class LogMessages implements \Countable
     public function merge(self $messages): void
     {
         $this->messages = array_merge_recursive($this->messages, $messages->messages);
-
-        foreach ($messages->messages as $type => $messagesByType) {
-            $this->count += \count($messagesByType);
-        }
+        $this->count += $messages->count();
     }
 }

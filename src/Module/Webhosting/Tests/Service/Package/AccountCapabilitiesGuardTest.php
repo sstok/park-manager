@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Service\Package;
 
-use ParkManager\Component\Model\LogMessage\LogMessage;
-use ParkManager\Component\Model\LogMessage\LogMessages;
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessage;
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountRepository;
@@ -75,8 +75,8 @@ final class AccountCapabilitiesGuardTest extends TestCase
                         $capabilitiesGuard->isAllowed($capability, ['bing' => 'bong'], $account2, Argument::any())->willReturn(true);
                         $capabilitiesGuard->isAllowed($capability, [], $account1, Argument::any())->will(function ($args) {
                             /** @var MonthlyTrafficQuota $args[0] */
-                            /** @var LogMessages $args[3] */
-                            $args[3]->add(LogMessage::error('It failed '.$args[0]->configuration()['limit']));
+                            /** @var ServiceMessages $args[3] */
+                            $args[3]->add(ServiceMessage::error('It failed '.$args[0]->configuration()['limit']));
 
                             return false;
                         });
@@ -113,6 +113,6 @@ final class AccountCapabilitiesGuardTest extends TestCase
         );
 
         self::assertCount(1, $messages);
-        self::assertEquals(['error' => [LogMessage::error('It failed 50')]], $messages->all());
+        self::assertEquals(['error' => [ServiceMessage::error('It failed 50')]], $messages->all());
     }
 }

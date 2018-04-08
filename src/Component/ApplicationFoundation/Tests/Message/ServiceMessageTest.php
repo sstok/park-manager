@@ -12,15 +12,15 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\Tests\LogMessage;
+namespace ParkManager\Component\ApplicationFoundation\Tests\Message;
 
-use ParkManager\Component\Model\LogMessage\LogMessage;
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessage;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class LogMessageTest extends TestCase
+final class ServiceMessageTest extends TestCase
 {
     /**
      * @test
@@ -28,8 +28,8 @@ final class LogMessageTest extends TestCase
      */
     public function its_constructable(string $type)
     {
-        /** @var LogMessage $message */
-        $message = LogMessage::{$type}('Whoops');
+        /** @var ServiceMessage $message */
+        $message = ServiceMessage::{$type}('Whoops');
 
         self::assertEquals($type, $message->type);
         self::assertEquals('Whoops', $message->messageTemplate);
@@ -52,7 +52,7 @@ final class LogMessageTest extends TestCase
     /** @test */
     public function its_constructable_with_systemMessage()
     {
-        $message = LogMessage::error('Whoops', [], 'Fatal system error!');
+        $message = ServiceMessage::error('Whoops', [], 'Fatal system error!');
 
         self::assertEquals('error', $message->type);
         self::assertEquals('Whoops', $message->messageTemplate);
@@ -65,7 +65,7 @@ final class LogMessageTest extends TestCase
     /** @test */
     public function its_supports_plural()
     {
-        $message = LogMessage::error('Whoops', [], 'Fatal system error!')->withPlural(2);
+        $message = ServiceMessage::error('Whoops', [], 'Fatal system error!')->withPlural(2);
 
         self::assertEquals('error', $message->type);
         self::assertEquals('Whoops', $message->messageTemplate);
@@ -79,7 +79,7 @@ final class LogMessageTest extends TestCase
     /** @test */
     public function it_supports_translated_parameters()
     {
-        $message = LogMessage::notice('From the other side', ['hello' => 'me it is', 'wondering' => 'was I'])
+        $message = ServiceMessage::notice('From the other side', ['hello' => 'me it is', 'wondering' => 'was I'])
             ->translateParameters(['hello']);
 
         self::assertEquals('notice', $message->type);

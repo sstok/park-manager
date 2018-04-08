@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Bridge\ServiceBus\Tests\DependencyInjection\Compiler;
 
-use League\Tactician\CommandBus;
 use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\InvokeInflector;
@@ -27,6 +26,7 @@ use ParkManager\Bridge\ServiceBus\Tests\Fixtures\Handler\RegisterUserHandler;
 use ParkManager\Bridge\ServiceBus\Tests\Fixtures\Middleware\MessageGuardMiddleware;
 use ParkManager\Bridge\ServiceBus\Tests\Fixtures\Middleware\SecondaryMiddleware;
 use ParkManager\Bridge\ServiceBus\Tests\Fixtures\RegisterUser;
+use ParkManager\Component\ServiceBus\TacticianCommandBus as CommandBus;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -181,7 +181,7 @@ final class MessageBusPassTest extends AbstractCompilerPassTestCase
 
         $this->expectHandlerLocator($busId, $expectedHandlers);
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            $busId,
+            $busId.'.__executor',
             0,
             array_merge($expectedMiddlewares, [$this->createHandlerLocatorMiddleware($busId)])
         );

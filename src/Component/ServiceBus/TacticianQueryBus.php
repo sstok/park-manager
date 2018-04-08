@@ -15,10 +15,19 @@ declare(strict_types=1);
 namespace ParkManager\Component\ServiceBus;
 
 use League\Tactician\CommandBus;
+use ParkManager\Component\ApplicationFoundation\Query\QueryBus;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
-final class QueryBus extends CommandBus
+final class TacticianQueryBus implements QueryBus
 {
+    private $bus;
+
+    public function __construct(CommandBus $bus)
+    {
+        $this->bus = $bus;
+    }
+
+    public function handle(object $query)
+    {
+        return $this->bus->handle($query);
+    }
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Service\Package;
 
-use ParkManager\Component\Model\LogMessage\LogMessages;
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountRepository;
 use ParkManager\Module\Webhosting\Domain\Package\CapabilitiesGuard;
@@ -33,11 +33,11 @@ final class AccountCapabilitiesGuard implements CapabilitiesGuard
         $this->capabilitiesManager = $capabilitiesManager;
     }
 
-    public function allowedTo(WebhostingAccountId $accountId, array $context, string ...$capabilityNames): LogMessages
+    public function allowedTo(WebhostingAccountId $accountId, array $context, string ...$capabilityNames): ServiceMessages
     {
         $account = $this->accountRepository->get($accountId);
         $capabilities = $account->capabilities();
-        $messages = new LogMessages();
+        $messages = new ServiceMessages();
 
         foreach ($capabilityNames as $capabilityName) {
             if (!$capabilities->has($capabilityName)) {

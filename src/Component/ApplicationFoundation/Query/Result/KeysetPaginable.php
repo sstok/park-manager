@@ -12,19 +12,24 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\Result;
+namespace ParkManager\Component\ApplicationFoundation\Query\Result;
 
 /**
- * The SortablePaginableResult is implemented by a provider to limit
- * the amount of records returned, providing information about the
- * total count of items, and which sorting is accepted.
+ * The KeysetPaginable is implemented by a provider to limit
+ * the amount of records returned and providing information
+ * on how to get to the next page (using an ElementIdentifier).
  *
- * For performance reasons this should only be used for results when
- * offset paginating doesn't have a negative impact or uses an index.
+ * Note: Unlike offset paging this technique only allows a prev/next
+ * paging but no total or fast forward to a specific page.
+ *
+ * Because of how records are searched the sorting is required,
+ * and cannot be ignored.
  *
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
+ *
+ * @see http://use-the-index-luke.com/no-offset
  */
-interface SortablePaginableResult extends PaginableResult
+interface KeysetPaginable
 {
     public const SORT_ASCENDING = 'asc';
     public const SORT_DESCENDING = 'desc';
@@ -36,13 +41,10 @@ interface SortablePaginableResult extends PaginableResult
     public function sortSpecification(): array;
 
     /**
-     * Returns a portion of the total result.
+     * @param mixed      $keyset
+     * @param array|null $sorting
      *
-     * @param int   $offset
-     * @param int   $limit
-     * @param array $sorting a hash of fields and there sorting eg. [id => asc]
-     *
-     * @return iterable
+     * @return KeysetPageResult
      */
-    public function slice(int $offset, int $limit, ?array $sorting = null): iterable;
+    public function getPage($keyset, array $sorting = null): KeysetPageResult;
 }

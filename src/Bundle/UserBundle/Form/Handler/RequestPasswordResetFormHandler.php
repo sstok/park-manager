@@ -16,8 +16,8 @@ namespace ParkManager\Bundle\UserBundle\Form\Handler;
 
 use Hostnet\Component\FormHandler\HandlerConfigInterface;
 use Hostnet\Component\FormHandler\HandlerTypeInterface;
-use League\Tactician\CommandBus;
 use ParkManager\Bundle\UserBundle\Form\Type\RequestPasswordResetType;
+use ParkManager\Component\ApplicationFoundation\Command\CommandBus;
 use ParkManager\Component\User\Model\Command\RequestUserPasswordReset;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;

@@ -12,8 +12,14 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\LogMessage;
+namespace ParkManager\Component\ApplicationFoundation\Command;
 
-final class PluralMessage
+interface CommandBus
 {
+    /**
+     * @param object $command
+     *
+     * @return mixed
+     */
+    public function handle(object $command);
 }

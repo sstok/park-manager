@@ -19,6 +19,7 @@ use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MessageBusCon
 use ParkManager\Bridge\ServiceBus\Tests\Fixtures\Handler\CancelUserHandler;
 use ParkManager\Bridge\ServiceBus\Tests\Fixtures\Handler\RegisterUserHandler;
 use ParkManager\Bridge\ServiceBus\Tests\Fixtures\Middleware\MessageGuardMiddleware;
+use ParkManager\Component\ServiceBus\TacticianCommandBus;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -47,7 +48,7 @@ final class MessageBusConfiguratorTest extends TestCase
             ->end()
             ->handlers();
 
-        $expectedDef = new Definition(CommandBus::class);
+        $expectedDef = new Definition(TacticianCommandBus::class);
         $expectedDef->addTag('park_manager.service_bus');
         $expectedDef->setPublic(false);
 

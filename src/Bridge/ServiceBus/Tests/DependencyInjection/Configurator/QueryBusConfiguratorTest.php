@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Bridge\ServiceBus\Tests\DependencyInjection\Configurator;
 
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\QueryBusConfigurator;
-use ParkManager\Component\ServiceBus\QueryBus;
+use ParkManager\Component\ServiceBus\TacticianQueryBus;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -40,7 +40,7 @@ final class QueryBusConfiguratorTest extends TestCase
 
         QueryBusConfigurator::register($containerConfigurator->defaults(), 'park_manager.query_bus.users');
 
-        $expectedDef = new Definition(QueryBus::class);
+        $expectedDef = new Definition(TacticianQueryBus::class);
         $expectedDef->addTag('park_manager.service_bus');
         $expectedDef->setPublic(false);
 
