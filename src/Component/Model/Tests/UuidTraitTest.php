@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Model\Tests;
 
-use ParkManager\Component\Model\UuidTrait;
+use ParkManager\Component\SharedKernel\UuidTrait;
 use PHPUnit\Framework\TestCase;
 
 final class UuidTraitTest extends TestCase

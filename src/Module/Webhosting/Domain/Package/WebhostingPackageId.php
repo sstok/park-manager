@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Domain\Package;
 
-use ParkManager\Component\Model\UuidTrait;
+use ParkManager\Component\SharedKernel\UuidTrait;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model;
 
-use ParkManager\Component\Model\UuidTrait;
+use ParkManager\Component\SharedKernel\UuidTrait;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
