@@ -112,7 +112,7 @@ abstract class ConfirmPasswordResetActionTestCase extends WebTestCase
             SplitToken::fromString('H46VaCeI-DtDoW7i_ZhtTzx39ObsQJjADCUbQhSMw1cn3sHQamoDfFY3'),
             'wrong'
         );
-        $user->setPasswordResetToken($token->toValueHolder(new \DateTimeImmutable('+ 10 minutes')));
+        $user->setPasswordResetToken($token->toValueHolder());
         $user->changePassword('impossible-to-use');
         $repository->save($user);
 

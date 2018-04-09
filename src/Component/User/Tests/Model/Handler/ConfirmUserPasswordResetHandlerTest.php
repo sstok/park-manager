@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Tests\Model\Handler;
 
+use ParkManager\Component\Security\Token\FakeSplitTokenFactory;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Exception\PasswordResetConfirmationRejected;
 use ParkManager\Component\User\Model\Command\ConfirmUserPasswordReset;
@@ -34,7 +35,7 @@ final class ConfirmUserPasswordResetHandlerTest extends TestCase
     /** @test */
     public function it_handles_password_reset_confirmation()
     {
-        $token = SplitToken::fromString(self::TOKEN_STRING);
+        $token = FakeSplitTokenFactory::instance()->fromString(self::TOKEN_STRING);
         $handler = new ConfirmUserPasswordResetHandler(
             $this->expectUserSaved(
                 self::SELECTOR,
@@ -49,7 +50,7 @@ final class ConfirmUserPasswordResetHandlerTest extends TestCase
     /** @test */
     public function it_handles_password_reset_confirmation_with_failure()
     {
-        $token = SplitToken::fromString(self::TOKEN_STRING);
+        $token = FakeSplitTokenFactory::instance()->fromString(self::TOKEN_STRING);
 
         $handler = new ConfirmUserPasswordResetHandler(
             $this->expectUserSaved(
@@ -68,7 +69,7 @@ final class ConfirmUserPasswordResetHandlerTest extends TestCase
         $handler = new ConfirmUserPasswordResetHandler($this->expectUserNotSaved());
 
         $this->expectException(PasswordResetConfirmationRejected::class);
-        $handler(new ConfirmUserPasswordReset(SplitToken::fromString(self::TOKEN_STRING), 'my-password-word'));
+        $handler(new ConfirmUserPasswordReset(FakeSplitTokenFactory::instance()->fromString(self::TOKEN_STRING), 'my-password-word'));
     }
 
     private function expectUserConfirmationTokenIsVerified(SplitToken $token, string $password, bool $result = true): User

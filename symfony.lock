@@ -113,6 +113,9 @@
     "paragonie/constant_time_encoding": {
         "version": "v2.2.0"
     },
+    "paragonie/halite": {
+        "version": "dev-master"
+    },
     "phar-io/manifest": {
         "version": "1.0.1"
     },

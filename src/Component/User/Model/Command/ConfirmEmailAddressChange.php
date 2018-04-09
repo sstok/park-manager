@@ -23,9 +23,9 @@ final class ConfirmEmailAddressChange
 {
     private $token;
 
-    public function __construct(string $token)
+    public function __construct(SplitToken $token)
     {
-        $this->token = SplitToken::fromString($token);
+        $this->token = $token;
     }
 
     public function token(): SplitToken

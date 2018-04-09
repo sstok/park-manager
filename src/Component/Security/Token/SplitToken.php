@@ -16,6 +16,7 @@ namespace ParkManager\Component\Security\Token;
 
 use ParagonIE\ConstantTime\Base64UrlSafe;
 use ParagonIE\ConstantTime\Binary;
+use ParagonIE\Halite\HiddenString;
 
 /**
  * A split-token value-object.
@@ -28,12 +29,12 @@ use ParagonIE\ConstantTime\Binary;
  *   encoder. Do not replace these with a regular encoder as this leaks timing
  *   information, making it possible to perform side-channel attacks.
  *
- * * The selector is used as ID to find the token, leaking this value
+ * * The selector is used as ID to identify the token, leaking this value
  *   has no negative effect. The index of the storage already leaks timing.
  *
  * * The verifier is used _as a password_ to authenticate the token,
  *   only the 'full token' has the original value. The storage holds
- *   a crypto hashed (Argon2i) version of the verifier.
+ *   a crypto hashed version of the verifier.
  *
  * * When validating the token, the provided verifier is crypto
  *   compared in *constant-time* for equality.
@@ -41,7 +42,7 @@ use ParagonIE\ConstantTime\Binary;
  * The 'full token' is to be shared with the receiver only!
  *
  * THE TOKEN HOLDS THE ORIGINAL "VERIFIER", DO NOT STORE THE TOKEN
- * IN A DATABASE UNLESS A PROPER FORM OF STORAGE ENCRYPTION IS USED!
+ * IN A DIRECTLY UNLESS A PROPER FORM OF ENCRYPTION IS USED!
  *
  * Example (for illustration):
  *
@@ -49,51 +50,68 @@ use ParagonIE\ConstantTime\Binary;
  * $userId = ...; // Can be null
  *
  * // Create
- * $token = SplitToken::generate($userId);
+ * $splitTokenFactory = ...;
+ *
+ * $token = $splitTokenFactory->create($userId);
  *
  * // The $authToken is to be shared with the receiver (eg. the user) only.
  * // And is URI safe.
  * //
  * // DO NOT STORE "THIS" VALUE IN THE DATABASE! Store the selector and verifier-hash instead.
- * $authToken = $token->token();
+ * $authToken = $token->token(); // HiddenString
+ *
+ * $holder = $token->toValueHolder();
  *
  * // UPDATE site_user
  * // SET
- * //   recovery_selector = $authToken->selector(),
- * //   recovery_verifier = $authToken->verifierHash(),
+ * //   recovery_selector = $holder->selector(),
+ * //   recovery_verifier = $holder->verifierHash(),
+ * //   recovery_expires_at = $holder->expiresAt(),
+ * //   recovery_metadata = $holder->metadata(),
  * //   recovery_timestamp = NOW()
  * // WHERE user_id = ...
  *
  *
  * // Verification step:
- * $token = SplitToken::fromString($_GET['token']);
+ * $token = $splitTokenFactory->fromString($_GET['token']);
  *
- * // $result = SELECT user_id, recover_verifier WHERE recover_selector = $token->selector()
+ * // $result = SELECT user_id, recover_verifier, recovery_expires_at, recovery_metadata WHERE recover_selector = $token->selector()
+ * $holder = new SplitTokenValueHolder($token->selector(), $result['recovery_verifier'], $result['recovery_expires_at'], $result['recovery_metadata']);
  *
- * $accepted = $token->verify($result['recover_verifier'], $result['user_id']);
+ * $accepted = $token->matches($holder, $result['user_id']);
  * <code>
  *
- * Note: Invoking verifierHash() doesn't work for a reconstructed SplitToken object.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
+ * Note: Invoking toValueHolder() doesn't work for a reconstructed SplitToken object.
  */
 final class SplitToken
 {
     private const SELECTOR_BYTES = 24;
     private const VERIFIER_BYTES = 18;
-    private const TOKEN_CHAR_LENGTH = (self::SELECTOR_BYTES * 4 / 3) + (self::VERIFIER_BYTES * 4 / 3);
+
+    public const TOKEN_DATA_LENGTH = (self::VERIFIER_BYTES + self::SELECTOR_BYTES);
+    public const TOKEN_CHAR_LENGTH = (self::SELECTOR_BYTES * 4 / 3) + (self::VERIFIER_BYTES * 4 / 3);
 
     private $selector;
     private $verifier;
     private $verifierHash;
     private $token;
+    private $expiresAt;
+
+    /**
+     * @var callable
+     */
+    private $verifierHasher;
+
+    /**
+     * @var callable
+     */
+    private $verifierValidator;
 
     /**
      * Wipe it from memory after it's been used.
      */
     public function __destruct()
     {
-        \sodium_memzero($this->token);
         \sodium_memzero($this->verifier);
 
         if (null !== $this->verifierHash) {
@@ -102,85 +120,64 @@ final class SplitToken
     }
 
     /**
-     * Returns the token as base64 URI-safe encoded string.
+     * Creates a new SplitToken object based of the $token.
      *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->token();
-    }
-
-    /**
-     * Generate a new SplitToken instance.
+     * The $randomBytes argument must provide a crypto-random string (wrapped in
+     * a HiddenString object) of exactly {@see SplitToken::TOKEN_DATA_LENGTH} bytes.
      *
-     * Caution: The token should not be stored! Store the selector and verifier-hash
-     * separate.
-     *
-     * @param string $id Optional id to bind the token a specific entity (highly recommended)
+     * @param HiddenString            $randomBytes
+     * @param callable                $verifierHasher    Callable to produce a hash of the verifier
+     *                                                   string
+     * @param callable                $verifierValidator Callable to validate the hash against
+     *                                                   a user provided verifier value
+     * @param null|string             $id                Optional id to bind the token a specific entity
+     *                                                   (highly recommended)
+     * @param \DateTimeImmutable|null $expiresAt
      *
      * @return SplitToken
      */
-    public static function generate(?string $id = null): self
-    {
-        $selector = Base64UrlSafe::encode(\random_bytes(static::SELECTOR_BYTES));
-        $verifier = Base64UrlSafe::encode(\random_bytes(static::VERIFIER_BYTES));
+    public static function create(
+        HiddenString $randomBytes,
+        callable $verifierHasher,
+        callable $verifierValidator,
+        ?string $id = null,
+        ?\DateTimeImmutable $expiresAt = null
+    ): self {
+        $bytesString = $randomBytes->getString();
+
+        if (($i = Binary::safeStrlen($bytesString)) < self::TOKEN_DATA_LENGTH) {
+            // Don't zero memory as the value is invalid.
+            throw new \RuntimeException(sprintf('Invalid token-data provided, expected exactly %s bytes.', self::TOKEN_DATA_LENGTH));
+        }
 
         $instance = new self();
-        $instance->selector = $selector;
-        $instance->verifier = $verifier;
-        $instance->token = $selector.$verifier;
-        $instance->verifierHash = \sodium_crypto_pwhash_str(
-            $verifier.':'.($id ?? '\0'),
-            \SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
-            \SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
-        );
+        $instance->expiresAt = $expiresAt;
+        $instance->selector = Base64UrlSafe::encode(Binary::safeSubstr($bytesString, 0, self::SELECTOR_BYTES));
+        $instance->verifier = Base64UrlSafe::encode(Binary::safeSubstr($bytesString, self::SELECTOR_BYTES, self::VERIFIER_BYTES));
+        $instance->token = new HiddenString($instance->selector.$instance->verifier, false, true);
+        $instance->verifierHash = $verifierHasher($instance->verifier.':'.($id ?? '\0'));
+        $instance->verifierValidator = $verifierValidator;
+        $instance->verifierHasher = $verifierHasher;
+
+        \sodium_memzero($bytesString);
 
         return $instance;
     }
 
     /**
-     * Returns the selector to store/find the token in storage.
+     * Recreates a SplitToken object from a string.
      *
-     * @return string A 24 byte string
-     */
-    public function selector(): string
-    {
-        return $this->selector;
-    }
-
-    /**
-     * Returns the verifier-hash for storage.
+     * Note: The $token is zeroed from memory when valid.
      *
-     * @return string An Argon2i crypt-hashed string
-     */
-    public function verifierHash(): string
-    {
-        if (null === $this->verifierHash) {
-            throw new \RuntimeException('verifierHash() does not work for a reconstructed SplitToken object.');
-        }
-
-        return $this->verifierHash;
-    }
-
-    /**
-     * Returns the token (selector + verifier) for authentication.
-     *
-     * @return string
-     */
-    public function token(): string
-    {
-        return $this->token;
-    }
-
-    /**
-     * Reconstruct SplitToken from user provided string.
-     *
-     * @param string $token
+     * @param string   $token
+     * @param callable $verifierHasher    Callable to produce a hash of the verifier
+     *                                    string
+     * @param callable $verifierValidator Callable to validate the hash against
+     *                                    a user provided verifier value
      *
      * @return SplitToken
      */
-    public static function fromString(string $token): self
+    public static function fromString(string $token, callable $verifierHasher, callable $verifierValidator): self
     {
         if (Binary::safeStrlen($token) < self::TOKEN_CHAR_LENGTH) {
             // Don't zero memory as the value is invalid.
@@ -188,54 +185,75 @@ final class SplitToken
         }
 
         $instance = new self();
-        $instance->token = $token;
+        $instance->token = new HiddenString($token);
         $instance->selector = Binary::safeSubstr($token, 0, 32);
         $instance->verifier = Binary::safeSubstr($token, 32);
+        $instance->verifierValidator = $verifierValidator;
+        $instance->verifierHasher = $verifierHasher;
 
         // Don't (re)generate as this needs the salt of the stored hash.
         $instance->verifierHash = null;
+
+        \sodium_memzero($token);
 
         return $instance;
     }
 
     /**
-     * Verify this token against a (stored) selector and verifier-hash.
+     * Returns the selector to identify the token in storage.
+     *
+     * @return string
+     */
+    public function selector(): string
+    {
+        return $this->selector;
+    }
+
+    /**
+     * Returns the token (selector + verifier) for authentication.
+     *
+     * @return HiddenString
+     */
+    public function token(): HiddenString
+    {
+        return $this->token;
+    }
+
+    /**
+     * Verifies this SplitToken against a (stored) SplitTokenValueHolder.
      *
      * This method is to be used once the SplitToken is reconstructed
      * from a user-provided string.
      *
-     * @param string      $selector     The selector (as stored)
-     * @param string      $verifierHash The verifier hash (as stored)
-     * @param null|string $id           Id this token was bound to during generation
+     * @param SplitTokenValueHolder $token
+     * @param null|string           $id    Id this token was bound to during generation
      *
      * @return bool
      */
-    public function matches(string $selector, string $verifierHash, ?string $id = null): bool
+    public function matches(SplitTokenValueHolder $token, ?string $id = null): bool
     {
-        // Ensure the algorithm works as expected, and this API is used correctly.
-        if ($selector !== $this->selector) {
+        if ($token->isExpired() || $token->selector() !== $this->selector) {
             return false;
         }
 
-        if (\sodium_crypto_pwhash_str_verify($verifierHash, $this->verifier.':'.($id ?? '\0'))) {
-            return true;
-        }
-
-        return false;
+        return ($this->verifierValidator)($token->verifierHash(), $this->verifier.':'.($id ?? '\0'));
     }
 
     /**
-     * Produce a new SplitTokenValue instance (with the selector and verifierHash).
+     * Produce a new SplitTokenValue instance.
      *
      * Note: This method doesn't work when reconstructed from a string.
      *
-     * @param \DateTimeImmutable|null $expiresAt
-     * @param array                   $metadata
+     * @param array $metadata
      *
      * @return SplitTokenValueHolder
      */
-    public function toValueHolder(?\DateTimeImmutable $expiresAt = null, array $metadata = []): SplitTokenValueHolder
+    public function toValueHolder(array $metadata = []): SplitTokenValueHolder
     {
-        return new SplitTokenValueHolder($this->selector(), $this->verifierHash(), $expiresAt, $metadata);
+        if (null === $this->verifierHash) {
+            throw new \RuntimeException('toValueHolder() does not work SplitToken object created with fromString().');
+        }
+
+        return new SplitTokenValueHolder($this->selector, $this->verifierHash, $this->expiresAt, $metadata);
     }
 }

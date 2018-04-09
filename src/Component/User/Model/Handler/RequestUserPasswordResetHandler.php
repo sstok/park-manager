@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model\Handler;
 
-use ParkManager\Component\Security\Token\SplitToken;
+use ParkManager\Component\Security\Token\SplitTokenFactory;
 use ParkManager\Component\User\Canonicalizer\Canonicalizer;
 use ParkManager\Component\User\Model\Command\RequestUserPasswordReset;
 use ParkManager\Component\User\Model\Service\PasswordResetMailer;
@@ -28,25 +28,27 @@ final class RequestUserPasswordResetHandler
     private $userCollection;
     private $emailCanonicalizer;
     private $passwordResetMailer;
+    private $splitTokenFactory;
     private $maxTokenLife;
 
     /**
-     * Constructor.
-     *
      * @param UserCollection      $userCollection
      * @param Canonicalizer       $emailCanonicalizer
      * @param PasswordResetMailer $passwordResetMailer
+     * @param SplitTokenFactory   $splitTokenFactory
      * @param int                 $maxTokenLife        Maximum life-time in seconds (default is 'one hour')
      */
     public function __construct(
         UserCollection $userCollection,
         Canonicalizer $emailCanonicalizer,
         PasswordResetMailer $passwordResetMailer,
+        SplitTokenFactory $splitTokenFactory,
         int $maxTokenLife = 3600
     ) {
         $this->userCollection = $userCollection;
         $this->emailCanonicalizer = $emailCanonicalizer;
         $this->passwordResetMailer = $passwordResetMailer;
+        $this->splitTokenFactory = $splitTokenFactory;
         $this->maxTokenLife = $maxTokenLife;
     }
 
@@ -60,10 +62,10 @@ final class RequestUserPasswordResetHandler
             return;
         }
 
-        $splitToken = SplitToken::generate($user->id()->toString());
         $tokenExpiration = new \DateTimeImmutable('+ '.$this->maxTokenLife.' seconds');
+        $splitToken = $this->splitTokenFactory->generate($user->id()->toString(), $tokenExpiration);
 
-        if ($user->setPasswordResetToken($splitToken->toValueHolder($tokenExpiration))) {
+        if ($user->setPasswordResetToken($splitToken->toValueHolder())) {
             $this->userCollection->save($user);
             $this->passwordResetMailer->send($email, $splitToken, $tokenExpiration);
         }

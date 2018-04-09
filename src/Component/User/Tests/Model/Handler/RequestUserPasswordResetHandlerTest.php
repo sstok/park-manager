@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Tests\Model\Handler;
 
+use ParkManager\Component\Security\Token\FakeSplitTokenFactory;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Canonicalizer\SimpleEmailCanonicalizer;
 use ParkManager\Component\User\Model\Command\RequestUserPasswordReset;
@@ -38,7 +39,8 @@ final class RequestUserPasswordResetHandlerTest extends TestCase
         $handler = new RequestUserPasswordResetHandler(
             $this->expectUserSaved('john2@example.com', $this->expectUserConfirmationTokenIsSet()),
             new SimpleEmailCanonicalizer(),
-            $this->createConfirmationMailer('John2@example.com')
+            $this->createConfirmationMailer('John2@example.com'),
+            FakeSplitTokenFactory::instance()
         );
 
         $command = new RequestUserPasswordReset('John2@example.com');
@@ -51,7 +53,8 @@ final class RequestUserPasswordResetHandlerTest extends TestCase
         $handler = new RequestUserPasswordResetHandler(
             $this->expectUserNotSaved('john2@example.com', $this->expectUserConfirmationTokenIsNotSet()),
             new SimpleEmailCanonicalizer(),
-            $this->createConfirmationMailer(null)
+            $this->createConfirmationMailer(null),
+            FakeSplitTokenFactory::instance()
         );
 
         $command = new RequestUserPasswordReset('John2@example.com');
@@ -64,7 +67,8 @@ final class RequestUserPasswordResetHandlerTest extends TestCase
         $handler = new RequestUserPasswordResetHandler(
             $this->expectUserNotSaved('john2@example.com', null),
             new SimpleEmailCanonicalizer(),
-            $this->createConfirmationMailer(null)
+            $this->createConfirmationMailer(null),
+            FakeSplitTokenFactory::instance()
         );
 
         $command = new RequestUserPasswordReset('John2@example.com');

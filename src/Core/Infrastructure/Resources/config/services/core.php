@@ -17,6 +17,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 use ParkManager\Component\Mailer\NullSender;
 use ParkManager\Component\Mailer\Sender;
+use ParkManager\Component\Security\Token\SodiumSplitTokenFactory;
+use ParkManager\Component\Security\Token\SplitTokenFactory;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services();
@@ -26,5 +28,6 @@ return function (ContainerConfigurator $c) {
     $di->set('park_manager.service_bus.log_messages', ServiceMessages::class)
         ->alias(ServiceMessages::class, 'park_manager.service_bus.log_messages');
 
+    $di->set(SodiumSplitTokenFactory::class)->alias(SplitTokenFactory::class, SodiumSplitTokenFactory::class);
     $di->set(NullSender::class)->alias(Sender::class, NullSender::class);
 };
