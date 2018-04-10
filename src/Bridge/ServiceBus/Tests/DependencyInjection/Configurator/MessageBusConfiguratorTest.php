@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Bridge\ServiceBus\Tests\DependencyInjection\Configurator;
 
-use League\Tactician\CommandBus;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MessageBusConfigurator;
 use ParkManager\Bridge\ServiceBus\Tests\Fixtures\Handler\CancelUserHandler;
 use ParkManager\Bridge\ServiceBus\Tests\Fixtures\Handler\RegisterUserHandler;

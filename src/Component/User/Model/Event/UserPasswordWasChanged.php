@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model\Event;
 
-use ParkManager\Component\Model\Event\DomainEvent;
+use ParkManager\Component\SharedKernel\Event\DomainEvent;
 use ParkManager\Component\User\Model\UserId;
 
 /**

@@ -12,19 +12,17 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\Event;
-
-use Symfony\Component\EventDispatcher\Event;
+namespace ParkManager\Component\SharedKernel\Event;
 
 /**
- * A DomainEvent occurs when something changed within the Domain.
- * That other systems are interested in.
- *
- * Note: This class functions as an adapter to the Symfony EventDispatcher.
- * The class-name is used as event name.
- *
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
-abstract class DomainEvent extends Event
+abstract class EventsRecordingEntity
 {
+    use DomainEventsCollectionTrait;
+
+    protected function __construct()
+    {
+        // no-op
+    }
 }

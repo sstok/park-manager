@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bridge\Doctrine\Type;
 
-use ParkManager\Component\Model\RootEntityOwner;
+use ParkManager\Component\SharedKernel\RootEntityOwner;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>

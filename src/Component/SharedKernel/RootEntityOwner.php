@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model;
+namespace ParkManager\Component\SharedKernel;
 
 /**
  * The RootEntityOwner reference is used to link an owner (eg. user or system entity)

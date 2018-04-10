@@ -1,6 +1,11 @@
 UPGRADE
 =======
 
+## Upgrade FROM 0.3.0 to 0.4.0
+
+ * The Model Component has been removed, use the SharedKernel and 
+   ApplicationFoundation Components instead.
+
 ## Upgrade FROM 0.2.0 to 0.3.0
 
 ### User

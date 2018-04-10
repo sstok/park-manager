@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Domain\Account\Event;
 
-use ParkManager\Component\Model\RootEntityOwner;
+use ParkManager\Component\SharedKernel\RootEntityOwner;
 use ParkManager\Module\Webhosting\Domain\Account\Event\WebhostingAccountWasRegistered;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 use PHPUnit\Framework\TestCase;

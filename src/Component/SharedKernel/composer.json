@@ -1,7 +1,7 @@
 {
-    "name": "park-manager/model",
+    "name": "park-manager/shared-kernel",
     "type": "library",
-    "description": "Park-Manager Model Component",
+    "description": "Park-Manager SharedKernel Component",
     "homepage": "http://www.park-manager.com/",
     "license": "MPL-2.0",
     "authors": [
@@ -16,6 +16,7 @@
     ],
     "require": {
         "php": "^7.2",
+        "ramsey/uuid": "^3.0",
         "symfony/event-dispatcher": "^4.0.4"
     },
     "config": {
@@ -26,18 +27,15 @@
     },
     "autoload": {
         "psr-4": {
-            "ParkManager\\Component\\Model\\": ""
+            "ParkManager\\Component\\SharedKernel\\": ""
         },
         "exclude-from-classmap": [
             "Tests/"
         ]
     },
     "autoload-dev": {
-        "ParkManager\\Component\\Model\\Tests\\": "Tests"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.3-dev"
+        "psr-4": {
+            "ParkManager\\Component\\SharedKernel\\Tests\\": "Tests"
         }
     }
 }

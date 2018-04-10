@@ -17,9 +17,9 @@ namespace ParkManager\Component\User\Model;
 use Assert\Assertion;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use ParkManager\Component\Model\EventsRecordingEntity;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\Security\Token\SplitTokenValueHolder;
+use ParkManager\Component\SharedKernel\Event\EventsRecordingEntity;
 use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
 
 /**

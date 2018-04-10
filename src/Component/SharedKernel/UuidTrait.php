@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model;
+namespace ParkManager\Component\SharedKernel;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -21,8 +21,6 @@ use Ramsey\Uuid\UuidInterface;
  * An Identity holds a single UUID value.
  *
  * Use this trait any in ValueObject that uniquely identifies an Entity.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 trait UuidTrait
 {

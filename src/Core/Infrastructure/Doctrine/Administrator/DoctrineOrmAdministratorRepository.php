@@ -16,7 +16,7 @@ namespace ParkManager\Core\Infrastructure\Doctrine\Administrator;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Bundle\UserBundle\Model\DoctrineOrmUserCollection;
-use ParkManager\Component\Model\Event\EventEmitter;
+use ParkManager\Component\SharedKernel\Event\EventEmitter;
 use ParkManager\Core\Domain\Administrator\Administrator;
 use ParkManager\Core\Domain\Administrator\AdministratorRepository;
 

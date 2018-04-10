@@ -12,9 +12,9 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\Tests\Mock\Event;
+namespace ParkManager\Component\SharedKernel\Tests\Mock\Event;
 
-use ParkManager\Component\Model\Event\DomainEvent;
+use ParkManager\Component\SharedKernel\Event\DomainEvent;
 
 final class UserWasRegistered extends DomainEvent
 {

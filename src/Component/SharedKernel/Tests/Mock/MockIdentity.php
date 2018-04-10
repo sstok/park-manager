@@ -12,16 +12,12 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Module\Webhosting\Domain\Package;
+namespace ParkManager\Component\SharedKernel\Tests\Mock;
 
 use ParkManager\Component\SharedKernel\UuidTrait;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- *
- * @codeCoverageIgnore
- */
-final class WebhostingPackageId
+/** @ignore */
+class MockIdentity implements \Serializable, \JsonSerializable
 {
     use UuidTrait;
 }

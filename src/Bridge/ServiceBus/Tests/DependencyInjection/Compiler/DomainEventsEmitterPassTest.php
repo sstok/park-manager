@@ -17,7 +17,7 @@ namespace ParkManager\Bridge\ServiceBus\Tests\DependencyInjection\Compiler;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler\DomainEventsEmitterPass;
 use ParkManager\Bridge\ServiceBus\Tests\DependencyInjection\Fixture\EventListener\RegisterUserListener;
-use ParkManager\Component\Model\Event\SymfonyEventEmitter;
+use ParkManager\Component\SharedKernel\Event\SymfonyEventEmitter;
 use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

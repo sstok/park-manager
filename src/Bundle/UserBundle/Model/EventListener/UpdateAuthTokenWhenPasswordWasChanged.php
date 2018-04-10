@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\UserBundle\Model\EventListener;
 
-use ParkManager\Component\Model\Event\EventSubscriber;
+use ParkManager\Component\SharedKernel\Event\EventSubscriber;
 use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
 use ParkManager\Component\User\Model\UserId;
 use ParkManager\Component\User\Security\SecurityUser;

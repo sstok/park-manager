@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Tests\Infrastructure\Doctrine\Package;
 
 use ParkManager\Bridge\Doctrine\Test\EntityRepositoryTestCase;
-use ParkManager\Component\Model\Test\EventSourcedRepositoryTestHelper;
+use ParkManager\Component\SharedKernel\Test\Event\EventSourcedRepositoryTestHelper;
 use ParkManager\Module\Webhosting\Domain\Package\Capabilities;
 use ParkManager\Module\Webhosting\Domain\Package\Exception\WebhostingPackageNotFound;
 use ParkManager\Module\Webhosting\Domain\Package\WebhostingPackage;

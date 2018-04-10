@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Domain\Account\Event;
 
-use ParkManager\Component\Model\Event\DomainEvent;
-use ParkManager\Component\Model\RootEntityOwner;
+use ParkManager\Component\SharedKernel\Event\DomainEvent;
+use ParkManager\Component\SharedKernel\RootEntityOwner;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 
 /**

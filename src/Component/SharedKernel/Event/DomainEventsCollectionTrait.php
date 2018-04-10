@@ -12,14 +12,10 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model;
-
-use ParkManager\Component\Model\Event\DomainEvent;
+namespace ParkManager\Component\SharedKernel\Event;
 
 /**
  * The DomainEventsCollectionTrait keeps track of recorded events.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 trait DomainEventsCollectionTrait
 {

@@ -16,8 +16,8 @@ namespace ParkManager\Bridge\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use ParkManager\Component\Model\Event\EventEmitter;
-use ParkManager\Component\Model\EventsRecordingEntity;
+use ParkManager\Component\SharedKernel\Event\EventEmitter;
+use ParkManager\Component\SharedKernel\Event\EventsRecordingEntity;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>

@@ -15,9 +15,8 @@ declare(strict_types=1);
 namespace ParkManager\Component\User\Tests\Model;
 
 use Assert\AssertionFailedException;
-use ParkManager\Component\Model\Test\EventsRecordingEntityAssertionTrait;
-use ParkManager\Component\Model\Tests\ObjectHydrationAssertTrait;
 use ParkManager\Component\Security\Token\SplitToken;
+use ParkManager\Component\SharedKernel\Test\Event\EventsRecordingEntityAssertionTrait;
 use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
 use ParkManager\Component\User\Model\User;
 use ParkManager\Component\User\Model\UserId;
@@ -29,7 +28,6 @@ use PHPUnit\Framework\TestCase;
 final class UserTest extends TestCase
 {
     use EventsRecordingEntityAssertionTrait;
-    use ObjectHydrationAssertTrait;
 
     private const ID1 = '930c3fd0-3bd1-11e7-bb9b-acdc32b58315';
 

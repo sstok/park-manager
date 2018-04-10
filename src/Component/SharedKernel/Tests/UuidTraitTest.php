@@ -12,9 +12,9 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\Tests;
+namespace ParkManager\Component\SharedKernel\Tests;
 
-use ParkManager\Component\Model\UuidTrait;
+use ParkManager\Component\SharedKernel\Tests\Mock\MockIdentity;
 use PHPUnit\Framework\TestCase;
 
 final class UuidTraitTest extends TestCase
@@ -69,10 +69,4 @@ final class UuidTraitTest extends TestCase
 
         self::assertEquals('56253090-3960-11e7-94fd-acbc32b58315', json_decode($serialized, true));
     }
-}
-
-/** @ignore */
-class MockIdentity implements \Serializable, \JsonSerializable
-{
-    use UuidTrait;
 }

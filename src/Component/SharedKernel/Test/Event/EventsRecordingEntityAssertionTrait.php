@@ -12,10 +12,10 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Model\Test;
+namespace ParkManager\Component\SharedKernel\Test\Event;
 
-use ParkManager\Component\Model\Event\DomainEvent;
-use ParkManager\Component\Model\EventsRecordingEntity;
+use ParkManager\Component\SharedKernel\Event\DomainEvent;
+use ParkManager\Component\SharedKernel\Event\EventsRecordingEntity;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
