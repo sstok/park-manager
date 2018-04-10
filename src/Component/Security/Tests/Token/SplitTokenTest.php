@@ -14,74 +14,155 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Security\Tests\Token;
 
+use ParagonIE\Halite\HiddenString;
 use ParkManager\Component\Security\Token\SplitToken;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- * @group slow
  */
 final class SplitTokenTest extends TestCase
 {
-    /**
-     * @test
-     * @slowThreshold 1000
-     */
-    public function it_generates_a_split_token_without_id()
-    {
-        $splitToken = SplitToken::generate();
+    private const FULL_TOKEN = '1zUeXUvr4LKymANBB_bLEqiP5GPr-Pha_OR6OOnV1o8Vy_rWhDoxKNIt';
+    private const SELECTOR = '1zUeXUvr4LKymANBB_bLEqiP5GPr-Pha';
 
-        self::assertNotNull($token = $splitToken->token());
-        self::assertNotEquals($token, $selector = $splitToken->selector());
-        self::assertEquals($token, (string) $splitToken);
-        self::assertNotNull($verifier = $splitToken->verifierHash());
-        self::assertStringStartsWith($selector, $token);
-        self::assertStringEndsNotWith($selector, $verifier);
-        self::assertStringStartsWith('$argon2i', $verifier);
+    private static $randValue;
+
+    /**
+     * @beforeClass
+     */
+    public static function createRandomBytes()
+    {
+        self::$randValue = new HiddenString(hex2bin('d7351e5d4bebe0b2b298034107f6cb12a88fe463ebf8f85afce47a38e9d5d68f15cbfad6843a3128d22d'), false, true);
     }
 
     /**
      * @test
-     * @slowThreshold 1000
      */
-    public function it_generates_a_split_token_with_id()
+    public function it_validates_the_correct_length()
     {
-        $splitToken = SplitToken::generate('50');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Invalid token-data provided, expected exactly 42 bytes.');
 
-        self::assertNotNull($token = $splitToken->token());
-        self::assertNotEquals($token, $selector = $splitToken->selector());
-        self::assertNotNull($verifier = $splitToken->verifierHash());
-        self::assertStringStartsWith($selector, $token);
-        self::assertStringEndsNotWith($selector, $verifier);
-        self::assertStringStartsWith('$argon2i', $verifier);
+        SplitToken::create(
+            $fullToken = new HiddenString('NanananaBatNan', false, true),
+            function (string $value) { },
+            function () { }
+        );
     }
 
     /**
      * @test
-     * @slowThreshold 1000
      */
-    public function it_can_produce_a_SplitTokenValueHolder()
+    public function it_creates_a_split_token_without_id()
     {
-        $splitToken = SplitToken::generate();
+        $splitToken = SplitToken::create(
+            self::$randValue,
+            function (string $value) {
+                return $value;
+            },
+            function () {
+                return false;
+            }
+        );
+
+        self::assertEquals(self::FULL_TOKEN, $token = $splitToken->token()->getString());
+        self::assertEquals(self::SELECTOR, $selector = $splitToken->selector());
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_split_token_with_id()
+    {
+        $splitToken = SplitToken::create(
+            $fullToken = self::$randValue,
+            function (string $value) {
+                return $value;
+            },
+            function () {
+                return false;
+            },
+            '50'
+        );
+
+        self::assertEquals(self::FULL_TOKEN, $token = $splitToken->token()->getString());
+        self::assertEquals(self::SELECTOR, $selector = $splitToken->selector());
+    }
+
+    /**
+     * @test
+     */
+    public function it_produces_a_SplitTokenValueHolder()
+    {
+        $verifier = '';
+        $splitToken = SplitToken::create(
+            self::$randValue,
+            function (string $value) use (&$verifier) {
+                $verifier = $value;
+
+                return $value;
+            },
+            function () {
+                return false;
+            }
+        );
+
         $value = $splitToken->toValueHolder();
 
         self::assertEquals($splitToken->selector(), $value->selector());
-        self::assertEquals($splitToken->verifierHash(), $value->verifierHash());
+        self::assertEquals($verifier, $value->verifierHash());
         self::assertEquals([], $value->metadata());
         self::assertFalse($value->isExpired());
+        self::assertFalse($value->isExpired(new \DateTimeImmutable('-5 minutes')));
     }
 
     /**
      * @test
-     * @slowThreshold 1000
      */
-    public function it_can_produce_a_SplitTokenValueHolder_with_expiration()
+    public function it_produces_a_SplitTokenValueHolder_with_metadata()
     {
-        $splitToken = SplitToken::generate();
-        $value = $splitToken->toValueHolder($date = new \DateTimeImmutable('+5 minutes'));
+        $verifier = '';
+        $splitToken = SplitToken::create(
+            $fullToken = self::$randValue,
+            function (string $value) use (&$verifier) {
+                $verifier = $value;
 
-        self::assertEquals($value->selector(), $splitToken->selector());
-        self::assertEquals($value->verifierHash(), $splitToken->verifierHash());
+                return $value;
+            },
+            function () {
+                return false;
+            }
+        );
+
+        $value = $splitToken->toValueHolder(['he' => 'now']);
+
+        self::assertEquals($verifier, $value->verifierHash());
+        self::assertEquals(['he' => 'now'], $value->metadata());
+    }
+
+    /**
+     * @test
+     */
+    public function it_produces_a_SplitTokenValueHolder_with_expiration()
+    {
+        $date = new \DateTimeImmutable('+5 minutes');
+        $splitToken = SplitToken::create(
+            $fullToken = self::$randValue,
+            function (string $value) use (&$verifier) {
+                $verifier = $value;
+
+                return $value;
+            },
+            function () {
+                return false;
+            },
+            null,
+            $date
+        );
+
+        $value = $splitToken->toValueHolder();
+
         self::assertTrue($value->isExpired($date->modify('+10 minutes')));
         self::assertFalse($value->isExpired($date));
         self::assertEquals([], $value->metadata());
@@ -89,119 +170,138 @@ final class SplitTokenTest extends TestCase
 
     /**
      * @test
-     * @slowThreshold 1000
-     */
-    public function it_can_produce_a_SplitTokenValueHolder_with_metadata()
-    {
-        $splitToken = SplitToken::generate();
-        $value = $splitToken->toValueHolder(null, ['foo' => 'bar']);
-
-        self::assertEquals($value->selector(), $splitToken->selector());
-        self::assertEquals($value->verifierHash(), $splitToken->verifierHash());
-        self::assertEquals(['foo' => 'bar'], $value->metadata());
-        self::assertFalse($value->isExpired());
-    }
-
-    /**
-     * @test
-     * @slowThreshold 1000
-     */
-    public function its_reconstruction_validates_minimum_length()
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Invalid token provided.');
-
-        SplitToken::fromString($token = 'ngyG');
-    }
-
-    /**
-     * @test
-     * @slowThreshold 1000
      */
     public function it_reconstructs_from_string()
     {
-        $splitTokenReconstituted = SplitToken::fromString($token = 'ngyG-7F0202Jl8yP-GiZvRQlzizrCDeprqTOY7QjYPplwRmLEcgGkPty');
+        $splitTokenReconstituted = SplitToken::fromString(
+            self::FULL_TOKEN,
+            function (string $value) use (&$verifier) {
+                $verifier = $value;
 
-        self::assertEquals($token, $splitTokenReconstituted->token());
-        self::assertNotNull('ngyG-7F0202Jl8yP-GiZvRQlzizrCDep', $splitTokenReconstituted->selector());
-        self::assertStringEndsNotWith('rqTOY7QjYPplwRmLEcgGkPty', $splitTokenReconstituted->selector());
-        self::assertStringEndsNotWith('RmLEcgGkPty', $splitTokenReconstituted->selector());
+                return $value;
+            },
+            function () {
+                return false;
+            }
+        );
+
+        self::assertEquals(self::FULL_TOKEN, $splitTokenReconstituted->token()->getString());
+        self::assertEquals(self::SELECTOR, $splitTokenReconstituted->selector());
     }
 
     /**
      * @test
-     * @slowThreshold 1000
      */
-    public function it_fails_when_verifierHash_is_invoked_on_reconstructed()
+    public function it_fails_when_creating_holder_with_string_constructed()
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('verifierHash() does not work for a reconstructed SplitToken object.');
+        $this->expectExceptionMessage('toValueHolder() does not work SplitToken object created with fromString().');
 
-        SplitToken::fromString($token = 'ngyG-7F0202Jl8yP-GiZvRQlzizrCDeprqTOY7QjYPplwRmLEcgGkPty')->verifierHash();
+        SplitToken::fromString(
+            self::FULL_TOKEN,
+            function (string $value) use (&$verifier) {
+                $verifier = $value;
+
+                return $value;
+            },
+            function () {
+                return false;
+            }
+        )->toValueHolder();
     }
 
     /**
      * @test
-     * @slowThreshold 1000
      */
-    public function it_verifies_generated_SplitToken_and_no_id()
+    public function it_verifies_SplitToken_from_string_and_no_id()
     {
-        $splitToken = SplitToken::generate();
+        $hasher = function (string $value) {
+            return $value;
+        };
+        $verifierCallable = function (string $val1, string $val2) {
+            return $val1 === $val2;
+        };
 
-        self::assertTrue($splitToken->matches($splitToken->selector(), $splitToken->verifierHash()));
-        self::assertFalse($splitToken->matches($splitToken->selector(), $splitToken->verifierHash(), '50'));
-        self::assertFalse($splitToken->matches($splitToken->verifierHash(), $splitToken->selector()));
+        // Stored.
+        $splitTokenHolder = SplitToken::create(self::$randValue, $hasher, $verifierCallable)->toValueHolder();
+
+        // Reconstructed.
+        $fromString = SplitToken::fromString(self::FULL_TOKEN, $hasher, $verifierCallable);
+
+        self::assertTrue($fromString->matches($splitTokenHolder));
+        self::assertFalse($fromString->matches($splitTokenHolder, '50'));
     }
 
     /**
      * @test
-     * @slowThreshold 1000
      */
-    public function it_verifies_generated_SplitToken_and_id()
+    public function it_verifies_SplitToken_from_string_SplitToken_and_id()
     {
-        $splitToken = SplitToken::generate('50');
+        $hasher = function (string $value) {
+            return $value;
+        };
+        $verifierCallable = function (string $val1, string $val2) {
+            return $val1 === $val2;
+        };
 
-        self::assertTrue($splitToken->matches($splitToken->selector(), $splitToken->verifierHash(), '50'));
-        self::assertFalse($splitToken->matches($splitToken->selector(), $splitToken->verifierHash(), '60'));
-        self::assertFalse($splitToken->matches($splitToken->selector(), $splitToken->verifierHash()));
-        self::assertFalse($splitToken->matches($splitToken->verifierHash(), $splitToken->selector()));
+        // Stored.
+        $splitTokenHolder = SplitToken::create(self::$randValue, $hasher, $verifierCallable, '50')->toValueHolder();
+
+        // Reconstructed.
+        $fromString = SplitToken::fromString(self::FULL_TOKEN, $hasher, $verifierCallable);
+
+        self::assertTrue($fromString->matches($splitTokenHolder, '50'));
+        self::assertFalse($fromString->matches($splitTokenHolder, '60'));
+        self::assertFalse($fromString->matches($splitTokenHolder));
     }
 
     /**
      * @test
-     * @slowThreshold 1000
      */
-    public function it_verifies_reconstructed()
+    public function it_verifies_SplitToken_from_string_selector()
     {
-        $token = 'ZcqcqWqW-YAhgmLobo6tps0Xiyq678DiLgRZaJvbTI2QxGEzD2a7swBs';
-        $verifierHash = '$argon2i$v=19$m=32768,t=4,p=1$LU0TzgT8jcnYpqRGzPFVbA$ik1q480aF9RGRxP2hxyVjAyDBkuE/SyO7+joMzpiqEY';
-        $selector = 'ZcqcqWqW-YAhgmLobo6tps0Xiyq678Di';
+        $hasher = function (string $value) {
+            return $value;
+        };
+        $verifierCallable = function (string $val1, string $val2) {
+            return $val1 === $val2;
+        };
 
-        $splitToken = SplitToken::fromString($token);
+        // Stored.
+        $splitTokenHolder = SplitToken::create(self::$randValue, $hasher, $verifierCallable, '50')->toValueHolder();
 
-        self::assertTrue($splitToken->matches($selector, $verifierHash));
-        self::assertFalse($splitToken->matches($selector, $verifierHash, '50'));
-        self::assertFalse($splitToken->matches($verifierHash, $selector));
-        self::assertFalse($splitToken->matches($selector, 'foo'));
+        // Reconstructed.
+        $fromString = SplitToken::fromString('12UeXUvr4LKymANBB_bLEqiP5GPr-Pha_OR6OOnV1o8Vy_rWhDoxKNIt', $hasher, $verifierCallable);
+
+        self::assertFalse($fromString->matches($splitTokenHolder));
+        self::assertFalse($fromString->matches($splitTokenHolder, '50'));
     }
 
     /**
      * @test
-     * @slowThreshold 1000
      */
-    public function it_verifies_reconstructed_with_id()
+    public function it_verifies_SplitToken_from_string_with_expiration()
     {
-        $token = 'S1th74ywhDETYAaXWi-2Bee2_ltx-JPGKs9SVvbZCkMi8ZxiEVMBw68S';
-        $verifierHash = '$argon2i$v=19$m=32768,t=4,p=1$8nUJsz8Me7341Ryx73sc7g$lXA1SjnLCx87qYXOHl94b1iccECXVzcmHEIGuyLWSc4';
-        $selector = 'S1th74ywhDETYAaXWi-2Bee2_ltx-JPG';
+        $hasher = function (string $value) {
+            return $value;
+        };
+        $verifierCallable = function (string $val1, string $val2) {
+            return $val1 === $val2;
+        };
 
-        $splitToken = SplitToken::fromString($token);
+        // Stored.
+        $splitTokenHolder = SplitToken::create(
+            self::$randValue,
+            $hasher,
+            $verifierCallable,
+            null,
+            new \DateTimeImmutable('-5 minutes')
+        )->toValueHolder();
 
-        self::assertTrue($splitToken->matches($selector, $verifierHash, '50'));
-        self::assertFalse($splitToken->matches($selector, $verifierHash, '60'));
-        self::assertFalse($splitToken->matches($selector, $verifierHash));
-        self::assertFalse($splitToken->matches($verifierHash, $selector));
-        self::assertFalse($splitToken->matches($selector, 'foo', '50'));
-        self::assertFalse($splitToken->matches($selector, 'foo'));
+        // Reconstructed.
+        $fromString = SplitToken::fromString(self::FULL_TOKEN, $hasher, $verifierCallable);
+
+        self::assertFalse($fromString->matches($splitTokenHolder));
+        self::assertFalse($fromString->matches($splitTokenHolder, '50'));
     }
 }

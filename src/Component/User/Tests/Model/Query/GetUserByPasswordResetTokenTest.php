@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Tests\Model\Query;
 
-use ParkManager\Component\Security\Token\SplitToken;
+use ParkManager\Component\Security\Token\FakeSplitTokenFactory;
 use ParkManager\Component\User\Model\Query\GetUserByPasswordResetToken;
 use PHPUnit\Framework\TestCase;
 
@@ -27,7 +27,7 @@ final class GetUserByPasswordResetTokenTest extends TestCase
     public function it_constructable()
     {
         $message = new GetUserByPasswordResetToken(
-            $token = SplitToken::fromString('S1th74ywhDETYAaXWi-2Bee2_ltx-JPGKs9SVvbZCkMi8ZxiEVMBw68S')
+            $token = FakeSplitTokenFactory::instance()->fromString('S1th74ywhDETYAaXWi-2Bee2_ltx-JPGKs9SVvbZCkMi8ZxiEVMBw68S')
         );
 
         self::assertEquals($token, $message->token());

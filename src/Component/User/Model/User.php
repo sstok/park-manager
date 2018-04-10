@@ -242,7 +242,7 @@ abstract class User extends EventsRecordingEntity
         }
 
         try {
-            if ($this->emailAddressChangeToken->isValid($token, $this->id()->toString())) {
+            if ($token->matches($this->emailAddressChangeToken, $this->id()->toString())) {
                 $metadata = $this->emailAddressChangeToken->metadata();
                 $this->changeEmail($metadata['email'], $metadata['canonical_email']);
 
@@ -294,7 +294,7 @@ abstract class User extends EventsRecordingEntity
         }
 
         try {
-            if ($this->passwordResetToken->isValid($token, $this->id()->toString())) {
+            if ($token->matches($this->passwordResetToken, $this->id()->toString())) {
                 $this->changePassword($passwordHash);
 
                 return true;

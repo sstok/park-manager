@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Tests\Model\Command;
 
-use ParkManager\Component\Security\Token\SplitToken;
+use ParkManager\Component\Security\Token\FakeSplitTokenFactory;
 use ParkManager\Component\User\Model\Command\ConfirmUserPasswordReset;
 use PHPUnit\Framework\TestCase;
 
@@ -29,7 +29,7 @@ final class ConfirmUserPasswordResetTest extends TestCase
     public function its_constructable()
     {
         $password = 'my-password-I-forgot';
-        $token = SplitToken::fromString(self::TOKEN_STRING);
+        $token = FakeSplitTokenFactory::instance()->fromString(self::TOKEN_STRING);
 
         $command = new ConfirmUserPasswordReset($token, $password);
 

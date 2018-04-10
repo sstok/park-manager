@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Tests\Model\Handler;
 
+use ParkManager\Component\Security\Token\FakeSplitTokenFactory;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Component\User\Model\Command\ConfirmEmailAddressChange;
@@ -37,11 +38,11 @@ final class ConfirmEmailAddressChangeHandlerTest extends TestCase
         $handler = new ConfirmEmailAddressChangeHandler(
             $this->expectUserSaved(
                 self::SELECTOR,
-                $this->expectUserConfirmationTokenIsVerified(SplitToken::fromString(self::TOKEN_STRING))
+                $this->expectUserConfirmationTokenIsVerified(FakeSplitTokenFactory::instance()->fromString(self::TOKEN_STRING))
             )
         );
 
-        $command = new ConfirmEmailAddressChange(self::TOKEN_STRING);
+        $command = new ConfirmEmailAddressChange(FakeSplitTokenFactory::instance()->fromString(self::TOKEN_STRING));
         $handler($command);
     }
 
@@ -51,12 +52,12 @@ final class ConfirmEmailAddressChangeHandlerTest extends TestCase
         $handler = new ConfirmEmailAddressChangeHandler(
             $this->expectUserSaved(
                 self::SELECTOR,
-                $this->expectUserConfirmationTokenIsVerified(SplitToken::fromString(self::TOKEN_STRING), false)
+                $this->expectUserConfirmationTokenIsVerified(FakeSplitTokenFactory::instance()->fromString(self::TOKEN_STRING), false)
             )
         );
 
         $this->expectException(EmailChangeConfirmationRejected::class);
-        $handler(new ConfirmEmailAddressChange(self::TOKEN_STRING));
+        $handler(new ConfirmEmailAddressChange(FakeSplitTokenFactory::instance()->fromString(self::TOKEN_STRING)));
     }
 
     /** @test */
@@ -65,7 +66,7 @@ final class ConfirmEmailAddressChangeHandlerTest extends TestCase
         $handler = new ConfirmEmailAddressChangeHandler($this->expectUserNotSaved());
 
         $this->expectException(EmailChangeConfirmationRejected::class);
-        $handler(new ConfirmEmailAddressChange(self::TOKEN_STRING));
+        $handler(new ConfirmEmailAddressChange(FakeSplitTokenFactory::instance()->fromString(self::TOKEN_STRING)));
     }
 
     private function expectUserConfirmationTokenIsVerified(SplitToken $token, bool $result = true): User

@@ -5,6 +5,49 @@ UPGRADE
 
  * The Model Component has been removed, use the SharedKernel and 
    ApplicationFoundation Components instead.
+   
+### Security
+
+ * A `SplitToken` can not be created directly anymore, use one of the provided
+   Factories for creating a `SplitToken`.
+   
+   Tip: Use `FakeSplitTokenFactory` for testing, this implementation uses a
+   static value for all tokens and performs no actual password-hashing.
+   
+   Before:
+  
+   ```php
+   $token = SplitToken::generate($id);
+   $token = SplitToken::fromString(...);
+   ```
+   
+   After:
+   
+   ```php
+   $splitTokenFactory = new SodiumSplitTokenFactory(); // No special options.
+
+   $token = $splitTokenFactory->generate($id);
+   $token = $splitTokenFactory->fromString(...);
+   ```
+   
+ * The `SplitTokenValueHolder` can not be used anymore to validate
+   a SplitToken, use the `SplitToken` object to validate:
+   
+   Before:
+  
+   ```php
+   if ($holder->isValid($token, $id)) {
+       // ...
+   }
+   ```
+   
+   After:
+   
+   ```php
+   if ($token->matches($holder, $id)) {
+       // ...
+   }
+   ```
 
 ## Upgrade FROM 0.2.0 to 0.3.0
 

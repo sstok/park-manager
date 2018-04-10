@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Model\Handler;
 
-use ParkManager\Component\Security\Token\SplitToken;
+use ParkManager\Component\Security\Token\SplitTokenFactory;
 use ParkManager\Component\User\Model\Command\RequestConfirmationOfEmailAddressChange;
 use ParkManager\Component\User\Model\Service\EmailAddressChangeConfirmationMailer;
 use ParkManager\Component\User\Model\UserCollection;
@@ -29,19 +29,27 @@ final class RequestConfirmationOfEmailAddressChangeHandler
     private $maxTokenLife;
 
     /**
+     * @var SplitTokenFactory
+     */
+    private $splitTokenFactory;
+
+    /**
      * Constructor.
      *
      * @param UserCollection                       $userCollection
      * @param EmailAddressChangeConfirmationMailer $confirmationMailer
+     * @param SplitTokenFactory                    $splitTokenFactory
      * @param int                                  $maxTokenLife       Maximum life-time in seconds (default is 'one hour')
      */
     public function __construct(
         UserCollection $userCollection,
         EmailAddressChangeConfirmationMailer $confirmationMailer,
+        SplitTokenFactory $splitTokenFactory,
         int $maxTokenLife = 3600
     ) {
         $this->maxTokenLife = $maxTokenLife;
         $this->userCollection = $userCollection;
+        $this->splitTokenFactory = $splitTokenFactory;
         $this->confirmationMailer = $confirmationMailer;
     }
 
@@ -59,10 +67,10 @@ final class RequestConfirmationOfEmailAddressChangeHandler
         $email = $command->email();
         $user = $this->userCollection->get($id);
 
-        $splitToken = SplitToken::generate($id->toString());
         $tokenExpiration = new \DateTimeImmutable('+ '.$this->maxTokenLife.' seconds');
+        $splitToken = $this->splitTokenFactory->generate($id->toString(), $tokenExpiration);
 
-        if ($user->setConfirmationOfEmailAddressChange($email, $canonicalEmail, $splitToken->toValueHolder($tokenExpiration))) {
+        if ($user->setConfirmationOfEmailAddressChange($email, $canonicalEmail, $splitToken->toValueHolder())) {
             $this->userCollection->save($user);
             $this->confirmationMailer->send($email, $splitToken, $tokenExpiration);
         }

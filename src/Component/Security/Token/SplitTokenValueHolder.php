@@ -15,18 +15,19 @@ declare(strict_types=1);
 namespace ParkManager\Component\Security\Token;
 
 /**
- * SplitTokenValue allows to easily store the SplitToken information in a database.
+ * SplitToken keeps SplitToken information for storage.
  *
- * A SplitTokenValue holds the SplitToken:
+ * * The selector is used to identify a token, this is a unique random
+ *   URI-safe string with a fixed length of {@see SplitToken::SELECTOR_BYTES} bytes.
  *
- * * selector;
- * * verifier-hash;
- * * an (optional) expiration timestamp;
- * * And (optionally) some metadata to perform the operation;
+ * * The verifierHash holds a password hash of a variable
+ *   length and is to be validated by a verifier callback.
+ *
+ * Additionally a SplitTokenValueHolder optionally holds an
+ * expiration timestamp and metadata to perform the operation
+ * or collect auditing information.
  *
  * The original token is not stored with this value-object.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class SplitTokenValueHolder
 {
@@ -47,13 +48,6 @@ final class SplitTokenValueHolder
         $this->metadata = $metadata;
     }
 
-    /**
-     * Returns whether the provided value-holder is empty.
-     *
-     * @param SplitTokenValueHolder|null $valueHolder
-     *
-     * @return bool
-     */
     public static function isEmpty(?self $valueHolder): bool
     {
         if (null === $valueHolder) {
@@ -63,21 +57,11 @@ final class SplitTokenValueHolder
         return null === $valueHolder->selector;
     }
 
-    /**
-     * Returns the selector to store/find the token in storage.
-     *
-     * @return string A 24 byte string
-     */
     public function selector(): string
     {
         return $this->selector;
     }
 
-    /**
-     * Returns the verifier-hash for storage.
-     *
-     * @return string An Argon2i crypt-hashed string
-     */
     public function verifierHash(): string
     {
         return $this->verifierHash;
@@ -102,14 +86,6 @@ final class SplitTokenValueHolder
         return $this->expiresAt->getTimestamp() < ($datetime ?? new \DateTimeImmutable())->getTimestamp();
     }
 
-    public function isValid(SplitToken $token, ?string $id = null): bool
-    {
-        return !$this->isExpired() && $token->matches($this->selector(), $this->verifierHash(), $id);
-    }
-
-    /**
-     * @return \DateTimeImmutable|null
-     */
     public function expiresAt(): ?\DateTimeImmutable
     {
         return $this->expiresAt;

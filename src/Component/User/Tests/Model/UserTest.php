@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Component\User\Tests\Model;
 
 use Assert\AssertionFailedException;
+use ParkManager\Component\Security\Token\FakeSplitTokenFactory;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\SharedKernel\Test\Event\EventsRecordingEntityAssertionTrait;
 use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
@@ -155,14 +156,14 @@ final class UserTest extends TestCase
     /** @test */
     public function it_sets_emailAddress_confirmation_token()
     {
-        $token = SplitToken::generate(self::ID1);
         $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
+        $token = FakeSplitTokenFactory::instance()->generate(self::ID1, $expiration);
         $user = $this->createUser();
 
         $tokenWasSet = $user->setConfirmationOfEmailAddressChange(
             'Doh@example.com',
             'doh@example.com',
-            $token->toValueHolder($expiration)
+            $token->toValueHolder()
         );
 
         self::assertTrue($tokenWasSet);
@@ -173,20 +174,20 @@ final class UserTest extends TestCase
     /** @test */
     public function it_does_not_set_emailAddress_confirmation_token_when_already_set_with_same_information()
     {
-        $token = SplitToken::generate(self::ID1);
         $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
+        $token = FakeSplitTokenFactory::instance()->generate(self::ID1, $expiration);
         $user = $this->createUser();
 
         $user->setConfirmationOfEmailAddressChange(
             'Doh@example.com',
             'doh@example.com',
-            $token->toValueHolder($expiration)
+            $token->toValueHolder()
         );
 
         $tokenWasSet = $user->setConfirmationOfEmailAddressChange(
             'Doh@example.com',
             'doh@example.com',
-            $token->toValueHolder($expiration)
+            $token->toValueHolder()
         );
 
         self::assertFalse($tokenWasSet);
@@ -197,13 +198,13 @@ final class UserTest extends TestCase
     /** @test */
     public function it_changes_emailAddress_when_confirmation_token_is_correct()
     {
-        $token = SplitToken::generate(self::ID1);
         $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
+        $token = FakeSplitTokenFactory::instance()->generate(self::ID1, $expiration);
         $user = $this->createUser();
         $user->setConfirmationOfEmailAddressChange(
             'Doh@example.com',
             'doh@example.com',
-            $token->toValueHolder($expiration)
+            $token->toValueHolder()
         );
 
         // Second usage is prohibited, so try a second time.
@@ -219,14 +220,14 @@ final class UserTest extends TestCase
     /** @test */
     public function it_does_not_change_emailAddress_when_confirmation_token_is_invalid()
     {
-        $token = SplitToken::generate(self::ID1);
-        $token2 = SplitToken::generate('930c3fd0-3bd1-11e7-bb9b-acdc32b58320');
         $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
+        $token = FakeSplitTokenFactory::instance()->generate(self::ID1, $expiration);
+        $token2 = FakeSplitTokenFactory::instance(str_repeat('ha', SplitToken::TOKEN_CHAR_LENGTH))->generate('930c3fd0-3bd1-11e7-bb9b-acdc32b58320');
         $user = $this->createUser();
         $user->setConfirmationOfEmailAddressChange(
             'Doh@example.com',
             'doh@example.com',
-            $token->toValueHolder($expiration)
+            $token->toValueHolder()
         );
 
         // Second attempt is prohibited, so try a second time (with correct token)!
@@ -242,7 +243,7 @@ final class UserTest extends TestCase
     /** @test */
     public function it_does_not_change_emailAddress_when_confirmation_token_is_unset()
     {
-        $token = SplitToken::generate(self::ID1);
+        $token = FakeSplitTokenFactory::instance()->generate(self::ID1);
         $user = $this->createUser();
 
         $changeWasAccepted = $user->confirmEmailAddressChange($token);
@@ -255,13 +256,13 @@ final class UserTest extends TestCase
     /** @test */
     public function it_does_not_change_emailAddress_when_confirmation_token_has_expired()
     {
-        $token = SplitToken::generate(self::ID1);
         $expiration = new \DateTimeImmutable('- 5 minutes');
+        $token = FakeSplitTokenFactory::instance()->generate(self::ID1, $expiration);
         $user = $this->createUser();
         $user->setConfirmationOfEmailAddressChange(
             'Doh@example.com',
             'doh@example.com',
-            $token->toValueHolder($expiration)
+            $token->toValueHolder()
         );
 
         $changeWasAccepted = $user->confirmEmailAddressChange($token);
@@ -274,12 +275,12 @@ final class UserTest extends TestCase
     /** @test */
     public function it_sets_passwordReset_confirmation_token()
     {
-        $token = SplitToken::generate(self::ID1);
         $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
+        $token = FakeSplitTokenFactory::instance()->generate(self::ID1, $expiration);
         $user = $this->createUser('pass-my-word');
 
         $tokenWasSet = $user->setPasswordResetToken(
-            $token->toValueHolder($expiration)
+            $token->toValueHolder()
         );
 
         self::assertTrue($tokenWasSet);
@@ -288,12 +289,12 @@ final class UserTest extends TestCase
     /** @test */
     public function it_does_not_set_passwordReset_confirmation_token_when_already_set_with_and_not_expired()
     {
-        $token = SplitToken::generate(self::ID1);
         $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
+        $token = FakeSplitTokenFactory::instance()->generate(self::ID1, $expiration);
         $user = $this->createUser('pass-my-word');
 
-        $user->setPasswordResetToken($token->toValueHolder($expiration));
-        $tokenWasSet = $user->setPasswordResetToken($token->toValueHolder($expiration));
+        $user->setPasswordResetToken($token->toValueHolder());
+        $tokenWasSet = $user->setPasswordResetToken($token->toValueHolder());
 
         self::assertFalse($tokenWasSet);
     }
@@ -301,10 +302,10 @@ final class UserTest extends TestCase
     /** @test */
     public function it_changes_password_when_reset_confirmation_token_is_correct()
     {
-        $token = SplitToken::generate(self::ID1);
         $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
+        $token = FakeSplitTokenFactory::instance()->generate(self::ID1, $expiration);
         $user = $this->createUser('pass-my-word');
-        $user->setPasswordResetToken($tokenHolder = $token->toValueHolder($expiration));
+        $user->setPasswordResetToken($tokenHolder = $token->toValueHolder());
 
         // Second usage is prohibited, so try a second time.
         $currentToken = $user->passwordResetToken();
@@ -323,11 +324,11 @@ final class UserTest extends TestCase
     /** @test */
     public function it_does_not_change_password_when_reset_confirmation_token_is_invalid()
     {
-        $token = SplitToken::generate(self::ID1);
-        $token2 = SplitToken::generate('930c3fd0-3bd1-11e7-bb9b-acdc32b58320');
         $expiration = new \DateTimeImmutable('+ 5 minutes UTC');
+        $token = FakeSplitTokenFactory::instance()->generate(self::ID1, $expiration);
+        $token2 = FakeSplitTokenFactory::instance(str_repeat('na', SplitToken::TOKEN_CHAR_LENGTH))->generate('930c3fd0-3bd1-11e7-bb9b-acdc32b58320');
         $user = $this->createUser('pass-my-word');
-        $user->setPasswordResetToken($token->toValueHolder($expiration));
+        $user->setPasswordResetToken($token->toValueHolder());
 
         // Second attempt is prohibited, so try a second time (with correct token)!
         $changeWasAccepted = $user->confirmPasswordReset($token2, 'new-password');
@@ -341,7 +342,7 @@ final class UserTest extends TestCase
     /** @test */
     public function it_does_not_change_password_when_reset_confirmation_token_is_unset()
     {
-        $token = SplitToken::generate('930c3fd0-3bd1-11e7-bb9b-acdc32b58320');
+        $token = FakeSplitTokenFactory::instance()->generate('930c3fd0-3bd1-11e7-bb9b-acdc32b58320');
         $user = $this->createUser('pass-my-word');
 
         $changeWasAccepted = $user->confirmPasswordReset($token, 'new-password');
@@ -353,10 +354,10 @@ final class UserTest extends TestCase
     /** @test */
     public function it_does_not_change_password_when_reset_confirmation_token_has_expired()
     {
-        $token = SplitToken::generate(self::ID1);
         $expiration = new \DateTimeImmutable('- 5 minutes');
+        $token = FakeSplitTokenFactory::instance()->generate(self::ID1, $expiration);
         $user = $this->createUser('pass-my-word');
-        $user->setPasswordResetToken($token->toValueHolder($expiration));
+        $user->setPasswordResetToken($token->toValueHolder());
 
         $changeWasAccepted = $user->confirmPasswordReset($token, 'new-password');
 

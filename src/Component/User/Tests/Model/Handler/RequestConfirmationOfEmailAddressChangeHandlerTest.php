@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Tests\Model\Handler;
 
+use ParkManager\Component\Security\Token\FakeSplitTokenFactory;
 use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Model\Command\RequestConfirmationOfEmailAddressChange;
 use ParkManager\Component\User\Model\Handler\RequestConfirmationOfEmailAddressChangeHandler;
@@ -36,7 +37,8 @@ final class RequestConfirmationOfEmailAddressChangeHandlerTest extends TestCase
     {
         $handler = new RequestConfirmationOfEmailAddressChangeHandler(
             $this->expectUserSaved('john2@example.com', $this->expectUserConfirmationTokenIsSet()),
-            $this->createConfirmationMailer('John2@example.com')
+            $this->createConfirmationMailer('John2@example.com'),
+            FakeSplitTokenFactory::instance()
         );
 
         $command = new RequestConfirmationOfEmailAddressChange(self::USER_ID, 'John2@example.com', 'john2@example.com');
@@ -48,7 +50,8 @@ final class RequestConfirmationOfEmailAddressChangeHandlerTest extends TestCase
     {
         $handler = new RequestConfirmationOfEmailAddressChangeHandler(
             $this->expectUserNotSaved('john2@example.com'),
-            $this->createConfirmationMailer(null)
+            $this->createConfirmationMailer(null),
+            FakeSplitTokenFactory::instance()
         );
 
         $command = new RequestConfirmationOfEmailAddressChange(self::USER_ID, 'John2@example.com', 'john2@example.com');

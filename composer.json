@@ -28,6 +28,8 @@
         "league/tactician-container": "^2.0",
         "league/tactician-doctrine": "^1.1",
         "paragonie/constant_time_encoding": "^2.0",
+        "paragonie/halite": "^4.4.2",
+        "ramsey/uuid": "^3.0",
         "rollerworks/app-sectioning": "^0.6.0",
         "rollerworks/route-autowiring-bundle": "^1.0.2",
         "sensio/framework-extra-bundle": "^5.0",
@@ -61,6 +63,7 @@
     },
     "replace": {
         "paragonie/random_compat": "*",
+        "paragonie/sodium_compat": "*",
         "park-manager/module": "self.version",
         "park-manager/service-bus": "self.version",
         "park-manager/service-bus-bridge": "self.version",
