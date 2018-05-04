@@ -14,10 +14,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Fixtures\Domain\PackageCapability;
 
-use ParkManager\Module\Webhosting\Domain\Package\CapabilityCoveringCommand;
-use ParkManager\Module\Webhosting\Tests\Fixtures\Application\Mailbox\CreateMailbox;
+use ParkManager\Module\Webhosting\Domain\Package\Capability;
 
-final class MailboxCountCount
+final class FtpUserCount implements Capability
 {
     private $limit;
 
@@ -26,7 +25,7 @@ final class MailboxCountCount
         return 'b9ea5838-97c7-11e7-a1a1-acbc32b58315';
     }
 
-    public function __construct(string $limit)
+    public function __construct(int $limit)
     {
         $this->limit = $limit;
     }

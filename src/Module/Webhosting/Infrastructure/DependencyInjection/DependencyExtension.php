@@ -16,6 +16,9 @@ namespace ParkManager\Module\Webhosting\Infrastructure\DependencyInjection;
 
 use ParkManager\Component\Module\ParkManagerModuleDependencyExtension;
 use ParkManager\Component\Module\Traits\DoctrineDbalTypesConfiguratorTrait;
+use ParkManager\Module\Webhosting\Application\Service\Package\PackageConfigurationApplier;
+use ParkManager\Module\Webhosting\Domain\Package\Capability;
+use ParkManager\Module\Webhosting\Infrastructure\Service\Package\CapabilityGuard;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -31,6 +34,18 @@ final class DependencyExtension extends ParkManagerModuleDependencyExtension
     protected function loadModule(array $configs, ContainerBuilder $container, LoaderInterface $loader): void
     {
         $loader->load('*.php', 'glob');
+
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $container->registerForAutoconfiguration(Capability::class)
+            ->addTag('park_manager.webhosting_capability');
+        $container->registerForAutoconfiguration(CapabilityGuard::class)
+            ->addTag('park_manager.webhosting_capability_guard');
+        $container->registerForAutoconfiguration(PackageConfigurationApplier::class)
+            ->addTag('park_manager.webhosting_capability_config_applier');
+
+        $this->processCapabilitiesMapping($container, $config);
     }
 
     public function getAlias(): string
@@ -41,5 +56,29 @@ final class DependencyExtension extends ParkManagerModuleDependencyExtension
     public function getModuleName(): string
     {
         return 'ParkManagerWebhosting';
+    }
+
+    private function processCapabilitiesMapping(ContainerBuilder $container, array $config): void
+    {
+        $enabled = $container->getParameterBag()->resolveValue($config['capabilities']);
+        $container->setParameter('park_manager.webhosting.package_capabilities.enabled', $enabled);
+        $container->setParameter('park_manager.webhosting.package_capabilities.command_mapping', []);
+
+        if ($enabled === false) {
+            return;
+        }
+
+        $commandToCapabilityMapping = [];
+        foreach ($config['capabilities']['mapping'] as $command => $mappingConfig) {
+            $commandToCapabilityMapping[$command] = [
+                'capability' => $mappingConfig['capability'],
+                'mapping' => $mappingConfig['mapping'],
+            ];
+        }
+
+        $container->setParameter(
+            'park_manager.webhosting.package_capabilities.command_mapping',
+            $commandToCapabilityMapping
+        );
     }
 }

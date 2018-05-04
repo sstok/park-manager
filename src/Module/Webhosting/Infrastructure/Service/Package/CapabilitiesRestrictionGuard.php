@@ -12,14 +12,11 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Module\Webhosting\Domain\Package;
+namespace ParkManager\Module\Webhosting\Infrastructure\Service\Package;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
-interface CapabilitiesFactory
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
+
+interface CapabilitiesRestrictionGuard
 {
-    public function createById(string $id, array $options): Capability;
-
-    public function createByName(string $capabilityName, array $options): Capability;
+    public function decide(object $command, ServiceMessages $messages): bool;
 }

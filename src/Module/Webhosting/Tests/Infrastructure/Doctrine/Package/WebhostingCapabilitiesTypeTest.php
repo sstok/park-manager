@@ -17,12 +17,11 @@ namespace ParkManager\Module\Webhosting\Tests\Infrastructure\Doctrine\Package;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use ParkManager\Module\Webhosting\Domain\Package\Capabilities;
-use ParkManager\Module\Webhosting\Domain\Package\CapabilitiesFactory;
 use ParkManager\Module\Webhosting\Infrastructure\Doctrine\Package\WebhostingCapabilitiesType;
+use ParkManager\Module\Webhosting\Infrastructure\Service\Package\CapabilitiesFactory;
 use ParkManager\Module\Webhosting\Tests\Fixtures\Domain\PackageCapability\MonthlyTrafficQuota;
 use ParkManager\Module\Webhosting\Tests\Fixtures\Domain\PackageCapability\StorageSpaceQuota;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 
 /**
  * @internal
@@ -84,14 +83,9 @@ final class WebhostingCapabilitiesTypeTest extends TestCase
 
     private function createCapabilitiesFactory(): CapabilitiesFactory
     {
-        $factoryProphecy = $this->prophesize(CapabilitiesFactory::class);
-        $factoryProphecy->createById(MonthlyTrafficQuota::id(), Argument::any())->will(function ($args) {
-            return MonthlyTrafficQuota::reconstituteFromArray($args[1]);
-        });
-        $factoryProphecy->createById(StorageSpaceQuota::id(), Argument::any())->will(function ($args) {
-            return StorageSpaceQuota::reconstituteFromArray($args[1]);
-        });
-
-        return $factoryProphecy->reveal();
+        return new CapabilitiesFactory([
+            MonthlyTrafficQuota::id() => MonthlyTrafficQuota::class,
+            StorageSpaceQuota::id() => StorageSpaceQuota::class,
+        ]);
     }
 }

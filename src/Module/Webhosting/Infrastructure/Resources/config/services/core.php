@@ -16,7 +16,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use League\Tactician\Plugins\LockingMiddleware;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MessageBusConfigurator;
-use ParkManager\Module\Webhosting\Infrastructure\ServiceBus\Middleware\CapabilityCoveringCommandValidator;
+use ParkManager\Module\Webhosting\Infrastructure\ServiceBus\Middleware\AccountCapabilitiesRestrictionGuardMiddleware;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
@@ -29,7 +29,7 @@ return function (ContainerConfigurator $c) {
             ->doctrineOrmTransaction('default')
             ->domainEvents()
             ->end()
-            ->register(CapabilityCoveringCommandValidator::class, -100)
+            ->register(AccountCapabilitiesRestrictionGuardMiddleware::class, -100)
         ->end()
         ->handlers(__DIR__.'/../../../../Application')
             ->load('ParkManager\\Module\\Webhosting\\Application\\', '**/*Handler.php')

@@ -12,16 +12,22 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Module\Webhosting\Infrastructure\Service\PackageCapability;
+namespace ParkManager\Module\Webhosting\Application\Service\Package;
 
 use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Package\Capability;
-use ParkManager\Module\Webhosting\Domain\Package\ConfigurationApplier;
 
-final class MonthlyTrafficQuotaApplier implements ConfigurationApplier
+/**
+ * A PackageConfigurationApplier applies the Capability's configuration
+ * on the given webhosting account.
+ *
+ * This sub-system should only be used when the limitation applies
+ * outside of the webhosting system (like a filesystem quota).
+ *
+ * @author Sebastiaan Stok <s.stok@rollerworks.net>
+ */
+interface PackageConfigurationApplier
 {
-    public function apply(Capability $configuration, WebhostingAccount $account, ServiceMessages $messages): void
-    {
-    }
+    public function apply(Capability $configuration, WebhostingAccount $account, ServiceMessages $messages): void;
 }

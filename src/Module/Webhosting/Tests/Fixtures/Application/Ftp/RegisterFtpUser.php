@@ -12,29 +12,22 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Module\Webhosting\Tests\Fixtures\Application\Mailbox;
+namespace ParkManager\Module\Webhosting\Tests\Fixtures\Application\Ftp;
 
 use ParkManager\Module\Webhosting\Application\AccountIdAwareCommand;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 
-final class CreateMailbox implements AccountIdAwareCommand
+final class RegisterFtpUser implements AccountIdAwareCommand
 {
     private $accountId;
-    private $size;
 
-    public function __construct(string $accountId, $size)
+    public function __construct(string $accountId)
     {
         $this->accountId = WebhostingAccountId::fromString($accountId);
-        $this->size = $size;
     }
 
     public function account(): WebhostingAccountId
     {
         return $this->accountId;
-    }
-
-    public function sizeInBytes()
-    {
-        return $this->size;
     }
 }

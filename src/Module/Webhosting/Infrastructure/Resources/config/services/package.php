@@ -16,16 +16,13 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Component\SharedKernel\Event\EventEmitter;
-use ParkManager\Module\Webhosting\Domain\Package\{
-    CapabilitiesFactory,
-    CapabilitiesGuard,
-    Capability\MonthlyTrafficQuota,
-    WebhostingPackageRepository
-};
+use ParkManager\Module\Webhosting\Domain\Package\WebhostingPackageRepository;
 use ParkManager\Module\Webhosting\Infrastructure\Doctrine\Package\WebhostingPackageOrmRepository;
-use ParkManager\Module\Webhosting\Infrastructure\Service\PackageCapability\MonthlyTrafficQuotaApplier;
-use ParkManager\Module\Webhosting\Service\Package\{AccountCapabilitiesGuard, CapabilitiesRegistry};
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use ParkManager\Module\Webhosting\Infrastructure\Service\Package\{
+    AccountCapabilitiesRestrictionGuard,
+    CapabilitiesFactory,
+    CapabilitiesRestrictionGuard
+};
 
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
@@ -36,21 +33,20 @@ return function (ContainerConfigurator $c) {
         ->bind(EntityManagerInterface::class, ref('doctrine.orm.entity_manager'));
 
     // CapabilitiesFactory alias needs to be public for Doctrine type in ParkManagerWebhostingModule::boot()
-    $di->set(CapabilitiesRegistry::class)
-        ->alias(CapabilitiesFactory::class, CapabilitiesRegistry::class)->public();
+    $di->set(CapabilitiesFactory::class)->arg(0, [])->public();
 
-    $di->set(AccountCapabilitiesGuard::class)
-        ->alias(CapabilitiesGuard::class, AccountCapabilitiesGuard::class);
+    $di->set(AccountCapabilitiesRestrictionGuard::class)
+        ->arg('$capabilityGuards', ref('park_manager.webhosting.package_capability_guards'))
+        ->arg('$mappings', '%park_manager.webhosting.package_capabilities.command_mapping%');
+    $di->alias(CapabilitiesRestrictionGuard::class, AccountCapabilitiesRestrictionGuard::class);
 
     $di->set(WebhostingPackageOrmRepository::class)
         ->alias(WebhostingPackageRepository::class, WebhostingPackageOrmRepository::class);
 
-    $di->load('ParkManager\Module\Webhosting\Infrastructure\\Service\\PackageCapability\\',
-        __DIR__.'/../../../../Infrastructure/Service/PackageCapability'
+    $di->load('ParkManager\\Module\\Webhosting\\Domain\\Package\\Capability\\',
+        __DIR__.'/../../../../Domain/Package/Capability'
     );
-
-    $di->set(MonthlyTrafficQuota::class)->tag('park_manager.webhosting_capability', [
-        'applier' => MonthlyTrafficQuotaApplier::class,
-        'form-type' => IntegerType::class,
-    ]);
+    $di->load('ParkManager\Module\Webhosting\Infrastructure\\Service\\Package\\Capability\\',
+        __DIR__.'/../../../../Infrastructure/Service/Package/Capability'
+    );
 };

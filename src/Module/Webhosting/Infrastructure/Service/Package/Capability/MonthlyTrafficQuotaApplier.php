@@ -12,17 +12,16 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Module\Webhosting\Tests\Fixtures\Infrastructure\PackageCapability;
+namespace ParkManager\Module\Webhosting\Infrastructure\Service\Package\Capability;
 
 use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
+use ParkManager\Module\Webhosting\Application\Service\Package\PackageConfigurationApplier;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Package\Capability;
-use ParkManager\Module\Webhosting\Domain\Package\CapabilityGuard;
 
-final class MonthlyTrafficQuotaGuard2 implements CapabilityGuard
+final class MonthlyTrafficQuotaApplier implements PackageConfigurationApplier
 {
-    public function isAllowed(Capability $configuration, array $context, WebhostingAccount $account, ServiceMessages $messages): bool
+    public function apply(Capability $configuration, WebhostingAccount $account, ServiceMessages $messages): void
     {
-        return true;
     }
 }

@@ -16,11 +16,9 @@ namespace ParkManager\Module\Webhosting;
 
 use Doctrine\DBAL\Types\Type;
 use ParkManager\Component\Module\AbstractParkManagerModule;
-use ParkManager\Module\Webhosting\Domain\Package\CapabilitiesFactory;
-use ParkManager\Module\Webhosting\Infrastructure\DependencyInjection\Compiler\{
-    CapabilitiesRegistryPass, CommandToCapabilitiesGuardPass
-};
+use ParkManager\Module\Webhosting\Infrastructure\DependencyInjection\Compiler\CapabilitiesPass;
 use ParkManager\Module\Webhosting\Infrastructure\Doctrine\Package\WebhostingCapabilitiesType;
+use ParkManager\Module\Webhosting\Infrastructure\Service\Package\CapabilitiesFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -32,7 +30,7 @@ final class ParkManagerWebhostingModule extends AbstractParkManagerModule
     {
         parent::build($container);
 
-        $container->addCompilerPass(new CapabilitiesRegistryPass());
+        $container->addCompilerPass(new CapabilitiesPass());
     }
 
     public function boot(): void

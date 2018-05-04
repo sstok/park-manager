@@ -12,10 +12,11 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Module\Webhosting\Domain\Package;
+namespace ParkManager\Module\Webhosting\Infrastructure\Service\Package;
 
 use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
+use ParkManager\Module\Webhosting\Domain\Package\Capability;
 
 /**
  * A CapabilityGuard ensures the performed operation doesn't violate
@@ -27,12 +28,7 @@ use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
  *
  * Caution: An account's Capabilities can be updated any moment, so when
  * the account already has 10 mailboxes and the Capability was updated
- * to only allow 8 the guard still MUST return false - allow the operation.
- *
- * When a Capability has more then one attribute it's recommend to "log" a
- * message to inform higher layers about the specific reason.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
+ * to only allow 8 the guard still MUST return false.
  */
 interface CapabilityGuard
 {
@@ -47,5 +43,5 @@ interface CapabilityGuard
      *
      * @return bool
      */
-    public function isAllowed(Capability $configuration, array $context, WebhostingAccount $account, ServiceMessages $messages): bool;
+    public function decide(Capability $configuration, array $context, WebhostingAccount $account, ServiceMessages $messages): bool;
 }
