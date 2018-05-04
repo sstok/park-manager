@@ -20,99 +20,106 @@ use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountRepository;
 use ParkManager\Module\Webhosting\Domain\Package\Capabilities;
-use ParkManager\Module\Webhosting\Domain\Package\CapabilityGuard;
-use ParkManager\Module\Webhosting\Service\Package\AccountCapabilitiesGuard;
-use ParkManager\Module\Webhosting\Service\Package\CapabilitiesRegistry;
-use ParkManager\Module\Webhosting\Tests\Fixtures\Domain\PackageCapability\MonthlyTrafficQuota;
-use ParkManager\Module\Webhosting\Tests\Fixtures\Domain\PackageCapability\StorageSpaceQuota;
+use ParkManager\Module\Webhosting\Domain\Package\Capability;
+use ParkManager\Module\Webhosting\Infrastructure\Service\Package\AccountCapabilitiesRestrictionGuard;
+use ParkManager\Module\Webhosting\Tests\Fixtures\Application\Ftp\RegisterFtpUser;
+use ParkManager\Module\Webhosting\Tests\Fixtures\Application\Mailbox\CreateMailbox;
+use ParkManager\Module\Webhosting\Tests\Fixtures\Application\Mailbox\RemoveMailbox;
+use ParkManager\Module\Webhosting\Tests\Fixtures\Domain\PackageCapability\{
+    FtpUserCount, MonthlyTrafficQuota, StorageSpaceQuota
+};
+use ParkManager\Module\Webhosting\Tests\Fixtures\Infrastructure\PackageCapability\{
+    AllowingWithWarningsGuard, DenyingGuard
+};
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\PropertyAccess\PropertyAccessorBuilder;
 
 /**
  * @internal
  */
 final class AccountCapabilitiesGuardTest extends TestCase
 {
-    private const ACCOUNT_ID = '374dd50e-9b9f-11e7-9730-acbc32b58315';
+    private const ACCOUNT_ID1 = '374dd50e-9b9f-11e7-9730-acbc32b58315';
     private const ACCOUNT_ID2 = '374dd50e-9b9f-11e7-9730-acbc32b58316';
 
     /**
-     * @var AccountCapabilitiesGuard
+     * @var AccountCapabilitiesRestrictionGuard
      */
     private $capabilitiesGuard;
 
     protected function setUp(): void
     {
-        $account1 = $this->createMock(WebhostingAccount::class);
-        $account1->expects(self::atMost(1))
-            ->method('capabilities')
-            ->willReturn(new Capabilities($capability = new MonthlyTrafficQuota(50)));
-
-        $account2 = $this->createMock(WebhostingAccount::class);
-        $account2->expects(self::atMost(1))
-            ->method('capabilities')
-            ->willReturn(new Capabilities(new StorageSpaceQuota('1GB')));
+        $account1 = $this->createAccountMock(self::ACCOUNT_ID1, new MonthlyTrafficQuota(50), new FtpUserCount(5));
+        $account2 = $this->createAccountMock(self::ACCOUNT_ID2, new StorageSpaceQuota('1GB'));
 
         $repositoryProphecy = $this->prophesize(WebhostingAccountRepository::class);
-        $repositoryProphecy->get(WebhostingAccountId::fromString(self::ACCOUNT_ID))->willReturn($account1);
+        $repositoryProphecy->get(WebhostingAccountId::fromString(self::ACCOUNT_ID1))->willReturn($account1);
         $repositoryProphecy->get(WebhostingAccountId::fromString(self::ACCOUNT_ID2))->willReturn($account2);
         $accountRepository = $repositoryProphecy->reveal();
 
-        $capabilitiesRegistry = new CapabilitiesRegistry(
-            [
-                MonthlyTrafficQuota::class => ['guard' => MonthlyTrafficQuota::class],
-                StorageSpaceQuota::class => ['guard' => null],
-            ],
-            [
-                MonthlyTrafficQuota::id() => MonthlyTrafficQuota::class,
-                StorageSpaceQuota::id() => StorageSpaceQuota::class,
-            ],
+        $this->capabilitiesGuard = new AccountCapabilitiesRestrictionGuard(
+            $accountRepository,
             new ServiceLocator(
                 [
-                    MonthlyTrafficQuota::class => function () use ($capability, $account1, $account2) {
-                        $capabilitiesGuard = $this->prophesize(CapabilityGuard::class);
-                        $capabilitiesGuard->isAllowed($capability, ['bing' => 'bong'], $account2, Argument::any())->willReturn(true);
-                        $capabilitiesGuard->isAllowed($capability, [], $account1, Argument::any())->will(function ($args) {
-                            /** @var MonthlyTrafficQuota $args[0] */
-                            /** @var ServiceMessages $args[3] */
-                            $args[3]->add(ServiceMessage::error('It failed '.$args[0]->configuration()['limit']));
-
-                            return false;
-                        });
-
-                        return $capabilitiesGuard->reveal();
+                    StorageSpaceQuota::class => function () {
+                        return new DenyingGuard();
+                    },
+                    FtpUserCount::class => function () {
+                        return new AllowingWithWarningsGuard();
                     },
                 ]
             ),
-            new ServiceLocator([])
+            (new PropertyAccessorBuilder())->enableExceptionOnInvalidIndex()->getPropertyAccessor(),
+            [
+                CreateMailbox::class => [
+                    'capability' => StorageSpaceQuota::class,
+                    'mapping' => ['limit' => 'sizeInBytes'],
+                ],
+                RegisterFtpUser::class => [
+                    'capability' => FtpUserCount::class,
+                ],
+            ]
         );
-
-        $this->capabilitiesGuard = new AccountCapabilitiesGuard($accountRepository, $capabilitiesRegistry);
     }
 
     /** @test */
-    public function it_works_when_none_of_provided_capabilities_is_present_on_account()
+    public function it_decides_to_pass_when_capabilities_are_not_present_on_account()
     {
-        $messages = $this->capabilitiesGuard->allowedTo(
-            WebhostingAccountId::fromString(self::ACCOUNT_ID2),
-            ['bing' => 'bong'],
-            MonthlyTrafficQuota::class
-        );
+        $messages = new ServiceMessages();
 
+        self::assertTrue($this->capabilitiesGuard->decide(new CreateMailbox(self::ACCOUNT_ID1, 5), $messages));
+        self::assertTrue($this->capabilitiesGuard->decide(new RemoveMailbox(self::ACCOUNT_ID2), $messages));
         self::assertCount(0, $messages);
     }
 
     /** @test */
-    public function it_asks_guard_for_provided_capabilities_is_present_on_account()
+    public function it_decides_to_reject_when_capability_guard_rejects()
     {
-        $messages = $this->capabilitiesGuard->allowedTo(
-            WebhostingAccountId::fromString(self::ACCOUNT_ID),
-            [],
-            MonthlyTrafficQuota::class
-        );
+        $messages = new ServiceMessages();
+        self::assertFalse($this->capabilitiesGuard->decide(new CreateMailbox(self::ACCOUNT_ID2, 5), $messages));
+        self::assertEquals(['error' => [ServiceMessage::error('It failed 5')]], $messages->all());
+    }
 
-        self::assertCount(1, $messages);
-        self::assertEquals(['error' => [ServiceMessage::error('It failed 50')]], $messages->all());
+    /** @test */
+    public function it_decides_to_pass_when_capability_guard_approves()
+    {
+        $messages = new ServiceMessages();
+        self::assertTrue($this->capabilitiesGuard->decide(new RegisterFtpUser(self::ACCOUNT_ID1), $messages));
+        self::assertEquals(['warning' => [ServiceMessage::warning('Hold it there, you are about to get stuck NULL')]], $messages->all());
+    }
+
+    private function createAccountMock(string $id, Capability ...$capabilities): WebhostingAccount
+    {
+        $account = $this->createMock(WebhostingAccount::class);
+        $account->expects(self::atMost(1))
+            ->method('capabilities')
+            ->willReturn(new Capabilities(...$capabilities));
+
+        $account->expects(self::any())
+            ->method('id')
+            ->willReturn(WebhostingAccountId::fromString($id));
+
+        return $account;
     }
 }

@@ -28,7 +28,79 @@ final class ConfigurationTest extends TestCase
     /** @test */
     public function it_works_with_empty_config()
     {
-        $this->assertProcessedConfigurationEquals([[]], []);
+        $this->assertProcessedConfigurationEquals([[]], [
+            'capabilities' => [
+                'enabled' => true,
+                'mapping' => [],
+            ],
+        ]);
+    }
+
+    /** @test */
+    public function it_works_with_capabilities()
+    {
+        $this->assertProcessedConfigurationEquals(
+            [
+                [
+                    'capabilities' => [
+                        'enabled' => true,
+                        'mapping' => [
+                            'Foobar' => [
+                                'capability' => 'MaximumAmountOfFoo',
+                                'attributes' => ['baz' => 'bar'],
+                            ],
+                            'BlueBar' => [
+                                'capability' => 'QuotaAmountOfBlue',
+                            ],
+                            'CreateSomething' => 'MaximumAmountOfStuff',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'capabilities' => [
+                    'enabled' => true,
+                    'mapping' => [
+                        'Foobar' => [
+                            'capability' => 'MaximumAmountOfFoo',
+                            'attributes' => ['baz' => 'bar'],
+                        ],
+                        'BlueBar' => [
+                            'capability' => 'QuotaAmountOfBlue',
+                            'attributes' => [],
+                        ],
+                        'CreateSomething' => [
+                            'capability' => 'MaximumAmountOfStuff',
+                            'attributes' => [],
+                        ],
+                    ],
+                ],
+            ],
+            'capabilities'
+        );
+    }
+
+    /** @test */
+    public function it_requires_capabilities_mapping_attributes_are_scalar()
+    {
+        $this->assertPartialConfigurationIsInvalid(
+            [
+                [
+                    'capabilities' => [
+                        'enabled' => true,
+                        'mapping' => [
+                            'Foobar' => [
+                                'capability' => 'MaximumAmountOfFoo',
+                                'attributes' => ['baz' => false],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'capabilities',
+            'Invalid configuration for path "park_manager_webhosting.capabilities.mapping.Foobar.attributes.baz": '.
+            'Attribute value expected to a property path as string.'
+        );
     }
 
     protected function getConfiguration(): Configuration

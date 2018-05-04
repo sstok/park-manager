@@ -14,14 +14,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Infrastructure\ServiceBus\Middleware;
 
-use ParkManager\Component\ApplicationFoundation\Message\ServiceMessage;
 use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
-use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
-use ParkManager\Module\Webhosting\Domain\Package\CapabilitiesGuard;
-use ParkManager\Module\Webhosting\Infrastructure\ServiceBus\Middleware\CapabilityCoveringCommandValidator;
-use ParkManager\Module\Webhosting\Tests\Fixtures\Application\Mailbox\{CreateMailbox, RemoveMailbox};
+use ParkManager\Module\Webhosting\Infrastructure\Service\Package\CapabilitiesRestrictionGuard;
+use ParkManager\Module\Webhosting\Infrastructure\ServiceBus\Middleware\AccountCapabilitiesRestrictionGuardMiddleware;
+use ParkManager\Module\Webhosting\Tests\Fixtures\Application\Mailbox\CreateMailbox;
+use ParkManager\Module\Webhosting\Tests\Fixtures\Application\Mailbox\RemoveMailbox;
 use ParkManager\Module\Webhosting\Tests\Fixtures\Application\Package\CreatePackage;
-use ParkManager\Module\Webhosting\Tests\Fixtures\Domain\PackageCapability\MailboxCountCount;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
@@ -35,88 +33,66 @@ final class CapabilityCoveringCommandValidatorTest extends TestCase
     /** @test */
     public function it_ignores_unsupported_commands()
     {
-        $commandGuard = new CapabilityCoveringCommandValidator($this->createUnusedCapabilitiesGuard(), $logStack = new ServiceMessages());
+        $serviceMessages = new ServiceMessages();
+        $middleware = new AccountCapabilitiesRestrictionGuardMiddleware(
+            $this->createCapabilitiesGuard($serviceMessages), $serviceMessages
+        );
 
-        self::assertTrue($commandGuard->execute(
+        self::assertTrue($middleware->execute(
             $command = new CreatePackage(),
             function () { return true; }
         ));
-        self::assertEquals(new ServiceMessages(), $logStack);
     }
 
     /** @test */
-    public function it_maps_command_to_capabilities()
+    public function it_returns_false_when_guard_decides_to_block()
     {
-        $logMessages = new ServiceMessages();
-        $logMessages->add(ServiceMessage::error('Cannot let you do this John, your mailbox limit is reached.'));
+        $serviceMessages = new ServiceMessages();
+        $middleware = new AccountCapabilitiesRestrictionGuardMiddleware(
+            $this->createCapabilitiesGuard($serviceMessages), $serviceMessages
+        );
 
-        $commandGuard = new CapabilityCoveringCommandValidator($this->createCapabilitiesGuard($logMessages, []), $logStack = new ServiceMessages());
-
-        self::assertFalse($commandGuard->execute(
-            $command = new CreateMailbox(WebhostingAccountId::fromString(self::ACCOUNT_ID), 500),
+        self::assertFalse($middleware->execute(
+            $command = new CreateMailbox(self::ACCOUNT_ID, 500),
             function () { return true; }
         ));
-        self::assertEquals($logMessages, $logStack);
     }
 
     /** @test */
     public function it_continues_execution_when_guard_approves()
     {
-        $commandGuard = new CapabilityCoveringCommandValidator($this->createCapabilitiesGuard(new ServiceMessages(), []), $logStack = new ServiceMessages());
+        $serviceMessages = new ServiceMessages();
+        $middleware = new AccountCapabilitiesRestrictionGuardMiddleware(
+            $this->createCapabilitiesGuard($serviceMessages), $serviceMessages
+        );
 
-        self::assertEquals('it-worked', $commandGuard->execute(
-            $command = new CreateMailbox(WebhostingAccountId::fromString(self::ACCOUNT_ID), 500),
+        self::assertEquals('it-worked', $middleware->execute(
+            $command = new RemoveMailbox(self::ACCOUNT_ID, 500),
             function ($passedCommand) use ($command) {
                 self::assertSame($command, $passedCommand);
 
                 return 'it-worked';
             }
         ));
-        self::assertEquals(new ServiceMessages(), $logStack);
     }
 
-    /** @test */
-    public function it_maps_command_to_capabilities_with_context()
+    private function createCapabilitiesGuard(ServiceMessages $serviceMessages): CapabilitiesRestrictionGuard
     {
-        $logMessages = new ServiceMessages();
-        $logMessages->add(ServiceMessage::error('Cannot let you do this John, your mailbox limit is reached.'));
+        $guardProphecy = $this->prophesize(CapabilitiesRestrictionGuard::class);
+        $guardProphecy->decide(
+            Argument::type(CreateMailbox::class),
+            $serviceMessages
+        )->willReturn(false);
 
-        $commandGuard = new CapabilityCoveringCommandValidator(
-            $this->createCapabilitiesGuard($logMessages, ['account' => self::ACCOUNT_ID]),
-            $logStack = new ServiceMessages(),
-            function ($command, $account) {
-                return ['account' => (string) $account];
-            }
-        );
+        $guardProphecy->decide(
+            Argument::type(RemoveMailbox::class),
+            $serviceMessages
+        )->willReturn(true);
 
-        self::assertFalse($commandGuard->execute(
-            $command = new CreateMailbox(WebhostingAccountId::fromString(self::ACCOUNT_ID), 500),
-            function () { return true; }
-        ));
-        self::assertEquals($logMessages, $logStack);
-
-        self::assertTrue($commandGuard->execute(
-            $command = new RemoveMailbox(WebhostingAccountId::fromString(self::ACCOUNT_ID)),
-            function () { return true; }
-        ));
-    }
-
-    private function createCapabilitiesGuard(ServiceMessages $logMessages, $context): CapabilitiesGuard
-    {
-        $guardProphecy = $this->prophesize(CapabilitiesGuard::class);
-        $guardProphecy->allowedTo(
-            WebhostingAccountId::fromString(self::ACCOUNT_ID),
-            $context,
-            MailboxCountCount::class
-        )->willReturn($logMessages);
-
-        return $guardProphecy->reveal();
-    }
-
-    private function createUnusedCapabilitiesGuard(): CapabilitiesGuard
-    {
-        $guardProphecy = $this->prophesize(CapabilitiesGuard::class);
-        $guardProphecy->allowedTo(Argument::cetera())->shouldNotBeCalled();
+        $guardProphecy->decide(
+            Argument::type(CreatePackage::class),
+            $serviceMessages
+        )->shouldNotBeCalled();
 
         return $guardProphecy->reveal();
     }

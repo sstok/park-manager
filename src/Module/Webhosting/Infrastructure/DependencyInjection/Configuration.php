@@ -17,9 +17,6 @@ namespace ParkManager\Module\Webhosting\Infrastructure\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class Configuration implements ConfigurationInterface
 {
     private $configName;
@@ -36,9 +33,48 @@ final class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->end()
-        ;
+                ->append($this->addCapabilities())
+            ->end();
 
         return $treeBuilder;
+    }
+
+    private function addCapabilities()
+    {
+        $node = (new TreeBuilder())->root('capabilities');
+        $node
+            ->canBeDisabled()
+            ->children()
+                ->arrayNode('mapping')
+                    ->requiresAtLeastOneElement()
+                    ->useAttributeAsKey('command')
+                    ->arrayPrototype()
+                        ->performNoDeepMerging()
+                        ->beforeNormalization()
+                            ->ifString()
+                            ->then(function ($v) {
+                                return ['capability' => $v];
+                            })
+                        ->end()
+                        ->children()
+                            ->scalarNode('capability')->cannotBeEmpty()->end()
+                            ->arrayNode('attributes')
+                                ->useAttributeAsKey('key')
+                                ->defaultValue([])
+                                ->scalarPrototype()
+                                    ->validate()
+                                        ->ifTrue(function ($v) {
+                                            return !is_string($v);
+                                        })
+                                        ->thenInvalid('Attribute value expected to a property path as string.')
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+
+        return $node;
     }
 }

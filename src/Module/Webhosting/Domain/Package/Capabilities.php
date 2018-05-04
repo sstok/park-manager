@@ -18,8 +18,6 @@ use ParkManager\Module\Webhosting\Domain\Package\Exception\CapabilityNotInSet;
 
 /**
  * Capabilities holds an immutable set of unique Capability objects.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class Capabilities implements \IteratorAggregate
 {
@@ -28,16 +26,17 @@ final class Capabilities implements \IteratorAggregate
      */
     private $capabilities = [];
 
-    private $capabilitiesArray = [];
-    private $capabilitiesIndexedArray = [];
+    /**
+     * @var array
+     */
+    private $capabilitiesIndexed = [];
 
     public function __construct(Capability ...$capabilities)
     {
         foreach ($capabilities as $capability) {
             $class = get_class($capability);
             $this->capabilities[$class] = $capability;
-            $this->capabilitiesArray[$class] = $capability->configuration();
-            $this->capabilitiesIndexedArray[$capability::id()] = $capability->configuration();
+            $this->capabilitiesIndexed[$capability::id()] = $capability->configuration();
         }
     }
 
@@ -77,14 +76,9 @@ final class Capabilities implements \IteratorAggregate
         return $this->capabilities[$capability];
     }
 
-    public function toArray(): array
-    {
-        return $this->capabilitiesArray;
-    }
-
     public function toIndexedArray(): array
     {
-        return $this->capabilitiesIndexedArray;
+        return $this->capabilitiesIndexed;
     }
 
     public function equals(self $other): bool
@@ -94,39 +88,6 @@ final class Capabilities implements \IteratorAggregate
         }
 
         // Leave values of the array are expected to be scalar. So strict comparison is possible.
-        return $this->capabilitiesArray === $other->capabilitiesArray;
-    }
-
-    public static function reconstituteFromArray(array $capabilities): self
-    {
-        $capabilitiesInstances = [];
-
-        foreach ($capabilities as $class => $configuration) {
-            $capabilitiesInstances[] = $class::reconstituteFromArray($configuration);
-        }
-
-        return new self(...$capabilitiesInstances);
-    }
-
-    /**
-     * Reconstitutes a Capabilities set from storage.
-     *
-     * Unlike reconstituteFromArray() this expects the capabilites
-     * are provided by their id (not their name).
-     *
-     * @param CapabilitiesFactory $factory
-     * @param array               $capabilities
-     *
-     * @return Capabilities
-     */
-    public static function reconstituteFromStorage(CapabilitiesFactory $factory, array $capabilities): self
-    {
-        $capabilitiesInstances = [];
-
-        foreach ($capabilities as $id => $configuration) {
-            $capabilitiesInstances[] = $factory->createById($id, $configuration);
-        }
-
-        return new self(...$capabilitiesInstances);
+        return $this->capabilitiesIndexed === $other->capabilitiesIndexed;
     }
 }

@@ -21,9 +21,9 @@ final class RemoveMailbox implements AccountIdAwareCommand
 {
     private $accountId;
 
-    public function __construct(WebhostingAccountId $accountId)
+    public function __construct(string $accountId)
     {
-        $this->accountId = $accountId;
+        $this->accountId = WebhostingAccountId::fromString($accountId);
     }
 
     public function account(): WebhostingAccountId

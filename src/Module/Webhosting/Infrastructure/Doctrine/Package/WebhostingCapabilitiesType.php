@@ -17,7 +17,7 @@ namespace ParkManager\Module\Webhosting\Infrastructure\Doctrine\Package;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
 use ParkManager\Module\Webhosting\Domain\Package\Capabilities;
-use ParkManager\Module\Webhosting\Domain\Package\CapabilitiesFactory;
+use ParkManager\Module\Webhosting\Infrastructure\Service\Package\CapabilitiesFactory;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
@@ -61,7 +61,7 @@ final class WebhostingCapabilitiesType extends JsonType
             throw new \RuntimeException('setCapabilitiesFactory() needs to be called before this type can be used.');
         }
 
-        return Capabilities::reconstituteFromStorage($this->capabilitiesFactory, $val);
+        return $this->capabilitiesFactory->reconstituteFromStorage($val);
     }
 
     public function getName(): string

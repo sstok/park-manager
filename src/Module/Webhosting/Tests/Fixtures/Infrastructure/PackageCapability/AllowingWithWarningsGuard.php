@@ -14,15 +14,18 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Fixtures\Infrastructure\PackageCapability;
 
+use ParkManager\Component\ApplicationFoundation\Message\ServiceMessage;
 use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Package\Capability;
 use ParkManager\Module\Webhosting\Infrastructure\Service\Package\CapabilityGuard;
 
-final class MonthlyTrafficQuotaGuard implements CapabilityGuard
+final class AllowingWithWarningsGuard implements CapabilityGuard
 {
     public function decide(Capability $configuration, array $context, WebhostingAccount $account, ServiceMessages $messages): bool
     {
+        $messages->add(ServiceMessage::warning('Hold it there, you are about to get stuck '.($context['limit'] ?? 'NULL')));
+
         return true;
     }
 }
