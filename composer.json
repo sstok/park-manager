@@ -68,6 +68,7 @@
         "park-manager/service-bus": "self.version",
         "park-manager/service-bus-bridge": "self.version",
         "park-manager/service-bus-bundle": "self.version",
+        "symfony/polyfill-ctype": "*",
         "symfony/polyfill-intl-icu": "*",
         "symfony/polyfill-mbstring": "*",
         "symfony/polyfill-php56": "*",
