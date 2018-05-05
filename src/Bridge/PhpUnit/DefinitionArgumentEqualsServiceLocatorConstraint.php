@@ -51,7 +51,7 @@ final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
         }, $expectedValue);
     }
 
-    public function toString()
+    public function toString(): string
     {
         return sprintf(
             'has an argument with index %d with the given value',

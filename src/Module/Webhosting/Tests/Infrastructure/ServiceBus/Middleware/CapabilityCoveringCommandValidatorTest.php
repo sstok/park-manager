@@ -67,7 +67,7 @@ final class CapabilityCoveringCommandValidatorTest extends TestCase
         );
 
         self::assertEquals('it-worked', $middleware->execute(
-            $command = new RemoveMailbox(self::ACCOUNT_ID, 500),
+            $command = new RemoveMailbox(self::ACCOUNT_ID),
             function ($passedCommand) use ($command) {
                 self::assertSame($command, $passedCommand);
 

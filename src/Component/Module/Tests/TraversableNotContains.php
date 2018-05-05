@@ -63,7 +63,7 @@ class TraversableNotContains extends Constraint
         }
     }
 
-    public function toString()
+    public function toString(): string
     {
         return 'contains not value of type "'.$this->type.'"';
     }

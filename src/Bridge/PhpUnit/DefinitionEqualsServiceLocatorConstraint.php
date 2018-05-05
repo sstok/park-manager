@@ -47,7 +47,7 @@ final class DefinitionEqualsServiceLocatorConstraint extends Constraint
         }, $expectedValue);
     }
 
-    public function toString()
+    public function toString(): string
     {
         return sprintf(
             'has a service definition "%s"',

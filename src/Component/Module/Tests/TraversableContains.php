@@ -63,7 +63,7 @@ class TraversableContains extends Constraint
         }
     }
 
-    public function toString()
+    public function toString(): string
     {
         return 'contains value of type "'.$this->type.'"';
     }
