@@ -124,6 +124,5 @@
             "id": "01BF6RBYGY5V4S3FDMBNKXVVNS",
             "allow-contrib": true
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
