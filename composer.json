@@ -63,7 +63,7 @@
     },
     "replace": {
         "paragonie/random_compat": "*",
-        "paragonie/sodium_compat": "*",
+        "park-manager/confirmation-handler": "self.version",
         "park-manager/form-handler": "self.version",
         "park-manager/module": "self.version",
         "park-manager/service-bus": "self.version",

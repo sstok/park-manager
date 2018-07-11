@@ -12,9 +12,9 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\WebUI\Tests;
+namespace ParkManager\Component\ConfirmationHandler\Tests;
 
-use ParkManager\Component\WebUI\CheckedConfirmationHandler;
+use ParkManager\Component\ConfirmationHandler\CheckedConfirmationHandler;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
