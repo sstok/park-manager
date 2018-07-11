@@ -1,12 +1,12 @@
-Park-Manager WebUI
-==================
+Park-Manager ConfirmationHandler
+================================
 
-The WebUI component of Park-Manager, see resources for more information.
+The ConfirmationHandler component of Park-Manager, see resources for more information.
 
 Resources
 ---------
 
-  * [Documentation](http://docs.park-manager.com/current/component/web-ui/index.html)
+  * [Documentation](http://docs.park-manager.com/current/component/confirmation-handler/index.html)
   * [Contributing](http://docs.park-manager.com/current/contributing/index.html)
   * [Report issues](https://github.com/park-manager/park-manager/issues) and
     [send Pull Requests](https://github.com/park-manager/park-manager/pulls)

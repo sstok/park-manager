@@ -1,7 +1,7 @@
 {
-    "name": "park-manager/web-ui",
+    "name": "park-manager/confirmation-handler",
     "type": "library",
-    "description": "Park-Manager WebUI Component",
+    "description": "Park-Manager ConfirmationHandler Component",
     "homepage": "http://www.park-manager.com/",
     "license": "MPL-2.0",
     "authors": [
@@ -16,8 +16,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "symfony/form": "^3.4 || ^4.0",
-        "symfony/http-kernel": "^3.4 || ^4.0"
+        "symfony/http-kernel": "^4.0"
     },
     "config": {
         "preferred-install": {
@@ -27,7 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ParkManager\\Component\\WebUI\\": ""
+            "ParkManager\\Component\\ConfirmationHandler\\": ""
         },
         "exclude-from-classmap": [
             "Tests/"
@@ -35,7 +34,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "ParkManager\\Component\\WebUI\\Tests\\": "Tests"
+            "ParkManager\\Component\\ConfirmationHandler\\Tests\\": "Tests"
         }
     }
 }
