@@ -16,11 +16,14 @@ namespace ParkManager\Core\Infrastructure\DependencyInjection;
 
 use ParkManager\Bridge\Doctrine\Type\ArrayCollectionType;
 use ParkManager\Bridge\Doctrine\Type\RootEntityOwnerType;
+use ParkManager\Bridge\Twig\EventListener\TwigResponseListener;
 use ParkManager\Component\Module\ParkManagerModuleDependencyExtension;
 use ParkManager\Component\Module\Traits\DoctrineDbalTypesConfiguratorTrait;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Sebastiaan Stok <s.stok@rollerworks.net>
@@ -44,6 +47,11 @@ final class DependencyExtension extends ParkManagerModuleDependencyExtension
     protected function loadModule(array $configs, ContainerBuilder $container, LoaderInterface $loader): void
     {
         $loader->load('*.php', 'glob');
+
+        if (class_exists(TwigResponseListener::class)) {
+            $container->register(TwigResponseListener::class)
+                ->setArgument(0, ServiceLocatorTagPass::register($container, ['twig' => new Reference('twig')]));
+        }
     }
 
     public function prependExtra(ContainerBuilder $container): void
