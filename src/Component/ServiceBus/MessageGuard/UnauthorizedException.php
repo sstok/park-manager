@@ -23,7 +23,7 @@ final class UnauthorizedException extends \RuntimeException
 
     public static function forMessage(object $messageName): self
     {
-        $e = new static ('You are not authorized to access the resource "'.get_class($messageName).'".');
+        $e = new static ('You are not authorized to access the resource "'.\get_class($messageName).'".');
         $e->messageName = $messageName;
 
         return $e;

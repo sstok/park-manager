@@ -47,7 +47,7 @@ final class AccountCapabilitiesRestrictionGuard implements CapabilitiesRestricti
 
     public function decide(object $command, ServiceMessages $messages): bool
     {
-        if (!$command instanceof AccountIdAwareCommand || !isset($this->mappings[$name = get_class($command)])) {
+        if (!$command instanceof AccountIdAwareCommand || !isset($this->mappings[$name = \get_class($command)])) {
             return true;
         }
 
@@ -72,7 +72,7 @@ final class AccountCapabilitiesRestrictionGuard implements CapabilitiesRestricti
 
     private function getContextFromCommand(object $command): array
     {
-        $name = get_class($command);
+        $name = \get_class($command);
         $mappings = $this->mappings[$name]['mapping'] ?? [];
         $context = [];
 

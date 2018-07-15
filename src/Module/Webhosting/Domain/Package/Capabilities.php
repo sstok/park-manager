@@ -34,7 +34,7 @@ final class Capabilities implements \IteratorAggregate
     public function __construct(Capability ...$capabilities)
     {
         foreach ($capabilities as $capability) {
-            $class = get_class($capability);
+            $class = \get_class($capability);
             $this->capabilities[$class] = $capability;
             $this->capabilitiesIndexed[$capability::id()] = $capability->configuration();
         }
@@ -51,7 +51,7 @@ final class Capabilities implements \IteratorAggregate
         $capabilitiesList = $this->capabilities;
 
         foreach ($capabilities as $capability) {
-            unset($capabilitiesList[get_class($capability)]);
+            unset($capabilitiesList[\get_class($capability)]);
         }
 
         return new self(...array_values($capabilitiesList));

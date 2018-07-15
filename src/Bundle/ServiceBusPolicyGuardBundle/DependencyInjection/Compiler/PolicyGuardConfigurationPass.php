@@ -61,7 +61,7 @@ final class PolicyGuardConfigurationPass implements CompilerPassInterface
                 continue;
             }
 
-            if (is_string($policy)) {
+            if (\is_string($policy)) {
                 $policy = new Definition(Expression::class, [$policy]);
             }
 
@@ -87,7 +87,7 @@ final class PolicyGuardConfigurationPass implements CompilerPassInterface
                 continue;
             }
 
-            if (is_string($policy)) {
+            if (\is_string($policy)) {
                 $policy = new Definition(Expression::class, [$policy]);
             }
 

@@ -33,7 +33,7 @@ final class SymfonyEventEmitter implements EventEmitter
      */
     public function emit(DomainEvent $event): DomainEvent
     {
-        $this->eventDispatcher->dispatch(get_class($event), $event);
+        $this->eventDispatcher->dispatch(\get_class($event), $event);
 
         return $event;
     }

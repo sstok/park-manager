@@ -41,7 +41,7 @@ final class ValidatorMiddleware implements Middleware
     {
         $constraintViolations = $this->validator->validate($command);
 
-        if (count($constraintViolations) > 0) {
+        if (\count($constraintViolations) > 0) {
             throw InvalidCommandException::onCommand($command, $constraintViolations);
         }
 

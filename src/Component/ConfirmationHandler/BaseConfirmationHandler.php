@@ -118,7 +118,7 @@ abstract class BaseConfirmationHandler
 
     protected function checkToken()
     {
-        if (!is_string($token = $this->request->request->get('_token'))) {
+        if (!\is_string($token = $this->request->request->get('_token'))) {
             $valid = false;
         } elseif (!$valid = $this->tokenManager->isTokenValid(new CsrfToken($this->tokenId, $token))) {
             $this->tokenManager->removeToken($this->tokenId);

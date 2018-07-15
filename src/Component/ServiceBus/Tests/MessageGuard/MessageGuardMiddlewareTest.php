@@ -68,8 +68,8 @@ final class MessageGuardMiddlewareTest extends TestCase
 
         self::assertSame($message, $returnValue);
         self::assertEquals([
-            ['info', 'PermissionGuard "'.get_class($guard1).'" decides: ABSTAIN', []],
-            ['info', 'PermissionGuard "'.get_class($guard2).'" decides: ALLOW', []],
+            ['info', 'PermissionGuard "'.\get_class($guard1).'" decides: ABSTAIN', []],
+            ['info', 'PermissionGuard "'.\get_class($guard2).'" decides: ALLOW', []],
         ], $logger->cleanLogs());
     }
 
@@ -97,7 +97,7 @@ final class MessageGuardMiddlewareTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            sprintf('PermissionGuard "%s" returned unsupported decision %d', get_class($guard), 3)
+            sprintf('PermissionGuard "%s" returned unsupported decision %d', \get_class($guard), 3)
         );
 
         $messageGuard->execute($message, function () {});

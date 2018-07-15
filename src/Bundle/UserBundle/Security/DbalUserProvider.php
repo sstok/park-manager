@@ -72,7 +72,7 @@ final class DbalUserProvider implements UserProviderInterface
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof $this->userClass) {
-            throw new UnsupportedUserException(sprintf('Expected an instance of %s, but got "%s".', $this->userClass, get_class($user)));
+            throw new UnsupportedUserException(sprintf('Expected an instance of %s, but got "%s".', $this->userClass, \get_class($user)));
         }
 
         $fetchedUser = $this->connection->fetchAssoc(

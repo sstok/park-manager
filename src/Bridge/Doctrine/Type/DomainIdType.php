@@ -37,7 +37,7 @@ abstract class DomainIdType extends GuidType
 
     final public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
-        if (null === $value || is_string($value)) {
+        if (null === $value || \is_string($value)) {
             return $value;
         }
 

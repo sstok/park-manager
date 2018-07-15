@@ -74,7 +74,7 @@ final class MessageBusPass implements CompilerPassInterface
 
     private static function assertSingleTag(array $tags, string $busId, string $tagName): void
     {
-        if (count($tags) > 1) {
+        if (\count($tags) > 1) {
             throw CompilerPassException::toManyTags($busId, $tagName);
         }
     }

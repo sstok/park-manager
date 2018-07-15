@@ -33,8 +33,8 @@ final class CapabilitiesTest extends TestCase
         $capabilities = new Capabilities($capability, $capability);
 
         self::assertCapabilitiesEquals([$capability], $capabilities);
-        self::assertTrue($capabilities->has(get_class($capability)));
-        self::assertFalse($capabilities->has(get_class($capability2)));
+        self::assertTrue($capabilities->has(\get_class($capability)));
+        self::assertFalse($capabilities->has(\get_class($capability2)));
         self::assertEquals($capability, $capabilities->get(StorageSpaceQuota::class));
     }
 
@@ -82,7 +82,7 @@ final class CapabilitiesTest extends TestCase
     {
         $processedCapabilities = [];
         foreach ($capabilities as $capability) {
-            $processedCapabilities[get_class($capability)] = $capability;
+            $processedCapabilities[\get_class($capability)] = $capability;
         }
 
         self::assertEquals($processedCapabilities, iterator_to_array($capabilitiesSet));

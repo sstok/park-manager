@@ -173,7 +173,7 @@ final class PolicyGuardMiddlewareConfigurator implements AdvancedMiddlewareConfi
 
     private static function assertPolicy(string $string, $policy): void
     {
-        if (!\is_bool($policy) && null !== $policy && !is_string($policy)) {
+        if (!\is_bool($policy) && null !== $policy && !\is_string($policy)) {
             throw new \InvalidArgumentException(
                 sprintf('Policy for "%s" must be: boolean, null or a string.', $string)
             );

@@ -65,7 +65,7 @@ final class MessageGuardPassTest extends AbstractCompilerPassTestCase
     {
         $expectedGuards = array_map(
             function ($serviceId) {
-                if (is_string($serviceId)) {
+                if (\is_string($serviceId)) {
                     return new Reference($serviceId);
                 }
 

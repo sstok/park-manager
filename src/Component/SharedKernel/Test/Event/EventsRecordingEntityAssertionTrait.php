@@ -32,10 +32,10 @@ trait EventsRecordingEntityAssertionTrait
 
         foreach ($expectedEvents as $i => $event) {
             self::assertArrayHasKey($i, $events, 'Event must exist at position.');
-            self::assertEquals(get_class($events[$i]), get_class($event), 'Event at position must be of same type');
+            self::assertEquals(\get_class($events[$i]), \get_class($event), 'Event at position must be of same type');
         }
 
-        self::assertCount($c = count($expectedEvents), $events, sprintf('Expected exactly "%d" events.', $c));
+        self::assertCount($c = \count($expectedEvents), $events, sprintf('Expected exactly "%d" events.', $c));
     }
 
     protected static function assertNoDomainEvents(EventsRecordingEntity $entity): void

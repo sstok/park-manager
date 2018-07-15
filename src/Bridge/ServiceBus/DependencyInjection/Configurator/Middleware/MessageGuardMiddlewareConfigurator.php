@@ -42,16 +42,16 @@ final class MessageGuardMiddlewareConfigurator implements MiddlewareConfigurator
             ->tag($serviceId.'.middleware', ['priority' => MessageBusConfigurator::MIDDLEWARE_PRIORITY_GUARD])->autowire(false)->private();
 
         foreach ($guards as $guard) {
-            if (is_array($guard)) {
+            if (\is_array($guard)) {
                 $this->registerGuard($guard[0], $guard[1] ?? 0, $guard[2] ?? []);
-            } elseif (is_string($guard)) {
+            } elseif (\is_string($guard)) {
                 $this->registerGuard($guard);
             } else {
                 throw new \InvalidArgumentException(
                     sprintf(
                         'Invalid guard provided for MessageGuardMiddlewareConfigurator with MessageBus (%s), expected string or array. Got "%s".',
                         $serviceId,
-                        gettype($guard)
+                        \gettype($guard)
                     )
                 );
             }

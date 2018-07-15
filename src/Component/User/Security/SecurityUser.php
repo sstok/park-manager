@@ -123,7 +123,7 @@ abstract class SecurityUser implements UserInterface, EquatableInterface, \Seria
      */
     public function isEqualTo(UserInterface $user): bool
     {
-        if (get_class($user) !== get_class($this)) {
+        if (\get_class($user) !== \get_class($this)) {
             return false;
         }
 

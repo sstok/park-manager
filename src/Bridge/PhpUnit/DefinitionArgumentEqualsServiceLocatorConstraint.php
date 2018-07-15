@@ -39,7 +39,7 @@ final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
         $this->container = $container;
         $this->argumentIndex = (int) $argumentIndex;
         $this->expectedValue = array_map(function ($serviceId) {
-            if (is_string($serviceId)) {
+            if (\is_string($serviceId)) {
                 return new ServiceClosureArgument(new Reference($serviceId));
             }
 

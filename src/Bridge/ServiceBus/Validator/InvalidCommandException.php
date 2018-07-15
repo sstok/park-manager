@@ -28,7 +28,7 @@ final class InvalidCommandException extends \Exception implements Exception
     public static function onCommand(object $command, ConstraintViolationListInterface $violations): self
     {
         $exception = new static(
-            'Validation failed for '.get_class($command).
+            'Validation failed for '.\get_class($command).
             ' with '.$violations->count().' violation(s).'
         );
 

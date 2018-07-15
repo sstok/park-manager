@@ -64,7 +64,7 @@ final class Configuration implements ConfigurationInterface
                                 ->scalarPrototype()
                                     ->validate()
                                         ->ifTrue(function ($v) {
-                                            return !is_string($v);
+                                            return !\is_string($v);
                                         })
                                         ->thenInvalid('Attribute value expected to a property path as string.')
                                     ->end()

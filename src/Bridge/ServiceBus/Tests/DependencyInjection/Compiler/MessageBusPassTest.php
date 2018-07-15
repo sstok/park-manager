@@ -172,7 +172,7 @@ final class MessageBusPassTest extends AbstractCompilerPassTestCase
     private function expectMessageBus(string $busId, array $expectedHandlers, array $expectedMiddlewares = []): void
     {
         $expectedMiddlewares = array_map(function ($serviceId) {
-            if (is_string($serviceId)) {
+            if (\is_string($serviceId)) {
                 return new Reference($serviceId);
             }
 

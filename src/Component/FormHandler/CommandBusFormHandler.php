@@ -119,7 +119,7 @@ final class CommandBusFormHandler implements FormHandler
 
             return $result;
         } catch (Throwable $e) {
-            $exceptionName = get_class($e);
+            $exceptionName = \get_class($e);
 
             if (isset($this->exceptionFormatters[$exceptionName])) {
                 $errors = $this->exceptionFormatters[$exceptionName]($e);
@@ -147,12 +147,12 @@ final class CommandBusFormHandler implements FormHandler
 
     private function mapErrors($errors): void
     {
-        if (!is_array($errors)) {
+        if (!\is_array($errors)) {
             $errors = [null => [$errors]];
         }
 
         foreach ($errors as $formPath => $formErrors) {
-            if (!is_array($formErrors)) {
+            if (!\is_array($formErrors)) {
                 $formErrors = [$formErrors];
             }
 

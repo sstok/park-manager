@@ -48,7 +48,7 @@ final class PolicyGuard implements PermissionGuard
 
     public function decide(object $message): int
     {
-        $messageName = get_class($message);
+        $messageName = \get_class($message);
 
         if (isset($this->classPolicies[$messageName])) {
             $policy = $this->classPolicies[$messageName];
@@ -60,7 +60,7 @@ final class PolicyGuard implements PermissionGuard
             return self::PERMISSION_ABSTAIN;
         }
 
-        if (is_bool($policy)) {
+        if (\is_bool($policy)) {
             return (int) $policy;
         }
 

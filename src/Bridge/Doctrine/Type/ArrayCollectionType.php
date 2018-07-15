@@ -45,7 +45,7 @@ final class ArrayCollectionType extends JsonType
             return new ArrayCollection();
         }
 
-        $value = is_resource($value) ? stream_get_contents($value) : $value;
+        $value = \is_resource($value) ? stream_get_contents($value) : $value;
 
         return new ArrayCollection(json_decode($value, true));
     }

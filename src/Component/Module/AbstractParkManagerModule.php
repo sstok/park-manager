@@ -38,7 +38,7 @@ abstract class AbstractParkManagerModule extends Bundle implements ParkManagerMo
                     throw new \LogicException(
                         sprintf(
                             'Extension %s must implement Symfony\Component\DependencyInjection\Extension\ExtensionInterface.',
-                            get_class($extension)
+                            \get_class($extension)
                         )
                     );
                 }
@@ -75,7 +75,7 @@ abstract class AbstractParkManagerModule extends Bundle implements ParkManagerMo
      */
     public function build(ContainerBuilder $container)
     {
-        if (0 !== count($doctrineMapping = $this->getDoctrineMappings())) {
+        if (0 !== \count($doctrineMapping = $this->getDoctrineMappings())) {
             $container->addCompilerPass(
                 DoctrineOrmMappingsPass::createXmlMappingDriver($doctrineMapping, $this->getDoctrineEmNames())
             );

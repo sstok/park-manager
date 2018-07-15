@@ -43,12 +43,12 @@ final class MessageGuardMiddleware implements Middleware
             $decision = $guard->decide($command);
 
             if ($decision < -1 || $decision > 1) {
-                throw new \InvalidArgumentException(sprintf('PermissionGuard "%s" returned unsupported decision %d', get_class($guard), $decision));
+                throw new \InvalidArgumentException(sprintf('PermissionGuard "%s" returned unsupported decision %d', \get_class($guard), $decision));
             }
 
             if ($this->logger) {
                 $this->logger->info(
-                    sprintf('PermissionGuard "%s" decides: %s', get_class($guard), [0 => 'DENY', 1 => 'ALLOW', -1 => 'ABSTAIN'][$decision])
+                    sprintf('PermissionGuard "%s" decides: %s', \get_class($guard), [0 => 'DENY', 1 => 'ALLOW', -1 => 'ABSTAIN'][$decision])
                 );
             }
 
