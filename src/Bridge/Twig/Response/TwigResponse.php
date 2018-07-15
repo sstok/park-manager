@@ -33,7 +33,7 @@ class TwigResponse extends Response
     {
         parent::__construct('', $status, $headers);
 
-        if (!is_array($variables)) {
+        if (!\is_array($variables)) {
             if ($variables instanceof Form || $variables instanceof FormHandler) {
                 $variables = ['form' => $variables->createView()];
             } else {

@@ -14,14 +14,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\RouteAutofillBundle\Tests\EventListener;
 
-use ParkManager\Bundle\RouteAutofillBundle\MappingFileLoader;
 use ParkManager\Bundle\RouteAutofillBundle\EventListener\RouteRedirectResponseListener;
 use ParkManager\Bundle\RouteAutofillBundle\Response\RouteRedirectResponse;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

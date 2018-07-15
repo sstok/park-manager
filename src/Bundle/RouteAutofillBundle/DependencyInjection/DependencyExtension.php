@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\RouteAutofillBundle\DependencyInjection;
 
 use ParkManager\Bundle\RouteAutofillBundle\CacheWarmer\RouteRedirectMappingWarmer;
-use ParkManager\Bundle\RouteAutofillBundle\MappingFileLoader;
 use ParkManager\Bundle\RouteAutofillBundle\EventListener\RouteRedirectResponseListener;
+use ParkManager\Bundle\RouteAutofillBundle\MappingFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;

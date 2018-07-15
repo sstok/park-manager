@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\RouteAutofillBundle;
 
-use ParkManager\Bundle\RouteAutofillBundle\MappingFileLoader;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
