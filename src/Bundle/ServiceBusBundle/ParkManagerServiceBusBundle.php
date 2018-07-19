@@ -18,7 +18,7 @@ use ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler\DomainEventsEmitt
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler\MessageBusPass;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler\MessageGuardPass;
 use ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler\TracingDomainEventsEmitterPass;
-use ParkManager\Bundle\ServiceBusBundle\DependecyInjection\DependencyExtension;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\DependencyExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
