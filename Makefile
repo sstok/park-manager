@@ -15,6 +15,10 @@ test: docker-up
 	docker-compose run --rm php make in-docker-test
 	@$(MAKE) docker-down
 
+test-strict: docker-up
+	docker-compose run --rm php make in-docker-test-strict
+	@$(MAKE) docker-down
+
 test-coverage: docker-up
 	mkdir -p build/logs build/cov
 	docker-compose run --rm php make in-docker-test-coverage
@@ -32,7 +36,7 @@ phpstan:
 
 in-docker-phpstan:
 	composer bin phpstan install --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
-	php -d memory_limit=1G vendor/bin/phpstan analyse --configuration phpstan.neon --level max src public bin
+	php -d memory_limit=1G vendor/bin/phpstan analyse --configuration phpstan.neon --ansi --errorFormat=table --level max src public bin
 
 cs:
 	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --diff"
@@ -76,8 +80,11 @@ in-docker-install-fixtures:
 in-docker-test: in-docker-install-fixtures
 	vendor/bin/phpunit --exclude-group "" --verbose
 
+in-docker-test-strict: in-docker-install-fixtures
+	SYMFONY_DEPRECATIONS_HELPER=strict vendor/bin/phpunit --exclude-group "" --verbose
+
 in-docker-test-coverage: in-docker-install-fixtures
-	phpdbg -qrr vendor/bin/phpunit --verbose --exclude-group "" --coverage-php build/cov/coverage-phpunit.cov
+	SYMFONY_DEPRECATIONS_HELPER=disabled phpdbg -qrr vendor/bin/phpunit --verbose --exclude-group "" --coverage-php build/cov/coverage-phpunit.cov
 
 in-docker-clean-vendor:
 	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/Tests" }' | xargs rm -rf
