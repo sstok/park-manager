@@ -19,9 +19,6 @@ use ParkManager\Bundle\UserBundle\DependencyInjection\DependencyExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class ParkManagerUserBundle extends Bundle
 {
     public function getContainerExtension(): DependencyExtension

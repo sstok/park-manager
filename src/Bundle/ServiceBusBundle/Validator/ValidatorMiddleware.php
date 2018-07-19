@@ -17,9 +17,6 @@ namespace ParkManager\Bundle\ServiceBusBundle\Validator;
 use League\Tactician\Middleware;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class ValidatorMiddleware implements Middleware
 {
     private $validator;

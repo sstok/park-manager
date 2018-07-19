@@ -14,9 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\ServiceBus\MessageGuard;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 interface PermissionGuard
 {
     /**

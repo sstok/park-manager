@@ -20,8 +20,6 @@ use Symfony\Component\Finder\Finder;
 
 /**
  * Helps with automatically registering Doctrine DBAL types.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 trait DoctrineDbalTypesConfiguratorTrait
 {

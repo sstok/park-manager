@@ -17,9 +17,6 @@ namespace ParkManager\Component\User\Model\Handler;
 use ParkManager\Component\User\Model\Command\ChangeUserPassword;
 use ParkManager\Component\User\Model\UserCollection;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class ChangeUserPasswordHandler
 {
     private $userCollection;

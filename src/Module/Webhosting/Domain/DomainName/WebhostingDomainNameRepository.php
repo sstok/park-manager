@@ -19,9 +19,6 @@ use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Domain\DomainName;
 use ParkManager\Module\Webhosting\Domain\DomainName\Exception\WebhostingDomainNameNotFound;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 interface WebhostingDomainNameRepository
 {
     /**

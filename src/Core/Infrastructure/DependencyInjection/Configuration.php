@@ -17,9 +17,6 @@ namespace ParkManager\Core\Infrastructure\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class Configuration implements ConfigurationInterface
 {
     private $configName;

@@ -20,8 +20,6 @@ namespace ParkManager\Component\User\ReadModel;
  *
  * Note: Unlike a Domain Repository these results are read-only
  * and are not automatically updated when the domain state changes.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 interface UserFinder
 {

@@ -18,9 +18,6 @@ use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\DomainName;
 use ParkManager\Module\Webhosting\Domain\DomainName\Exception\CannotTransferPrimaryDomainName;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class WebhostingDomainName
 {
     /**

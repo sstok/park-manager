@@ -17,8 +17,6 @@ namespace ParkManager\Component\ApplicationFoundation\Query\Result;
 /**
  * A KeysetPageResult is returned by KeysetPaginable::getPage()
  * to provide information about the current keyset position (page).
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 interface KeysetPageResult
 {

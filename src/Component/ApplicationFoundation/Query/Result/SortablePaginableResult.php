@@ -21,8 +21,6 @@ namespace ParkManager\Component\ApplicationFoundation\Query\Result;
  *
  * For performance reasons this should only be used for results when
  * offset paginating doesn't have a negative impact or uses an index.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 interface SortablePaginableResult extends PaginableResult
 {

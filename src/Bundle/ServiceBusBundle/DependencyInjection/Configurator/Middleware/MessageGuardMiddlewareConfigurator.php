@@ -20,9 +20,6 @@ use ParkManager\Component\ServiceBus\MessageGuard\MessageGuardMiddleware;
 use ParkManager\Component\ServiceBus\MessageGuard\PermissionGuard;
 use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceConfigurator;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class MessageGuardMiddlewareConfigurator implements MiddlewareConfigurator
 {
     private $di;

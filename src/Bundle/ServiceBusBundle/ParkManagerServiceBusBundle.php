@@ -23,9 +23,6 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class ParkManagerServiceBusBundle extends Bundle
 {
     public function getContainerExtension(): DependencyExtension

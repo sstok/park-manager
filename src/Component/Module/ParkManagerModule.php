@@ -16,9 +16,6 @@ namespace ParkManager\Component\Module;
 
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 interface ParkManagerModule extends BundleInterface
 {
 }

@@ -16,9 +16,6 @@ namespace ParkManager\Component\SharedKernel\Event;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class SymfonyEventEmitter implements EventEmitter
 {
     private $eventDispatcher;

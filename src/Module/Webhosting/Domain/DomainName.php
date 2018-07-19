@@ -14,9 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Domain;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class DomainName
 {
     private $name;

@@ -20,9 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 abstract class AbstractParkManagerModule extends Bundle implements ParkManagerModule
 {
     /**

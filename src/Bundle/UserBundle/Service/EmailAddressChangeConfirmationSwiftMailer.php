@@ -19,9 +19,6 @@ use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Model\Service\EmailAddressChangeConfirmationMailer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class EmailAddressChangeConfirmationSwiftMailer implements EmailAddressChangeConfirmationMailer
 {
     private $sender;

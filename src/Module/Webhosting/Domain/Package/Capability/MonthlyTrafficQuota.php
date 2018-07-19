@@ -16,9 +16,6 @@ namespace ParkManager\Module\Webhosting\Domain\Package\Capability;
 
 use ParkManager\Module\Webhosting\Domain\Package\Capability;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class MonthlyTrafficQuota implements Capability
 {
     private $quota;

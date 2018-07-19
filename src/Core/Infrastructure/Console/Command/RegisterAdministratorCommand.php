@@ -25,9 +25,6 @@ use Symfony\Component\Security\Core\Encoder\Argon2iPasswordEncoder;
 use Symfony\Component\Validator\Constraints\{Email, NotBlank};
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class RegisterAdministratorCommand extends Command
 {
     protected static $defaultName = 'park-manager:administrator:register';

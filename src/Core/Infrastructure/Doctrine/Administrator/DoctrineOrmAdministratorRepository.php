@@ -20,9 +20,6 @@ use ParkManager\Component\SharedKernel\Event\EventEmitter;
 use ParkManager\Core\Domain\Administrator\Administrator;
 use ParkManager\Core\Domain\Administrator\AdministratorRepository;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class DoctrineOrmAdministratorRepository extends DoctrineOrmUserCollection implements AdministratorRepository
 {
     public function __construct(EntityManagerInterface $entityManager, EventEmitter $eventEmitter)

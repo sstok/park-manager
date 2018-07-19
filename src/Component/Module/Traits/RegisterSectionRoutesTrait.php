@@ -16,9 +16,6 @@ namespace ParkManager\Component\Module\Traits;
 
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 trait RegisterSectionRoutesTrait
 {
     /**

@@ -16,9 +16,6 @@ namespace ParkManager\Component\User\Exception;
 
 use ParkManager\Component\User\Model\UserId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class UserNotFound extends \InvalidArgumentException
 {
     public static function withUserId(UserId $userId): self

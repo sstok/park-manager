@@ -16,8 +16,6 @@ namespace ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Exception;
 
 /**
  * Exception interface for component.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 interface ServiceBusException
 {

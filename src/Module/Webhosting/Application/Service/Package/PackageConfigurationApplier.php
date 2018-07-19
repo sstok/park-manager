@@ -24,8 +24,6 @@ use ParkManager\Module\Webhosting\Domain\Package\Capability;
  *
  * This sub-system should only be used when the limitation applies
  * outside of the webhosting system (like a filesystem quota).
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 interface PackageConfigurationApplier
 {

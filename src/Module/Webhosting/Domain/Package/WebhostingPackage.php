@@ -18,9 +18,6 @@ use ParkManager\Component\SharedKernel\Event\EventsRecordingEntity;
 use ParkManager\Module\Webhosting\Domain\Package\Event\WebhostingPackageCapabilitiesWasChanged;
 use ParkManager\Module\Webhosting\Domain\Package\Event\WebhostingPackageWasCreated;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class WebhostingPackage extends EventsRecordingEntity
 {
     /**

@@ -16,9 +16,6 @@ namespace ParkManager\Component\User\Model\Handler;
 
 use ParkManager\Component\User\Model\UserCollection;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 abstract class BaseUserHandler
 {
     protected $repository;

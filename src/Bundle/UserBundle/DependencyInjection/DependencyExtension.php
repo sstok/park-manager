@@ -19,9 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class DependencyExtension extends Extension
 {
     public const EXTENSION_ALIAS = 'park_manager_user';

@@ -18,9 +18,6 @@ use ParkManager\Component\User\Exception\PasswordResetConfirmationRejected;
 use ParkManager\Component\User\Model\Command\ConfirmUserPasswordReset;
 use ParkManager\Component\User\Model\UserCollection;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class ConfirmUserPasswordResetHandler
 {
     private $userCollection;

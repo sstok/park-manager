@@ -16,9 +16,6 @@ namespace ParkManager\Component\User\Model;
 
 use ParkManager\Component\User\Exception\UserNotFound;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 interface UserCollection
 {
     /**

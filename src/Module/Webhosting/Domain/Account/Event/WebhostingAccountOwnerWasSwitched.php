@@ -18,9 +18,6 @@ use ParkManager\Component\SharedKernel\Event\DomainEvent;
 use ParkManager\Component\SharedKernel\RootEntityOwner;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class WebhostingAccountOwnerWasSwitched extends DomainEvent
 {
     private $id;

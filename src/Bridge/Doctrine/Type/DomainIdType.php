@@ -17,9 +17,6 @@ namespace ParkManager\Bridge\Doctrine\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\GuidType;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 abstract class DomainIdType extends GuidType
 {
     public const NAME = 'park_manager_domain_id';

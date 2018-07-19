@@ -16,9 +16,6 @@ namespace ParkManager\Module\Webhosting\Application;
 
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 interface AccountIdAwareCommand
 {
     public function account(): WebhostingAccountId;

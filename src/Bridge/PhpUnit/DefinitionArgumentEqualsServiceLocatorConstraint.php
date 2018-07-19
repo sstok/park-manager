@@ -23,9 +23,6 @@ use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
 {
     private $container;

@@ -14,9 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Domain\Package\Exception;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class CapabilityNotRegistered extends \RuntimeException
 {
     public static function withId(string $id): self

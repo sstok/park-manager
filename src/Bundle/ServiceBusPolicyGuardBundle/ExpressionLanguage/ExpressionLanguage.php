@@ -16,9 +16,6 @@ namespace ParkManager\Bundle\ServiceBusPolicyGuardBundle\ExpressionLanguage;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class ExpressionLanguage extends BaseExpressionLanguage
 {
     protected function registerFunctions()

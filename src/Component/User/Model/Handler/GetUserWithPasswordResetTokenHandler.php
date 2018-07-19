@@ -18,9 +18,6 @@ use ParkManager\Component\User\Model\Query\GetUserByPasswordResetToken;
 use ParkManager\Component\User\ReadModel\User;
 use ParkManager\Component\User\ReadModel\UserFinder;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class GetUserWithPasswordResetTokenHandler
 {
     private $userFinder;

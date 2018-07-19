@@ -18,9 +18,6 @@ use ParkManager\Component\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Component\User\Model\Command\ConfirmEmailAddressChange;
 use ParkManager\Component\User\Model\UserCollection;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class ConfirmEmailAddressChangeHandler
 {
     private $userCollection;

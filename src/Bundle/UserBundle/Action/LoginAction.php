@@ -19,9 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Twig\Environment as Twig;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class LoginAction
 {
     private $twig;

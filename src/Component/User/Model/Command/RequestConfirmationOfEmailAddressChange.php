@@ -16,9 +16,6 @@ namespace ParkManager\Component\User\Model\Command;
 
 use ParkManager\Component\User\Model\UserId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class RequestConfirmationOfEmailAddressChange
 {
     private $id;

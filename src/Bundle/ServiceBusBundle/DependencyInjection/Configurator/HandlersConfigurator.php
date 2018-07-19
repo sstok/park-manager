@@ -21,8 +21,6 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceCon
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- *
  * @internal
  */
 final class HandlersConfigurator

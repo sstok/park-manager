@@ -18,9 +18,6 @@ use ParkManager\Component\ServiceBus\MessageGuard\PermissionGuard;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class PolicyGuard implements PermissionGuard
 {
     private $expressionLanguage;

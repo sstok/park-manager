@@ -16,9 +16,6 @@ namespace ParkManager\Module\Webhosting\Domain\Package\Exception;
 
 use ParkManager\Module\Webhosting\Domain\Package\WebhostingPackageId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class WebhostingPackageNotFound extends \InvalidArgumentException
 {
     public static function withId(WebhostingPackageId $id): self

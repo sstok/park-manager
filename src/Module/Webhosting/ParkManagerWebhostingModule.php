@@ -21,9 +21,6 @@ use ParkManager\Module\Webhosting\Infrastructure\Doctrine\Package\WebhostingCapa
 use ParkManager\Module\Webhosting\Infrastructure\Service\Package\CapabilitiesFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class ParkManagerWebhostingModule extends AbstractParkManagerModule
 {
     public function build(ContainerBuilder $container): void

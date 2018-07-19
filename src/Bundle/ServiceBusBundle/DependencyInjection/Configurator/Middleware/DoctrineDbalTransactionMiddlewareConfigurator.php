@@ -20,9 +20,6 @@ use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\Middlew
 use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class DoctrineDbalTransactionMiddlewareConfigurator implements MiddlewareConfigurator
 {
     public function __construct(AbstractServiceConfigurator $di, string $serviceId, string $managerName)

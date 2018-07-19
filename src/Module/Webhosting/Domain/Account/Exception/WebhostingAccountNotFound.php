@@ -16,9 +16,6 @@ namespace ParkManager\Module\Webhosting\Domain\Account\Exception;
 
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class WebhostingAccountNotFound extends \InvalidArgumentException
 {
     public static function withId(WebhostingAccountId $id): self

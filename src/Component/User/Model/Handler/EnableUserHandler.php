@@ -16,9 +16,6 @@ namespace ParkManager\Component\User\Model\Handler;
 
 use ParkManager\Component\User\Model\Command\EnableUser;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class EnableUserHandler extends BaseUserHandler
 {
     public function __invoke(EnableUser $command): void

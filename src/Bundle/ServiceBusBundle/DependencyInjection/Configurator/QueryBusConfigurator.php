@@ -18,8 +18,6 @@ use ParkManager\Component\ServiceBus\TacticianQueryBus;
 use Symfony\Component\DependencyInjection\Loader\Configurator\DefaultsConfigurator;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- *
  * @final
  */
 class QueryBusConfigurator extends MessageBusConfigurator

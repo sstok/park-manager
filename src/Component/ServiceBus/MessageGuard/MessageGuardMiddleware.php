@@ -17,9 +17,6 @@ namespace ParkManager\Component\ServiceBus\MessageGuard;
 use League\Tactician\Middleware;
 use Psr\Log\LoggerInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class MessageGuardMiddleware implements Middleware
 {
     private $guards;

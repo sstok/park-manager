@@ -22,8 +22,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *
  * If the Symfony Security system did not grant access the decision
  * is abstained.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class SymfonyGuard implements PermissionGuard
 {

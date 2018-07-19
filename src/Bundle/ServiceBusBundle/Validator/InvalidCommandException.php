@@ -17,9 +17,6 @@ namespace ParkManager\Bundle\ServiceBusBundle\Validator;
 use League\Tactician\Exception\Exception;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class InvalidCommandException extends \Exception implements Exception
 {
     private $command;

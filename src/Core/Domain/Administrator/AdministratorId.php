@@ -16,9 +16,6 @@ namespace ParkManager\Core\Domain\Administrator;
 
 use ParkManager\Component\User\Model\UserId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class AdministratorId extends UserId
 {
 }

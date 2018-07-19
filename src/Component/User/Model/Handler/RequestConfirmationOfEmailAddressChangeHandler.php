@@ -19,9 +19,6 @@ use ParkManager\Component\User\Model\Command\RequestConfirmationOfEmailAddressCh
 use ParkManager\Component\User\Model\Service\EmailAddressChangeConfirmationMailer;
 use ParkManager\Component\User\Model\UserCollection;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class RequestConfirmationOfEmailAddressChangeHandler
 {
     private $userCollection;

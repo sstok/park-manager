@@ -20,9 +20,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class UnauthorizedExceptionListener implements EventSubscriberInterface
 {
     public function onException(GetResponseForExceptionEvent $event): void

@@ -19,9 +19,6 @@ use Doctrine\DBAL\Types\JsonType;
 use ParkManager\Module\Webhosting\Domain\Package\Capabilities;
 use ParkManager\Module\Webhosting\Infrastructure\Service\Package\CapabilitiesFactory;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class WebhostingCapabilitiesType extends JsonType
 {
     /**

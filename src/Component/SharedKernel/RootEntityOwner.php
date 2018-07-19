@@ -23,8 +23,6 @@ namespace ParkManager\Component\SharedKernel;
  *
  * When the actual identity uses a different technique for id's,
  * the owner-id should be mapped to the external identity's id.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class RootEntityOwner
 {

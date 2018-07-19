@@ -23,8 +23,6 @@ use ParkManager\Component\User\Model\UserCollection;
 use ParkManager\Component\User\Model\UserId;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- *
  * @method User findOneBy(array $criteria, array $orderBy = null)
  */
 class DoctrineOrmUserCollection extends EntityRepository implements UserCollection

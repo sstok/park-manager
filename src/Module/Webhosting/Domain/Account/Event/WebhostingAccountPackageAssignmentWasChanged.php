@@ -20,9 +20,6 @@ use ParkManager\Module\Webhosting\Domain\Package\Capabilities;
 use ParkManager\Module\Webhosting\Domain\Package\WebhostingPackage;
 use ParkManager\Module\Webhosting\Domain\Package\WebhostingPackageId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class WebhostingAccountPackageAssignmentWasChanged extends DomainEvent
 {
     private $accountId;

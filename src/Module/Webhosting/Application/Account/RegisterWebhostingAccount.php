@@ -20,9 +20,6 @@ use ParkManager\Module\Webhosting\Domain\DomainName;
 use ParkManager\Module\Webhosting\Domain\Package\Capabilities;
 use ParkManager\Module\Webhosting\Domain\Package\WebhostingPackageId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class RegisterWebhostingAccount
 {
     private $id;

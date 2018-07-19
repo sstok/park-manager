@@ -14,9 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Core\Domain\Administrator\Exception;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class AdministratorEmailAddressAlreadyInUse extends \InvalidArgumentException
 {
 }

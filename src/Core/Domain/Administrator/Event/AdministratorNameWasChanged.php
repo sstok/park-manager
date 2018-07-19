@@ -17,9 +17,6 @@ namespace ParkManager\Core\Domain\Administrator\Event;
 use ParkManager\Component\SharedKernel\Event\DomainEvent;
 use ParkManager\Component\User\Model\UserId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class AdministratorNameWasChanged extends DomainEvent
 {
     private $id;

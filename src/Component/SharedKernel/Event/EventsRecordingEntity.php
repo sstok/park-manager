@@ -14,9 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\SharedKernel\Event;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 abstract class EventsRecordingEntity
 {
     use DomainEventsCollectionTrait;

@@ -19,9 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class TracingDomainEventsEmitterPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void

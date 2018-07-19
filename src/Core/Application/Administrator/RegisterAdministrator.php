@@ -16,9 +16,6 @@ namespace ParkManager\Core\Application\Administrator;
 
 use ParkManager\Core\Domain\Administrator\AdministratorId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class RegisterAdministrator
 {
     private $id;

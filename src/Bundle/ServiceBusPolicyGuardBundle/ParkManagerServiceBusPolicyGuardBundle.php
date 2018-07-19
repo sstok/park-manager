@@ -19,9 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class ParkManagerServiceBusPolicyGuardBundle extends Bundle
 {
     public function getContainerExtension(): ?ExtensionInterface

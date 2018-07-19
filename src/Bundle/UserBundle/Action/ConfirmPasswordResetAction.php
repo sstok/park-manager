@@ -24,9 +24,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class ConfirmPasswordResetAction
 {
     private $queryBus;

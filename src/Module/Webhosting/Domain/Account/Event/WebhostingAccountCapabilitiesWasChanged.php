@@ -18,9 +18,6 @@ use ParkManager\Component\SharedKernel\Event\DomainEvent;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Domain\Package\Capabilities;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class WebhostingAccountCapabilitiesWasChanged extends DomainEvent
 {
     private $id;

@@ -20,9 +20,6 @@ use ParkManager\Component\User\Model\Command\RequestUserPasswordReset;
 use ParkManager\Component\User\Model\Service\PasswordResetMailer;
 use ParkManager\Component\User\Model\UserCollection;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class RequestUserPasswordResetHandler
 {
     private $userCollection;

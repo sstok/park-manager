@@ -22,9 +22,6 @@ use ParkManager\Bundle\ServiceBusPolicyGuardBundle\Guard\PolicyGuard;
 use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class PolicyGuardMiddlewareConfigurator implements AdvancedMiddlewareConfigurator
 {
     private $parent;

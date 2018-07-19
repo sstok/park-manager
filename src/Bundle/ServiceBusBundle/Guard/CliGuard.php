@@ -19,8 +19,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 /**
  * Allows access when SAPI is cli and no Security-token was set.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class CliGuard implements PermissionGuard
 {

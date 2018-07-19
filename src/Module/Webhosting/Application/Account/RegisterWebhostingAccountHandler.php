@@ -21,9 +21,6 @@ use ParkManager\Module\Webhosting\Domain\DomainName\WebhostingDomainName;
 use ParkManager\Module\Webhosting\Domain\DomainName\WebhostingDomainNameRepository;
 use ParkManager\Module\Webhosting\Domain\Package\WebhostingPackageRepository;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class RegisterWebhostingAccountHandler
 {
     private $accountRepository;

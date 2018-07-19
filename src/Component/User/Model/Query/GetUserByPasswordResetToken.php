@@ -16,9 +16,6 @@ namespace ParkManager\Component\User\Model\Query;
 
 use ParkManager\Component\Security\Token\SplitToken;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class GetUserByPasswordResetToken
 {
     private $token;

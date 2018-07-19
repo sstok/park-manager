@@ -20,8 +20,6 @@ use ParkManager\Component\User\Model\UserId;
 
 /**
  * READ-ONLY Representation of a user.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 class User
 {

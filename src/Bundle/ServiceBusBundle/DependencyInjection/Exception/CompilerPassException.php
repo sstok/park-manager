@@ -14,9 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Exception;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class CompilerPassException extends RuntimeException
 {
     public static function toManyTags(string $serviceId, string $tagName): self

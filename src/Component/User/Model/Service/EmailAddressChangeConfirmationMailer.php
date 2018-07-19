@@ -16,9 +16,6 @@ namespace ParkManager\Component\User\Model\Service;
 
 use ParkManager\Component\Security\Token\SplitToken;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 interface EmailAddressChangeConfirmationMailer
 {
     public function send(string $emailAddress, SplitToken $splitToken, \DateTimeImmutable $tokenExpiration): void;

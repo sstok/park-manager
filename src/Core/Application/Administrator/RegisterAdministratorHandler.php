@@ -20,9 +20,6 @@ use ParkManager\Component\User\Model\UserCollection;
 use ParkManager\Core\Domain\Administrator\Administrator;
 use ParkManager\Core\Domain\Administrator\Exception\AdministratorEmailAddressAlreadyInUse;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class RegisterAdministratorHandler
 {
     private $repository;

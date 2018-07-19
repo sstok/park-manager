@@ -17,8 +17,6 @@ namespace ParkManager\Bundle\UserBundle\Tests\Fixtures;
 use ParkManager\Component\User\Security\SecurityUser;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- *
  * @internal
  */
 final class TestSecurityUser extends SecurityUser

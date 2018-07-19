@@ -20,8 +20,6 @@ use ParkManager\Component\Security\Token\SplitToken;
  * ConfirmUserPasswordReset (with encoded-password).
  *
  * Note: For security reasons the password is provided in encoded format.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class ConfirmUserPasswordReset
 {

@@ -14,9 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\User\Canonicalizer;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class SimpleEmailCanonicalizer implements Canonicalizer
 {
     public function canonicalize(string $string): string

@@ -18,8 +18,6 @@ use ParkManager\Component\User\Model\UserCollection;
 use ParkManager\Component\User\Model\UserId;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- *
  * @method get(UserId $id): Administrator
  * @method findByEmailAddress(string $email): Administrator
  * @method findByEmailAddressChangeToken(string $selector): Administrator

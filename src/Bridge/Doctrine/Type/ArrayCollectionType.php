@@ -19,9 +19,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class ArrayCollectionType extends JsonType
 {
     /**

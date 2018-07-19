@@ -16,9 +16,6 @@ namespace ParkManager\Component\User\Model;
 
 use ParkManager\Component\SharedKernel\UuidTrait;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class UserId
 {
     use UuidTrait;

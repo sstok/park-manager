@@ -22,8 +22,6 @@ use Psr\Container\ContainerInterface;
  * Fetches handled instance from a reduced Symfony ServiceLocator container.
  *
  * Handlers are located by message-name.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class ContainerLocator implements HandlerLocator
 {

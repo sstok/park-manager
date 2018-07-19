@@ -18,9 +18,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class RequestPasswordResetType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

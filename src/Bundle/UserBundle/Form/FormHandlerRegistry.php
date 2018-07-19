@@ -18,9 +18,6 @@ use Hostnet\Component\FormHandler\Exception\InvalidHandlerTypeException;
 use Hostnet\Component\FormHandler\HandlerRegistryInterface;
 use Psr\Container\ContainerInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class FormHandlerRegistry implements HandlerRegistryInterface
 {
     private $handlersContainer;

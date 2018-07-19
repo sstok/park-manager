@@ -18,9 +18,6 @@ use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\VarDumper\VarDumper;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class HttpResponseAssertions
 {
     public static function assertRequestWasSuccessful(Client $client): void

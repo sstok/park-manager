@@ -22,9 +22,6 @@ use ParkManager\Module\Webhosting\Infrastructure\Service\Package\CapabilityGuard
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class DependencyExtension extends ParkManagerModuleDependencyExtension
 {
     use DoctrineDbalTypesConfiguratorTrait;

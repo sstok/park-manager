@@ -19,9 +19,6 @@ use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class UserFormHandlerPass implements CompilerPassInterface
 {
     private $registryId;

@@ -16,9 +16,6 @@ namespace ParkManager\Module\Webhosting\Domain\DomainName\Exception;
 
 use ParkManager\Module\Webhosting\Domain\DomainName\WebhostingDomainNameId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class WebhostingDomainNameNotFound extends \InvalidArgumentException
 {
     public static function withId(WebhostingDomainNameId $id): self

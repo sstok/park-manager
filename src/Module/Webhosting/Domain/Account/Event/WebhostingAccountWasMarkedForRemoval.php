@@ -17,9 +17,6 @@ namespace ParkManager\Module\Webhosting\Domain\Account\Event;
 use ParkManager\Component\SharedKernel\Event\DomainEvent;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class WebhostingAccountWasMarkedForRemoval extends DomainEvent
 {
     private $id;

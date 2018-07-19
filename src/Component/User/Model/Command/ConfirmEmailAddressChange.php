@@ -16,9 +16,6 @@ namespace ParkManager\Component\User\Model\Command;
 
 use ParkManager\Component\Security\Token\SplitToken;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class ConfirmEmailAddressChange
 {
     private $token;

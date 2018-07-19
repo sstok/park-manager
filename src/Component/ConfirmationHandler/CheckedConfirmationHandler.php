@@ -25,8 +25,6 @@ namespace ParkManager\Component\ConfirmationHandler;
  *
  * Typing the name forces the user to think if what their about to do is correct
  * (instead of blindly pressing YES), and reduces "small-screen area mistakes".
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class CheckedConfirmationHandler extends BaseConfirmationHandler
 {

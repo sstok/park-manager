@@ -16,9 +16,6 @@ namespace ParkManager\Core\Infrastructure\Security;
 
 use ParkManager\Component\User\Security\SecurityUser;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class AdministratorSecurityUser extends SecurityUser
 {
 }

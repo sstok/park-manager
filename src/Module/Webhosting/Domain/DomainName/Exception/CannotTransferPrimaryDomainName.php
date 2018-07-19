@@ -17,9 +17,6 @@ namespace ParkManager\Module\Webhosting\Domain\DomainName\Exception;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Domain\DomainName\WebhostingDomainNameId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class CannotTransferPrimaryDomainName extends \InvalidArgumentException
 {
     public static function of(WebhostingDomainNameId $domainName, WebhostingAccountId $current, WebhostingAccountId $new): self

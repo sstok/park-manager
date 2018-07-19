@@ -19,9 +19,6 @@ use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 abstract class MiddlewareConfiguratorTestCase extends AbstractContainerBuilderTestCase
 {
     /**

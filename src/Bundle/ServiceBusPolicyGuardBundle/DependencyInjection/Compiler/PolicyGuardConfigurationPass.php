@@ -23,9 +23,6 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\ExpressionLanguage\Expression;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class PolicyGuardConfigurationPass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;

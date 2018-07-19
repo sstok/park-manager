@@ -29,8 +29,6 @@ use ParkManager\Component\User\Model\Event\UserPasswordWasChanged;
  *
  * Note: This object should not be stored in a session directly
  * but instead be used as information provider for a SecurityUser.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 abstract class User extends EventsRecordingEntity
 {

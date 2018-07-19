@@ -17,9 +17,6 @@ namespace ParkManager\Bridge\Doctrine;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository as BaseEntityRepository;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 abstract class EntityRepository extends BaseEntityRepository
 {
     public function __construct(EntityManagerInterface $entityManager, string $className)

@@ -19,9 +19,6 @@ use ParkManager\Component\SharedKernel\RootEntityOwner;
 use ParkManager\Module\Webhosting\Domain\Package\Capabilities;
 use ParkManager\Module\Webhosting\Domain\Package\WebhostingPackage;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class WebhostingAccount extends EventsRecordingEntity
 {
     /**

@@ -19,8 +19,6 @@ use ParkManager\Core\Domain\Administrator\Event\AdministratorNameWasChanged;
 use ParkManager\Core\Domain\Administrator\Event\AdministratorWasRegistered;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- *
  * @final
  *
  * @method id(): AdministratorId

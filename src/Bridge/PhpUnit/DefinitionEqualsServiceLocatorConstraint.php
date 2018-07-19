@@ -21,9 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class DefinitionEqualsServiceLocatorConstraint extends Constraint
 {
     private $serviceId;

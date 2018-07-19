@@ -17,9 +17,6 @@ namespace ParkManager\Core\Infrastructure\Doctrine\Administrator;
 use ParkManager\Bridge\Doctrine\Type\DomainIdType;
 use ParkManager\Core\Domain\Administrator\AdministratorId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class AdministratorIdType extends DomainIdType
 {
     public const NAME = 'park_manager_administrator_id';

@@ -19,9 +19,6 @@ use Doctrine\ORM\EntityRepository;
 use ParkManager\Component\SharedKernel\Event\EventEmitter;
 use ParkManager\Component\SharedKernel\Event\EventsRecordingEntity;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 abstract class EventSourcedEntityRepository extends EntityRepository
 {
     protected $eventBus;

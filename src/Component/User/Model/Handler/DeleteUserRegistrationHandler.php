@@ -16,9 +16,6 @@ namespace ParkManager\Component\User\Model\Handler;
 
 use ParkManager\Component\User\Model\Command\DeleteUserRegistration;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class DeleteUserRegistrationHandler extends BaseUserHandler
 {
     public function __invoke(DeleteUserRegistration $command): void

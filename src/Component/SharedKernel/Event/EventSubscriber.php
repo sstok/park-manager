@@ -16,9 +16,6 @@ namespace ParkManager\Component\SharedKernel\Event;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 interface EventSubscriber extends EventSubscriberInterface
 {
 }

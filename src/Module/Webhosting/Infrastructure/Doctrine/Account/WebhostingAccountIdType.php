@@ -17,9 +17,6 @@ namespace ParkManager\Module\Webhosting\Infrastructure\Doctrine\Account;
 use ParkManager\Bridge\Doctrine\Type\DomainIdType;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class WebhostingAccountIdType extends DomainIdType
 {
     public const NAME = 'park_manager_webhosting_account_id';

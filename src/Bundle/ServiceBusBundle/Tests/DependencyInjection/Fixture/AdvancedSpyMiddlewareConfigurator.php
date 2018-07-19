@@ -19,8 +19,6 @@ use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\Middlew
 use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceConfigurator;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>\
- *
  * @internal
  */
 final class AdvancedSpyMiddlewareConfigurator implements AdvancedMiddlewareConfigurator

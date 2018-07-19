@@ -15,8 +15,6 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\ServiceBusPolicyGuardBundle\DependencyInjection;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- *
  * @internal
  */
 final class PolicyConfigHolder

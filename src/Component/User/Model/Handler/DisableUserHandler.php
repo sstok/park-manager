@@ -16,9 +16,6 @@ namespace ParkManager\Component\User\Model\Handler;
 
 use ParkManager\Component\User\Model\Command\DisableUser;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class DisableUserHandler extends BaseUserHandler
 {
     public function __invoke(DisableUser $command): void

@@ -19,9 +19,6 @@ use ParkManager\Component\Security\Token\SplitToken;
 use ParkManager\Component\User\Model\Service\PasswordResetMailer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class PasswordResetSwiftMailer implements PasswordResetMailer
 {
     private $sender;

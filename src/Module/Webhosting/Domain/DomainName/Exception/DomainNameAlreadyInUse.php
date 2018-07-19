@@ -17,9 +17,6 @@ namespace ParkManager\Module\Webhosting\Domain\DomainName\Exception;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Domain\DomainName;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class DomainNameAlreadyInUse extends \InvalidArgumentException
 {
     public static function byAccountId(DomainName $domainName, WebhostingAccountId $accountId): self

@@ -24,9 +24,6 @@ use ParkManager\Module\Webhosting\Domain\Package\{
     WebhostingPackageRepository
 };
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class WebhostingPackageOrmRepository extends EventSourcedEntityRepository implements WebhostingPackageRepository
 {
     public function __construct(EntityManagerInterface $entityManager, EventEmitter $eventEmitter, string $className = WebhostingPackage::class)

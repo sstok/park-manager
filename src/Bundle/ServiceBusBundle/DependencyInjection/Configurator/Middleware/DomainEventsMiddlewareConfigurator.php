@@ -22,9 +22,6 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceCon
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class DomainEventsMiddlewareConfigurator implements AdvancedMiddlewareConfigurator
 {
     private $parent;

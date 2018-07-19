@@ -17,9 +17,6 @@ namespace ParkManager\Component\SharedKernel\Test\Event;
 use ParkManager\Component\SharedKernel\Event\DomainEvent;
 use ParkManager\Component\SharedKernel\Event\EventsRecordingEntity;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 trait EventsRecordingEntityAssertionTrait
 {
     /**

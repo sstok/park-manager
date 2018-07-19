@@ -16,9 +16,6 @@ namespace ParkManager\Module\Webhosting\Domain\Package;
 
 use ParkManager\Module\Webhosting\Domain\Package\Exception\WebhostingPackageNotFound;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 interface WebhostingPackageRepository
 {
     /**

@@ -17,9 +17,6 @@ namespace ParkManager\Bridge\Doctrine\Test;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 abstract class EntityRepositoryTestCase extends KernelTestCase
 {
     protected function setUp()

@@ -17,8 +17,6 @@ namespace ParkManager\Module\Webhosting\Domain\DomainName;
 use ParkManager\Component\SharedKernel\UuidTrait;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- *
  * @codeCoverageIgnore
  */
 final class WebhostingDomainNameId

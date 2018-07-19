@@ -25,8 +25,6 @@ use Symfony\Component\DependencyInjection\Reference;
  * The MessageGuardPass registers the PermissionGuard's for MessageBuses.
  *
  * Caution: Be sure to register this *before* the RegisterListenersPass.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class MessageGuardPass implements CompilerPassInterface
 {

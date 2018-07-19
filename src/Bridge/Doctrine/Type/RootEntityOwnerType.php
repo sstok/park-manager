@@ -16,9 +16,6 @@ namespace ParkManager\Bridge\Doctrine\Type;
 
 use ParkManager\Component\SharedKernel\RootEntityOwner;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class RootEntityOwnerType extends DomainIdType
 {
     public const NAME = 'park_manager_root_entity_owner';

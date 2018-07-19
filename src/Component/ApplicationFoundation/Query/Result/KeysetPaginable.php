@@ -25,8 +25,6 @@ namespace ParkManager\Component\ApplicationFoundation\Query\Result;
  * Because of how records are searched the sorting is required,
  * and cannot be ignored.
  *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- *
  * @see http://use-the-index-luke.com/no-offset
  */
 interface KeysetPaginable

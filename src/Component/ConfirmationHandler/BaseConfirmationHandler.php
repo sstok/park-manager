@@ -21,8 +21,6 @@ use Twig\Environment;
 
 /**
  * @internal
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 abstract class BaseConfirmationHandler
 {

@@ -17,8 +17,6 @@ namespace ParkManager\Component\ConfirmationHandler;
 /**
  * The ConfirmationHandler helps with safely handling the confirmation
  * of a specific action (mainly ensuring a CSRF token was used).
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class ConfirmationHandler extends BaseConfirmationHandler
 {

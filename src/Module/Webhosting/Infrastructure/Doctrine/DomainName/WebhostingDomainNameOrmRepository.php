@@ -25,9 +25,6 @@ use ParkManager\Module\Webhosting\Domain\DomainName\WebhostingDomainName;
 use ParkManager\Module\Webhosting\Domain\DomainName\WebhostingDomainNameId;
 use ParkManager\Module\Webhosting\Domain\DomainName\WebhostingDomainNameRepository;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class WebhostingDomainNameOrmRepository extends EntityRepository implements WebhostingDomainNameRepository
 {
     public function __construct(EntityManagerInterface $entityManager, string $className = WebhostingDomainName::class)

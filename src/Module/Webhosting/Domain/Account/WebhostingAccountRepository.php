@@ -17,9 +17,6 @@ namespace ParkManager\Module\Webhosting\Domain\Account;
 use ParkManager\Module\Webhosting\Domain\Account\Exception\CannotRemoveActiveWebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Account\Exception\WebhostingAccountNotFound;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 interface WebhostingAccountRepository
 {
     /**

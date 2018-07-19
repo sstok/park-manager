@@ -27,9 +27,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class ConfirmPasswordResetFormHandler implements HandlerTypeInterface
 {
     private $requestStack;

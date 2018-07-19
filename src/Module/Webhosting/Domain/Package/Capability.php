@@ -25,8 +25,6 @@ namespace ParkManager\Module\Webhosting\Domain\Package;
  * and unware of the package it's used in.
  *
  * A Capability is immutable and sharable.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 interface Capability
 {

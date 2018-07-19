@@ -24,8 +24,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * To ensure password-encoders work properly this class needs
  * to be extended for each each "user type".
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 abstract class SecurityUser implements UserInterface, EquatableInterface, \Serializable
 {

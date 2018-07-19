@@ -21,9 +21,6 @@ use ParkManager\Core\Infrastructure\DependencyInjection\DependencyExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class ParkManagerCore extends AbstractParkManagerModule
 {
     public function getContainerExtension(): DependencyExtension

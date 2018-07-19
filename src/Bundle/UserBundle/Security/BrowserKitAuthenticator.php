@@ -28,8 +28,6 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 /**
  * The BrowserKitAuthenticator is only to be used during BrowserKit tests.
- *
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
  */
 final class BrowserKitAuthenticator extends AbstractGuardAuthenticator
 {

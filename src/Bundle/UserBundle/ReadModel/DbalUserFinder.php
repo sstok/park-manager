@@ -21,9 +21,6 @@ use ParkManager\Component\User\Model\UserId;
 use ParkManager\Component\User\ReadModel\User;
 use ParkManager\Component\User\ReadModel\UserFinder;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class DbalUserFinder implements UserFinder
 {
     protected $connection;

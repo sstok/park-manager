@@ -21,9 +21,6 @@ use ParkManager\Component\User\Security\SecurityUser;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class UpdateAuthTokenWhenPasswordWasChanged implements EventSubscriber
 {
     private $userProvider;

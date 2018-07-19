@@ -23,9 +23,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 class ConfirmPasswordResetType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

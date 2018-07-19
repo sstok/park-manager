@@ -17,9 +17,6 @@ namespace ParkManager\Component\User\Model\Event;
 use ParkManager\Component\SharedKernel\Event\DomainEvent;
 use ParkManager\Component\User\Model\UserId;
 
-/**
- * @author Sebastiaan Stok <s.stok@rollerworks.net>
- */
 final class UserPasswordWasChanged extends DomainEvent
 {
     private $id;
