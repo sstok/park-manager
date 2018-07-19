@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use League\Tactician\Plugins\LockingMiddleware;
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MessageBusConfigurator;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\MessageBusConfigurator;
 use ParkManager\Module\Webhosting\Infrastructure\ServiceBus\Middleware\AccountCapabilitiesRestrictionGuardMiddleware;
 
 return function (ContainerConfigurator $c) {

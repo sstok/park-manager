@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\DependencyInjection\MiddlewareConfigurator;
 
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MessageBusConfigurator;
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\Middleware\PolicyGuardMiddlewareConfigurator;
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MiddlewaresConfigurator;
-use ParkManager\Bridge\ServiceBus\Test\DependencyInjection\MiddlewareConfiguratorTestCase;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\MessageBusConfigurator;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\Middleware\PolicyGuardMiddlewareConfigurator;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\MiddlewaresConfigurator;
+use ParkManager\Bundle\ServiceBusBundle\Test\DependencyInjection\MiddlewareConfiguratorTestCase;
 use ParkManager\Bundle\ServiceBusPolicyGuardBundle\ExpressionLanguage\ExpressionLanguage;
 use ParkManager\Bundle\ServiceBusPolicyGuardBundle\Guard\PolicyGuard;
 use Symfony\Component\DependencyInjection\ExpressionLanguageProvider;

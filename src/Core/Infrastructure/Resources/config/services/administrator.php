@@ -18,8 +18,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Hostnet\Component\FormHandler\HandlerFactory;
 use Hostnet\Component\FormHandler\HandlerFactoryInterface;
 use League\Tactician\Plugins\LockingMiddleware;
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MessageBusConfigurator;
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\QueryBusConfigurator;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\MessageBusConfigurator;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\QueryBusConfigurator;
 use ParkManager\Bundle\UserBundle\Action\{
     ChangePasswordAction,
     ConfirmPasswordResetAction,

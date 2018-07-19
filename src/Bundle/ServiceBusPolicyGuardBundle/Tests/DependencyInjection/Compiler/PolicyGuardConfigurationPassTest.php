@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\DependencyInjection\Compiler;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MessageBusConfigurator;
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\Middleware\PolicyGuardMiddlewareConfigurator;
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MiddlewaresConfigurator;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\MessageBusConfigurator;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\Middleware\PolicyGuardMiddlewareConfigurator;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\MiddlewaresConfigurator;
 use ParkManager\Bundle\ServiceBusPolicyGuardBundle\DependencyInjection\Compiler\PolicyGuardConfigurationPass;
 use ParkManager\Bundle\ServiceBusPolicyGuardBundle\ExpressionLanguage\ExpressionLanguage;
 use ParkManager\Bundle\ServiceBusPolicyGuardBundle\Guard\PolicyGuard;

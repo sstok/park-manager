@@ -33,7 +33,7 @@
     "autoload": {
         "psr-4": {
             "ParkManager\\Bundle\\ServiceBusPolicyGuardBundle\\": "",
-            "ParkManager\\Bridge\\ServiceBus\\DependencyInjection\\Configurator\\Middleware\\": [
+            "ParkManager\\Bundle\\ServiceBusBundle\\DependencyInjection\\Configurator\\Middleware\\": [
                 "DependencyInjection/MiddlewareConfigurator"
             ]
         },

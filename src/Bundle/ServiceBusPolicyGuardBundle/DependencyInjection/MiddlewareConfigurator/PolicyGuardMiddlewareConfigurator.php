@@ -12,10 +12,10 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\Middleware;
+namespace ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\Middleware;
 
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\AdvancedMiddlewareConfigurator;
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Configurator\MiddlewaresConfigurator;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\AdvancedMiddlewareConfigurator;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\MiddlewaresConfigurator;
 use ParkManager\Bundle\ServiceBusPolicyGuardBundle\DependencyInjection\PolicyConfigHolder;
 use ParkManager\Bundle\ServiceBusPolicyGuardBundle\ExpressionLanguage\ExpressionLanguage;
 use ParkManager\Bundle\ServiceBusPolicyGuardBundle\Guard\PolicyGuard;

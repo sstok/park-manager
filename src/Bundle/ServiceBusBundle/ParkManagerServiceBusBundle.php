@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\ServiceBusBundle;
 
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler\DomainEventsEmitterPass;
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler\MessageBusPass;
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler\MessageGuardPass;
-use ParkManager\Bridge\ServiceBus\DependencyInjection\Compiler\TracingDomainEventsEmitterPass;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Compiler\DomainEventsEmitterPass;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Compiler\MessageBusPass;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Compiler\MessageGuardPass;
+use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Compiler\TracingDomainEventsEmitterPass;
 use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\DependencyExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
