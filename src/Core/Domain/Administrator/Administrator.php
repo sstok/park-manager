@@ -21,7 +21,7 @@ use ParkManager\Core\Domain\Administrator\Event\AdministratorWasRegistered;
 /**
  * @final
  *
- * @method id(): AdministratorId
+ * @method AdministratorId id()
  */
 class Administrator extends User
 {

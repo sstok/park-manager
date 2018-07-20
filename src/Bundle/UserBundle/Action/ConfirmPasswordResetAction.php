@@ -18,6 +18,7 @@ use Hostnet\Component\FormHandler\HandlerFactoryInterface;
 use ParkManager\Bundle\UserBundle\Form\Handler\ConfirmPasswordResetFormHandler;
 use ParkManager\Component\ApplicationFoundation\Query\QueryBus;
 use ParkManager\Component\Security\Token\SplitToken;
+use ParkManager\Component\Security\Token\SplitTokenFactory;
 use ParkManager\Component\User\Model\Query\GetUserByPasswordResetToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,18 +32,24 @@ final class ConfirmPasswordResetAction
     private $handlerFactory;
     private $template;
 
-    public function __construct(QueryBus $queryBus, Environment $twig, HandlerFactoryInterface $handlerFactory, string $template)
+    /**
+     * @var SplitTokenFactory
+     */
+    private $tokenFactory;
+
+    public function __construct(QueryBus $queryBus, Environment $twig, HandlerFactoryInterface $handlerFactory, SplitTokenFactory $tokenFactory, string $template)
     {
         $this->queryBus = $queryBus;
         $this->twig = $twig;
         $this->handlerFactory = $handlerFactory;
+        $this->tokenFactory = $tokenFactory;
         $this->template = $template;
     }
 
     public function __invoke(Request $request, string $token): Response
     {
         try {
-            $splitToken = SplitToken::fromString($token);
+            $splitToken = $this->tokenFactory->fromString($token);
         } catch (\Exception $e) {
             return $this->newErrorResponse('password_reset.error.invalid_token');
         }

@@ -30,7 +30,7 @@ trait UuidTrait
     protected function __construct(UuidInterface $value)
     {
         $this->value = $value;
-        $this->stringValue = (string) $value;
+        $this->stringValue = $value->toString();
     }
 
     public static function create()
@@ -70,7 +70,7 @@ trait UuidTrait
     public function unserialize($serialized): void
     {
         $this->value = Uuid::fromString($serialized);
-        $this->stringValue = (string) $this->value;
+        $this->stringValue = $this->value->toString();
     }
 
     public function jsonSerialize(): string

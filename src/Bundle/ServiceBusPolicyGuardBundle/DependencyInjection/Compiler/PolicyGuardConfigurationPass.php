@@ -99,7 +99,7 @@ final class PolicyGuardConfigurationPass implements CompilerPassInterface
         $groups = [];
 
         foreach ($policiesPerPrefix as $prefix => $patterns) {
-            $prefixRegexp = preg_quote($prefix, '').'(?';
+            $prefixRegexp = preg_quote((string) $prefix, '').'(?';
             foreach ($patterns as $idx => $pattern) {
                 $prefixRegexp .= '|'.$pattern.'(*:'.$idx.')';
             }

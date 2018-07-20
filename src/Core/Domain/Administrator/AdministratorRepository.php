@@ -18,9 +18,9 @@ use ParkManager\Component\User\Model\UserCollection;
 use ParkManager\Component\User\Model\UserId;
 
 /**
- * @method get(UserId $id): Administrator
- * @method findByEmailAddress(string $email): Administrator
- * @method findByEmailAddressChangeToken(string $selector): Administrator
+ * @method Administrator get(UserId $id)
+ * @method Administrator|null findByEmailAddress(string $email)
+ * @method Administrator|null findByEmailAddressChangeToken(string $selector)
  */
 interface AdministratorRepository extends UserCollection
 {
