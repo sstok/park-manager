@@ -18,7 +18,7 @@ use ParkManager\Component\User\Model\UserCollection;
 use ParkManager\Component\User\Model\UserId;
 
 /**
- * @method Administrator get(UserId $id)
+ * @method Administrator      get(UserId $id)
  * @method Administrator|null findByEmailAddress(string $email)
  * @method Administrator|null findByEmailAddressChangeToken(string $selector)
  */
