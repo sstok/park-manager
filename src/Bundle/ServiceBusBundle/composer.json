@@ -16,8 +16,10 @@
     ],
     "require": {
         "php": "^7.2",
-        "park-manager/service-bus-bridge": "^0.3",
-        "symfony/framework-bundle": "^4.0"
+        "park-manager/service-bus": "^0.3",
+        "symfony/dependency-injection": "^4.0",
+        "symfony/framework-bundle": "^4.0",
+        "league/tactician-container": "^2.0.0"
     },
     "config": {
         "preferred-install": {

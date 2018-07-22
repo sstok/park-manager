@@ -16,9 +16,10 @@
     ],
     "require": {
         "php": "^7.2",
-        "league/tactician": "^1.0",
+        "park-manager/application-foundation": "^0.3",
         "psr/container": "^1.0",
-        "psr/log": "^1.0"
+        "psr/log": "^1.0",
+        "league/tactician": "^1.0"
     },
     "require-dev": {
         "symfony/debug": "^4.0.4"
