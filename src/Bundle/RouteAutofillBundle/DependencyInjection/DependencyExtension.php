@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\RouteAutofillBundle\DependencyInjection;
 
+use ParkManager\Bundle\RouteAutofillBundle\AutoFilledUrlGenerator;
 use ParkManager\Bundle\RouteAutofillBundle\CacheWarmer\RouteRedirectMappingWarmer;
 use ParkManager\Bundle\RouteAutofillBundle\EventListener\RouteRedirectResponseListener;
 use ParkManager\Bundle\RouteAutofillBundle\MappingFileLoader;
@@ -32,11 +33,16 @@ final class DependencyExtension extends Extension
             ->addArgument(new Reference('router.default'))
             ->addTag('kernel.cache_warmer');
 
-        $container->register(RouteRedirectResponseListener::class)
+        $container->register(AutoFilledUrlGenerator::class)
+            ->setAutowired(true)
             ->setArgument(
-                1,
+                '$autoFillMapping',
                 (new Definition(MappingFileLoader::class))->setArguments(['%kernel.cache_dir%/route_autofill_mapping.php'])
             );
+
+        $container->register(RouteRedirectResponseListener::class)
+            ->addTag('kernel.event_subscriber')
+            ->addArgument(new Reference(AutoFilledUrlGenerator::class));
     }
 
     public function getAlias(): string
