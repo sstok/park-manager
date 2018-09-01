@@ -12,7 +12,9 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\SharedKernel\Event;
+namespace ParkManager\Component\DomainEvent;
+
+use ParkManager\Component\DomainEvent\DomainEvent;
 
 interface EventEmitter
 {

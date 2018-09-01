@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\ServiceBusBundle\Tests\DependencyInjection\Fixture\EventListener;
 
-use ParkManager\Component\SharedKernel\Event\EventSubscriber;
+use ParkManager\Component\DomainEvent\EventSubscriber;
 
 final class RegisterAdminSubscriber implements EventSubscriber
 {

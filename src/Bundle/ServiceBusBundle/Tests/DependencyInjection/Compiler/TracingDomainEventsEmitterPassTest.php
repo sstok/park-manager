@@ -18,7 +18,7 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase
 use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Compiler\DomainEventsEmitterPass;
 use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Compiler\TracingDomainEventsEmitterPass;
 use ParkManager\Bundle\ServiceBusBundle\Tests\DependencyInjection\Fixture\EventListener\RegisterUserListener;
-use ParkManager\Component\SharedKernel\Event\SymfonyEventEmitter;
+use ParkManager\Component\DomainEvent\Adapter\SymfonyEventEmitter;
 use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -20,7 +20,7 @@ use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\Middlew
 use ParkManager\Bundle\ServiceBusBundle\Test\DependencyInjection\MiddlewareConfiguratorTestCase;
 use ParkManager\Bundle\ServiceBusBundle\Tests\DependencyInjection\Fixture\EventListener\RegisterAdminSubscriber;
 use ParkManager\Bundle\ServiceBusBundle\Tests\DependencyInjection\Fixture\EventListener\RegisterUserListener;
-use ParkManager\Component\SharedKernel\Event\SymfonyEventEmitter;
+use ParkManager\Component\DomainEvent\Adapter\SymfonyEventEmitter;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\Configurator\DefaultsConfigurator;
 use Symfony\Component\EventDispatcher\EventDispatcher;

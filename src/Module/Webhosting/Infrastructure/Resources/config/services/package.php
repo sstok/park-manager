@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Component\SharedKernel\Event\EventEmitter;
+use ParkManager\Component\DomainEvent\EventEmitter;
 use ParkManager\Module\Webhosting\Domain\Package\WebhostingPackageRepository;
 use ParkManager\Module\Webhosting\Infrastructure\Doctrine\Package\WebhostingPackageOrmRepository;
 use ParkManager\Module\Webhosting\Infrastructure\Service\Package\{

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Domain\Package\Event;
 
-use ParkManager\Component\SharedKernel\Event\DomainEvent;
+use ParkManager\Component\DomainEvent\DomainEvent;
 use ParkManager\Module\Webhosting\Domain\Package\Capabilities;
 use ParkManager\Module\Webhosting\Domain\Package\WebhostingPackageId;
 
