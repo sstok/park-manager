@@ -63,7 +63,7 @@ final class TwigResponseListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::RESPONSE => ['onKernelResponse', -1024],
+            KernelEvents::RESPONSE => ['onKernelResponse', -90], // Before ProfilerListener
         ];
     }
 }
