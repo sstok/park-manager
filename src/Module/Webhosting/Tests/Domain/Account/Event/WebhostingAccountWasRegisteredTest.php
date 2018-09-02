@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Domain\Account\Event;
 
-use ParkManager\Component\SharedKernel\RootEntityOwner;
+use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
 use ParkManager\Module\Webhosting\Domain\Account\Event\WebhostingAccountWasRegistered;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 use PHPUnit\Framework\TestCase;
@@ -32,7 +32,7 @@ final class WebhostingAccountWasRegisteredTest extends TestCase
     {
         $event = new WebhostingAccountWasRegistered(
             $id = WebhostingAccountId::fromString(self::ACCOUNT_ID),
-            $owner = RootEntityOwner::fromString(self::OWNER_ID)
+            $owner = OwnerId::fromString(self::OWNER_ID)
         );
 
         self::assertTrue($id->equals($event->id()));

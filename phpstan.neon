@@ -25,12 +25,12 @@ parameters:
         - '#__construct\(\) does not call parent constructor from .+#' # Perfectly valid reason.
 
         # Symfony
-        - '#Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:isEnabled\(\)#' # Guarded by isEqualTo() and tests
-        - '#Method ParkManager\\Bundle\\UserBundle\\Security\\[^:]+\:\:getUser\(\) should return ParkManager\\Component\\User\\Security\\SecurityUser\|null but returns Symfony\\Component\\Security\\Core\\User\\UserInterface#' # Authenticator
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:#' # XXX Needs Custom ReflectionProvider
 
         ## False positive
+        - '#Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:isEnabled\(\)#'
         - '#Property Doctrine\\ORM\\EntityRepository\:\:\$_em \(Doctrine\\ORM\\EntityManager\) does not accept Doctrine\\ORM\\EntityManagerInterface#' # Doctrine PHPDoc bug
+        - '#Property Doctrine\\ORM\\EntityRepository\:\:\$_class \(Doctrine\\ORM\\Mapping\\ClassMetadata\) does not accept Doctrine\\Common\\Persistence\\Mapping\\ClassMetadata#'
         - '#Result of \&\& is always false#'
 
         - '#Call to an undefined method Exception\:\:getMessageName\(\)#'

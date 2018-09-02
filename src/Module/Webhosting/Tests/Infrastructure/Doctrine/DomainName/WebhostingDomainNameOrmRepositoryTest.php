@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Tests\Infrastructure\Doctrine\DomainName;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Bridge\Doctrine\Test\EntityRepositoryTestCase;
-use ParkManager\Component\SharedKernel\RootEntityOwner;
+use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
+use ParkManager\Module\CoreModule\Test\Infrastructure\Doctrine\EntityRepositoryTestCase;
 use ParkManager\Module\Webhosting\Domain\Account\Exception\WebhostingAccountNotFound;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
@@ -76,13 +76,13 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
 
         $this->account1 = WebhostingAccount::registerWithCustomCapabilities(
             WebhostingAccountId::fromString(self::ACCOUNT_ID1),
-            RootEntityOwner::fromString(self::OWNER_ID1),
+            OwnerId::fromString(self::OWNER_ID1),
             new Capabilities()
         );
 
         $this->account2 = WebhostingAccount::registerWithCustomCapabilities(
             WebhostingAccountId::fromString(self::ACCOUNT_ID2),
-            RootEntityOwner::fromString(self::OWNER_ID1),
+            OwnerId::fromString(self::OWNER_ID1),
             new Capabilities()
         );
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Domain\Account\Event;
 
-use ParkManager\Component\SharedKernel\RootEntityOwner;
+use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
 use ParkManager\Module\Webhosting\Domain\Account\Event\WebhostingAccountOwnerWasSwitched;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 use PHPUnit\Framework\TestCase;
@@ -29,8 +29,8 @@ final class WebhostingAccountOwnerWasSwitchedTest extends TestCase
     {
         $event = new WebhostingAccountOwnerWasSwitched(
             $id = WebhostingAccountId::fromString('b288e23c-97c5-11e7-b51a-acbc32b58315'),
-            $oldOwner = RootEntityOwner::fromString('2a9cd25c-97ca-11e7-9683-acbc32b58315'),
-            $newOwner = RootEntityOwner::fromString('ce18c388-9ba2-11e7-b15f-acbc32b58315')
+            $oldOwner = OwnerId::fromString('2a9cd25c-97ca-11e7-9683-acbc32b58315'),
+            $newOwner = OwnerId::fromString('ce18c388-9ba2-11e7-b15f-acbc32b58315')
         );
 
         self::assertTrue($id->equals($event->id()));

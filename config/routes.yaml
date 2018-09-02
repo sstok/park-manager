@@ -7,22 +7,11 @@
 # Avoid registering routes here directly but instead use the RouteAutowiringBundle
 # and/or Symfony Flex to ensure bundle removal doesn't break the application.
 
-_admin:
-    resource: 'admin:rollerworks_autowiring#park_manager.admin_section.root'
-    type: app_section
+# XXX Use a custom route loader `park_manager.sections_loader; automatically loads admin,api,client (in order)
+# with the correct configuration (prefix, host (admin and API (catch all) only), schemas (https))
+#
+# Move to config/routes/park_manager.yaml
 
-_client:
-    resource: 'client:rollerworks_autowiring#park_manager.client_section.root'
-    type: app_section
-
-home:
-    path: /
-    controller: ParkManager\Core\Infrastructure\Web\Action\HomepageAction
-
-admin_home:
-    path: /admin/
-    controller: ParkManager\Core\Infrastructure\Web\Action\HomepageAction
-
-admin_login:
-    path: /admin/login
-    defaults: { _controller: 'park_manager.web_action.security.login.administrator' }
+_park_manager:
+    type: park_manager_sections_loader
+    resource: .

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Domain\Package;
 
-use ParkManager\Component\SharedKernel\Test\Event\EventsRecordingEntityAssertionTrait;
+use ParkManager\Module\CoreModule\Test\Domain\EventsRecordingEntityAssertionTrait;
 use ParkManager\Module\Webhosting\Domain\Package\Capabilities;
 use ParkManager\Module\Webhosting\Domain\Package\Event\WebhostingPackageCapabilitiesWasChanged;
 use ParkManager\Module\Webhosting\Domain\Package\Event\WebhostingPackageWasCreated;

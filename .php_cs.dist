@@ -57,7 +57,7 @@ return PhpCsFixer\Config::create()
             ->notPath('var/')
             //->notPath('config/')
             ->notPath('config/bundles.php')
-            //->notPath('%/src/Module/[^/]+/Infrastructure/Pomm/ParkManager/[^/]+/AutoStructure/%')
+            ->notPath('{Resources/config/routing/}')
             ->in([__DIR__.'/src', __DIR__.'/.dances', __DIR__.'/bin', __DIR__.'/public'])
     )
 ;

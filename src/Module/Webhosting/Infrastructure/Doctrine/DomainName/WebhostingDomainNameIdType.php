@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Infrastructure\Doctrine\DomainName;
 
-use ParkManager\Bridge\Doctrine\Type\DomainIdType;
+use ParkManager\Module\CoreModule\Infrastructure\Doctrine\DomainIdType;
 use ParkManager\Module\Webhosting\Domain\DomainName\WebhostingDomainNameId;
 
 final class WebhostingDomainNameIdType extends DomainIdType

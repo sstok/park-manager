@@ -50,8 +50,14 @@ trait DoctrineDbalTypesConfiguratorTrait
             $className = $namespace.str_replace('/', '\\', mb_substr($node->getRelativePathname(), 0, -4));
 
             if (class_exists($className) && is_subclass_of($className, DbalType::class)) {
+                $r = new \ReflectionClass($className);
+
+                if ($r->isAbstract() || $r->isInterface() || $r->isTrait()) {
+                    continue;
+                }
+
                 /** @var DbalType $type */
-                $type = (new \ReflectionClass($className))->newInstanceWithoutConstructor();
+                $type = $r->newInstanceWithoutConstructor();
                 $types[$type->getName()] = ['class' => $className, 'commented' => true];
             }
         }

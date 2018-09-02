@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Domain\Account\Event;
 
-use ParkManager\Component\SharedKernel\Event\DomainEvent;
-use ParkManager\Component\SharedKernel\RootEntityOwner;
+use ParkManager\Component\DomainEvent\DomainEvent;
+use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 
 final class WebhostingAccountOwnerWasSwitched extends DomainEvent
@@ -24,7 +24,7 @@ final class WebhostingAccountOwnerWasSwitched extends DomainEvent
     private $oldOwner;
     private $newOwner;
 
-    public function __construct(WebhostingAccountId $id, RootEntityOwner $oldOwner, RootEntityOwner $newOwner)
+    public function __construct(WebhostingAccountId $id, OwnerId $oldOwner, OwnerId $newOwner)
     {
         $this->newOwner = $newOwner;
         $this->oldOwner = $oldOwner;
@@ -36,12 +36,12 @@ final class WebhostingAccountOwnerWasSwitched extends DomainEvent
         return $this->id;
     }
 
-    public function oldOwner(): RootEntityOwner
+    public function oldOwner(): OwnerId
     {
         return $this->oldOwner;
     }
 
-    public function newOwner(): RootEntityOwner
+    public function newOwner(): OwnerId
     {
         return $this->newOwner;
     }

@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\DomainEvent;
 
-use ParkManager\Component\DomainEvent\DomainEvent;
-
 interface EventEmitter
 {
     /**

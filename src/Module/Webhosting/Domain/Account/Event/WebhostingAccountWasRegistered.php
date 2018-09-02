@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Domain\Account\Event;
 
-use ParkManager\Component\SharedKernel\Event\DomainEvent;
-use ParkManager\Component\SharedKernel\RootEntityOwner;
+use ParkManager\Component\DomainEvent\DomainEvent;
+use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 
 final class WebhostingAccountWasRegistered extends DomainEvent
@@ -23,7 +23,7 @@ final class WebhostingAccountWasRegistered extends DomainEvent
     private $accountId;
     private $owner;
 
-    public function __construct(WebhostingAccountId $id, RootEntityOwner $owner)
+    public function __construct(WebhostingAccountId $id, OwnerId $owner)
     {
         $this->accountId = $id;
         $this->owner = $owner;
@@ -34,7 +34,7 @@ final class WebhostingAccountWasRegistered extends DomainEvent
         return $this->accountId;
     }
 
-    public function owner(): RootEntityOwner
+    public function owner(): OwnerId
     {
         return $this->owner;
     }

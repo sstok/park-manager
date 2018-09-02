@@ -17,9 +17,6 @@ namespace ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator;
 use ParkManager\Component\ServiceBus\TacticianCommandBus;
 use Symfony\Component\DependencyInjection\Loader\Configurator\DefaultsConfigurator;
 
-/**
- * @final
- */
 class MessageBusConfigurator
 {
     // Priorities the higher the sooner.

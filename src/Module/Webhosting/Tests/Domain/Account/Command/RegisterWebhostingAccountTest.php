@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Domain\Account\Command;
 
-use ParkManager\Component\SharedKernel\RootEntityOwner;
+use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
 use ParkManager\Module\Webhosting\Application\Account\RegisterWebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Domain\DomainName;
@@ -43,7 +43,7 @@ final class RegisterWebhostingAccountTest extends TestCase
         );
 
         self::assertEquals(WebhostingAccountId::fromString(self::ACCOUNT_ID), $command->id());
-        self::assertEquals(RootEntityOwner::fromString(self::OWNER_ID), $command->owner());
+        self::assertEquals(OwnerId::fromString(self::OWNER_ID), $command->owner());
         self::assertEquals(WebhostingPackageId::fromString(self::PACKAGE_ID), $command->package());
         self::assertEquals($domainName, $command->domainName());
         self::assertNull($command->customCapabilities());
@@ -60,7 +60,7 @@ final class RegisterWebhostingAccountTest extends TestCase
         );
 
         self::assertEquals(WebhostingAccountId::fromString(self::ACCOUNT_ID), $command->id());
-        self::assertEquals(RootEntityOwner::fromString(self::OWNER_ID), $command->owner());
+        self::assertEquals(OwnerId::fromString(self::OWNER_ID), $command->owner());
         self::assertEquals($capabilities, $command->customCapabilities());
         self::assertEquals($domainName, $command->domainName());
         self::assertNull($command->package());

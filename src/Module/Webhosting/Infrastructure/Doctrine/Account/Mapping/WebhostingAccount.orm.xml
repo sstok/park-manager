@@ -10,7 +10,7 @@
             <generator strategy="NONE" />
         </id>
 
-        <field name="owner" column="owner_id" type="park_manager_root_entity_owner" nullable="false" />
+        <field name="owner" column="owner_id" type="park_manager_owner_id" nullable="false" />
         <field name="capabilities" type="webhosting_capabilities" nullable="false" />
         <field name="markedForRemoval" column="marked_for_removal" type="boolean" nullable="true" />
         <field name="expirationDate" column="expires_on" type="datetime_immutable" nullable="true" />

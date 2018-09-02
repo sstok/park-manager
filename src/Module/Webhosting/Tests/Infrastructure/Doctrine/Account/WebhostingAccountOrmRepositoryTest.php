@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Tests\Infrastructure\Doctrine\Account;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Bridge\Doctrine\Test\EntityRepositoryTestCase;
-use ParkManager\Component\SharedKernel\RootEntityOwner;
-use ParkManager\Component\SharedKernel\Test\Event\EventSourcedRepositoryTestHelper;
+use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
+use ParkManager\Module\CoreModule\Test\Domain\EventSourcedRepositoryTestHelper;
+use ParkManager\Module\CoreModule\Test\Infrastructure\Doctrine\EntityRepositoryTestCase;
 use ParkManager\Module\Webhosting\Domain\Account\Exception\CannotRemoveActiveWebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Account\Exception\WebhostingAccountNotFound;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
@@ -81,12 +81,12 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         $account2 = $repository->get($id2);
 
         self::assertEquals($id, $account->id());
-        self::assertEquals(RootEntityOwner::fromString(self::OWNER_ID1), $account->owner());
+        self::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account->owner());
         self::assertEquals(new Capabilities(), $account->capabilities());
         self::assertNull($account->package());
 
         self::assertEquals($id2, $account2->id());
-        self::assertEquals(RootEntityOwner::fromString(self::OWNER_ID1), $account2->owner());
+        self::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account2->owner());
         self::assertEquals($this->packageCapabilities, $account2->capabilities());
         self::assertEquals($this->package, $account2->package());
     }
@@ -143,7 +143,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         $repository->save(
             WebhostingAccount::registerWithCustomCapabilities(
                 WebhostingAccountId::fromString(self::ACCOUNT_ID1),
-                RootEntityOwner::fromString(self::OWNER_ID1),
+                OwnerId::fromString(self::OWNER_ID1),
                 new Capabilities()
             )
         );
@@ -155,7 +155,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         $repository->save(
             WebhostingAccount::register(
                 WebhostingAccountId::fromString(self::ACCOUNT_ID2),
-                RootEntityOwner::fromString(self::OWNER_ID1),
+                OwnerId::fromString(self::OWNER_ID1),
                 $this->package
             )
         );

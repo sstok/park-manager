@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace ParkManager\Module\Webhosting\Tests\Fixtures\Infrastructure\PackageCapability;
 
 use ParkManager\Component\ApplicationFoundation\Message\ServiceMessages;
-use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Application\Service\Package\PackageConfigurationApplier;
+use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccount;
 use ParkManager\Module\Webhosting\Domain\Package\Capability;
 
 final class MonthlyTrafficQuotaApplier implements PackageConfigurationApplier

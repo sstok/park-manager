@@ -22,11 +22,6 @@ use ParkManager\Module\Webhosting\Domain\DomainName\Exception\WebhostingDomainNa
 interface WebhostingDomainNameRepository
 {
     /**
-     * Returns the model class-name to use when constructing.
-     */
-    public function getModelClass(): string;
-
-    /**
      * @throws WebhostingDomainNameNotFound when no domain-name was found with the id
      */
     public function get(WebhostingDomainNameId $id): WebhostingDomainName;

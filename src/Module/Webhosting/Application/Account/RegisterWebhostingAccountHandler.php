@@ -40,7 +40,6 @@ final class RegisterWebhostingAccountHandler
     public function __invoke(RegisterWebhostingAccount $command): void
     {
         /** @var WebhostingAccount|string $className */
-        $className = $this->accountRepository->getModelClass();
         $domainName = $command->domainName();
 
         if (null !== $currentRegistration = $this->domainNameRepository->findByFullName($domainName)) {
@@ -48,24 +47,20 @@ final class RegisterWebhostingAccountHandler
         }
 
         if (null !== $packageId = $command->package()) {
-            /** @var WebhostingAccount $account */
-            $account = $className::register(
+            $account = WebhostingAccount::register(
                 $command->id(),
                 $command->owner(),
                 $this->packageRepository->get($packageId)
             );
         } else {
-            /** @var WebhostingAccount $account */
-            $account = $className::registerWithCustomCapabilities(
+            $account = WebhostingAccount::registerWithCustomCapabilities(
                 $command->id(),
                 $command->owner(),
                 $command->customCapabilities()
             );
         }
 
-        /** @var WebhostingDomainName|string $primaryDomainNameClass */
-        $primaryDomainNameClass = $this->domainNameRepository->getModelClass();
-        $primaryDomainName = $primaryDomainNameClass::registerPrimary($account, $domainName);
+        $primaryDomainName = WebhostingDomainName::registerPrimary($account, $domainName);
 
         $this->accountRepository->save($account);
         $this->domainNameRepository->save($primaryDomainName);

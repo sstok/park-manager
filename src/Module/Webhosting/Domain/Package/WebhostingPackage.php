@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Domain\Package;
 
-use ParkManager\Component\SharedKernel\Event\EventsRecordingEntity;
+use ParkManager\Module\CoreModule\Domain\EventsRecordingEntity;
 use ParkManager\Module\Webhosting\Domain\Package\Event\WebhostingPackageCapabilitiesWasChanged;
 use ParkManager\Module\Webhosting\Domain\Package\Event\WebhostingPackageWasCreated;
 

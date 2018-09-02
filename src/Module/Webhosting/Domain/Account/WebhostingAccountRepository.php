@@ -20,14 +20,7 @@ use ParkManager\Module\Webhosting\Domain\Account\Exception\WebhostingAccountNotF
 interface WebhostingAccountRepository
 {
     /**
-     * Returns the model class-name to use when constructing.
-     *
-     * @return string
-     */
-    public function getModelClass(): string;
-
-    /**
-     * Get User by id.
+     * Get Account by id.
      *
      * @throws WebhostingAccountNotFound when no account was found with the id
      */

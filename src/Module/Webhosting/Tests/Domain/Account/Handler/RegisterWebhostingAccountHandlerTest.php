@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Tests\Domain\Account\Handler;
 
-use ParkManager\Component\SharedKernel\RootEntityOwner;
+use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
 use ParkManager\Module\Webhosting\Application\Account\RegisterWebhostingAccount;
 use ParkManager\Module\Webhosting\Application\Account\RegisterWebhostingAccountHandler;
 use ParkManager\Module\Webhosting\Domain\Account\{
@@ -116,12 +116,11 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     private function createAccountRepositoryThatSaves(Capabilities $capabilities, ?WebhostingPackage $package = null, string $id = self::ACCOUNT_ID1, string $owner = self::OWNER_ID1): WebhostingAccountRepository
     {
         $accountRepositoryProphecy = $this->prophesize(WebhostingAccountRepository::class);
-        $accountRepositoryProphecy->getModelClass()->willReturn(WebhostingAccount::class);
         $accountRepositoryProphecy->save(
             Argument::that(
                 function (WebhostingAccount $account) use ($capabilities, $id, $owner, $package) {
                     self::assertEquals(WebhostingAccountId::fromString($id), $account->id());
-                    self::assertEquals(RootEntityOwner::fromString($owner), $account->owner());
+                    self::assertEquals(OwnerId::fromString($owner), $account->owner());
                     self::assertEquals($capabilities, $account->capabilities());
                     self::assertEquals($package, $account->package());
 
@@ -136,7 +135,6 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     private function createAccountRepositoryWithoutSave(): WebhostingAccountRepository
     {
         $accountRepositoryProphecy = $this->prophesize(WebhostingAccountRepository::class);
-        $accountRepositoryProphecy->getModelClass()->willReturn(WebhostingAccount::class);
         $accountRepositoryProphecy->save(Argument::any())->shouldNotBeCalled();
 
         return $accountRepositoryProphecy->reveal();
@@ -158,7 +156,6 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     private function createDomainNameRepositoryThatSaves(DomainName $expectedDomain, string $accountId): WebhostingDomainNameRepository
     {
         $domainNameRepositoryProphecy = $this->prophesize(WebhostingDomainNameRepository::class);
-        $domainNameRepositoryProphecy->getModelClass()->willReturn(WebhostingDomainName::class);
         $domainNameRepositoryProphecy->findByFullName($expectedDomain)->willReturn(null);
         $domainNameRepositoryProphecy->save(
             Argument::that(
@@ -189,7 +186,6 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
             ->willReturn($existingAccount);
 
         $domainNameRepositoryProphecy = $this->prophesize(WebhostingDomainNameRepository::class);
-        $domainNameRepositoryProphecy->getModelClass()->willReturn(WebhostingDomainName::class);
         $domainNameRepositoryProphecy->findByFullName($expectedDomain)->willReturn($existingDomain);
         $domainNameRepositoryProphecy->save(Argument::any())->shouldNotBeCalled();
 

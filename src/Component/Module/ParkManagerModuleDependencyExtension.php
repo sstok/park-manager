@@ -92,10 +92,22 @@ abstract class ParkManagerModuleDependencyExtension extends Extension implements
                 ],
             ]);
         }
+        if (is_dir($this->moduleDir.'/UI/Web/Resources/translations')) {
+            $container->prependExtensionConfig('framework', [
+                'translator' => [
+                    'paths' => [$this->moduleDir.'/UI/Web/Resources/translations'],
+                ],
+            ]);
+        }
 
         if (is_dir($resourcesDirectory.'/templates')) {
             $container->prependExtensionConfig('twig', [
                 'paths' => [$resourcesDirectory.'/templates' => $this->getModuleName()],
+            ]);
+        }
+        if (is_dir($this->moduleDir.'/UI/Web/Resources/templates')) {
+            $container->prependExtensionConfig('twig', [
+                'paths' => [$this->moduleDir.'/UI/Web/Resources/templates' => $this->getModuleName()],
             ]);
         }
 

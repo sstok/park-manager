@@ -16,7 +16,7 @@ namespace ParkManager\Module\Webhosting\Infrastructure\Doctrine\DomainName;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
-use ParkManager\Bridge\Doctrine\EntityRepository;
+use ParkManager\Module\CoreModule\Infrastructure\Doctrine\EntityRepository;
 use ParkManager\Module\Webhosting\Domain\Account\Exception\WebhostingAccountNotFound;
 use ParkManager\Module\Webhosting\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\Webhosting\Domain\DomainName;

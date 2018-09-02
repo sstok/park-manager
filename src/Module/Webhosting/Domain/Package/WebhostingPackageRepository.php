@@ -19,13 +19,6 @@ use ParkManager\Module\Webhosting\Domain\Package\Exception\WebhostingPackageNotF
 interface WebhostingPackageRepository
 {
     /**
-     * Returns the model class-name to use when constructing.
-     *
-     * @return string
-     */
-    public function getModelClass(): string;
-
-    /**
      * @throws WebhostingPackageNotFound when no package was found with the id
      */
     public function get(WebhostingPackageId $id): WebhostingPackage;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use Rollerworks\Component\AppSectioning\SectioningFactory;
+use ParkManager\Module\CoreModule\ParkManagerCoreModule;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -50,13 +50,9 @@ class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        $container->addResource(new FileResource($this->getProjectDir().'/config/bundles.php'));
+        ParkManagerCoreModule::setAppConfiguration($container);
 
-        (new SectioningFactory($container, 'park_manager.section'))
-            ->set('admin', $_ENV['APP_ADMIN_SECTION'] ?? '/admin')
-            ->set('client', $_ENV['APP_CLIENT_SECTION'] ?? '/')
-            ->set('api', $_ENV['APP_API_SECTION'] ?? '/api')
-            ->register();
+        $container->addResource(new FileResource($this->getProjectDir().'/config/bundles.php'));
 
         $confDir = $this->getProjectDir().'/config';
         $loader->load($confDir.'/{packages}/*'.self::CONFIG_EXTS, 'glob');

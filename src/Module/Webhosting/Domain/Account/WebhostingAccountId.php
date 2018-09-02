@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\Webhosting\Domain\Account;
 
-use ParkManager\Component\SharedKernel\UuidTrait;
+use ParkManager\Module\CoreModule\Domain\UuidTrait;
 
 /**
  * @codeCoverageIgnore

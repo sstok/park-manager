@@ -8,8 +8,13 @@ Park the Manager (Park-Manager) brings you the power to set-up your own Hosting 
 Whether you're an advanced sysadmin or just getting started with Linux.
 Park-Manager is your friend in hosting software!
 
-**WARNING! Park-Manager is still in active development, the current status is pre-alpha
-and not recommended for production usage.**
+<!-- Markdown does not support text alingment (shrug) -->
+<table style="border-style:none">
+  <tr>
+    <td style="border-style:none"><img src="https://user-images.githubusercontent.com/904790/44299876-c88e6180-a2fd-11e8-9c46-69a877058726.png"></td>
+    <td style="border-style:none"><strong>Park-Manager is still actively developed. The current status is pre-alpha and not ready for production usage.</strong></td>
+  </tr>
+</table>
 
 Requirements
 ------------
