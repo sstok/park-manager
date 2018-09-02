@@ -28,6 +28,7 @@ return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
         ->autowire()
         ->autoconfigure()
+        ->private()
         // Bindings
         ->bind(EventEmitter::class, ref('park_manager.command_bus.webhosting.domain_event_emitter'))
         ->bind(EntityManagerInterface::class, ref('doctrine.orm.entity_manager'));

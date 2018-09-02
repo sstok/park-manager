@@ -21,7 +21,8 @@ use ParkManager\Module\Webhosting\Infrastructure\ServiceBus\Middleware\AccountCa
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
         ->autowire()
-        ->autoconfigure();
+        ->autoconfigure()
+        ->private();
 
     MessageBusConfigurator::register($di, 'park_manager.command_bus.webhosting')
         ->middlewares()

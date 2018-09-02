@@ -22,6 +22,7 @@ return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
         ->autowire()
         ->autoconfigure()
+        ->private()
         // Bindings
         ->bind(EntityManagerInterface::class, ref('doctrine.orm.entity_manager'));
 
