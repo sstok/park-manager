@@ -35,6 +35,11 @@ final class ComposerGenerator extends BaseComposerGenerator
 
     protected function getRequires(): array
     {
-        return ['symfony/framework-bundle' => '^4.0'];
+        return ['symfony/framework-bundle' => '^4.1'];
+    }
+
+    protected function getLicense(): string
+    {
+        return 'MIT';
     }
 }

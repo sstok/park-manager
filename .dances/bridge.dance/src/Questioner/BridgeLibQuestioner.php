@@ -45,7 +45,6 @@ final class BridgeLibQuestioner implements Questioner
             return $value;
         }));
 
-        $questions->set('license', 'MPL-2.0');
         $questions->set('php_namespace', 'ParkManager\\Bridge\\'.StringUtil::camelize((string) $questions->get('bridge_name')));
     }
 }

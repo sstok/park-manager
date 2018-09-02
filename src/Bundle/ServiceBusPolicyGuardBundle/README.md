@@ -15,5 +15,5 @@ Resources
 License
 -------
 
-All contents of this package are subject to the terms of the [Mozilla Public License, v. 2.0](LICENSE).
-If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+All contents of this package are part of the [Park-Manager](https://www.park-manager.com) framework,
+and are released under the [MIT license](LICENSE).
