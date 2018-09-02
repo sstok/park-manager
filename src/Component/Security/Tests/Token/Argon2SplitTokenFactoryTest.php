@@ -14,20 +14,20 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Security\Tests\Token;
 
-use ParkManager\Component\Security\Token\SodiumSplitTokenFactory;
+use ParkManager\Component\Security\Token\Argon2SplitTokenFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class SodiumSplitTokenFactoryTest extends TestCase
+final class Argon2SplitTokenFactoryTest extends TestCase
 {
     /**
      * @test
      */
     public function it_generates_a_new_token_on_every_call()
     {
-        $factory = new SodiumSplitTokenFactory();
+        $factory = new Argon2SplitTokenFactory();
         $splitToken1 = $factory->generate();
         $splitToken2 = $factory->generate();
 
@@ -40,7 +40,7 @@ final class SodiumSplitTokenFactoryTest extends TestCase
      */
     public function it_creates_from_string()
     {
-        $factory = new SodiumSplitTokenFactory();
+        $factory = new Argon2SplitTokenFactory();
         $splitToken = $factory->generate();
         $fullToken = $splitToken->token()->getString();
         $splitTokenFromString = $factory->fromString($fullToken);

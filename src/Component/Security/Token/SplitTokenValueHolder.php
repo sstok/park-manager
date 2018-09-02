@@ -36,16 +36,25 @@ final class SplitTokenValueHolder
     private $expiresAt;
     private $metadata = [];
 
+    /**
+     * THIS MUST NOT BE STORED!
+     *
+     * @var SplitToken
+     */
+    private $token;
+
     public function __construct(
         string $selector,
         string $verifierHash,
         ?\DateTimeImmutable $expiresAt = null,
-        array $metadata = []
+        array $metadata = [],
+        ?SplitToken $token = null
     ) {
         $this->selector = $selector;
         $this->verifierHash = $verifierHash;
         $this->expiresAt = $expiresAt;
         $this->metadata = $metadata;
+        $this->token = $token;
     }
 
     public static function isEmpty(?self $valueHolder): bool
@@ -89,5 +98,10 @@ final class SplitTokenValueHolder
     public function expiresAt(): ?\DateTimeImmutable
     {
         return $this->expiresAt;
+    }
+
+    public function getToken(): ?SplitToken
+    {
+        return $this->token;
     }
 }

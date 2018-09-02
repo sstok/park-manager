@@ -17,8 +17,7 @@ namespace ParkManager\Component\Security\Token;
 use ParagonIE\Halite\HiddenString;
 
 /**
- * The FakeSplitTokenFactory always uses the same non-random value
- * for the SplitToken to speed-up tests.
+ * Always uses the same non-random value for the SplitToken to speed-up tests.
  *
  * !! THIS IMPLEMENTATION IS NOT SECURE, USE ONLY FOR TESTING !!
  */
@@ -28,9 +27,14 @@ final class FakeSplitTokenFactory implements SplitTokenFactory
 
     private $randomValue;
 
-    public static function instance(?string $randomValue = null)
+    public static function instance(?string $randomValue = null): self
     {
         return new self($randomValue);
+    }
+
+    public static function randomInstance(): self
+    {
+        return new self(random_bytes(FakeSplitToken::TOKEN_DATA_LENGTH));
     }
 
     public function __construct(?string $randomValue = null)
@@ -38,31 +42,13 @@ final class FakeSplitTokenFactory implements SplitTokenFactory
         $this->randomValue = $randomValue ?? hex2bin('d7351e5d4bebe0b2b298034107f6cb12a88fe463ebf8f85afce47a38e9d5d68f15cbfad6843a3128d22d');
     }
 
-    public function generate(?string $id = null, ?\DateTimeImmutable $expirationTimestamp = null): SplitToken
+    public function generate(?string $id = null): SplitToken
     {
-        return SplitToken::create(
-            new HiddenString($this->randomValue, false, true),
-            [$this, 'hasher'],
-            [$this, 'validator'],
-            $id,
-            $expirationTimestamp
-        );
+        return FakeSplitToken::create(new HiddenString($this->randomValue, false, true), $id);
     }
 
     public function fromString(string $token): SplitToken
     {
-        return SplitToken::fromString($token, [$this, 'hasher'], [$this, 'validator']);
-    }
-
-    /** @internal */
-    public function hasher(string $input)
-    {
-        return $input;
-    }
-
-    /** @internal */
-    public function validator(string $input1, string $input2)
-    {
-        return $input1 === $input2;
+        return FakeSplitToken::fromString($token);
     }
 }

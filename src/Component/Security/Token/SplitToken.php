@@ -42,7 +42,7 @@ use ParagonIE\Halite\HiddenString;
  * The 'full token' is to be shared with the receiver only!
  *
  * THE TOKEN HOLDS THE ORIGINAL "VERIFIER", DO NOT STORE THE TOKEN
- * IN A DIRECTLY UNLESS A PROPER FORM OF ENCRYPTION IS USED!
+ * IN A STORAGE DIRECTLY, UNLESS A PROPER FORM OF ENCRYPTION IS USED!
  *
  * Example (for illustration):
  *
@@ -83,14 +83,14 @@ use ParagonIE\Halite\HiddenString;
  *
  * Note: Invoking toValueHolder() doesn't work for a reconstructed SplitToken object.
  */
-final class SplitToken
+abstract class SplitToken
 {
-    private const SELECTOR_BYTES = 24;
-    private const VERIFIER_BYTES = 18;
-
+    public const SELECTOR_BYTES = 24;
+    public const VERIFIER_BYTES = 18;
     public const TOKEN_DATA_LENGTH = (self::VERIFIER_BYTES + self::SELECTOR_BYTES);
     public const TOKEN_CHAR_LENGTH = (self::SELECTOR_BYTES * 4 / 3) + (self::VERIFIER_BYTES * 4 / 3);
 
+    protected $config = [];
     private $selector;
     private $verifier;
     private $verifierHash;
@@ -98,68 +98,50 @@ final class SplitToken
     private $expiresAt;
 
     /**
-     * @var callable
-     */
-    private $verifierHasher;
-
-    /**
-     * @var callable
-     */
-    private $verifierValidator;
-
-    /**
-     * Wipe it from memory after it's been used.
-     */
-    public function __destruct()
-    {
-        \sodium_memzero($this->verifier);
-
-        if (null !== $this->verifierHash) {
-            \sodium_memzero($this->verifierHash);
-        }
-    }
-
-    /**
      * Creates a new SplitToken object based of the $token.
      *
      * The $randomBytes argument must provide a crypto-random string (wrapped in
-     * a HiddenString object) of exactly {@see SplitToken::TOKEN_DATA_LENGTH} bytes.
+     * a HiddenString object) of exactly {@see static::getLength()} bytes.
      *
-     * @param HiddenString            $randomBytes
-     * @param callable                $verifierHasher    Callable to produce a hash of the verifier
-     *                                                   string
-     * @param callable                $verifierValidator Callable to validate the hash against
-     *                                                   a user provided verifier value
-     * @param null|string             $id                Optional id to bind the token a specific entity
-     *                                                   (highly recommended)
-     * @param \DateTimeImmutable|null $expiresAt
+     * @param HiddenString $randomBytes
+     * @param null|string  $id          Optional id to bind the token a specific entity
+     *                                  (highly recommended)
+     * @param array        $config      Configuration for the hasher method (implementation specific)
      *
-     * @return SplitToken
+     * @return static
      */
-    public static function create(
-        HiddenString $randomBytes,
-        callable $verifierHasher,
-        callable $verifierValidator,
-        ?string $id = null,
-        ?\DateTimeImmutable $expiresAt = null
-    ): self {
+    public static function create(HiddenString $randomBytes, ?string $id = null, array $config = []): self
+    {
         $bytesString = $randomBytes->getString();
 
-        if (($i = Binary::safeStrlen($bytesString)) < self::TOKEN_DATA_LENGTH) {
+        if (Binary::safeStrlen($bytesString) < self::TOKEN_DATA_LENGTH) {
             // Don't zero memory as the value is invalid.
-            throw new \RuntimeException(sprintf('Invalid token-data provided, expected exactly %s bytes.', self::TOKEN_DATA_LENGTH));
+            throw new \RuntimeException(sprintf('Invalid token-data provided, expected exactly %s bytes.', static::VERIFIER_BYTES + static::SELECTOR_BYTES));
         }
 
-        $instance = new self();
-        $instance->expiresAt = $expiresAt;
+        $instance = new static();
         $instance->selector = Base64UrlSafe::encode(Binary::safeSubstr($bytesString, 0, self::SELECTOR_BYTES));
         $instance->verifier = Base64UrlSafe::encode(Binary::safeSubstr($bytesString, self::SELECTOR_BYTES, self::VERIFIER_BYTES));
         $instance->token = new HiddenString($instance->selector.$instance->verifier, false, true);
-        $instance->verifierHash = $verifierHasher($instance->verifier.':'.($id ?? '\0'));
-        $instance->verifierValidator = $verifierValidator;
-        $instance->verifierHasher = $verifierHasher;
+        $instance->configureHasher($config);
 
+        $instance->verifierHash = $instance->hashVerifier($instance->verifier.':'.($id ?? '\0'));
+
+        \sodium_memzero($instance->verifier);
         \sodium_memzero($bytesString);
+
+        return $instance;
+    }
+
+    /**
+     * @param \DateTimeImmutable|null $expiresAt
+     *
+     * @return static
+     */
+    public function expireAt(?\DateTimeImmutable $expiresAt = null)
+    {
+        $instance = clone $this;
+        $instance->expiresAt = $expiresAt;
 
         return $instance;
     }
@@ -169,27 +151,21 @@ final class SplitToken
      *
      * Note: The $token is zeroed from memory when valid.
      *
-     * @param string   $token
-     * @param callable $verifierHasher    Callable to produce a hash of the verifier
-     *                                    string
-     * @param callable $verifierValidator Callable to validate the hash against
-     *                                    a user provided verifier value
+     * @param string $token
      *
-     * @return SplitToken
+     * @return static
      */
-    public static function fromString(string $token, callable $verifierHasher, callable $verifierValidator): self
+    final public static function fromString(string $token): self
     {
         if (Binary::safeStrlen($token) < self::TOKEN_CHAR_LENGTH) {
             // Don't zero memory as the value is invalid.
             throw new \RuntimeException('Invalid token provided.');
         }
 
-        $instance = new self();
+        $instance = new static();
         $instance->token = new HiddenString($token);
         $instance->selector = Binary::safeSubstr($token, 0, 32);
         $instance->verifier = Binary::safeSubstr($token, 32);
-        $instance->verifierValidator = $verifierValidator;
-        $instance->verifierHasher = $verifierHasher;
 
         // Don't (re)generate as this needs the salt of the stored hash.
         $instance->verifierHash = null;
@@ -230,13 +206,13 @@ final class SplitToken
      *
      * @return bool
      */
-    public function matches(SplitTokenValueHolder $token, ?string $id = null): bool
+    final public function matches(SplitTokenValueHolder $token, ?string $id = null): bool
     {
         if ($token->isExpired() || $token->selector() !== $this->selector) {
             return false;
         }
 
-        return ($this->verifierValidator)($token->verifierHash(), $this->verifier.':'.($id ?? '\0'));
+        return $this->verifyHash($token->verifierHash(), $this->verifier.':'.($id ?? '\0'));
     }
 
     /**
@@ -254,6 +230,40 @@ final class SplitToken
             throw new \RuntimeException('toValueHolder() does not work SplitToken object created with fromString().');
         }
 
-        return new SplitTokenValueHolder($this->selector, $this->verifierHash, $this->expiresAt, $metadata);
+        return new SplitTokenValueHolder($this->selector, $this->verifierHash, $this->expiresAt, $metadata, $this);
     }
+
+    /**
+     * This method is called in create() before the verifier is hashed,
+     * allowing to set-up configuration for the hashing method.
+     *
+     * @param array $config
+     */
+    protected function configureHasher(array $config)
+    {
+        // no-op
+    }
+
+    /**
+     * Checks if the provided hash equals the provided verifier.
+     *
+     * This implementation must use a time-safe hash-comparator.
+     * Either: sodium_crypto_pwhash_str_verify($hash, $verifier)
+     *   or hash_equals($hash, static::hashVerifier($verifier))
+     *
+     * @param string $hash
+     * @param string $verifier
+     *
+     * @return bool
+     */
+    abstract protected function verifyHash(string $hash, string $verifier): bool;
+
+    /**
+     * Produces a hashed version of the verifier.
+     *
+     * @param string $verifier
+     *
+     * @return string
+     */
+    abstract protected function hashVerifier(string $verifier): string;
 }

@@ -24,21 +24,17 @@ interface SplitTokenFactory
      * ```
      * return SplitToken::create(
      *     new HiddenString(\random_bytes(SplitToken::TOKEN_CHAR_LENGTH), false, true), // DO NOT ENCODE HERE (always provide as raw binary)!
-     *     [$this, 'hasher'], // ($hash, $verifier) -- sodium_crypto_pwhash_str($hash, $verifier)
-     *     [$this, 'validator'], // ($value) -- sodium_crypto_pwhash_str_verify($value)
-     *     $id,
-     *     $expirationTimestamp
+     *     $id
      * );
      * ```
      *
-     * @param null|string             $id
-     * @param \DateTimeImmutable|null $expiresAt
+     * @param null|string $id
      *
      * @return SplitToken
      *
      * @see \ParagonIE\Halite\HiddenString
      */
-    public function generate(?string $id = null, ?\DateTimeImmutable $expiresAt = null): SplitToken;
+    public function generate(?string $id = null): SplitToken;
 
     /**
      * Recreates a SplitToken object from a HiddenString (provided by eg. a user).
@@ -46,11 +42,7 @@ interface SplitTokenFactory
      * Example:
      *
      * ```
-     * return SplitToken::fromString(
-     *     $token,
-     *     [$this, 'hasher'],
-     *     [$this, 'validator']
-     * );
+     * return SplitToken::fromString($token);
      * ```
      *
      * @param string $token
