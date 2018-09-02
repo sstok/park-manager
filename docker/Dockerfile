@@ -1,4 +1,4 @@
-FROM composer:1.5
+FROM composer:1.7
 FROM php:7.2-alpine
 
 RUN apk add --no-cache --virtual .persistent-deps \
