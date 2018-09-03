@@ -12,7 +12,7 @@ return [
     ParkManager\Bundle\ServiceBusPolicyGuardBundle\ParkManagerServiceBusPolicyGuardBundle::class => ['all' => true],
     ParkManager\Bundle\RouteAutofillBundle\ParkManagerRouteAutofillBundle::class => ['all' => true],
     ParkManager\Module\CoreModule\ParkManagerCoreModule::class => ['all' => true],
-    ParkManager\Module\Webhosting\ParkManagerWebhostingModule::class => ['all' => true],
+    ParkManager\Module\WebhostingModule\ParkManagerWebhostingModule::class => ['all' => true],
     Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle::class => ['all' => true],
     Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
     Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],

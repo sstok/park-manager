@@ -1,0 +1,40 @@
+{
+    "name": "park-manager/webhosting-module",
+    "type": "park-manager-module",
+    "description": "Park-Manager Webhosting Module",
+    "homepage": "http://www.park-manager.com/",
+    "license": "MPL-2.0",
+    "authors": [
+        {
+            "name": "Sebastiaan Stok",
+            "email": "s.stok@rollerscapes.net"
+        },
+        {
+            "name": "Community contributions",
+            "homepage": "https://github.com/park-manager/park-manager/contributors"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "park-manager/core-bundle": "^0.3"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "ParkManager\\Module\\WebhostingModule\\": ""
+        },
+        "exclude-from-classmap": [
+            "Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ParkManager\\Module\\WebhostingModule\\Tests\\": "Tests"
+        }
+    }
+}

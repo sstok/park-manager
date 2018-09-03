@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccount" table="account" schema="webhosting">
+        <id name="id" type="park_manager_webhosting_account_id" column="id">
+            <generator strategy="NONE" />
+        </id>
+
+        <field name="owner" column="owner_id" type="park_manager_owner_id" nullable="false" />
+        <field name="capabilities" type="webhosting_capabilities" nullable="false" />
+        <field name="markedForRemoval" column="marked_for_removal" type="boolean" nullable="true" />
+        <field name="expirationDate" column="expires_on" type="datetime_immutable" nullable="true" />
+
+        <many-to-one field="package" target-entity="ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackage">
+            <join-column nullable="true" name="package_id" referenced-column-name="id" on-delete="RESTRICT" />
+        </many-to-one>
+    </entity>
+
+</doctrine-mapping>
