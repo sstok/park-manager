@@ -45,7 +45,7 @@ final class BundleQuestioner implements Questioner
             return $value.'Bundle';
         }));
 
-        $questions->set('license', 'MPL-2.0');
+        $questions->set('license', 'MIT');
         $questions->set('php_namespace', 'ParkManager\\Bundle\\'.StringUtil::camelize((string) $questions->get('bundle_name')));
         $questions->set('extension_name', StringUtil::camelize(mb_substr((string) $questions->get('bundle_name'), 0, -6)));
     }

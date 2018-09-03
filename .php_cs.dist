@@ -53,6 +53,7 @@ return PhpCsFixer\Config::create()
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->notPath('{Resources/config/routing/}')
-            ->in([__DIR__.'/src', __DIR__.'/.dances', __DIR__.'/bin', __DIR__.'/public'])
+            ->append([__DIR__.'/src/Kernel.php'])
+            ->in([__DIR__.'/src/Module', __DIR__.'/.dances', __DIR__.'/bin', __DIR__.'/public'])
     )
 ;

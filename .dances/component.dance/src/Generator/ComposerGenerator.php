@@ -37,4 +37,9 @@ final class ComposerGenerator extends BaseComposerGenerator
     {
         return [];
     }
+
+    protected function getLicense(): string
+    {
+        return 'MIT';
+    }
 }

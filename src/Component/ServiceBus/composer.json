@@ -3,7 +3,7 @@
     "type": "library",
     "description": "Park-Manager ServiceBus Component",
     "homepage": "http://www.park-manager.com/",
-    "license": "MPL-2.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "Sebastiaan Stok",

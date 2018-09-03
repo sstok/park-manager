@@ -32,8 +32,8 @@ abstract class BaseComposerGenerator implements Generator
             'name' => 'park-manager/'.$this->generatePackageSubName($answers),
             'type' => $this->getType(),
             'description' => $this->getDescription($answers),
-            'homepage' => 'http://www.park-manager.com/',
-            'license' => 'MPL-2.0',
+            'homepage' => 'https://www.park-manager.com/',
+            'license' => $this->getLicense(),
             'authors' => [
                 [
                     'name' => $answers['author_name'],
@@ -80,4 +80,9 @@ abstract class BaseComposerGenerator implements Generator
     abstract protected function getDescription(array $answers): string;
 
     abstract protected function getRequires(): array;
+
+    protected function getLicense(): string
+    {
+        return 'MPL-2.0';
+    }
 }
