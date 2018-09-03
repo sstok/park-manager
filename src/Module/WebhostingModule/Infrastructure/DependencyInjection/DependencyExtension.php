@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\WebhostingModule\Infrastructure\DependencyInjection;
 
 use ParkManager\Component\Module\ParkManagerModuleDependencyExtension;
+use ParkManager\Component\Module\RegistersDoctrineDbalTypes;
 use ParkManager\Component\Module\Traits\DoctrineDbalTypesConfiguratorTrait;
 use ParkManager\Module\WebhostingModule\Application\Service\Package\PackageConfigurationApplier;
 use ParkManager\Module\WebhostingModule\Domain\Package\Capability;
@@ -22,7 +23,7 @@ use ParkManager\Module\WebhostingModule\Infrastructure\Service\Package\Capabilit
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class DependencyExtension extends ParkManagerModuleDependencyExtension
+final class DependencyExtension extends ParkManagerModuleDependencyExtension implements RegistersDoctrineDbalTypes
 {
     use DoctrineDbalTypesConfiguratorTrait;
 

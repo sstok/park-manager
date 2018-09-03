@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  * configurations automatically.
  *
  * This extension loads Routes, templates, translations,
- * and Doctrine DBAL Types (if DoctrineDbalTypesConfiguratorTrait is imported).
+ * and Doctrine DBAL Types (if the RegistersDoctrineDbalTypes interface is implemented).
  *
  * Templates: Infrastructure/Resources/templates and UI/Web/Resources/templates
  * Translations: Infrastructure/Resources/translations and UI/Web/Resources/translations
@@ -110,7 +110,7 @@ abstract class ParkManagerModuleDependencyExtension extends Extension implements
             ]);
         }
 
-        if (method_exists($this, 'registerDoctrineDbalTypes')) {
+        if ($this instanceof RegistersDoctrineDbalTypes) {
             $this->registerDoctrineDbalTypes($container, $this->moduleDir);
         }
 

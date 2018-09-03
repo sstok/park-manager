@@ -19,6 +19,9 @@ use Symfony\Component\Finder\Finder;
 
 /**
  * Helps with automatically registering Doctrine DBAL types.
+ *
+ * Note: Implement the RegistersDoctrineDbalTypes interface to make this detection
+ * work in the ParkManagerModuleDependencyExtension.
  */
 trait DoctrineDbalTypesConfiguratorTrait
 {
@@ -31,7 +34,7 @@ trait DoctrineDbalTypesConfiguratorTrait
      * @param ContainerBuilder $container
      * @param string           $moduleDirectory
      */
-    protected function registerDoctrineDbalTypes(ContainerBuilder $container, string $moduleDirectory): void
+    public function registerDoctrineDbalTypes(ContainerBuilder $container, string $moduleDirectory): void
     {
         if (!file_exists($moduleDirectory.'/Infrastructure/Doctrine')) {
             return;
