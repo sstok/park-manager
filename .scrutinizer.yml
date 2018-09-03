@@ -25,11 +25,11 @@ checks:
         no_unnecessary_final_modifier: false
         overriding_private_members: false
 
-# Disable style checks, this is already handled by StyleCI.
+# Disable style checks, this is already handled by Travis
 tools:
     php_cs_fixer: false
     php_analyzer:
-            enabled: true
-            config:
-                checkstyle:
-                    enabled: false
+        enabled: true
+        config:
+            checkstyle:
+                enabled: false
