@@ -63,12 +63,12 @@ abstract class BaseConfirmationHandler
      * Usually you only need the ID, when this is used as unique identification.
      *
      * @param Request  $request
-     * @param string[] ...$requestAttrNames A list of Request Attributes to include in the unique
-     *                                      security token computation
+     * @param string[] $requestAttrNames A list of Request Attribute-names to include in the unique
+     *                                   security token computation
      *
      * @return $this
      */
-    public function handleRequest(Request $request, string ...$requestAttrNames): self
+    public function handleRequest(Request $request, array $requestAttrNames = []): self
     {
         $this->request = $request;
         $this->tokenId = 'confirm.';

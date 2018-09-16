@@ -41,7 +41,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
         );
 
         $confirmationHandler->configure('Confirm deleting', 'Are you sure?', $reqValue, 'Yes');
-        $confirmationHandler->handleRequest($this->makePostRequest($value), 'id');
+        $confirmationHandler->handleRequest($this->makePostRequest($value), ['id']);
 
         self::assertTrue($confirmationHandler->isConfirmed(), sprintf('"%s" does not match for "%s"', $value, $reqValue));
     }
@@ -70,7 +70,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
             $this->createTokenManagerWithValid($this->createTokenId([self::ID1]))
         );
 
-        $confirmationHandler->handleRequest($this->makeGetRequest(), 'id');
+        $confirmationHandler->handleRequest($this->makeGetRequest(), ['id']);
 
         self::assertFalse($confirmationHandler->isConfirmed());
     }
@@ -83,7 +83,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
             $this->createTokenManagerWithInvalid($this->createTokenId([self::ID1]), false)
         );
 
-        $confirmationHandler->handleRequest($this->makePostRequestWithoutToken(), 'id');
+        $confirmationHandler->handleRequest($this->makePostRequestWithoutToken(), ['id']);
 
         self::assertFalse($confirmationHandler->isConfirmed());
     }
@@ -96,7 +96,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
             $this->createTokenManagerWithInvalid($this->createTokenId([self::ID1]))
         );
 
-        $confirmationHandler->handleRequest($this->makeInvalidPostRequest(), 'id');
+        $confirmationHandler->handleRequest($this->makeInvalidPostRequest(), ['id']);
 
         self::assertFalse($confirmationHandler->isConfirmed());
     }
@@ -115,7 +115,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
         );
 
         $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Everything', 'Yes');
-        $confirmationHandler->handleRequest($this->makePostRequest($value), 'id');
+        $confirmationHandler->handleRequest($this->makePostRequest($value), ['id']);
 
         self::assertFalse($confirmationHandler->isConfirmed());
         self::assertEquals(
@@ -160,7 +160,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
             $this->createTwigEnvironment(),
             $this->createTokenManagerWithInvalid($this->createTokenId([self::ID1]))
         );
-        $confirmationHandler->handleRequest($this->makeInvalidPostRequest(), 'id');
+        $confirmationHandler->handleRequest($this->makeInvalidPostRequest(), ['id']);
         $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Everything', 'Yes');
         $confirmationHandler->setCancelUrl('/user/1/show');
 

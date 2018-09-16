@@ -37,7 +37,7 @@ final class ConfirmationHandlerTest extends TestCase
             $this->createTokenManagerWithValid($this->createTokenId([self::ID1]))
         );
 
-        $confirmationHandler->handleRequest($this->makePostRequest(), 'id');
+        $confirmationHandler->handleRequest($this->makePostRequest(), ['id']);
 
         self::assertTrue($confirmationHandler->isConfirmed());
     }
@@ -50,7 +50,7 @@ final class ConfirmationHandlerTest extends TestCase
             $this->createTokenManagerWithValid($this->createTokenId([self::ID1]))
         );
 
-        $confirmationHandler->handleRequest($this->makeGetRequest(), 'id');
+        $confirmationHandler->handleRequest($this->makeGetRequest(), ['id']);
 
         self::assertFalse($confirmationHandler->isConfirmed());
     }
@@ -63,7 +63,7 @@ final class ConfirmationHandlerTest extends TestCase
             $this->createTokenManagerWithInvalid($this->createTokenId([self::ID1]), false)
         );
 
-        $confirmationHandler->handleRequest($this->makePostRequestWithoutToken(), 'id');
+        $confirmationHandler->handleRequest($this->makePostRequestWithoutToken(), ['id']);
 
         self::assertFalse($confirmationHandler->isConfirmed());
     }
@@ -76,7 +76,7 @@ final class ConfirmationHandlerTest extends TestCase
             $this->createTokenManagerWithInvalid($this->createTokenId([self::ID1]))
         );
 
-        $confirmationHandler->handleRequest($this->makeInvalidPostRequest(), 'id');
+        $confirmationHandler->handleRequest($this->makeInvalidPostRequest(), ['id']);
 
         self::assertFalse($confirmationHandler->isConfirmed());
     }
@@ -102,7 +102,7 @@ final class ConfirmationHandlerTest extends TestCase
             $this->createTwigEnvironment(),
             $this->createTokenManagerWithValid($this->createTokenId([self::ID1]))
         );
-        $confirmationHandler->handleRequest($this->makeGetRequest(), 'id');
+        $confirmationHandler->handleRequest($this->makeGetRequest(), ['id']);
         $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Yes');
         $confirmationHandler->setCancelUrl('/user/1/show');
 
@@ -120,7 +120,7 @@ final class ConfirmationHandlerTest extends TestCase
             $this->createTwigEnvironment(),
             $this->createTokenManagerWithInvalid($this->createTokenId([self::ID1]))
         );
-        $confirmationHandler->handleRequest($this->makeInvalidPostRequest(), 'id');
+        $confirmationHandler->handleRequest($this->makeInvalidPostRequest(), ['id']);
         $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Yes');
         $confirmationHandler->setCancelUrl('/user/1/show');
 
