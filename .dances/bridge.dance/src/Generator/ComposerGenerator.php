@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\SkeletonDancer\Generator;
 
 use SkeletonDancer\StringUtil;
+use function str_replace;
 
 final class ComposerGenerator extends BaseComposerGenerator
 {
@@ -30,7 +31,7 @@ final class ComposerGenerator extends BaseComposerGenerator
 
     protected function getDescription(array $answers): string
     {
-        return 'Park-Manager '.$answers['bridge_name'].' Bridge';
+        return 'Park-Manager ' . $answers['bridge_name'] . ' Bridge';
     }
 
     protected function getRequires(): array

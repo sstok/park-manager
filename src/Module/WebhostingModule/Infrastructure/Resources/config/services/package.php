@@ -18,11 +18,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Component\DomainEvent\EventEmitter;
 use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackageRepository;
 use ParkManager\Module\WebhostingModule\Infrastructure\Doctrine\Package\WebhostingPackageOrmRepository;
-use ParkManager\Module\WebhostingModule\Infrastructure\Service\Package\{
-    AccountCapabilitiesRestrictionGuard,
-    CapabilitiesFactory,
-    CapabilitiesRestrictionGuard
-};
+use ParkManager\Module\WebhostingModule\Infrastructure\Service\Package\AccountCapabilitiesRestrictionGuard;
+use ParkManager\Module\WebhostingModule\Infrastructure\Service\Package\CapabilitiesFactory;
+use ParkManager\Module\WebhostingModule\Infrastructure\Service\Package\CapabilitiesRestrictionGuard;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
@@ -44,10 +42,12 @@ return function (ContainerConfigurator $c) {
     $di->set(WebhostingPackageOrmRepository::class)
         ->alias(WebhostingPackageRepository::class, WebhostingPackageOrmRepository::class);
 
-    $di->load('ParkManager\\Module\\WebhostingModule\\Domain\\Package\\Capability\\',
-        __DIR__.'/../../../../Domain/Package/Capability'
+    $di->load(
+        'ParkManager\\Module\\WebhostingModule\\Domain\\Package\\Capability\\',
+        __DIR__ . '/../../../../Domain/Package/Capability'
     );
-    $di->load('ParkManager\Module\WebhostingModule\Infrastructure\\Service\\Package\\Capability\\',
-        __DIR__.'/../../../../Infrastructure/Service/Package/Capability'
+    $di->load(
+        'ParkManager\Module\WebhostingModule\Infrastructure\\Service\\Package\\Capability\\',
+        __DIR__ . '/../../../../Infrastructure/Service/Package/Capability'
     );
 };

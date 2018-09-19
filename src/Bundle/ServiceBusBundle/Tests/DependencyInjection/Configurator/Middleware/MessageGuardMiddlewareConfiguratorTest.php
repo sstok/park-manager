@@ -62,7 +62,7 @@ final class MessageGuardMiddlewareConfiguratorTest extends MiddlewareConfigurato
             ['priority' => MessageBusConfigurator::MIDDLEWARE_PRIORITY_GUARD]
         );
 
-        $serviceId = 'park_manager.command_bus.users.message_guard.'.CliGuard::class;
+        $serviceId = 'park_manager.command_bus.users.message_guard.' . CliGuard::class;
         $this->assertContainerBuilderHasService($serviceId, CliGuard::class);
         $this->assertContainerBuilderHasServiceDefinitionWithTag(
             $serviceId,
@@ -70,7 +70,7 @@ final class MessageGuardMiddlewareConfiguratorTest extends MiddlewareConfigurato
             ['priority' => 0]
         );
 
-        $serviceId = 'park_manager.command_bus.users.message_guard.'.SymfonyGuard::class;
+        $serviceId = 'park_manager.command_bus.users.message_guard.' . SymfonyGuard::class;
         $this->assertContainerBuilderHasService($serviceId, SymfonyGuard::class);
         $this->assertContainerBuilderHasServiceDefinitionWithTag(
             $serviceId,
@@ -78,7 +78,7 @@ final class MessageGuardMiddlewareConfiguratorTest extends MiddlewareConfigurato
             ['priority' => -5]
         );
 
-        $serviceId = 'park_manager.command_bus.users.message_guard.'.FooGuard::class;
+        $serviceId = 'park_manager.command_bus.users.message_guard.' . FooGuard::class;
         $this->assertContainerBuilderHasService($serviceId, FooGuard::class);
         $this->assertContainerBuilderHasServiceDefinitionWithArgument($serviceId, 0, 'bar');
         $this->assertContainerBuilderHasServiceDefinitionWithTag(

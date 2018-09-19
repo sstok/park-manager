@@ -27,9 +27,7 @@ namespace ParkManager\Component\ApplicationFoundation\Message;
  */
 class ServiceMessage
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     public $type;
 
     /**
@@ -53,14 +51,10 @@ class ServiceMessage
      */
     public $messagePluralization;
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     public $translatedParameters = [];
 
-    /**
-     * @var string|null
-     */
+    /** @var string|null */
     public $systemMessage;
 
     /**
@@ -72,16 +66,14 @@ class ServiceMessage
      */
     protected function __construct(string $type, ?string $messageTemplate, array $messageParameters = [], ?string $systemMessage = null)
     {
-        $this->type = $type;
-        $this->messageTemplate = $messageTemplate;
+        $this->type              = $type;
+        $this->messageTemplate   = $messageTemplate;
         $this->messageParameters = $messageParameters;
-        $this->systemMessage = $systemMessage;
+        $this->systemMessage     = $systemMessage;
     }
 
     /**
-     * @param int|null $messagePluralization
-     *
-     * @return $this
+     * @return static
      */
     public function withPlural(?int $messagePluralization)
     {
@@ -94,7 +86,7 @@ class ServiceMessage
      * @param array $translatedParameters An array of parameter names that need
      *                                    to be translated prior to their usage
      *
-     * @return $this
+     * @return static
      */
     public function translateParameters(array $translatedParameters)
     {

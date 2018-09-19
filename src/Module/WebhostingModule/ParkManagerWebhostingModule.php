@@ -20,6 +20,7 @@ use ParkManager\Module\WebhostingModule\Infrastructure\DependencyInjection\Compi
 use ParkManager\Module\WebhostingModule\Infrastructure\Doctrine\Package\WebhostingCapabilitiesType;
 use ParkManager\Module\WebhostingModule\Infrastructure\Service\Package\CapabilitiesFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use function realpath;
 
 final class ParkManagerWebhostingModule extends AbstractParkManagerModule
 {
@@ -32,7 +33,7 @@ final class ParkManagerWebhostingModule extends AbstractParkManagerModule
 
     public function boot(): void
     {
-        if (!Type::hasType('webhosting_capabilities')) {
+        if (! Type::hasType('webhosting_capabilities')) {
             Type::addType('webhosting_capabilities', WebhostingCapabilitiesType::class);
         }
 
@@ -50,10 +51,11 @@ final class ParkManagerWebhostingModule extends AbstractParkManagerModule
         }
     }
 
-    protected function getDoctrineMappings(): array
+    protected function getDoctrineOrmMappings(): array
     {
-        $mapping = parent::getDoctrineMappings();
-        $mapping[realpath(__DIR__.'/Infrastructure/Doctrine/RootMapping')] = 'ParkManager\Module\WebhostingModule\Domain';
+        $mapping = parent::getDoctrineOrmMappings();
+
+        $mapping[realpath(__DIR__ . '/Infrastructure/Doctrine/RootMapping')] = 'ParkManager\Module\WebhostingModule\Domain';
 
         return $mapping;
     }

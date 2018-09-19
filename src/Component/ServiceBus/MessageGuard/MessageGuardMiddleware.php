@@ -15,6 +15,8 @@ namespace ParkManager\Component\ServiceBus\MessageGuard;
 
 use League\Tactician\Middleware;
 use Psr\Log\LoggerInterface;
+use function get_class;
+use function sprintf;
 
 final class MessageGuardMiddleware implements Middleware
 {
@@ -23,9 +25,8 @@ final class MessageGuardMiddleware implements Middleware
 
     /**
      * @param iterable|PermissionGuard[] $guards When a generator be sure to allow rewinding
-     * @param LoggerInterface|null       $logger
      */
-    public function __construct(iterable $guards, LoggerInterface $logger = null)
+    public function __construct(iterable $guards, ?LoggerInterface $logger = null)
     {
         $this->guards = $guards;
         $this->logger = $logger;
@@ -39,12 +40,12 @@ final class MessageGuardMiddleware implements Middleware
             $decision = $guard->decide($command);
 
             if ($decision < -1 || $decision > 1) {
-                throw new \InvalidArgumentException(sprintf('PermissionGuard "%s" returned unsupported decision %d', \get_class($guard), $decision));
+                throw new \InvalidArgumentException(sprintf('PermissionGuard "%s" returned unsupported decision %d', get_class($guard), $decision));
             }
 
             if ($this->logger) {
                 $this->logger->info(
-                    sprintf('PermissionGuard "%s" decides: %s', \get_class($guard), [0 => 'DENY', 1 => 'ALLOW', -1 => 'ABSTAIN'][$decision])
+                    sprintf('PermissionGuard "%s" decides: %s', get_class($guard), [0 => 'DENY', 1 => 'ALLOW', -1 => 'ABSTAIN'][$decision])
                 );
             }
 
@@ -53,8 +54,8 @@ final class MessageGuardMiddleware implements Middleware
             }
         }
 
-        if (PermissionGuard::PERMISSION_DENY === $decision || PermissionGuard::PERMISSION_ABSTAIN === $decision) {
-            throw UnauthorizedException::forMessage($command);
+        if ($decision === PermissionGuard::PERMISSION_DENY || $decision === PermissionGuard::PERMISSION_ABSTAIN) {
+            throw MessageAuthorizationFailed::forMessage($command);
         }
 
         return $next($command);

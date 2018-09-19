@@ -21,6 +21,10 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use function array_map;
+use function is_a;
+use function is_string;
+use function sprintf;
 
 final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
 {
@@ -32,14 +36,14 @@ final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
     {
         parent::__construct();
 
-        $this->container = $container;
+        $this->container     = $container;
         $this->argumentIndex = (int) $argumentIndex;
         $this->expectedValue = array_map(function ($serviceId) {
-            if (\is_string($serviceId)) {
+            if (is_string($serviceId)) {
                 return new ServiceClosureArgument(new Reference($serviceId));
             }
 
-            if (!$serviceId instanceof ServiceClosureArgument) {
+            if (! $serviceId instanceof ServiceClosureArgument) {
                 return new ServiceClosureArgument($serviceId);
             }
 
@@ -57,17 +61,17 @@ final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
 
     public function evaluate($other, $description = '', $returnResult = false)
     {
-        if (!($other instanceof Definition)) {
+        if (! ($other instanceof Definition)) {
             throw new \InvalidArgumentException(
                 'Expected an instance of Symfony\Component\DependencyInjection\Definition'
             );
         }
 
-        if (!$this->evaluateArgumentIndex($other, $returnResult)) {
+        if (! $this->evaluateArgumentIndex($other, $returnResult)) {
             return false;
         }
 
-        if (!$this->evaluateArgumentValue($other, $returnResult)) {
+        if (! $this->evaluateArgumentValue($other, $returnResult)) {
             return false;
         }
 
@@ -81,7 +85,7 @@ final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
         } catch (\Exception $exception) {
             // Older versions of Symfony throw \OutOfBoundsException
             // Newer versions throw Symfony\Component\DependencyInjection\Exception\OutOfBoundsException
-            if (!($exception instanceof \OutOfBoundsException || $exception instanceof OutOfBoundsException)) {
+            if (! ($exception instanceof \OutOfBoundsException || $exception instanceof OutOfBoundsException)) {
                 // this was not the expected exception
                 throw $exception;
             }
@@ -106,7 +110,7 @@ final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
     {
         $actualValue = $definition->getArgument($this->argumentIndex);
 
-        if (!($actualValue instanceof Reference)) {
+        if (! ($actualValue instanceof Reference)) {
             $this->fail(
                 $definition,
                 sprintf(
@@ -119,7 +123,7 @@ final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
 
         $serviceLocatorDef = $this->container->findDefinition((string) $actualValue);
 
-        if (!is_a($serviceLocatorDef->getClass(), ServiceLocator::class, true)) {
+        if (! is_a($serviceLocatorDef->getClass(), ServiceLocator::class, true)) {
             $this->fail(
                 $definition,
                 sprintf(
@@ -135,9 +139,9 @@ final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
         }
 
         $actualValue = $serviceLocatorDef->getArgument(0);
-        $constraint = new IsEqual($this->expectedValue);
+        $constraint  = new IsEqual($this->expectedValue);
 
-        if (!$constraint->evaluate($actualValue, '', true)) {
+        if (! $constraint->evaluate($actualValue, '', true)) {
             if ($returnResult) {
                 return false;
             }

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\WebhostingModule\Domain\Account\Exception;
 
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
+use function sprintf;
 
 final class CannotRemoveActiveWebhostingAccount extends \InvalidArgumentException
 {
@@ -22,7 +23,7 @@ final class CannotRemoveActiveWebhostingAccount extends \InvalidArgumentExceptio
     {
         return new self(
             sprintf(
-                'Webhosting account %s cannot be removed as it\'s still active.'.
+                'Webhosting account %s cannot be removed as it\'s still active.' .
                 ' Call markForRemoval() on the WebhostingAccount instance first.',
                 $id->toString()
             )

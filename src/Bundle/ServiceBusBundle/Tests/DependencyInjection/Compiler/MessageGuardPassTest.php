@@ -23,6 +23,8 @@ use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use function array_map;
+use function is_string;
 
 /**
  * @internal
@@ -50,7 +52,7 @@ final class MessageGuardPassTest extends AbstractCompilerPassTestCase
         ]);
 
         self::assertEquals(
-            [MessageGuardPass::class.': MessageGuardMiddleware is not enabled for park_manager.query_bus.users, ignoring.'],
+            [MessageGuardPass::class . ': MessageGuardMiddleware is not enabled for park_manager.query_bus.users, ignoring.'],
             $this->container->getCompiler()->getLog()
         );
     }
@@ -64,7 +66,7 @@ final class MessageGuardPassTest extends AbstractCompilerPassTestCase
     {
         $expectedGuards = array_map(
             function ($serviceId) {
-                if (\is_string($serviceId)) {
+                if (is_string($serviceId)) {
                     return new Reference($serviceId);
                 }
 

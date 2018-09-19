@@ -18,12 +18,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Component\DomainEvent\EventEmitter;
 use ParkManager\Module\CoreModule\Infrastructure\Doctrine\EventSourcedEntityRepository;
 use ParkManager\Module\WebhostingModule\Domain\Package\Exception\WebhostingPackageNotFound;
-use ParkManager\Module\WebhostingModule\Domain\Package\{
-    WebhostingPackage,
-    WebhostingPackageId,
-    WebhostingPackageRepository
-};
+use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackage;
+use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackageId;
+use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackageRepository;
 
+/**
+ * @method WebhostingPackage|null find($id, $lockMode = null, $lockVersion = null)
+ */
 final class WebhostingPackageOrmRepository extends EventSourcedEntityRepository implements WebhostingPackageRepository
 {
     public function __construct(EntityManagerInterface $entityManager, EventEmitter $eventEmitter, string $className = WebhostingPackage::class)
@@ -33,10 +34,9 @@ final class WebhostingPackageOrmRepository extends EventSourcedEntityRepository 
 
     public function get(WebhostingPackageId $id): WebhostingPackage
     {
-        /** @var WebhostingPackage|null $package */
         $package = $this->find($id->toString());
 
-        if (null === $package) {
+        if ($package === null) {
             throw WebhostingPackageNotFound::withId($id);
         }
 

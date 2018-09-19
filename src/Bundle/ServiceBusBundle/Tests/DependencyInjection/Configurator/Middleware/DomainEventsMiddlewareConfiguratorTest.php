@@ -32,19 +32,19 @@ final class DomainEventsMiddlewareConfiguratorTest extends MiddlewareConfigurato
     /** @test */
     public function it_registers_middleware()
     {
-        $di = $this->containerConfigurator->defaults();
+        $di           = $this->containerConfigurator->defaults();
         $configurator = $this->createConfigurator($di);
 
         $busId = 'park_manager.command_bus.users';
-        $this->assertContainerBuilderHasService($busId.'.domain_event_emitter.symfony', EventDispatcher::class);
-        $this->assertContainerBuilderHasService($busId.'.domain_event_emitter', SymfonyEventEmitter::class);
-        $this->assertContainerBuilderHasServiceDefinitionWithTag($busId.'.domain_event_emitter', 'park_manager.service_bus.domain_event_emitter', ['bus-id' => $busId]);
+        $this->assertContainerBuilderHasService($busId . '.domain_event_emitter.symfony', EventDispatcher::class);
+        $this->assertContainerBuilderHasService($busId . '.domain_event_emitter', SymfonyEventEmitter::class);
+        $this->assertContainerBuilderHasServiceDefinitionWithTag($busId . '.domain_event_emitter', 'park_manager.service_bus.domain_event_emitter', ['bus-id' => $busId]);
     }
 
     /** @test */
     public function it_registers_subscribers_and_listeners()
     {
-        $di = $this->containerConfigurator->defaults();
+        $di           = $this->containerConfigurator->defaults();
         $configurator = $this->createConfigurator($di);
 
         $configurator->listener(
@@ -59,27 +59,27 @@ final class DomainEventsMiddlewareConfiguratorTest extends MiddlewareConfigurato
 
         $busId = 'park_manager.command_bus.users';
 
-        $this->assertContainerBuilderHasServiceDefinitionWithTag($busId.'.domain_event_emitter', 'park_manager.service_bus.domain_event_emitter', ['bus-id' => $busId]);
+        $this->assertContainerBuilderHasServiceDefinitionWithTag($busId . '.domain_event_emitter', 'park_manager.service_bus.domain_event_emitter', ['bus-id' => $busId]);
 
-        $this->assertContainerBuilderHasService($busId.'.domain_event_listener.'.RegisterAdminSubscriber::class);
-        $this->assertContainerBuilderHasService($busId.'.domain_event_listener.'.RegisterUserListener::class);
+        $this->assertContainerBuilderHasService($busId . '.domain_event_listener.' . RegisterAdminSubscriber::class);
+        $this->assertContainerBuilderHasService($busId . '.domain_event_listener.' . RegisterUserListener::class);
 
         $expectedDef = (new Definition(RegisterAdminSubscriber::class))->setPublic(false);
-        $expectedDef->addTag($busId.'.domain_event_subscriber');
+        $expectedDef->addTag($busId . '.domain_event_subscriber');
         $expectedDef->setArguments(['foo']);
-        self::assertEquals($expectedDef, $this->container->getDefinition($busId.'.domain_event_listener.'.RegisterAdminSubscriber::class));
+        self::assertEquals($expectedDef, $this->container->getDefinition($busId . '.domain_event_listener.' . RegisterAdminSubscriber::class));
 
         $expectedDef = (new Definition(RegisterUserListener::class))->setPublic(false);
-        $expectedDef->addTag($busId.'.domain_event_listener', ['event' => 'registerUser', 'method' => 'onRegisterUser']);
-        $expectedDef->addTag($busId.'.domain_event_listener', ['event' => 'removeUser', 'method' => 'onRemoveUser']);
+        $expectedDef->addTag($busId . '.domain_event_listener', ['event' => 'registerUser', 'method' => 'onRegisterUser']);
+        $expectedDef->addTag($busId . '.domain_event_listener', ['event' => 'removeUser', 'method' => 'onRemoveUser']);
         $expectedDef->setArguments(['bar']);
-        self::assertEquals($expectedDef, $this->container->getDefinition($busId.'.domain_event_listener.'.RegisterUserListener::class));
+        self::assertEquals($expectedDef, $this->container->getDefinition($busId . '.domain_event_listener.' . RegisterUserListener::class));
     }
 
     private function createConfigurator(DefaultsConfigurator $di): DomainEventsMiddlewareConfigurator
     {
-        $serviceId = 'park_manager.command_bus.users';
-        $configurator = new DomainEventsMiddlewareConfigurator(
+        $serviceId           = 'park_manager.command_bus.users';
+        $configurator        = new DomainEventsMiddlewareConfigurator(
             $midConfigurator = new MiddlewaresConfigurator(MessageBusConfigurator::extend($di, $serviceId), $di, $serviceId),
             $di,
             $serviceId

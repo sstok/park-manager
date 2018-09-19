@@ -23,6 +23,9 @@ use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccount;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountRepository;
 
+/**
+ * @method WebhostingAccount|null find($id, $lockMode = null, $lockVersion = null)
+ */
 final class WebhostingAccountOrmRepository extends EventSourcedEntityRepository implements WebhostingAccountRepository
 {
     public function __construct(EntityManagerInterface $entityManager, EventEmitter $eventEmitter, string $className = WebhostingAccount::class)
@@ -32,10 +35,9 @@ final class WebhostingAccountOrmRepository extends EventSourcedEntityRepository 
 
     public function get(WebhostingAccountId $id): WebhostingAccount
     {
-        /** @var WebhostingAccount|null $account */
         $account = $this->find($id->toString());
 
-        if (null === $account) {
+        if ($account === null) {
             throw WebhostingAccountNotFound::withId($id);
         }
 
@@ -50,7 +52,7 @@ final class WebhostingAccountOrmRepository extends EventSourcedEntityRepository 
 
     public function remove(WebhostingAccount $account): void
     {
-        if (!$account->isMarkedForRemoval()) {
+        if (! $account->isMarkedForRemoval()) {
             throw CannotRemoveActiveWebhostingAccount::withId($account->id());
         }
 

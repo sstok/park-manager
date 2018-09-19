@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\ConfirmationHandler;
 
+use BadMethodCallException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
+use function array_merge;
+use function is_string;
 
 /**
  * @internal
@@ -29,25 +32,25 @@ abstract class BaseConfirmationHandler
         'cancel_url' => null,
         'error' => null,
     ];
-    protected $tokenId;
 
-    /**
-     * @var Request
-     */
+    /** @var string */
+    protected $tokenId = '';
+
+    /** @var Request */
     protected $request;
 
     public function __construct(Environment $twig, CsrfTokenManagerInterface $tokenManager)
     {
         $this->tokenManager = $tokenManager;
-        $this->twig = $twig;
+        $this->twig         = $twig;
     }
 
     /**
      * @param string $url A full URI (with or without a hostname)
      *
-     * @return $this
+     * @return static
      */
-    public function setCancelUrl(?string $url): self
+    public function setCancelUrl(?string $url)
     {
         $this->templateContext['cancel_url'] = $url;
 
@@ -62,19 +65,18 @@ abstract class BaseConfirmationHandler
      * as it makes harder to re-use this confirmation form for a different item.
      * Usually you only need the ID, when this is used as unique identification.
      *
-     * @param Request  $request
      * @param string[] $requestAttrNames A list of Request Attribute-names to include in the unique
      *                                   security token computation
      *
-     * @return $this
+     * @return static
      */
-    public function handleRequest(Request $request, array $requestAttrNames = []): self
+    public function handleRequest(Request $request, array $requestAttrNames = [])
     {
         $this->request = $request;
         $this->tokenId = 'confirm.';
 
         foreach ($requestAttrNames as $requestAttrName) {
-            $this->tokenId .= $request->attributes->get($requestAttrName, '').'~';
+            $this->tokenId .= $request->attributes->get($requestAttrName, '') . '~';
         }
 
         return $this;
@@ -82,8 +84,6 @@ abstract class BaseConfirmationHandler
 
     /**
      * Returns whether the action was confirmed (and has a valid token).
-     *
-     * @return bool
      */
     abstract public function isConfirmed(): bool;
 
@@ -99,13 +99,11 @@ abstract class BaseConfirmationHandler
      * @param string $template       A Twig template to render
      * @param array  $extraVariables An additional list of variables for the template
      *                               (cannot overwrite existing configuration)
-     *
-     * @return string
      */
     public function render(string $template, array $extraVariables = []): string
     {
-        if (!isset($this->templateContext['title'])) {
-            throw new \BadMethodCallException('Unable render confirmation-ui call configure() first.');
+        if (! isset($this->templateContext['title'])) {
+            throw new BadMethodCallException('Unable render confirmation-ui call configure() first.');
         }
 
         $extraVariables['token'] = $this->tokenManager->getToken($this->tokenId)->getValue();
@@ -115,13 +113,19 @@ abstract class BaseConfirmationHandler
 
     protected function checkToken()
     {
-        if (!\is_string($token = $this->request->request->get('_token'))) {
+        $token = $this->request->request->get('_token');
+
+        if (! is_string($token)) {
             $valid = false;
-        } elseif (!$valid = $this->tokenManager->isTokenValid(new CsrfToken($this->tokenId, $token))) {
-            $this->tokenManager->removeToken($this->tokenId);
+        } else {
+            $valid = $this->tokenManager->isTokenValid(new CsrfToken($this->tokenId, $token));
+
+            if (! $valid) {
+                $this->tokenManager->removeToken($this->tokenId);
+            }
         }
 
-        if (!$valid) {
+        if (! $valid) {
             $this->templateContext['error'] = 'Invalid CSRF token.';
         }
 
@@ -130,8 +134,8 @@ abstract class BaseConfirmationHandler
 
     protected function guardNeedsRequest(): void
     {
-        if (null === $this->request) {
-            throw new \BadMethodCallException('Unable perform operation, call handleRequest() first.');
+        if ($this->request === null) {
+            throw new BadMethodCallException('Unable perform operation, call handleRequest() first.');
         }
     }
 }

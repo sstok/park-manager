@@ -24,6 +24,11 @@
         },
         "sort-packages": true
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.3-dev"
+        }
+    },
     "autoload": {
         "psr-4": {
             "ParkManager\\Component\\Security\\": ""
@@ -34,10 +39,5 @@
     },
     "autoload-dev": {
         "ParkManager\\Component\\Security\\Tests\\": "Tests"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.3-dev"
-        }
     }
 }

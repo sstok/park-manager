@@ -16,8 +16,6 @@ namespace ParkManager\Component\ApplicationFoundation\Query;
 interface QueryBus
 {
     /**
-     * @param object $query
-     *
      * @return mixed
      */
     public function handle(object $query);

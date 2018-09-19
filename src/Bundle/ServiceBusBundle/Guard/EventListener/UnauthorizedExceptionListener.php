@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\ServiceBusBundle\Guard\EventListener;
 
-use ParkManager\Component\ServiceBus\MessageGuard\UnauthorizedException;
+use ParkManager\Component\ServiceBus\MessageGuard\MessageAuthorizationFailed;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -23,8 +23,10 @@ final class UnauthorizedExceptionListener implements EventSubscriberInterface
 {
     public function onException(GetResponseForExceptionEvent $event): void
     {
-        /** @var $exception UnauthorizedException */
-        if (($exception = $event->getException()) instanceof UnauthorizedException) {
+        /** @var MessageAuthorizationFailed $exception */
+        $exception = $event->getException();
+
+        if ($exception instanceof MessageAuthorizationFailed) {
             $newException = new AccessDeniedException($exception->getMessage(), $exception);
             $newException->setSubject($exception->getMessageName());
             $event->setException($newException);

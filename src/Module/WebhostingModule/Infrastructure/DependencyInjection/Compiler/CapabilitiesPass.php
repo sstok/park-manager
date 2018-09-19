@@ -22,15 +22,21 @@ use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
+use function class_exists;
+use function is_a;
+use function mb_strlen;
+use function mb_strrpos;
+use function mb_substr;
+use function sprintf;
 
 final class CapabilitiesPass implements CompilerPassInterface
 {
-    private $guardServices = [];
+    private $guardServices   = [];
     private $applierServices = [];
-    private $capabilities = [];
+    private $capabilities    = [];
 
-    public const CAPABILITY_TAG = 'park_manager.webhosting_capability';
-    public const CAPABILITY_GUARD_TAG = 'park_manager.webhosting_capability_guard';
+    public const CAPABILITY_TAG                = 'park_manager.webhosting_capability';
+    public const CAPABILITY_GUARD_TAG          = 'park_manager.webhosting_capability_guard';
     public const CAPABILITY_CONFIG_APPLIER_TAG = 'park_manager.webhosting_capability_config_applier';
 
     public function process(ContainerBuilder $container): void
@@ -80,7 +86,7 @@ final class CapabilitiesPass implements CompilerPassInterface
                 );
             }
 
-            if (!isset($this->guardServices[$name]) && !isset($this->applierServices[$name])) {
+            if (! isset($this->guardServices[$name]) && ! isset($this->applierServices[$name])) {
                 throw new InvalidArgumentException(
                     sprintf('Webhosting Capability "%s" requires a %1$sGuard *or* %1$sApplier is registered.', $name)
                 );
@@ -93,8 +99,8 @@ final class CapabilitiesPass implements CompilerPassInterface
 
     private function getClassName(string $class, ?string $suffix = null): string
     {
-        if (null !== $suffix) {
-            $class = mb_substr($class, 0, -\mb_strlen($suffix));
+        if ($suffix !== null) {
+            $class = mb_substr($class, 0, -mb_strlen($suffix));
         }
 
         return mb_substr($class, mb_strrpos($class, '\\') + 1);
@@ -102,7 +108,7 @@ final class CapabilitiesPass implements CompilerPassInterface
 
     private function assertServiceClass(string $capabilityName, string $className, string $expectedInterface): void
     {
-        if (!class_exists($className)) {
+        if (! class_exists($className)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Webhosting Capability %s is incorrectly configured. Class %s cannot be found.',
@@ -112,7 +118,7 @@ final class CapabilitiesPass implements CompilerPassInterface
             );
         }
 
-        if (!is_a($className, $expectedInterface, true)) {
+        if (! is_a($className, $expectedInterface, true)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Webhosting Capability %s is incorrectly configured. Class %s does not implement interface %s.',

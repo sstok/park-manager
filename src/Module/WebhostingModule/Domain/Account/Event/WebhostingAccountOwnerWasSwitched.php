@@ -28,7 +28,7 @@ final class WebhostingAccountOwnerWasSwitched extends DomainEvent
     {
         $this->newOwner = $newOwner;
         $this->oldOwner = $oldOwner;
-        $this->id = $id;
+        $this->id       = $id;
     }
 
     public function id(): WebhostingAccountId

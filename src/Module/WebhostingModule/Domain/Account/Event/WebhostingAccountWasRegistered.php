@@ -26,7 +26,7 @@ final class WebhostingAccountWasRegistered extends DomainEvent
     public function __construct(WebhostingAccountId $id, OwnerId $owner)
     {
         $this->accountId = $id;
-        $this->owner = $owner;
+        $this->owner     = $owner;
     }
 
     public function id(): WebhostingAccountId

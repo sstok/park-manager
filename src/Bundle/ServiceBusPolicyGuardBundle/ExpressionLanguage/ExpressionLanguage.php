@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\ServiceBusPolicyGuardBundle\ExpressionLanguage;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
+use function method_exists;
+use function sprintf;
 
 final class ExpressionLanguage extends BaseExpressionLanguage
 {
@@ -30,7 +32,7 @@ final class ExpressionLanguage extends BaseExpressionLanguage
         $this->register('id_same', function (string $id1, string $id2): string {
             return sprintf('((!(%1$s instanceof %2$s)) ? false : %1$s->equals(%2$s))', $id1, $id2);
         }, function (array $variables, object $id1, object $id2): bool {
-            return (!($id1 instanceof $id2)) ? false : $id1->equals($id2);
+            return (! ($id1 instanceof $id2)) ? false : $id1->equals($id2);
         });
 
         $this->register('has_method', function (string $object, string $method): string {

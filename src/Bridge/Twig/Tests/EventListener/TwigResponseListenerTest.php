@@ -32,7 +32,7 @@ final class TwigResponseListenerTest extends TestCase
     public function it_ignores_other_responses()
     {
         $container = $this->createUnusedContainer();
-        $listener = new TwigResponseListener($container);
+        $listener  = new TwigResponseListener($container);
 
         $event = $this->createEvent($response = new Response());
         $listener->onKernelResponse($event);
@@ -44,7 +44,7 @@ final class TwigResponseListenerTest extends TestCase
     public function it_ignores_empty_response()
     {
         $container = $this->createUnusedContainer();
-        $listener = new TwigResponseListener($container);
+        $listener  = new TwigResponseListener($container);
 
         $event = $this->createEvent(new TwigResponse('Nope', [], 204));
         $listener->onKernelResponse($event);
@@ -56,7 +56,7 @@ final class TwigResponseListenerTest extends TestCase
     public function it_ignores_when_content_is_already_set()
     {
         $container = $this->createUnusedContainer();
-        $listener = new TwigResponseListener($container);
+        $listener  = new TwigResponseListener($container);
 
         $event = $this->createEvent((new TwigResponse('Nope'))->setContent('Something'));
         $listener->onKernelResponse($event);
@@ -68,7 +68,7 @@ final class TwigResponseListenerTest extends TestCase
     public function it_renders_twig_template()
     {
         $container = $this->createUsedContainer('@CoreModule/client/show_user.html.twig', ['He' => 'you']);
-        $listener = new TwigResponseListener($container);
+        $listener  = new TwigResponseListener($container);
 
         $event = $this->createEvent(new TwigResponse('@CoreModule/client/show_user.html.twig', ['He' => 'you']));
         $listener->onKernelResponse($event);

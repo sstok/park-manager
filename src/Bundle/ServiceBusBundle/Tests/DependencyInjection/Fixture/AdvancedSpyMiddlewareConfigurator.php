@@ -28,7 +28,7 @@ final class AdvancedSpyMiddlewareConfigurator implements AdvancedMiddlewareConfi
     public function __construct(MiddlewaresConfigurator $parent, AbstractServiceConfigurator $di, string $serviceId, $argument1, $argument2)
     {
         self::$arguments = [$parent, $di, $serviceId, $argument1, $argument2];
-        $this->parent = $parent;
+        $this->parent    = $parent;
     }
 
     public function end(): MiddlewaresConfigurator

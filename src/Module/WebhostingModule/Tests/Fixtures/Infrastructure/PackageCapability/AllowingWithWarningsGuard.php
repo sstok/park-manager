@@ -24,7 +24,7 @@ final class AllowingWithWarningsGuard implements CapabilityGuard
 {
     public function decide(Capability $configuration, array $context, WebhostingAccount $account, ServiceMessages $messages): bool
     {
-        $messages->add(ServiceMessage::warning('Hold it there, you are about to get stuck '.($context['limit'] ?? 'NULL')));
+        $messages->add(ServiceMessage::warning('Hold it there, you are about to get stuck ' . ($context['limit'] ?? 'NULL')));
 
         return true;
     }

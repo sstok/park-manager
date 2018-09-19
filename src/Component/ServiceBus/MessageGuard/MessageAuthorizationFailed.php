@@ -13,13 +13,16 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\ServiceBus\MessageGuard;
 
-final class UnauthorizedException extends \RuntimeException
+use function get_class;
+
+final class MessageAuthorizationFailed extends \RuntimeException
 {
     private $messageName;
 
     public static function forMessage(object $messageName): self
     {
-        $e = new static ('You are not authorized to access the resource "'.\get_class($messageName).'".');
+        $e = new static('You are not authorized to access the resource "' . get_class($messageName) . '".');
+
         $e->messageName = $messageName;
 
         return $e;

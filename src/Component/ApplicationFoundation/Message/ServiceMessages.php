@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\ApplicationFoundation\Message;
 
+use function array_merge_recursive;
+
 final class ServiceMessages implements \Countable
 {
     /**
@@ -51,7 +53,7 @@ final class ServiceMessages implements \Countable
     public function clear(): void
     {
         $this->messages = [];
-        $this->count = 0;
+        $this->count    = 0;
     }
 
     public function allOf(string $type): array

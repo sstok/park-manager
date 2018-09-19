@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\WebhostingModule\Domain\DomainName\Exception;
 
 use ParkManager\Module\WebhostingModule\Domain\DomainName\WebhostingDomainNameId;
+use function sprintf;
 
 final class WebhostingDomainNameNotFound extends \InvalidArgumentException
 {

@@ -20,9 +20,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 abstract class MiddlewareConfiguratorTestCase extends AbstractContainerBuilderTestCase
 {
-    /**
-     * @var ServicesConfigurator
-     */
+    /** @var ServicesConfigurator */
     protected $containerConfigurator;
 
     protected function setUp()
@@ -30,6 +28,7 @@ abstract class MiddlewareConfiguratorTestCase extends AbstractContainerBuilderTe
         parent::setUp();
 
         $instanceof = [];
+
         $this->containerConfigurator = new ServicesConfigurator(
             $this->container,
             new PhpFileLoader($this->container, $this->createMock(FileLocatorInterface::class)),

@@ -20,51 +20,37 @@ use ParkManager\Module\WebhostingModule\Domain\DomainName\Exception\CannotTransf
 
 class WebhostingDomainName
 {
-    /**
-     * @var WebhostingAccount
-     */
+    /** @var WebhostingAccount */
     protected $account;
 
-    /**
-     * @var DomainName
-     */
+    /** @var DomainName */
     protected $domainName;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $primary = false;
 
-    /**
-     * @var WebhostingDomainNameId
-     */
+    /** @var WebhostingDomainNameId */
     protected $id;
 
     public function __construct(WebhostingAccount $account, DomainName $domainName)
     {
-        $this->account = $account;
+        $this->account    = $account;
         $this->domainName = $domainName;
-        $this->id = WebhostingDomainNameId::create();
+        $this->id         = WebhostingDomainNameId::create();
     }
 
     /**
-     * @param WebhostingAccount $account
-     * @param DomainName        $domainName
-     *
      * @return static
      */
     public static function registerPrimary(WebhostingAccount $account, DomainName $domainName)
     {
-        $instance = new static($account, $domainName);
+        $instance          = new static($account, $domainName);
         $instance->primary = true;
 
         return $instance;
     }
 
     /**
-     * @param WebhostingAccount $account
-     * @param DomainName        $domainName
-     *
      * @return static
      */
     public static function registerSecondary(WebhostingAccount $account, DomainName $domainName)

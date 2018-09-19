@@ -33,15 +33,12 @@ use ParkManager\Module\WebhostingModule\Domain\Package\Capability;
 interface CapabilityGuard
 {
     /**
-     * @param Capability        $configuration Current Capability configuration
-     * @param array             $context       Additional information about the operation
-     *                                         (implement dependent - not required)
-     * @param WebhostingAccount $account
-     * @param ServiceMessages   $messages      The ServiceMessages allows to "log" messages for
-     *                                         extra information about the failure or a warning
-     *                                         about reaching the limits of the account's capabilities
-     *
-     * @return bool
+     * @param Capability      $configuration Current Capability configuration
+     * @param array           $context       Additional information about the operation
+     *                                       (implement dependent - not required)
+     * @param ServiceMessages $messages      The ServiceMessages allows to "log" messages for
+     *                                       extra information about the failure or a warning
+     *                                       about reaching the limits of the account's capabilities
      */
     public function decide(Capability $configuration, array $context, WebhostingAccount $account, ServiceMessages $messages): bool;
 }

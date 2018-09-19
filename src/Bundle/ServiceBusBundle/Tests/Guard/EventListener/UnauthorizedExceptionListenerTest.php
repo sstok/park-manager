@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\ServiceBusBundle\Tests\Guard\EventListener;
 
 use ParkManager\Bundle\ServiceBusBundle\Guard\EventListener\UnauthorizedExceptionListener;
-use ParkManager\Component\ServiceBus\MessageGuard\UnauthorizedException;
+use ParkManager\Component\ServiceBus\MessageGuard\MessageAuthorizationFailed;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -29,8 +29,8 @@ final class UnauthorizedExceptionListenerTest extends TestCase
     /** @test */
     public function it_ignore_other_exceptions()
     {
-        $listener = new UnauthorizedExceptionListener();
-        $event = new GetResponseForExceptionEvent(
+        $listener      = new UnauthorizedExceptionListener();
+        $event         = new GetResponseForExceptionEvent(
             $this->createMock(HttpKernelInterface::class),
             new Request(),
             HttpKernelInterface::MASTER_REQUEST,
@@ -45,12 +45,12 @@ final class UnauthorizedExceptionListenerTest extends TestCase
     /** @test */
     public function it_changes_UnauthorizedException_to_AccessDeniedException()
     {
-        $listener = new UnauthorizedExceptionListener();
-        $event = new GetResponseForExceptionEvent(
+        $listener      = new UnauthorizedExceptionListener();
+        $event         = new GetResponseForExceptionEvent(
             $this->createMock(HttpKernelInterface::class),
             new Request(),
             HttpKernelInterface::MASTER_REQUEST,
-            $exception = UnauthorizedException::forMessage($message = new \stdClass())
+            $exception = MessageAuthorizationFailed::forMessage($message = new \stdClass())
         );
 
         $listener->onException($event);

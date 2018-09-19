@@ -32,21 +32,23 @@ final class RegisterWebhostingAccountHandler
         WebhostingPackageRepository $packageRepository,
         WebhostingDomainNameRepository $domainNameRepository
     ) {
-        $this->accountRepository = $accountRepository;
-        $this->packageRepository = $packageRepository;
+        $this->accountRepository    = $accountRepository;
+        $this->packageRepository    = $packageRepository;
         $this->domainNameRepository = $domainNameRepository;
     }
 
     public function __invoke(RegisterWebhostingAccount $command): void
     {
-        /** @var WebhostingAccount|string $className */
         $domainName = $command->domainName();
+        $packageId  = $command->package();
 
-        if (null !== $currentRegistration = $this->domainNameRepository->findByFullName($domainName)) {
+        $currentRegistration = $this->domainNameRepository->findByFullName($domainName);
+
+        if ($currentRegistration !== null) {
             throw DomainNameAlreadyInUse::byAccountId($domainName, $currentRegistration->account()->id());
         }
 
-        if (null !== $packageId = $command->package()) {
+        if ($packageId !== null) {
             $account = WebhostingAccount::register(
                 $command->id(),
                 $command->owner(),

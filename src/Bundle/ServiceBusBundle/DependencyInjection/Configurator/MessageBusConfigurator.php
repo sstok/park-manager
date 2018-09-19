@@ -15,14 +15,17 @@ namespace ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator;
 
 use ParkManager\Component\ServiceBus\TacticianCommandBus;
 use Symfony\Component\DependencyInjection\Loader\Configurator\DefaultsConfigurator;
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
+use function debug_backtrace;
+use function dirname;
 
 class MessageBusConfigurator
 {
     // Priorities the higher the sooner.
     // --
-    public const MIDDLEWARE_PRIORITY_GUARD = 10000;
+    public const MIDDLEWARE_PRIORITY_GUARD       = 10000;
     public const MIDDLEWARE_PRIORITY_TRANSACTION = 8000;
-    public const MIDDLEWARE_PRIORITY_HANDLE = -10000;
+    public const MIDDLEWARE_PRIORITY_HANDLE      = -10000;
     // --
 
     private $di;
@@ -49,13 +52,11 @@ class MessageBusConfigurator
     /**
      * @param string|null $searchDirectory Absolute directory to locate load()s from
      *                                     (falls back to "current" services.php file directory)
-     *
-     * @return HandlersConfigurator
      */
-    public function handlers(string $searchDirectory = null): HandlersConfigurator
+    public function handlers(?string $searchDirectory = null): HandlersConfigurator
     {
-        if (null === $searchDirectory) {
-            $searchDirectory = \dirname(debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS)[0]['file']);
+        if ($searchDirectory === null) {
+            $searchDirectory = dirname(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[0]['file']);
         }
 
         return new HandlersConfigurator($this, $this->di, $this->serviceId, $searchDirectory);
@@ -63,7 +64,7 @@ class MessageBusConfigurator
 
     protected function __construct(DefaultsConfigurator $di, string $serviceId)
     {
-        $this->di = $di;
+        $this->di        = $di;
         $this->serviceId = $serviceId;
     }
 }

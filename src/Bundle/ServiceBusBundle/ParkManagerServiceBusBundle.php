@@ -26,7 +26,7 @@ class ParkManagerServiceBusBundle extends Bundle
 {
     public function getContainerExtension(): DependencyExtension
     {
-        if (null === $this->extension) {
+        if ($this->extension === null) {
             $this->extension = new DependencyExtension();
         }
 

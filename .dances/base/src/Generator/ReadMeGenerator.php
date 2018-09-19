@@ -24,7 +24,7 @@ final class ReadMeGenerator implements Generator
 
     public function __construct(\Twig_Environment $twig, Filesystem $filesystem)
     {
-        $this->twig = $twig;
+        $this->twig       = $twig;
         $this->filesystem = $filesystem;
     }
 

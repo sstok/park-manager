@@ -18,6 +18,11 @@ use League\Tactician\Middleware;
 use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\Middleware\DomainEventsMiddlewareConfigurator;
 use ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\Middleware\PolicyGuardMiddlewareConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\AbstractServiceConfigurator;
+use function array_merge;
+use function class_exists;
+use function is_a;
+use function sprintf;
+use function ucfirst;
 
 /**
  * @internal
@@ -38,26 +43,23 @@ class MiddlewaresConfigurator
 
     public function __construct(MessageBusConfigurator $parent, AbstractServiceConfigurator $di, string $serviceId)
     {
-        $this->parent = $parent;
+        $this->parent    = $parent;
         $this->serviceId = $serviceId;
-        $this->di = $di;
+        $this->di        = $di;
     }
 
     /**
-     * @param string $name
-     * @param array  $arguments
-     *
      * @return AdvancedMiddlewareConfigurator|$this Returns the MiddlewareConfigurator for advanced configurators
      */
     public function __call(string $name, array $arguments): object
     {
-        $className = __NAMESPACE__.'\\Middleware\\'.ucfirst($name).'MiddlewareConfigurator';
+        $className = __NAMESPACE__ . '\\Middleware\\' . ucfirst($name) . 'MiddlewareConfigurator';
 
-        if (!class_exists($className)) {
+        if (! class_exists($className)) {
             throw new \InvalidArgumentException(sprintf('Cannot locate class "%s" for middleware %s.', $className, $name));
         }
 
-        if (!is_a($className, MiddlewareConfigurator::class, true)) {
+        if (! is_a($className, MiddlewareConfigurator::class, true)) {
             throw new \InvalidArgumentException(sprintf('Class %s must implement %s.', $className, MiddlewareConfigurator::class));
         }
 
@@ -72,20 +74,20 @@ class MiddlewaresConfigurator
 
     public function register(string $middlewareClass, int $priority = 0, $arguments = []): self
     {
-        if (CommandHandlerMiddleware::class === $middlewareClass) {
+        if ($middlewareClass === CommandHandlerMiddleware::class) {
             throw new \InvalidArgumentException(sprintf('Cannot register %s as this is already done by the configurator.', CommandHandlerMiddleware::class));
         }
 
-        if (!class_exists($middlewareClass)) {
+        if (! class_exists($middlewareClass)) {
             throw new \InvalidArgumentException(sprintf('Cannot locate class %s.', $middlewareClass));
         }
 
-        if (!is_a($middlewareClass, Middleware::class, true)) {
+        if (! is_a($middlewareClass, Middleware::class, true)) {
             throw new \InvalidArgumentException(sprintf('Class %s must implement %s.', $middlewareClass, Middleware::class));
         }
 
-        $this->di->set($this->serviceId.'.middleware.'.$middlewareClass, $middlewareClass)
-            ->tag($this->serviceId.'.middleware', ['priority' => $priority])
+        $this->di->set($this->serviceId . '.middleware.' . $middlewareClass, $middlewareClass)
+            ->tag($this->serviceId . '.middleware', ['priority' => $priority])
             ->args($arguments)
             ->private();
 

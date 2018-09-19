@@ -22,7 +22,7 @@ final class DomainName
     public function __construct(string $name, string $tld)
     {
         $this->name = $name;
-        $this->tld = $tld;
+        $this->tld  = $tld;
     }
 
     public function name(): string
@@ -37,6 +37,6 @@ final class DomainName
 
     public function toString()
     {
-        return $this->name.'.'.$this->tld;
+        return $this->name . '.' . $this->tld;
     }
 }

@@ -15,11 +15,6 @@ namespace ParkManager\Component\DomainEvent;
 
 interface EventEmitter
 {
-    /**
-     * @param DomainEvent $event
-     *
-     * @return DomainEvent
-     */
     public function emit(DomainEvent $event): DomainEvent;
 
     /**
@@ -57,7 +52,7 @@ interface EventEmitter
      *
      * @return array The event listeners for the specified event, or all event listeners by event name
      */
-    public function getListeners(string $eventName = null): array;
+    public function getListeners(?string $eventName = null): array;
 
     /**
      * Checks whether an event has any registered listeners.
@@ -66,5 +61,5 @@ interface EventEmitter
      *
      * @return bool true if the specified event has any listeners, false otherwise
      */
-    public function hasListeners(string $eventName = null): bool;
+    public function hasListeners(?string $eventName = null): bool;
 }

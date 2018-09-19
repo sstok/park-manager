@@ -31,8 +31,6 @@ interface KeysetPageResult
 
     /**
      * Returns whether there are other items from beyond the give keyset.
-     *
-     * @return bool
      */
     public function hasNextPage(): bool;
 

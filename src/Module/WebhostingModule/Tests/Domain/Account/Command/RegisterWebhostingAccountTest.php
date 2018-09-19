@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
 final class RegisterWebhostingAccountTest extends TestCase
 {
     private const ACCOUNT_ID = 'b288e23c-97c5-11e7-b51a-acbc32b58315';
-    private const OWNER_ID = '2a9cd25c-97ca-11e7-9683-acbc32b58315';
+    private const OWNER_ID   = '2a9cd25c-97ca-11e7-9683-acbc32b58315';
     private const PACKAGE_ID = '654665ea-9869-11e7-9563-acbc32b58315';
 
     /** @test */

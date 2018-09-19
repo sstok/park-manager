@@ -59,11 +59,11 @@ final class AutoFilledUrlGenerator implements UrlGeneratorInterface
     private $requestStack;
     private $context;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, RequestStack $requestStack, MappingFileLoader $autoFillMapping = null)
+    public function __construct(UrlGeneratorInterface $urlGenerator, RequestStack $requestStack, ?MappingFileLoader $autoFillMapping = null)
     {
-        $this->urlGenerator = $urlGenerator;
+        $this->urlGenerator    = $urlGenerator;
         $this->autoFillMapping = $autoFillMapping ?? MappingFileLoader::fromArray([]);
-        $this->requestStack = $requestStack;
+        $this->requestStack    = $requestStack;
     }
 
     public function setContext(RequestContext $context)
@@ -94,7 +94,7 @@ final class AutoFilledUrlGenerator implements UrlGeneratorInterface
     private function fillMissingParameters(array $mapping, array $parameters, ParameterBag $attributes): array
     {
         foreach ($mapping as $name => $v) {
-            if (isset($parameters[$name]) || !$attributes->has($name)) {
+            if (isset($parameters[$name]) || ! $attributes->has($name)) {
                 continue;
             }
 

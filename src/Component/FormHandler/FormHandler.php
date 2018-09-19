@@ -76,8 +76,6 @@ interface FormHandler
      * - Form is submitted
      * - Form is valid
      * - Command was handled (without errors)
-     *
-     * @return bool
      */
     public function isReady(): bool;
 }

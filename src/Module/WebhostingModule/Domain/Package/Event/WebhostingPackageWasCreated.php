@@ -25,7 +25,7 @@ final class WebhostingPackageWasCreated extends DomainEvent
 
     public function __construct(WebhostingPackageId $id, Capabilities $capabilities)
     {
-        $this->packageId = $id;
+        $this->packageId    = $id;
         $this->capabilities = $capabilities;
     }
 

@@ -25,12 +25,11 @@ use ParkManager\Module\WebhostingModule\Infrastructure\Service\Package\AccountCa
 use ParkManager\Module\WebhostingModule\Tests\Fixtures\Application\Ftp\RegisterFtpUser;
 use ParkManager\Module\WebhostingModule\Tests\Fixtures\Application\Mailbox\CreateMailbox;
 use ParkManager\Module\WebhostingModule\Tests\Fixtures\Application\Mailbox\RemoveMailbox;
-use ParkManager\Module\WebhostingModule\Tests\Fixtures\Domain\PackageCapability\{
-    FtpUserCount, MonthlyTrafficQuota, StorageSpaceQuota
-};
-use ParkManager\Module\WebhostingModule\Tests\Fixtures\Infrastructure\PackageCapability\{
-    AllowingWithWarningsGuard, DenyingGuard
-};
+use ParkManager\Module\WebhostingModule\Tests\Fixtures\Domain\PackageCapability\FtpUserCount;
+use ParkManager\Module\WebhostingModule\Tests\Fixtures\Domain\PackageCapability\MonthlyTrafficQuota;
+use ParkManager\Module\WebhostingModule\Tests\Fixtures\Domain\PackageCapability\StorageSpaceQuota;
+use ParkManager\Module\WebhostingModule\Tests\Fixtures\Infrastructure\PackageCapability\AllowingWithWarningsGuard;
+use ParkManager\Module\WebhostingModule\Tests\Fixtures\Infrastructure\PackageCapability\DenyingGuard;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\PropertyAccess\PropertyAccessorBuilder;
@@ -43,9 +42,7 @@ final class AccountCapabilitiesGuardTest extends TestCase
     private const ACCOUNT_ID1 = '374dd50e-9b9f-11e7-9730-acbc32b58315';
     private const ACCOUNT_ID2 = '374dd50e-9b9f-11e7-9730-acbc32b58316';
 
-    /**
-     * @var AccountCapabilitiesRestrictionGuard
-     */
+    /** @var AccountCapabilitiesRestrictionGuard */
     private $capabilitiesGuard;
 
     protected function setUp(): void

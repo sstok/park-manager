@@ -34,8 +34,9 @@ final class CapabilityCoveringCommandValidatorTest extends TestCase
     public function it_ignores_unsupported_commands()
     {
         $serviceMessages = new ServiceMessages();
-        $middleware = new AccountCapabilitiesRestrictionGuardMiddleware(
-            $this->createCapabilitiesGuard($serviceMessages), $serviceMessages
+        $middleware      = new AccountCapabilitiesRestrictionGuardMiddleware(
+            $this->createCapabilitiesGuard($serviceMessages),
+            $serviceMessages
         );
 
         self::assertTrue($middleware->execute(
@@ -48,8 +49,9 @@ final class CapabilityCoveringCommandValidatorTest extends TestCase
     public function it_returns_false_when_guard_decides_to_block()
     {
         $serviceMessages = new ServiceMessages();
-        $middleware = new AccountCapabilitiesRestrictionGuardMiddleware(
-            $this->createCapabilitiesGuard($serviceMessages), $serviceMessages
+        $middleware      = new AccountCapabilitiesRestrictionGuardMiddleware(
+            $this->createCapabilitiesGuard($serviceMessages),
+            $serviceMessages
         );
 
         self::assertFalse($middleware->execute(
@@ -62,8 +64,9 @@ final class CapabilityCoveringCommandValidatorTest extends TestCase
     public function it_continues_execution_when_guard_approves()
     {
         $serviceMessages = new ServiceMessages();
-        $middleware = new AccountCapabilitiesRestrictionGuardMiddleware(
-            $this->createCapabilitiesGuard($serviceMessages), $serviceMessages
+        $middleware      = new AccountCapabilitiesRestrictionGuardMiddleware(
+            $this->createCapabilitiesGuard($serviceMessages),
+            $serviceMessages
         );
 
         self::assertEquals('it-worked', $middleware->execute(

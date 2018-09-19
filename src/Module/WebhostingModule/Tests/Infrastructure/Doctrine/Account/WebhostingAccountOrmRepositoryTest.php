@@ -36,20 +36,16 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
 {
     use EventSourcedRepositoryTestHelper;
 
-    private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
+    private const OWNER_ID1   = '3f8da982-a528-11e7-a2da-acbc32b58315';
     private const PACKAGE_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
 
     private const ACCOUNT_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
     private const ACCOUNT_ID2 = '47f6db14-a69c-11e7-be13-acbc32b58315';
 
-    /**
-     * @var Capabilities
-     */
+    /** @var Capabilities */
     private $packageCapabilities;
 
-    /**
-     * @var WebhostingPackage
-     */
+    /** @var WebhostingPackage */
     private $package;
 
     protected function setUp(): void
@@ -57,7 +53,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         parent::setUp();
 
         $this->packageCapabilities = new Capabilities(new MonthlyTrafficQuota(50));
-        $this->package = WebhostingPackage::create(
+        $this->package             = WebhostingPackage::create(
             WebhostingPackageId::fromString(self::PACKAGE_ID1),
             $this->packageCapabilities
         );
@@ -75,9 +71,9 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         $this->setUpAccount1($repository);
         $this->setUpAccount2($repository);
 
-        $id = WebhostingAccountId::fromString(self::ACCOUNT_ID1);
-        $id2 = WebhostingAccountId::fromString(self::ACCOUNT_ID2);
-        $account = $repository->get($id);
+        $id       = WebhostingAccountId::fromString(self::ACCOUNT_ID1);
+        $id2      = WebhostingAccountId::fromString(self::ACCOUNT_ID2);
+        $account  = $repository->get($id);
         $account2 = $repository->get($id2);
 
         self::assertEquals($id, $account->id());
@@ -98,7 +94,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         $this->setUpAccount1($repository);
         $this->setUpAccount2($repository);
 
-        $id = WebhostingAccountId::fromString(self::ACCOUNT_ID1);
+        $id      = WebhostingAccountId::fromString(self::ACCOUNT_ID1);
         $account = $repository->get($id);
 
         // Mark for removal, then store this status.
@@ -121,7 +117,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         $repository = $this->createRepository(1);
         $this->setUpAccount1($repository);
 
-        $id = WebhostingAccountId::fromString(self::ACCOUNT_ID1);
+        $id      = WebhostingAccountId::fromString(self::ACCOUNT_ID1);
         $account = $repository->get($id);
 
         $this->expectException(CannotRemoveActiveWebhostingAccount::class);

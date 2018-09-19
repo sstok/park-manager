@@ -20,9 +20,9 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Exception\AlreadySubmittedException;
-use Symfony\Component\Form\Extension\Core\Type\{
-    FormType, IntegerType, TextType
-};
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\HttpFoundation\Type\FormTypeHttpFoundationExtension;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormError;
@@ -31,6 +31,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\ValidatorBuilder;
+use function explode;
+use function iterator_to_array;
 
 /**
  * @internal
@@ -43,7 +45,7 @@ final class CommandBusFormHandlerTest extends TestCase
         $commandBusProphecy->handle(Argument::any())->shouldNotBeCalled();
         $commandBus = $commandBusProphecy->reveal();
 
-        $form = $this->createRealForm();
+        $form    = $this->createRealForm();
         $handler = new CommandBusFormHandler($form, $commandBus);
 
         self::assertSame($form, $handler->getForm());
@@ -56,7 +58,7 @@ final class CommandBusFormHandlerTest extends TestCase
         $commandBusProphecy->handle(Argument::any())->shouldNotBeCalled();
         $commandBus = $commandBusProphecy->reveal();
 
-        $form = $this->createRealForm();
+        $form    = $this->createRealForm();
         $handler = new CommandBusFormHandler($form, $commandBus);
 
         $request = Request::create('/');
@@ -73,7 +75,7 @@ final class CommandBusFormHandlerTest extends TestCase
         $commandBusProphecy->handle(Argument::any())->shouldNotBeCalled();
         $commandBus = $commandBusProphecy->reveal();
 
-        $form = $this->createRealForm(new StubCommand());
+        $form    = $this->createRealForm(new StubCommand());
         $handler = new CommandBusFormHandler($form, $commandBus);
 
         $request = Request::create('/', 'POST');
@@ -90,7 +92,7 @@ final class CommandBusFormHandlerTest extends TestCase
         $commandBusProphecy->handle(Argument::which('id', 5))->shouldBeCalled();
         $commandBus = $commandBusProphecy->reveal();
 
-        $form = $this->createRealForm(new StubCommand());
+        $form    = $this->createRealForm(new StubCommand());
         $handler = new CommandBusFormHandler($form, $commandBus);
 
         $request = Request::create('/', 'POST');
@@ -109,7 +111,7 @@ final class CommandBusFormHandlerTest extends TestCase
         $commandBusProphecy->handle(Argument::any())->shouldNotBeCalled();
         $commandBus = $commandBusProphecy->reveal();
 
-        $form = $this->createRealForm(new StubCommand());
+        $form    = $this->createRealForm(new StubCommand());
         $handler = new CommandBusFormHandler($form, $commandBus);
 
         $request = Request::create('/', 'POST');
@@ -133,7 +135,7 @@ final class CommandBusFormHandlerTest extends TestCase
         $commandBusProphecy->handle(Argument::which('id', 5))->shouldBeCalledTimes(1);
         $commandBus = $commandBusProphecy->reveal();
 
-        $form = $this->createRealForm(new StubCommand());
+        $form    = $this->createRealForm(new StubCommand());
         $handler = new CommandBusFormHandler($form, $commandBus);
 
         $request = Request::create('/', 'POST');
@@ -154,7 +156,7 @@ final class CommandBusFormHandlerTest extends TestCase
         $commandBusProphecy->handle(Argument::which('id', 5))->shouldBeCalledTimes(1);
         $commandBus = $commandBusProphecy->reveal();
 
-        $form = $this->createRealForm(new StubCommand());
+        $form    = $this->createRealForm(new StubCommand());
         $handler = new CommandBusFormHandler($form, $commandBus, function () {
             throw new \InvalidArgumentException('This command is not invalid it is not.');
         });
@@ -174,7 +176,7 @@ final class CommandBusFormHandlerTest extends TestCase
         $commandBusProphecy->handle(Argument::any())->shouldNotBeCalled();
         $commandBus = $commandBusProphecy->reveal();
 
-        $form = $this->createRealForm(new StubCommand());
+        $form    = $this->createRealForm(new StubCommand());
         $handler = new CommandBusFormHandler($form, $commandBus, function () {
             throw new \InvalidArgumentException('This command is not invalid it is not.');
         });
@@ -190,7 +192,6 @@ final class CommandBusFormHandlerTest extends TestCase
      * @test
      * @dataProvider provideExceptions
      *
-     * @param \Exception         $exception
      * @param array<FormError[]> $expectedErrors
      */
     public function it_maps_command_bus_exceptions(\Exception $exception, array $expectedErrors)
@@ -234,9 +235,10 @@ final class CommandBusFormHandlerTest extends TestCase
         self::assertFalse($form->isValid());
 
         foreach ($expectedErrors as $formPath => $formErrors) {
+            $formPath    = (string) $formPath;
             $currentForm = $form;
 
-            if ('' !== (string) $formPath) {
+            if ($formPath !== '') {
                 foreach (explode('.', $formPath) as $child) {
                     $currentForm = $currentForm->get($child);
                 }

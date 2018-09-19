@@ -26,7 +26,7 @@ final class MappingFileLoader
 
     public static function fromArray(array $mapping): self
     {
-        $loader = new self('nope');
+        $loader          = new self('nope');
         $loader->mapping = $mapping;
 
         return $loader;
@@ -34,7 +34,7 @@ final class MappingFileLoader
 
     public function all()
     {
-        if (null === $this->mapping) {
+        if ($this->mapping === null) {
             $this->mapping = include $this->filename;
         }
 

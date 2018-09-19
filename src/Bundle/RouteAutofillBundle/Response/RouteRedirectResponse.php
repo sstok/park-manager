@@ -19,13 +19,13 @@ class RouteRedirectResponse
 {
     protected $route;
     protected $parameters = [];
-    protected $status = 302;
+    protected $status     = 302;
 
     public function __construct(string $route, array $parameters = [], int $status = 302)
     {
-        $this->route = $route;
+        $this->route      = $route;
         $this->parameters = $parameters;
-        $this->status = $status;
+        $this->status     = $status;
     }
 
     public static function permanent(string $route, array $parameters = [])

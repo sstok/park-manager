@@ -21,8 +21,8 @@ final class StubCommand
 
     public function __construct($id = 5, $username = null, $profile = null)
     {
-        $this->id = $id;
+        $this->id       = $id;
         $this->username = $username;
-        $this->profile = $profile;
+        $this->profile  = $profile;
     }
 }

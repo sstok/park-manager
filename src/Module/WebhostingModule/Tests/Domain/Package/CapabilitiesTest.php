@@ -19,6 +19,8 @@ use ParkManager\Module\WebhostingModule\Domain\Package\Exception\CapabilityNotIn
 use ParkManager\Module\WebhostingModule\Tests\Fixtures\Domain\PackageCapability\MonthlyTrafficQuota;
 use ParkManager\Module\WebhostingModule\Tests\Fixtures\Domain\PackageCapability\StorageSpaceQuota;
 use PHPUnit\Framework\TestCase;
+use function get_class;
+use function iterator_to_array;
 
 /**
  * @internal
@@ -28,20 +30,20 @@ final class CapabilitiesTest extends TestCase
     /** @test */
     public function its_constructable()
     {
-        $capability = new StorageSpaceQuota('9B');
-        $capability2 = new MonthlyTrafficQuota(50);
+        $capability   = new StorageSpaceQuota('9B');
+        $capability2  = new MonthlyTrafficQuota(50);
         $capabilities = new Capabilities($capability, $capability);
 
         self::assertCapabilitiesEquals([$capability], $capabilities);
-        self::assertTrue($capabilities->has(\get_class($capability)));
-        self::assertFalse($capabilities->has(\get_class($capability2)));
+        self::assertTrue($capabilities->has(get_class($capability)));
+        self::assertFalse($capabilities->has(get_class($capability2)));
         self::assertEquals($capability, $capabilities->get(StorageSpaceQuota::class));
     }
 
     /** @test */
     public function it_throws_when_getting_unset_capability()
     {
-        $capability = new StorageSpaceQuota('9B');
+        $capability   = new StorageSpaceQuota('9B');
         $capabilities = new Capabilities($capability);
 
         $this->expectException(CapabilityNotInSet::class);
@@ -53,10 +55,10 @@ final class CapabilitiesTest extends TestCase
     /** @test */
     public function it_allows_adding_and_returns_new_set()
     {
-        $capability = new StorageSpaceQuota('9B');
+        $capability  = new StorageSpaceQuota('9B');
         $capability2 = new MonthlyTrafficQuota(50);
 
-        $capabilities = new Capabilities($capability);
+        $capabilities    = new Capabilities($capability);
         $capabilitiesNew = $capabilities->add($capability2);
 
         self::assertNotSame($capabilities, $capabilitiesNew);
@@ -67,10 +69,10 @@ final class CapabilitiesTest extends TestCase
     /** @test */
     public function it_allows_removing_and_returns_new_set()
     {
-        $capability = new StorageSpaceQuota('9B');
+        $capability  = new StorageSpaceQuota('9B');
         $capability2 = new MonthlyTrafficQuota(50);
 
-        $capabilities = new Capabilities($capability, $capability2);
+        $capabilities    = new Capabilities($capability, $capability2);
         $capabilitiesNew = $capabilities->remove($capability);
 
         self::assertNotSame($capabilities, $capabilitiesNew);
@@ -82,7 +84,7 @@ final class CapabilitiesTest extends TestCase
     {
         $processedCapabilities = [];
         foreach ($capabilities as $capability) {
-            $processedCapabilities[\get_class($capability)] = $capability;
+            $processedCapabilities[get_class($capability)] = $capability;
         }
 
         self::assertEquals($processedCapabilities, iterator_to_array($capabilitiesSet));

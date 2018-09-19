@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
 final class WebhostingAccountPackageAssignmentWasChangedTest extends TestCase
 {
     private const WEBHOSTING_PACKAGE_ID = 'b3e3846a-97c6-11e7-bf67-acbc32b58315';
-    private const ACCOUNT_ID = 'b288e23c-97c5-11e7-b51a-acbc32b58315';
+    private const ACCOUNT_ID            = 'b288e23c-97c5-11e7-b51a-acbc32b58315';
 
     /** @test */
     public function its_constructable()

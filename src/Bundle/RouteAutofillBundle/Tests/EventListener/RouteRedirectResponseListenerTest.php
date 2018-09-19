@@ -36,7 +36,7 @@ final class RouteRedirectResponseListenerTest extends TestCase
         $urlGenerator = $urlGeneratorProphecy->reveal();
 
         $listener = new RouteRedirectResponseListener($urlGenerator);
-        $event = $this->createEvent(false);
+        $event    = $this->createEvent(false);
 
         $listener->onKernelView($event);
 
@@ -54,7 +54,7 @@ final class RouteRedirectResponseListenerTest extends TestCase
         $urlGenerator = $urlGeneratorProphecy->reveal();
 
         $listener = new RouteRedirectResponseListener($urlGenerator);
-        $event = $this->createEvent(new RouteRedirectResponse('foobar', ['he' => 'bar']));
+        $event    = $this->createEvent(new RouteRedirectResponse('foobar', ['he' => 'bar']));
 
         $listener->onKernelView($event);
 
@@ -71,7 +71,7 @@ final class RouteRedirectResponseListenerTest extends TestCase
         $urlGenerator = $urlGeneratorProphecy->reveal();
 
         $listener = new RouteRedirectResponseListener($urlGenerator);
-        $event = $this->createEvent(RouteRedirectResponse::permanent('foobar', ['he' => 'bar']));
+        $event    = $this->createEvent(RouteRedirectResponse::permanent('foobar', ['he' => 'bar']));
 
         $listener->onKernelView($event);
 

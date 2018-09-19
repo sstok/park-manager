@@ -25,7 +25,7 @@ final class CreateMailbox implements AccountIdAwareCommand
     public function __construct(string $accountId, $size)
     {
         $this->accountId = WebhostingAccountId::fromString($accountId);
-        $this->size = $size;
+        $this->size      = $size;
     }
 
     public function account(): WebhostingAccountId

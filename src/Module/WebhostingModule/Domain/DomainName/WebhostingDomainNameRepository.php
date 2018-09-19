@@ -22,14 +22,14 @@ use ParkManager\Module\WebhostingModule\Domain\DomainName\Exception\WebhostingDo
 interface WebhostingDomainNameRepository
 {
     /**
-     * @throws WebhostingDomainNameNotFound when no domain-name was found with the id
+     * @throws WebhostingDomainNameNotFound When no domain-name was found with the id
      */
     public function get(WebhostingDomainNameId $id): WebhostingDomainName;
 
     /**
      * Get the primary DomainName of an webhosting account.
      *
-     * @throws WebhostingAccountNotFound when no account was found with the id
+     * @throws WebhostingAccountNotFound When no account was found with the id
      */
     public function getPrimaryOf(WebhostingAccountId $id): WebhostingDomainName;
 

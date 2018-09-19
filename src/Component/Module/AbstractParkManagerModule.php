@@ -18,36 +18,37 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use function count;
+use function file_exists;
+use function get_class;
+use function preg_replace;
+use function sprintf;
 
 abstract class AbstractParkManagerModule extends Bundle implements ParkManagerModule
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getContainerExtension()
+    public function getContainerExtension(): ?ExtensionInterface
     {
-        if (null === $this->extension) {
+        if ($this->extension === null) {
             $extension = $this->createContainerExtension();
 
-            if (null !== $extension) {
-                if (!$extension instanceof ExtensionInterface) {
+            if ($extension !== null) {
+                if (! $extension instanceof ExtensionInterface) {
                     throw new \LogicException(
                         sprintf(
                             'Extension %s must implement Symfony\Component\DependencyInjection\Extension\ExtensionInterface.',
-                            \get_class($extension)
+                            get_class($extension)
                         )
                     );
                 }
 
-                // check naming convention
+                // Check the naming convention.
                 // Park-Manager vendor Modules don't have to follow the alias convention
-                $basename = preg_replace('/Module$/', '', $this->getName());
-                $expectedAlias = Container::underscore($basename);
+                $expectedAlias = Container::underscore(preg_replace('/Module$/', '', $this->getName()));
 
                 if ($expectedAlias !== $extension->getAlias()) {
                     throw new \LogicException(
                         sprintf(
-                            'Users will expect the alias of the default extension of a module to be the underscored version of the module name ("%s"). '.
+                            'Users will expect the alias of the default extension of a module to be the underscored version of the module name ("%s"). ' .
                             'You can override "AbstractParkManagerModule::getContainerExtension()" if you want to use "%s" or another alias.',
                             $expectedAlias,
                             $extension->getAlias()
@@ -61,40 +62,49 @@ abstract class AbstractParkManagerModule extends Bundle implements ParkManagerMo
             }
         }
 
-        if ($this->extension) {
+        if ($this->extension !== false) {
             return $this->extension;
         }
+
+        return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
-        if (0 !== \count($doctrineMapping = $this->getDoctrineMappings())) {
+        $doctrineMapping = $this->getDoctrineOrmMappings();
+
+        if (count($doctrineMapping) !== 0) {
             $container->addCompilerPass(
                 DoctrineOrmMappingsPass::createXmlMappingDriver($doctrineMapping, $this->getDoctrineEmNames())
             );
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getContainerExtensionClass(): string
     {
-        return $this->getNamespace().'\\Infrastructure\\DependencyInjection\\DependencyExtension';
+        return $this->getNamespace() . '\\Infrastructure\\DependencyInjection\\DependencyExtension';
     }
 
+    /**
+     * Return the list of EntityManager names (either [default]) to register the mappings for.
+     *
+     * @return string[]
+     */
     protected function getDoctrineEmNames(): array
     {
         return [];
     }
 
-    protected function getDoctrineMappings(): array
+    /**
+     * Gets the mappings for Doctrine ORM (XML only).
+     *
+     * @return string[] [directory => namespace-prefix]
+     */
+    protected function getDoctrineOrmMappings(): array
     {
-        $path = $this->getPath().'/Infrastructure/Doctrine/';
         $namespace = $this->getNamespace();
+        $path      = $this->getPath() . '/Infrastructure/Doctrine/';
+
         $mappings = [];
 
         if (file_exists($path)) {
@@ -103,11 +113,11 @@ abstract class AbstractParkManagerModule extends Bundle implements ParkManagerMo
                     continue;
                 }
 
-                $basename = $node->getBasename();
-                $directory = $path.$basename.'/Mapping';
+                $basename  = $node->getBasename();
+                $directory = $path . $basename . '/Mapping';
 
                 if (file_exists($directory)) {
-                    $mappings[$directory] = $namespace.'\\Domain\\'.$basename;
+                    $mappings[$directory] = $namespace . '\\Domain\\' . $basename;
                 }
             }
         }

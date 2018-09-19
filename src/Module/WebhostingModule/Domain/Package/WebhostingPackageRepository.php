@@ -19,7 +19,7 @@ use ParkManager\Module\WebhostingModule\Domain\Package\Exception\WebhostingPacka
 interface WebhostingPackageRepository
 {
     /**
-     * @throws WebhostingPackageNotFound when no package was found with the id
+     * @throws WebhostingPackageNotFound When no package was found with the id
      */
     public function get(WebhostingPackageId $id): WebhostingPackage;
 

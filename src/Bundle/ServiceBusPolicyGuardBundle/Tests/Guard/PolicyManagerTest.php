@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\Guard;
 
 use ParkManager\Bundle\ServiceBusPolicyGuardBundle\Guard\PolicyGuard;
-use ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\Fixtures\{
-    Deeper\MessageC, MessageA, MessageB, ServiceA
-};
+use ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\Fixtures\Deeper\MessageC;
+use ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\Fixtures\MessageA;
+use ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\Fixtures\MessageB;
+use ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\Fixtures\ServiceA;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -121,9 +122,7 @@ final class PolicyManagerTest extends TestCase
     {
         $manager = new PolicyGuard(
             $this->expressionLanguage,
-            [
-                'ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\Fixtures' => false,
-            ],
+            ['ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\Fixtures' => false],
             [
                 \stdClass::class => new Expression('my_bar == "bar"'),
                 MessageB::class => new Expression('services.get("my_service").getId() == message.id()'),
@@ -146,9 +145,9 @@ final class PolicyManagerTest extends TestCase
             $this->expressionLanguage,
             [],
             [],
-            '{^(?|'.
-                'ParkManager\\\Bundle\\\ServiceBusPolicyGuardBundle\\\Tests\\\Fixtures\\\(?|MessageA(*:1)|MessageB(*:2)))|'.
-                'ParkManager\\\Bundle\\\ServiceBusPolicyGuardBundle\\\Tests\\\Fixtures\\\Deeper\\\(?|Message\w(*:3))'.
+            '{^(?|' .
+                'ParkManager\\\Bundle\\\ServiceBusPolicyGuardBundle\\\Tests\\\Fixtures\\\(?|MessageA(*:1)|MessageB(*:2)))|' .
+                'ParkManager\\\Bundle\\\ServiceBusPolicyGuardBundle\\\Tests\\\Fixtures\\\Deeper\\\(?|Message\w(*:3))' .
             '}su',
             [1 => true, 2 => false, 3 => true],
             ['my_bar' => 'foo']

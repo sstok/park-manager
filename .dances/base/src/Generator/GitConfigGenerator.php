@@ -16,6 +16,7 @@ namespace ParkManager\SkeletonDancer\Generator;
 
 use SkeletonDancer\Generator;
 use SkeletonDancer\Service\Filesystem;
+use function implode;
 
 final class GitConfigGenerator implements Generator
 {
@@ -41,7 +42,7 @@ final class GitConfigGenerator implements Generator
                     'phpunit.xml.dist export-ignore',
                     '/Tests export-ignore',
                 ]
-            )."\n"
+            ) . "\n"
         );
     }
 }

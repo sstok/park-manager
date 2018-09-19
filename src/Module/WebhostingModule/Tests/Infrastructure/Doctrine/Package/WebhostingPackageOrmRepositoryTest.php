@@ -41,10 +41,10 @@ final class WebhostingPackageOrmRepositoryTest extends EntityRepositoryTestCase
         $this->setUpPackage1($repository);
         $this->setUpPackage2($repository);
 
-        $id = WebhostingPackageId::fromString(self::PACKAGE_ID1);
+        $id  = WebhostingPackageId::fromString(self::PACKAGE_ID1);
         $id2 = WebhostingPackageId::fromString(self::PACKAGE_ID2);
 
-        $package = $repository->get($id);
+        $package  = $repository->get($id);
         $package2 = $repository->get($id2);
 
         self::assertEquals($id, $package->id());
@@ -63,8 +63,8 @@ final class WebhostingPackageOrmRepositoryTest extends EntityRepositoryTestCase
         $this->setUpPackage1($repository);
         $this->setUpPackage2($repository);
 
-        $id = WebhostingPackageId::fromString(self::PACKAGE_ID1);
-        $id2 = WebhostingPackageId::fromString(self::PACKAGE_ID2);
+        $id      = WebhostingPackageId::fromString(self::PACKAGE_ID1);
+        $id2     = WebhostingPackageId::fromString(self::PACKAGE_ID2);
         $package = $repository->get($id);
 
         $repository->remove($package);

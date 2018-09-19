@@ -19,6 +19,9 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use function dirname;
+use function is_dir;
+use function realpath;
 
 /**
  * The ParkManagerModuleDependencyExtension provides an addition
@@ -39,12 +42,13 @@ abstract class ParkManagerModuleDependencyExtension extends Extension implements
 {
     use ServiceLoaderTrait;
 
+    /** @var string|null */
     protected $moduleDir;
 
     /**
      * Name of this Module (with vendor namespace).
      *
-     * @return string eg. AcmeWebhosting
+     * @return string either AcmeWebhosting
      */
     abstract public function getModuleName(): string;
 
@@ -52,8 +56,7 @@ abstract class ParkManagerModuleDependencyExtension extends Extension implements
      * Configures a number of common operations.
      * Use loadModule() to load additional configurations.
      *
-     * @param array            $configs
-     * @param ContainerBuilder $container
+     * @param array[] $configs
      *
      * @internal
      */
@@ -63,9 +66,9 @@ abstract class ParkManagerModuleDependencyExtension extends Extension implements
 
         $routeImporter = new RouteImporter($container);
         $routeImporter->addObjectResource($this);
-        $this->registerRoutes($routeImporter, realpath($this->moduleDir.'/Infrastructure/Resources/config') ?: null);
+        $this->registerRoutes($routeImporter, realpath($this->moduleDir . '/Infrastructure/Resources/config') ?: null);
 
-        $loader = $this->getServiceLoader($container, $this->moduleDir.'/Infrastructure/Resources/config/services');
+        $loader = $this->getServiceLoader($container, $this->moduleDir . '/Infrastructure/Resources/config/services');
         $this->loadModule($configs, $container, $loader);
     }
 
@@ -75,38 +78,36 @@ abstract class ParkManagerModuleDependencyExtension extends Extension implements
      *
      * Note: Registers only when directory or methods exist.
      *
-     * @param ContainerBuilder $container
-     *
      * @internal
      */
     final public function prepend(ContainerBuilder $container): void
     {
         $this->initModuleDirectory();
-        $resourcesDirectory = $this->moduleDir.'/Infrastructure/Resources';
+        $resourcesDirectory = $this->moduleDir . '/Infrastructure/Resources';
 
-        if (is_dir($resourcesDirectory.'/translations')) {
+        if (is_dir($resourcesDirectory . '/translations')) {
             $container->prependExtensionConfig('framework', [
                 'translator' => [
-                    'paths' => [$resourcesDirectory.'/translations'],
+                    'paths' => [$resourcesDirectory . '/translations'],
                 ],
             ]);
         }
-        if (is_dir($this->moduleDir.'/UI/Web/Resources/translations')) {
+        if (is_dir($this->moduleDir . '/UI/Web/Resources/translations')) {
             $container->prependExtensionConfig('framework', [
                 'translator' => [
-                    'paths' => [$this->moduleDir.'/UI/Web/Resources/translations'],
+                    'paths' => [$this->moduleDir . '/UI/Web/Resources/translations'],
                 ],
             ]);
         }
 
-        if (is_dir($resourcesDirectory.'/templates')) {
+        if (is_dir($resourcesDirectory . '/templates')) {
             $container->prependExtensionConfig('twig', [
-                'paths' => [$resourcesDirectory.'/templates' => $this->getModuleName()],
+                'paths' => [$resourcesDirectory . '/templates' => $this->getModuleName()],
             ]);
         }
-        if (is_dir($this->moduleDir.'/UI/Web/Resources/templates')) {
+        if (is_dir($this->moduleDir . '/UI/Web/Resources/templates')) {
             $container->prependExtensionConfig('twig', [
-                'paths' => [$this->moduleDir.'/UI/Web/Resources/templates' => $this->getModuleName()],
+                'paths' => [$this->moduleDir . '/UI/Web/Resources/templates' => $this->getModuleName()],
             ]);
         }
 
@@ -120,10 +121,9 @@ abstract class ParkManagerModuleDependencyExtension extends Extension implements
     /**
      * Loads a specific configuration.
      *
-     * @param array            $configs   The configs (unprocessed)
-     * @param ContainerBuilder $container
-     * @param LoaderInterface  $loader    Service definitions loader for all supported types
-     *                                    including Glob, Directory, Closure and ini
+     * @param array[]         $configs The configs (unprocessed)
+     * @param LoaderInterface $loader  Service definitions loader for "all" supported types
+     *                                 including Glob, Directory, Closure and ini
      */
     protected function loadModule(array $configs, ContainerBuilder $container, LoaderInterface $loader): void
     {
@@ -133,8 +133,6 @@ abstract class ParkManagerModuleDependencyExtension extends Extension implements
      * Allow an extension to prepend the extension configurations.
      *
      * prepend() is final, use this method instead.
-     *
-     * @param ContainerBuilder $container
      */
     protected function prependExtra(ContainerBuilder $container): void
     {
@@ -157,9 +155,8 @@ abstract class ParkManagerModuleDependencyExtension extends Extension implements
      *   $routeImporter->import($configDir.'/routing/client.php', 'park_manager.client_section.root');
      *   $routeImporter->import($configDir.'/routing/admin.php', 'park_manager.admin_section.root');
      *
-     * @param RouteImporter $routeImporter
-     * @param string        $configDir     Full path of Resources/config directory
-     *                                     (null when missing)
+     * @param string $configDir Full path of Resources/config directory
+     *                          (null when missing)
      */
     protected function registerRoutes(RouteImporter $routeImporter, ?string $configDir): void
     {
@@ -167,8 +164,8 @@ abstract class ParkManagerModuleDependencyExtension extends Extension implements
 
     final protected function initModuleDirectory(): void
     {
-        if (null === $this->moduleDir) {
-            $this->moduleDir = \dirname((new \ReflectionObject($this))->getFileName(), 3);
+        if ($this->moduleDir === null) {
+            $this->moduleDir = dirname((new \ReflectionObject($this))->getFileName(), 3);
         }
     }
 }

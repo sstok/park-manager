@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Security\Token;
 
+use function sha1;
+
 /**
  * !! THIS IMPLEMENTATION IS NOT SECURE, USE ONLY FOR TESTING !!
  */

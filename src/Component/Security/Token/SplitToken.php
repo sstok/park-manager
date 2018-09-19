@@ -16,6 +16,8 @@ namespace ParkManager\Component\Security\Token;
 use ParagonIE\ConstantTime\Base64UrlSafe;
 use ParagonIE\ConstantTime\Binary;
 use ParagonIE\Halite\HiddenString;
+use function sodium_memzero;
+use function sprintf;
 
 /**
  * A split-token value-object.
@@ -84,8 +86,8 @@ use ParagonIE\Halite\HiddenString;
  */
 abstract class SplitToken
 {
-    public const SELECTOR_BYTES = 24;
-    public const VERIFIER_BYTES = 18;
+    public const SELECTOR_BYTES    = 24;
+    public const VERIFIER_BYTES    = 18;
     public const TOKEN_DATA_LENGTH = (self::VERIFIER_BYTES + self::SELECTOR_BYTES);
     public const TOKEN_CHAR_LENGTH = (self::SELECTOR_BYTES * 4 / 3) + (self::VERIFIER_BYTES * 4 / 3);
 
@@ -102,14 +104,13 @@ abstract class SplitToken
      * The $randomBytes argument must provide a crypto-random string (wrapped in
      * a HiddenString object) of exactly {@see static::getLength()} bytes.
      *
-     * @param HiddenString $randomBytes
-     * @param null|string  $id          Optional id to bind the token a specific entity
-     *                                  (highly recommended)
-     * @param array        $config      Configuration for the hasher method (implementation specific)
+     * @param null|string $id     Optional id to bind the token a specific entity
+     *                            (highly recommended)
+     * @param mixed[]     $config Configuration for the hasher method (implementation specific)
      *
      * @return static
      */
-    public static function create(HiddenString $randomBytes, ?string $id = null, array $config = []): self
+    public static function create(HiddenString $randomBytes, ?string $id = null, array $config = [])
     {
         $bytesString = $randomBytes->getString();
 
@@ -118,28 +119,26 @@ abstract class SplitToken
             throw new \RuntimeException(sprintf('Invalid token-data provided, expected exactly %s bytes.', static::VERIFIER_BYTES + static::SELECTOR_BYTES));
         }
 
-        $instance = new static();
+        $instance           = new static();
         $instance->selector = Base64UrlSafe::encode(Binary::safeSubstr($bytesString, 0, self::SELECTOR_BYTES));
         $instance->verifier = Base64UrlSafe::encode(Binary::safeSubstr($bytesString, self::SELECTOR_BYTES, self::VERIFIER_BYTES));
-        $instance->token = new HiddenString($instance->selector.$instance->verifier, false, true);
+        $instance->token    = new HiddenString($instance->selector . $instance->verifier, false, true);
         $instance->configureHasher($config);
 
-        $instance->verifierHash = $instance->hashVerifier($instance->verifier.':'.($id ?? '\0'));
+        $instance->verifierHash = $instance->hashVerifier($instance->verifier . ':' . ($id ?? '\0'));
 
-        \sodium_memzero($instance->verifier);
-        \sodium_memzero($bytesString);
+        sodium_memzero($instance->verifier);
+        sodium_memzero($bytesString);
 
         return $instance;
     }
 
     /**
-     * @param \DateTimeImmutable|null $expiresAt
-     *
      * @return static
      */
     public function expireAt(?\DateTimeImmutable $expiresAt = null)
     {
-        $instance = clone $this;
+        $instance            = clone $this;
         $instance->expiresAt = $expiresAt;
 
         return $instance;
@@ -148,36 +147,32 @@ abstract class SplitToken
     /**
      * Recreates a SplitToken object from a string.
      *
-     * Note: The $token is zeroed from memory when valid.
-     *
-     * @param string $token
+     * Note: The provided $token is zeroed from memory when it's valid.
      *
      * @return static
      */
-    final public static function fromString(string $token): self
+    final public static function fromString(string $token)
     {
         if (Binary::safeStrlen($token) < self::TOKEN_CHAR_LENGTH) {
             // Don't zero memory as the value is invalid.
             throw new \RuntimeException('Invalid token provided.');
         }
 
-        $instance = new static();
-        $instance->token = new HiddenString($token);
+        $instance           = new static();
+        $instance->token    = new HiddenString($token);
         $instance->selector = Binary::safeSubstr($token, 0, 32);
         $instance->verifier = Binary::safeSubstr($token, 32);
 
         // Don't (re)generate as this needs the salt of the stored hash.
         $instance->verifierHash = null;
 
-        \sodium_memzero($token);
+        sodium_memzero($token);
 
         return $instance;
     }
 
     /**
      * Returns the selector to identify the token in storage.
-     *
-     * @return string
      */
     public function selector(): string
     {
@@ -185,9 +180,7 @@ abstract class SplitToken
     }
 
     /**
-     * Returns the token (selector + verifier) for authentication.
-     *
-     * @return HiddenString
+     * Returns the full token (selector + verifier) for authentication.
      */
     public function token(): HiddenString
     {
@@ -200,10 +193,7 @@ abstract class SplitToken
      * This method is to be used once the SplitToken is reconstructed
      * from a user-provided string.
      *
-     * @param SplitTokenValueHolder $token
-     * @param null|string           $id    Id this token was bound to during generation
-     *
-     * @return bool
+     * @param null|string $id Id this token was bound to during generation
      */
     final public function matches(SplitTokenValueHolder $token, ?string $id = null): bool
     {
@@ -211,7 +201,7 @@ abstract class SplitToken
             return false;
         }
 
-        return $this->verifyHash($token->verifierHash(), $this->verifier.':'.($id ?? '\0'));
+        return $this->verifyHash($token->verifierHash(), $this->verifier . ':' . ($id ?? '\0'));
     }
 
     /**
@@ -219,13 +209,11 @@ abstract class SplitToken
      *
      * Note: This method doesn't work when reconstructed from a string.
      *
-     * @param array $metadata
-     *
-     * @return SplitTokenValueHolder
+     * @param mixed[] $metadata Metadata for storage
      */
     public function toValueHolder(array $metadata = []): SplitTokenValueHolder
     {
-        if (null === $this->verifierHash) {
+        if ($this->verifierHash === null) {
             throw new \RuntimeException('toValueHolder() does not work SplitToken object created with fromString().');
         }
 
@@ -235,8 +223,6 @@ abstract class SplitToken
     /**
      * This method is called in create() before the verifier is hashed,
      * allowing to set-up configuration for the hashing method.
-     *
-     * @param array $config
      */
     protected function configureHasher(array $config)
     {
@@ -249,20 +235,11 @@ abstract class SplitToken
      * This implementation must use a time-safe hash-comparator.
      * Either: sodium_crypto_pwhash_str_verify($hash, $verifier)
      *   or hash_equals($hash, static::hashVerifier($verifier))
-     *
-     * @param string $hash
-     * @param string $verifier
-     *
-     * @return bool
      */
     abstract protected function verifyHash(string $hash, string $verifier): bool;
 
     /**
      * Produces a hashed version of the verifier.
-     *
-     * @param string $verifier
-     *
-     * @return string
      */
     abstract protected function hashVerifier(string $verifier): string;
 }

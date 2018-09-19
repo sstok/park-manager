@@ -37,7 +37,7 @@ final class MiddlewaresConfiguratorTest extends TestCase
         $servicesConfigurator = $this->createMock(AbstractServiceConfigurator::class);
 
         $busConfigurator = $this->createMock(MessageBusConfigurator::class);
-        $configurator = new MiddlewaresConfigurator($busConfigurator, $servicesConfigurator, 'park_manager.command_bus.users');
+        $configurator    = new MiddlewaresConfigurator($busConfigurator, $servicesConfigurator, 'park_manager.command_bus.users');
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot locate class "ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Configurator\Middleware\NopeMiddlewareConfigurator" for middleware nope.');
@@ -49,8 +49,8 @@ final class MiddlewaresConfiguratorTest extends TestCase
     public function it_invokes_middleware_configurator()
     {
         $servicesConfigurator = $this->createMock(AbstractServiceConfigurator::class);
-        $busConfigurator = $this->createMock(MessageBusConfigurator::class);
-        $configurator = new MiddlewaresConfigurator($busConfigurator, $servicesConfigurator, 'park_manager.command_bus.users');
+        $busConfigurator      = $this->createMock(MessageBusConfigurator::class);
+        $configurator         = new MiddlewaresConfigurator($busConfigurator, $servicesConfigurator, 'park_manager.command_bus.users');
 
         SpyMiddlewareConfigurator::$arguments = null;
 
@@ -66,8 +66,8 @@ final class MiddlewaresConfiguratorTest extends TestCase
     public function it_invokes_advanced_middleware_configurator()
     {
         $servicesConfigurator = $this->createMock(AbstractServiceConfigurator::class);
-        $busConfigurator = $this->createMock(MessageBusConfigurator::class);
-        $configurator = new MiddlewaresConfigurator($busConfigurator, $servicesConfigurator, 'park_manager.command_bus.users');
+        $busConfigurator      = $this->createMock(MessageBusConfigurator::class);
+        $configurator         = new MiddlewaresConfigurator($busConfigurator, $servicesConfigurator, 'park_manager.command_bus.users');
 
         AdvancedSpyMiddlewareConfigurator::$arguments = null;
 
@@ -81,7 +81,7 @@ final class MiddlewaresConfiguratorTest extends TestCase
     /** @test */
     public function it_registers_standalone_middleware_service()
     {
-        $instanceof = [];
+        $instanceof            = [];
         $containerConfigurator = new ServicesConfigurator(
             $containerBuilder = new ContainerBuilder(),
             new PhpFileLoader($containerBuilder, $this->createMock(FileLocatorInterface::class)),
@@ -89,7 +89,7 @@ final class MiddlewaresConfiguratorTest extends TestCase
         );
 
         $busConfigurator = $this->createMock(MessageBusConfigurator::class);
-        $configurator = new MiddlewaresConfigurator($busConfigurator, $containerConfigurator->defaults(), 'park_manager.command_bus.users');
+        $configurator    = new MiddlewaresConfigurator($busConfigurator, $containerConfigurator->defaults(), 'park_manager.command_bus.users');
         $configurator->register(MessageGuardMiddleware::class, 5, ['foo']);
 
         $expectedDef = new Definition(MessageGuardMiddleware::class);
@@ -99,7 +99,7 @@ final class MiddlewaresConfiguratorTest extends TestCase
 
         self::assertEquals(
             $expectedDef,
-            $containerBuilder->getDefinition('park_manager.command_bus.users.middleware.'.MessageGuardMiddleware::class)
+            $containerBuilder->getDefinition('park_manager.command_bus.users.middleware.' . MessageGuardMiddleware::class)
         );
     }
 }

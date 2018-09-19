@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\ServiceBus\Tests\MessageGuard;
 
+use ParkManager\Component\ServiceBus\MessageGuard\MessageAuthorizationFailed;
 use ParkManager\Component\ServiceBus\MessageGuard\MessageGuardMiddleware;
 use ParkManager\Component\ServiceBus\MessageGuard\PermissionGuard;
-use ParkManager\Component\ServiceBus\MessageGuard\UnauthorizedException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Debug\BufferingLogger;
+use function get_class;
+use function sprintf;
 
 /**
  * @internal
@@ -29,7 +31,7 @@ final class MessageGuardMiddlewareTest extends TestCase
     {
         $messageGuard = new MessageGuardMiddleware([]);
 
-        $this->expectException(UnauthorizedException::class);
+        $this->expectException(MessageAuthorizationFailed::class);
 
         $messageGuard->execute(new \stdClass(), function () {});
     }
@@ -45,7 +47,7 @@ final class MessageGuardMiddlewareTest extends TestCase
             $this->createNotExecutedPermissionGuard(),
         ]);
 
-        $this->expectException(UnauthorizedException::class);
+        $this->expectException(MessageAuthorizationFailed::class);
 
         $messageGuard->execute($message, function () {});
     }
@@ -67,8 +69,8 @@ final class MessageGuardMiddlewareTest extends TestCase
 
         self::assertSame($message, $returnValue);
         self::assertEquals([
-            ['info', 'PermissionGuard "'.\get_class($guard1).'" decides: ABSTAIN', []],
-            ['info', 'PermissionGuard "'.\get_class($guard2).'" decides: ALLOW', []],
+            ['info', 'PermissionGuard "' . get_class($guard1) . '" decides: ABSTAIN', []],
+            ['info', 'PermissionGuard "' . get_class($guard2) . '" decides: ALLOW', []],
         ], $logger->cleanLogs());
     }
 
@@ -82,7 +84,7 @@ final class MessageGuardMiddlewareTest extends TestCase
             $this->createPermissionGuard($message, PermissionGuard::PERMISSION_ABSTAIN),
         ]);
 
-        $this->expectException(UnauthorizedException::class);
+        $this->expectException(MessageAuthorizationFailed::class);
 
         $messageGuard->execute($message, function () {});
     }
@@ -96,7 +98,7 @@ final class MessageGuardMiddlewareTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            sprintf('PermissionGuard "%s" returned unsupported decision %d', \get_class($guard), 3)
+            sprintf('PermissionGuard "%s" returned unsupported decision %d', get_class($guard), 3)
         );
 
         $messageGuard->execute($message, function () {});

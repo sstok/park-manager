@@ -16,6 +16,13 @@ namespace ParkManager\Bundle\ServiceBusPolicyGuardBundle\Guard;
 use ParkManager\Component\ServiceBus\MessageGuard\PermissionGuard;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use function get_class;
+use function is_bool;
+use function is_int;
+use function mb_strlen;
+use function mb_strrpos;
+use function mb_substr;
+use function preg_match;
 
 final class PolicyGuard implements PermissionGuard
 {
@@ -35,38 +42,51 @@ final class PolicyGuard implements PermissionGuard
         array $variables
     ) {
         $this->expressionLanguage = $expressionLanguage;
-        $this->namespacePolicies = $namespacePolicies;
-        $this->classPolicies = $classPolicies;
-        $this->regexpPolicies = $regexpPolicies;
-        $this->regexpPolicyMap = $regexpPolicyMap;
-        $this->variables = $variables;
+        $this->namespacePolicies  = $namespacePolicies;
+        $this->classPolicies      = $classPolicies;
+        $this->regexpPolicies     = $regexpPolicies;
+        $this->regexpPolicyMap    = $regexpPolicyMap;
+        $this->variables          = $variables;
     }
 
     public function decide(object $message): int
     {
-        $messageName = \get_class($message);
+        $policy = $this->getPolicyForMessageName(get_class($message));
 
-        if (isset($this->classPolicies[$messageName])) {
-            $policy = $this->classPolicies[$messageName];
-        } elseif (isset($this->namespacePolicies[$namespace = mb_substr($messageName, 0, (false !== $p = mb_strrpos($messageName, '\\')) ? $p : mb_strlen($messageName))])) {
-            $policy = $this->namespacePolicies[$namespace];
-        } elseif (preg_match($this->regexpPolicies, $messageName, $matches) && isset($matches['MARK'])) {
-            $policy = $this->regexpPolicyMap[$matches['MARK']];
-        } else {
-            return self::PERMISSION_ABSTAIN;
-        }
-
-        if (\is_bool($policy)) {
+        if (is_int($policy) || is_bool($policy)) {
             return (int) $policy;
         }
 
-        $parameters = $this->variables;
+        $parameters            = $this->variables;
         $parameters['message'] = $message;
-        $parameters['ALLOW'] = PermissionGuard::PERMISSION_ALLOW;
-        $parameters['DENY'] = PermissionGuard::PERMISSION_DENY;
+        $parameters['ALLOW']   = PermissionGuard::PERMISSION_ALLOW;
+        $parameters['DENY']    = PermissionGuard::PERMISSION_DENY;
         $parameters['ABSTAIN'] = PermissionGuard::PERMISSION_ABSTAIN;
 
         /** @var Expression $policy */
         return (int) $this->expressionLanguage->evaluate($policy, $parameters);
+    }
+
+    /**
+     * @return int|bool|string
+     */
+    private function getPolicyForMessageName(string $messageName)
+    {
+        if (isset($this->classPolicies[$messageName])) {
+            return $this->classPolicies[$messageName];
+        }
+
+        $lastNsPos = mb_strrpos($messageName, '\\');
+        $namespace = mb_substr($messageName, 0, $lastNsPos !== false ? $lastNsPos : mb_strlen($messageName));
+
+        if (isset($this->namespacePolicies[$namespace])) {
+            return $this->namespacePolicies[$namespace];
+        }
+
+        if (preg_match($this->regexpPolicies, $messageName, $matches) && isset($matches['MARK'])) {
+            return $this->regexpPolicyMap[$matches['MARK']];
+        }
+
+        return self::PERMISSION_ABSTAIN;
     }
 }

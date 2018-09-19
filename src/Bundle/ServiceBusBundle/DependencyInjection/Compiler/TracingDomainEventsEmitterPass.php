@@ -24,10 +24,10 @@ final class TracingDomainEventsEmitterPass implements CompilerPassInterface
     {
         foreach ($container->findTaggedServiceIds('park_manager.service_bus.domain_event_emitter', true) as $serviceId => $tags) {
             $serviceId = $container->findDefinition($serviceId)->getArgument(0);
-            $container->register($serviceId.'.debug', TraceableEventDispatcher::class)
+            $container->register($serviceId . '.debug', TraceableEventDispatcher::class)
                 ->setDecoratedService($serviceId)
                 ->setArguments([
-                    new Reference($serviceId.'.debug.inner'),
+                    new Reference($serviceId . '.debug.inner'),
                     new Reference('debug.stopwatch'),
                     new Reference('monolog.logger.domain_event', ContainerBuilder::NULL_ON_INVALID_REFERENCE),
                 ]);

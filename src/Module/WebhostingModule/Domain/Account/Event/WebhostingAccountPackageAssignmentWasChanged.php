@@ -25,20 +25,18 @@ final class WebhostingAccountPackageAssignmentWasChanged extends DomainEvent
     private $accountId;
     private $package;
 
-    /**
-     * @var Capabilities|null
-     */
+    /** @var Capabilities|null */
     private $capabilities;
 
     public function __construct(WebhostingAccountId $id, WebhostingPackage $package)
     {
         $this->accountId = $id;
-        $this->package = $package->id();
+        $this->package   = $package->id();
     }
 
     public static function withCapabilities(WebhostingAccountId $id, WebhostingPackage $package): self
     {
-        $event = new self($id, $package);
+        $event               = new self($id, $package);
         $event->capabilities = $package->capabilities();
 
         return $event;

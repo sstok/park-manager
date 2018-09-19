@@ -29,6 +29,9 @@ use ParkManager\Component\ServiceBus\TacticianCommandBus as CommandBus;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use function array_map;
+use function array_merge;
+use function is_string;
 
 /**
  * @internal
@@ -163,7 +166,7 @@ final class MessageBusPassTest extends AbstractCompilerPassTestCase
     private function expectHandlerLocator(string $busId, array $handlerMap): void
     {
         self::assertThat(
-            $this->container->findDefinition($busId.'.handler_locator'),
+            $this->container->findDefinition($busId . '.handler_locator'),
             new DefinitionArgumentEqualsServiceLocatorConstraint($this->container, 0, $handlerMap)
         );
     }
@@ -171,7 +174,7 @@ final class MessageBusPassTest extends AbstractCompilerPassTestCase
     private function expectMessageBus(string $busId, array $expectedHandlers, array $expectedMiddlewares = []): void
     {
         $expectedMiddlewares = array_map(function ($serviceId) {
-            if (\is_string($serviceId)) {
+            if (is_string($serviceId)) {
                 return new Reference($serviceId);
             }
 
@@ -180,7 +183,7 @@ final class MessageBusPassTest extends AbstractCompilerPassTestCase
 
         $this->expectHandlerLocator($busId, $expectedHandlers);
         $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            $busId.'.__executor',
+            $busId . '.__executor',
             0,
             array_merge($expectedMiddlewares, [$this->createHandlerLocatorMiddleware($busId)])
         );
@@ -191,7 +194,7 @@ final class MessageBusPassTest extends AbstractCompilerPassTestCase
         $commandLocatorMiddleware = new Definition(CommandHandlerMiddleware::class);
         $commandLocatorMiddleware->setArguments([
             new Definition(ClassNameExtractor::class),
-            new Reference($busId.'.handler_locator'),
+            new Reference($busId . '.handler_locator'),
             new Definition(InvokeInflector::class),
         ]);
 

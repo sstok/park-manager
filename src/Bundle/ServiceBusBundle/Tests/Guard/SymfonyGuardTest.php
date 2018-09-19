@@ -26,7 +26,7 @@ final class SymfonyGuardTest extends TestCase
     public function it_decides_allow_if_access_granted_by_symfony()
     {
         $message = new \stdClass();
-        $guard = new SymfonyGuard($this->createAuthorizationChecker($message, true));
+        $guard   = new SymfonyGuard($this->createAuthorizationChecker($message, true));
 
         self::assertEquals(SymfonyGuard::PERMISSION_ALLOW, $guard->decide($message));
     }
@@ -35,7 +35,7 @@ final class SymfonyGuardTest extends TestCase
     public function it_decides_abstain_if_access_denied_by_symfony()
     {
         $message = new \stdClass();
-        $guard = new SymfonyGuard($this->createAuthorizationChecker($message, false));
+        $guard   = new SymfonyGuard($this->createAuthorizationChecker($message, false));
 
         self::assertEquals(SymfonyGuard::PERMISSION_ABSTAIN, $guard->decide($message));
     }

@@ -49,9 +49,7 @@ final class ConfigurationTest extends TestCase
                                 'capability' => 'MaximumAmountOfFoo',
                                 'attributes' => ['baz' => 'bar'],
                             ],
-                            'BlueBar' => [
-                                'capability' => 'QuotaAmountOfBlue',
-                            ],
+                            'BlueBar' => ['capability' => 'QuotaAmountOfBlue'],
                             'CreateSomething' => 'MaximumAmountOfStuff',
                         ],
                     ],
@@ -98,7 +96,7 @@ final class ConfigurationTest extends TestCase
                 ],
             ],
             'capabilities',
-            'Invalid configuration for path "park_manager_webhosting.capabilities.mapping.Foobar.attributes.baz": '.
+            'Invalid configuration for path "park_manager_webhosting.capabilities.mapping.Foobar.attributes.baz": ' .
             'Attribute value expected to a property path as string.'
         );
     }

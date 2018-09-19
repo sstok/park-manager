@@ -16,11 +16,8 @@ namespace ParkManager\Bundle\RouteAutofillBundle\Tests;
 use ParkManager\Bundle\RouteAutofillBundle\AutoFilledUrlGenerator;
 use ParkManager\Bundle\RouteAutofillBundle\MappingFileLoader;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -29,7 +26,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 final class AutoFilledUrlGeneratorTest extends TestCase
 {
     /** @test */
-    public const FOOBAR_RESULT = 'https://park-manager.com/webhosting';
+    public const FOOBAR_RESULT   = 'https://park-manager.com/webhosting';
     public const BLUE_BAR_RESULT = '//park-manager.com/';
     private const MOO_CAR_RESULT = '/webhosting/5/';
 
@@ -69,26 +66,6 @@ final class AutoFilledUrlGeneratorTest extends TestCase
         self::assertEquals(self::BLUE_BAR_RESULT, $generator->generate('bluebar', [], UrlGeneratorInterface::RELATIVE_PATH));
         self::assertEquals(self::MOO_CAR_RESULT, $generator->generate('moocar', ['he' => 'bar', 'id' => 5]));
         self::assertEquals(self::FILLED_BAR_RESULT, $generator->generate('filledd_bar', ['he' => 'foo', 'name' => 'bar']));
-    }
-
-    private function createEvent($result): GetResponseForControllerResultEvent
-    {
-        return new GetResponseForControllerResultEvent(
-            $this->createMock(HttpKernelInterface::class),
-            new Request(),
-            HttpKernelInterface::MASTER_REQUEST,
-            $result
-        );
-    }
-
-    private function assertResponseIsRedirect($response, string $expectedTargetUrl, int $expectedStatus = 302): void
-    {
-        /**
-         * @var RedirectResponse $response
-         */
-        self::assertInstanceOf(RedirectResponse::class, $response);
-        self::assertEquals($expectedTargetUrl, $response->getTargetUrl());
-        self::assertEquals($expectedStatus, $response->getStatusCode());
     }
 
     private function createUrlGenerator(): UrlGeneratorInterface

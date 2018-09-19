@@ -67,9 +67,9 @@ class ModuleTest extends TestCase
 
         $this->expectException('LogicException');
         $this->expectExceptionMessage(
-            'Users will expect the alias of the default extension of a module to be the '.
-            'underscored version of the module name ("extension_alias_not_valid"). '.
-            'You can override "AbstractParkManagerModule::getContainerExtension()" '.
+            'Users will expect the alias of the default extension of a module to be the ' .
+            'underscored version of the module name ("extension_alias_not_valid"). ' .
+            'You can override "AbstractParkManagerModule::getContainerExtension()" ' .
             'if you want to use "extension_valid_is_not" or another alias.'
         );
 
@@ -127,7 +127,7 @@ class ModuleTest extends TestCase
 
         self::assertContains(
             DoctrineOrmMappingsPass::createXmlMappingDriver([
-                $module->getPath().'/Infrastructure/Doctrine/Account/Mapping' => $module->getNamespace().'\\Domain\\Account',
+                $module->getPath() . '/Infrastructure/Doctrine/Account/Mapping' => $module->getNamespace() . '\\Domain\\Account',
             ]),
             $containerBuilder->getCompilerPassConfig()->getPasses(),
             '',

@@ -16,6 +16,8 @@ namespace ParkManager\Bridge\Twig\Response;
 use ParkManager\Component\FormHandler\FormHandler;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
+use function is_array;
+use function sprintf;
 
 class TwigResponse extends Response
 {
@@ -23,17 +25,14 @@ class TwigResponse extends Response
     private $variables;
 
     /**
-     * @param string                 $template
      * @param array|Form|FormHandler $variables A Form or FormHandler object is passed as [form => createView()]
-     * @param int                    $status
-     * @param array                  $headers
      */
     public function __construct(string $template, $variables = [], int $status = 200, array $headers = [])
     {
         parent::__construct('', $status, $headers);
 
-        if (!\is_array($variables)) {
-            if (!($variables instanceof Form) && !($variables instanceof FormHandler)) {
+        if (! is_array($variables)) {
+            if (! ($variables instanceof Form) && ! ($variables instanceof FormHandler)) {
                 throw new \InvalidArgumentException(
                     sprintf('TwigResponse $variables expects an array, %s or %s object.', Form::class, FormHandler::class)
                 );
@@ -42,7 +41,7 @@ class TwigResponse extends Response
             $variables = ['form' => $variables->createView()];
         }
 
-        $this->template = $template;
+        $this->template  = $template;
         $this->variables = $variables;
     }
 

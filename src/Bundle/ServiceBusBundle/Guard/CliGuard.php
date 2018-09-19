@@ -15,6 +15,7 @@ namespace ParkManager\Bundle\ServiceBusBundle\Guard;
 
 use ParkManager\Component\ServiceBus\MessageGuard\PermissionGuard;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use const PHP_SAPI;
 
 /**
  * Allows access when SAPI is cli and no Security-token was set.
@@ -30,7 +31,7 @@ final class CliGuard implements PermissionGuard
 
     public function decide(object $message): int
     {
-        if (\PHP_SAPI === 'cli' && null === $this->tokenStorage->getToken()) {
+        if (PHP_SAPI === 'cli' && $this->tokenStorage->getToken() === null) {
             return self::PERMISSION_ALLOW;
         }
 

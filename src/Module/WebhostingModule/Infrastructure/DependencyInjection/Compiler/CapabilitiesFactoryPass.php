@@ -22,9 +22,7 @@ final class CapabilitiesFactoryPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has(CapabilitiesFactory::class) ||
-            !$container->hasParameter('park_manager.webhosting.package_capabilities')
-        ) {
+        if (! $container->has(CapabilitiesFactory::class) || ! $container->hasParameter('park_manager.webhosting.package_capabilities')) {
             return;
         }
 

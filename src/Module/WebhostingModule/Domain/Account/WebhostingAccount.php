@@ -28,31 +28,23 @@ class WebhostingAccount extends EventsRecordingEntity
      */
     protected $package;
 
-    /**
-     * @var Capabilities
-     */
+    /** @var Capabilities */
     protected $capabilities;
 
-    /**
-     * @var WebhostingAccountId
-     */
+    /** @var WebhostingAccountId */
     protected $id;
 
-    /**
-     * @var OwnerId
-     */
+    /** @var OwnerId */
     protected $owner;
 
-    /**
-     * @var \DateTimeImmutable|null
-     */
+    /** @var \DateTimeImmutable|null */
     protected $expirationDate;
 
     private $markedForRemoval = false;
 
     protected function __construct(WebhostingAccountId $id, OwnerId $owner)
     {
-        $this->id = $id;
+        $this->id    = $id;
         $this->owner = $owner;
     }
 
@@ -62,7 +54,7 @@ class WebhostingAccount extends EventsRecordingEntity
         // Store the capabilities as part of the webhosting account
         // The package can be changed at any time, but the capabilities are immutable.
         $account->capabilities = $package->capabilities();
-        $account->package = $package;
+        $account->package      = $package;
         $account->recordThat(new Event\WebhostingAccountWasRegistered($id, $owner));
 
         return $account;
@@ -70,7 +62,7 @@ class WebhostingAccount extends EventsRecordingEntity
 
     public static function registerWithCustomCapabilities(WebhostingAccountId $id, OwnerId $owner, Capabilities $capabilities): self
     {
-        $account = new static($id, $owner);
+        $account               = new static($id, $owner);
         $account->capabilities = $capabilities;
         $account->recordThat(new Event\WebhostingAccountWasRegistered($id, $owner));
 
@@ -121,7 +113,7 @@ class WebhostingAccount extends EventsRecordingEntity
             return;
         }
 
-        $this->package = $package;
+        $this->package      = $package;
         $this->capabilities = $package->capabilities();
         $this->recordThat(Event\WebhostingAccountPackageAssignmentWasChanged::withCapabilities($this->id, $package));
     }
@@ -134,11 +126,11 @@ class WebhostingAccount extends EventsRecordingEntity
      */
     public function assignCustomCapabilities(Capabilities $capabilities): void
     {
-        if (null === $this->package && $this->capabilities->equals($capabilities)) {
+        if ($this->package === null && $this->capabilities->equals($capabilities)) {
             return;
         }
 
-        $this->package = null;
+        $this->package      = null;
         $this->capabilities = $capabilities;
         $this->recordThat(new Event\WebhostingAccountCapabilitiesWasChanged($this->id, $capabilities));
     }
@@ -175,7 +167,7 @@ class WebhostingAccount extends EventsRecordingEntity
 
     public function isExpired(?\DateTimeImmutable $current = null): bool
     {
-        if (null === $this->expirationDate) {
+        if ($this->expirationDate === null) {
             return false;
         }
 

@@ -20,30 +20,22 @@ use ParkManager\Module\WebhostingModule\Domain\Package\Event\WebhostingPackageWa
 
 class WebhostingPackage extends EventsRecordingEntity
 {
-    /**
-     * @var Capabilities
-     */
+    /** @var Capabilities */
     protected $capabilities;
 
-    /**
-     * @var WebhostingPackageId
-     */
+    /** @var WebhostingPackageId */
     protected $id;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $metadata = [];
 
     protected function __construct(WebhostingPackageId $id, Capabilities $capabilities)
     {
-        $this->id = $id;
+        $this->id           = $id;
         $this->capabilities = $capabilities;
     }
 
     /**
-     * @param WebhostingPackageId $id
-     *
      * @return static
      */
     public static function create(WebhostingPackageId $id, Capabilities $capabilities)

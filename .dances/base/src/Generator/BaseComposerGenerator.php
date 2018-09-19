@@ -16,6 +16,9 @@ namespace ParkManager\SkeletonDancer\Generator;
 
 use SkeletonDancer\Generator;
 use SkeletonDancer\Service\Filesystem;
+use const JSON_PRETTY_PRINT;
+use const JSON_UNESCAPED_SLASHES;
+use function json_encode;
 
 abstract class BaseComposerGenerator implements Generator
 {
@@ -29,7 +32,7 @@ abstract class BaseComposerGenerator implements Generator
     final public function generate(array $answers)
     {
         $composer = [
-            'name' => 'park-manager/'.$this->generatePackageSubName($answers),
+            'name' => 'park-manager/' . $this->generatePackageSubName($answers),
             'type' => $this->getType(),
             'description' => $this->getDescription($answers),
             'homepage' => 'https://www.park-manager.com/',
@@ -46,30 +49,22 @@ abstract class BaseComposerGenerator implements Generator
             ],
             'require' => ['php' => '^7.2'] + $this->getRequires(),
             'config' => [
-                'preferred-install' => [
-                    '*' => 'dist',
-                ],
+                'preferred-install' => ['*' => 'dist'],
                 'sort-packages' => true,
             ],
             'autoload' => [
-                'psr-4' => [
-                    $answers['php_namespace'].'\\' => '',
-                ],
-                'exclude-from-classmap' => [
-                    'Tests/',
-                ],
+                'psr-4' => [$answers['php_namespace'] . '\\' => ''],
+                'exclude-from-classmap' => ['Tests/'],
             ],
             'autoload-dev' => [
-                'psr-4' => [
-                    $answers['php_namespace'].'\\Tests\\' => 'Tests',
-                ],
+                'psr-4' => [$answers['php_namespace'] . '\\Tests\\' => 'Tests'],
             ],
         ];
 
         $this->filesystem->dumpFile(
             'composer.json',
             // Add extra newline to content to fix content mismatch when dumping
-            json_encode($composer, JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES)."\n"
+            json_encode($composer, JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES) . "\n"
         );
     }
 

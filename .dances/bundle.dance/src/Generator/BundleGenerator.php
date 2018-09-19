@@ -25,7 +25,7 @@ final class BundleGenerator implements Generator
     public function __construct(\Twig_Environment $twig, Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
-        $this->twig = $twig;
+        $this->twig       = $twig;
     }
 
     public function generate(array $answers)
@@ -40,6 +40,6 @@ final class BundleGenerator implements Generator
         $this->filesystem->dumpFile('DependencyInjection/DependencyExtension.php', $this->twig->render('extension.php.twig', $answers));
         $this->filesystem->dumpFile('DependencyInjection/Configuration.php', $this->twig->render('configuration.php.twig', $answers));
         $this->filesystem->dumpFile('Resources/config/services.php', $this->twig->render('services.php.twig', $answers));
-        $this->filesystem->dumpFile('ParkManager'.$answers['bundle_name'].'Bundle.php', $this->twig->render('bundle.php.twig', $answers));
+        $this->filesystem->dumpFile('ParkManager' . $answers['bundle_name'] . 'Bundle.php', $this->twig->render('bundle.php.twig', $answers));
     }
 }

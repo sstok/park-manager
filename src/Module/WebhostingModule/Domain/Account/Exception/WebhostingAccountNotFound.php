@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\WebhostingModule\Domain\Account\Exception;
 
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
+use function sprintf;
 
 final class WebhostingAccountNotFound extends \InvalidArgumentException
 {

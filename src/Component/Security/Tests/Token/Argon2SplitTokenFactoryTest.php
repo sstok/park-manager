@@ -26,7 +26,7 @@ final class Argon2SplitTokenFactoryTest extends TestCase
      */
     public function it_generates_a_new_token_on_every_call()
     {
-        $factory = new Argon2SplitTokenFactory();
+        $factory     = new Argon2SplitTokenFactory();
         $splitToken1 = $factory->generate();
         $splitToken2 = $factory->generate();
 
@@ -39,9 +39,9 @@ final class Argon2SplitTokenFactoryTest extends TestCase
      */
     public function it_creates_from_string()
     {
-        $factory = new Argon2SplitTokenFactory();
-        $splitToken = $factory->generate();
-        $fullToken = $splitToken->token()->getString();
+        $factory              = new Argon2SplitTokenFactory();
+        $splitToken           = $factory->generate();
+        $fullToken            = $splitToken->token()->getString();
         $splitTokenFromString = $factory->fromString($fullToken);
 
         self::assertTrue($splitTokenFromString->matches($splitToken->toValueHolder()));

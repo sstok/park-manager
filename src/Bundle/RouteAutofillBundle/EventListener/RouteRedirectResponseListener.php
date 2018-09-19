@@ -33,7 +33,7 @@ final class RouteRedirectResponseListener implements EventSubscriberInterface
     {
         $result = $event->getControllerResult();
 
-        if (!$result instanceof RouteRedirectResponse) {
+        if (! $result instanceof RouteRedirectResponse) {
             return;
         }
 
@@ -47,8 +47,6 @@ final class RouteRedirectResponseListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [
-            KernelEvents::VIEW => 'onKernelView',
-        ];
+        return [KernelEvents::VIEW => 'onKernelView'];
     }
 }

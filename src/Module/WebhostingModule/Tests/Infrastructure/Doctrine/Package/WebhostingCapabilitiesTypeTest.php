@@ -33,7 +33,7 @@ final class WebhostingCapabilitiesTypeTest extends TestCase
      */
     public static function setUpType(): void
     {
-        if (!Type::hasType('webhosting_capabilities')) {
+        if (! Type::hasType('webhosting_capabilities')) {
             Type::addType('webhosting_capabilities', WebhostingCapabilitiesType::class);
         }
     }
@@ -41,13 +41,13 @@ final class WebhostingCapabilitiesTypeTest extends TestCase
     /** @test */
     public function it_converts_to_database_value()
     {
-        $type = $this->getDbalType();
+        $type     = $this->getDbalType();
         $platform = $this->createPlatform();
 
         self::assertNull($type->convertToDatabaseValue(null, $platform));
         self::assertJsonStringEqualsJsonString('[]', $type->convertToDatabaseValue(new Capabilities(), $platform));
         self::assertJsonStringEqualsJsonString(
-            '{"'.MonthlyTrafficQuota::id().'":{"limit":50}}',
+            '{"' . MonthlyTrafficQuota::id() . '":{"limit":50}}',
             $type->convertToDatabaseValue(new Capabilities(new MonthlyTrafficQuota(50)), $platform)
         );
     }
@@ -55,7 +55,7 @@ final class WebhostingCapabilitiesTypeTest extends TestCase
     /** @test */
     public function it_converts_from_database_value_to_php_value()
     {
-        $type = $this->getDbalType();
+        $type     = $this->getDbalType();
         $platform = $this->createPlatform();
 
         self::assertEquals(new Capabilities(), $type->convertToPHPValue(null, $platform));
@@ -63,7 +63,7 @@ final class WebhostingCapabilitiesTypeTest extends TestCase
         self::assertEquals(new Capabilities(), $type->convertToPHPValue('{}', $platform));
         self::assertEquals(
             new Capabilities(new MonthlyTrafficQuota(50)),
-            $type->convertToPHPValue('{"'.MonthlyTrafficQuota::id().'":{"limit":50}}', $platform)
+            $type->convertToPHPValue('{"' . MonthlyTrafficQuota::id() . '":{"limit":50}}', $platform)
         );
     }
 

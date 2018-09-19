@@ -21,9 +21,7 @@ use ParkManager\Module\WebhostingModule\Infrastructure\Service\Package\Capabilit
 
 final class WebhostingCapabilitiesType extends JsonType
 {
-    /**
-     * @var CapabilitiesFactory|null
-     */
+    /** @var CapabilitiesFactory|null */
     private $capabilitiesFactory;
 
     public function setCapabilitiesFactory(?CapabilitiesFactory $capabilitiesFactory): void
@@ -33,17 +31,14 @@ final class WebhostingCapabilitiesType extends JsonType
 
     /**
      * @param Capabilities|null $value
-     * @param AbstractPlatform  $platform
-     *
-     * @return null|string
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
-        if (null === $value) {
+        if ($value === null) {
             return null;
         }
 
-        if (!$value instanceof Capabilities) {
+        if (! $value instanceof Capabilities) {
             throw new \InvalidArgumentException('Expected Capabilities instance.');
         }
 
@@ -54,7 +49,7 @@ final class WebhostingCapabilitiesType extends JsonType
     {
         $val = parent::convertToPHPValue($value, $platform) ?? [];
 
-        if (!isset($this->capabilitiesFactory)) {
+        if (! isset($this->capabilitiesFactory)) {
             throw new \RuntimeException('setCapabilitiesFactory() needs to be called before this type can be used.');
         }
 

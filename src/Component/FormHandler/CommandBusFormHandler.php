@@ -19,6 +19,9 @@ use Symfony\Component\Form\Exception\BadMethodCallException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Throwable;
+use function explode;
+use function get_class;
+use function is_array;
 
 final class CommandBusFormHandler implements FormHandler
 {
@@ -27,28 +30,21 @@ final class CommandBusFormHandler implements FormHandler
     private $validator;
 
     private $handled = false;
-    private $ready = false;
+    private $ready   = false;
 
-    /**
-     * @var callable[]
-     */
+    /** @var callable[] */
     private $exceptionFormatters = [];
 
-    /**
-     * @var callable|null
-     */
+    /** @var callable|null */
     private $fallbackFormatter;
 
     public function __construct(FormInterface $form, CommandBus $commandBus, ?callable $validator = null)
     {
-        $this->form = $form;
+        $this->form       = $form;
         $this->commandBus = $commandBus;
-        $this->validator = $validator;
+        $this->validator  = $validator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mapException(string $exceptionClass, callable $formatter): void
     {
         if ($this->handled) {
@@ -58,9 +54,6 @@ final class CommandBusFormHandler implements FormHandler
         $this->exceptionFormatters[$exceptionClass] = $formatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setExceptionFallback(callable $formatter): void
     {
         if ($this->handled) {
@@ -70,27 +63,21 @@ final class CommandBusFormHandler implements FormHandler
         $this->fallbackFormatter = $formatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForm(): FormInterface
     {
         return $this->form;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handleRequest($request, bool $autoExecute = true)
     {
         if ($this->handled) {
             throw new AlreadySubmittedException('A form can only be handled once.');
         }
 
-        $this->handled = true;
         $this->form->handleRequest($request);
+        $this->handled = true;
 
-        if (null !== $this->validator && !$this->form->isSubmitted()) {
+        if ($this->validator !== null && ! $this->form->isSubmitted()) {
             ($this->validator)($this->form->getData());
         }
 
@@ -99,30 +86,25 @@ final class CommandBusFormHandler implements FormHandler
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createView(): FormView
     {
         return $this->form->createView();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     private function dispatch()
     {
         try {
             $result = $this->commandBus->handle($this->form->getData());
+
             $this->ready = true;
 
             return $result;
         } catch (Throwable $e) {
-            $exceptionName = \get_class($e);
+            $exceptionName = get_class($e);
 
             if (isset($this->exceptionFormatters[$exceptionName])) {
                 $errors = $this->exceptionFormatters[$exceptionName]($e);
-            } elseif (null !== $this->fallbackFormatter) {
+            } elseif ($this->fallbackFormatter !== null) {
                 $errors = ($this->fallbackFormatter)($e);
             } else {
                 throw $e;
@@ -132,12 +114,9 @@ final class CommandBusFormHandler implements FormHandler
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isReady(): bool
     {
-        if (!$this->handled) {
+        if (! $this->handled) {
             throw new BadMethodCallException('handleRequest() must to be called before a Forms readiness can be checked.');
         }
 
@@ -146,18 +125,19 @@ final class CommandBusFormHandler implements FormHandler
 
     private function mapErrors($errors): void
     {
-        if (!\is_array($errors)) {
+        if (! is_array($errors)) {
             $errors = [null => [$errors]];
         }
 
         foreach ($errors as $formPath => $formErrors) {
-            if (!\is_array($formErrors)) {
+            if (! is_array($formErrors)) {
                 $formErrors = [$formErrors];
             }
 
-            $form = $this->form;
+            $formPath = (string) $formPath;
+            $form     = $this->form;
 
-            if ('' !== (string) $formPath) {
+            if ($formPath !== '') {
                 foreach (explode('.', $formPath) as $child) {
                     $form = $form->get($child);
                 }

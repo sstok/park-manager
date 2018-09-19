@@ -34,8 +34,6 @@ interface Capability
      * This must never change! Moving/renaming the
      * Capability class should not require updating
      * the databse.
-     *
-     * @return string
      */
     public static function id(): string;
 

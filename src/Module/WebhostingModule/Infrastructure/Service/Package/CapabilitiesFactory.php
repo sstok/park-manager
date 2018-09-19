@@ -34,7 +34,7 @@ final class CapabilitiesFactory
         $capabilitiesInstances = [];
 
         foreach ($capabilities as $id => $configuration) {
-            if (!isset($this->capabilitiesById[$id])) {
+            if (! isset($this->capabilitiesById[$id])) {
                 throw CapabilityNotRegistered::withId($id);
             }
 

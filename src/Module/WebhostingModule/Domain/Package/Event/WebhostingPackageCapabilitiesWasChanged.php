@@ -25,7 +25,7 @@ final class WebhostingPackageCapabilitiesWasChanged extends DomainEvent
 
     public function __construct(WebhostingPackageId $id, Capabilities $capabilities)
     {
-        $this->id = $id;
+        $this->id           = $id;
         $this->capabilities = $capabilities;
     }
 

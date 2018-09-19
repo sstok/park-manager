@@ -34,7 +34,7 @@ final class DependencyExtension extends ParkManagerModuleDependencyExtension imp
         $loader->load('*.php', 'glob');
 
         $configuration = $this->getConfiguration($configs, $container);
-        $config = $this->processConfiguration($configuration, $configs);
+        $config        = $this->processConfiguration($configuration, $configs);
 
         $container->registerForAutoconfiguration(Capability::class)
             ->addTag('park_manager.webhosting_capability');

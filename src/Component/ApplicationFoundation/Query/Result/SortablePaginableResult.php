@@ -23,7 +23,7 @@ namespace ParkManager\Component\ApplicationFoundation\Query\Result;
  */
 interface SortablePaginableResult extends PaginableResult
 {
-    public const SORT_ASCENDING = 'asc';
+    public const SORT_ASCENDING  = 'asc';
     public const SORT_DESCENDING = 'desc';
 
     /**
@@ -35,8 +35,6 @@ interface SortablePaginableResult extends PaginableResult
     /**
      * Returns a portion of the total result.
      *
-     * @param int   $offset
-     * @param int   $limit
      * @param array $sorting a hash of fields and there sorting eg. [id => asc]
      *
      * @return iterable

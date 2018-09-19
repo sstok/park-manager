@@ -21,6 +21,9 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use function implode;
+use function is_scalar;
+use function sprintf;
 
 /**
  * @internal
@@ -119,8 +122,8 @@ final class CheckedConfirmationHandlerTest extends TestCase
 
         self::assertFalse($confirmationHandler->isConfirmed());
         self::assertEquals(
-            '<form action="/user/1/delete"><h1>Confirm deleting</h1><p>Are you sure?</p>Value does not match expected &quot;Everything&quot;.<input type="hidden" name="_value" value="'.
-            (is_scalar($value) ? (string) $value : '').
+            '<form action="/user/1/delete"><h1>Confirm deleting</h1><p>Are you sure?</p>Value does not match expected &quot;Everything&quot;.<input type="hidden" name="_value" value="' .
+            (is_scalar($value) ? (string) $value : '') .
             '"><input type="hidden" name="_token" value="valid-token"><button type="submit">Yes</button><a href="">Cancel</a></form>',
             $confirmationHandler->render('checked_confirm.html.twig')
         );
@@ -174,8 +177,6 @@ final class CheckedConfirmationHandlerTest extends TestCase
     /**
      * @param mixed $value
      * @param array $attributes
-     *
-     * @return Request
      */
     private function makePostRequest($value = 'everything', array $attributes = ['id' => self::ID1]): Request
     {
@@ -214,7 +215,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
 
     private function createTokenId(array $ids): string
     {
-        return 'confirm.'.implode('~', $ids).'~';
+        return 'confirm.' . implode('~', $ids) . '~';
     }
 
     private function createTokenManagerWithInvalid(string $tokenId, bool $hasToken = true): CsrfTokenManagerInterface
@@ -241,7 +242,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
 
     private function createTwigEnvironment(): Environment
     {
-        return new Environment(new FilesystemLoader([__DIR__.'/templates'], __DIR__.'/templates'), [
+        return new Environment(new FilesystemLoader([__DIR__ . '/templates'], __DIR__ . '/templates'), [
             'debug' => true,
             'strict_variables' => true,
         ]);

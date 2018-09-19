@@ -24,7 +24,7 @@ final class ChangelogGenerator implements Generator
 
     public function __construct(\Twig_Environment $twig, Filesystem $filesystem)
     {
-        $this->twig = $twig;
+        $this->twig       = $twig;
         $this->filesystem = $filesystem;
     }
 
@@ -32,7 +32,7 @@ final class ChangelogGenerator implements Generator
     {
         $this->filesystem->dumpFile(
             'CHANGELOG.md',
-           <<<'BODY'
+            <<<'BODY'
 Change Log
 ==========
 

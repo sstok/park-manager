@@ -25,6 +25,9 @@ use ParkManager\Module\WebhostingModule\Domain\DomainName\WebhostingDomainName;
 use ParkManager\Module\WebhostingModule\Domain\DomainName\WebhostingDomainNameId;
 use ParkManager\Module\WebhostingModule\Domain\DomainName\WebhostingDomainNameRepository;
 
+/**
+ * @method WebhostingDomainName|null find($id, $lockMode = null, $lockVersion = null)
+ */
 final class WebhostingDomainNameOrmRepository extends EntityRepository implements WebhostingDomainNameRepository
 {
     public function __construct(EntityManagerInterface $entityManager, string $className = WebhostingDomainName::class)
@@ -34,10 +37,9 @@ final class WebhostingDomainNameOrmRepository extends EntityRepository implement
 
     public function get(WebhostingDomainNameId $id): WebhostingDomainName
     {
-        /** @var WebhostingDomainName|null $domainName */
         $domainName = $this->find($id->toString());
 
-        if (null === $domainName) {
+        if ($domainName === null) {
             throw WebhostingDomainNameNotFound::withId($id);
         }
 

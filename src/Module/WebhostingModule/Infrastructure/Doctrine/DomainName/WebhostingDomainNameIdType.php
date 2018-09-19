@@ -19,6 +19,6 @@ use ParkManager\Module\WebhostingModule\Domain\DomainName\WebhostingDomainNameId
 
 final class WebhostingDomainNameIdType extends DomainIdType
 {
-    public const NAME = 'park_manager_webhosting_domain_name_id';
+    public const NAME         = 'park_manager_webhosting_domain_name_id';
     public const OBJECT_CLASS = WebhostingDomainNameId::class;
 }

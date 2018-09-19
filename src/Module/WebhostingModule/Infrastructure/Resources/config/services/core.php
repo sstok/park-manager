@@ -32,7 +32,7 @@ return function (ContainerConfigurator $c) {
             ->end()
             ->register(AccountCapabilitiesRestrictionGuardMiddleware::class, -100)
         ->end()
-        ->handlers(__DIR__.'/../../../../Application')
+        ->handlers(__DIR__ . '/../../../../Application')
             ->load('ParkManager\\Module\\WebhostingModule\\Application\\', '**/*Handler.php')
         ->end();
 };

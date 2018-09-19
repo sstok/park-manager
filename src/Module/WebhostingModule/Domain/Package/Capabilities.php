@@ -15,27 +15,26 @@ declare(strict_types=1);
 namespace ParkManager\Module\WebhostingModule\Domain\Package;
 
 use ParkManager\Module\WebhostingModule\Domain\Package\Exception\CapabilityNotInSet;
+use function array_merge;
+use function array_values;
+use function get_class;
 
 /**
  * Capabilities holds an immutable set of unique Capability objects.
  */
 final class Capabilities implements \IteratorAggregate
 {
-    /**
-     * @var Capability[]
-     */
+    /** @var Capability[] */
     private $capabilities = [];
 
-    /**
-     * @var array
-     */
+    /** @var array[] */
     private $capabilitiesIndexed = [];
 
     public function __construct(Capability ...$capabilities)
     {
         foreach ($capabilities as $capability) {
-            $class = \get_class($capability);
-            $this->capabilities[$class] = $capability;
+            $class                                        = get_class($capability);
+            $this->capabilities[$class]                   = $capability;
             $this->capabilitiesIndexed[$capability::id()] = $capability->configuration();
         }
     }
@@ -51,7 +50,7 @@ final class Capabilities implements \IteratorAggregate
         $capabilitiesList = $this->capabilities;
 
         foreach ($capabilities as $capability) {
-            unset($capabilitiesList[\get_class($capability)]);
+            unset($capabilitiesList[get_class($capability)]);
         }
 
         return new self(...array_values($capabilitiesList));
@@ -69,7 +68,7 @@ final class Capabilities implements \IteratorAggregate
 
     public function get(string $capability): Capability
     {
-        if (!isset($this->capabilities[$capability])) {
+        if (! isset($this->capabilities[$capability])) {
             throw CapabilityNotInSet::withName($capability);
         }
 

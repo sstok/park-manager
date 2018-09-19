@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Exception;
 
-class CompilerPassException extends RuntimeException
+use RuntimeException;
+use function sprintf;
+
+class CompilerPassException extends RuntimeException implements ServiceBusException
 {
     public static function toManyTags(string $serviceId, string $tagName): self
     {
@@ -39,8 +42,8 @@ class CompilerPassException extends RuntimeException
     {
         return new self(
             sprintf(
-                'Unable to determine supported message for handler in "%s".'.
-                'Either provide an "message" attribute for the tag or make sure __invoke() '.
+                'Unable to determine supported message for handler in "%s".' .
+                'Either provide an "message" attribute for the tag or make sure __invoke() ' .
                 'exists, is public (not an abstract) and has exactly one required object argument at position 0.',
                 $serviceId
             )

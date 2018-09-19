@@ -13,3 +13,8 @@ phpunit.xml
 .php_cs
 vendor-bin/*/vendor/*
 composer.lock
+
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+/phpcs.xml
+###< squizlabs/php_codesniffer ###

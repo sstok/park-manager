@@ -33,14 +33,12 @@ final class AccountCapabilitiesRestrictionGuardMiddleware implements Middleware
     public function __construct(CapabilitiesRestrictionGuard $capabilitiesGuard, ServiceMessages $serviceMessages)
     {
         $this->accountCapabilitiesGuard = $capabilitiesGuard;
-        $this->serviceMessages = $serviceMessages;
+        $this->serviceMessages          = $serviceMessages;
     }
 
     public function execute($command, callable $next)
     {
-        if ($command instanceof AccountIdAwareCommand &&
-            !$this->accountCapabilitiesGuard->decide($command, $this->serviceMessages)
-        ) {
+        if ($command instanceof AccountIdAwareCommand && ! $this->accountCapabilitiesGuard->decide($command, $this->serviceMessages)) {
             return false;
         }
 

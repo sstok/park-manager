@@ -30,7 +30,7 @@ final class QueryBusConfiguratorTest extends TestCase
     /** @test */
     public function it_registers_query_bus()
     {
-        $instanceof = [];
+        $instanceof            = [];
         $containerConfigurator = new ServicesConfigurator(
             $containerBuilder = new ContainerBuilder(),
             new PhpFileLoader($containerBuilder, $this->createMock(FileLocatorInterface::class)),

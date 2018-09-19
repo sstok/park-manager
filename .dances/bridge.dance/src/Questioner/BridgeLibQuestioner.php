@@ -18,6 +18,11 @@ use SkeletonDancer\Question;
 use SkeletonDancer\Questioner;
 use SkeletonDancer\QuestionsSet;
 use SkeletonDancer\StringUtil;
+use function basename;
+use function getcwd;
+use function mb_strpos;
+use function mb_substr;
+use function trim;
 
 final class BridgeLibQuestioner implements Questioner
 {
@@ -28,23 +33,23 @@ final class BridgeLibQuestioner implements Questioner
                 throw new \InvalidArgumentException('Name cannot be empty.');
             }
 
-            if ('Bridge' === mb_substr($value, -6)) {
+            if (mb_substr($value, -6) === 'Bridge') {
                 $value = mb_substr($value, 0, -6);
             }
 
-            if (0 === mb_strpos($value, 'Park-Manager')) {
+            if (mb_strpos($value, 'Park-Manager') === 0) {
                 $value = mb_substr($value, 12);
             }
 
             $value = trim($value);
 
-            if ('' === $value) {
+            if ($value === '') {
                 throw new \InvalidArgumentException('Name cannot be only "Bridge" or Park-Manager.');
             }
 
             return $value;
         }));
 
-        $questions->set('php_namespace', 'ParkManager\\Bridge\\'.StringUtil::camelize((string) $questions->get('bridge_name')));
+        $questions->set('php_namespace', 'ParkManager\\Bridge\\' . StringUtil::camelize((string) $questions->get('bridge_name')));
     }
 }

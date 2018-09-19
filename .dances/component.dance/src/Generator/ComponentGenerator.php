@@ -25,15 +25,13 @@ final class ComponentGenerator implements Generator
     public function __construct(\Twig_Environment $twig, Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
-        $this->twig = $twig;
+        $this->twig       = $twig;
     }
 
     public function generate(array $answers)
     {
         $this->filesystem->mkdir(
-            [
-                'Tests',
-            ]
+            ['Tests']
         );
     }
 }

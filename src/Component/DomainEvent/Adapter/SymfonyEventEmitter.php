@@ -17,6 +17,7 @@ use ParkManager\Component\DomainEvent\DomainEvent;
 use ParkManager\Component\DomainEvent\EventEmitter;
 use ParkManager\Component\DomainEvent\EventSubscriber;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use function get_class;
 
 final class SymfonyEventEmitter implements EventEmitter
 {
@@ -27,35 +28,23 @@ final class SymfonyEventEmitter implements EventEmitter
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function emit(DomainEvent $event): DomainEvent
     {
-        $this->eventDispatcher->dispatch(\get_class($event), $event);
+        $this->eventDispatcher->dispatch(get_class($event), $event);
 
         return $event;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addListener(string $eventName, callable $listener, int $priority = 0): void
     {
         $this->eventDispatcher->addListener($eventName, $listener, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addSubscriber(EventSubscriber $subscriber): void
     {
         $this->eventDispatcher->addSubscriber($subscriber);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeListener(string $eventName, callable $listener): void
     {
         $this->eventDispatcher->removeListener($eventName, $listener);
@@ -66,18 +55,12 @@ final class SymfonyEventEmitter implements EventEmitter
         $this->eventDispatcher->removeSubscriber($subscriber);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getListeners(string $eventName = null): array
+    public function getListeners(?string $eventName = null): array
     {
         return $this->eventDispatcher->getListeners($eventName);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasListeners(string $eventName = null): bool
+    public function hasListeners(?string $eventName = null): bool
     {
         return $this->eventDispatcher->hasListeners($eventName);
     }

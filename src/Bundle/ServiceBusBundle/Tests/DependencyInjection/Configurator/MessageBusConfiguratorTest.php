@@ -33,7 +33,7 @@ final class MessageBusConfiguratorTest extends TestCase
     /** @test */
     public function it_registers_handlers()
     {
-        $instanceof = [];
+        $instanceof            = [];
         $containerConfigurator = new ServicesConfigurator(
             $containerBuilder = new ContainerBuilder(),
             new PhpFileLoader($containerBuilder, $this->createMock(FileLocatorInterface::class)),
@@ -56,14 +56,14 @@ final class MessageBusConfiguratorTest extends TestCase
         $expectedDef->addTag('park_manager.command_bus.users.handler');
         $expectedDef->setPublic(false);
 
-        self::assertEquals($expectedDef, $containerBuilder->getDefinition('park_manager.command_bus.users.handler.'.RegisterUserHandler::class));
-        self::assertFalse($containerBuilder->hasDefinition('park_manager.command_bus.users.handler.'.CancelUserHandler::class));
+        self::assertEquals($expectedDef, $containerBuilder->getDefinition('park_manager.command_bus.users.handler.' . RegisterUserHandler::class));
+        self::assertFalse($containerBuilder->hasDefinition('park_manager.command_bus.users.handler.' . CancelUserHandler::class));
     }
 
     /** @test */
     public function it_registers_middlewares()
     {
-        $instanceof = [];
+        $instanceof            = [];
         $containerConfigurator = new ServicesConfigurator(
             $containerBuilder = new ContainerBuilder(),
             new PhpFileLoader($containerBuilder, $this->createMock(FileLocatorInterface::class)),
@@ -83,14 +83,14 @@ final class MessageBusConfiguratorTest extends TestCase
 
         self::assertEquals(
             $expectedDef,
-            $containerBuilder->getDefinition('park_manager.command_bus.users.middleware.'.MessageGuardMiddleware::class)
+            $containerBuilder->getDefinition('park_manager.command_bus.users.middleware.' . MessageGuardMiddleware::class)
         );
     }
 
     /** @test */
     public function it_extends_existing()
     {
-        $instanceof = [];
+        $instanceof            = [];
         $containerConfigurator = new ServicesConfigurator(
             $containerBuilder = new ContainerBuilder(),
             new PhpFileLoader($containerBuilder, $this->createMock(FileLocatorInterface::class)),
@@ -108,7 +108,7 @@ final class MessageBusConfiguratorTest extends TestCase
         $expectedDef->addTag('park_manager.command_bus.users.handler');
         $expectedDef->setPublic(false);
 
-        self::assertEquals($expectedDef, $containerBuilder->getDefinition('park_manager.command_bus.users.handler.'.RegisterUserHandler::class));
-        self::assertFalse($containerBuilder->hasDefinition('park_manager.command_bus.users.handler.'.CancelUserHandler::class));
+        self::assertEquals($expectedDef, $containerBuilder->getDefinition('park_manager.command_bus.users.handler.' . RegisterUserHandler::class));
+        self::assertFalse($containerBuilder->hasDefinition('park_manager.command_bus.users.handler.' . CancelUserHandler::class));
     }
 }

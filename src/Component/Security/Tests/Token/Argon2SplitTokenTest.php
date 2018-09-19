@@ -16,6 +16,7 @@ namespace ParkManager\Component\Security\Tests\Token;
 use ParagonIE\Halite\HiddenString;
 use ParkManager\Component\Security\Token\Argon2SplitToken as SplitToken;
 use PHPUnit\Framework\TestCase;
+use function hex2bin;
 
 /**
  * @internal
@@ -23,7 +24,7 @@ use PHPUnit\Framework\TestCase;
 final class Argon2SplitTokenTest extends TestCase
 {
     private const FULL_TOKEN = '1zUeXUvr4LKymANBB_bLEqiP5GPr-Pha_OR6OOnV1o8Vy_rWhDoxKNIt';
-    private const SELECTOR = '1zUeXUvr4LKymANBB_bLEqiP5GPr-Pha';
+    private const SELECTOR   = '1zUeXUvr4LKymANBB_bLEqiP5GPr-Pha';
 
     private static $randValue;
 
@@ -53,7 +54,7 @@ final class Argon2SplitTokenTest extends TestCase
     {
         $splitToken = SplitToken::create(self::$randValue);
 
-        self::assertEquals(self::FULL_TOKEN, $token = $splitToken->token()->getString());
+        self::assertEquals(self::FULL_TOKEN, $token  = $splitToken->token()->getString());
         self::assertEquals(self::SELECTOR, $selector = $splitToken->selector());
     }
 
@@ -64,7 +65,7 @@ final class Argon2SplitTokenTest extends TestCase
     {
         $splitToken = SplitToken::create($fullToken = self::$randValue, '50');
 
-        self::assertEquals(self::FULL_TOKEN, $token = $splitToken->token()->getString());
+        self::assertEquals(self::FULL_TOKEN, $token  = $splitToken->token()->getString());
         self::assertEquals(self::SELECTOR, $selector = $splitToken->selector());
     }
 
@@ -104,7 +105,7 @@ final class Argon2SplitTokenTest extends TestCase
     public function it_produces_a_SplitTokenValueHolder_with_metadata()
     {
         $splitToken = SplitToken::create(self::$randValue);
-        $value = $splitToken->toValueHolder(['he' => 'now']);
+        $value      = $splitToken->toValueHolder(['he' => 'now']);
 
         self::assertStringStartsWith('$argon2i', $value->verifierHash());
         self::assertEquals(['he' => 'now'], $value->metadata());
@@ -115,7 +116,7 @@ final class Argon2SplitTokenTest extends TestCase
      */
     public function it_produces_a_SplitTokenValueHolder_with_expiration()
     {
-        $date = new \DateTimeImmutable('+5 minutes');
+        $date       = new \DateTimeImmutable('+5 minutes');
         $splitToken = SplitToken::create($fullToken = self::$randValue)->expireAt($date);
 
         $value = $splitToken->toValueHolder();

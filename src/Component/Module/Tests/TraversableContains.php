@@ -57,13 +57,13 @@ class TraversableContains extends Constraint
             return $success;
         }
 
-        if (!$success) {
+        if (! $success) {
             $this->fail($other, $description);
         }
     }
 
     public function toString(): string
     {
-        return 'contains value of type "'.$this->type.'"';
+        return 'contains value of type "' . $this->type . '"';
     }
 }

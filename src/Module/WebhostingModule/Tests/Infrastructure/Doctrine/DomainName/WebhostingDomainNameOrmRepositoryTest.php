@@ -36,38 +36,26 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
 {
     private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
 
-    private const ACCOUNT_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
-    private const ACCOUNT_ID2 = '47f6db14-a69c-11e7-be13-acbc32b58316';
+    private const ACCOUNT_ID1  = '2d3fb900-a528-11e7-a027-acbc32b58315';
+    private const ACCOUNT_ID2  = '47f6db14-a69c-11e7-be13-acbc32b58316';
     private const ACCOUNT_NOOP = '30b26ae0-a6b5-11e7-b978-acbc32b58315';
 
-    /**
-     * @var WebhostingDomainNameOrmRepository
-     */
+    /** @var WebhostingDomainNameOrmRepository */
     private $repository;
 
-    /**
-     * @var WebhostingAccount
-     */
+    /** @var WebhostingAccount */
     private $account1;
 
-    /**
-     * @var WebhostingAccount
-     */
+    /** @var WebhostingAccount */
     private $account2;
 
-    /**
-     * @var WebhostingDomainNameId
-     */
+    /** @var WebhostingDomainNameId */
     private $id1;
 
-    /**
-     * @var WebhostingDomainNameId
-     */
+    /** @var WebhostingDomainNameId */
     private $id2;
 
-    /**
-     * @var WebhostingDomainNameId
-     */
+    /** @var WebhostingDomainNameId */
     private $id3;
 
     protected function setUp(): void
@@ -93,13 +81,13 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
         });
 
         $webhostingDomainName1 = WebhostingDomainName::registerPrimary($this->account1, new DomainName('example', 'com'));
-        $this->id1 = $webhostingDomainName1->id();
+        $this->id1             = $webhostingDomainName1->id();
 
         $webhostingDomainName2 = WebhostingDomainName::registerPrimary($this->account2, new DomainName('example', 'net'));
-        $this->id2 = $webhostingDomainName2->id();
+        $this->id2             = $webhostingDomainName2->id();
 
         $webhostingDomainName3 = WebhostingDomainName::registerSecondary($this->account2, new DomainName('example', 'co.uk'));
-        $this->id3 = $webhostingDomainName3->id();
+        $this->id3             = $webhostingDomainName3->id();
 
         $this->repository = new WebhostingDomainNameOrmRepository($em);
         $this->repository->save($webhostingDomainName1);
@@ -196,7 +184,7 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     /** @test */
     public function it_marks_previous_primary_as_secondary()
     {
-        $primaryDomainName = $this->repository->get($this->id2);
+        $primaryDomainName   = $this->repository->get($this->id2);
         $secondaryDomainName = $this->repository->get($this->id3);
 
         $secondaryDomainName->markPrimary();

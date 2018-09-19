@@ -16,18 +16,18 @@ namespace ParkManager\Component\Mailer;
 interface Sender
 {
     /**
-     * @param string $template   Template name (and path)
-     * @param array  $recipients Either a string (e-mail address)
-     *                           or e-mail address => name
-     * @param array  $variables  Variables for the template
+     * @param string  $template   Template name (and path)
+     * @param array   $recipients Either a string (e-mail address)
+     *                            or e-mail address => name
+     * @param mixed[] $variables  Variables for the template
      */
     public function send(string $template, array $recipients, array $variables): void;
 
     /**
      * @param string              $template    Template name (and path)
-     * @param array               $recipients  Either a string (e-mail address)
+     * @param string[]|array[]    $recipients  Either a string (e-mail address)
      *                                         or "e-mail address" => name
-     * @param array               $variables   Variables for the template
+     * @param mixed[]             $variables   Variables for the template
      * @param string[]|resource[] $attachments Filename => absolute path or
      *                                         PHP stream resource (read-only)
      */

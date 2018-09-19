@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Domain\Package\Exception;
 
+use function class_exists;
+use function sprintf;
+
 final class CapabilityNotRegistered extends \RuntimeException
 {
     public static function withId(string $id): self
@@ -23,7 +26,7 @@ final class CapabilityNotRegistered extends \RuntimeException
 
     public static function withName(string $name): self
     {
-        if (!class_exists($name)) {
+        if (! class_exists($name)) {
             return new self(sprintf('Webhosting Package Capability %s cannot be found.', $name));
         }
 

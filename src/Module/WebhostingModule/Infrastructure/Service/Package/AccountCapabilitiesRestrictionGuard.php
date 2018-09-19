@@ -19,6 +19,7 @@ use ParkManager\Module\WebhostingModule\Application\AccountIdAwareCommand;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountRepository;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface as PropertyAccessor;
+use function get_class;
 
 /**
  * The AccountCapabilitiesRestrictionGuard determines if the a Command violates
@@ -40,22 +41,24 @@ final class AccountCapabilitiesRestrictionGuard implements CapabilitiesRestricti
         array $mappings
     ) {
         $this->accountRepository = $accountRepository;
-        $this->capabilityGuards = $capabilityGuards;
-        $this->mappings = $mappings;
-        $this->propertyAccessor = $propertyAccessor;
+        $this->capabilityGuards  = $capabilityGuards;
+        $this->mappings          = $mappings;
+        $this->propertyAccessor  = $propertyAccessor;
     }
 
     public function decide(object $command, ServiceMessages $messages): bool
     {
-        if (!$command instanceof AccountIdAwareCommand || !isset($this->mappings[$name = \get_class($command)])) {
+        $name = get_class($command);
+
+        if (! $command instanceof AccountIdAwareCommand || ! isset($this->mappings[$name])) {
             return true;
         }
 
-        $account = $this->accountRepository->get($command->account());
-        $capabilities = $account->capabilities();
+        $account        = $this->accountRepository->get($command->account());
+        $capabilities   = $account->capabilities();
         $capabilityName = $this->mappings[$name]['capability'];
 
-        if (!$capabilities->has($capabilityName)) {
+        if (! $capabilities->has($capabilityName)) {
             return true;
         }
 
@@ -72,8 +75,9 @@ final class AccountCapabilitiesRestrictionGuard implements CapabilitiesRestricti
 
     private function getContextFromCommand(object $command): array
     {
-        $name = \get_class($command);
+        $name     = get_class($command);
         $mappings = $this->mappings[$name]['mapping'] ?? [];
+
         $context = [];
 
         foreach ($mappings as $argumentName => $propertyPath) {

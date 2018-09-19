@@ -18,20 +18,18 @@ use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\GlobFileLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\{
-    ClosureLoader,
-    DirectoryLoader,
-    IniFileLoader,
-    PhpFileLoader,
-    XmlFileLoader,
-    YamlFileLoader
-};
+use Symfony\Component\DependencyInjection\Loader\ClosureLoader;
+use Symfony\Component\DependencyInjection\Loader\DirectoryLoader;
+use Symfony\Component\DependencyInjection\Loader\IniFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 trait ServiceLoaderTrait
 {
     protected function getServiceLoader(ContainerBuilder $container, ...$servicesPath): DelegatingLoader
     {
-        $locator = new FileLocator($servicesPath);
+        $locator  = new FileLocator($servicesPath);
         $resolver = new LoaderResolver([
             new PhpFileLoader($container, $locator),
             new XmlFileLoader($container, $locator),

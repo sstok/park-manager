@@ -16,6 +16,9 @@ namespace ParkManager\Bundle\RouteAutofillBundle\CacheWarmer;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
+use function array_fill_keys;
+use function sprintf;
+use function var_export;
 
 final class RouteRedirectMappingWarmer extends CacheWarmer
 {
@@ -43,7 +46,7 @@ final class RouteRedirectMappingWarmer extends CacheWarmer
 
         /** @var Route $route */
         foreach ($this->router->getRouteCollection() as $routeName => $route) {
-            if (!$route->hasOption('autofill_variables')) {
+            if (! $route->hasOption('autofill_variables')) {
                 continue;
             }
 
@@ -52,6 +55,6 @@ final class RouteRedirectMappingWarmer extends CacheWarmer
             $mapping[$routeName] = array_fill_keys($compiledRoute->getVariables(), true);
         }
 
-        $this->writeCacheFile($cacheDir.'/route_autofill_mapping.php', sprintf("<?php return %s;\n", var_export($mapping, true)));
+        $this->writeCacheFile($cacheDir . '/route_autofill_mapping.php', sprintf("<?php return %s;\n", var_export($mapping, true)));
     }
 }

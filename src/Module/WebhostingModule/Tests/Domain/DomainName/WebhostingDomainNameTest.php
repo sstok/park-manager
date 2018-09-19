@@ -26,20 +26,18 @@ use PHPUnit\Framework\TestCase;
  */
 final class WebhostingDomainNameTest extends TestCase
 {
-    private const ID1 = 'c8257ca8-a6ad-11e7-8ba3-acbc32b58315';
-
     private const ACCOUNT_ID1 = '374dd50e-9b9f-11e7-9730-acbc32b58315';
     private const ACCOUNT_ID2 = 'cfa42746-a6ac-11e7-bff0-acbc32b58315';
 
     /** @test */
     public function it_registers_primary_domainName()
     {
-        $domainName = new DomainName('example', 'com');
+        $domainName  = new DomainName('example', 'com');
         $domainName2 = new DomainName('example', 'net');
-        $account = $this->createAccount(self::ACCOUNT_ID1);
-        $account2 = $this->createAccount(self::ACCOUNT_ID2);
+        $account     = $this->createAccount(self::ACCOUNT_ID1);
+        $account2    = $this->createAccount(self::ACCOUNT_ID2);
 
-        $webhostingDomainName = WebhostingDomainName::registerPrimary($account, $domainName);
+        $webhostingDomainName  = WebhostingDomainName::registerPrimary($account, $domainName);
         $webhostingDomainName2 = WebhostingDomainName::registerPrimary($account2, $domainName2);
 
         self::assertNotEquals($webhostingDomainName, $webhostingDomainName2);
@@ -55,7 +53,7 @@ final class WebhostingDomainNameTest extends TestCase
     public function it_registers_secondary_domainName()
     {
         $domainName2 = new DomainName('example', 'net');
-        $account = $this->createAccount(self::ACCOUNT_ID1);
+        $account     = $this->createAccount(self::ACCOUNT_ID1);
 
         $webhostingDomainName = WebhostingDomainName::registerSecondary($account, $domainName2);
 
@@ -68,7 +66,7 @@ final class WebhostingDomainNameTest extends TestCase
     public function it_can_upgrade_secondary_to_primary()
     {
         $domainName = new DomainName('example', 'com');
-        $account = $this->createAccount(self::ACCOUNT_ID1);
+        $account    = $this->createAccount(self::ACCOUNT_ID1);
 
         $webhostingDomainName = WebhostingDomainName::registerSecondary($account, $domainName);
         $webhostingDomainName->markPrimary();
@@ -93,8 +91,9 @@ final class WebhostingDomainNameTest extends TestCase
     /** @test */
     public function it_can_transfer_secondary_domainName()
     {
-        $account2 = $this->createAccount(self::ACCOUNT_ID2);
-        $webhostingDomainName = WebhostingDomainName::registerSecondary($this->createAccount(self::ACCOUNT_ID1),
+        $account2             = $this->createAccount(self::ACCOUNT_ID2);
+        $webhostingDomainName = WebhostingDomainName::registerSecondary(
+            $this->createAccount(self::ACCOUNT_ID1),
             new DomainName('example', 'com')
         );
 
@@ -106,8 +105,8 @@ final class WebhostingDomainNameTest extends TestCase
     /** @test */
     public function it_cannot_transfer_primary_domainName()
     {
-        $account2 = $this->createAccount(self::ACCOUNT_ID2);
-        $account1 = $this->createAccount(self::ACCOUNT_ID1);
+        $account2             = $this->createAccount(self::ACCOUNT_ID2);
+        $account1             = $this->createAccount(self::ACCOUNT_ID1);
         $webhostingDomainName = WebhostingDomainName::registerPrimary($account1, new DomainName('example', 'com'));
 
         $this->expectException(CannotTransferPrimaryDomainName::class);

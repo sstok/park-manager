@@ -15,6 +15,7 @@ namespace ParkManager\Bundle\ServiceBusBundle\Validator;
 
 use League\Tactician\Middleware;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use function count;
 
 final class ValidatorMiddleware implements Middleware
 {
@@ -26,10 +27,9 @@ final class ValidatorMiddleware implements Middleware
     }
 
     /**
-     * @param object   $command
-     * @param callable $next
+     * @param object $command
      *
-     * @throws InvalidCommandException
+     * @throws CommandFailedValidation
      *
      * @return mixed
      */
@@ -37,8 +37,8 @@ final class ValidatorMiddleware implements Middleware
     {
         $constraintViolations = $this->validator->validate($command);
 
-        if (\count($constraintViolations) > 0) {
-            throw InvalidCommandException::onCommand($command, $constraintViolations);
+        if (count($constraintViolations) > 0) {
+            throw CommandFailedValidation::onCommand($command, $constraintViolations);
         }
 
         return $next($command);

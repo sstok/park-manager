@@ -49,20 +49,20 @@ final class SplitTokenValueHolder
         array $metadata = [],
         ?SplitToken $token = null
     ) {
-        $this->selector = $selector;
+        $this->selector     = $selector;
         $this->verifierHash = $verifierHash;
-        $this->expiresAt = $expiresAt;
-        $this->metadata = $metadata;
-        $this->token = $token;
+        $this->expiresAt    = $expiresAt;
+        $this->metadata     = $metadata;
+        $this->token        = $token;
     }
 
     public static function isEmpty(?self $valueHolder): bool
     {
-        if (null === $valueHolder) {
+        if ($valueHolder === null) {
             return true;
         }
 
-        return null === $valueHolder->selector;
+        return $valueHolder->selector === null;
     }
 
     public function selector(): string
@@ -87,7 +87,7 @@ final class SplitTokenValueHolder
 
     public function isExpired(?\DateTimeImmutable $datetime = null): bool
     {
-        if (null === $this->expiresAt) {
+        if ($this->expiresAt === null) {
             return false;
         }
 

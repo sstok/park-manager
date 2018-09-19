@@ -16,8 +16,6 @@ namespace ParkManager\Component\ApplicationFoundation\Command;
 interface CommandBus
 {
     /**
-     * @param object $command
-     *
      * @return mixed
      */
     public function handle(object $command);

@@ -19,6 +19,10 @@ use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use function array_map;
+use function is_a;
+use function is_string;
+use function sprintf;
 
 final class DefinitionEqualsServiceLocatorConstraint extends Constraint
 {
@@ -29,13 +33,13 @@ final class DefinitionEqualsServiceLocatorConstraint extends Constraint
     {
         parent::__construct();
 
-        $this->serviceId = $serviceId;
+        $this->serviceId     = $serviceId;
         $this->expectedValue = array_map(function ($serviceId) {
-            if (\is_string($serviceId)) {
+            if (is_string($serviceId)) {
                 return new ServiceClosureArgument(new Reference($serviceId));
             }
 
-            if (!$serviceId instanceof ServiceClosureArgument) {
+            if (! $serviceId instanceof ServiceClosureArgument) {
                 return new ServiceClosureArgument($serviceId);
             }
 
@@ -53,13 +57,13 @@ final class DefinitionEqualsServiceLocatorConstraint extends Constraint
 
     public function evaluate($other, $description = '', $returnResult = false)
     {
-        if (!($other instanceof ContainerBuilder)) {
+        if (! ($other instanceof ContainerBuilder)) {
             throw new \InvalidArgumentException(
                 'Expected an instance of Symfony\Component\DependencyInjection\ContainerBuilder'
             );
         }
 
-        if (!$this->evaluateServiceDefinition($other, $returnResult)) {
+        if (! $this->evaluateServiceDefinition($other, $returnResult)) {
             return false;
         }
 
@@ -68,7 +72,7 @@ final class DefinitionEqualsServiceLocatorConstraint extends Constraint
 
     private function evaluateServiceDefinition(ContainerBuilder $containerBuilder, $returnResult)
     {
-        if (!$containerBuilder->has($this->serviceId)) {
+        if (! $containerBuilder->has($this->serviceId)) {
             if ($returnResult) {
                 return false;
             }
@@ -82,10 +86,10 @@ final class DefinitionEqualsServiceLocatorConstraint extends Constraint
             );
         }
 
-        $definition = $containerBuilder->findDefinition($this->serviceId);
+        $definition  = $containerBuilder->findDefinition($this->serviceId);
         $actualClass = $containerBuilder->getParameterBag()->resolveValue($definition->getClass());
 
-        if (!is_a($actualClass, ServiceLocator::class, true)) {
+        if (! is_a($actualClass, ServiceLocator::class, true)) {
             $this->fail(
                 $definition,
                 sprintf(
@@ -101,9 +105,9 @@ final class DefinitionEqualsServiceLocatorConstraint extends Constraint
         }
 
         $actualValue = $definition->getArgument(0);
-        $constraint = new IsEqual($this->expectedValue);
+        $constraint  = new IsEqual($this->expectedValue);
 
-        if (!$constraint->evaluate($actualValue, '', true)) {
+        if (! $constraint->evaluate($actualValue, '', true)) {
             if ($returnResult) {
                 return false;
             }

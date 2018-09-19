@@ -36,10 +36,6 @@ interface PermissionGuard
      * The PermissionGuard is expected to return one of the following:
      * self::PERMISSION_ALLOW, self::PERMISSION_DENY
      * or self::PERMISSION_ABSTAIN
-     *
-     * @param object $message
-     *
-     * @return int
      */
     public function decide(object $message): int;
 }

@@ -22,7 +22,7 @@ interface WebhostingAccountRepository
     /**
      * Get Account by id.
      *
-     * @throws WebhostingAccountNotFound when no account was found with the id
+     * @throws WebhostingAccountNotFound When no account was found with the id
      */
     public function get(WebhostingAccountId $id): WebhostingAccount;
 
@@ -36,7 +36,7 @@ interface WebhostingAccountRepository
     /**
      * Remove an webhosting account registration from the repository.
      *
-     * @throws CannotRemoveActiveWebhostingAccount when account is still active
+     * @throws CannotRemoveActiveWebhostingAccount When account is still active
      */
     public function remove(WebhostingAccount $account): void;
 }

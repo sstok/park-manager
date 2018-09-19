@@ -31,6 +31,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\ExpressionLanguage\Expression;
+use function array_map;
 
 /**
  * @internal
@@ -39,9 +40,7 @@ final class PolicyGuardConfigurationPassTest extends AbstractCompilerPassTestCas
 {
     private const BUS_ID = 'park_manager.command_bus.users';
 
-    /**
-     * @var ServicesConfigurator
-     */
+    /** @var ServicesConfigurator */
     protected $containerConfigurator;
 
     protected function registerCompilerPass(ContainerBuilder $container)
@@ -53,7 +52,7 @@ final class PolicyGuardConfigurationPassTest extends AbstractCompilerPassTestCas
     {
         parent::setUp();
 
-        $instanceof = [];
+        $instanceof                  = [];
         $this->containerConfigurator = new ServicesConfigurator(
             $this->container,
             new PhpFileLoader($this->container, $this->createMock(FileLocatorInterface::class)),
@@ -69,9 +68,9 @@ final class PolicyGuardConfigurationPassTest extends AbstractCompilerPassTestCas
 
         $this->compile();
 
-        $guardId = self::BUS_ID.'.message_guard.'.PolicyGuard::class;
+        $guardId = self::BUS_ID . '.message_guard.' . PolicyGuard::class;
         $this->assertContainerBuilderHasService($guardId, PolicyGuard::class);
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 0, new Reference(self::BUS_ID.'.policy_guard.expression_language'));
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 0, new Reference(self::BUS_ID . '.policy_guard.expression_language'));
         $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 1, []);
         $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 2, []);
         $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 3, '{^/$}');
@@ -82,7 +81,7 @@ final class PolicyGuardConfigurationPassTest extends AbstractCompilerPassTestCas
     /** @test */
     public function it_processes_namespace_and_class_boolean_policies()
     {
-        $di = $this->containerConfigurator->defaults();
+        $di           = $this->containerConfigurator->defaults();
         $configurator = $this->createConfigurator($di);
         $configurator->setNamespace('Fixtures', false);
         $configurator->setNamespace('Fixtures2', true);
@@ -92,9 +91,9 @@ final class PolicyGuardConfigurationPassTest extends AbstractCompilerPassTestCas
 
         $this->compile();
 
-        $guardId = self::BUS_ID.'.message_guard.'.PolicyGuard::class;
+        $guardId = self::BUS_ID . '.message_guard.' . PolicyGuard::class;
         $this->assertContainerBuilderHasService($guardId, PolicyGuard::class);
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 0, new Reference(self::BUS_ID.'.policy_guard.expression_language'));
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 0, new Reference(self::BUS_ID . '.policy_guard.expression_language'));
         $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 1, [
             'ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\Fixtures' => false,
             'ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\Fixtures2' => true,
@@ -111,7 +110,7 @@ final class PolicyGuardConfigurationPassTest extends AbstractCompilerPassTestCas
     /** @test */
     public function it_processes_namespace_and_class_expression_policies()
     {
-        $di = $this->containerConfigurator->defaults();
+        $di           = $this->containerConfigurator->defaults();
         $configurator = $this->createConfigurator($di);
         $configurator->setVariable('foo', 'bar');
         $configurator->setVariable('repository', new Reference('ServiceA'));
@@ -121,9 +120,9 @@ final class PolicyGuardConfigurationPassTest extends AbstractCompilerPassTestCas
 
         $this->compile();
 
-        $guardId = self::BUS_ID.'.message_guard.'.PolicyGuard::class;
+        $guardId = self::BUS_ID . '.message_guard.' . PolicyGuard::class;
         $this->assertContainerBuilderHasService($guardId, PolicyGuard::class);
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 0, new Reference(self::BUS_ID.'.policy_guard.expression_language'));
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 0, new Reference(self::BUS_ID . '.policy_guard.expression_language'));
         $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 1, [
             'ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\Fixtures' => new Definition(Expression::class, ['DENY']),
             'ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests\Fixtures2' => new Definition(Expression::class, ['repository.get(1) ? ALLOW : ABSTAIN']),
@@ -140,7 +139,7 @@ final class PolicyGuardConfigurationPassTest extends AbstractCompilerPassTestCas
     /** @test */
     public function it_processes_regexp_policies()
     {
-        $di = $this->containerConfigurator->defaults();
+        $di           = $this->containerConfigurator->defaults();
         $configurator = $this->createConfigurator($di);
         $configurator->setRegexp('ParkManager\\\Bundle\\\ServiceBusPolicyGuardBundle\\\Tests\\\\Fixtures2\\\\Message[C]', 'ALLOW', false);
         $configurator->setRegexp('Message[A]', true);
@@ -149,9 +148,9 @@ final class PolicyGuardConfigurationPassTest extends AbstractCompilerPassTestCas
 
         $this->compile();
 
-        $guardId = self::BUS_ID.'.message_guard.'.PolicyGuard::class;
+        $guardId = self::BUS_ID . '.message_guard.' . PolicyGuard::class;
         $this->assertContainerBuilderHasService($guardId, PolicyGuard::class);
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 0, new Reference(self::BUS_ID.'.policy_guard.expression_language'));
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 0, new Reference(self::BUS_ID . '.policy_guard.expression_language'));
         $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 1, []);
         $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 2, []);
         $this->assertContainerBuilderHasServiceDefinitionWithArgument($guardId, 3, '{^(?|ParkManager\\\Bundle\\\ServiceBusPolicyGuardBundle\\\Tests\\\Fixtures2\\\Message[C](*:1))|ParkManager\\\Bundle\\\ServiceBusPolicyGuardBundle\\\Tests\\\(?|Message[A](*:2)|Message[B](*:3))$}su');
@@ -162,24 +161,24 @@ final class PolicyGuardConfigurationPassTest extends AbstractCompilerPassTestCas
     /** @test */
     public function it_processes_ExpressionLanguageProviders()
     {
-        $di = $this->containerConfigurator->defaults();
+        $di           = $this->containerConfigurator->defaults();
         $configurator = $this->createConfigurator($di);
         $configurator->addExpressionLanguageProvider(ExpressionLanguageProvider::class);
-        $configurator->addExpressionLanguageProvider(ExpressionLanguageProvider::class.'2', ['foobar']);
+        $configurator->addExpressionLanguageProvider(ExpressionLanguageProvider::class . '2', ['foobar']);
 
         $this->compile();
 
-        $this->assertContainerBuilderHasService(self::BUS_ID.'.policy_guard.expression_language', ExpressionLanguage::class);
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument(self::BUS_ID.'.policy_guard.expression_language', 0, new Reference('cache.system'));
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument(self::BUS_ID.'.policy_guard.expression_language', 1, [
-            new Reference(self::BUS_ID.'.policy_guard.expression_language.'.ExpressionLanguageProvider::class),
-            new Reference(self::BUS_ID.'.policy_guard.expression_language.'.ExpressionLanguageProvider::class.'2'),
+        $this->assertContainerBuilderHasService(self::BUS_ID . '.policy_guard.expression_language', ExpressionLanguage::class);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(self::BUS_ID . '.policy_guard.expression_language', 0, new Reference('cache.system'));
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(self::BUS_ID . '.policy_guard.expression_language', 1, [
+            new Reference(self::BUS_ID . '.policy_guard.expression_language.' . ExpressionLanguageProvider::class),
+            new Reference(self::BUS_ID . '.policy_guard.expression_language.' . ExpressionLanguageProvider::class . '2'),
         ]);
     }
 
     private function createConfigurator(DefaultsConfigurator $di, ?string $namespacePrefix = 'ParkManager\Bundle\ServiceBusPolicyGuardBundle\Tests'): PolicyGuardMiddlewareConfigurator
     {
-        $configurator = new PolicyGuardMiddlewareConfigurator(
+        $configurator        = new PolicyGuardMiddlewareConfigurator(
             $midConfigurator = new MiddlewaresConfigurator(MessageBusConfigurator::extend($di, self::BUS_ID), $di, self::BUS_ID),
             $di,
             self::BUS_ID,

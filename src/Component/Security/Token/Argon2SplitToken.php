@@ -13,15 +13,23 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\Security\Token;
 
+use const PASSWORD_ARGON2_DEFAULT_MEMORY_COST;
+use const PASSWORD_ARGON2_DEFAULT_THREADS;
+use const PASSWORD_ARGON2_DEFAULT_TIME_COST;
+use const PASSWORD_ARGON2I;
+use function array_merge;
+use function password_hash;
+use function password_verify;
+
 final class Argon2SplitToken extends SplitToken
 {
     protected function configureHasher(array $config = [])
     {
         $this->config = array_merge(
             [
-                'memory_cost' => \PASSWORD_ARGON2_DEFAULT_MEMORY_COST,
-                'time_cost' => \PASSWORD_ARGON2_DEFAULT_TIME_COST,
-                'threads' => \PASSWORD_ARGON2_DEFAULT_THREADS,
+                'memory_cost' => PASSWORD_ARGON2_DEFAULT_MEMORY_COST,
+                'time_cost' => PASSWORD_ARGON2_DEFAULT_TIME_COST,
+                'threads' => PASSWORD_ARGON2_DEFAULT_THREADS,
             ],
             $config
         );
@@ -29,11 +37,11 @@ final class Argon2SplitToken extends SplitToken
 
     protected function verifyHash(string $hash, string $verifier): bool
     {
-        return \password_verify($verifier, $hash);
+        return password_verify($verifier, $hash);
     }
 
     protected function hashVerifier(string $verifier): string
     {
-        return \password_hash($verifier, \PASSWORD_ARGON2I, $this->config);
+        return password_hash($verifier, PASSWORD_ARGON2I, $this->config);
     }
 }

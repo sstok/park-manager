@@ -21,6 +21,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use function implode;
 
 /**
  * @internal
@@ -167,7 +168,7 @@ final class ConfirmationHandlerTest extends TestCase
 
     private function createTokenId(array $ids): string
     {
-        return 'confirm.'.implode('~', $ids).'~';
+        return 'confirm.' . implode('~', $ids) . '~';
     }
 
     private function createTokenManagerWithInvalid(string $tokenId, bool $hasToken = true): CsrfTokenManagerInterface
@@ -194,7 +195,7 @@ final class ConfirmationHandlerTest extends TestCase
 
     private function createTwigEnvironment(): Environment
     {
-        return new Environment(new FilesystemLoader([__DIR__.'/templates'], __DIR__.'/templates'), [
+        return new Environment(new FilesystemLoader([__DIR__ . '/templates'], __DIR__ . '/templates'), [
             'debug' => true,
             'strict_variables' => true,
         ]);

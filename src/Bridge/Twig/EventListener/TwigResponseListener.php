@@ -42,7 +42,7 @@ final class TwigResponseListener implements EventSubscriberInterface
     {
         $response = $event->getResponse();
 
-        if (!$response instanceof TwigResponse || $response->isEmpty() || '' !== $response->getContent()) {
+        if (! $response instanceof TwigResponse || $response->isEmpty() || $response->getContent() !== '') {
             return;
         }
 
@@ -52,7 +52,9 @@ final class TwigResponseListener implements EventSubscriberInterface
             $response->headers->all()
         );
 
-        if (null !== $charset = $response->getCharset()) {
+        $charset = $response->getCharset();
+
+        if ($charset !== null) {
             $newResponse->setCharset($charset);
         }
 

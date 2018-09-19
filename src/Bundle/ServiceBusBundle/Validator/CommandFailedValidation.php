@@ -15,8 +15,10 @@ namespace ParkManager\Bundle\ServiceBusBundle\Validator;
 
 use League\Tactician\Exception\Exception;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use function get_class;
+use function sprintf;
 
-final class InvalidCommandException extends \Exception implements Exception
+final class CommandFailedValidation extends \Exception implements Exception
 {
     private $command;
     private $violations;
@@ -24,11 +26,10 @@ final class InvalidCommandException extends \Exception implements Exception
     public static function onCommand(object $command, ConstraintViolationListInterface $violations): self
     {
         $exception = new static(
-            'Validation failed for '.\get_class($command).
-            ' with '.$violations->count().' violation(s).'
+            sprintf('Validation failed for %s with %d violation(s).', get_class($command), $violations->count())
         );
 
-        $exception->command = $command;
+        $exception->command    = $command;
         $exception->violations = $violations;
 
         return $exception;

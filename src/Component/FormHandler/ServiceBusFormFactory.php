@@ -27,9 +27,9 @@ final class ServiceBusFormFactory
 
     public function __construct(FormFactoryInterface $formFactory, QueryBus $queryBus, CommandBus $commandBus, ?callable $commandValidator = null)
     {
-        $this->formFactory = $formFactory;
-        $this->queryBus = $queryBus;
-        $this->commandBus = $commandBus;
+        $this->formFactory      = $formFactory;
+        $this->queryBus         = $queryBus;
+        $this->commandBus       = $commandBus;
         $this->commandValidator = $commandValidator;
     }
 
@@ -40,15 +40,11 @@ final class ServiceBusFormFactory
      * Use {@link \Symfony\Component\Form\FormEvents::PRE_SET_DATA} to convert
      * the initial data to a correct Command object.
      *
-     * @param string $formType
-     * @param mixed  $data        The initial data (or a Command)
-     * @param array  $formOptions
-     *
-     * @return FormHandler
+     * @param mixed $data The initial form-data (or a Command object)
      */
     public function createForCommand(string $formType, $data, array $formOptions = []): FormHandler
     {
-        $form = $this->formFactory->create($formType, $data, $formOptions);
+        $form    = $this->formFactory->create($formType, $data, $formOptions);
         $handler = new CommandBusFormHandler($form, $this->commandBus, $this->commandValidator);
 
         $this->configureMappingByForm($form, $handler);
@@ -59,19 +55,18 @@ final class ServiceBusFormFactory
     /**
      * Creates a new FormHandler for handling a Query, to allow modifying existing data.
      *
-     * The Command must be provided as the Form data.
+     * The QueryBus first handles the Query, and then passes the returned
+     * data to the Form as initial-data. The Form must transform this form-data
+     * a Command.
+     *
      * Use {@link \Symfony\Component\Form\FormEvents::PRE_SET_DATA} to convert
      * the initial data to a correct Command object.
      *
-     * @param string $formType
-     * @param object $query       The Query message object
-     * @param array  $formOptions
-     *
-     * @return FormHandler
+     * @param object $query The Query message object
      */
     public function createForQuery(string $formType, object $query, array $formOptions = []): FormHandler
     {
-        $form = $this->formFactory->create($formType, $this->queryBus->handle($query), $formOptions);
+        $form    = $this->formFactory->create($formType, $this->queryBus->handle($query), $formOptions);
         $handler = new CommandBusFormHandler($form, $this->commandBus, $this->commandValidator);
 
         $this->configureMappingByForm($form, $handler);
@@ -82,7 +77,7 @@ final class ServiceBusFormFactory
     private function configureMappingByForm(FormInterface $form, FormHandler $handler): void
     {
         foreach ($form->getConfig()->getOption('exception_mapping', []) as $exceptionClass => $formatter) {
-            if ('*' === $exceptionClass) {
+            if ($exceptionClass === '*') {
                 $handler->setExceptionFallback($formatter);
             } else {
                 $handler->mapException($exceptionClass, $formatter);

@@ -16,6 +16,7 @@ namespace ParkManager\Module\WebhostingModule\Domain\DomainName\Exception;
 
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\WebhostingModule\Domain\DomainName;
+use function sprintf;
 
 final class DomainNameAlreadyInUse extends \InvalidArgumentException
 {

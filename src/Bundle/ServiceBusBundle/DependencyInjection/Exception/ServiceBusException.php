@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\ServiceBusBundle\DependencyInjection\Exception;
 
-/**
- * Exception interface for component.
- */
-interface ServiceBusException
+use Throwable;
+
+interface ServiceBusException extends Throwable
 {
 }

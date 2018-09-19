@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace ParkManager\Component\Security\Token;
 
 use ParagonIE\Halite\HiddenString;
+use function hex2bin;
+use function random_bytes;
 
 /**
  * Always uses the same non-random value for the SplitToken to speed-up tests.

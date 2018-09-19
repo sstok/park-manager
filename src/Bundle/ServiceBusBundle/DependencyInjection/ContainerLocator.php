@@ -33,7 +33,7 @@ final class ContainerLocator implements HandlerLocator
 
     public function getHandlerForCommand($commandName): object
     {
-        if (!$this->container->has($commandName)) {
+        if (! $this->container->has($commandName)) {
             throw MissingHandlerException::forCommand($commandName);
         }
 

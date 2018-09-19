@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\ServiceBusBundle\Tests\Guard;
 
 use ParkManager\Bundle\ServiceBusBundle\Tests\Fixtures\Command\CommandA;
-use ParkManager\Bundle\ServiceBusBundle\Validator\InvalidCommandException;
+use ParkManager\Bundle\ServiceBusBundle\Validator\CommandFailedValidation;
 use ParkManager\Bundle\ServiceBusBundle\Validator\ValidatorMiddleware;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -30,15 +30,15 @@ final class ValidatorMiddlewareTest extends TestCase
     /** @test */
     public function it_throws_when_there_are_violations()
     {
-        $list = new ConstraintViolationList([$this->createMock(ConstraintViolationInterface::class)]);
+        $list       = new ConstraintViolationList([$this->createMock(ConstraintViolationInterface::class)]);
         $middleware = new ValidatorMiddleware($this->createValidator($list));
-        $command = new CommandA();
+        $command    = new CommandA();
 
         try {
             $middleware->execute($command, function () {
                 return true;
             });
-        } catch (InvalidCommandException $e) {
+        } catch (CommandFailedValidation $e) {
             $this->assertEquals($list, $e->getViolations());
             $this->assertEquals($command, $e->getCommand());
         }
@@ -47,7 +47,7 @@ final class ValidatorMiddlewareTest extends TestCase
     /** @test */
     public function it_executes_when_there_are_no_violations()
     {
-        $list = new ConstraintViolationList([]);
+        $list       = new ConstraintViolationList([]);
         $middleware = new ValidatorMiddleware($this->createValidator($list));
 
         self::assertEquals('result', $middleware->execute(new CommandA(), function () {

@@ -26,7 +26,7 @@ final class DenyingGuard implements CapabilityGuard
 
     public function decide(Capability $configuration, array $context, WebhostingAccount $account, ServiceMessages $messages): bool
     {
-        $messages->add(ServiceMessage::error('It failed '.($context['limit'] ?? 'NULL')));
+        $messages->add(ServiceMessage::error('It failed ' . ($context['limit'] ?? 'NULL')));
 
         return false;
     }

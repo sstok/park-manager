@@ -27,9 +27,7 @@ interface SplitTokenFactory
      * );
      * ```
      *
-     * @param null|string $id
      *
-     * @return SplitToken
      *
      * @see \ParagonIE\Halite\HiddenString
      */
@@ -43,10 +41,6 @@ interface SplitTokenFactory
      * ```
      * return SplitToken::fromString($token);
      * ```
-     *
-     * @param string $token
-     *
-     * @return SplitToken
      */
     public function fromString(string $token): SplitToken;
 }

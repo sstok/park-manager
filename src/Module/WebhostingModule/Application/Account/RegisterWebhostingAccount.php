@@ -30,12 +30,12 @@ final class RegisterWebhostingAccount
 
     private function __construct(string $id, string $owner, DomainName $domainName, ?string $package, ?Capabilities $capabilities)
     {
-        $this->id = WebhostingAccountId::fromString($id);
-        $this->domainName = $domainName;
+        $this->id           = WebhostingAccountId::fromString($id);
+        $this->domainName   = $domainName;
         $this->capabilities = $capabilities;
-        $this->owner = OwnerId::fromString($owner);
+        $this->owner        = OwnerId::fromString($owner);
 
-        if (null !== $package) {
+        if ($package !== null) {
             $this->package = WebhostingPackageId::fromString($package);
         }
     }

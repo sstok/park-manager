@@ -25,7 +25,7 @@ final class WebhostingAccountCapabilitiesWasChanged extends DomainEvent
 
     public function __construct(WebhostingAccountId $id, Capabilities $capabilities)
     {
-        $this->id = $id;
+        $this->id           = $id;
         $this->capabilities = $capabilities;
     }
 

@@ -17,23 +17,17 @@ namespace ParkManager\Module\WebhostingModule\Tests\Domain\Account\Handler;
 use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
 use ParkManager\Module\WebhostingModule\Application\Account\RegisterWebhostingAccount;
 use ParkManager\Module\WebhostingModule\Application\Account\RegisterWebhostingAccountHandler;
-use ParkManager\Module\WebhostingModule\Domain\Account\{
-    WebhostingAccount,
-    WebhostingAccountId,
-    WebhostingAccountRepository
-};
+use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccount;
+use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
+use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountRepository;
 use ParkManager\Module\WebhostingModule\Domain\DomainName;
-use ParkManager\Module\WebhostingModule\Domain\DomainName\{
-    Exception\DomainNameAlreadyInUse,
-    WebhostingDomainName,
-    WebhostingDomainNameRepository
-};
-use ParkManager\Module\WebhostingModule\Domain\Package\{
-    Capabilities,
-    WebhostingPackage,
-    WebhostingPackageId,
-    WebhostingPackageRepository
-};
+use ParkManager\Module\WebhostingModule\Domain\DomainName\Exception\DomainNameAlreadyInUse;
+use ParkManager\Module\WebhostingModule\Domain\DomainName\WebhostingDomainName;
+use ParkManager\Module\WebhostingModule\Domain\DomainName\WebhostingDomainNameRepository;
+use ParkManager\Module\WebhostingModule\Domain\Package\Capabilities;
+use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackage;
+use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackageId;
+use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackageRepository;
 use ParkManager\Module\WebhostingModule\Tests\Fixtures\Domain\PackageCapability\MonthlyTrafficQuota;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -43,7 +37,7 @@ use Prophecy\Argument;
  */
 final class RegisterWebhostingAccountHandlerTest extends TestCase
 {
-    private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
+    private const OWNER_ID1   = '3f8da982-a528-11e7-a2da-acbc32b58315';
     private const PACKAGE_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
 
     private const ACCOUNT_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
@@ -52,13 +46,13 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     /** @test */
     public function it_handles_registration_of_account_with_package()
     {
-        $capabilities = new Capabilities(new MonthlyTrafficQuota(50));
-        $domainName = new DomainName('example', '.com');
-        $webhostingPackage = WebhostingPackage::create(WebhostingPackageId::fromString(self::PACKAGE_ID1), $capabilities);
-        $packageRepository = $this->createPackageRepository($webhostingPackage);
-        $accountRepository = $this->createAccountRepositoryThatSaves($capabilities, $webhostingPackage);
+        $capabilities         = new Capabilities(new MonthlyTrafficQuota(50));
+        $domainName           = new DomainName('example', '.com');
+        $webhostingPackage    = WebhostingPackage::create(WebhostingPackageId::fromString(self::PACKAGE_ID1), $capabilities);
+        $packageRepository    = $this->createPackageRepository($webhostingPackage);
+        $accountRepository    = $this->createAccountRepositoryThatSaves($capabilities, $webhostingPackage);
         $domainNameRepository = $this->createDomainNameRepositoryThatSaves($domainName, self::ACCOUNT_ID1);
-        $handler = new RegisterWebhostingAccountHandler($accountRepository, $packageRepository, $domainNameRepository);
+        $handler              = new RegisterWebhostingAccountHandler($accountRepository, $packageRepository, $domainNameRepository);
 
         $handler(
             RegisterWebhostingAccount::withPackage(
@@ -73,12 +67,12 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     /** @test */
     public function it_handles_registration_of_account_with_custom_capabilities()
     {
-        $capabilities = new Capabilities(new MonthlyTrafficQuota(50));
-        $domainName = new DomainName('example', '.com');
-        $packageRepository = $this->createNullPackageRepository();
-        $accountRepository = $this->createAccountRepositoryThatSaves($capabilities);
+        $capabilities         = new Capabilities(new MonthlyTrafficQuota(50));
+        $domainName           = new DomainName('example', '.com');
+        $packageRepository    = $this->createNullPackageRepository();
+        $accountRepository    = $this->createAccountRepositoryThatSaves($capabilities);
         $domainNameRepository = $this->createDomainNameRepositoryThatSaves($domainName, self::ACCOUNT_ID1);
-        $handler = new RegisterWebhostingAccountHandler($accountRepository, $packageRepository, $domainNameRepository);
+        $handler              = new RegisterWebhostingAccountHandler($accountRepository, $packageRepository, $domainNameRepository);
 
         $handler(
             RegisterWebhostingAccount::withCustomCapabilities(
@@ -93,12 +87,12 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     /** @test */
     public function it_checks_domain_is_not_already_registered()
     {
-        $domainName = new DomainName('example', '.com');
-        $accountId2 = WebhostingAccountId::fromString(self::ACCOUNT_ID2);
-        $packageRepository = $this->createNullPackageRepository();
-        $accountRepository = $this->createAccountRepositoryWithoutSave();
+        $domainName           = new DomainName('example', '.com');
+        $accountId2           = WebhostingAccountId::fromString(self::ACCOUNT_ID2);
+        $packageRepository    = $this->createNullPackageRepository();
+        $accountRepository    = $this->createAccountRepositoryWithoutSave();
         $domainNameRepository = $this->createDomainNameRepositoryWithExistingRegistration($domainName, $accountId2);
-        $handler = new RegisterWebhostingAccountHandler($accountRepository, $packageRepository, $domainNameRepository);
+        $handler              = new RegisterWebhostingAccountHandler($accountRepository, $packageRepository, $domainNameRepository);
 
         $this->expectException(DomainNameAlreadyInUse::class);
         $this->expectExceptionMessage(DomainNameAlreadyInUse::byAccountId($domainName, $accountId2)->getMessage());

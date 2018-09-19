@@ -23,9 +23,9 @@ final class DoctrineOrmTransactionMiddlewareConfigurator implements MiddlewareCo
 {
     public function __construct(AbstractServiceConfigurator $di, string $serviceId, string $managerName)
     {
-        $di->set($serviceId.'.middleware.doctrine_transaction', TransactionMiddleware::class)
-            ->args([new Reference('doctrine.orm.'.$managerName.'_entity_manager')])
-            ->tag($serviceId.'.middleware', ['priority' => MessageBusConfigurator::MIDDLEWARE_PRIORITY_TRANSACTION])
+        $di->set($serviceId . '.middleware.doctrine_transaction', TransactionMiddleware::class)
+            ->args([new Reference('doctrine.orm.' . $managerName . '_entity_manager')])
+            ->tag($serviceId . '.middleware', ['priority' => MessageBusConfigurator::MIDDLEWARE_PRIORITY_TRANSACTION])
             ->private();
     }
 }

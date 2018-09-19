@@ -13,6 +13,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\ConfirmationHandler;
 
+use function is_scalar;
+use function mb_strlen;
+use function mb_strtolower;
+use function substr_compare;
+use function trim;
+
 /**
  * The CheckedConfirmationHandler works same as the ConfirmationHandler except
  * that it requires a matching value is provided to reduce mistakenly confirming.
@@ -39,17 +45,14 @@ final class CheckedConfirmationHandler extends BaseConfirmationHandler
      *
      * @param string $title          The title of the confirmation (eg. "park_manager.module.action.confirm.title")
      * @param string $message        The message of the confirmation (eg. "park_manager.module.action.confirm.body")
-     * @param string $requiredValue
      * @param string $yesButtonLabel The label of the confirmation button (should contain a clear indication about what
      *                               will happen "Remove user")
-     *
-     * @return CheckedConfirmationHandler
      */
     public function configure(string $title, string $message, string $requiredValue, string $yesButtonLabel): self
     {
-        $this->templateContext['title'] = $title;
-        $this->templateContext['message'] = $message;
-        $this->templateContext['yes_btn_label'] = $yesButtonLabel;
+        $this->templateContext['title']          = $title;
+        $this->templateContext['message']        = $message;
+        $this->templateContext['yes_btn_label']  = $yesButtonLabel;
         $this->templateContext['required_value'] = $requiredValue;
 
         return $this;
@@ -57,28 +60,28 @@ final class CheckedConfirmationHandler extends BaseConfirmationHandler
 
     /**
      * Returns whether the action was confirmed (and has a valid token).
-     *
-     * @return bool
      */
     public function isConfirmed(): bool
     {
         $this->guardNeedsRequest();
 
-        if (!$this->request->isMethod('POST') || !$this->checkToken()) {
+        if (! $this->request->isMethod('POST') || ! $this->checkToken()) {
             return false;
         }
 
-        if (!is_scalar($val = $this->request->request->get('_value', ''))) {
-            $val = '';
+        $providedValue = $this->request->request->get('_value', '');
+
+        if (! is_scalar($providedValue)) {
+            $providedValue = '';
         }
 
-        $this->templateContext['provided_value'] = $val = (string) $val;
+        $this->templateContext['provided_value'] = $providedValue = (string) $providedValue;
 
         // Remove spaces and lowercase the input (this is about sanity not strictness)
-        $reqVal = mb_strtolower(trim($this->templateContext['required_value']));
-        $val = mb_strtolower(trim($val));
+        $requiredValue = mb_strtolower(trim($this->templateContext['required_value']));
+        $providedValue = mb_strtolower(trim($providedValue));
 
-        if ('' === $val || substr_compare($val, $reqVal, -mb_strlen($reqVal, '8bit')) !== 0) {
+        if ($providedValue === '' || substr_compare($providedValue, $requiredValue, -mb_strlen($requiredValue, '8bit')) !== 0) {
             $this->templateContext['error'] = 'Value does not match expected "{{ value }}".';
 
             return false;

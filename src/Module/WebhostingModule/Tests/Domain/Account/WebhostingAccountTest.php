@@ -16,22 +16,16 @@ namespace ParkManager\Module\WebhostingModule\Tests\Domain\Account;
 
 use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
 use ParkManager\Module\CoreModule\Test\Domain\EventsRecordingEntityAssertionTrait;
-use ParkManager\Module\WebhostingModule\Domain\Account\Event\{
-    WebhostingAccountCapabilitiesWasChanged,
-    WebhostingAccountOwnerWasSwitched,
-    WebhostingAccountPackageAssignmentWasChanged,
-    WebhostingAccountWasMarkedForRemoval,
-    WebhostingAccountWasRegistered
-};
-use ParkManager\Module\WebhostingModule\Domain\Account\{
-    WebhostingAccount,
-    WebhostingAccountId
-};
-use ParkManager\Module\WebhostingModule\Domain\Package\{
-    Capabilities,
-    WebhostingPackage,
-    WebhostingPackageId
-};
+use ParkManager\Module\WebhostingModule\Domain\Account\Event\WebhostingAccountCapabilitiesWasChanged;
+use ParkManager\Module\WebhostingModule\Domain\Account\Event\WebhostingAccountOwnerWasSwitched;
+use ParkManager\Module\WebhostingModule\Domain\Account\Event\WebhostingAccountPackageAssignmentWasChanged;
+use ParkManager\Module\WebhostingModule\Domain\Account\Event\WebhostingAccountWasMarkedForRemoval;
+use ParkManager\Module\WebhostingModule\Domain\Account\Event\WebhostingAccountWasRegistered;
+use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccount;
+use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
+use ParkManager\Module\WebhostingModule\Domain\Package\Capabilities;
+use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackage;
+use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackageId;
 use ParkManager\Module\WebhostingModule\Tests\Fixtures\Domain\PackageCapability\MonthlyTrafficQuota;
 use PHPUnit\Framework\TestCase;
 
@@ -53,9 +47,9 @@ final class WebhostingAccountTest extends TestCase
     /** @test */
     public function it_registers_an_webhosting_account()
     {
-        $id = WebhostingAccountId::create();
+        $id           = WebhostingAccountId::create();
         $capabilities = new Capabilities();
-        $package = $this->createWebhostingPackage($capabilities);
+        $package      = $this->createWebhostingPackage($capabilities);
 
         $account = WebhostingAccount::register($id, $owner = OwnerId::fromString(self::OWNER_ID1), $package);
 
@@ -69,7 +63,7 @@ final class WebhostingAccountTest extends TestCase
     /** @test */
     public function it_registers_an_webhosting_account_with_custom_capabilities()
     {
-        $id = WebhostingAccountId::create();
+        $id           = WebhostingAccountId::create();
         $capabilities = new Capabilities();
 
         $account = WebhostingAccount::registerWithCustomCapabilities($id, $owner = OwnerId::fromString(self::OWNER_ID1), $capabilities);
@@ -84,13 +78,13 @@ final class WebhostingAccountTest extends TestCase
     /** @test */
     public function it_allows_changing_package_assignment()
     {
-        $id2 = WebhostingAccountId::create();
+        $id2           = WebhostingAccountId::create();
         $capabilities1 = new Capabilities();
         $capabilities2 = new Capabilities(new MonthlyTrafficQuota(50));
-        $package1 = $this->createWebhostingPackage($capabilities1);
-        $package2 = $this->createWebhostingPackage($capabilities2, self::PACKAGE_ID_2);
-        $account1 = WebhostingAccount::register(WebhostingAccountId::create(), OwnerId::fromString(self::OWNER_ID1), $package1);
-        $account2 = WebhostingAccount::register($id2, OwnerId::fromString(self::OWNER_ID1), $package1);
+        $package1      = $this->createWebhostingPackage($capabilities1);
+        $package2      = $this->createWebhostingPackage($capabilities2, self::PACKAGE_ID_2);
+        $account1      = WebhostingAccount::register(WebhostingAccountId::create(), OwnerId::fromString(self::OWNER_ID1), $package1);
+        $account2      = WebhostingAccount::register($id2, OwnerId::fromString(self::OWNER_ID1), $package1);
         self::resetDomainEvents($account1, $account2);
 
         $account1->assignPackage($package1);
@@ -108,13 +102,13 @@ final class WebhostingAccountTest extends TestCase
     /** @test */
     public function it_allows_changing_package_assignment_with_capabilities()
     {
-        $id2 = WebhostingAccountId::create();
+        $id2           = WebhostingAccountId::create();
         $capabilities1 = new Capabilities();
         $capabilities2 = new Capabilities(new MonthlyTrafficQuota(50));
-        $package1 = $this->createWebhostingPackage($capabilities1);
-        $package2 = $this->createWebhostingPackage($capabilities2, self::PACKAGE_ID_2);
-        $account1 = WebhostingAccount::register(WebhostingAccountId::create(), OwnerId::fromString(self::OWNER_ID1), $package1);
-        $account2 = WebhostingAccount::register($id2, OwnerId::fromString(self::OWNER_ID1), $package1);
+        $package1      = $this->createWebhostingPackage($capabilities1);
+        $package2      = $this->createWebhostingPackage($capabilities2, self::PACKAGE_ID_2);
+        $account1      = WebhostingAccount::register(WebhostingAccountId::create(), OwnerId::fromString(self::OWNER_ID1), $package1);
+        $account2      = WebhostingAccount::register($id2, OwnerId::fromString(self::OWNER_ID1), $package1);
         self::resetDomainEvents($account1, $account2);
 
         $account1->assignPackageWithCapabilities($package1);
@@ -135,7 +129,7 @@ final class WebhostingAccountTest extends TestCase
     /** @test */
     public function it_updates_account_when_assigning_package_capabilities_are_different()
     {
-        $id = WebhostingAccountId::create();
+        $id      = WebhostingAccountId::create();
         $package = $this->createWebhostingPackage(new Capabilities());
         $account = WebhostingAccount::register($id, OwnerId::fromString(self::OWNER_ID1), $package);
         self::resetDomainEvents($account);
@@ -154,7 +148,7 @@ final class WebhostingAccountTest extends TestCase
     /** @test */
     public function it_allows_assigning_custom_specification()
     {
-        $id = WebhostingAccountId::create();
+        $id      = WebhostingAccountId::create();
         $package = $this->createWebhostingPackage(new Capabilities());
         $account = WebhostingAccount::register($id, OwnerId::fromString(self::OWNER_ID1), $package);
         self::resetDomainEvents($account);
@@ -169,7 +163,7 @@ final class WebhostingAccountTest extends TestCase
     /** @test */
     public function it_allows_changing_custom_specification()
     {
-        $id = WebhostingAccountId::create();
+        $id      = WebhostingAccountId::create();
         $account = WebhostingAccount::registerWithCustomCapabilities($id, OwnerId::fromString(self::OWNER_ID1), new Capabilities());
         self::resetDomainEvents($account);
 
@@ -183,9 +177,9 @@ final class WebhostingAccountTest extends TestCase
     /** @test */
     public function it_does_not_update_account_capabilities_when_assigning_capabilities_are_same()
     {
-        $id = WebhostingAccountId::create();
+        $id           = WebhostingAccountId::create();
         $capabilities = new Capabilities();
-        $account = WebhostingAccount::registerWithCustomCapabilities($id, OwnerId::fromString(self::OWNER_ID1), $capabilities);
+        $account      = WebhostingAccount::registerWithCustomCapabilities($id, OwnerId::fromString(self::OWNER_ID1), $capabilities);
         self::resetDomainEvents($account);
 
         $account->assignCustomCapabilities($capabilities);

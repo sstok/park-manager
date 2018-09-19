@@ -110,7 +110,7 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Webhosting Capability "MonthlyTrafficQuota" requires a '.
+            'Webhosting Capability "MonthlyTrafficQuota" requires a ' .
             'MonthlyTrafficQuotaGuard *or* MonthlyTrafficQuotaApplier is registered.'
         );
 
@@ -147,7 +147,7 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Webhosting Capability MonthlyTrafficQuota is incorrectly configured. '.
+            'Webhosting Capability MonthlyTrafficQuota is incorrectly configured. ' .
             'Class \\MonthlyTrafficQuotaGuard cannot be found.'
         );
 

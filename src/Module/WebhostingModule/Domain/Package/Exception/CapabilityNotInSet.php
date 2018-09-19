@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Domain\Package\Exception;
 
+use function sprintf;
+
 final class CapabilityNotInSet extends \InvalidArgumentException
 {
     public static function withName(string $name): self

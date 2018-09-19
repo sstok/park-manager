@@ -16,6 +16,7 @@ namespace ParkManager\Module\WebhostingModule\Infrastructure\DependencyInjection
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use function is_string;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -29,7 +30,7 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root($this->configName);
+        $rootNode    = $treeBuilder->root($this->configName);
 
         $rootNode
             ->children()
@@ -52,9 +53,7 @@ final class Configuration implements ConfigurationInterface
                         ->performNoDeepMerging()
                         ->beforeNormalization()
                             ->ifString()
-                            ->then(function ($v) {
-                                return ['capability' => $v];
-                            })
+                            ->then(function ($v) { return ['capability' => $v]; })
                         ->end()
                         ->children()
                             ->scalarNode('capability')->cannotBeEmpty()->end()
@@ -63,9 +62,7 @@ final class Configuration implements ConfigurationInterface
                                 ->defaultValue([])
                                 ->scalarPrototype()
                                     ->validate()
-                                        ->ifTrue(function ($v) {
-                                            return !\is_string($v);
-                                        })
+                                        ->ifTrue(function ($v) { return ! is_string($v); })
                                         ->thenInvalid('Attribute value expected to a property path as string.')
                                     ->end()
                                 ->end()

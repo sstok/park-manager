@@ -15,17 +15,11 @@ namespace ParkManager\Component\Mailer;
 
 final class NullSender implements Sender
 {
-    /**
-     * {@inheritdoc}
-     */
     public function send(string $template, array $recipients, array $variables): void
     {
         // no-op
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sendWithAttachments(string $template, array $recipients, array $variables, array $attachments): void
     {
         // no-op

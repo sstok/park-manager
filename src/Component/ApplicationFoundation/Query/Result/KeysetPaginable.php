@@ -28,7 +28,7 @@ namespace ParkManager\Component\ApplicationFoundation\Query\Result;
  */
 interface KeysetPaginable
 {
-    public const SORT_ASCENDING = 'asc';
+    public const SORT_ASCENDING  = 'asc';
     public const SORT_DESCENDING = 'desc';
 
     /**
@@ -40,8 +40,6 @@ interface KeysetPaginable
     /**
      * @param mixed      $keyset
      * @param array|null $sorting
-     *
-     * @return KeysetPageResult
      */
-    public function getPage($keyset, array $sorting = null): KeysetPageResult;
+    public function getPage($keyset, ?array $sorting = null): KeysetPageResult;
 }

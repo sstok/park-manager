@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ParkManager\Component\Module\Traits;
 
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
+use function file_exists;
 
 trait RegisterSectionRoutesTrait
 {
@@ -24,16 +25,16 @@ trait RegisterSectionRoutesTrait
      */
     final protected function registerRoutes(RouteImporter $routeImporter, ?string $configDir): void
     {
-        if (file_exists($configDir.'/routing/client.php')) {
-            $routeImporter->import($configDir.'/routing/client.php', 'park_manager.client_section.root');
+        if (file_exists($configDir . '/routing/client.php')) {
+            $routeImporter->import($configDir . '/routing/client.php', 'park_manager.client_section.root');
         }
 
-        if (file_exists($configDir.'/routing/admin.php')) {
-            $routeImporter->import($configDir.'/routing/admin.php', 'park_manager.admin_section.root');
+        if (file_exists($configDir . '/routing/admin.php')) {
+            $routeImporter->import($configDir . '/routing/admin.php', 'park_manager.admin_section.root');
         }
 
-        if (file_exists($configDir.'/routing/api.php')) {
-            $routeImporter->import($configDir.'/routing/api.php', 'park_manager.api_section.root');
+        if (file_exists($configDir . '/routing/api.php')) {
+            $routeImporter->import($configDir . '/routing/api.php', 'park_manager.api_section.root');
         }
     }
 }

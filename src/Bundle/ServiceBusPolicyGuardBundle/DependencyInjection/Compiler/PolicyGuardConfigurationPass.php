@@ -21,6 +21,15 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\ExpressionLanguage\Expression;
+use function count;
+use function implode;
+use function is_string;
+use function mb_strpos;
+use function preg_match;
+use function preg_quote;
+use function preg_split;
+use function sprintf;
+use function trim;
 
 final class PolicyGuardConfigurationPass implements CompilerPassInterface
 {
@@ -34,34 +43,38 @@ final class PolicyGuardConfigurationPass implements CompilerPassInterface
             $busId = $tags[0]['bus-id'];
 
             $guardServiceDef = $container->getDefinition($serviceId);
-            $guardServiceDef->setArgument(1, self::processPolicies($container, $busId.'.policy_guard.ns_policy'));
-            $guardServiceDef->setArgument(2, self::processPolicies($container, $busId.'.policy_guard.class_policy'));
+            $guardServiceDef->setArgument(1, self::getPoliciesListByType($container, $busId . '.policy_guard.ns_policy'));
+            $guardServiceDef->setArgument(2, self::getPoliciesListByType($container, $busId . '.policy_guard.class_policy'));
             $guardServiceDef->setArgument(3, self::processRegexpPolicies($container, $busId, $policyMaps));
             $guardServiceDef->setArgument(4, $policyMaps);
-            $guardServiceDef->setArgument(5, self::processVariables($container, $busId));
+            $guardServiceDef->setArgument(5, self::getExpressionVariablesHolder($container, $busId));
 
             $container->findDefinition($guardServiceDef->getArgument(0))
-                ->setArgument(1, $this->findAndSortTaggedServices($busId.'.policy_guard.expression_language_provider', $container));
+                ->setArgument(1, $this->findAndSortTaggedServices($busId . '.policy_guard.expression_language_provider', $container));
         }
     }
 
-    private static function processPolicies(ContainerBuilder $container, string $tagName): array
+    /**
+     * @return Definition[]
+     */
+    private static function getPoliciesListByType(ContainerBuilder $container, string $tagName): array
     {
         $processedPolicies = [];
 
         foreach ($container->findTaggedServiceIds($tagName) as $configService => $tags) {
-            list($pattern, $policy) = $container->getDefinition($configService)->getArguments();
+            [$pattern, $policy] = $container->getDefinition($configService)->getArguments();
             $container->removeDefinition($configService);
 
-            if (null === $policy) {
+            // Policy was unset
+            if ($policy === null) {
                 continue;
             }
 
-            if (\is_string($policy)) {
+            if (is_string($policy)) {
                 $policy = new Definition(Expression::class, [$policy]);
             }
 
-            foreach (self::expendPattern($pattern) as $processedPattern) {
+            foreach (self::expendReferencePattern($pattern) as $processedPattern) {
                 $processedPolicies[$processedPattern] = $policy;
             }
         }
@@ -73,48 +86,63 @@ final class PolicyGuardConfigurationPass implements CompilerPassInterface
     {
         $policiesPerPrefix = [];
         $processedPolicies = [];
+
         $mark = 0;
 
-        foreach ($container->findTaggedServiceIds($busName.'.policy_guard.regexp_policy') as $configService => $tags) {
-            list($regexp, $policy) = $container->getDefinition($configService)->getArguments();
+        foreach ($container->findTaggedServiceIds($busName . '.policy_guard.regexp_policy') as $configService => $tags) {
+            [$regexp, $policy] = $container->getDefinition($configService)->getArguments();
             $container->removeDefinition($configService);
 
-            if (null === $policy) {
+            if ($policy === null) {
                 continue;
             }
 
-            if (\is_string($policy)) {
+            if (is_string($policy)) {
                 $policy = new Definition(Expression::class, [$policy]);
             }
 
             $policiesPerPrefix[$tags[0]['prefix']][++$mark] = $regexp;
-            $processedPolicies[$mark] = $policy;
+            $processedPolicies[$mark]                       = $policy;
         }
 
-        if (!\count($policiesPerPrefix)) {
+        if (! count($policiesPerPrefix)) {
             return '{^/$}';
         }
 
+        return self::generatePolicyPatternGroups($policiesPerPrefix);
+    }
+
+    /**
+     * @param array[] $policiesPerPrefix prefix => [pattern-index => sub-pattern]
+     */
+    private static function generatePolicyPatternGroups(array $policiesPerPrefix): string
+    {
         $groups = [];
 
         foreach ($policiesPerPrefix as $prefix => $patterns) {
-            $prefixRegexp = preg_quote((string) $prefix, '').'(?';
+            $prefixRegexp = preg_quote((string) $prefix, '') . '(?';
+
             foreach ($patterns as $idx => $pattern) {
-                $prefixRegexp .= '|'.$pattern.'(*:'.$idx.')';
+                $prefixRegexp .= '|' . $pattern . '(*:' . $idx . ')';
             }
+
             $prefixRegexp .= ')';
+
             $groups[] = $prefixRegexp;
         }
 
-        return '{^'.implode('|', $groups).'$}su';
+        return '{^' . implode('|', $groups) . '$}su';
     }
 
-    private static function processVariables(ContainerBuilder $container, string $busId): array
+    /**
+     * @return string[]|ServiceClosureArgument[]
+     */
+    private static function getExpressionVariablesHolder(ContainerBuilder $container, string $busId): array
     {
         $variables = [];
-        $services = [];
+        $services  = [];
 
-        foreach ($container->findTaggedServiceIds($busId.'.policy_guard.variable') as $configService => $tags) {
+        foreach ($container->findTaggedServiceIds($busId . '.policy_guard.variable') as $configService => $tags) {
             list($name, $value) = $container->getDefinition($configService)->getArguments();
             $container->removeDefinition($configService);
 
@@ -133,27 +161,26 @@ final class PolicyGuardConfigurationPass implements CompilerPassInterface
         return $variables;
     }
 
-    private static function expendPattern(string $str): array
+    private static function expendReferencePattern(string $str): array
     {
         $strN = trim($str, '\\');
 
-        if (false === mb_strpos($strN, '{')) {
-            if (!preg_match('/^(?:'.self::NAME_REGEX.'\\\\?)+$/s', $strN)) {
+        if (mb_strpos($strN, '{') === false) {
+            if (! preg_match('/^(?:' . self::NAME_REGEX . '\\\\?)+$/s', $strN)) {
                 throw new \InvalidArgumentException(sprintf('Policy "%s" contains invalid characters.', $str));
             }
 
             return [$strN];
         }
 
-        if (!preg_match('/^(?P<start>(?:'.self::NAME_REGEX.'\\\\)+)\{(?P<expend>'.self::NAME_REGEX.'(?:\s*,\s*'.self::NAME_REGEX.')*)\}(?P<remainder>(?:\\\\'.self::NAME_REGEX.')*)$/s', $strN, $m)) {
+        if (! preg_match('/^(?P<start>(?:' . self::NAME_REGEX . '\\\\)+)\{(?P<expend>' . self::NAME_REGEX . '(?:\s*,\s*' . self::NAME_REGEX . ')*)\}(?P<remainder>(?:\\\\' . self::NAME_REGEX . ')*)$/s', $strN, $m)) {
             throw new \InvalidArgumentException(sprintf('Policy "%s" contains invalid characters.', $str));
         }
 
         $namespaces = [];
-        $parts = preg_split('/\h*,\h*/', $m['expend']);
 
-        foreach ($parts as $part) {
-            $namespaces[] = $m['start'].$part.$m['remainder'];
+        foreach (preg_split('/\h*,\h*/', $m['expend']) as $part) {
+            $namespaces[] = $m['start'] . $part . $m['remainder'];
         }
 
         return $namespaces;
