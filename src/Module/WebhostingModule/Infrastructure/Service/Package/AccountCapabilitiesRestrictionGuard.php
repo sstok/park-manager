@@ -34,12 +34,8 @@ final class AccountCapabilitiesRestrictionGuard implements CapabilitiesRestricti
     private $propertyAccessor;
     private $mappings;
 
-    public function __construct(
-        WebhostingAccountRepository $accountRepository,
-        ContainerInterface $capabilityGuards,
-        PropertyAccessor $propertyAccessor,
-        array $mappings
-    ) {
+    public function __construct(WebhostingAccountRepository $accountRepository, ContainerInterface $capabilityGuards, PropertyAccessor $propertyAccessor, array $mappings)
+    {
         $this->accountRepository = $accountRepository;
         $this->capabilityGuards  = $capabilityGuards;
         $this->mappings          = $mappings;

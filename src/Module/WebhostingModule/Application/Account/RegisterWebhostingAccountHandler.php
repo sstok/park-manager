@@ -27,11 +27,8 @@ final class RegisterWebhostingAccountHandler
     private $packageRepository;
     private $domainNameRepository;
 
-    public function __construct(
-        WebhostingAccountRepository $accountRepository,
-        WebhostingPackageRepository $packageRepository,
-        WebhostingDomainNameRepository $domainNameRepository
-    ) {
+    public function __construct(WebhostingAccountRepository $accountRepository, WebhostingPackageRepository $packageRepository, WebhostingDomainNameRepository $domainNameRepository)
+    {
         $this->accountRepository    = $accountRepository;
         $this->packageRepository    = $packageRepository;
         $this->domainNameRepository = $domainNameRepository;

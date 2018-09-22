@@ -33,14 +33,8 @@ final class PolicyGuard implements PermissionGuard
     private $regexpPolicyMap;
     private $variables;
 
-    public function __construct(
-        ExpressionLanguage $expressionLanguage,
-        array $namespacePolicies,
-        array $classPolicies,
-        string $regexpPolicies,
-        array $regexpPolicyMap,
-        array $variables
-    ) {
+    public function __construct(ExpressionLanguage $expressionLanguage, array $namespacePolicies, array $classPolicies, string $regexpPolicies, array $regexpPolicyMap, array $variables)
+    {
         $this->expressionLanguage = $expressionLanguage;
         $this->namespacePolicies  = $namespacePolicies;
         $this->classPolicies      = $classPolicies;

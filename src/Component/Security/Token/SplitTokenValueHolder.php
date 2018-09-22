@@ -42,13 +42,8 @@ final class SplitTokenValueHolder
      */
     private $token;
 
-    public function __construct(
-        string $selector,
-        string $verifierHash,
-        ?\DateTimeImmutable $expiresAt = null,
-        array $metadata = [],
-        ?SplitToken $token = null
-    ) {
+    public function __construct(string $selector, string $verifierHash, ?\DateTimeImmutable $expiresAt = null, array $metadata = [], ?SplitToken $token = null)
+    {
         $this->selector     = $selector;
         $this->verifierHash = $verifierHash;
         $this->expiresAt    = $expiresAt;
