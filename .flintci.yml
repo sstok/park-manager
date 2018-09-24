@@ -6,7 +6,7 @@ services:
 
     phpcsfixer:
         version: 2
-        config_path: .php_cs
+        config_path: .php_cs.dist
 
     phpcs:
         version:     latest
