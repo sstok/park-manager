@@ -1,0 +1,25 @@
+services:
+    eslint: true
+
+    composernormalize:
+        version: latest
+
+    phpcsfixer:
+        version: 2
+        config_path: .php_cs
+
+    phpcs:
+        version:     latest
+        config_path: ~
+        paths:       []
+        composer:    true
+
+    phpcbf:
+        version:     latest
+        config_path: ~
+        paths:       []
+        composer:    true
+
+    shellcheck:
+        version:     latest
+        path:        .
