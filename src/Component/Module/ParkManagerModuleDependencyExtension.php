@@ -68,7 +68,7 @@ abstract class ParkManagerModuleDependencyExtension extends Extension implements
         $routeImporter->addObjectResource($this);
         $this->registerRoutes($routeImporter, realpath($this->moduleDir . '/Infrastructure/Resources/config') ?: null);
 
-        $loader = $this->getServiceLoader($container, $this->moduleDir . '/Infrastructure/Resources/config/services');
+        $loader = $this->getServiceLoader($container, $this->moduleDir . '/Infrastructure/Resources/config');
         $this->loadModule($configs, $container, $loader);
     }
 

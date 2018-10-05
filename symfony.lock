@@ -83,23 +83,11 @@
     "egulias/email-validator": {
         "version": "2.1.2"
     },
-    "hostnet/form-handler-bundle": {
-        "version": "1.4.1"
-    },
-    "hostnet/form-handler-component": {
-        "version": "1.5.2"
-    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
     "johnkary/phpunit-speedtrap": {
         "version": "v2.0.0-beta1"
-    },
-    "league/tactician": {
-        "version": "v1.0.3"
-    },
-    "league/tactician-doctrine": {
-        "version": "v1.1"
     },
     "matthiasnoback/symfony-config-test": {
         "version": "v3.0.1"
@@ -343,6 +331,15 @@
     },
     "symfony/intl": {
         "version": "v4.0.0-beta2"
+    },
+    "symfony/messenger": {
+        "version": "4.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.1",
+            "ref": "f11dfa18618a8a5dd853ea3a302db2e0557e031c"
+        }
     },
     "symfony/monolog-bridge": {
         "version": "v3.3.10"

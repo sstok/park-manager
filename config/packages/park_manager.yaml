@@ -1,0 +1,18 @@
+framework:
+    messenger:
+        default_bus: park_manager.command_bus
+        buses:
+            # Caution the "security" middleware must always be done first!
+            # The validator may validate existence of other records, which could result
+            # in leaking information about existence.
+            #
+            # If the data is not valid by constraints there should be no match anyway.
+            park_manager.command_bus:
+                middleware:
+                    - security
+                    - validation
+                    - doctrine_transaction_middleware
+            park_manager.event_bus: ~
+            park_manager.query_bus:
+                middleware:
+                    - security

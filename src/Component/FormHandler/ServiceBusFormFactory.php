@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\FormHandler;
 
-use ParkManager\Component\ApplicationFoundation\Command\CommandBus;
-use ParkManager\Component\ApplicationFoundation\Query\QueryBus;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 
 final class ServiceBusFormFactory
 {
@@ -25,7 +24,7 @@ final class ServiceBusFormFactory
     private $commandBus;
     private $commandValidator;
 
-    public function __construct(FormFactoryInterface $formFactory, QueryBus $queryBus, CommandBus $commandBus, ?callable $commandValidator = null)
+    public function __construct(FormFactoryInterface $formFactory, MessageBus $queryBus, MessageBus $commandBus, ?callable $commandValidator = null)
     {
         $this->formFactory      = $formFactory;
         $this->queryBus         = $queryBus;
@@ -66,7 +65,7 @@ final class ServiceBusFormFactory
      */
     public function createForQuery(string $formType, object $query, array $formOptions = []): FormHandler
     {
-        $form    = $this->formFactory->create($formType, $this->queryBus->handle($query), $formOptions);
+        $form    = $this->formFactory->create($formType, $this->queryBus->dispatch($query), $formOptions);
         $handler = new CommandBusFormHandler($form, $this->commandBus, $this->commandValidator);
 
         $this->configureMappingByForm($form, $handler);
