@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\FormHandler;
 
-use ParkManager\Component\ApplicationFoundation\Command\CommandBus;
 use Symfony\Component\Form\Exception\AlreadySubmittedException;
 use Symfony\Component\Form\Exception\BadMethodCallException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 use Throwable;
 use function explode;
 use function get_class;
@@ -38,7 +38,7 @@ final class CommandBusFormHandler implements FormHandler
     /** @var callable|null */
     private $fallbackFormatter;
 
-    public function __construct(FormInterface $form, CommandBus $commandBus, ?callable $validator = null)
+    public function __construct(FormInterface $form, MessageBus $commandBus, ?callable $validator = null)
     {
         $this->form       = $form;
         $this->commandBus = $commandBus;
@@ -94,7 +94,7 @@ final class CommandBusFormHandler implements FormHandler
     private function dispatch()
     {
         try {
-            $result = $this->commandBus->handle($this->form->getData());
+            $result = $this->commandBus->dispatch($this->form->getData());
 
             $this->ready = true;
 

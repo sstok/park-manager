@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Component\FormHandler\Tests;
 
-use ParkManager\Component\ApplicationFoundation\Command\CommandBus;
 use ParkManager\Component\FormHandler\CommandBusFormHandler;
 use ParkManager\Component\FormHandler\Tests\Mock\StubCommand;
 use PHPUnit\Framework\TestCase;
@@ -29,6 +28,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryBuilder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\ValidatorBuilder;
 use function explode;
@@ -41,8 +41,8 @@ final class CommandBusFormHandlerTest extends TestCase
 {
     public function its_constructable()
     {
-        $commandBusProphecy = $this->prophesize(CommandBus::class);
-        $commandBusProphecy->handle(Argument::any())->shouldNotBeCalled();
+        $commandBusProphecy = $this->prophesize(MessageBus::class);
+        $commandBusProphecy->dispatch(Argument::any())->shouldNotBeCalled();
         $commandBus = $commandBusProphecy->reveal();
 
         $form    = $this->createRealForm();
@@ -54,8 +54,8 @@ final class CommandBusFormHandlerTest extends TestCase
     /** @test */
     public function it_handles_non_submit_request()
     {
-        $commandBusProphecy = $this->prophesize(CommandBus::class);
-        $commandBusProphecy->handle(Argument::any())->shouldNotBeCalled();
+        $commandBusProphecy = $this->prophesize(MessageBus::class);
+        $commandBusProphecy->dispatch(Argument::any())->shouldNotBeCalled();
         $commandBus = $commandBusProphecy->reveal();
 
         $form    = $this->createRealForm();
@@ -71,8 +71,8 @@ final class CommandBusFormHandlerTest extends TestCase
     /** @test */
     public function it_handles_submit_request_for_other_form()
     {
-        $commandBusProphecy = $this->prophesize(CommandBus::class);
-        $commandBusProphecy->handle(Argument::any())->shouldNotBeCalled();
+        $commandBusProphecy = $this->prophesize(MessageBus::class);
+        $commandBusProphecy->dispatch(Argument::any())->shouldNotBeCalled();
         $commandBus = $commandBusProphecy->reveal();
 
         $form    = $this->createRealForm(new StubCommand());
@@ -88,8 +88,8 @@ final class CommandBusFormHandlerTest extends TestCase
     /** @test */
     public function it_handles_submit_request_without_errors()
     {
-        $commandBusProphecy = $this->prophesize(CommandBus::class);
-        $commandBusProphecy->handle(Argument::which('id', 5))->shouldBeCalled();
+        $commandBusProphecy = $this->prophesize(MessageBus::class);
+        $commandBusProphecy->dispatch(Argument::which('id', 5))->shouldBeCalled();
         $commandBus = $commandBusProphecy->reveal();
 
         $form    = $this->createRealForm(new StubCommand());
@@ -107,8 +107,8 @@ final class CommandBusFormHandlerTest extends TestCase
     /** @test */
     public function it_handles_submit_request_with_existing_errors()
     {
-        $commandBusProphecy = $this->prophesize(CommandBus::class);
-        $commandBusProphecy->handle(Argument::any())->shouldNotBeCalled();
+        $commandBusProphecy = $this->prophesize(MessageBus::class);
+        $commandBusProphecy->dispatch(Argument::any())->shouldNotBeCalled();
         $commandBus = $commandBusProphecy->reveal();
 
         $form    = $this->createRealForm(new StubCommand());
@@ -131,8 +131,8 @@ final class CommandBusFormHandlerTest extends TestCase
     /** @test */
     public function it_forbids_handling_more_then_once()
     {
-        $commandBusProphecy = $this->prophesize(CommandBus::class);
-        $commandBusProphecy->handle(Argument::which('id', 5))->shouldBeCalledTimes(1);
+        $commandBusProphecy = $this->prophesize(MessageBus::class);
+        $commandBusProphecy->dispatch(Argument::which('id', 5))->shouldBeCalledTimes(1);
         $commandBus = $commandBusProphecy->reveal();
 
         $form    = $this->createRealForm(new StubCommand());
@@ -152,8 +152,8 @@ final class CommandBusFormHandlerTest extends TestCase
     /** @test */
     public function it_does_not_validate_command_if_submitting()
     {
-        $commandBusProphecy = $this->prophesize(CommandBus::class);
-        $commandBusProphecy->handle(Argument::which('id', 5))->shouldBeCalledTimes(1);
+        $commandBusProphecy = $this->prophesize(MessageBus::class);
+        $commandBusProphecy->dispatch(Argument::which('id', 5))->shouldBeCalledTimes(1);
         $commandBus = $commandBusProphecy->reveal();
 
         $form    = $this->createRealForm(new StubCommand());
@@ -172,8 +172,8 @@ final class CommandBusFormHandlerTest extends TestCase
     /** @test */
     public function it_validates_command_if_not_submitting()
     {
-        $commandBusProphecy = $this->prophesize(CommandBus::class);
-        $commandBusProphecy->handle(Argument::any())->shouldNotBeCalled();
+        $commandBusProphecy = $this->prophesize(MessageBus::class);
+        $commandBusProphecy->dispatch(Argument::any())->shouldNotBeCalled();
         $commandBus = $commandBusProphecy->reveal();
 
         $form    = $this->createRealForm(new StubCommand());
@@ -196,8 +196,8 @@ final class CommandBusFormHandlerTest extends TestCase
      */
     public function it_maps_command_bus_exceptions(\Exception $exception, array $expectedErrors)
     {
-        $commandBusProphecy = $this->prophesize(CommandBus::class);
-        $commandBusProphecy->handle(Argument::which('id', 5))->willThrow($exception);
+        $commandBusProphecy = $this->prophesize(MessageBus::class);
+        $commandBusProphecy->dispatch(Argument::which('id', 5))->willThrow($exception);
         $commandBus = $commandBusProphecy->reveal();
 
         $form = $this->createRealForm(new StubCommand());
