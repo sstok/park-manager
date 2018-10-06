@@ -11,11 +11,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace ParkManager\Component\Security\Token;
+namespace ParkManager\Module\CoreModule\Test\Crypto;
 
 use ParagonIE\Halite\HiddenString;
-use function hex2bin;
+use ParkManager\Module\CoreModule\Application\Service\Crypto\SplitTokenFactory;
+use ParkManager\Module\CoreModule\Domain\Shared\SplitToken;
+use ParkManager\Module\CoreModule\Test\Crypto\FakeSplitToken;
 use function random_bytes;
+use function hex2bin;
 
 /**
  * Always uses the same non-random value for the SplitToken to speed-up tests.

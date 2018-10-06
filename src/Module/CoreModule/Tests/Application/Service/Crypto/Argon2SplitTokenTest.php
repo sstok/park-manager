@@ -11,10 +11,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace ParkManager\Component\Security\Tests\Token;
+namespace ParkManager\Module\CoreModule\Tests\Application\Service\Crypto;
 
 use ParagonIE\Halite\HiddenString;
-use ParkManager\Component\Security\Token\Argon2SplitToken as SplitToken;
+use ParkManager\Module\CoreModule\Application\Service\Crypto\Argon2SplitToken as SplitToken;
 use PHPUnit\Framework\TestCase;
 use function hex2bin;
 

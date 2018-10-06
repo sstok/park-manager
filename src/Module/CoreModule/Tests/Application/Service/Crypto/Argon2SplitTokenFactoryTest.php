@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace ParkManager\Component\Security\Tests\Token;
+namespace ParkManager\Module\CoreModule\Tests\Application\Service\Crypto;
 
-use ParkManager\Component\Security\Token\Argon2SplitTokenFactory;
+use ParkManager\Module\CoreModule\Application\Service\Crypto\Argon2SplitTokenFactory;
 use PHPUnit\Framework\TestCase;
 
 /**

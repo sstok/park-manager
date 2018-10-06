@@ -11,8 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace ParkManager\Component\Security\Token;
+namespace ParkManager\Module\CoreModule\Test\Crypto;
 
+use ParkManager\Module\CoreModule\Domain\Shared\SplitToken;
 use function sha1;
 
 /**

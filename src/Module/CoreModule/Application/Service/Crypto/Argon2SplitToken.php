@@ -11,8 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace ParkManager\Component\Security\Token;
+namespace ParkManager\Module\CoreModule\Application\Service\Crypto;
 
+use ParkManager\Module\CoreModule\Domain\Shared\SplitToken;
 use const PASSWORD_ARGON2_DEFAULT_MEMORY_COST;
 use const PASSWORD_ARGON2_DEFAULT_THREADS;
 use const PASSWORD_ARGON2_DEFAULT_TIME_COST;
