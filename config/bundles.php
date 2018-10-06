@@ -14,7 +14,7 @@ return [
     Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
-    ParkManager\Bundle\RouteAutofillBundle\ParkManagerRouteAutofillBundle::class => ['all' => true],
+    Rollerworks\Bundle\RouteAutofillBundle\RollerworksRouteAutofillBundle::class => ['all' => true],
     ParkManager\Module\CoreModule\ParkManagerCoreModule::class => ['all' => true],
     ParkManager\Module\WebhostingModule\ParkManagerWebhostingModule::class => ['disabled' => true],
 ];

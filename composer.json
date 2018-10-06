@@ -32,6 +32,7 @@
         "paragonie/constant_time_encoding": "^2.0",
         "paragonie/halite": "^4.4.2",
         "ramsey/uuid": "^3.0",
+        "rollerworks/route-autofill-bundle": "^0.1.0",
         "rollerworks/route-autowiring-bundle": "^1.0.2",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/asset": "^4.2",
