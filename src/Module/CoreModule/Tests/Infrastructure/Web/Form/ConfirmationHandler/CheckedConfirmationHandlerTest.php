@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace ParkManager\Component\ConfirmationHandler\Tests;
+namespace ParkManager\Module\CoreModule\Tests\Infrastructure\Web\Form\ConfirmationHandler;
 
-use ParkManager\Component\ConfirmationHandler\ConfirmationHandler;
+use ParkManager\Module\CoreModule\Infrastructure\Web\Form\ConfirmationHandler\CheckedConfirmationHandler;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,31 +22,53 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use function implode;
+use function is_scalar;
+use function sprintf;
 
 /**
  * @internal
  */
-final class ConfirmationHandlerTest extends TestCase
+final class CheckedConfirmationHandlerTest extends TestCase
 {
     private const ID1 = '2108adf4-78e6-11e7-b6b3-acbc32b58315';
 
-    /** @test */
-    public function it_returns_request_was_submitted_for_post_request()
+    /**
+     * @test
+     * @dataProvider provideValidValues
+     */
+    public function it_returns_request_was_submitted_for_post_request(string $reqValue, string $value)
     {
-        $confirmationHandler = new ConfirmationHandler(
+        $confirmationHandler = new CheckedConfirmationHandler(
             $this->createTwigEnvironment(),
             $this->createTokenManagerWithValid($this->createTokenId([self::ID1]))
         );
 
-        $confirmationHandler->handleRequest($this->makePostRequest(), ['id']);
+        $confirmationHandler->configure('Confirm deleting', 'Are you sure?', $reqValue, 'Yes');
+        $confirmationHandler->handleRequest($this->makePostRequest($value), ['id']);
 
-        self::assertTrue($confirmationHandler->isConfirmed());
+        self::assertTrue($confirmationHandler->isConfirmed(), sprintf('"%s" does not match for "%s"', $value, $reqValue));
+    }
+
+    public function provideValidValues(): iterable
+    {
+        return [
+            ['Everything', 'Everything'],
+            ['everything', 'everything'],
+            ['everything', 'Everything'],
+            ['Everything', 'everything'],
+            ['Everything', ' everything '],
+            [' Everything ', 'everything'],
+            ['üpperdag', 'üpperdag'],
+            ['Dünderdag', 'DÜnderdag'],
+            [' üpperdag', 'üpperdag'],
+            ['2000', '2000'],
+        ];
     }
 
     /** @test */
     public function it_returns_request_was_not_submitted_for_get_request()
     {
-        $confirmationHandler = new ConfirmationHandler(
+        $confirmationHandler = new CheckedConfirmationHandler(
             $this->createTwigEnvironment(),
             $this->createTokenManagerWithValid($this->createTokenId([self::ID1]))
         );
@@ -59,7 +81,7 @@ final class ConfirmationHandlerTest extends TestCase
     /** @test */
     public function it_returns_request_was_not_submitted_when_CSRF_token_is_missing()
     {
-        $confirmationHandler = new ConfirmationHandler(
+        $confirmationHandler = new CheckedConfirmationHandler(
             $this->createTwigEnvironment(),
             $this->createTokenManagerWithInvalid($this->createTokenId([self::ID1]), false)
         );
@@ -72,7 +94,7 @@ final class ConfirmationHandlerTest extends TestCase
     /** @test */
     public function it_returns_request_was_not_submitted_when_CSRF_token_is_invalid()
     {
-        $confirmationHandler = new ConfirmationHandler(
+        $confirmationHandler = new CheckedConfirmationHandler(
             $this->createTwigEnvironment(),
             $this->createTokenManagerWithInvalid($this->createTokenId([self::ID1]))
         );
@@ -82,10 +104,48 @@ final class ConfirmationHandlerTest extends TestCase
         self::assertFalse($confirmationHandler->isConfirmed());
     }
 
+    /**
+     * @test
+     * @dataProvider provideInvalidValues
+     *
+     * @param mixed $value
+     */
+    public function it_returns_request_was_not_submitted_when_value_does_not_match($value)
+    {
+        $confirmationHandler = new CheckedConfirmationHandler(
+            $this->createTwigEnvironment(),
+            $this->createTokenManagerWithValid($this->createTokenId([self::ID1]))
+        );
+
+        $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Everything', 'Yes');
+        $confirmationHandler->handleRequest($this->makePostRequest($value), ['id']);
+
+        self::assertFalse($confirmationHandler->isConfirmed());
+        self::assertEquals(
+            '<form action="/user/1/delete"><h1>Confirm deleting</h1><p>Are you sure?</p>Value does not match expected &quot;Everything&quot;.<input type="hidden" name="_value" value="' .
+            (is_scalar($value) ? (string) $value : '') .
+            '"><input type="hidden" name="_token" value="valid-token"><button type="submit">Yes</button><a href="">Cancel</a></form>',
+            $confirmationHandler->render('checked_confirm.html.twig')
+        );
+    }
+
+    public function provideInvalidValues(): iterable
+    {
+        return [
+            ['Nope'],
+            ['7464435244'],
+            [35244],
+            [''],
+            [null],
+            [false],
+            [[]],
+        ];
+    }
+
     /** @test */
     public function it_fails_when_checking_confirmation_without_handled_request()
     {
-        $confirmationHandler = new ConfirmationHandler(
+        $confirmationHandler = new CheckedConfirmationHandler(
             $this->createTwigEnvironment(),
             $this->createTokenManagerWithValid($this->createTokenId([self::ID1]))
         );
@@ -97,46 +157,33 @@ final class ConfirmationHandlerTest extends TestCase
     }
 
     /** @test */
-    public function it_renders_template()
-    {
-        $confirmationHandler = new ConfirmationHandler(
-            $this->createTwigEnvironment(),
-            $this->createTokenManagerWithValid($this->createTokenId([self::ID1]))
-        );
-        $confirmationHandler->handleRequest($this->makeGetRequest(), ['id']);
-        $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Yes');
-        $confirmationHandler->setCancelUrl('/user/1/show');
-
-        self::assertFalse($confirmationHandler->isConfirmed());
-        self::assertEquals(
-            '<form action="/user/1/delete"><h1>Confirm deleting</h1><p>Are you sure?</p><input type="hidden" name="_token" value="valid-token"><button type="submit">Yes</button><a href="/user/1/show">Cancel</a></form>',
-            $confirmationHandler->render('confirm.html.twig')
-        );
-    }
-
-    /** @test */
     public function it_renders_template_with_token_validity()
     {
-        $confirmationHandler = new ConfirmationHandler(
+        $confirmationHandler = new CheckedConfirmationHandler(
             $this->createTwigEnvironment(),
             $this->createTokenManagerWithInvalid($this->createTokenId([self::ID1]))
         );
         $confirmationHandler->handleRequest($this->makeInvalidPostRequest(), ['id']);
-        $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Yes');
+        $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Everything', 'Yes');
         $confirmationHandler->setCancelUrl('/user/1/show');
 
         self::assertFalse($confirmationHandler->isConfirmed());
         self::assertEquals(
-            '<form action="/user/1/delete"><h1>Confirm deleting</h1><p>Are you sure?</p>Invalid CSRF token.<input type="hidden" name="_token" value="valid-token"><button type="submit">Yes</button><a href="/user/1/show">Cancel</a></form>',
-            $confirmationHandler->render('confirm.html.twig')
+            '<form action="/user/1/delete"><h1>Confirm deleting</h1><p>Are you sure?</p>Invalid CSRF token.<input type="hidden" name="_value" value=""><input type="hidden" name="_token" value="valid-token"><button type="submit">Yes</button><a href="/user/1/show">Cancel</a></form>',
+            $confirmationHandler->render('checked_confirm.html.twig')
         );
     }
 
-    private function makePostRequest(array $attributes = ['id' => self::ID1]): Request
+    /**
+     * @param mixed $value
+     * @param array $attributes
+     */
+    private function makePostRequest($value = 'everything', array $attributes = ['id' => self::ID1]): Request
     {
         $request = Request::create('/', 'POST');
         $request->request->set('_token', 'valid-token');
         $request->attributes->add($attributes);
+        $request->request->set('_value', $value);
 
         return $request;
     }

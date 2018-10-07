@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace ParkManager\Component\ConfirmationHandler;
+namespace ParkManager\Module\CoreModule\Infrastructure\Web\Form\ConfirmationHandler;
 
 use function is_scalar;
 use function mb_strlen;
