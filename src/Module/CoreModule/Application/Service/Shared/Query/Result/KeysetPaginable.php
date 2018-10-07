@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace ParkManager\Component\ApplicationFoundation\Query\Result;
+namespace ParkManager\Module\CoreModule\Application\Service\Shared\Query\Result;
 
 /**
  * The KeysetPaginable is implemented by a provider to limit
