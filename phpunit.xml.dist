@@ -12,7 +12,6 @@
 >
     <testsuites>
         <testsuite name="Park-Manager Test Suite">
-            <directory>src/Component/*/Tests</directory>
             <directory>src/Module/*/Tests</directory>
         </testsuite>
     </testsuites>
@@ -63,11 +62,6 @@
                 <directory>var/</directory>
                 <directory>etc/</directory>
                 <directory>config/</directory>
-                <directory>src/Component/*/Tests</directory>
-                <directory>src/Bridge/*/Tests</directory>
-                <directory>src/*/*Bundle/templates</directory>
-                <directory>src/*/*Bundle/translations</directory>
-                <directory>src/*/*Bundle/Tests</directory>
                 <directory>src/Module/*/templates</directory>
                 <directory>src/Module/*/translations</directory>
                 <directory>src/Module/*/Tests</directory>
