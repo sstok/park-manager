@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bridge\Twig\Response;
 
-use ParkManager\Component\FormHandler\FormHandler;
+use ParkManager\Module\CoreModule\Infrastructure\Web\Form\FormHandler\FormHandler;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use function is_array;
