@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Infrastructure\DependencyInjection;
 
-use ParkManager\Component\Module\ParkManagerModuleDependencyExtension;
-use ParkManager\Component\Module\RegistersDoctrineDbalTypes;
-use ParkManager\Component\Module\Traits\DoctrineDbalTypesConfiguratorTrait;
+use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\Module\ParkManagerModuleDependencyExtension;
+use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\Module\RegistersDoctrineDbalTypes;
+use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\Module\Traits\DoctrineDbalTypesConfiguratorTrait;
 use ParkManager\Module\WebhostingModule\Application\Service\Package\PackageConfigurationApplier;
 use ParkManager\Module\WebhostingModule\Domain\Package\Capability;
 use ParkManager\Module\WebhostingModule\Infrastructure\Service\Package\CapabilityGuard;
