@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use ParkManager\Component\Security\Token\Argon2SplitTokenFactory;
-use ParkManager\Component\Security\Token\SplitTokenFactory;
+use ParkManager\Module\CoreModule\Application\Service\Crypto\Argon2SplitTokenFactory;
+use ParkManager\Module\CoreModule\Application\Service\Crypto\SplitTokenFactory;
 use ParkManager\Module\CoreModule\Domain\Administrator\AdministratorRepository;
 use ParkManager\Module\CoreModule\Domain\User\UserRepository;
 use ParkManager\Module\CoreModule\Infrastructure\Context\ApplicationContext;
@@ -24,7 +24,6 @@ use ParkManager\Module\CoreModule\Infrastructure\Doctrine\Administrator\Doctrine
 use ParkManager\Module\CoreModule\Infrastructure\Doctrine\User\DoctrineOrmUserRepository;
 use ParkManager\Module\CoreModule\Infrastructure\Http\ApplicationSectionListener;
 use ParkManager\Module\CoreModule\Infrastructure\Http\SectionsLoader;
-use ParkManager\Module\CoreModule\Infrastructure\Twig\AppContextGlobal;
 use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -72,7 +71,4 @@ return function (ContainerConfigurator $c) {
             'private' => ref('park_manager.section.private.request_matcher'),
             'client' => ref('park_manager.section.client.request_matcher'),
         ]);
-
-    // Twig
-    $di->set(AppContextGlobal::class);
 };

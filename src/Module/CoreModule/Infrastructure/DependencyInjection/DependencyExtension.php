@@ -14,17 +14,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\CoreModule\Infrastructure\DependencyInjection;
 
-use ParkManager\Bridge\Twig\EventListener\TwigResponseListener;
-use ParkManager\Component\Module\ParkManagerModuleDependencyExtension;
-use ParkManager\Component\Module\RegistersDoctrineDbalTypes;
-use ParkManager\Component\Module\Traits\DoctrineDbalTypesConfiguratorTrait;
+use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\Module\ParkManagerModuleDependencyExtension;
+use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\Module\RegistersDoctrineDbalTypes;
+use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\Module\Traits\DoctrineDbalTypesConfiguratorTrait;
 use ParkManager\Module\CoreModule\Infrastructure\Twig\AppContextGlobal;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
-use function class_exists;
 
 final class DependencyExtension extends ParkManagerModuleDependencyExtension implements RegistersDoctrineDbalTypes
 {
@@ -46,12 +42,6 @@ final class DependencyExtension extends ParkManagerModuleDependencyExtension imp
     {
         $loader->load('services.php');
         $loader->load('services/*.php', 'glob');
-
-        if (class_exists(TwigResponseListener::class)) {
-            $container->register(TwigResponseListener::class)
-                ->addTag('kernel.event_subscriber')
-                ->setArgument(0, ServiceLocatorTagPass::register($container, ['twig' => new Reference('twig')]));
-        }
     }
 
     protected function prependExtra(ContainerBuilder $container): void

@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "park-manager/core-bundle": "^0.3"
+        "park-manager/core-module": "^0.3"
     },
     "config": {
         "preferred-install": {

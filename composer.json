@@ -53,9 +53,6 @@
     },
     "replace": {
         "paragonie/random_compat": "*",
-        "park-manager/confirmation-handler": "self.version",
-        "park-manager/form-handler": "self.version",
-        "park-manager/module": "self.version",
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
         "symfony/polyfill-intl-icu": "*",
