@@ -11,9 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace ParkManager\Bridge\Twig\Tests\Response;
+namespace ParkManager\Module\CoreModule\Tests\Infrastructure\Web;
 
-use ParkManager\Bridge\Twig\Response\TwigResponse;
+use ParkManager\Module\CoreModule\Infrastructure\Web\TwigResponse;
 use PHPUnit\Framework\TestCase;
 
 /**

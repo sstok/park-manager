@@ -11,28 +11,26 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace ParkManager\Bridge\Twig\EventListener;
+namespace ParkManager\Module\CoreModule\Infrastructure\EventListener;
 
-use ParkManager\Bridge\Twig\Response\TwigResponse;
+use ParkManager\Module\CoreModule\Infrastructure\Web\TwigResponse;
 use Psr\Container\ContainerInterface as Container;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use Twig\Environment;
 
 /**
- * The TwigResponseListener handles a TwigResponse.
+ * Handles a TwigResponse.
  *
  * The Twig Engine is lazily loaded as not every request invokes
  * the Twig engine (webservice API for example).
  */
-final class TwigResponseListener implements EventSubscriberInterface
+final class TwigResponseListener implements EventSubscriberInterface, ServiceSubscriberInterface
 {
     private $container;
 
-    /**
-     * @param Container $container Service container for loading *only* the Twig service (lazy)
-     */
     public function __construct(Container $container)
     {
         $this->container = $container;
@@ -42,29 +40,22 @@ final class TwigResponseListener implements EventSubscriberInterface
     {
         $response = $event->getResponse();
 
-        if (! $response instanceof TwigResponse || $response->isEmpty() || $response->getContent() !== '') {
-            return;
+        if ($response instanceof TwigResponse) {
+            $response->setRenderer($this->container->get('twig'));
         }
-
-        $newResponse = new Response(
-            $this->container->get('twig')->render($response->getTemplate(), $response->getTemplateVariables()),
-            $response->getStatusCode(),
-            $response->headers->all()
-        );
-
-        $charset = $response->getCharset();
-
-        if ($charset !== null) {
-            $newResponse->setCharset($charset);
-        }
-
-        $event->setResponse($newResponse);
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => ['onKernelResponse', -90], // Before ProfilerListener
+        ];
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return [
+            'twig' => Environment::class
         ];
     }
 }

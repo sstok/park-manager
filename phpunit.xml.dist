@@ -13,7 +13,6 @@
     <testsuites>
         <testsuite name="Park-Manager Test Suite">
             <directory>src/Component/*/Tests</directory>
-            <directory>src/Bridge/*/Tests</directory>
             <directory>src/Module/*/Tests</directory>
         </testsuite>
     </testsuites>
