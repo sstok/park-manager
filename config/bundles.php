@@ -15,6 +15,6 @@ return [
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
     Rollerworks\Bundle\RouteAutofillBundle\RollerworksRouteAutofillBundle::class => ['all' => true],
-    ParkManager\Module\CoreModule\ParkManagerCoreModule::class => ['all' => true],
+    ParkManager\Module\CoreModule\ParkManagerCoreModule::class => ['disabled' => true],
     ParkManager\Module\WebhostingModule\ParkManagerWebhostingModule::class => ['disabled' => true],
 ];
