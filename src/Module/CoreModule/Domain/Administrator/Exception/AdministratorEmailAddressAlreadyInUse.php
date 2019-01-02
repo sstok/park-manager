@@ -14,6 +14,20 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\CoreModule\Domain\Administrator\Exception;
 
+use ParkManager\Module\CoreModule\Domain\Administrator\AdministratorId;
+
 final class AdministratorEmailAddressAlreadyInUse extends \InvalidArgumentException
 {
+    /** @var AdministratorId */
+    private $id;
+
+    public function __construct(AdministratorId $id)
+    {
+        $this->id = $id;
+    }
+
+    public function getId(): AdministratorId
+    {
+        return $this->id;
+    }
 }

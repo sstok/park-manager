@@ -19,9 +19,16 @@ use ParkManager\Module\CoreModule\Domain\Shared\EmailAddress;
 
 final class RegisterAdministrator
 {
+    /** @var AdministratorId */
     private $id;
+
+    /** @var EmailAddress */
     private $email;
+
+    /** @var string */
     private $displayName;
+
+    /** @var string|null */
     private $password;
 
     /**

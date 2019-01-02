@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\CoreModule\Domain\Administrator\Exception;
 
 use ParkManager\Module\CoreModule\Domain\Administrator\AdministratorId;
+use ParkManager\Module\CoreModule\Domain\Shared\EmailAddress;
 use function sprintf;
 
 final class AdministratorNotFound extends \InvalidArgumentException
@@ -22,5 +23,10 @@ final class AdministratorNotFound extends \InvalidArgumentException
     public static function withId(AdministratorId $id): self
     {
         return new self(sprintf('Administrator with id "%s" does not exist.', $id->toString()));
+    }
+
+    public static function withEmail(EmailAddress $email): self
+    {
+        return new self(sprintf('Administrator with email address "%s" does not exist.', $email->toString()));
     }
 }

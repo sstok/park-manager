@@ -14,15 +14,12 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use ParkManager\Module\CoreModule\Domain\Shared\UserRepository;
-use ParkManager\Module\CoreModule\Infrastructure\Context\SwitchableUserRepository;
 use ParkManager\Module\CoreModule\Infrastructure\Messenger\Middleware\SecurityMiddleware;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
         ->autowire()
-        ->private()
-        ->bind(UserRepository::class, ref(SwitchableUserRepository::class));
+        ->private();
 
     $di->set('messenger.middleware.security', SecurityMiddleware::class)
         ->args([ref('security.authorization_checker')])
@@ -30,7 +27,7 @@ return function (ContainerConfigurator $c) {
 
     $applicationDir = __DIR__ . '/../../../../Application/';
     $di->load('ParkManager\Module\CoreModule\Application\Command\\', $applicationDir . 'Command/**/*Handler.php')
-        ->exclude(__DIR__ . '/../../../../Application/Command/User/{RequestConfirmationOfEmailAddressChangeHandler}.php')
+        ->exclude(__DIR__ . '/../../../../Application/Command/Client/{RequestEmailAddressChangeHandler}.php')
         ->tag('messenger.bus', ['bus' => 'park_manager.command_bus']);
 
     $di->load('ParkManager\Module\CoreModule\Application\Query\\', $applicationDir . 'Query/**/*Handler.php')

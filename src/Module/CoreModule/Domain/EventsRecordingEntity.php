@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\CoreModule\Domain;
 
-abstract class EventsRecordingEntity
+/**
+ * @deprecated
+ */
+abstract class EventsRecordingEntity implements RecordsDomainEvents
 {
     use DomainEventsCollectionTrait;
 }

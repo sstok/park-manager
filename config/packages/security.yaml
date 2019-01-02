@@ -1,19 +1,25 @@
 security:
     encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
         'ParkManager\Module\CoreModule\Infrastructure\Security\AdministratorUser':
             algorithm: argon2i
-        'ParkManager\Module\CoreModule\Infrastructure\Security\GenericUser':
+        'ParkManager\Module\CoreModule\Infrastructure\Security\ClientUser':
             algorithm: argon2i
 
     providers:
+        in_memory: { memory: ~ }
         administrator: { id: 'park_manager.security.user_provider.administrator' }
-        client: { id: 'park_manager.security.user_provider.generic_user' }
-        api: { id: 'park_manager.security.user_provider.generic_user' }
+        client: { id: 'park_manager.security.user_provider.client_user' }
+        api: { id: 'park_manager.security.user_provider.client_user' }
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        main:
+            anonymous: true
 
         admin:
             pattern: '^/admin/'

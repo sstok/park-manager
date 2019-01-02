@@ -19,29 +19,34 @@ use ParkManager\Module\CoreModule\Domain\Shared\EmailAddress;
 
 final class AdministratorWasRegistered
 {
+    /** @var AdministratorId */
     private $id;
-    private $email;
-    private $displayName;
 
-    public function __construct(AdministratorId $id, EmailAddress $email, string $displayName)
+    /** @var EmailAddress */
+    private $email;
+
+    /** @var string */
+    private $name;
+
+    public function __construct(AdministratorId $id, EmailAddress $email, string $name)
     {
-        $this->id          = $id;
-        $this->email       = $email;
-        $this->displayName = $displayName;
+        $this->id    = $id;
+        $this->email = $email;
+        $this->name  = $name;
     }
 
-    public function id(): AdministratorId
+    public function getId(): AdministratorId
     {
         return $this->id;
     }
 
-    public function email(): EmailAddress
+    public function getEmail(): EmailAddress
     {
         return $this->email;
     }
 
-    public function displayName(): string
+    public function getName(): string
     {
-        return $this->displayName;
+        return $this->name;
     }
 }
