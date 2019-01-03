@@ -11,7 +11,7 @@ framework:
                 middleware:
 #                    - security
                     - validation
-                    - doctrine_transaction_middleware
+                    - doctrine_transaction
             park_manager.event_bus: ~
             park_manager.query_bus:
 #                middleware:
