@@ -12,14 +12,14 @@ parameters:
         - var/*
         - templates/*
         - translations/*
-
+        - %currentWorkingDirectory%/src/Module/WebhostingModule/** # Disabled for now
         - %currentWorkingDirectory%/src/*/*/Tests/**
-        - %currentWorkingDirectory%/src/Core/Infrastructure/Console/Command/RegisterAdministratorCommand.php # Old file
+#        - %currentWorkingDirectory%/src/*/*/Test/**
 
     checkNullables: false # To many false positives
 
     symfony:
-        container_xml_path: var/cache/dev/srcDevDebugProjectContainer.xml
+        container_xml_path: var/cache/dev/srcApp_KernelDevDebugContainer.xml
 
     ignoreErrors:
         - '#__construct\(\) does not call parent constructor from .+#' # Perfectly valid reason.
@@ -31,7 +31,4 @@ parameters:
         - '#Property Doctrine\\ORM\\EntityRepository\:\:\$_em \(Doctrine\\ORM\\EntityManager\) does not accept Doctrine\\ORM\\EntityManagerInterface#' # Doctrine PHPDoc bug
         - '#Property Doctrine\\ORM\\EntityRepository\:\:\$_class \(Doctrine\\ORM\\Mapping\\ClassMetadata\) does not accept Doctrine\\Common\\Persistence\\Mapping\\ClassMetadata#'
         - '#Result of \&\& is always false#'
-#        - '#Negated boolean is always false#'
-
-        #- '#Call to an undefined method ParkManager\\Bundle\\ServiceBusBundle\\DependencyInjection\\Configurator\\MiddlewaresConfigurator\:\:#' # Magic call
-#        - '#Call to an undefined method object\:\:equals\(\)#' # ExpressionLanguage
+        - '#object\:\:toString\(\)#' # ValueObjects
