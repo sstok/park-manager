@@ -12,17 +12,17 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Component\Mailer;
+namespace ParkManager\Module\CoreModule\Infrastructure\Mailer\Sender;
+
+use ParkManager\Module\CoreModule\Application\Service\Mailer\RecipientEnvelope;
 
 final class NullSender implements Sender
 {
-    public function send(string $template, array $recipients, array $variables): void
+    public function send(string $template, array $variables, RecipientEnvelope ...$recipients): void
     {
-        // no-op
     }
 
-    public function sendWithAttachments(string $template, array $recipients, array $variables, array $attachments): void
+    public function sendWithAttachments(string $template, array $variables, array $attachments, RecipientEnvelope ...$recipients): void
     {
-        // no-op
     }
 }
