@@ -12,12 +12,21 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Module\CoreModule\Application\Service;
+namespace ParkManager\Module\CoreModule\Infrastructure\Mailer\Sender;
 
-use ParkManager\Module\CoreModule\Domain\Shared\EmailAddress;
-use ParkManager\Module\CoreModule\Domain\Shared\SplitToken;
-
-interface EmailAddressChangeConfirmationMailer
+interface Attachment
 {
-    public function send(EmailAddress $emailAddress, SplitToken $splitToken, \DateTimeImmutable $tokenExpiration): void;
+    public function getFilename(): string;
+
+    /**
+     * Returns the attachment's size in bytes.
+     *
+     * @return int
+     */
+    public function getSize(): int;
+
+    /**
+     * @return resource File opener resource (READ only)
+     */
+    public function getStream();
 }
