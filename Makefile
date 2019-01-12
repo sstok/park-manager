@@ -66,7 +66,7 @@ in-docker-install-dev:
 	rm -f composer.lock
 	cp composer.json _composer.json
 	composer.phar config minimum-stability dev
-	composer.phar update --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
+	php -d memory_limit=2G composer.phar update --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
 	mv _composer.json composer.json
 
 in-docker-install-fixtures:
