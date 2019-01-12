@@ -1,4 +1,4 @@
-FROM composer:1.7
+FROM composer:latest AS composer_build
 FROM php:7.2-alpine
 
 RUN apk add --no-cache --virtual .persistent-deps \
@@ -28,17 +28,16 @@ RUN set -xe \
 	&& pecl install \
 		apcu-${APCU_VERSION} \
 	&& docker-php-ext-enable --ini-name 20-apcu.ini apcu \
-    	&& docker-php-ext-enable sodium \
+    && docker-php-ext-enable sodium \
 	&& apk del .build-deps
 
-COPY --from=0 /usr/bin/composer /usr/bin/composer
+COPY --from=composer_build /usr/bin/composer /usr/bin/composer
 RUN ln -s /usr/bin/composer /usr/bin/composer.phar
 
 WORKDIR /srv/www
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 ENV COMPOSER_ALLOW_SUPERUSER 1
-RUN composer global require "hirak/prestissimo:^0.3" --prefer-dist --no-progress --no-suggest --classmap-authoritative
 
 #RUN mkdir -p var/cache var/logs var/sessions \
 #	&& composer dump-autoload --classmap-authoritative --no-dev \
