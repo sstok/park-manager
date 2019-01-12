@@ -14,12 +14,11 @@ parameters:
         - translations/*
         - %currentWorkingDirectory%/src/Module/WebhostingModule/** # Disabled for now
         - %currentWorkingDirectory%/src/*/*/Tests/**
-#        - %currentWorkingDirectory%/src/*/*/Test/**
 
     checkNullables: false # To many false positives
 
     symfony:
-        container_xml_path: var/cache/dev/srcApp_KernelDevDebugContainer.xml
+        container_xml_path: %currentWorkingDirectory%/var/cache/dev/srcParkManager_KernelDevDebugContainer.xml
 
     ignoreErrors:
         - '#__construct\(\) does not call parent constructor from .+#' # Perfectly valid reason.
@@ -30,5 +29,6 @@ parameters:
         ## False positive
         - '#Property Doctrine\\ORM\\EntityRepository\:\:\$_em \(Doctrine\\ORM\\EntityManager\) does not accept Doctrine\\ORM\\EntityManagerInterface#' # Doctrine PHPDoc bug
         - '#Property Doctrine\\ORM\\EntityRepository\:\:\$_class \(Doctrine\\ORM\\Mapping\\ClassMetadata\) does not accept Doctrine\\Common\\Persistence\\Mapping\\ClassMetadata#'
+
         - '#Result of \&\& is always false#'
         - '#object\:\:toString\(\)#' # ValueObjects
