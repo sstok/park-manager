@@ -41,7 +41,7 @@ final class CapabilityCoveringCommandValidatorTest extends TestCase
 
         self::assertTrue($middleware->execute(
             $command = new CreatePackage(),
-            function () { return true; }
+            static function () { return true; }
         ));
     }
 
@@ -56,7 +56,7 @@ final class CapabilityCoveringCommandValidatorTest extends TestCase
 
         self::assertFalse($middleware->execute(
             $command = new CreateMailbox(self::ACCOUNT_ID, 500),
-            function () { return true; }
+            static function () { return true; }
         ));
     }
 
@@ -71,7 +71,7 @@ final class CapabilityCoveringCommandValidatorTest extends TestCase
 
         self::assertEquals('it-worked', $middleware->execute(
             $command = new RemoveMailbox(self::ACCOUNT_ID),
-            function ($passedCommand) use ($command) {
+            static function ($passedCommand) use ($command) {
                 self::assertSame($command, $passedCommand);
 
                 return 'it-worked';

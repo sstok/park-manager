@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Domain\Account;
 
+use DateTimeImmutable;
 use ParkManager\Module\CoreModule\Domain\EventsRecordingEntity;
 use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
 use ParkManager\Module\WebhostingModule\Domain\Package\Capabilities;
@@ -37,7 +38,7 @@ class WebhostingAccount extends EventsRecordingEntity
     /** @var OwnerId */
     protected $owner;
 
-    /** @var \DateTimeImmutable|null */
+    /** @var DateTimeImmutable|null */
     protected $expirationDate;
 
     private $markedForRemoval = false;
@@ -152,7 +153,7 @@ class WebhostingAccount extends EventsRecordingEntity
      * Note: There is no promise the webhosting account will in fact
      * be removed on the specified date. This depends on other subsystems.
      */
-    public function setExpirationDate(\DateTimeImmutable $data): void
+    public function setExpirationDate(DateTimeImmutable $data): void
     {
         $this->expirationDate = $data;
     }
@@ -165,13 +166,13 @@ class WebhostingAccount extends EventsRecordingEntity
         $this->expirationDate = null;
     }
 
-    public function isExpired(?\DateTimeImmutable $current = null): bool
+    public function isExpired(?DateTimeImmutable $current = null): bool
     {
         if ($this->expirationDate === null) {
             return false;
         }
 
-        return $this->expirationDate->getTimestamp() <= ($current ?? new \DateTimeImmutable())->getTimestamp();
+        return $this->expirationDate->getTimestamp() <= ($current ?? new DateTimeImmutable())->getTimestamp();
     }
 
     /**

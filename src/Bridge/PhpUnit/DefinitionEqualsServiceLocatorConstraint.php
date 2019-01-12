@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bridge\PhpUnit;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
@@ -34,7 +35,7 @@ final class DefinitionEqualsServiceLocatorConstraint extends Constraint
         parent::__construct();
 
         $this->serviceId     = $serviceId;
-        $this->expectedValue = array_map(function ($serviceId) {
+        $this->expectedValue = array_map(static function ($serviceId) {
             if (is_string($serviceId)) {
                 return new ServiceClosureArgument(new Reference($serviceId));
             }
@@ -58,7 +59,7 @@ final class DefinitionEqualsServiceLocatorConstraint extends Constraint
     public function evaluate($other, $description = '', $returnResult = false)
     {
         if (! ($other instanceof ContainerBuilder)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Expected an instance of Symfony\Component\DependencyInjection\ContainerBuilder'
             );
         }

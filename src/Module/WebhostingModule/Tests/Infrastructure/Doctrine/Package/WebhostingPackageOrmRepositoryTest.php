@@ -25,6 +25,7 @@ use ParkManager\Module\WebhostingModule\Tests\Fixtures\Domain\PackageCapability\
 
 /**
  * @internal
+ *
  * @group functional
  */
 final class WebhostingPackageOrmRepositoryTest extends EntityRepositoryTestCase

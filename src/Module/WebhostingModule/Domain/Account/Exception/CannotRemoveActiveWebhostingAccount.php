@@ -14,10 +14,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Domain\Account\Exception;
 
+use InvalidArgumentException;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
 use function sprintf;
 
-final class CannotRemoveActiveWebhostingAccount extends \InvalidArgumentException
+final class CannotRemoveActiveWebhostingAccount extends InvalidArgumentException
 {
     public static function withId(WebhostingAccountId $id): self
     {

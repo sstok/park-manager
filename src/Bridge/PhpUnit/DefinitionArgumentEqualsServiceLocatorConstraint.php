@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Bridge\PhpUnit;
 
+use Exception;
+use InvalidArgumentException;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
@@ -38,7 +40,7 @@ final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
 
         $this->container     = $container;
         $this->argumentIndex = (int) $argumentIndex;
-        $this->expectedValue = array_map(function ($serviceId) {
+        $this->expectedValue = array_map(static function ($serviceId) {
             if (is_string($serviceId)) {
                 return new ServiceClosureArgument(new Reference($serviceId));
             }
@@ -62,7 +64,7 @@ final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
     public function evaluate($other, $description = '', $returnResult = false)
     {
         if (! ($other instanceof Definition)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Expected an instance of Symfony\Component\DependencyInjection\Definition'
             );
         }
@@ -82,7 +84,7 @@ final class DefinitionArgumentEqualsServiceLocatorConstraint extends Constraint
     {
         try {
             $definition->getArgument($this->argumentIndex);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             // Older versions of Symfony throw \OutOfBoundsException
             // Newer versions throw Symfony\Component\DependencyInjection\Exception\OutOfBoundsException
             if (! ($exception instanceof \OutOfBoundsException || $exception instanceof OutOfBoundsException)) {

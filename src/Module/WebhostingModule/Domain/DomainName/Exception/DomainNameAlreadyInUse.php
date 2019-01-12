@@ -14,11 +14,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Domain\DomainName\Exception;
 
+use InvalidArgumentException;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\WebhostingModule\Domain\DomainName;
 use function sprintf;
 
-final class DomainNameAlreadyInUse extends \InvalidArgumentException
+final class DomainNameAlreadyInUse extends InvalidArgumentException
 {
     public static function byAccountId(DomainName $domainName, WebhostingAccountId $accountId): self
     {

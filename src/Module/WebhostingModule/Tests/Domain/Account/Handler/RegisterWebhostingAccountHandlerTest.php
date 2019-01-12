@@ -112,7 +112,7 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
         $accountRepositoryProphecy = $this->prophesize(WebhostingAccountRepository::class);
         $accountRepositoryProphecy->save(
             Argument::that(
-                function (WebhostingAccount $account) use ($capabilities, $id, $owner, $package) {
+                static function (WebhostingAccount $account) use ($capabilities, $id, $owner, $package) {
                     self::assertEquals(WebhostingAccountId::fromString($id), $account->id());
                     self::assertEquals(OwnerId::fromString($owner), $account->owner());
                     self::assertEquals($capabilities, $account->capabilities());
@@ -153,7 +153,7 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
         $domainNameRepositoryProphecy->findByFullName($expectedDomain)->willReturn(null);
         $domainNameRepositoryProphecy->save(
             Argument::that(
-                function (WebhostingDomainName $domain) use ($expectedDomain, $accountId) {
+                static function (WebhostingDomainName $domain) use ($expectedDomain, $accountId) {
                     self::assertEquals($expectedDomain, $domain->domainName());
                     self::assertEquals(WebhostingAccountId::fromString($accountId), $domain->account()->id());
 

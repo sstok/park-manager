@@ -39,11 +39,17 @@
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint"/>
 
         <!-- BROKEN -->
-        <exclude name="SlevomatCodingStandard.Namespaces.DisallowGroupUse"/>
+        <exclude name="SlevomatCodingStandard.Namespaces.NamespaceSpacing"/>
 
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification"/>
         <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversablePropertyTypeHintSpecification"/>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Namespaces.NamespaceSpacing">
+        <properties>
+            <property name="linesCountBeforeNamespace" value="2" />
+        </properties>
     </rule>
 
     <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
@@ -64,11 +70,6 @@
 
     <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements.WriteOnlyProperty">
         <exclude-pattern>*/Tests/*</exclude-pattern>
-    </rule>
-
-    <rule ref="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix">
-        <exclude-pattern>src/Bundle/ServiceBusBundle/DependencyInjection/Exception/CompilerPassException.php</exclude-pattern>
-        <exclude-pattern>src/Bundle/ServiceBusBundle/DependencyInjection/Exception/RuntimeException.php</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing">

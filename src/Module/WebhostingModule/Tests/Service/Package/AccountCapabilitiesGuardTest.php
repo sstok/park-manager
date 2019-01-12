@@ -59,10 +59,10 @@ final class AccountCapabilitiesGuardTest extends TestCase
             $accountRepository,
             new ServiceLocator(
                 [
-                    StorageSpaceQuota::class => function () {
+                    StorageSpaceQuota::class => static function () {
                         return new DenyingGuard();
                     },
-                    FtpUserCount::class => function () {
+                    FtpUserCount::class => static function () {
                         return new AllowingWithWarningsGuard();
                     },
                 ]

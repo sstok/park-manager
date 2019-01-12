@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Domain\Package;
 
+use ArrayIterator;
+use IteratorAggregate;
 use ParkManager\Module\WebhostingModule\Domain\Package\Exception\CapabilityNotInSet;
+use Traversable;
 use function array_merge;
 use function array_values;
 use function get_class;
@@ -22,7 +25,7 @@ use function get_class;
 /**
  * Capabilities holds an immutable set of unique Capability objects.
  */
-final class Capabilities implements \IteratorAggregate
+final class Capabilities implements IteratorAggregate
 {
     /** @var Capability[] */
     private $capabilities = [];
@@ -56,9 +59,9 @@ final class Capabilities implements \IteratorAggregate
         return new self(...array_values($capabilitiesList));
     }
 
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
-        return new \ArrayIterator($this->capabilities);
+        return new ArrayIterator($this->capabilities);
     }
 
     public function has(string $capability): bool

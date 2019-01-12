@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Tests\Domain\Account;
 
+use DateTimeImmutable;
 use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
 use ParkManager\Module\CoreModule\Test\Domain\EventsRecordingEntityAssertionTrait;
 use ParkManager\Module\WebhostingModule\Domain\Account\Event\WebhostingAccountCapabilitiesWasChanged;
@@ -252,7 +253,7 @@ final class WebhostingAccountTest extends TestCase
         );
         self::resetDomainEvents($account1, $account2);
 
-        $account2->setExpirationDate($date = new \DateTimeImmutable('now +6 days'));
+        $account2->setExpirationDate($date = new DateTimeImmutable('now +6 days'));
 
         self::assertFalse($account1->isExpired());
         self::assertFalse($account1->isExpired($date->modify('+2 days')));

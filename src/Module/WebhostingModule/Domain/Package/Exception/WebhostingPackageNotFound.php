@@ -14,10 +14,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Domain\Package\Exception;
 
+use InvalidArgumentException;
 use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackageId;
 use function sprintf;
 
-final class WebhostingPackageNotFound extends \InvalidArgumentException
+final class WebhostingPackageNotFound extends InvalidArgumentException
 {
     public static function withId(WebhostingPackageId $id): self
     {

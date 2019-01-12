@@ -16,8 +16,10 @@ namespace ParkManager\Module\WebhostingModule\Infrastructure\Doctrine\Package;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
+use InvalidArgumentException;
 use ParkManager\Module\WebhostingModule\Domain\Package\Capabilities;
 use ParkManager\Module\WebhostingModule\Infrastructure\Service\Package\CapabilitiesFactory;
+use RuntimeException;
 
 final class WebhostingCapabilitiesType extends JsonType
 {
@@ -39,7 +41,7 @@ final class WebhostingCapabilitiesType extends JsonType
         }
 
         if (! $value instanceof Capabilities) {
-            throw new \InvalidArgumentException('Expected Capabilities instance.');
+            throw new InvalidArgumentException('Expected Capabilities instance.');
         }
 
         return parent::convertToDatabaseValue($value->toIndexedArray(), $platform);
@@ -50,7 +52,7 @@ final class WebhostingCapabilitiesType extends JsonType
         $val = parent::convertToPHPValue($value, $platform) ?? [];
 
         if (! isset($this->capabilitiesFactory)) {
-            throw new \RuntimeException('setCapabilitiesFactory() needs to be called before this type can be used.');
+            throw new RuntimeException('setCapabilitiesFactory() needs to be called before this type can be used.');
         }
 
         return $this->capabilitiesFactory->reconstituteFromStorage($val);

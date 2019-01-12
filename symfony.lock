@@ -116,6 +116,9 @@
     "paragonie/halite": {
         "version": "dev-master"
     },
+    "paragonie/hidden-string": {
+        "version": "v1.0.0"
+    },
     "paragonie/sodium_compat": {
         "version": "v1.6.3"
     },

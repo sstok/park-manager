@@ -30,6 +30,7 @@ use ParkManager\Module\WebhostingModule\Infrastructure\Doctrine\DomainName\Webho
 
 /**
  * @internal
+ *
  * @group functional
  */
 final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCase

@@ -14,10 +14,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Domain\Package\Exception;
 
+use RuntimeException;
 use function class_exists;
 use function sprintf;
 
-final class CapabilityNotRegistered extends \RuntimeException
+final class CapabilityNotRegistered extends RuntimeException
 {
     public static function withId(string $id): self
     {

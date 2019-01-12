@@ -30,6 +30,7 @@ use ParkManager\Module\WebhostingModule\Tests\Fixtures\Domain\PackageCapability\
 
 /**
  * @internal
+ *
  * @group functional
  */
 final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase

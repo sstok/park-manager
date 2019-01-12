@@ -14,11 +14,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Domain\DomainName\Exception;
 
+use InvalidArgumentException;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\WebhostingModule\Domain\DomainName\WebhostingDomainNameId;
 use function sprintf;
 
-final class CannotTransferPrimaryDomainName extends \InvalidArgumentException
+final class CannotTransferPrimaryDomainName extends InvalidArgumentException
 {
     public static function of(WebhostingDomainNameId $domainName, WebhostingAccountId $current, WebhostingAccountId $new): self
     {
