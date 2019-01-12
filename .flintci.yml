@@ -4,9 +4,7 @@ services:
     composernormalize:
         version: latest
 
-    phpcsfixer:
-        version: 2
-        config_path: .php_cs.dist
+    phpcsfixer: false
 
     phpcs:
         version:     latest

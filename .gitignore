@@ -6,8 +6,6 @@
 /var/
 /vendor/
 
-###< symfony/framework-bundle ###
-.php_cs.cache
 ###> symfony/web-server-bundle ###
 .web-server-pid
 ###< symfony/web-server-bundle ###
