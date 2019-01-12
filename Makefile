@@ -60,7 +60,7 @@ docker-down:
 ##
 in-docker-install:
 	rm -f composer.lock
-	composer.phar install --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
+	php -d memory_limit=2G composer.phar install --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
 
 in-docker-install-dev:
 	rm -f composer.lock
