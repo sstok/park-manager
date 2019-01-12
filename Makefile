@@ -72,7 +72,8 @@ in-docker-install-dev:
 	mv _composer.json composer.json
 
 in-docker-install-fixtures:
-	bin/console doctrine:schema:drop --force
+	bin/console doctrine:database:drop --force || true
+	bin/console doctrine:database:create
 	bin/console doctrine:schema:update --force
 	bin/console doctrine:schema:validate || true
 	psql -U root -h db -d park_manager -w -a -f ./etc/fixture.sql

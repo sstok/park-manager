@@ -5,11 +5,8 @@ services:
         image: parkmanager/ci-dev:latest
         depends_on:
             - db
-        env_file:
-            - .env.dist
         environment:
             DATABASE_URL: 'pgsql://root@db:5432/park_manager?charset=utf8&serverVersion=9.6'
-            APP_SECTIONS: '{"admin":{"prefix":"admin/"},"client":{"prefix":"/"},"api":{"prefix":"api/"}}'
 
         volumes:
             - .:/srv/www:rw

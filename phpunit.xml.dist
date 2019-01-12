@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.5/phpunit.xsd"
-         bootstrap="etc/test_bootstrap.php"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/7.2/phpunit.xsd"
+         bootstrap="config/bootstrap.php"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
 
@@ -25,30 +25,10 @@
 
     <php>
         <ini name="error_reporting" value="-1" />
-        <env name="KERNEL_CLASS" value="App\Kernel" />
+        <env name="KERNEL_CLASS" value="ParkManager\Kernel" />
+        <env name="SYMFONY_PHPUNIT_VERSION" value="7.2"/>
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak_vendors" />
-
-        <!-- ###+ framework-bundle ### -->
-        <env name="APP_ENV" value="test" force="true" />
-        <env name="APP_DEBUG" value="1" force="true" />
-        <env name="APP_SECRET" value="8b3b0c85daa39eadd88abd547b370997" />
-        <env name="APP_LOCALE" value="en" />
-        <env name="SHELL_VERBOSITY" value="-1" />
-        <!-- ###- framework-bundle ### -->
-
-        <!-- ###+ doctrine/doctrine-bundle ### -->
-        <!-- Format described at http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url -->
-        <!-- Note that Park-Manger only supports PostgreSQL -->
-        <env name="DATABASE_URL" value="pgsql://root@localhost:5432/park_manager?charset=utf8&amp;serverVersion=9.6" />
-        <!-- ###- doctrine/doctrine-bundle ### -->
-
-        <!-- ###+ symfony/swiftmailer-bundle ### -->
-        <env name="MAILER_URL" value="null://localhost" force="true" />
-        <!-- ###- symfony/swiftmailer-bundle ### -->
-
-        <!-- ###+ symfony/messenger ### -->
-        <!-- MESSENGER_TRANSPORT_DSN=amqp://guest:guest@localhost:5672/%2f/messages -->
-        <!-- ###- symfony/messenger ### -->
+        <env name="APP_ENV" value="test"/>
     </php>
 
     <filter>
@@ -56,9 +36,10 @@
             <directory>src/</directory>
             <exclude>
                 <directory>vendor/</directory>
+                <directory>vendor-bin/</directory>
                 <directory>templates/</directory>
                 <directory>translations/</directory>
-                <directory>web/</directory>
+                <directory>public/</directory>
                 <directory>var/</directory>
                 <directory>etc/</directory>
                 <directory>config/</directory>
