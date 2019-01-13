@@ -34,6 +34,8 @@ RUN set -xe \
 COPY --from=composer_build /usr/bin/composer /usr/bin/composer
 RUN ln -s /usr/bin/composer /usr/bin/composer.phar
 
+COPY php/conf.d/park-manager.ini $PHP_INI_DIR/conf.d/park-manager.ini
+
 WORKDIR /srv/www
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser

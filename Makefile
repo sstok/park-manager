@@ -33,7 +33,7 @@ security-check:
 
 phpstan:
 	docker-compose run --rm php make in-docker-phpstan
-	bash ./validate-composer.sh
+	#bash ./validate-composer.sh
 
 in-docker-phpstan:
 	composer bin phpstan install --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
@@ -60,13 +60,13 @@ docker-down:
 ##
 in-docker-install:
 	rm -f composer.lock
-	php -d memory_limit=2G composer.phar install --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
+	composer.phar install --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
 
 in-docker-install-dev:
 	rm -f composer.lock
 	cp composer.json _composer.json
 	composer.phar config minimum-stability dev
-	php -d memory_limit=2G composer.phar update --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
+	composer.phar update --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
 	mv _composer.json composer.json
 
 in-docker-install-fixtures:
