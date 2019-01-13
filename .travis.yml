@@ -1,6 +1,8 @@
 language: php
 
-sudo: true
+dist: trusty
+
+sudo: false
 
 services:
     - docker
@@ -25,7 +27,6 @@ before_install:
     - while sudo lsof -Pi :5432 -sTCP:LISTEN -t; do sleep 1; done
 
 install:
-    #- docker-compose up --build -d # Don't unless you want to wait for an hour...
     - make install
 
 script:
