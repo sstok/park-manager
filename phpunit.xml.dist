@@ -12,7 +12,9 @@
 >
     <testsuites>
         <testsuite name="Park-Manager Test Suite">
-            <directory>src/Module/*/Tests</directory>
+            <!--<directory>src/Module/*/Tests</directory>-->
+
+            <directory>src/Module/CoreModule/Tests</directory>
         </testsuite>
     </testsuites>
 
