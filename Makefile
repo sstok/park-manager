@@ -3,7 +3,7 @@ QA_DOCKER_COMMAND=docker run -it --rm -v "$(shell pwd):/project" -w /project ${Q
 
 dist: install security-check cs phpstan test
 ci: install security-check cs phpstan test
-lint: security-check cs-check phpstan
+lint: security-check cs-check phpstan psalm
 
 install:
 	docker-compose run --rm php make in-docker-install in-docker-clean-vendor
@@ -31,13 +31,19 @@ test-coverage: docker-up
 security-check:
 	sh -c "${QA_DOCKER_COMMAND} security-checker security:check ./composer.lock"
 
+psalm:
+	docker-compose run --rm php make in-docker-psalm
+
 phpstan:
 	docker-compose run --rm php make in-docker-phpstan
 	#bash ./validate-composer.sh
 
 in-docker-phpstan:
 	composer bin phpstan install --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
-	php -d memory_limit=1G vendor/bin/phpstan analyse --configuration phpstan.neon --ansi --error-format=table --level 5 src public bin
+	vendor/bin/phpstan analyse --configuration phpstan.neon --ansi --error-format=table --level 5 src public bin
+
+in-docker-psalm:
+	vendor/bin/psalm --show-info=false
 
 cs:
 	vendor/bin/phpcbf
@@ -93,5 +99,5 @@ in-docker-clean-vendor:
 	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/phpunit.xml.dist" }' | xargs rm -f
 	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/CHANGELOG.md" }' | xargs rm -f
 
-.PHONY: install install-dev security-check phpstan cs cs cs-checks docker-up down-down
+.PHONY: install install-dev security-check phpstan psalm cs cs cs-checks docker-up down-down
 .PHONY: in-docker-install in-docker-install-dev in-docker-install-lowest in-docker-test in-docker-test-coverage in-docker-clean-vendor
