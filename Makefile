@@ -1,103 +1,77 @@
+ifndef BUILD_ENV
+BUILD_ENV=php7.3
+endif
+
 QA_DOCKER_IMAGE=parkmanager/phpqa:latest
-QA_DOCKER_COMMAND=docker run -it --rm -v "$(shell pwd):/project" -w /project ${QA_DOCKER_IMAGE}
+QA_DOCKER_COMMAND=docker run --init --interactive --tty --rm --env "COMPOSER_HOME=/composer" --user "$(shell id -u):$(shell id -g)" --volume /tmp/tmp-phpqa-$(shell id -u):/tmp --volume "$(shell pwd):/project" --volume "${HOME}/.composer:/composer" --workdir /project ${QA_DOCKER_IMAGE}
 
-dist: install security-check cs phpstan test
-ci: install security-check cs phpstan test
-lint: security-check cs-check phpstan psalm
+dist: composer-validate cs phpstan psalm test
+ci: check test
+check: composer-validate cs-check phpstan psalm
+test: phpunit-coverage infection
 
-install:
-	docker-compose run --rm php make in-docker-install in-docker-clean-vendor
+clean:
+	rm -rf var/
 
-install-dev:
-	docker-compose run --rm php make in-docker-install-dev in-docker-clean-vendor
+composer-validate: ensure
+	sh -c "${QA_DOCKER_COMMAND} composer validate"
+#	sh -c "${QA_DOCKER_COMMAND} composer normalize"
 
-test: docker-up
-	docker-compose run --rm php make in-docker-test
-	@$(MAKE) docker-down
+	@for direc in $$(gfind src -mindepth 2 -type f -name composer.json -printf '%h\n'); \
+	do \
+		sh -c "${QA_DOCKER_COMMAND} composer validate --working-dir=$${direc}"; \
+	done;
 
-test-strict: docker-up
-	docker-compose run --rm php make in-docker-test-strict
-	@$(MAKE) docker-down
+#	@for direc in $$(gfind src -mindepth 2 -type f -name composer.json -printf '%h\n'); \
+#	do \
+#		sh -c "${QA_DOCKER_COMMAND} composer validate --working-dir=$${direc}"; \
+#		sh -c "${QA_DOCKER_COMMAND} composer normalize --working-dir=$${direc}"; \
+#	done;
 
-test-coverage: docker-up
-	mkdir -p build/logs build/cov
-	docker-compose run --rm php make in-docker-test-coverage
-	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr /usr/local/bin/phpcov merge --clover build/logs/clover.xml build/cov"
-	@$(MAKE) docker-down
+composer-install: fetch ensure clean
+	sh -c "${QA_DOCKER_COMMAND} composer upgrade"
 
-##
-# Linting tools
-##
-security-check:
-	sh -c "${QA_DOCKER_COMMAND} security-checker security:check ./composer.lock"
+composer-install-lowest: fetch ensure clean
+	sh -c "${QA_DOCKER_COMMAND} composer upgrade --prefer-lowest"
 
-psalm:
-	docker-compose run --rm php make in-docker-psalm
-
-phpstan:
-	docker-compose run --rm php make in-docker-phpstan
-	#bash ./validate-composer.sh
-
-in-docker-phpstan:
-	composer bin phpstan install --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
-	vendor/bin/phpstan analyse --configuration phpstan.neon --ansi --error-format=table --level 5 src public bin
-
-in-docker-psalm:
-	vendor/bin/psalm --show-info=false
-
-cs:
-	vendor/bin/phpcbf
-
-cs-check:
-	vendor/bin/phpcs
-
-##
-# Special operations
-##
-
-docker-up:
-	docker-compose up -d
-
-docker-down:
-	docker-compose down
-
-##
-# Private targets
-##
-in-docker-install:
-	rm -f composer.lock
-	composer.phar install --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
-
-in-docker-install-dev:
+composer-install-dev: fetch ensure clean
 	rm -f composer.lock
 	cp composer.json _composer.json
-	composer.phar config minimum-stability dev
-	composer.phar update --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi
+	sh -c "${QA_DOCKER_COMMAND} composer config minimum-stability dev"
+	sh -c "${QA_DOCKER_COMMAND} composer upgrade --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi"
 	mv _composer.json composer.json
 
-in-docker-install-fixtures:
+cs:
+	sh -c "docker-compose run --rm php vendor/bin/phpcbf"
+
+cs-check:
+	sh -c "docker-compose run --rm php vendor/bin/phpcs"
+
+phpstan: ensure
+	sh -c "${QA_DOCKER_COMMAND} phpstan analyse"
+
+psalm: ensure
+	sh -c "${QA_DOCKER_COMMAND} psalm --show-info=false"
+
+infection: phpunit-coverage
+	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr /tools/infection run --verbose --show-mutations --no-interaction --only-covered --coverage var/ --min-msi=84 --min-covered-msi=100"
+
+phpunit-coverage: ensure
+	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr vendor/bin/phpunit --verbose --exclude-group """" --coverage-text --log-junit=var/phpunit.junit.xml --coverage-xml var/coverage-xml/"
+
+db-fixtures:
 	bin/console doctrine:database:drop --force || true
 	bin/console doctrine:database:create
-	bin/console doctrine:schema:update --force
 	bin/console doctrine:schema:validate || true
+	bin/console doctrine:schema:update --force
 	psql -U root -h db -d park_manager -w -a -f ./etc/fixture.sql
 
-in-docker-test: in-docker-install-fixtures
-	vendor/bin/phpunit --exclude-group "" --verbose
+phpunit:
+	docker-compose run --rm php make db-fixtures
+	sh -c "${QA_DOCKER_COMMAND} phpunit --verbose --exclude-group """" "
 
-in-docker-test-strict: in-docker-install-fixtures
-	SYMFONY_DEPRECATIONS_HELPER=strict vendor/bin/phpunit --exclude-group "" --verbose
+ensure:
+	mkdir -p ${HOME}/.composer /tmp/tmp-phpqa-$(shell id -u)
 
-in-docker-test-coverage: in-docker-install-fixtures
-	SYMFONY_DEPRECATIONS_HELPER=disabled phpdbg -qrr vendor/bin/phpunit --verbose --exclude-group "" --coverage-php build/cov/coverage-phpunit.cov
-
-in-docker-clean-vendor:
-	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/Tests" }' | xargs rm -rf
-	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/LICENSE" }' | xargs rm -f
-	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/README.md" }' | xargs rm -f
-	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/.gitignore" }' | xargs rm -f
-	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/phpunit.xml.dist" }' | xargs rm -f
-	ls vendor/symfony/ | awk -F" " '{if ($$1) print "vendor/symfony/"$$1"/CHANGELOG.md" }' | xargs rm -f
-
-.PHONY: install install-dev security-check phpstan psalm cs cs cs-checks docker-up down-down
-.PHONY: in-docker-install in-docker-install-dev in-docker-install-lowest in-docker-test in-docker-test-coverage in-docker-clean-vendor
+fetch:
+	docker pull "${QA_DOCKER_IMAGE}"

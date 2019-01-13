@@ -1,0 +1,30 @@
+{
+    "tools": [
+        {
+            "name": "composer-normalize",
+            "summary": "Provides normalizing for composer.json",
+            "website": "https://github.com/localheinz/composer-normalize",
+            "command": {
+                "composer-global-install": {
+                    "package": "localheinz/composer-normalize"
+                }
+            },
+            "test": "composer normalize --help",
+            "tags": [
+                "composer"
+            ]
+        },
+        {
+            "name": "phpstan-prophecy",
+            "summary": "PHPStan plug-in for prophecy",
+            "website": "https://github.com/jangregor/phpstan-prophecy",
+            "command": {
+                "composer-bin-plugin": {
+                    "package": "jangregor/phpstan-prophecy",
+                    "namespace": "phpstan"
+                }
+            },
+            "test": "true"
+        }
+    ]
+}

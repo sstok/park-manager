@@ -18,8 +18,7 @@ branches:
 
 matrix:
     include:
-        - php: '7.1'
-          env: coverage=1 lint=1
+        - php: '7.2'
 
 before_install:
     - sudo service postgresql stop
@@ -30,4 +29,4 @@ install:
     - make install
 
 script:
-    - make lint test
+    - make ci
