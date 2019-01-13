@@ -1,3 +1,6 @@
+vendor-bin/*/vendor/*
+composer.lock
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -5,15 +8,11 @@
 /public/bundles/
 /var/
 /vendor/
+###< symfony/framework-bundle ###
 
 ###> symfony/web-server-bundle ###
 .web-server-pid
 ###< symfony/web-server-bundle ###
-phpunit.xml
-.php_cs.cache
-.php_cs
-vendor-bin/*/vendor/*
-composer.lock
 
 ###> squizlabs/php_codesniffer ###
 /.phpcs-cache
