@@ -5,6 +5,7 @@ endif
 QA_DOCKER_IMAGE=parkmanager/phpqa:latest
 QA_DOCKER_COMMAND=docker run --init --interactive --tty --rm --env "COMPOSER_HOME=/composer" --user "$(shell id -u):$(shell id -g)" --volume /tmp/tmp-phpqa-$(shell id -u):/tmp --volume "$(shell pwd):/project" --volume "${HOME}/.composer:/composer" --workdir /project ${QA_DOCKER_IMAGE}
 
+install: composer-install
 dist: composer-validate cs phpstan psalm test
 ci: check test
 check: composer-validate cs-check phpstan psalm

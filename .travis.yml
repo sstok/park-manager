@@ -12,13 +12,21 @@ addons:
         packages:
             - docker-ce
 
+cache:
+    directories:
+        - $HOME/.composer/cache/files
+
 branches:
     only:
         - master
 
 matrix:
+    fast_finish: true
     include:
         - php: '7.2'
+          env: TARGET=test
+        - php: '7.2'
+          env: TARGET=check
 
 before_install:
     - sudo service postgresql stop
@@ -28,5 +36,4 @@ before_install:
 install:
     - make install
 
-script:
-    - make ci
+script: make $TARGET
