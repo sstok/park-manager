@@ -1,10 +1,7 @@
 Park-Manager
 ============
 
-Park-Manager is a full-stack **hosting-management system**.
-
-Park-Manager is provided as [Free Software][1] and can be completely customized
-and extended to your needs.
+Park-Manager provides a [Free Software][1] full-stack **hosting-management** system.
 
  ##### :warning: Park-Manager is still actively developed. The current status is pre-alpha and not ready for production usage.
  ##### Major code changes should be expected.
@@ -12,68 +9,58 @@ and extended to your needs.
 Architecture
 ------------
 
-The Park-Manager architecture consists of:
+The Park-Manager application is build on top of [Symfony][2] and uses [Docker][3] 
+for the actual hosting platform.
 
-* The **Park-Manager framework** that supplies a set of reusable **PHP components**.
-* The **Park-Manager platform** that provides the basics for any **hosting system**.
-* The Park-Manager modules that provide the actual functionality, including:
+Functionality is provided in the form of modules, the CoreModule provides 
+the absolute basics for any **hosting system**.
+
+Additionally Park-Manager provides Modules for:
+
   * Webhosting
   * DNS management
   * Support tickets
 
-**Module system:**
-
-> The Park-Manager module system was highly inspired on the [Symfony's bundle architecture][2]. 
-> In fact, **a module is a bundle**, with some added functionality.
-
 Installation
 ------------
 
-* Install the Park-Manager system with [Docker][3] (*currently not ready*).
-* Install the Park-Manager framework libraries (for your own projects) with [Composer][4].
-* Park-Manager follows the [semantic versioning][5] strictly, 
+### :warning: Currently there is no formal way to install the Park-Manager hosting-system.
+
+<!-- * Install the Park-Manager system with [Docker][3] (*currently not ready*). -->
+
+* Park-Manager follows the [semantic versioning][4] strictly, 
   and has a release process that is predictable and business-friendly.
 
 Contributing
 ------------
 
 Park-Manager is an Open Source, community-driven project of contributors. 
-Join them with [contributing code][6] or [contributing documentation][7].
+Join them with [contributing code][5] or [contributing documentation][6].
 
 Code of Conduct
 ---------------
 
 To ensure a community that is welcoming to all, please review and abide 
-by the [Code of Conduct][8].
+by the [Code of Conduct][7].
 
 License
 -------
 
-The Park-Manager framework libraries are released under the [MIT license](LICENSE.MIT).
-
-The code of the Park-Manager platform and modules are subject to the 
-terms of the Mozilla Public License, version 2.0 (MPLv2.0).
-
-**Note:**
-
-> Unlike the MIT license, the **MPLv2.0 license does not allow (re)distribution
-> of a closed-source "only" version** of the software. 
->
-> See the [MPLv2.0 License](LICENSE) for all legal details.
+The Source Code of Park-Manager is subject to the terms of the
+Mozilla Public License, version 2.0 ([MPLv2.0 License](LICENSE)).
 
 About us
 --------
 
-Park-Manager is led by [Sebastiaan Stok (@sstok)][9] and supported by
-the Park-Manager [contributors][10].
+Park-Manager is led by [Sebastiaan Stok (@sstok)][8] and supported by
+the Park-Manager [contributors][9].
 
 [1]: https://www.gnu.org/philosophy/free-sw.html
-[2]: http://symfony.com/doc/current/bundles.html
+[2]: http://symfony.com/
 [3]: https://www.docker.com/
-[4]: https://getcomposer.org/
-[5]: http://semver.org/
-[6]: https://docs.park-manager.com/current/contributing/code/index.html
-[7]: https://docs.park-manager.com/current/contributing/documentation/index.html
-[8]: https://github.com/park-manager/park-manager/blob/master/CODE_OF_CONDUCT.md
-[9]: https://github.com/sstok
-[10]: https://github.com/park-manager/park-manager/blob/master/AUTHORS
+[4]: http://semver.org/
+[5]: https://docs.park-manager.com/current/contributing/code/index.html
+[6]: https://docs.park-manager.com/current/contributing/documentation/index.html
+[7]: https://github.com/park-manager/park-manager/blob/master/CODE_OF_CONDUCT.md
+[8]: https://github.com/sstok
+[9]: https://github.com/park-manager/park-manager/blob/master/AUTHORS
