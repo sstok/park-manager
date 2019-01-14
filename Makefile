@@ -55,7 +55,7 @@ psalm: ensure
 	sh -c "${QA_DOCKER_COMMAND} psalm --show-info=false"
 
 infection: phpunit-coverage
-	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr /tools/infection run --verbose --show-mutations --no-interaction --only-covered --coverage var/ --min-msi=84 --min-covered-msi=100"
+	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr /tools/infection run --verbose --show-mutations --no-interaction --only-covered --coverage var/ --min-msi=84 --min-covered-msi=84"
 
 phpunit-coverage: ensure
 	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr vendor/bin/phpunit --verbose --exclude-group """" --coverage-text --log-junit=var/phpunit.junit.xml --coverage-xml var/coverage-xml/"
