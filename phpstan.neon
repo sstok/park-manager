@@ -5,22 +5,21 @@ includes:
 	- /tools/.composer/vendor-bin/phpstan/vendor/jangregor/phpstan-prophecy/src/extension.neon
 
 parameters:
+    #reportUnmatchedIgnoredErrors: false
+
     tmpDir: %currentWorkingDirectory%/var/phpstan
     level: 5
     paths:
         - ./src
         - ./public
         - ./bin
-    autoload_files:
-        - /tools/.composer/vendor-bin/phpstan/vendor/autoload.php
-        - %currentWorkingDirectory%/vendor/autoload.php
     excludes_analyse:
         - var/
         - vendor/
         - templates/
         - translations/
         - %currentWorkingDirectory%/src/Module/WebhostingModule/** # Disabled for now
-#        - %currentWorkingDirectory%/src/*/*/Tests/**
+        - %currentWorkingDirectory%/src/*/*/Tests/**
 
     checkNullables: false # To many false positives
 

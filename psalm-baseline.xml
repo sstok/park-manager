@@ -5,14 +5,6 @@
       <code>$definition-&gt;getFactory()[0]</code>
     </PossiblyNullArrayAccess>
   </file>
-  <file src="src/Module/CoreModule/Application/Service/Crypto/Argon2SplitToken.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>string</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>return password_hash($verifier, PASSWORD_ARGON2I, $this-&gt;config);</code>
-    </NullableReturnStatement>
-  </file>
   <file src="src/Module/CoreModule/Application/Service/Crypto/Argon2SplitTokenFactory.php">
     <UndefinedClass occurrences="1">
       <code>HiddenString</code>
@@ -37,7 +29,7 @@
   </file>
   <file src="src/Module/CoreModule/Domain/Client/Client.php">
     <PossiblyNullReference occurrences="1">
-      <code>metadata</code>
+      <code>$this-&gt;emailAddressChangeToken</code>
     </PossiblyNullReference>
   </file>
   <file src="src/Module/CoreModule/Domain/Shared/SplitToken.php">
@@ -45,20 +37,21 @@
       <code>$token-&gt;verifierHash()</code>
     </PossiblyNullArgument>
     <PossiblyNullReference occurrences="2">
-      <code>isExpired</code>
-      <code>verifierHash</code>
+      <code>$token</code>
+      <code>$token</code>
     </PossiblyNullReference>
-    <UndefinedClass occurrences="5">
+    <UndefinedClass occurrences="6">
       <code>HiddenString</code>
       <code>HiddenString</code>
       <code>HiddenString</code>
+      <code>$randomBytes</code>
       <code>HiddenString</code>
       <code>HiddenString</code>
     </UndefinedClass>
   </file>
   <file src="src/Module/CoreModule/Domain/Shared/SplitTokenValueHolder.php">
     <PossiblyNullReference occurrences="1">
-      <code>isExpired</code>
+      <code>$valueHolder</code>
     </PossiblyNullReference>
   </file>
   <file src="src/Module/CoreModule/Infrastructure/DependencyInjection/Configuration.php">
@@ -100,7 +93,9 @@
     </TypeCoercion>
   </file>
   <file src="src/Module/CoreModule/Infrastructure/Doctrine/EventSourcedEntityRepository.php">
-    <TypeCoercion occurrences="2">
+    <TypeCoercion occurrences="4">
+      <code>$entityManager</code>
+      <code>$entityManager</code>
       <code>$entityManager</code>
       <code>$entityManager</code>
     </TypeCoercion>
@@ -150,7 +145,7 @@
       <code>$request-&gt;getSession()</code>
     </PossiblyNullArgument>
     <PossiblyNullReference occurrences="1">
-      <code>set</code>
+      <code>$request-&gt;getSession()</code>
     </PossiblyNullReference>
   </file>
   <file src="src/Module/CoreModule/Infrastructure/Security/SecurityUser.php">
@@ -232,6 +227,41 @@
       <code>array&lt;string,string&lt;object&gt;&gt;</code>
       <code>array&lt;string,string&lt;object&gt;&gt;</code>
     </ReservedWord>
+    <TypeCoercion occurrences="33">
+      <code>$this-&gt;storedById</code>
+      <code>$this-&gt;savedById</code>
+      <code>$this-&gt;removedById</code>
+      <code>$this-&gt;storedById</code>
+      <code>$this-&gt;savedById</code>
+      <code>$this-&gt;removedById</code>
+      <code>$this-&gt;storedById</code>
+      <code>$this-&gt;savedById</code>
+      <code>$this-&gt;removedById</code>
+      <code>$this-&gt;storedById</code>
+      <code>$this-&gt;savedById</code>
+      <code>$this-&gt;removedById</code>
+      <code>$this-&gt;storedById</code>
+      <code>$this-&gt;savedById</code>
+      <code>$this-&gt;removedById</code>
+      <code>$this-&gt;storedById</code>
+      <code>$this-&gt;savedById</code>
+      <code>$this-&gt;removedById</code>
+      <code>$this-&gt;storedById</code>
+      <code>$this-&gt;savedById</code>
+      <code>$this-&gt;removedById</code>
+      <code>$this-&gt;storedById</code>
+      <code>$this-&gt;savedById</code>
+      <code>$this-&gt;removedById</code>
+      <code>$this-&gt;storedById</code>
+      <code>$this-&gt;savedById</code>
+      <code>$this-&gt;removedById</code>
+      <code>$this-&gt;storedById</code>
+      <code>$this-&gt;savedById</code>
+      <code>$this-&gt;removedById</code>
+      <code>$this-&gt;storedById</code>
+      <code>$this-&gt;savedById</code>
+      <code>$this-&gt;removedById</code>
+    </TypeCoercion>
   </file>
   <file src="src/Module/CoreModule/Tests/Application/Command/Client/ConfirmEmailAddressChangeHandlerTest.php">
     <UndefinedClass occurrences="1">
@@ -244,14 +274,6 @@
     </UndefinedClass>
   </file>
   <file src="src/Module/CoreModule/Tests/Application/Command/Client/RequestEmailAddressChangeTest.php">
-    <LessSpecificReturnStatement occurrences="2">
-      <code>return $confirmationMailerProphecy-&gt;reveal();</code>
-      <code>return $confirmationMailerProphecy-&gt;reveal();</code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="2">
-      <code>EmailAddressChangeRequestMailer</code>
-      <code>EmailAddressChangeRequestMailer</code>
-    </MoreSpecificReturnType>
     <UndefinedClass occurrences="2">
       <code>$this-&gt;fullToken-&gt;token()</code>
       <code>$splitToken-&gt;token()</code>
@@ -310,102 +332,10 @@
       <code>$token-&gt;token()</code>
     </UndefinedClass>
   </file>
-  <file src="src/Module/CoreModule/Tests/Infrastructure/Messenger/Middleware/SecurityMiddlewareTest.php">
-    <InvalidArgument occurrences="2">
-      <code>self::isInstanceOf(MockMessage::class)</code>
-      <code>self::isInstanceOf(MockMessage::class)</code>
-    </InvalidArgument>
-  </file>
-  <file src="src/Module/CoreModule/Tests/Infrastructure/Security/EventListener/UpdateAuthTokenTokenWhenPasswordWasChangedPasswordChangedListenerTest.php">
-    <InvalidArgument occurrences="1">
-      <code>$this-&gt;createMock(UserInterface::class)</code>
-    </InvalidArgument>
-    <LessSpecificReturnStatement occurrences="4">
-      <code>return $userProviderProphecy-&gt;reveal();</code>
-      <code>return $tokenStorageProphecy-&gt;reveal();</code>
-      <code>return $userProviderProphecy-&gt;reveal();</code>
-      <code>return $tokenStorageProphecy-&gt;reveal();</code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="4">
-      <code>UserProviderInterface</code>
-      <code>TokenStorageInterface</code>
-      <code>UserProviderInterface</code>
-      <code>TokenStorageInterface</code>
-    </MoreSpecificReturnType>
-    <TooManyArguments occurrences="3">
-      <code>$tokenStorageProphecy-&gt;getToken()-&gt;willReturn($token)</code>
-      <code>$userProviderProphecy-&gt;refreshUser($currentUser)-&gt;willReturn($user)</code>
-      <code>$tokenStorageProphecy-&gt;getToken()-&gt;willReturn($token)</code>
-    </TooManyArguments>
-  </file>
   <file src="src/Module/CoreModule/Tests/Infrastructure/Security/SecurityUserTest.php">
     <PossiblyNullArgument occurrences="1">
       <code>$id</code>
     </PossiblyNullArgument>
-  </file>
-  <file src="src/Module/CoreModule/Tests/Infrastructure/UserInterface/Web/Common/Form/ConfirmationHandler/CheckedConfirmationHandlerTest.php">
-    <LessSpecificReturnStatement occurrences="2">
-      <code>return $tokenManagerProphecy-&gt;reveal();</code>
-      <code>return $tokenManagerProphecy-&gt;reveal();</code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="2">
-      <code>CsrfTokenManagerInterface</code>
-      <code>CsrfTokenManagerInterface</code>
-    </MoreSpecificReturnType>
-    <TooManyArguments occurrences="4">
-      <code>$tokenManagerProphecy-&gt;getToken($tokenId)-&gt;willReturn(new CsrfToken($tokenId, 'valid-token'))</code>
-      <code>$tokenManagerProphecy-&gt;isTokenValid(Argument::any())-&gt;willReturn(false)</code>
-      <code>$tokenManagerProphecy-&gt;getToken($tokenId)-&gt;willReturn(new CsrfToken($tokenId, 'valid-token'))</code>
-      <code>$tokenManagerProphecy-&gt;isTokenValid(new CsrfToken($tokenId, 'valid-token'))-&gt;willReturn(true)</code>
-    </TooManyArguments>
-  </file>
-  <file src="src/Module/CoreModule/Tests/Infrastructure/UserInterface/Web/Common/Form/ConfirmationHandler/ConfirmationHandlerTest.php">
-    <LessSpecificReturnStatement occurrences="2">
-      <code>return $tokenManagerProphecy-&gt;reveal();</code>
-      <code>return $tokenManagerProphecy-&gt;reveal();</code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="2">
-      <code>CsrfTokenManagerInterface</code>
-      <code>CsrfTokenManagerInterface</code>
-    </MoreSpecificReturnType>
-    <TooManyArguments occurrences="4">
-      <code>$tokenManagerProphecy-&gt;getToken($tokenId)-&gt;willReturn(new CsrfToken($tokenId, 'valid-token'))</code>
-      <code>$tokenManagerProphecy-&gt;isTokenValid(Argument::any())-&gt;willReturn(false)</code>
-      <code>$tokenManagerProphecy-&gt;getToken($tokenId)-&gt;willReturn(new CsrfToken($tokenId, 'valid-token'))</code>
-      <code>$tokenManagerProphecy-&gt;isTokenValid(new CsrfToken($tokenId, 'valid-token'))-&gt;willReturn(true)</code>
-    </TooManyArguments>
-  </file>
-  <file src="src/Module/CoreModule/Tests/Infrastructure/UserInterface/Web/EventListener/ApplicationSectionListenerTest.php">
-    <InvalidArgument occurrences="3">
-      <code>$event</code>
-      <code>$event</code>
-      <code>$event</code>
-    </InvalidArgument>
-    <LessSpecificReturnStatement occurrences="2">
-      <code>return $contextProphecy-&gt;reveal();</code>
-      <code>return $contextProphecy-&gt;reveal();</code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="2">
-      <code>ApplicationContext</code>
-      <code>ApplicationContext</code>
-    </MoreSpecificReturnType>
-  </file>
-  <file src="src/Module/CoreModule/Tests/Infrastructure/UserInterface/Web/EventListener/TwigResponseListenerTest.php">
-    <InvalidArgument occurrences="1">
-      <code>$this-&gt;createMock(HttpKernelInterface::class)</code>
-    </InvalidArgument>
-    <LessSpecificReturnStatement occurrences="2">
-      <code>return $containerProphecy-&gt;reveal();</code>
-      <code>return $containerProphecy-&gt;reveal();</code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="2">
-      <code>ContainerInterface</code>
-      <code>ContainerInterface</code>
-    </MoreSpecificReturnType>
-    <TooManyArguments occurrences="2">
-      <code>$twig-&gt;render($template, $variables)-&gt;willReturn('It was like this when I got here.')</code>
-      <code>$containerProphecy-&gt;get('twig')-&gt;willReturn($twig-&gt;reveal())</code>
-    </TooManyArguments>
   </file>
   <file src="src/Module/WebhostingModule/Application/Account/RegisterWebhostingAccountHandler.php">
     <PossiblyNullArgument occurrences="1">
@@ -481,11 +411,17 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Module/WebhostingModule/Infrastructure/Doctrine/Account/WebhostingAccountOrmRepository.php">
+    <InvalidArgument occurrences="1">
+      <code>$eventEmitter</code>
+    </InvalidArgument>
     <UndefinedClass occurrences="1">
       <code>EventEmitter</code>
     </UndefinedClass>
   </file>
   <file src="src/Module/WebhostingModule/Infrastructure/Doctrine/Package/WebhostingPackageOrmRepository.php">
+    <InvalidArgument occurrences="1">
+      <code>$eventEmitter</code>
+    </InvalidArgument>
     <UndefinedClass occurrences="1">
       <code>EventEmitter</code>
     </UndefinedClass>
@@ -551,33 +487,6 @@
       <code>WebhostingAccountWasRegistered</code>
     </MissingDependency>
   </file>
-  <file src="src/Module/WebhostingModule/Tests/Domain/Account/Handler/RegisterWebhostingAccountHandlerTest.php">
-    <InvalidReturnStatement occurrences="1">
-      <code>return $this-&gt;createMock(WebhostingPackageRepository::class);</code>
-    </InvalidReturnStatement>
-    <InvalidReturnType occurrences="1">
-      <code>WebhostingPackageRepository</code>
-    </InvalidReturnType>
-    <LessSpecificReturnStatement occurrences="5">
-      <code>return $accountRepositoryProphecy-&gt;reveal();</code>
-      <code>return $accountRepositoryProphecy-&gt;reveal();</code>
-      <code>return $packageRepositoryProphecy-&gt;reveal();</code>
-      <code>return $domainNameRepositoryProphecy-&gt;reveal();</code>
-      <code>return $domainNameRepositoryProphecy-&gt;reveal();</code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="5">
-      <code>WebhostingAccountRepository</code>
-      <code>WebhostingAccountRepository</code>
-      <code>WebhostingPackageRepository</code>
-      <code>WebhostingDomainNameRepository</code>
-      <code>WebhostingDomainNameRepository</code>
-    </MoreSpecificReturnType>
-    <TooManyArguments occurrences="3">
-      <code>$packageRepositoryProphecy-&gt;get($package-&gt;id())-&gt;willReturn($package)</code>
-      <code>$domainNameRepositoryProphecy-&gt;findByFullName($expectedDomain)-&gt;willReturn(null)</code>
-      <code>$domainNameRepositoryProphecy-&gt;findByFullName($expectedDomain)-&gt;willReturn($existingDomain)</code>
-    </TooManyArguments>
-  </file>
   <file src="src/Module/WebhostingModule/Tests/Domain/Account/WebhostingAccountTest.php">
     <MissingDependency occurrences="9">
       <code>WebhostingAccountWasRegistered</code>
@@ -590,14 +499,6 @@
       <code>WebhostingAccountOwnerWasSwitched</code>
       <code>WebhostingAccountWasMarkedForRemoval</code>
     </MissingDependency>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Domain/DomainName/WebhostingDomainNameTest.php">
-    <InvalidReturnStatement occurrences="1">
-      <code>return $account;</code>
-    </InvalidReturnStatement>
-    <InvalidReturnType occurrences="1">
-      <code>WebhostingAccount</code>
-    </InvalidReturnType>
   </file>
   <file src="src/Module/WebhostingModule/Tests/Domain/Package/Event/WebhostingPackageCapabilitiesWasChangedTest.php">
     <MissingDependency occurrences="1">
@@ -616,13 +517,15 @@
     </MissingDependency>
   </file>
   <file src="src/Module/WebhostingModule/Tests/Fixtures/Infrastructure/PackageCapability/AllowingWithWarningsGuard.php">
-    <UndefinedClass occurrences="1">
+    <UndefinedClass occurrences="2">
       <code>ServiceMessages</code>
+      <code>$messages</code>
     </UndefinedClass>
   </file>
   <file src="src/Module/WebhostingModule/Tests/Fixtures/Infrastructure/PackageCapability/DenyingGuard.php">
-    <UndefinedClass occurrences="1">
+    <UndefinedClass occurrences="2">
       <code>ServiceMessages</code>
+      <code>$messages</code>
     </UndefinedClass>
   </file>
   <file src="src/Module/WebhostingModule/Tests/Fixtures/Infrastructure/PackageCapability/MonthlyTrafficQuotaApplier.php">
@@ -636,10 +539,8 @@
     </UndefinedClass>
   </file>
   <file src="src/Module/WebhostingModule/Tests/Infrastructure/Doctrine/DomainName/WebhostingDomainNameOrmRepositoryTest.php">
-    <PossiblyNullReference occurrences="3">
-      <code>id</code>
-      <code>id</code>
-      <code>id</code>
+    <PossiblyNullReference occurrences="1">
+      <code>$domainName3</code>
     </PossiblyNullReference>
   </file>
   <file src="src/Module/WebhostingModule/Tests/Infrastructure/Doctrine/Package/WebhostingCapabilitiesTypeTest.php">
@@ -657,19 +558,6 @@
     </UndefinedClass>
   </file>
   <file src="src/Module/WebhostingModule/Tests/Service/Package/AccountCapabilitiesGuardTest.php">
-    <InvalidReturnStatement occurrences="1">
-      <code>return $account;</code>
-    </InvalidReturnStatement>
-    <InvalidReturnType occurrences="1">
-      <code>WebhostingAccount</code>
-    </InvalidReturnType>
-    <TooManyArguments occurrences="2">
-      <code>$repositoryProphecy-&gt;get(WebhostingAccountId::fromString(self::ACCOUNT_ID1))-&gt;willReturn($account1)</code>
-      <code>$repositoryProphecy-&gt;get(WebhostingAccountId::fromString(self::ACCOUNT_ID2))-&gt;willReturn($account2)</code>
-    </TooManyArguments>
-    <TypeCoercion occurrences="1">
-      <code>$accountRepository</code>
-    </TypeCoercion>
     <UndefinedClass occurrences="3">
       <code>ServiceMessages</code>
       <code>ServiceMessages</code>
