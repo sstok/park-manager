@@ -1,17 +1,23 @@
 includes:
-	- vendor-bin/phpstan/vendor/phpstan/phpstan-symfony/extension.neon
-	- vendor-bin/phpstan/vendor/phpstan/phpstan-doctrine/extension.neon
-	- vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
-	- vendor-bin/phpstan/vendor/jangregor/phpstan-prophecy/src/extension.neon
+	- /tools/.composer/vendor-bin/phpstan/vendor/phpstan/phpstan-symfony/extension.neon
+	- /tools/.composer/vendor-bin/phpstan/vendor/phpstan/phpstan-doctrine/extension.neon
+	- /tools/.composer/vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
+	- /tools/.composer/vendor-bin/phpstan/vendor/jangregor/phpstan-prophecy/src/extension.neon
 
 parameters:
-    autoload_files:
-        - vendor-bin/phpstan/vendor/autoload.php
-        - vendor/autoload.php
+    #reportUnmatchedIgnoredErrors: false
+
+    tmpDir: %currentWorkingDirectory%/var/phpstan
+    level: 5
+    paths:
+        - ./src
+        - ./public
+        - ./bin
     excludes_analyse:
-        - var/*
-        - templates/*
-        - translations/*
+        - var/
+        - vendor/
+        - templates/
+        - translations/
         - %currentWorkingDirectory%/src/Module/WebhostingModule/** # Disabled for now
         - %currentWorkingDirectory%/src/*/*/Tests/**
 
