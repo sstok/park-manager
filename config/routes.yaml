@@ -8,7 +8,7 @@
 # and/or Symfony Flex to ensure bundle removal doesn't break the application.
 
 # Move to config/routes/park_manager.yaml
-#
-#_park_manager:
-#    type: park_manager_sections_loader
-#    resource: .
+
+_park_manager:
+    type: park_manager_sections_loader
+    resource: .
