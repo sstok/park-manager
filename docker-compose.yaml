@@ -9,7 +9,7 @@ services:
             DATABASE_URL: 'pgsql://root@db:5432/park_manager?charset=utf8&serverVersion=9.6'
 
         volumes:
-            - .:/srv/www:rw
+            - .:/srv/www:delegated
             - /srv/www/var/logs/
             - /srv/www/var/sessions/
 
@@ -20,7 +20,7 @@ services:
             - POSTGRES_USER=root
         volumes:
             # Use virtual volume as this is only for testing
-            - db-data:/var/lib/postgresql/data:rw
+            - db-data:/var/lib/postgresql/data
         ports:
             - "5433:5432"
 
