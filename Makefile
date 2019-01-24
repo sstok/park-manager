@@ -65,7 +65,6 @@ db-fixtures:
 	bin/console doctrine:database:create
 	bin/console doctrine:schema:validate || true
 	bin/console doctrine:schema:update --force
-	psql -U root -h db -d park_manager -w -a -f ./etc/fixture.sql
 
 phpunit:
 	docker-compose run --rm php make db-fixtures
