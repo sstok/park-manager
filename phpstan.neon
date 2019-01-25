@@ -37,4 +37,3 @@ parameters:
         - '#Property Doctrine\\ORM\\EntityRepository\:\:\$_class \(Doctrine\\ORM\\Mapping\\ClassMetadata\) does not accept Doctrine\\Common\\Persistence\\Mapping\\ClassMetadata#'
 
         - '#Result of \&\& is always false#'
-        - '#object\:\:toString\(\)#' # ValueObjects
