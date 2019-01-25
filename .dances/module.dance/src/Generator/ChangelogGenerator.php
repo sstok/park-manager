@@ -17,21 +17,31 @@ namespace ParkManager\SkeletonDancer\Generator;
 use SkeletonDancer\Generator;
 use SkeletonDancer\Service\Filesystem;
 
-final class BridgeLibGenerator implements Generator
+final class ChangelogGenerator implements Generator
 {
-    private $twig;
+    /** @var Filesystem */
     private $filesystem;
 
-    public function __construct(\Twig_Environment $twig, Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
-        $this->twig       = $twig;
     }
 
-    public function generate(array $answers)
+    public function generate(array $configuration)
     {
-        $this->filesystem->mkdir(
-            ['Tests']
+        $this->filesystem->dumpFile(
+            'CHANGELOG.md',
+            <<<'BODY'
+Change Log
+==========
+
+All notable changes to this publication will be documented in this file.
+
+## 1.0.0 - ????-??-??
+
+First stable release.
+
+BODY
         );
     }
 }

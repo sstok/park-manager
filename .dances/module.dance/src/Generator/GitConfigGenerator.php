@@ -20,6 +20,7 @@ use function implode;
 
 final class GitConfigGenerator implements Generator
 {
+    /** @var Filesystem */
     private $filesystem;
 
     public function __construct(Filesystem $filesystem)

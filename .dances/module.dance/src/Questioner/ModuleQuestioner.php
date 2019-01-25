@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\SkeletonDancer\Questioner;
 
+use InvalidArgumentException;
 use SkeletonDancer\Question;
 use SkeletonDancer\Questioner;
 use SkeletonDancer\QuestionsSet;
@@ -24,16 +25,16 @@ use function mb_strpos;
 use function mb_substr;
 use function trim;
 
-final class BridgeLibQuestioner implements Questioner
+final class ModuleQuestioner implements Questioner
 {
     public function interact(QuestionsSet $questions)
     {
-        $questions->communicate('bridge_name', Question::ask('Bridge name', basename(getcwd()), function ($value) {
+        $questions->communicate('module_name', Question::ask('Module name', basename(getcwd()), static function ($value) {
             if (empty($value)) {
-                throw new \InvalidArgumentException('Name cannot be empty.');
+                throw new InvalidArgumentException('Name cannot be empty.');
             }
 
-            if (mb_substr($value, -6) === 'Bridge') {
+            if (mb_substr($value, -6) === 'Module') {
                 $value = mb_substr($value, 0, -6);
             }
 
@@ -44,12 +45,13 @@ final class BridgeLibQuestioner implements Questioner
             $value = trim($value);
 
             if ($value === '') {
-                throw new \InvalidArgumentException('Name cannot be only "Bridge" or Park-Manager.');
+                throw new InvalidArgumentException('Name cannot be only "Module" or Park-Manager.');
             }
 
             return $value;
         }));
 
-        $questions->set('php_namespace', 'ParkManager\\Bridge\\' . StringUtil::camelize((string) $questions->get('bridge_name')));
+        $questions->set('license', 'MPL-2.0');
+        $questions->set('php_namespace', 'ParkManager\\Module\\' . StringUtil::camelize((string) $questions->get('module_name')));
     }
 }

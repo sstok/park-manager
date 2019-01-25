@@ -16,12 +16,15 @@ namespace ParkManager\SkeletonDancer\Generator;
 
 use SkeletonDancer\Generator;
 use SkeletonDancer\Service\Filesystem;
+use SkeletonDancer\StringUtil;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use function json_encode;
+use function str_replace;
 
-abstract class BaseComposerGenerator implements Generator
+final class ComposerGenerator implements Generator
 {
+    /** @var Filesystem */
     private $filesystem;
 
     public function __construct(Filesystem $filesystem)
@@ -29,14 +32,14 @@ abstract class BaseComposerGenerator implements Generator
         $this->filesystem = $filesystem;
     }
 
-    final public function generate(array $answers)
+    final public function generate(array $answers): void
     {
         $composer = [
             'name' => 'park-manager/' . $this->generatePackageSubName($answers),
-            'type' => $this->getType(),
-            'description' => $this->getDescription($answers),
+            'type' => 'park-manager-module',
+            'description' => 'Park-Manager ' . $answers['module_name'] . ' Module',
             'homepage' => 'https://www.park-manager.com/',
-            'license' => $this->getLicense(),
+            'license' => 'MPL-2.0',
             'authors' => [
                 [
                     'name' => $answers['author_name'],
@@ -47,7 +50,7 @@ abstract class BaseComposerGenerator implements Generator
                     'homepage' => 'https://github.com/park-manager/park-manager/contributors',
                 ],
             ],
-            'require' => ['php' => '^7.2'] + $this->getRequires(),
+            'require' => ['php' => '^7.2', 'park-manager/core-module' => '^1.0'],
             'config' => [
                 'preferred-install' => ['*' => 'dist'],
                 'sort-packages' => true,
@@ -68,16 +71,8 @@ abstract class BaseComposerGenerator implements Generator
         );
     }
 
-    abstract protected function generatePackageSubName(array $answers): string;
-
-    abstract protected function getType(): string;
-
-    abstract protected function getDescription(array $answers): string;
-
-    abstract protected function getRequires(): array;
-
-    protected function getLicense(): string
+    private function generatePackageSubName(array $answers): string
     {
-        return 'MPL-2.0';
+        return str_replace('_', '-', StringUtil::underscore($answers['module_name'])) . '-module';
     }
 }

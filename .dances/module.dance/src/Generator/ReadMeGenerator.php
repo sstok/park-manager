@@ -16,22 +16,24 @@ namespace ParkManager\SkeletonDancer\Generator;
 
 use SkeletonDancer\Generator;
 use SkeletonDancer\Service\Filesystem;
+use Twig_Environment;
 
-final class ComponentGenerator implements Generator
+final class ReadMeGenerator implements Generator
 {
-    private $twig;
+    /** @var Filesystem */
     private $filesystem;
 
-    public function __construct(\Twig_Environment $twig, Filesystem $filesystem)
+    /** @var Twig_Environment */
+    private $twig;
+
+    public function __construct(Twig_Environment $twig, Filesystem $filesystem)
     {
-        $this->filesystem = $filesystem;
         $this->twig       = $twig;
+        $this->filesystem = $filesystem;
     }
 
     public function generate(array $answers)
     {
-        $this->filesystem->mkdir(
-            ['Tests']
-        );
+        $this->filesystem->dumpFile('README.md', $this->twig->render('readme.md.twig', $answers));
     }
 }

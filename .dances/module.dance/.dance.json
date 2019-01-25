@@ -1,8 +1,8 @@
 {
-    "title": "Park-Manager Symfony-Bundle Dance",
-    "description": "Creates a Park-Manager Symfony-Bundle structure (MPL v2.0. licensed)",
+    "title": "Park-Manager Module Dance",
+    "description": "Creates a Park-Manager Module structure (MPL v2.0. licensed)",
     "questioners": [
-        "ParkManager\\SkeletonDancer\\Questioner\\BundleQuestioner",
+        "ParkManager\\SkeletonDancer\\Questioner\\ModuleQuestioner",
         "SkeletonDancer\\Questioner\\AuthorQuestioner"
     ],
     "generators": [
@@ -11,11 +11,11 @@
         "ParkManager\\SkeletonDancer\\Generator\\ChangelogGenerator",
         "ParkManager\\SkeletonDancer\\Generator\\ComposerGenerator",
         "ParkManager\\SkeletonDancer\\Generator\\ReadMeGenerator",
-        "ParkManager\\SkeletonDancer\\Generator\\BundleGenerator"
+        "ParkManager\\SkeletonDancer\\Generator\\ModuleGenerator"
     ],
     "autoloading": {
         "psr-4": {
-            "ParkManager\\SkeletonDancer": ["src", "../base/src"]
+            "ParkManager\\SkeletonDancer": ["src"]
         }
     }
 }
