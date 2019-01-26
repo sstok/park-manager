@@ -221,6 +221,9 @@
     "rollerworks/route-autowiring-bundle": {
         "version": "v1.1.0"
     },
+    "rollerworks/split-token": {
+        "version": "0.1-dev"
+    },
     "sabre/event": {
         "version": "5.0.3"
     },
