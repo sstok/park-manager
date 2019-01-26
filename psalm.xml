@@ -54,7 +54,14 @@
         <PossiblyNullReference>
             <errorLevel type="suppress">
                 <!-- Tests are always checked or at least will produce an error -->
-                <directory name="src/Module/CoreModule/Tests" />
+                <directory name="src/Module/*/Tests" />
+
+                <!-- This already covered by a Helper method -->
+                <file name="src/Module/CoreModule/Domain/Shared/SplitToken.php" />
+                <file name="src/Module/CoreModule/Domain/Shared/SplitTokenValueHolder.php" />
+                <!-- ~~ -->
+
+                <file name="src/Module/CoreModule/Infrastructure/Security/FormAuthenticator.php" />
             </errorLevel>
         </PossiblyNullReference>
 
