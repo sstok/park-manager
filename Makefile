@@ -9,7 +9,7 @@ install: composer-install
 dist: composer-validate cs phpstan psalm test
 ci: check test
 check: composer-validate cs-check phpstan psalm
-test: phpunit-coverage infection
+test: phpunit-coverage # infection
 
 clean:
 	rm -rf var/

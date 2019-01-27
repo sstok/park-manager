@@ -5,11 +5,6 @@
       <code>$definition-&gt;getFactory()[0]</code>
     </PossiblyNullArrayAccess>
   </file>
-  <file src="src/Module/CoreModule/Application/Service/Crypto/Argon2SplitTokenFactory.php">
-    <UndefinedClass occurrences="1">
-      <code>HiddenString</code>
-    </UndefinedClass>
-  </file>
   <file src="src/Module/CoreModule/Application/Service/EventListener/ClientPasswordResetRequestListener.php">
     <PossiblyNullArgument occurrences="1">
       <code>$event-&gt;token()-&gt;getExpirationTime()</code>
@@ -30,28 +25,6 @@
   <file src="src/Module/CoreModule/Domain/Client/Client.php">
     <PossiblyNullReference occurrences="1">
       <code>$this-&gt;emailAddressChangeToken</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/Module/CoreModule/Domain/Shared/SplitToken.php">
-    <PossiblyNullArgument occurrences="1">
-      <code>$token-&gt;verifierHash()</code>
-    </PossiblyNullArgument>
-    <PossiblyNullReference occurrences="2">
-      <code>$token</code>
-      <code>$token</code>
-    </PossiblyNullReference>
-    <UndefinedClass occurrences="6">
-      <code>HiddenString</code>
-      <code>HiddenString</code>
-      <code>HiddenString</code>
-      <code>$randomBytes</code>
-      <code>HiddenString</code>
-      <code>HiddenString</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/CoreModule/Domain/Shared/SplitTokenValueHolder.php">
-    <PossiblyNullReference occurrences="1">
-      <code>$valueHolder</code>
     </PossiblyNullReference>
   </file>
   <file src="src/Module/CoreModule/Infrastructure/DependencyInjection/Configuration.php">
@@ -201,11 +174,6 @@
       <code>?string</code>
     </ImplementedReturnTypeMismatch>
   </file>
-  <file src="src/Module/CoreModule/Test/Crypto/FakeSplitTokenFactory.php">
-    <UndefinedClass occurrences="1">
-      <code>HiddenString</code>
-    </UndefinedClass>
-  </file>
   <file src="src/Module/CoreModule/Test/Domain/EventSourcedRepositoryTestHelper.php">
     <UndefinedClass occurrences="4">
       <code>EventEmitter</code>
@@ -288,33 +256,6 @@
     <UndefinedClass occurrences="1">
       <code>$this-&gt;fullToken-&gt;token()</code>
     </UndefinedClass>
-  </file>
-  <file src="src/Module/CoreModule/Tests/Application/Service/Crypto/Argon2SplitTokenFactoryTest.php">
-    <UndefinedClass occurrences="1">
-      <code>$splitToken-&gt;token()</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/CoreModule/Tests/Application/Service/Crypto/Argon2SplitTokenTest.php">
-    <PossiblyNullArgument occurrences="3">
-      <code>$token = $splitToken-&gt;toValueHolder()-&gt;verifierHash()</code>
-      <code>$value-&gt;verifierHash()</code>
-      <code>$value-&gt;verifierHash()</code>
-    </PossiblyNullArgument>
-    <UndefinedClass occurrences="5">
-      <code>HiddenString</code>
-      <code>HiddenString</code>
-      <code>$splitToken-&gt;token()</code>
-      <code>$splitToken-&gt;token()</code>
-      <code>$splitTokenReconstituted-&gt;token()</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/CoreModule/Tests/Application/Service/Crypto/SplitTokenValueHolderTest.php">
-    <LessSpecificReturnStatement occurrences="1">
-      <code>return (new Instantiator())-&gt;instantiate(SplitTokenValueHolder::class);</code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="1">
-      <code>SplitTokenValueHolder</code>
-    </MoreSpecificReturnType>
   </file>
   <file src="src/Module/CoreModule/Tests/Domain/Administrator/AdministratorTest.php">
     <PossiblyInvalidArgument occurrences="1">
