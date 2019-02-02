@@ -51,6 +51,13 @@
             </errorLevel>
         </PossiblyUndefinedMethod>
 
+        <PossiblyNullOperand>
+            <errorLevel type="suppress">
+                <!-- Fields are always initialized when calling load() or prepend(), any other public method usage is not supported. -->
+                <file name="src/Module/CoreModule/Infrastructure/DependencyInjection/Module/ParkManagerModuleDependencyExtension.php" />
+            </errorLevel>
+        </PossiblyNullOperand>
+
         <PossiblyNullReference>
             <errorLevel type="suppress">
                 <!-- Tests are always checked or at least will produce an error -->
