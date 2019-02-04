@@ -46,7 +46,7 @@ final class WebhostingAccountTest extends TestCase
     private const PACKAGE_ID_2 = 'f5788aae-9aed-11e7-a3c9-acbc32b58315';
 
     /** @test */
-    public function it_registers_an_webhosting_account()
+    public function it_registers_an_webhosting_account(): void
     {
         $id           = WebhostingAccountId::create();
         $capabilities = new Capabilities();
@@ -62,7 +62,7 @@ final class WebhostingAccountTest extends TestCase
     }
 
     /** @test */
-    public function it_registers_an_webhosting_account_with_custom_capabilities()
+    public function it_registers_an_webhosting_account_with_custom_capabilities(): void
     {
         $id           = WebhostingAccountId::create();
         $capabilities = new Capabilities();
@@ -77,7 +77,7 @@ final class WebhostingAccountTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_changing_package_assignment()
+    public function it_allows_changing_package_assignment(): void
     {
         $id2           = WebhostingAccountId::create();
         $capabilities1 = new Capabilities();
@@ -101,7 +101,7 @@ final class WebhostingAccountTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_changing_package_assignment_with_capabilities()
+    public function it_allows_changing_package_assignment_with_capabilities(): void
     {
         $id2           = WebhostingAccountId::create();
         $capabilities1 = new Capabilities();
@@ -128,7 +128,7 @@ final class WebhostingAccountTest extends TestCase
     }
 
     /** @test */
-    public function it_updates_account_when_assigning_package_capabilities_are_different()
+    public function it_updates_account_when_assigning_package_capabilities_are_different(): void
     {
         $id      = WebhostingAccountId::create();
         $package = $this->createWebhostingPackage(new Capabilities());
@@ -147,7 +147,7 @@ final class WebhostingAccountTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_assigning_custom_specification()
+    public function it_allows_assigning_custom_specification(): void
     {
         $id      = WebhostingAccountId::create();
         $package = $this->createWebhostingPackage(new Capabilities());
@@ -162,7 +162,7 @@ final class WebhostingAccountTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_changing_custom_specification()
+    public function it_allows_changing_custom_specification(): void
     {
         $id      = WebhostingAccountId::create();
         $account = WebhostingAccount::registerWithCustomCapabilities($id, OwnerId::fromString(self::OWNER_ID1), new Capabilities());
@@ -176,7 +176,7 @@ final class WebhostingAccountTest extends TestCase
     }
 
     /** @test */
-    public function it_does_not_update_account_capabilities_when_assigning_capabilities_are_same()
+    public function it_does_not_update_account_capabilities_when_assigning_capabilities_are_same(): void
     {
         $id           = WebhostingAccountId::create();
         $capabilities = new Capabilities();
@@ -191,7 +191,7 @@ final class WebhostingAccountTest extends TestCase
     }
 
     /** @test */
-    public function it_supports_switching_the_account_owner()
+    public function it_supports_switching_the_account_owner(): void
     {
         $account1 = WebhostingAccount::register(
             WebhostingAccountId::fromString(self::ACCOUNT_ID),
@@ -216,7 +216,7 @@ final class WebhostingAccountTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_being_marked_for_removal()
+    public function it_allows_being_marked_for_removal(): void
     {
         $account1 = WebhostingAccount::register(
             WebhostingAccountId::fromString(self::ACCOUNT_ID),
@@ -239,7 +239,7 @@ final class WebhostingAccountTest extends TestCase
     }
 
     /** @test */
-    public function it_can_expire()
+    public function it_can_expire(): void
     {
         $account1 = WebhostingAccount::register(
             WebhostingAccountId::fromString(self::ACCOUNT_ID),

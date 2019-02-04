@@ -27,7 +27,7 @@ final class WebhostingAccountCapabilitiesWasChangedTest extends TestCase
     private const ACCOUNT_ID = 'b288e23c-97c5-11e7-b51a-acbc32b58315';
 
     /** @test */
-    public function its_constructable()
+    public function its_constructable(): void
     {
         $capabilities = new Capabilities();
 

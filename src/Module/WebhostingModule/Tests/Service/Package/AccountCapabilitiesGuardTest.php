@@ -81,7 +81,7 @@ final class AccountCapabilitiesGuardTest extends TestCase
     }
 
     /** @test */
-    public function it_decides_to_pass_when_capabilities_are_not_present_on_account()
+    public function it_decides_to_pass_when_capabilities_are_not_present_on_account(): void
     {
         $messages = new ServiceMessages();
 
@@ -91,7 +91,7 @@ final class AccountCapabilitiesGuardTest extends TestCase
     }
 
     /** @test */
-    public function it_decides_to_reject_when_capability_guard_rejects()
+    public function it_decides_to_reject_when_capability_guard_rejects(): void
     {
         $messages = new ServiceMessages();
         self::assertFalse($this->capabilitiesGuard->decide(new CreateMailbox(self::ACCOUNT_ID2, 5), $messages));
@@ -99,7 +99,7 @@ final class AccountCapabilitiesGuardTest extends TestCase
     }
 
     /** @test */
-    public function it_decides_to_pass_when_capability_guard_approves()
+    public function it_decides_to_pass_when_capability_guard_approves(): void
     {
         $messages = new ServiceMessages();
         self::assertTrue($this->capabilitiesGuard->decide(new RegisterFtpUser(self::ACCOUNT_ID1), $messages));

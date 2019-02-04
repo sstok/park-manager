@@ -32,7 +32,7 @@ final class WebhostingAccountPackageAssignmentWasChangedTest extends TestCase
     private const ACCOUNT_ID            = 'b288e23c-97c5-11e7-b51a-acbc32b58315';
 
     /** @test */
-    public function its_constructable()
+    public function its_constructable(): void
     {
         $event = new WebhostingAccountPackageAssignmentWasChanged(
             $id = $this->createAccountId(),
@@ -45,7 +45,7 @@ final class WebhostingAccountPackageAssignmentWasChangedTest extends TestCase
     }
 
     /** @test */
-    public function its_constructable_with_capabilities_provided()
+    public function its_constructable_with_capabilities_provided(): void
     {
         $event = WebhostingAccountPackageAssignmentWasChanged::withCapabilities(
             $id = $this->createAccountId(),

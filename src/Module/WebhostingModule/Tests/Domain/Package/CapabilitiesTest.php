@@ -28,7 +28,7 @@ use function iterator_to_array;
 final class CapabilitiesTest extends TestCase
 {
     /** @test */
-    public function its_constructable()
+    public function its_constructable(): void
     {
         $capability   = new StorageSpaceQuota('9B');
         $capability2  = new MonthlyTrafficQuota(50);
@@ -41,7 +41,7 @@ final class CapabilitiesTest extends TestCase
     }
 
     /** @test */
-    public function it_throws_when_getting_unset_capability()
+    public function it_throws_when_getting_unset_capability(): void
     {
         $capability   = new StorageSpaceQuota('9B');
         $capabilities = new Capabilities($capability);
@@ -53,7 +53,7 @@ final class CapabilitiesTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_adding_and_returns_new_set()
+    public function it_allows_adding_and_returns_new_set(): void
     {
         $capability  = new StorageSpaceQuota('9B');
         $capability2 = new MonthlyTrafficQuota(50);
@@ -67,7 +67,7 @@ final class CapabilitiesTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_removing_and_returns_new_set()
+    public function it_allows_removing_and_returns_new_set(): void
     {
         $capability  = new StorageSpaceQuota('9B');
         $capability2 = new MonthlyTrafficQuota(50);

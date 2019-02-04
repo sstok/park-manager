@@ -25,10 +25,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 final class CapabilitiesFactoryPassTest extends AbstractCompilerPassTestCase
 {
-    /**
-     * @test
-     */
-    public function it_compiles_with_no_CapabilitiesFactory_registered()
+    /** @test */
+    public function it_compiles_with_no_CapabilitiesFactory_registered(): void
     {
         $this->container->setParameter(
             'park_manager.webhosting.package_capabilities',
@@ -40,10 +38,8 @@ final class CapabilitiesFactoryPassTest extends AbstractCompilerPassTestCase
         $this->assertContainerBuilderNotHasService(CapabilitiesFactory::class);
     }
 
-    /**
-     * @test
-     */
-    public function it_sets_CapabilitiesFactory_mapping()
+    /** @test */
+    public function it_sets_CapabilitiesFactory_mapping(): void
     {
         $this->container->setParameter(
             'park_manager.webhosting.package_capabilities',

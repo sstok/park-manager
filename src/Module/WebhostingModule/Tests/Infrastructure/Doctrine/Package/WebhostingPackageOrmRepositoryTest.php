@@ -36,7 +36,7 @@ final class WebhostingPackageOrmRepositoryTest extends EntityRepositoryTestCase
     private const PACKAGE_ID2 = '3bd0fa08-a756-11e7-bdf0-acbc32b58315';
 
     /** @test */
-    public function it_gets_existing_packages()
+    public function it_gets_existing_packages(): void
     {
         $repository = $this->createRepository(2);
         $this->setUpPackage1($repository);
@@ -58,7 +58,7 @@ final class WebhostingPackageOrmRepositoryTest extends EntityRepositoryTestCase
     }
 
     /** @test */
-    public function it_removes_an_existing_package()
+    public function it_removes_an_existing_package(): void
     {
         $repository = $this->createRepository(2);
         $this->setUpPackage1($repository);
@@ -87,7 +87,7 @@ final class WebhostingPackageOrmRepositoryTest extends EntityRepositoryTestCase
         );
     }
 
-    private function setUpPackage1(WebhostingPackageOrmRepository $repository)
+    private function setUpPackage1(WebhostingPackageOrmRepository $repository): void
     {
         $package = WebhostingPackage::create(
             WebhostingPackageId::fromString(self::PACKAGE_ID1),
@@ -99,7 +99,7 @@ final class WebhostingPackageOrmRepositoryTest extends EntityRepositoryTestCase
         $this->assertInTransaction();
     }
 
-    private function setUpPackage2(WebhostingPackageOrmRepository $repository)
+    private function setUpPackage2(WebhostingPackageOrmRepository $repository): void
     {
         $repository->save(
             WebhostingPackage::create(

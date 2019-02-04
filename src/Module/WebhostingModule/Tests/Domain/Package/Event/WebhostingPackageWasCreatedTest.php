@@ -29,7 +29,7 @@ final class WebhostingPackageWasCreatedTest extends TestCase
     private const WEBHOSTING_PACKAGE_ID = 'b3e3846a-97c6-11e7-bf67-acbc32b58315';
 
     /** @test */
-    public function its_constructable()
+    public function its_constructable(): void
     {
         $event = new WebhostingPackageWasCreated(
             $id = WebhostingPackageId::fromString(self::WEBHOSTING_PACKAGE_ID),

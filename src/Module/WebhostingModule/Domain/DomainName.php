@@ -35,7 +35,7 @@ final class DomainName
         return $this->tld;
     }
 
-    public function toString()
+    public function toString(): string
     {
         return $this->name . '.' . $this->tld;
     }

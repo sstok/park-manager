@@ -30,7 +30,7 @@ final class WebhostingDomainNameTest extends TestCase
     private const ACCOUNT_ID2 = 'cfa42746-a6ac-11e7-bff0-acbc32b58315';
 
     /** @test */
-    public function it_registers_primary_domainName()
+    public function it_registers_primary_domainName(): void
     {
         $domainName  = new DomainName('example', 'com');
         $domainName2 = new DomainName('example', 'net');
@@ -50,7 +50,7 @@ final class WebhostingDomainNameTest extends TestCase
     }
 
     /** @test */
-    public function it_registers_secondary_domainName()
+    public function it_registers_secondary_domainName(): void
     {
         $domainName2 = new DomainName('example', 'net');
         $account     = $this->createAccount(self::ACCOUNT_ID1);
@@ -63,7 +63,7 @@ final class WebhostingDomainNameTest extends TestCase
     }
 
     /** @test */
-    public function it_can_upgrade_secondary_to_primary()
+    public function it_can_upgrade_secondary_to_primary(): void
     {
         $domainName = new DomainName('example', 'com');
         $account    = $this->createAccount(self::ACCOUNT_ID1);
@@ -76,7 +76,7 @@ final class WebhostingDomainNameTest extends TestCase
     }
 
     /** @test */
-    public function it_can_change_name()
+    public function it_can_change_name(): void
     {
         $webhostingDomainName = WebhostingDomainName::registerSecondary(
             $this->createAccount(self::ACCOUNT_ID1),
@@ -89,7 +89,7 @@ final class WebhostingDomainNameTest extends TestCase
     }
 
     /** @test */
-    public function it_can_transfer_secondary_domainName()
+    public function it_can_transfer_secondary_domainName(): void
     {
         $account2             = $this->createAccount(self::ACCOUNT_ID2);
         $webhostingDomainName = WebhostingDomainName::registerSecondary(
@@ -103,7 +103,7 @@ final class WebhostingDomainNameTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_transfer_primary_domainName()
+    public function it_cannot_transfer_primary_domainName(): void
     {
         $account2             = $this->createAccount(self::ACCOUNT_ID2);
         $account1             = $this->createAccount(self::ACCOUNT_ID1);

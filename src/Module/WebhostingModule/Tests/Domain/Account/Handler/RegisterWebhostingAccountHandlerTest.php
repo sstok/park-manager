@@ -44,7 +44,7 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     private const ACCOUNT_ID2 = '696d345c-a5e1-11e7-9856-acbc32b58315';
 
     /** @test */
-    public function it_handles_registration_of_account_with_package()
+    public function it_handles_registration_of_account_with_package(): void
     {
         $capabilities         = new Capabilities(new MonthlyTrafficQuota(50));
         $domainName           = new DomainName('example', '.com');
@@ -65,7 +65,7 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     }
 
     /** @test */
-    public function it_handles_registration_of_account_with_custom_capabilities()
+    public function it_handles_registration_of_account_with_custom_capabilities(): void
     {
         $capabilities         = new Capabilities(new MonthlyTrafficQuota(50));
         $domainName           = new DomainName('example', '.com');
@@ -85,7 +85,7 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     }
 
     /** @test */
-    public function it_checks_domain_is_not_already_registered()
+    public function it_checks_domain_is_not_already_registered(): void
     {
         $domainName           = new DomainName('example', '.com');
         $accountId2           = WebhostingAccountId::fromString(self::ACCOUNT_ID2);

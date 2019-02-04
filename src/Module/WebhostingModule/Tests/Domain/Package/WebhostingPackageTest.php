@@ -34,7 +34,7 @@ final class WebhostingPackageTest extends TestCase
     private const ID1 = '654665ea-9869-11e7-9563-acbc32b58315';
 
     /** @test */
-    public function it_registers_a_webhosting_package()
+    public function it_registers_a_webhosting_package(): void
     {
         $package = WebhostingPackage::create(
             $id = WebhostingPackageId::fromString(self::ID1),
@@ -47,7 +47,7 @@ final class WebhostingPackageTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_changing_capabilities()
+    public function it_allows_changing_capabilities(): void
     {
         $package = $this->createPackage();
         $package->changeCapabilities(
@@ -67,7 +67,7 @@ final class WebhostingPackageTest extends TestCase
     }
 
     /** @test */
-    public function it_supports_setting_metadata()
+    public function it_supports_setting_metadata(): void
     {
         $package = $this->createPackage();
         $package->withMetadata(['label' => 'Gold']);

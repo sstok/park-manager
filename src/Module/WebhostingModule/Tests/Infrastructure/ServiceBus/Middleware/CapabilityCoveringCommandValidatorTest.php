@@ -31,7 +31,7 @@ final class CapabilityCoveringCommandValidatorTest extends TestCase
     private const ACCOUNT_ID = '2d3fb900-a528-11e7-a027-acbc32b58315';
 
     /** @test */
-    public function it_ignores_unsupported_commands()
+    public function it_ignores_unsupported_commands(): void
     {
         $serviceMessages = new ServiceMessages();
         $middleware      = new AccountCapabilitiesRestrictionGuardMiddleware(
@@ -46,7 +46,7 @@ final class CapabilityCoveringCommandValidatorTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_false_when_guard_decides_to_block()
+    public function it_returns_false_when_guard_decides_to_block(): void
     {
         $serviceMessages = new ServiceMessages();
         $middleware      = new AccountCapabilitiesRestrictionGuardMiddleware(
@@ -61,7 +61,7 @@ final class CapabilityCoveringCommandValidatorTest extends TestCase
     }
 
     /** @test */
-    public function it_continues_execution_when_guard_approves()
+    public function it_continues_execution_when_guard_approves(): void
     {
         $serviceMessages = new ServiceMessages();
         $middleware      = new AccountCapabilitiesRestrictionGuardMiddleware(

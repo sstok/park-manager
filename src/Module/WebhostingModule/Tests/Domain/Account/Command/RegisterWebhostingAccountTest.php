@@ -33,7 +33,7 @@ final class RegisterWebhostingAccountTest extends TestCase
     private const PACKAGE_ID = '654665ea-9869-11e7-9563-acbc32b58315';
 
     /** @test */
-    public function its_constructable_with_package()
+    public function its_constructable_with_package(): void
     {
         $command = RegisterWebhostingAccount::withPackage(
             self::ACCOUNT_ID,
@@ -50,7 +50,7 @@ final class RegisterWebhostingAccountTest extends TestCase
     }
 
     /** @test */
-    public function its_constructable_with_custom_capabilities()
+    public function its_constructable_with_custom_capabilities(): void
     {
         $command = RegisterWebhostingAccount::withCustomCapabilities(
             self::ACCOUNT_ID,

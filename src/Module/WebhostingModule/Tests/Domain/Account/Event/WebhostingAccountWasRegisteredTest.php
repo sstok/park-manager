@@ -28,7 +28,7 @@ final class WebhostingAccountWasRegisteredTest extends TestCase
     private const OWNER_ID   = '2a9cd25c-97ca-11e7-9683-acbc32b58315';
 
     /** @test */
-    public function its_constructable()
+    public function its_constructable(): void
     {
         $event = new WebhostingAccountWasRegistered(
             $id = WebhostingAccountId::fromString(self::ACCOUNT_ID),

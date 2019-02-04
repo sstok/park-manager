@@ -26,7 +26,7 @@ final class ConfigurationTest extends TestCase
     use ConfigurationTestCaseTrait;
 
     /** @test */
-    public function it_works_with_empty_config()
+    public function it_works_with_empty_config(): void
     {
         $this->assertProcessedConfigurationEquals([[]], [
             'capabilities' => [
@@ -37,7 +37,7 @@ final class ConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function it_works_with_capabilities()
+    public function it_works_with_capabilities(): void
     {
         $this->assertProcessedConfigurationEquals(
             [
@@ -79,7 +79,7 @@ final class ConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_capabilities_mapping_attributes_are_scalar()
+    public function it_requires_capabilities_mapping_attributes_are_scalar(): void
     {
         $this->assertPartialConfigurationIsInvalid(
             [

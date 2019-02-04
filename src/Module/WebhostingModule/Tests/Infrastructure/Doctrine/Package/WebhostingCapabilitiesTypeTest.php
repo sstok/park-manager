@@ -39,7 +39,7 @@ final class WebhostingCapabilitiesTypeTest extends TestCase
     }
 
     /** @test */
-    public function it_converts_to_database_value()
+    public function it_converts_to_database_value(): void
     {
         $type     = $this->getDbalType();
         $platform = $this->createPlatform();
@@ -53,7 +53,7 @@ final class WebhostingCapabilitiesTypeTest extends TestCase
     }
 
     /** @test */
-    public function it_converts_from_database_value_to_php_value()
+    public function it_converts_from_database_value_to_php_value(): void
     {
         $type     = $this->getDbalType();
         $platform = $this->createPlatform();

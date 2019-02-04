@@ -29,10 +29,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
 {
-    /**
-     * @test
-     */
-    public function it_compiles_with_no_capabilities_registered()
+    /** @test */
+    public function it_compiles_with_no_capabilities_registered(): void
     {
         $this->compile();
 
@@ -48,10 +46,8 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_processes_capabilities_with_guards()
+    /** @test */
+    public function it_processes_capabilities_with_guards(): void
     {
         $this->registerService(MonthlyTrafficQuotaGuard::class, MonthlyTrafficQuotaGuard::class)
             ->addTag(CapabilitiesPass::CAPABILITY_GUARD_TAG);
@@ -74,10 +70,8 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_processes_capabilities_with_appliers()
+    /** @test */
+    public function it_processes_capabilities_with_appliers(): void
     {
         $this->registerService(MonthlyTrafficQuotaApplier::class, MonthlyTrafficQuotaApplier::class)
             ->addTag(CapabilitiesPass::CAPABILITY_CONFIG_APPLIER_TAG);
@@ -100,10 +94,8 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_checks_a_guard_or_applier_is_set()
+    /** @test */
+    public function it_checks_a_guard_or_applier_is_set(): void
     {
         $this->registerService(MonthlyTrafficQuota::class, MonthlyTrafficQuota::class)
             ->addTag(CapabilitiesPass::CAPABILITY_TAG);
@@ -117,10 +109,8 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
         $this->compile();
     }
 
-    /**
-     * @test
-     */
-    public function it_checks_only_a_guard_or_applier_is_set()
+    /** @test */
+    public function it_checks_only_a_guard_or_applier_is_set(): void
     {
         $this->registerService(MonthlyTrafficQuotaGuard::class, MonthlyTrafficQuotaGuard::class)
             ->addTag(CapabilitiesPass::CAPABILITY_GUARD_TAG);
@@ -135,10 +125,8 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
         $this->compile();
     }
 
-    /**
-     * @test
-     */
-    public function it_checks_service_class_exists()
+    /** @test */
+    public function it_checks_service_class_exists(): void
     {
         $this->registerService('\MonthlyTrafficQuotaGuard', '\MonthlyTrafficQuotaGuard')
             ->addTag(CapabilitiesPass::CAPABILITY_GUARD_TAG);
@@ -166,7 +154,7 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
      * @param string               $serviceId
      * @param Reference[]|string[] $expectedValue
      */
-    private function assertContainerBuilderHasServiceDefinitionWithServiceLocator($serviceId, $expectedValue)
+    private function assertContainerBuilderHasServiceDefinitionWithServiceLocator($serviceId, $expectedValue): void
     {
         self::assertThat($this->container, new DefinitionEqualsServiceLocatorConstraint($serviceId, $expectedValue));
     }

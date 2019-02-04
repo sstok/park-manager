@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 final class WebhostingAccountOwnerWasSwitchedTest extends TestCase
 {
     /** @test */
-    public function its_constructable()
+    public function its_constructable(): void
     {
         $event = new WebhostingAccountOwnerWasSwitched(
             $id = WebhostingAccountId::fromString('b288e23c-97c5-11e7-b51a-acbc32b58315'),

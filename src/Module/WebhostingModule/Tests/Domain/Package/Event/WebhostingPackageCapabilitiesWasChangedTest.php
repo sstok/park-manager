@@ -29,7 +29,7 @@ final class WebhostingPackageCapabilitiesWasChangedTest extends TestCase
     private const PACKAGE_ID = 'b3e3846a-97c6-11e7-bf67-acbc32b58315';
 
     /** @test */
-    public function its_constructable()
+    public function its_constructable(): void
     {
         $event = new WebhostingPackageCapabilitiesWasChanged(
             $id = WebhostingPackageId::fromString(self::PACKAGE_ID),

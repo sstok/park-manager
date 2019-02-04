@@ -100,7 +100,7 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     }
 
     /** @test */
-    public function it_gets_existing_domain_name()
+    public function it_gets_existing_domain_name(): void
     {
         $webhostingDomainName = $this->repository->get($this->id1);
 
@@ -125,7 +125,7 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     }
 
     /** @test */
-    public function it_gets_primary_of_account()
+    public function it_gets_primary_of_account(): void
     {
         self::assertTrue($this->repository->getPrimaryOf($this->account1->id())->id()->equals($this->id1), 'ID should equal');
         self::assertTrue($this->repository->getPrimaryOf($this->account2->id())->id()->equals($this->id2), 'ID should equal');
@@ -139,7 +139,7 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     }
 
     /** @test */
-    public function it_gets_by_name()
+    public function it_gets_by_name(): void
     {
         $domainName1 = $this->repository->findByFullName(new DomainName('example', 'com'));
         $domainName2 = $this->repository->findByFullName(new DomainName('example', 'net'));
@@ -156,7 +156,7 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     }
 
     /** @test */
-    public function it_removes_an_secondary_domain_name()
+    public function it_removes_an_secondary_domain_name(): void
     {
         $webhostingDomainName = $this->repository->get($this->id3);
 
@@ -170,7 +170,7 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     }
 
     /** @test */
-    public function it_cannot_remove_a_primary_domain_name()
+    public function it_cannot_remove_a_primary_domain_name(): void
     {
         $webhostingDomainName = $this->repository->get($this->id1);
 
@@ -183,7 +183,7 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     }
 
     /** @test */
-    public function it_marks_previous_primary_as_secondary()
+    public function it_marks_previous_primary_as_secondary(): void
     {
         $primaryDomainName   = $this->repository->get($this->id2);
         $secondaryDomainName = $this->repository->get($this->id3);

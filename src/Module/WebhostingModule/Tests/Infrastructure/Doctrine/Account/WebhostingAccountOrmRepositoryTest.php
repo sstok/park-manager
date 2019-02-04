@@ -66,7 +66,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
     }
 
     /** @test */
-    public function it_gets_existing_accounts()
+    public function it_gets_existing_accounts(): void
     {
         $repository = $this->createRepository(2);
         $this->setUpAccount1($repository);
@@ -89,7 +89,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
     }
 
     /** @test */
-    public function it_removes_an_existing_model()
+    public function it_removes_an_existing_model(): void
     {
         $repository = $this->createRepository(3);
         $this->setUpAccount1($repository);
@@ -113,7 +113,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
     }
 
     /** @test */
-    public function it_checks_account_is_marked_for_removal()
+    public function it_checks_account_is_marked_for_removal(): void
     {
         $repository = $this->createRepository(1);
         $this->setUpAccount1($repository);
@@ -135,7 +135,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         );
     }
 
-    private function setUpAccount1(WebhostingAccountOrmRepository $repository)
+    private function setUpAccount1(WebhostingAccountOrmRepository $repository): void
     {
         $repository->save(
             WebhostingAccount::registerWithCustomCapabilities(
@@ -147,7 +147,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         $this->assertInTransaction();
     }
 
-    private function setUpAccount2(WebhostingAccountOrmRepository $repository)
+    private function setUpAccount2(WebhostingAccountOrmRepository $repository): void
     {
         $repository->save(
             WebhostingAccount::register(

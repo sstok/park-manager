@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Infrastructure\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use function is_string;
@@ -40,7 +41,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addCapabilities()
+    private function addCapabilities(): NodeDefinition
     {
         $node = (new TreeBuilder())->root('capabilities');
         $node
