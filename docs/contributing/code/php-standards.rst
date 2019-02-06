@@ -9,7 +9,7 @@ When contributing code to Park-Manager, you must follow its coding standards.
     the PHP code.
 
     The Front-end follows a different set of standards, which you can find in
-    :doc:`/contributing/code/front-end-standards.rst`
+    :doc:`/contributing/code/front-end-standards`
 
 The Park-Manager Coding Standard is a set of rules for `PHP_CodeSniffer <https://github.com/squizlabs/PHP_CodeSniffer>`_.
 It is based on `PSR-1 <https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md>`_
