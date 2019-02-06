@@ -1,0 +1,11 @@
+* :doc:`/contributing/code/bc`
+* :doc:`/contributing/code/security`
+* :doc:`/contributing/code/experimental`
+* :doc:`/contributing/code/patches`
+* :doc:`/contributing/code/bugs`
+* :doc:`/contributing/code/testing`
+* :doc:`/contributing/code/static-analysis`
+* :doc:`/contributing/code/php-standards`
+* :doc:`/contributing/code/front-end-standards`
+* :doc:`/contributing/code/security-conventions`
+* :doc:`/contributing/code/license`
