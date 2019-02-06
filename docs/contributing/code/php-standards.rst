@@ -142,7 +142,7 @@ Routing Naming Conventions
   and optionally the section as third;
 
 * The last group always revers to the action (either ``ftp_user_list``
-   or ``ftp_user_register``);
+  or ``ftp_user_register``);
 
 * Use lowercase letters for names;
 
