@@ -9,7 +9,7 @@ RUN pip install  pip==9.0.1 wheel==0.29.0 \
 
 COPY . /www
 
-RUN make -C _build html
+RUN make html
 
 FROM  nginx:latest
 
