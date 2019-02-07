@@ -1,6 +1,19 @@
 UPGRADE
 =======
 
+## Upgrade FROM 0.4.0 to 0.5.0
+
+ * The Park-Manager Components Bridges and Bundles have all been merged
+   into the CoreModule.
+   
+  * The SplitToken functionality is now available at https://github.com/rollerworks/split-token
+  
+  * Modules are now expected to extend from the 
+    `ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\Module\AbstractParkManagerModule`
+    class or at least implement the `ParkManagerModule` otherwise.
+    
+  * The ServiceBus component and bundle were replaced with the Symfony Messenger.
+
 ## Upgrade FROM 0.3.0 to 0.4.0
 
  * The Model Component has been removed, use the SharedKernel and 
