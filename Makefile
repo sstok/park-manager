@@ -8,15 +8,16 @@ QA_DOCKER_COMMAND=docker run --init --interactive --tty --rm --env "COMPOSER_HOM
 install: composer-install
 dist: composer-validate cs phpstan psalm test
 ci: check test
-check: composer-validate cs-check phpstan psalm
+check: composer-validate lint-xml lint-yaml lint-twig cs-check phpstan psalm
 test: phpunit-coverage # infection
 
 clean:
 	rm -rf var/
 
 composer-validate: ensure
-	sh -c "${QA_DOCKER_COMMAND} composer validate"
-#	sh -c "${QA_DOCKER_COMMAND} composer normalize"
+	@echo "Validating local composer files"
+	@sh -c "${QA_DOCKER_COMMAND} composer validate"
+#	@sh -c "${QA_DOCKER_COMMAND} composer normalize"
 
 	@for direc in $$(gfind src -mindepth 2 -type f -name composer.json -printf '%h\n'); \
 	do \
@@ -28,6 +29,31 @@ composer-validate: ensure
 #		sh -c "${QA_DOCKER_COMMAND} composer validate --working-dir=$${direc}"; \
 #		sh -c "${QA_DOCKER_COMMAND} composer normalize --working-dir=$${direc}"; \
 #	done;
+
+lint-xml:
+	@echo "Validating XML files"
+
+ifeq (, $(shell which xmllint))
+	@echo "[SKIPPED] No xmllint in $(PATH), consider installing it"
+else
+	@find . \( -name '*.xml' -or -name '*.xliff' -or -name '*.xlf' \) \
+			-not -path './vendor/*' \
+			-not -path './vendor-bin/*' \
+			-not -path './.*' \
+			-not -path './var/*' \
+			-type f \
+			-exec xmllint --format --encode UTF-8 --noout '{}' \;
+endif
+
+lint-yaml:
+	@echo "Validating YAML files"
+	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:yaml -vv src/"
+	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:yaml -vv config/"
+
+lint-twig:
+	@echo "Validating Twig files"
+	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:twig -vv src/"
+	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:twig -vv templates/"
 
 composer-install: fetch ensure clean
 	sh -c "${QA_DOCKER_COMMAND} composer upgrade"
