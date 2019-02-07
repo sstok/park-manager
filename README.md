@@ -63,4 +63,4 @@ the Park-Manager [contributors][9].
 [6]: https://docs.park-manager.com/current/contributing/documentation/index.html
 [7]: https://github.com/park-manager/park-manager/blob/master/CODE_OF_CONDUCT.md
 [8]: https://github.com/sstok
-[9]: https://github.com/park-manager/park-manager/blob/master/AUTHORS
+[9]: https://github.com/park-manager/park-manager/graphs/contributors
