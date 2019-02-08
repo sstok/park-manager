@@ -82,4 +82,8 @@
 
         <InvalidStringClass errorLevel="info"/>
     </issueHandlers>
+    <stubs>
+        <file name=".github/.psalm-stubs/symfony-di-dsl.php" />
+    </stubs>
+
 <plugins><pluginClass class="Psalm\PhpUnitPlugin\Plugin"/></plugins></psalm>

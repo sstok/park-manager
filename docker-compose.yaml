@@ -22,7 +22,7 @@ services:
             # Use virtual volume as this is only for testing
             - db-data:/var/lib/postgresql/data
         ports:
-            - "5433:5432"
+            - "55433:5432"
 
 volumes:
     db-data: {}

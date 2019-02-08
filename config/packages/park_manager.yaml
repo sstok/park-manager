@@ -12,7 +12,8 @@ framework:
 #                    - security
                     - validation
                     - doctrine_transaction
-            park_manager.event_bus: ~
+            park_manager.event_bus:
+                default_middleware: allow_no_handlers
             park_manager.query_bus:
 #                middleware:
 #                    - security
