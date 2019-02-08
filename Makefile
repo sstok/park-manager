@@ -80,11 +80,13 @@ phpstan: ensure
 psalm: ensure
 	sh -c "${QA_DOCKER_COMMAND} psalm --show-info=false"
 
-infection: phpunit-coverage
+infection: ensure
+	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr vendor/bin/phpunit --verbose --log-junit=var/phpunit.junit.xml --coverage-xml var/coverage-xml/"
 	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr /tools/infection run --verbose --show-mutations --no-interaction --only-covered --coverage var/ --min-msi=84 --min-covered-msi=84"
 
 phpunit-coverage: ensure
-	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr vendor/bin/phpunit --verbose --exclude-group """" --coverage-text --log-junit=var/phpunit.junit.xml --coverage-xml var/coverage-xml/"
+	docker-compose run --rm php make db-fixtures
+	docker-compose run --rm php phpdbg -qrr vendor/bin/phpunit --verbose --exclude-group "" --coverage-text --log-junit=var/phpunit.junit.xml --coverage-xml var/coverage-xml/
 
 db-fixtures:
 	bin/console doctrine:database:drop --force || true
@@ -94,7 +96,7 @@ db-fixtures:
 
 phpunit:
 	docker-compose run --rm php make db-fixtures
-	sh -c "${QA_DOCKER_COMMAND} phpunit --verbose --exclude-group """" "
+	docker-compose run --rm php phpunit --verbose --exclude-group ""
 
 ensure:
 	mkdir -p ${HOME}/.composer /tmp/tmp-phpqa-$(shell id -u)
