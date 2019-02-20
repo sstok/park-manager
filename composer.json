@@ -72,7 +72,7 @@
         "doctrine/coding-standard": "^5.0",
         "johnkary/phpunit-speedtrap": "v3.0.0",
         "matthiasnoback/symfony-config-test": "^4.0.0",
-        "matthiasnoback/symfony-dependency-injection-test": "^3.0.0",
+        "matthiasnoback/symfony-dependency-injection-test": "dev-master@dev",
         "phpunit/phpunit": "^7.2.7",
         "psalm/plugin-phpunit": "^0.3.0",
         "ramsey/uuid-console": "^1.1.1",

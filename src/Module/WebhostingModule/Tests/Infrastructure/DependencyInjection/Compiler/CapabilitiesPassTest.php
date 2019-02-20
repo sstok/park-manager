@@ -11,14 +11,12 @@ declare(strict_types=1);
 namespace ParkManager\Module\WebhostingModule\Tests\Infrastructure\DependencyInjection\Compiler;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
-use ParkManager\Bridge\PhpUnit\DefinitionEqualsServiceLocatorConstraint;
 use ParkManager\Module\WebhostingModule\Infrastructure\DependencyInjection\Compiler\CapabilitiesPass;
 use ParkManager\Module\WebhostingModule\Tests\Fixtures\Domain\PackageCapability\MonthlyTrafficQuota;
 use ParkManager\Module\WebhostingModule\Tests\Fixtures\Infrastructure\PackageCapability\MonthlyTrafficQuotaApplier;
 use ParkManager\Module\WebhostingModule\Tests\Fixtures\Infrastructure\PackageCapability\MonthlyTrafficQuotaGuard;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @internal
@@ -32,11 +30,11 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
 
         $this->assertContainerBuilderNotHasService(MonthlyTrafficQuota::class);
         $this->assertContainerBuilderHasParameter('park_manager.webhosting.package_capabilities', []);
-        $this->assertContainerBuilderHasServiceDefinitionWithServiceLocator(
+        $this->assertContainerBuilderHasServiceLocator(
             'park_manager.webhosting.package_capability_guards',
             []
         );
-        $this->assertContainerBuilderHasServiceDefinitionWithServiceLocator(
+        $this->assertContainerBuilderHasServiceLocator(
             'park_manager.webhosting.package_capability_configuration_appliers',
             []
         );
@@ -56,11 +54,11 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
         $this->assertContainerBuilderHasParameter('park_manager.webhosting.package_capabilities', [
             'MonthlyTrafficQuota' => MonthlyTrafficQuota::class,
         ]);
-        $this->assertContainerBuilderHasServiceDefinitionWithServiceLocator(
+        $this->assertContainerBuilderHasServiceLocator(
             'park_manager.webhosting.package_capability_guards',
             ['MonthlyTrafficQuota' => MonthlyTrafficQuotaGuard::class]
         );
-        $this->assertContainerBuilderHasServiceDefinitionWithServiceLocator(
+        $this->assertContainerBuilderHasServiceLocator(
             'park_manager.webhosting.package_capability_configuration_appliers',
             []
         );
@@ -80,11 +78,11 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
         $this->assertContainerBuilderHasParameter('park_manager.webhosting.package_capabilities', [
             'MonthlyTrafficQuota' => MonthlyTrafficQuota::class,
         ]);
-        $this->assertContainerBuilderHasServiceDefinitionWithServiceLocator(
+        $this->assertContainerBuilderHasServiceLocator(
             'park_manager.webhosting.package_capability_guards',
             []
         );
-        $this->assertContainerBuilderHasServiceDefinitionWithServiceLocator(
+        $this->assertContainerBuilderHasServiceLocator(
             'park_manager.webhosting.package_capability_configuration_appliers',
             ['MonthlyTrafficQuota' => MonthlyTrafficQuotaApplier::class]
         );
@@ -141,17 +139,5 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
     protected function registerCompilerPass(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new CapabilitiesPass());
-    }
-
-    /**
-     * Assert that the ContainerBuilder for this test has a service definition with the given id,
-     * and its value is a ServiceLocator with a ref-map equal to the given value.
-     *
-     * @param string               $serviceId
-     * @param Reference[]|string[] $expectedValue
-     */
-    private function assertContainerBuilderHasServiceDefinitionWithServiceLocator($serviceId, $expectedValue): void
-    {
-        self::assertThat($this->container, new DefinitionEqualsServiceLocatorConstraint($serviceId, $expectedValue));
     }
 }
