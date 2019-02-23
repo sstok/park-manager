@@ -11,12 +11,12 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use ParkManager\Module\CoreModule\Infrastructure\Doctrine\Shared\DoctrineDbalAuthenticationFinder;
+use ParkManager\Module\CoreModule\Infrastructure\Http\ArgumentResolver\FormFactoryResolver;
 use Rollerworks\Component\SplitToken\Argon2SplitTokenFactory;
 use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\AutoServiceConfigurator;
 use ParkManager\Module\CoreModule\Infrastructure\Doctrine\Administrator\DoctrineOrmAdministratorRepository;
 use ParkManager\Module\CoreModule\Infrastructure\Doctrine\Client\DoctrineOrmClientRepository;
 use ParkManager\Module\CoreModule\Infrastructure\Http\ArgumentResolver\ApplicationContextResolver;
-use ParkManager\Module\CoreModule\Infrastructure\Http\ArgumentResolver\ServiceBusFormFactoryResolver;
 use ParkManager\Module\CoreModule\Infrastructure\Http\SectionsLoader;
 use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Common\ApplicationContext;
 use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\EventListener\ApplicationSectionListener;
@@ -57,7 +57,7 @@ return function (ContainerConfigurator $c) {
             'client' => ref('park_manager.section.client.request_matcher'),
         ]);
 
-    $di->set(ServiceBusFormFactoryResolver::class)
+    $di->set(FormFactoryResolver::class)
         ->tag('controller.argument_value_resolver', ['priority' => 30]);
 
     $di->set(ApplicationContextResolver::class)

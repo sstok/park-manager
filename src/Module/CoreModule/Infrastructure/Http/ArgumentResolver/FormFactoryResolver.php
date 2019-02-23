@@ -11,24 +11,24 @@ declare(strict_types=1);
 namespace ParkManager\Module\CoreModule\Infrastructure\Http\ArgumentResolver;
 
 use Generator;
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Common\Form\Handler\ServiceBusFormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-final class ServiceBusFormFactoryResolver implements ArgumentValueResolverInterface
+final class FormFactoryResolver implements ArgumentValueResolverInterface
 {
-    /** @var ServiceBusFormFactory */
+    /** @var FormFactoryInterface */
     private $formFactory;
 
-    public function __construct(ServiceBusFormFactory $formFactory)
+    public function __construct(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
     }
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        return ! $argument->isVariadic() && $argument->getType() === ServiceBusFormFactory::class;
+        return ! $argument->isVariadic() && $argument->getType() === FormFactoryInterface::class;
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument): Generator
