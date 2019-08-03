@@ -8,12 +8,13 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\SkeletonDancer\Generator;
+namespace Dance\Generator;
 
 use SkeletonDancer\Generator;
 use SkeletonDancer\Service\Filesystem;
+use function implode;
 
-final class ChangelogGenerator implements Generator
+final class GitConfigGenerator implements Generator
 {
     /** @var Filesystem */
     private $filesystem;
@@ -25,19 +26,20 @@ final class ChangelogGenerator implements Generator
 
     public function generate(array $configuration)
     {
+        $this->filesystem->dumpFile('.gitignore', "/vendor/\nphpunit.xml\n");
         $this->filesystem->dumpFile(
-            'CHANGELOG.md',
-            <<<'BODY'
-Change Log
-==========
-
-All notable changes to this publication will be documented in this file.
-
-## 1.0.0 - ????-??-??
-
-First stable release.
-
-BODY
+            '.gitattributes',
+            implode(
+                "\n",
+                [
+                    "# Always use LF\ncore.autocrlf=lf",
+                    '',
+                    '.gitattributes export-ignore',
+                    '.gitignore export-ignore',
+                    'phpunit.xml.dist export-ignore',
+                    '/Tests export-ignore',
+                ]
+            ) . "\n"
         );
     }
 }

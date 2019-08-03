@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\SkeletonDancer\Generator;
+namespace Dance\Generator;
 
 use SkeletonDancer\Generator;
 use SkeletonDancer\Service\Filesystem;
