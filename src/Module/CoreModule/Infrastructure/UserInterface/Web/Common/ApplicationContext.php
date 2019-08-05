@@ -50,26 +50,26 @@ class ApplicationContext
 
     public function getActiveSection(): string
     {
-        $this->guardRepositoryIsActive();
+        $this->guardSectionIsActive();
 
         return $this->activeSection;
     }
 
     public function isPrivateSection(): bool
     {
-        $this->guardRepositoryIsActive();
+        $this->guardSectionIsActive();
 
         return $this->privateSection;
     }
 
     public function getRouteNamePrefix(): string
     {
-        $this->guardRepositoryIsActive();
+        $this->guardSectionIsActive();
 
         return $this->activeSection;
     }
 
-    private function guardRepositoryIsActive(): void
+    private function guardSectionIsActive(): void
     {
         if ($this->activeSection === null) {
             throw new RuntimeException('No active section was set.');
