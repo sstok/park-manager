@@ -1,4 +1,4 @@
-{% spaceless %}
+{% apply spaceless %}
 <form action="/user/1/delete">
     <h1>{{ title }}</h1>
     <p>{{ message }}</p>
@@ -10,4 +10,4 @@
     <button type="submit">{{ yes_btn_label }}</button>
     <a href="{{ cancel_url }}">Cancel</a>
 </form>
-{% endspaceless %}
+{% endapply %}

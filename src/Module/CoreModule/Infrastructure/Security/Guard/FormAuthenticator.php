@@ -14,6 +14,7 @@ use ParkManager\Module\CoreModule\Infrastructure\Security\SecurityUser;
 use ParkManager\Module\CoreModule\Infrastructure\Security\UserProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as UrlGenerator;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -100,7 +101,7 @@ final class FormAuthenticator extends AbstractFormLoginAuthenticator
         return true;
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): ?Response
     {
         $targetPath = null;
 
@@ -115,7 +116,7 @@ final class FormAuthenticator extends AbstractFormLoginAuthenticator
         return new RedirectResponse($targetPath);
     }
 
-    public function supports(Request $request)
+    public function supports(Request $request): bool
     {
         return $request->request->has('_email');
     }

@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\CoreModule\Infrastructure\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class UserPasswordWasChanged extends Event
 {

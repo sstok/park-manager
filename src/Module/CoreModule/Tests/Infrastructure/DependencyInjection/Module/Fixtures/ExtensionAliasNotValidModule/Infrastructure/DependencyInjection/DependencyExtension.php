@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DependencyExtension extends Extension
 {
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'extension_valid_is_not';
     }

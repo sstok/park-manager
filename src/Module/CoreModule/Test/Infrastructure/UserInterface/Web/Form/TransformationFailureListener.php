@@ -21,14 +21,14 @@ use function strtr;
 
 class TransformationFailureListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::POST_SUBMIT => ['convertTransformationFailureToFormError', -1024],
         ];
     }
 
-    public function convertTransformationFailureToFormError(FormEvent $event)
+    public function convertTransformationFailureToFormError(FormEvent $event): void
     {
         $form = $event->getForm();
 

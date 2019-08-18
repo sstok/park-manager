@@ -40,7 +40,7 @@ final class SectionsLoader extends Loader
         return $collection;
     }
 
-    public function supports($resource, $type = null)
+    public function supports($resource, $type = null): bool
     {
         return $type === 'park_manager_sections_loader';
     }

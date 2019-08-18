@@ -32,7 +32,6 @@ final class UserPasswordChangeListener implements MessageSubscriber
     public function __invoke(object $message): void
     {
         $this->eventDispatcher->dispatch(
-            UserPasswordWasChanged::class,
             new UserPasswordWasChanged(
                 $message->getId()->toString(),
                 $message->getPassword()

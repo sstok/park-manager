@@ -78,7 +78,7 @@
         "matthiasnoback/symfony-config-test": "^4.0.1",
         "matthiasnoback/symfony-dependency-injection-test": "^4.0.0",
         "phpunit/phpunit": "^8.2.3",
-        "psalm/plugin-phpunit": "^0.6.0",
+        "psalm/plugin-phpunit": "^0.7",
         "ramsey/uuid-console": "^1.1.1",
         "symfony/browser-kit": "*",
         "symfony/css-selector": "*",

@@ -69,7 +69,7 @@ abstract class SecurityUser implements UserInterface, EquatableInterface, Serial
         return $this->password;
     }
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null; // No-op
     }

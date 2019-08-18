@@ -3,9 +3,9 @@ security:
         Symfony\Component\Security\Core\User\User: plaintext
 
         'ParkManager\Module\CoreModule\Infrastructure\Security\AdministratorUser':
-            algorithm: argon2i
+            algorithm: auto
         'ParkManager\Module\CoreModule\Infrastructure\Security\ClientUser':
-            algorithm: argon2i
+            algorithm: auto
 
     providers:
         in_memory: { memory: ~ }

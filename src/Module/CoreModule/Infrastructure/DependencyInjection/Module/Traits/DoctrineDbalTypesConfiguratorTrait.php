@@ -61,7 +61,7 @@ trait DoctrineDbalTypesConfiguratorTrait
 
                 /** @var DbalType $type */
                 $type                    = $r->newInstanceWithoutConstructor();
-                $types[$type->getName()] = ['class' => $className, 'commented' => true];
+                $types[$type->getName()] = ['class' => $className];
             }
         }
 
