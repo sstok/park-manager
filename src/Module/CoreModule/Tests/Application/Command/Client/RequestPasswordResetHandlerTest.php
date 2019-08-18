@@ -13,10 +13,12 @@ namespace ParkManager\Module\CoreModule\Tests\Application\Command\Client;
 use DateTimeImmutable;
 use ParkManager\Module\CoreModule\Application\Command\Client\RequestPasswordReset;
 use ParkManager\Module\CoreModule\Application\Command\Client\RequestPasswordResetHandler;
+use ParkManager\Module\CoreModule\Application\Service\Mailer\Client\PasswordResetMailer;
 use ParkManager\Module\CoreModule\Domain\Client\Client;
 use ParkManager\Module\CoreModule\Domain\Client\Event\ClientPasswordResetWasRequested;
 use ParkManager\Module\CoreModule\Test\Domain\Repository\ClientRepositoryMock;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use function array_pop;
 
@@ -38,7 +40,7 @@ final class RequestPasswordResetHandlerTest extends TestCase
     {
         $repository = new ClientRepositoryMock([$client = ClientRepositoryMock::createClient()]);
 
-        $handler = new RequestPasswordResetHandler($repository, $this->tokenFactory, 120);
+        $handler = new RequestPasswordResetHandler($repository, $this->tokenFactory, $this->expectMailIsSend($client), 120);
         $handler(new RequestPasswordReset('Jane@example.com'));
 
         $repository->assertHasEntity(
@@ -60,6 +62,14 @@ final class RequestPasswordResetHandlerTest extends TestCase
         );
     }
 
+    private function expectMailIsSend(Client $client): PasswordResetMailer
+    {
+        $mailerProphecy = $this->prophesize(PasswordResetMailer::class);
+        $mailerProphecy->send($client->email(), Argument::any())->shouldBeCalled();
+
+        return $mailerProphecy->reveal();
+    }
+
     /** @test */
     public function reset_request_already_set_will_not_store(): void
     {
@@ -68,10 +78,18 @@ final class RequestPasswordResetHandlerTest extends TestCase
         $client->releaseEvents();
         $repository = new ClientRepositoryMock([$client]);
 
-        $handler = new RequestPasswordResetHandler($repository, $this->tokenFactory);
+        $handler = new RequestPasswordResetHandler($repository, $this->tokenFactory, $this->expectMailIsNotSend());
         $handler(new RequestPasswordReset('Jane@example.com'));
 
         $repository->assertNoEntitiesWereSaved();
+    }
+
+    private function expectMailIsNotSend(): PasswordResetMailer
+    {
+        $mailerProphecy = $this->prophesize(PasswordResetMailer::class);
+        $mailerProphecy->send(Argument::any(), Argument::any())->shouldNotBeCalled();
+
+        return $mailerProphecy->reveal();
     }
 
     /** @test */
@@ -79,7 +97,7 @@ final class RequestPasswordResetHandlerTest extends TestCase
     {
         $repository = new ClientRepositoryMock();
 
-        $handler = new RequestPasswordResetHandler($repository, $this->tokenFactory);
+        $handler = new RequestPasswordResetHandler($repository, $this->tokenFactory, $this->expectMailIsNotSend());
         $handler(new RequestPasswordReset('Jane@example.com'));
 
         $repository->assertNoEntitiesWereSaved();

@@ -37,6 +37,7 @@ login:
 password_reset:
     heading: Password reset
     admin_heading: Administrator Password reset
+    client_heading: Password reset
     paragraph.html: |
         <p>To reset your password provide the (main) e-mail address associated with your account.</p>
         <p>Please note that <b>no more then one reset request is accepted</b> within a reasonable time,

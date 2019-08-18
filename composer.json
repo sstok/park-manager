@@ -45,6 +45,7 @@
         "symfony/flex": "^1.3.0",
         "symfony/form": "*",
         "symfony/framework-bundle": "*",
+        "symfony/mailer": "*",
         "symfony/messenger": "*",
         "symfony/monolog-bundle": "^3.1",
         "symfony/security-bundle": "*",
@@ -70,15 +71,20 @@
     },
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.2",
+        "dama/doctrine-test-bundle": "^6.0",
         "doctrine/coding-standard": "^5.0",
+        "doctrine/doctrine-fixtures-bundle": "^3.2",
         "easycorp/easy-log-handler": "^1.0.7",
+        "liip/test-fixtures-bundle": "^1.2",
         "matthiasnoback/symfony-config-test": "^4.0.1",
         "matthiasnoback/symfony-dependency-injection-test": "^4.0.0",
         "phpunit/phpunit": "^8.2.3",
         "psalm/plugin-phpunit": "^0.6.0",
         "ramsey/uuid-console": "^1.1.1",
         "symfony/browser-kit": "*",
+        "symfony/css-selector": "*",
         "symfony/debug-bundle": "*",
+        "symfony/panther": "^0.4.1",
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "*",
         "symfony/var-dumper": "*",
@@ -98,7 +104,7 @@
         },
         "symfony": {
             "id": "01BF6RBYGY5V4S3FDMBNKXVVNS",
-            "require": "4.3.*",
+            "require": "4.4.*",
             "allow-contrib": true
         }
     },
@@ -112,7 +118,7 @@
         ]
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
+    "prefer-stable": false,
     "scripts": {
         "post-install-cmd": [
             "@auto-scripts"

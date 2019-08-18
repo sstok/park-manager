@@ -18,4 +18,7 @@ return [
     Rollerworks\Bundle\MessageBusFormBundle\RollerworksMessageBusFormBundle::class => ['all' => true],
     ParkManager\Module\CoreModule\ParkManagerCoreModule::class => ['all' => true],
     ParkManager\Module\WebhostingModule\ParkManagerWebhostingModule::class => ['disabled' => true],
+    DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
+    Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
+    Liip\TestFixturesBundle\LiipTestFixturesBundle::class => ['dev' => true, 'test' => true],
 ];

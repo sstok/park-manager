@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\CoreModule\Application\Command\Client;
 
 use DateTimeImmutable;
+use ParkManager\Module\CoreModule\Application\Service\Mailer\Client\PasswordResetMailer;
 use ParkManager\Module\CoreModule\Domain\Client\ClientRepository;
 use ParkManager\Module\CoreModule\Domain\Client\Exception\ClientNotFound;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
@@ -23,14 +24,18 @@ final class RequestPasswordResetHandler
     /** @var SplitTokenFactory */
     private $tokenFactory;
 
+    /** @var PasswordResetMailer */
+    private $mailer;
+
     /** @var int */
     private $tokenTTL;
 
-    public function __construct(ClientRepository $clients, SplitTokenFactory $tokenFactory, int $tokenTTL = 3600)
+    public function __construct(ClientRepository $clients, SplitTokenFactory $tokenFactory, PasswordResetMailer $mailer, int $tokenTTL = 3600)
     {
         $this->repository   = $clients;
         $this->tokenFactory = $tokenFactory;
         $this->tokenTTL     = $tokenTTL;
+        $this->mailer       = $mailer;
     }
 
     public function __invoke(RequestPasswordReset $command): void
@@ -54,6 +59,8 @@ final class RequestPasswordResetHandler
 
         if ($client->requestPasswordReset($splitToken)) {
             $this->repository->save($client);
+
+            $this->mailer->send($client->email(), $splitToken);
         }
     }
 }

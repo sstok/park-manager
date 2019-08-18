@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\CoreModule\Infrastructure\DependencyInjection;
 
+use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\Module\ParkManagerModuleDependencyExtension;
 use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\Module\RegistersDoctrineDbalTypes;
 use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\Module\Traits\DoctrineDbalTypesConfiguratorTrait;
@@ -17,6 +18,7 @@ use ParkManager\Module\CoreModule\Infrastructure\Twig\AppContextGlobal;
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use function class_exists;
 
 final class DependencyExtension extends ParkManagerModuleDependencyExtension implements RegistersDoctrineDbalTypes
 {
@@ -41,6 +43,10 @@ final class DependencyExtension extends ParkManagerModuleDependencyExtension imp
 
         $this->registerMessageBusHandlers($loader);
         $this->registerWebUIActions($loader);
+
+        if (class_exists(DoctrineFixturesBundle::class)) {
+            $loader->load('data_fixtures.php');
+        }
     }
 
     protected function prependExtra(ContainerBuilder $container): void

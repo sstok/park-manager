@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Module\CoreModule\Domain\Shared;
 
 use ParkManager\Module\CoreModule\Domain\Shared\Exception\MalformedEmailAddress;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\NamedAddress;
 use const IDNA_DEFAULT;
 use const INTL_IDNA_VARIANT_UTS46;
 use const MB_CASE_LOWER;
@@ -64,6 +66,15 @@ final class EmailAddress
     public function name(): ?string
     {
         return $this->name;
+    }
+
+    public function toMimeAddress(): Address
+    {
+        if ($this->name !== null) {
+            return new NamedAddress($this->address, $this->name);
+        }
+
+        return new Address($this->address);
     }
 
     private function canonicalize(string $address, string &$label): string
