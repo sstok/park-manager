@@ -103,13 +103,13 @@
       <code>ref('park_manager.application_context')</code>
     </UndefinedFunction>
   </file>
-  <file src="src/Module/CoreModule/Infrastructure/Security/BrowserKitAuthenticator.php">
+  <file src="src/Module/CoreModule/Infrastructure/Security/Guard/BrowserKitAuthenticator.php">
     <MoreSpecificImplementedParamType occurrences="2">
       <code>$credentials</code>
       <code>$credentials</code>
     </MoreSpecificImplementedParamType>
   </file>
-  <file src="src/Module/CoreModule/Infrastructure/Security/FormAuthenticator.php">
+  <file src="src/Module/CoreModule/Infrastructure/Security/Guard/FormAuthenticator.php">
     <MoreSpecificImplementedParamType occurrences="2">
       <code>$credentials</code>
       <code>$user</code>

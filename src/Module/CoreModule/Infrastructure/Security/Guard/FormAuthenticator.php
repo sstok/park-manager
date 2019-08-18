@@ -8,8 +8,10 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Module\CoreModule\Infrastructure\Security;
+namespace ParkManager\Module\CoreModule\Infrastructure\Security\Guard;
 
+use ParkManager\Module\CoreModule\Infrastructure\Security\SecurityUser;
+use ParkManager\Module\CoreModule\Infrastructure\Security\UserProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

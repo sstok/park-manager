@@ -13,7 +13,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use ParkManager\Module\CoreModule\Infrastructure\Security\AdministratorUser;
 use ParkManager\Module\CoreModule\Infrastructure\Security\ClientUser;
 use ParkManager\Module\CoreModule\Infrastructure\Security\EventListener\UserPasswordChangeListener;
-use ParkManager\Module\CoreModule\Infrastructure\Security\FormAuthenticator;
+use ParkManager\Module\CoreModule\Infrastructure\Security\Guard\FormAuthenticator;
 use ParkManager\Module\CoreModule\Infrastructure\Security\UserProvider;
 
 return function (ContainerConfigurator $c) {
