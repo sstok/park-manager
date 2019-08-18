@@ -56,7 +56,7 @@ final class RequestEmailAddressChangeHandler
 
         if ($client->requestEmailChange($email, $splitToken)) {
             $this->repository->save($client);
-            $this->confirmationMailer->send($id, $email, $splitToken, $tokenExpiration);
+            $this->confirmationMailer->send($email, $splitToken);
         }
     }
 }

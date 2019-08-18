@@ -14,7 +14,6 @@ use DateTimeImmutable;
 use ParkManager\Module\CoreModule\Application\Command\Client\RequestEmailAddressChange;
 use ParkManager\Module\CoreModule\Application\Command\Client\RequestEmailAddressChangeHandler;
 use ParkManager\Module\CoreModule\Application\Service\Mailer\Client\EmailAddressChangeRequestMailer;
-use ParkManager\Module\CoreModule\Domain\Client\ClientId;
 use ParkManager\Module\CoreModule\Domain\Client\Event\ClientEmailAddressChangeWasRequested;
 use ParkManager\Module\CoreModule\Domain\Shared\EmailAddress;
 use ParkManager\Module\CoreModule\Test\Domain\Repository\ClientRepositoryMock;
@@ -96,14 +95,12 @@ final class RequestEmailAddressChangeTest extends TestCase
     {
         $confirmationMailerProphecy = $this->prophesize(EmailAddressChangeRequestMailer::class);
         $confirmationMailerProphecy->send(
-            ClientId::fromString(self::USER_ID),
             $email,
             Argument::that(
                 static function (SplitToken $splitToken) {
                     return $splitToken->token()->getString() !== '';
                 }
-            ),
-            Argument::any()
+            )
         )->shouldBeCalledTimes(1);
 
         return $confirmationMailerProphecy->reveal();
@@ -112,7 +109,7 @@ final class RequestEmailAddressChangeTest extends TestCase
     private function expectNoConfirmationIsSendMailer(): EmailAddressChangeRequestMailer
     {
         $confirmationMailerProphecy = $this->prophesize(EmailAddressChangeRequestMailer::class);
-        $confirmationMailerProphecy->send(Argument::any(), Argument::any(), Argument::any())->shouldNotBeCalled();
+        $confirmationMailerProphecy->send(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         return $confirmationMailerProphecy->reveal();
     }

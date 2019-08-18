@@ -11,10 +11,8 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\AutoServiceConfigurator;
-use ParkManager\Module\CoreModule\Infrastructure\Mailer\Client\ClientRecipientEnvelopeFactory;
 use ParkManager\Module\CoreModule\Infrastructure\Mailer\Client\EmailAddressChangeRequestMailerImp;
 use ParkManager\Module\CoreModule\Infrastructure\Mailer\Client\PasswordResetMailerImpl;
-use ParkManager\Module\CoreModule\Infrastructure\Mailer\Sender\NullSender;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
@@ -23,10 +21,8 @@ return function (ContainerConfigurator $c) {
         ->private();
 
     $autoDi = new AutoServiceConfigurator($di);
-    $autoDi->set(NullSender::class);
 
     // Client
-    $autoDi->set(ClientRecipientEnvelopeFactory::class);
     $autoDi->set(EmailAddressChangeRequestMailerImp::class);
     $autoDi->set(PasswordResetMailerImpl::class);
 };
