@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use ParkManager\Module\CoreModule\Infrastructure\Twig\AppContextGlobal;
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\EventListener\TwigResponseListener;
+use ParkManager\Module\CoreModule\Infrastructure\EventListener\TwigResponseListener;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()

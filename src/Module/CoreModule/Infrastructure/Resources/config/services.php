@@ -18,8 +18,8 @@ use ParkManager\Module\CoreModule\Infrastructure\Doctrine\Administrator\Doctrine
 use ParkManager\Module\CoreModule\Infrastructure\Doctrine\Client\DoctrineOrmClientRepository;
 use ParkManager\Module\CoreModule\Infrastructure\Http\ArgumentResolver\ApplicationContextResolver;
 use ParkManager\Module\CoreModule\Infrastructure\Http\SectionsLoader;
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Common\ApplicationContext;
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\EventListener\ApplicationSectionListener;
+use ParkManager\Module\CoreModule\Infrastructure\Common\ApplicationContext;
+use ParkManager\Module\CoreModule\Infrastructure\EventListener\ApplicationSectionListener;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()

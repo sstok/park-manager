@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace Symfony\Component\Routing\Loader\Configurator;
 
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Action\Client\ConfirmPasswordResetAction;
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Action\Client\RequestPasswordResetAction;
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Action\HomepageAction;
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Action\SecurityLoginAction;
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Action\SecurityLogoutAction;
+use ParkManager\Module\CoreModule\Infrastructure\Action\Client\ConfirmPasswordResetAction;
+use ParkManager\Module\CoreModule\Infrastructure\Action\Client\RequestPasswordResetAction;
+use ParkManager\Module\CoreModule\Infrastructure\Action\HomepageAction;
+use ParkManager\Module\CoreModule\Infrastructure\Action\SecurityLoginAction;
+use ParkManager\Module\CoreModule\Infrastructure\Action\SecurityLogoutAction;
 
 return function (RoutingConfigurator $routes) {
     $client = $routes->collection('park_manager.client.');

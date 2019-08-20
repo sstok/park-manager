@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\CoreModule\Infrastructure\Twig;
 
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Common\ApplicationContext;
+use ParkManager\Module\CoreModule\Infrastructure\Common\ApplicationContext;
 
 /**
  * AppContextGlobal gives access to the ApplicationContext with limited information.

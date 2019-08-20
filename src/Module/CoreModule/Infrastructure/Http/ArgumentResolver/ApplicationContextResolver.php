@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\CoreModule\Infrastructure\Http\ArgumentResolver;
 
 use Generator;
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Common\ApplicationContext;
+use ParkManager\Module\CoreModule\Infrastructure\Common\ApplicationContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;

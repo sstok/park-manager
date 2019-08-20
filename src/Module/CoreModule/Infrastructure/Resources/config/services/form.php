@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Form\Type\DefaultMessageBusExtension;
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Form\Type\Security\ChangePasswordType;
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Form\Type\Security\SplitTokenType;
-use ParkManager\Module\CoreModule\Infrastructure\UserInterface\Web\Form\Type\Security\SecurityUserHashedPasswordType;
+use ParkManager\Module\CoreModule\Infrastructure\Form\Type\DefaultMessageBusExtension;
+use ParkManager\Module\CoreModule\Infrastructure\Form\Type\Security\ChangePasswordType;
+use ParkManager\Module\CoreModule\Infrastructure\Form\Type\Security\SplitTokenType;
+use ParkManager\Module\CoreModule\Infrastructure\Form\Type\Security\SecurityUserHashedPasswordType;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
