@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager;
 
-use ParkManager\Bundle\CoreBundle\ParkManagerCoreModule;
+use ParkManager\Bundle\CoreBundle\ParkManagerCoreBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -43,7 +43,7 @@ class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        ParkManagerCoreModule::setAppConfiguration($container);
+        ParkManagerCoreBundle::setAppConfiguration($container);
 
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', true);

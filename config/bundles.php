@@ -14,7 +14,7 @@ return [
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
     Rollerworks\Bundle\RouteAutofillBundle\RollerworksRouteAutofillBundle::class => ['all' => true],
     Rollerworks\Bundle\MessageBusFormBundle\RollerworksMessageBusFormBundle::class => ['all' => true],
-    ParkManager\Bundle\CoreBundle\ParkManagerCoreModule::class => ['all' => true],
+    ParkManager\Bundle\CoreBundle\ParkManagerCoreBundle::class => ['all' => true],
     ParkManager\Module\WebhostingModule\ParkManagerWebhostingModule::class => ['disabled' => true],
     DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],

@@ -71,14 +71,14 @@
     },
     "autoload": {
         "psr-4": {
-            "ParkManager\\Module\\CoreModule\\": ""
+            "ParkManager\\Bundle\\CoreBundle\\": "src/"
         },
         "exclude-from-classmap": [
-            "Tests/",
-            "Infrastructure/Resources/"
+            "tests/",
+            "config/"
         ]
     },
     "autoload-dev": {
-        "ParkManager\\Module\\CoreModule\\Tests\\": "Tests"
+        "ParkManager\\Bundle\\CoreBundle\\Tests\\": "tests/"
     }
 }

@@ -1,7 +1,7 @@
-Park-Manager CoreModule
+Park-Manager CoreBundle
 =======================
 
-The Park-Manager CoreModule forms the heart of the Park-Manager Application.
+The Park-Manager CoreBundle forms the heart of the Park-Manager Application.
 
 See resources for more information.
 

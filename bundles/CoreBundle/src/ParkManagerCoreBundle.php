@@ -10,17 +10,24 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle;
 
+use DirectoryIterator;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\DependencyExtension;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\EnvVariableResource;
-use ParkManager\Bundle\CoreBundle\DependencyInjection\Module\AbstractParkManagerModule;
 use ParkManager\Bundle\CoreBundle\Http\CookiesRequestMatcher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpFoundation\RequestMatcher;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 use function realpath;
 
-class ParkManagerCoreModule extends AbstractParkManagerModule
+class ParkManagerCoreBundle extends Bundle
 {
+    public function getPath(): string
+    {
+        return \dirname(__DIR__);
+    }
+
     public function getContainerExtension(): ?ExtensionInterface
     {
         if ($this->extension === null) {
@@ -28,6 +35,33 @@ class ParkManagerCoreModule extends AbstractParkManagerModule
         }
 
         return $this->extension;
+    }
+
+    public function build(ContainerBuilder $container): void
+    {
+        $namespace = $this->getNamespace();
+        $path      = $this->getPath() . '/src//Doctrine/';
+
+        $mappings = [];
+
+        if (file_exists($path)) {
+            foreach (new DirectoryIterator($path) as $node) {
+                if ($node->isDot()) {
+                    continue;
+                }
+
+                $basename  = $node->getBasename();
+                $directory = $path . $basename . '/Mapping';
+
+                if (file_exists($directory)) {
+                    $mappings[$directory] = $namespace . '\\Domain\\' . $basename;
+                }
+            }
+        }
+
+        $mappings[realpath(__DIR__ . '/Doctrine/SecurityMapping')] = 'Rollerworks\\Component\\SplitToken';
+
+        $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings));
     }
 
     public static function setAppConfiguration(ContainerBuilder $container): void
@@ -55,13 +89,5 @@ class ParkManagerCoreModule extends AbstractParkManagerModule
             $container->getDefinition('park_manager.section.private.request_matcher')->setArgument(1, $primaryHost);
             $container->getDefinition('park_manager.section.api.request_matcher')->setArguments(['/', '^api\.']);
         }
-    }
-
-    protected function getDoctrineOrmMappings(): array
-    {
-        $mapping = parent::getDoctrineOrmMappings();
-        $mapping[realpath(__DIR__ . '/Doctrine/SecurityMapping')] = 'Rollerworks\\Component\\SplitToken';
-
-        return $mapping;
     }
 }

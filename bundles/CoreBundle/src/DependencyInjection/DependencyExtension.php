@@ -11,54 +11,54 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\DependencyInjection;
 
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
-use ParkManager\Bundle\CoreBundle\DependencyInjection\Module\ParkManagerModuleDependencyExtension;
-use ParkManager\Bundle\CoreBundle\DependencyInjection\Module\RegistersDoctrineDbalTypes;
-use ParkManager\Bundle\CoreBundle\DependencyInjection\Module\Traits\DoctrineDbalTypesConfiguratorTrait;
+use ParkManager\Bundle\CoreBundle\DependencyInjection\Traits\DoctrineDbalTypesConfiguratorTrait;
+use ParkManager\Bundle\CoreBundle\DependencyInjection\Traits\ExtensionPathResolver;
+use ParkManager\Bundle\CoreBundle\DependencyInjection\Traits\RoutesImporterTrait;
+use ParkManager\Bundle\CoreBundle\DependencyInjection\Traits\ServiceLoaderTrait;
 use ParkManager\Bundle\CoreBundle\Twig\AppContextGlobal;
-use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use function class_exists;
 
-final class DependencyExtension extends ParkManagerModuleDependencyExtension implements RegistersDoctrineDbalTypes
+final class DependencyExtension extends Extension implements PrependExtensionInterface
 {
+    use ExtensionPathResolver;
+    use ServiceLoaderTrait;
     use DoctrineDbalTypesConfiguratorTrait;
+    use RoutesImporterTrait;
 
-    public const EXTENSION_ALIAS = 'park_manager';
+    public const EXTENSION_ALIAS = 'park_manager_core';
 
     public function getAlias(): string
     {
         return self::EXTENSION_ALIAS;
     }
 
-    public function getModuleName(): string
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        return 'ParkManagerCore';
-    }
+        $this->initBundlePath();
 
-    protected function loadModule(array $configs, ContainerBuilder $container, LoaderInterface $loader): void
-    {
+        $loader = $this->getServiceLoader($container, $this->bundlePath . '/config');
         $loader->load('services.php');
         $loader->load('services/*.php', 'glob');
-
-        $this->registerMessageBusHandlers($loader);
-        $this->registerWebUIActions($loader);
 
         if (class_exists(DoctrineFixturesBundle::class)) {
             $loader->load('data_fixtures.php');
         }
+
+        $routeImporter = $this->getRouteImporter($container);
+        $routeImporter->import($this->bundlePath . '/config/routing/administrator.php', 'park_manager.admin_section.root');
+        $routeImporter->import($this->bundlePath . '/config/routing/client.php', 'park_manager.client_section.root');
     }
 
-    protected function prependExtra(ContainerBuilder $container): void
+    public function prepend(ContainerBuilder $container): void
     {
+        $this->initBundlePath();
+        $this->registerDoctrineDbalTypes($container, $this->bundlePath . '/src');
+
         $container->prependExtensionConfig('twig', [
             'globals' => ['app_context' => '@' . AppContextGlobal::class],
         ]);
-    }
-
-    protected function registerRoutes(RouteImporter $routeImporter, ?string $configDir): void
-    {
-        $routeImporter->import($configDir . '/routing/administrator.php', 'park_manager.admin_section.root');
-        $routeImporter->import($configDir . '/routing/client.php', 'park_manager.client_section.root');
     }
 }

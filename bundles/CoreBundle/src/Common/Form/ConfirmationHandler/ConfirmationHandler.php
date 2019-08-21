@@ -19,8 +19,8 @@ final class ConfirmationHandler extends BaseConfirmationHandler
     /**
      * Configure the confirmation handler for usage.
      *
-     * @param string $title          The title of the confirmation (eg. "park_manager.module.action.confirm.title")
-     * @param string $message        The message of the confirmation (eg. "park_manager.module.action.confirm.body")
+     * @param string $title          The title of the confirmation (eg. "action.confirm.title")
+     * @param string $message        The message of the confirmation (eg. "action.confirm.body")
      * @param string $yesButtonLabel The label of the confirmation button (should contain a clear indication about what
      *                               will happen "Remove user")
      *

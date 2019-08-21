@@ -11,14 +11,14 @@ declare(strict_types=1);
 namespace ParkManager\Module\WebhostingModule;
 
 use Doctrine\DBAL\Types\Type;
-use ParkManager\Bundle\CoreBundle\DependencyInjection\Module\AbstractParkManagerModule;
 use ParkManager\Module\WebhostingModule\Infrastructure\DependencyInjection\Compiler\CapabilitiesPass;
 use ParkManager\Module\WebhostingModule\Infrastructure\Doctrine\Package\WebhostingCapabilitiesType;
 use ParkManager\Module\WebhostingModule\Infrastructure\Service\Package\CapabilitiesFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 use function realpath;
 
-final class ParkManagerWebhostingModule extends AbstractParkManagerModule
+final class ParkManagerWebhostingModule extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {

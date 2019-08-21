@@ -23,6 +23,7 @@ use ParkManager\Bundle\CoreBundle\EventListener\ApplicationSectionListener;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
+        ->autoconfigure()
         ->autowire()
         ->private()
         ->bind('$eventBus', ref('park_manager.event_bus'));
@@ -63,4 +64,11 @@ return function (ContainerConfigurator $c) {
     $di->set(ApplicationContextResolver::class)
         ->args([ref('park_manager.application_context')])
         ->tag('controller.argument_value_resolver', ['priority' => 30]);
+
+    // UseCases
+    $di->load('ParkManager\\Bundle\\CoreBundle\\Application\\Command\\', __DIR__ . '/../src/Application/Command/**/*Handler.php')
+        ->tag('messenger.message_handler', ['bus' => 'park_manager.command_bus']);
+
+    // Actions
+    $di->load('ParkManager\\Bundle\\CoreBundle\\Action\\', __DIR__ . '/../src/Action/**/*Action.php');
 };

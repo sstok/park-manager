@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\DependencyInjection\Module\Traits;
+namespace ParkManager\Bundle\CoreBundle\DependencyInjection\Traits;
 
 use Rollerworks\Bundle\RouteAutowiringBundle\RouteImporter;
 use function file_exists;

@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\DependencyInjection\Module\Traits;
+namespace ParkManager\Bundle\CoreBundle\DependencyInjection\Traits;
 
 use Doctrine\DBAL\Types\Type as DbalType;
 use ReflectionClass;
@@ -21,28 +21,15 @@ use function mb_substr;
 use function preg_replace;
 use function str_replace;
 
-/**
- * Helps with automatically registering Doctrine DBAL types.
- *
- * Note: Implement the RegistersDoctrineDbalTypes interface to make this detection
- * work in the ParkManagerModuleDependencyExtension.
- */
 trait DoctrineDbalTypesConfiguratorTrait
 {
     /**
-     * Registers the Doctrine DBAL Types (located in Module/Doctrine).
-     *
-     * Overwrite this method to skip/change registering.
-     * All types are assumed to be commented.
+     * Registers the Doctrine DBAL Types (located in src/Doctrine).
      */
-    public function registerDoctrineDbalTypes(ContainerBuilder $container, string $moduleDirectory): void
+    public function registerDoctrineDbalTypes(ContainerBuilder $container, string $srcDirectory): void
     {
-        if (! file_exists($moduleDirectory . '/Doctrine')) {
-            return;
-        }
-
         $finder = new Finder();
-        $finder->in($moduleDirectory . '/Doctrine');
+        $finder->in($srcDirectory . '/Doctrine');
         $finder->name('*.php');
         $finder->files();
 
