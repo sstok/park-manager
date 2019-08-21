@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Application\Service\Finder\Shared;
+namespace ParkManager\Bundle\CoreBundle\Security;
 
 final class SecurityAuthenticationData
 {

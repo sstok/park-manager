@@ -12,10 +12,10 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Tests\Doctrine\Shared;
+namespace ParkManager\Bundle\CoreBundle\Tests\Doctrine;
 
-use ParkManager\Bundle\CoreBundle\Application\Service\Finder\Shared\SecurityAuthenticationData;
-use ParkManager\Bundle\CoreBundle\Doctrine\Shared\DoctrineDbalAuthenticationFinder;
+use ParkManager\Bundle\CoreBundle\Security\SecurityAuthenticationData;
+use ParkManager\Bundle\CoreBundle\Doctrine\DoctrineDbalAuthenticationFinder;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorRepository;

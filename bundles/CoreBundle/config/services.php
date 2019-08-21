@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use ParkManager\Bundle\CoreBundle\Doctrine\Shared\DoctrineDbalAuthenticationFinder;
+use ParkManager\Bundle\CoreBundle\Doctrine\DoctrineDbalAuthenticationFinder;
 use ParkManager\Bundle\CoreBundle\Http\ArgumentResolver\FormFactoryResolver;
 use Rollerworks\Component\SplitToken\Argon2SplitTokenFactory;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\AutoServiceConfigurator;

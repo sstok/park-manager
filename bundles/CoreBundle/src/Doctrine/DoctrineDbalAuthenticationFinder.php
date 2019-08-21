@@ -12,11 +12,11 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Doctrine\Shared;
+namespace ParkManager\Bundle\CoreBundle\Doctrine;
 
 use Doctrine\DBAL\Connection;
-use ParkManager\Bundle\CoreBundle\Application\Service\Finder\Shared\AuthenticationFinder;
-use ParkManager\Bundle\CoreBundle\Application\Service\Finder\Shared\SecurityAuthenticationData;
+use ParkManager\Bundle\CoreBundle\Security\AuthenticationFinder;
+use ParkManager\Bundle\CoreBundle\Security\SecurityAuthenticationData;
 use function is_array;
 use function json_decode;
 
