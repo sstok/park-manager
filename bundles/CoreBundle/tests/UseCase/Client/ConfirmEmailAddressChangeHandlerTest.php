@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Tests\Application\Command\Client;
+namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Client;
 
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmEmailAddressChange;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmEmailAddressChangeHandler;
