@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Mailer\Client;
 
-use ParkManager\Bundle\CoreBundle\Application\Service\Mailer\Client\EmailAddressChangeRequestMailer;
+use ParkManager\Bundle\CoreBundle\Mailer\Client\EmailAddressChangeRequestMailer;
 use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;

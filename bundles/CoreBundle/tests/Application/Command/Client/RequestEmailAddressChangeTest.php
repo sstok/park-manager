@@ -13,7 +13,7 @@ namespace ParkManager\Bundle\CoreBundle\Tests\Application\Command\Client;
 use DateTimeImmutable;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestEmailAddressChange;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestEmailAddressChangeHandler;
-use ParkManager\Bundle\CoreBundle\Application\Service\Mailer\Client\EmailAddressChangeRequestMailer;
+use ParkManager\Bundle\CoreBundle\Mailer\Client\EmailAddressChangeRequestMailer;
 use ParkManager\Bundle\CoreBundle\Domain\Client\Event\ClientEmailAddressChangeWasRequested;
 use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\ClientRepositoryMock;

@@ -8,12 +8,12 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Application\Service\Mailer\Client;
+namespace ParkManager\Bundle\CoreBundle\Mailer\Client;
 
 use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
 use Rollerworks\Component\SplitToken\SplitToken;
 
-interface EmailAddressChangeRequestMailer
+interface PasswordResetMailer
 {
-    public function send(EmailAddress $newAddress, SplitToken $splitToken): void;
+    public function send(EmailAddress $email, SplitToken $splitToken): void;
 }

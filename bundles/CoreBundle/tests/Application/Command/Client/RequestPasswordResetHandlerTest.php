@@ -13,7 +13,7 @@ namespace ParkManager\Bundle\CoreBundle\Tests\Application\Command\Client;
 use DateTimeImmutable;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestPasswordReset;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestPasswordResetHandler;
-use ParkManager\Bundle\CoreBundle\Application\Service\Mailer\Client\PasswordResetMailer;
+use ParkManager\Bundle\CoreBundle\Mailer\Client\PasswordResetMailer;
 use ParkManager\Bundle\CoreBundle\Domain\Client\Client;
 use ParkManager\Bundle\CoreBundle\Domain\Client\Event\ClientPasswordResetWasRequested;
 use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\ClientRepositoryMock;
