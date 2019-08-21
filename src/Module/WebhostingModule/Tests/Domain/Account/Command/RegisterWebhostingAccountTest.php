@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Tests\Domain\Account\Command;
 
-use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
+use ParkManager\Bundle\CoreBundle\Domain\Shared\OwnerId;
 use ParkManager\Module\WebhostingModule\Application\Account\RegisterWebhostingAccount;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
 use ParkManager\Module\WebhostingModule\Domain\DomainName;

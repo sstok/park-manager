@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Domain\Package;
 
-use ParkManager\Module\CoreModule\Domain\EventsRecordingEntity;
+use ParkManager\Bundle\CoreBundle\Domain\EventsRecordingEntity;
 use ParkManager\Module\WebhostingModule\Domain\Package\Event\WebhostingPackageCapabilitiesWasChanged;
 use ParkManager\Module\WebhostingModule\Domain\Package\Event\WebhostingPackageWasCreated;
 

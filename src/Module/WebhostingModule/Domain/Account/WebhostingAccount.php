@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Module\WebhostingModule\Domain\Account;
 
 use DateTimeImmutable;
-use ParkManager\Module\CoreModule\Domain\EventsRecordingEntity;
-use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
+use ParkManager\Bundle\CoreBundle\Domain\EventsRecordingEntity;
+use ParkManager\Bundle\CoreBundle\Domain\Shared\OwnerId;
 use ParkManager\Module\WebhostingModule\Domain\Package\Capabilities;
 use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackage;
 

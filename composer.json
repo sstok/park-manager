@@ -108,12 +108,17 @@
     },
     "autoload": {
         "psr-4": {
-            "ParkManager\\Module\\CoreModule\\": "src/Module/CoreModule",
+            "ParkManager\\Bundle\\CoreBundle\\": "bundles/CoreBundle/src",
             "ParkManager\\": "src/"
         },
         "exclude-from-classmap": [
             ".dances/"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ParkManager\\Bundle\\CoreBundle\\Tests\\": "bundles/CoreBundle/tests/"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": false,

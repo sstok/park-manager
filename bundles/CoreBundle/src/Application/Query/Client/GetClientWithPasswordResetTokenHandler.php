@@ -1,0 +1,42 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+namespace ParkManager\Bundle\CoreBundle\Application\Query\Client;
+
+use ParkManager\Bundle\CoreBundle\Domain\Client\ClientId;
+use ParkManager\Bundle\CoreBundle\Domain\Client\ClientRepository;
+use ParkManager\Bundle\CoreBundle\Domain\Shared\Exception\PasswordResetTokenNotAccepted;
+
+final class GetClientWithPasswordResetTokenHandler
+{
+    /** @var ClientRepository */
+    private $repository;
+
+    public function __construct(ClientRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function __invoke(GetClientWithPasswordResetToken $query): ClientId
+    {
+        $client = $this->repository->getByPasswordResetToken($query->token()->selector());
+        $token  = $client->passwordResetToken();
+
+        // If the token does not match force a removal of the token to prevent future guessing of the verifier.
+        if (! $query->token()->matches($token)) {
+            $client->clearPasswordReset();
+            $this->repository->save($client);
+
+            throw new PasswordResetTokenNotAccepted($token, $query->token());
+        }
+
+        return $client->id();
+    }
+}
