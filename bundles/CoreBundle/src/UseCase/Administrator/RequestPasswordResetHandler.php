@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\UseCase\Administrator;
 
 use DateTimeImmutable;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorRepository;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Exception\AdministratorNotFound;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorRepository;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\AdministratorNotFound;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
 
 final class RequestPasswordResetHandler

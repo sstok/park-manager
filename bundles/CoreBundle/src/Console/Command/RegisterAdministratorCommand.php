@@ -12,7 +12,7 @@ namespace ParkManager\Bundle\CoreBundle\Console\Command;
 
 use InvalidArgumentException;
 use ParkManager\Bundle\CoreBundle\UseCase\Administrator\RegisterAdministrator;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorId;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
 use ParkManager\Bundle\CoreBundle\Security\AdministratorUser;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

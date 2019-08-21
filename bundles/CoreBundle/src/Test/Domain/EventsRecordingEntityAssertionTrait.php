@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Test\Domain;
 
-use ParkManager\Bundle\CoreBundle\Domain\RecordsDomainEvents;
+use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use PHPUnit\Framework\Assert;
 use function array_map;
 use function count;

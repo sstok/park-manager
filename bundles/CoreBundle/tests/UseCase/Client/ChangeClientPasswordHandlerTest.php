@@ -12,7 +12,7 @@ namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Client;
 
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ChangeClientPassword;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ChangeClientPasswordHandler;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Event\ClientPasswordWasChanged;
+use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordWasChanged;
 use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\ClientRepositoryMock;
 use PHPUnit\Framework\TestCase;
 

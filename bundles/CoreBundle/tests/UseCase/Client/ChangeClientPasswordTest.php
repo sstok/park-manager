@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Client;
 
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ChangeClientPassword;
-use ParkManager\Bundle\CoreBundle\Domain\Client\ClientId;
+use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
 use PHPUnit\Framework\TestCase;
 
 /**

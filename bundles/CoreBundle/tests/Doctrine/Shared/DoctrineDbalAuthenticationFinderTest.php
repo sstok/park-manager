@@ -16,10 +16,10 @@ namespace ParkManager\Bundle\CoreBundle\Tests\Doctrine\Shared;
 
 use ParkManager\Bundle\CoreBundle\Application\Service\Finder\Shared\SecurityAuthenticationData;
 use ParkManager\Bundle\CoreBundle\Doctrine\Shared\DoctrineDbalAuthenticationFinder;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Administrator;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorId;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorRepository;
-use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorRepository;
+use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Test\Doctrine\EntityRepositoryTestCase;
 
 /**

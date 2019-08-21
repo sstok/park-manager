@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Domain\Account;
 
-use ParkManager\Bundle\CoreBundle\Domain\UuidTrait;
+use ParkManager\Bundle\CoreBundle\Model\UuidTrait;
 
 /**
  * @codeCoverageIgnore

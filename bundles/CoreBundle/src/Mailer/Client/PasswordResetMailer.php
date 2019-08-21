@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Mailer\Client;
 
-use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use Rollerworks\Component\SplitToken\SplitToken;
 
 interface PasswordResetMailer

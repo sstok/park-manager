@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Doctrine\Client;
 
 use ParkManager\Bundle\CoreBundle\Doctrine\DomainIdType;
-use ParkManager\Bundle\CoreBundle\Domain\Client\ClientId;
+use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
 
 final class ClientIdType extends DomainIdType
 {

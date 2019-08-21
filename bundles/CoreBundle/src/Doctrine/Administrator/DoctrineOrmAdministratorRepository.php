@@ -12,12 +12,12 @@ namespace ParkManager\Bundle\CoreBundle\Doctrine\Administrator;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Bundle\CoreBundle\Doctrine\EventSourcedEntityRepository;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Administrator;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorId;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorRepository;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Exception\AdministratorNotFound;
-use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
-use ParkManager\Bundle\CoreBundle\Domain\Shared\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorRepository;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\AdministratorNotFound;
+use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 
 /**

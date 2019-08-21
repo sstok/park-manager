@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Test\Domain;
 
 use Closure;
-use ParkManager\Bundle\CoreBundle\Domain\RecordsDomainEvents;
+use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use PHPUnit\Framework\Assert;
 use Throwable;
 use function array_values;

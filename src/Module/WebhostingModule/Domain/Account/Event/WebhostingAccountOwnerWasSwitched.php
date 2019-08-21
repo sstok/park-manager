@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Domain\Account\Event;
 
-use ParkManager\Bundle\CoreBundle\Domain\Shared\OwnerId;
+use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 use ParkManager\Component\DomainEvent\DomainEvent;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
 

@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Module\WebhostingModule\Tests\Domain\Account;
 
 use DateTimeImmutable;
-use ParkManager\Bundle\CoreBundle\Domain\Shared\OwnerId;
+use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 use ParkManager\Bundle\CoreBundle\Test\Domain\EventsRecordingEntityAssertionTrait;
 use ParkManager\Module\WebhostingModule\Domain\Account\Event\WebhostingAccountCapabilitiesWasChanged;
 use ParkManager\Module\WebhostingModule\Domain\Account\Event\WebhostingAccountOwnerWasSwitched;

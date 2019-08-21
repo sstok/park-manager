@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Tests\Domain\Account\Event;
 
-use ParkManager\Bundle\CoreBundle\Domain\Shared\OwnerId;
+use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 use ParkManager\Module\WebhostingModule\Domain\Account\Event\WebhostingAccountOwnerWasSwitched;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
 use PHPUnit\Framework\TestCase;

@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\UseCase\Client;
 
-use ParkManager\Bundle\CoreBundle\Domain\Client\ClientId;
-use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
+use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 
 final class RequestEmailAddressChange
 {

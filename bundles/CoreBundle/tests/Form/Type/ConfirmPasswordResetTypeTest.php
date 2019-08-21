@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Tests\Form\Type;
 
 use Closure;
-use ParkManager\Bundle\CoreBundle\Domain\Shared\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Bundle\CoreBundle\Form\Type\Security\ConfirmPasswordResetType;
 use ParkManager\Bundle\CoreBundle\Form\Type\Security\SecurityUserHashedPasswordType;
 use ParkManager\Bundle\CoreBundle\Form\Type\Security\SplitTokenType;

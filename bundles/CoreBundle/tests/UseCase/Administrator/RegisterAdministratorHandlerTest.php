@@ -12,12 +12,12 @@ namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Administrator;
 
 use ParkManager\Bundle\CoreBundle\UseCase\Administrator\RegisterAdministrator;
 use ParkManager\Bundle\CoreBundle\UseCase\Administrator\RegisterAdministratorHandler;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Administrator;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorId;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Event\AdministratorPasswordWasChanged;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Event\AdministratorWasRegistered;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Exception\AdministratorEmailAddressAlreadyInUse;
-use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordWasChanged;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorWasRegistered;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\AdministratorEmailAddressAlreadyInUse;
+use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\AdministratorRepositoryMock;
 use PHPUnit\Framework\TestCase;
 

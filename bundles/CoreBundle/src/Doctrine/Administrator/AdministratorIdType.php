@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Doctrine\Administrator;
 
 use ParkManager\Bundle\CoreBundle\Doctrine\DomainIdType;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorId;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
 
 final class AdministratorIdType extends DomainIdType
 {

@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Test\Domain\Repository;
 
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Administrator;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorId;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorRepository;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Event\AdministratorPasswordResetWasRequested;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Exception\AdministratorNotFound;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Exception\PasswordResetConfirmationRejected;
-use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorRepository;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordResetWasRequested;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\AdministratorNotFound;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\PasswordResetConfirmationRejected;
+use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Test\Domain\MockRepository;
 
 final class AdministratorRepositoryMock implements AdministratorRepository

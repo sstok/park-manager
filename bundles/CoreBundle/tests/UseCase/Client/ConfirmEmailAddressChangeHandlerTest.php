@@ -12,9 +12,9 @@ namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Client;
 
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmEmailAddressChange;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmEmailAddressChangeHandler;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Client;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Exception\EmailChangeConfirmationRejected;
-use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\Client\Client;
+use ParkManager\Bundle\CoreBundle\Model\Client\Exception\EmailChangeConfirmationRejected;
+use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\ClientRepositoryMock;
 use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;

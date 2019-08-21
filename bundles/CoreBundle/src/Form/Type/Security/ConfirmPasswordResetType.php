@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Form\Type\Security;
 
-use ParkManager\Bundle\CoreBundle\Domain\Shared\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 use Rollerworks\Bundle\MessageBusFormBundle\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

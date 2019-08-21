@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\UseCase\Administrator;
 
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Administrator;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorRepository;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Exception\AdministratorEmailAddressAlreadyInUse;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\Exception\AdministratorNotFound;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorRepository;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\AdministratorEmailAddressAlreadyInUse;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\AdministratorNotFound;
 
 final class RegisterAdministratorHandler
 {

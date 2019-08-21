@@ -12,8 +12,8 @@ namespace ParkManager\Bundle\CoreBundle\UseCase\Client;
 
 use DateTimeImmutable;
 use ParkManager\Bundle\CoreBundle\Mailer\Client\PasswordResetMailer;
-use ParkManager\Bundle\CoreBundle\Domain\Client\ClientRepository;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Exception\ClientNotFound;
+use ParkManager\Bundle\CoreBundle\Model\Client\ClientRepository;
+use ParkManager\Bundle\CoreBundle\Model\Client\Exception\ClientNotFound;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
 
 final class RequestPasswordResetHandler

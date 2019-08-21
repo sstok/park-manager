@@ -12,7 +12,7 @@ namespace ParkManager\Bundle\CoreBundle\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use ParkManager\Bundle\CoreBundle\Domain\RecordsDomainEvents;
+use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 
 abstract class EventSourcedEntityRepository extends EntityRepository

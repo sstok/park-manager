@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\UseCase\Administrator;
 
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorRepository;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorRepository;
 
 final class ChangePasswordHandler
 {

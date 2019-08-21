@@ -40,7 +40,7 @@ class ParkManagerCoreBundle extends Bundle
     public function build(ContainerBuilder $container): void
     {
         $namespace = $this->getNamespace();
-        $path      = $this->getPath() . '/src//Doctrine/';
+        $path      = $this->getPath() . '/src/Doctrine/';
 
         $mappings = [];
 
@@ -54,12 +54,13 @@ class ParkManagerCoreBundle extends Bundle
                 $directory = $path . $basename . '/Mapping';
 
                 if (file_exists($directory)) {
-                    $mappings[$directory] = $namespace . '\\Domain\\' . $basename;
+                    $mappings[$directory] = $namespace . '\\Model\\' . $basename;
                 }
             }
         }
 
         $mappings[realpath(__DIR__ . '/Doctrine/SecurityMapping')] = 'Rollerworks\\Component\\SplitToken';
+        $mappings[realpath(__DIR__ . '/Doctrine/Mapping')] = $namespace . '\\Model';
 
         $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings));
     }

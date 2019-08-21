@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\UseCase\Client;
 
-use ParkManager\Bundle\CoreBundle\Domain\Client\Client;
-use ParkManager\Bundle\CoreBundle\Domain\Client\ClientRepository;
+use ParkManager\Bundle\CoreBundle\Model\Client\Client;
+use ParkManager\Bundle\CoreBundle\Model\Client\ClientRepository;
 
 final class RegisterClientHandler
 {

@@ -12,8 +12,8 @@ namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Client;
 
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordReset;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordResetHandler;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Event\ClientPasswordWasChanged;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Exception\PasswordResetConfirmationRejected;
+use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordWasChanged;
+use ParkManager\Bundle\CoreBundle\Model\Client\Exception\PasswordResetConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\ClientRepositoryMock;
 use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;

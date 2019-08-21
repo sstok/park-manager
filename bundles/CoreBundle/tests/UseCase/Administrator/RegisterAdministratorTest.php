@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Administrator;
 
 use ParkManager\Bundle\CoreBundle\UseCase\Administrator\RegisterAdministrator;
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorId;
-use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
+use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use PHPUnit\Framework\TestCase;
 
 /**

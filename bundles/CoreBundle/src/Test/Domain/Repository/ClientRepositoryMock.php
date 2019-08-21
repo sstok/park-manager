@@ -10,15 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Test\Domain\Repository;
 
-use ParkManager\Bundle\CoreBundle\Domain\Client\Client;
-use ParkManager\Bundle\CoreBundle\Domain\Client\ClientId;
-use ParkManager\Bundle\CoreBundle\Domain\Client\ClientRepository;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Event\ClientEmailAddressChangeWasRequested;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Event\ClientPasswordResetWasRequested;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Exception\ClientNotFound;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Exception\EmailChangeConfirmationRejected;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Exception\PasswordResetConfirmationRejected;
-use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\Client\Client;
+use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
+use ParkManager\Bundle\CoreBundle\Model\Client\ClientRepository;
+use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientEmailAddressChangeWasRequested;
+use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordResetWasRequested;
+use ParkManager\Bundle\CoreBundle\Model\Client\Exception\ClientNotFound;
+use ParkManager\Bundle\CoreBundle\Model\Client\Exception\EmailChangeConfirmationRejected;
+use ParkManager\Bundle\CoreBundle\Model\Client\Exception\PasswordResetConfirmationRejected;
+use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Test\Domain\MockRepository;
 
 final class ClientRepositoryMock implements ClientRepository

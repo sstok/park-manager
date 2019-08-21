@@ -12,13 +12,13 @@ namespace ParkManager\Bundle\CoreBundle\Doctrine\Client;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Bundle\CoreBundle\Doctrine\EntityRepository;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Client;
-use ParkManager\Bundle\CoreBundle\Domain\Client\ClientId;
-use ParkManager\Bundle\CoreBundle\Domain\Client\ClientRepository;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Exception\ClientNotFound;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Exception\EmailChangeConfirmationRejected;
-use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
-use ParkManager\Bundle\CoreBundle\Domain\Shared\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Bundle\CoreBundle\Model\Client\Client;
+use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
+use ParkManager\Bundle\CoreBundle\Model\Client\ClientRepository;
+use ParkManager\Bundle\CoreBundle\Model\Client\Exception\ClientNotFound;
+use ParkManager\Bundle\CoreBundle\Model\Client\Exception\EmailChangeConfirmationRejected;
+use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 
 /**
