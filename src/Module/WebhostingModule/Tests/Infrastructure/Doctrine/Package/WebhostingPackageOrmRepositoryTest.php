@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Tests\Infrastructure\Doctrine\Package;
 
-use ParkManager\Module\CoreModule\Test\Domain\EventSourcedRepositoryTestHelper;
-use ParkManager\Module\CoreModule\Test\Infrastructure\Doctrine\EntityRepositoryTestCase;
+use ParkManager\Bundle\CoreBundle\Test\Doctrine\EntityRepositoryTestCase;
+use ParkManager\Bundle\CoreBundle\Test\Domain\EventSourcedRepositoryTestHelper;
 use ParkManager\Module\WebhostingModule\Domain\Package\Capabilities;
 use ParkManager\Module\WebhostingModule\Domain\Package\Exception\WebhostingPackageNotFound;
 use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackage;

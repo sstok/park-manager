@@ -1,5 +1,5 @@
 services:
-    'ParkManager\Module\CoreModule\Infrastructure\Security\Guard\BrowserKitAuthenticator':
+    'ParkManager\Bundle\CoreBundle\Security\Guard\BrowserKitAuthenticator':
         autowire: true
         public: false
 
@@ -9,9 +9,9 @@ security:
     firewalls:
         admin:
             guard:
-                entry_point: 'ParkManager\Module\CoreModule\Infrastructure\Security\Guard\BrowserKitAuthenticator'
+                entry_point: 'ParkManager\Bundle\CoreBundle\Security\Guard\BrowserKitAuthenticator'
                 authenticators:
-                    - 'ParkManager\Module\CoreModule\Infrastructure\Security\Guard\BrowserKitAuthenticator'
+                    - 'ParkManager\Bundle\CoreBundle\Security\Guard\BrowserKitAuthenticator'
 
 #        client:
 #            http_basic: ~

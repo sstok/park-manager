@@ -11,6 +11,7 @@ parameters:
     level: 5
     paths:
         - ./src
+        - ./bundles
         - ./public
         - ./bin
     excludes_analyse:
@@ -20,6 +21,7 @@ parameters:
         - translations/
         - %currentWorkingDirectory%/src/Module/WebhostingModule/** # Disabled for now
         - %currentWorkingDirectory%/src/*/*/Tests/**
+        - %currentWorkingDirectory%/bundles/*/tests/**
 
     checkNullables: false # To many false positives
 

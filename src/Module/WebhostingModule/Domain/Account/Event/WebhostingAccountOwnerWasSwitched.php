@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Domain\Account\Event;
 
+use ParkManager\Bundle\CoreBundle\Domain\Shared\OwnerId;
 use ParkManager\Component\DomainEvent\DomainEvent;
-use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
 
 final class WebhostingAccountOwnerWasSwitched extends DomainEvent

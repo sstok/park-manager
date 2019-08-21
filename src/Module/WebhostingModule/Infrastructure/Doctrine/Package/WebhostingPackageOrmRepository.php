@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Module\WebhostingModule\Infrastructure\Doctrine\Package;
 
 use Doctrine\ORM\EntityManagerInterface;
+use ParkManager\Bundle\CoreBundle\Doctrine\EventSourcedEntityRepository;
 use ParkManager\Component\DomainEvent\EventEmitter;
-use ParkManager\Module\CoreModule\Infrastructure\Doctrine\EventSourcedEntityRepository;
 use ParkManager\Module\WebhostingModule\Domain\Package\Exception\WebhostingPackageNotFound;
 use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackage;
 use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackageId;
