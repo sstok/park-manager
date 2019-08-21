@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\Application\Command\Client;
 
-use ParkManager\Bundle\CoreBundle\Application\Command\Client\ConfirmPasswordReset;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordReset;
 use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 

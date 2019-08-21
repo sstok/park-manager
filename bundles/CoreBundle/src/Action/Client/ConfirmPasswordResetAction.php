@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Action\Client;
 
-use ParkManager\Bundle\CoreBundle\Application\Command\Client\ConfirmPasswordReset;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordReset;
 use ParkManager\Bundle\CoreBundle\Common\TwigResponse;
 use ParkManager\Bundle\CoreBundle\Form\Type\Security\ConfirmPasswordResetType;
 use ParkManager\Bundle\CoreBundle\Security\ClientUser;

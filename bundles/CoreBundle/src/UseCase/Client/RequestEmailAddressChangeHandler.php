@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Application\Command\Client;
+namespace ParkManager\Bundle\CoreBundle\UseCase\Client;
 
 use DateTimeImmutable;
 use ParkManager\Bundle\CoreBundle\Application\Service\Mailer\Client\EmailAddressChangeRequestMailer as ConfirmationMailer;

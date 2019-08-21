@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\Application\Command\Client;
 
-use ParkManager\Bundle\CoreBundle\Application\Command\Client\RequestPasswordReset;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestPasswordReset;
 use PHPUnit\Framework\TestCase;
 
 /**

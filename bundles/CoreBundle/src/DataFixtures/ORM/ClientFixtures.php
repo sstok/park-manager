@@ -12,8 +12,8 @@ namespace ParkManager\Bundle\CoreBundle\DataFixtures\ORM;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use ParkManager\Bundle\CoreBundle\Application\Command\BatchCommand;
-use ParkManager\Bundle\CoreBundle\Application\Command\Client\RegisterClient;
+use ParkManager\Bundle\CoreBundle\UseCase\BatchCommand;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\RegisterClient;
 use ParkManager\Bundle\CoreBundle\Domain\Client\ClientId;
 use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Security\ClientUser;

@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\Application\Command\Administrator;
 
-use ParkManager\Bundle\CoreBundle\Application\Command\Administrator\RegisterAdministrator;
+use ParkManager\Bundle\CoreBundle\UseCase\Administrator\RegisterAdministrator;
 use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorId;
 use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;
 use PHPUnit\Framework\TestCase;

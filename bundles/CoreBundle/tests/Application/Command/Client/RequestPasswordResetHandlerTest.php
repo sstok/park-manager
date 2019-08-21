@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Tests\Application\Command\Client;
 
 use DateTimeImmutable;
-use ParkManager\Bundle\CoreBundle\Application\Command\Client\RequestPasswordReset;
-use ParkManager\Bundle\CoreBundle\Application\Command\Client\RequestPasswordResetHandler;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestPasswordReset;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestPasswordResetHandler;
 use ParkManager\Bundle\CoreBundle\Application\Service\Mailer\Client\PasswordResetMailer;
 use ParkManager\Bundle\CoreBundle\Domain\Client\Client;
 use ParkManager\Bundle\CoreBundle\Domain\Client\Event\ClientPasswordResetWasRequested;

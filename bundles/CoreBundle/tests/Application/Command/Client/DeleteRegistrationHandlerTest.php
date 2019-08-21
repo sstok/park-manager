@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\Application\Command\Client;
 
-use ParkManager\Bundle\CoreBundle\Application\Command\Client\DeleteRegistration;
-use ParkManager\Bundle\CoreBundle\Application\Command\Client\DeleteRegistrationHandler;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\DeleteRegistration;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\DeleteRegistrationHandler;
 use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\ClientRepositoryMock;
 use PHPUnit\Framework\TestCase;
 

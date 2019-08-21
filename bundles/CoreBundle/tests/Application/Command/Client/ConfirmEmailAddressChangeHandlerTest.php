@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\Application\Command\Client;
 
-use ParkManager\Bundle\CoreBundle\Application\Command\Client\ConfirmEmailAddressChange;
-use ParkManager\Bundle\CoreBundle\Application\Command\Client\ConfirmEmailAddressChangeHandler;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmEmailAddressChange;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmEmailAddressChangeHandler;
 use ParkManager\Bundle\CoreBundle\Domain\Client\Client;
 use ParkManager\Bundle\CoreBundle\Domain\Client\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Domain\Shared\EmailAddress;

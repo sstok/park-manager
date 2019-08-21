@@ -66,7 +66,7 @@ return function (ContainerConfigurator $c) {
         ->tag('controller.argument_value_resolver', ['priority' => 30]);
 
     // UseCases
-    $di->load('ParkManager\\Bundle\\CoreBundle\\Application\\Command\\', __DIR__ . '/../src/Application/Command/**/*Handler.php')
+    $di->load('ParkManager\\Bundle\\CoreBundle\\UseCase\\', __DIR__ . '/../src/UseCase/**/*Handler.php')
         ->tag('messenger.message_handler', ['bus' => 'park_manager.command_bus']);
 
     // Actions

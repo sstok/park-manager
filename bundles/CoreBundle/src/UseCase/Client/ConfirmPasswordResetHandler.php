@@ -8,12 +8,12 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Application\Command\Client;
+namespace ParkManager\Bundle\CoreBundle\UseCase\Client;
 
 use ParkManager\Bundle\CoreBundle\Domain\Client\ClientRepository;
-use ParkManager\Bundle\CoreBundle\Domain\Client\Exception\EmailChangeConfirmationRejected;
+use ParkManager\Bundle\CoreBundle\Domain\Client\Exception\PasswordResetConfirmationRejected;
 
-final class ConfirmEmailAddressChangeHandler
+final class ConfirmPasswordResetHandler
 {
     /** @var ClientRepository */
     private $repository;
@@ -23,19 +23,19 @@ final class ConfirmEmailAddressChangeHandler
         $this->repository = $repository;
     }
 
-    public function __invoke(ConfirmEmailAddressChange $command): void
+    public function __invoke(ConfirmPasswordReset $command): void
     {
-        $token     = $command->token();
-        $client    = $this->repository->getByEmailAddressChangeToken($token->selector());
-        $exception = null;
+        $token       = $command->token();
+        $client      = $this->repository->getByPasswordResetToken($token->selector());
+        $exception   = null;
 
         // Cannot use finally here as the exception triggers the global exception handler
         // making the overall process unpredictable.
 
         try {
-            $client->confirmEmailChange($token);
+            $client->confirmPasswordReset($token, $command->password());
             $this->repository->save($client);
-        } catch (EmailChangeConfirmationRejected $e) {
+        } catch (PasswordResetConfirmationRejected $e) {
             $this->repository->save($client);
 
             throw $e;

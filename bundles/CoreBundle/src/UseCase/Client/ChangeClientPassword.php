@@ -8,13 +8,13 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Application\Command\Administrator;
+namespace ParkManager\Bundle\CoreBundle\UseCase\Client;
 
-use ParkManager\Bundle\CoreBundle\Domain\Administrator\AdministratorId;
+use ParkManager\Bundle\CoreBundle\Domain\Client\ClientId;
 
-final class ChangePassword
+final class ChangeClientPassword
 {
-    /** @var AdministratorId */
+    /** @var ClientId */
     private $id;
 
     /** @var string|null */
@@ -26,11 +26,11 @@ final class ChangePassword
      */
     public function __construct(string $id, ?string $password)
     {
-        $this->id       = AdministratorId::fromString($id);
+        $this->id       = ClientId::fromString($id);
         $this->password = $password;
     }
 
-    public function id(): AdministratorId
+    public function id(): ClientId
     {
         return $this->id;
     }

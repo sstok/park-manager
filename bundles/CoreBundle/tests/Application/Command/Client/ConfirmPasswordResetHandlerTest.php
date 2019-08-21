@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\Application\Command\Client;
 
-use ParkManager\Bundle\CoreBundle\Application\Command\Client\ConfirmPasswordReset;
-use ParkManager\Bundle\CoreBundle\Application\Command\Client\ConfirmPasswordResetHandler;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordReset;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordResetHandler;
 use ParkManager\Bundle\CoreBundle\Domain\Client\Event\ClientPasswordWasChanged;
 use ParkManager\Bundle\CoreBundle\Domain\Client\Exception\PasswordResetConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\ClientRepositoryMock;
