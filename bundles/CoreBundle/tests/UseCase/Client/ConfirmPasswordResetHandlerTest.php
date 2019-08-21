@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Client;
 
-use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordReset;
-use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordResetHandler;
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\PasswordResetConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\ClientRepositoryMock;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordReset;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordResetHandler;
 use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;

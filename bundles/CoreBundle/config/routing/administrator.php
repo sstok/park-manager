@@ -15,7 +15,7 @@ use ParkManager\Bundle\CoreBundle\Action\HomepageAction;
 use ParkManager\Bundle\CoreBundle\Action\SecurityLoginAction;
 use ParkManager\Bundle\CoreBundle\Action\SecurityLogoutAction;
 
-return function (RoutingConfigurator $routes) {
+return static function (RoutingConfigurator $routes) {
     $admin = $routes->collection('park_manager.admin.');
 
         // Security
@@ -28,7 +28,6 @@ return function (RoutingConfigurator $routes) {
         $security->add('logout', '/logout')
             ->controller(SecurityLogoutAction::class)
             ->methods(['GET']);
-
 
     $security->add('confirm_password_reset', '/password-reset/confirm/{token}')
         ->requirements(['token' => '.+'])// Token can contain slashes

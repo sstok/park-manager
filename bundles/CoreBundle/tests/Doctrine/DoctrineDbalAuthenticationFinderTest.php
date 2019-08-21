@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\Doctrine;
 
-use ParkManager\Bundle\CoreBundle\Security\SecurityAuthenticationData;
 use ParkManager\Bundle\CoreBundle\Doctrine\DoctrineDbalAuthenticationFinder;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorRepository;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Security\SecurityAuthenticationData;
 use ParkManager\Bundle\CoreBundle\Test\Doctrine\EntityRepositoryTestCase;
 
 /**

@@ -10,8 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Administrator;
 
-use ParkManager\Bundle\CoreBundle\UseCase\Administrator\RegisterAdministrator;
-use ParkManager\Bundle\CoreBundle\UseCase\Administrator\RegisterAdministratorHandler;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordWasChanged;
@@ -19,6 +17,8 @@ use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorWasRegi
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\AdministratorEmailAddressAlreadyInUse;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\AdministratorRepositoryMock;
+use ParkManager\Bundle\CoreBundle\UseCase\Administrator\RegisterAdministrator;
+use ParkManager\Bundle\CoreBundle\UseCase\Administrator\RegisterAdministratorHandler;
 use PHPUnit\Framework\TestCase;
 
 /**

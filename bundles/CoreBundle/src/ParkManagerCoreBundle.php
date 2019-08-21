@@ -19,13 +19,15 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use function dirname;
+use function file_exists;
 use function realpath;
 
 class ParkManagerCoreBundle extends Bundle
 {
     public function getPath(): string
     {
-        return \dirname(__DIR__);
+        return dirname(__DIR__);
     }
 
     public function getContainerExtension(): ?ExtensionInterface

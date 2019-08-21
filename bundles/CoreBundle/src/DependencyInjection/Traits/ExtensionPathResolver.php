@@ -12,6 +12,10 @@ namespace ParkManager\Bundle\CoreBundle\DependencyInjection\Traits;
 
 use LogicException;
 use ReflectionClass;
+use function dirname;
+use function realpath;
+use function sprintf;
+use function substr;
 
 trait ExtensionPathResolver
 {

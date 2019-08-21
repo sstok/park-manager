@@ -11,9 +11,9 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Console\Command;
 
 use InvalidArgumentException;
-use ParkManager\Bundle\CoreBundle\UseCase\Administrator\RegisterAdministrator;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
 use ParkManager\Bundle\CoreBundle\Security\AdministratorUser;
+use ParkManager\Bundle\CoreBundle\UseCase\Administrator\RegisterAdministrator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

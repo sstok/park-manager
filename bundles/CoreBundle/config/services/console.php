@@ -12,7 +12,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use ParkManager\Bundle\CoreBundle\Console\Command\RegisterAdministratorCommand;
 
-return function (ContainerConfigurator $c) {
+return static function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
         ->autowire()
         ->private()

@@ -14,7 +14,7 @@ use ParkManager\Bundle\CoreBundle\DependencyInjection\AutoServiceConfigurator;
 use ParkManager\Bundle\CoreBundle\Mailer\Client\EmailAddressChangeRequestMailerImp;
 use ParkManager\Bundle\CoreBundle\Mailer\Client\PasswordResetMailerImpl;
 
-return function (ContainerConfigurator $c) {
+return static function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
         ->autowire()
         ->autoconfigure(false)

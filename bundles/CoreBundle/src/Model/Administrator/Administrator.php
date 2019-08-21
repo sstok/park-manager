@@ -19,8 +19,8 @@ use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswor
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorWasRegistered;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\CannotDisableSuperAdministrator;
 use ParkManager\Bundle\CoreBundle\Model\DomainEventsCollectionTrait;
-use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
 

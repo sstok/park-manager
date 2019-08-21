@@ -16,7 +16,7 @@ use ParkManager\Bundle\CoreBundle\Security\EventListener\UserPasswordChangeListe
 use ParkManager\Bundle\CoreBundle\Security\Guard\FormAuthenticator;
 use ParkManager\Bundle\CoreBundle\Security\UserProvider;
 
-return function (ContainerConfigurator $c) {
+return static function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
         ->autowire()
         ->autoconfigure(false)

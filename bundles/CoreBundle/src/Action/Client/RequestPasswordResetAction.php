@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Action\Client;
 
-use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestPasswordReset;
 use ParkManager\Bundle\CoreBundle\Common\TwigResponse;
 use ParkManager\Bundle\CoreBundle\Form\Type\Security\RequestPasswordResetType;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestPasswordReset;
 use Rollerworks\Bundle\RouteAutofillBundle\Response\RouteRedirectResponse;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;

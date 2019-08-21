@@ -16,7 +16,7 @@ use ParkManager\Bundle\CoreBundle\Action\HomepageAction;
 use ParkManager\Bundle\CoreBundle\Action\SecurityLoginAction;
 use ParkManager\Bundle\CoreBundle\Action\SecurityLogoutAction;
 
-return function (RoutingConfigurator $routes) {
+return static function (RoutingConfigurator $routes) {
     $client = $routes->collection('park_manager.client.');
 
         // Security

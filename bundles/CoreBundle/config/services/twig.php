@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use ParkManager\Bundle\CoreBundle\Twig\AppContextGlobal;
 use ParkManager\Bundle\CoreBundle\EventListener\TwigResponseListener;
+use ParkManager\Bundle\CoreBundle\Twig\AppContextGlobal;
 
-return function (ContainerConfigurator $c) {
+return static function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
         ->autowire()
         ->autoconfigure()

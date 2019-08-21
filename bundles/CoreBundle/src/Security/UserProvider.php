@@ -11,8 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Security;
 
 use InvalidArgumentException;
-use ParkManager\Bundle\CoreBundle\Security\AuthenticationFinder;
-use ParkManager\Bundle\CoreBundle\Security\SecurityAuthenticationData;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;

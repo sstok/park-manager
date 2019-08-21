@@ -13,11 +13,13 @@
     <arg value="nps"/>
 
     <file>src</file>
+    <file>bundles</file>
     <file>.dances</file>
     <file>bin</file>
 
     <exclude-pattern>src/Migrations</exclude-pattern>
     <exclude-pattern>*/Tests/Fixtures/*</exclude-pattern>
+    <exclude-pattern>*/config/*</exclude-pattern> <!-- Needs refining; no importing namespaced functions -->
     <exclude-pattern>*/Resources/*</exclude-pattern> <!-- Needs refining; no importing namespaced functions -->
 
     <rule ref="Doctrine">

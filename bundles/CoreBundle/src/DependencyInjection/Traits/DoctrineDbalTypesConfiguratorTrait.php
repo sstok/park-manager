@@ -15,7 +15,6 @@ use ReflectionClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
 use function class_exists;
-use function file_exists;
 use function is_subclass_of;
 use function mb_substr;
 use function preg_replace;

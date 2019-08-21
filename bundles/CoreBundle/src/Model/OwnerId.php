@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Model;
 
 use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
-use ParkManager\Bundle\CoreBundle\Model\UuidTrait;
 
 /**
  * OwnerId is used to "soft link" an entity to either a specific AbstractUser, or system.

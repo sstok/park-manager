@@ -11,10 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Tests\Security;
 
 use InvalidArgumentException;
-use ParkManager\Bundle\CoreBundle\Security\AuthenticationFinder;
-use ParkManager\Bundle\CoreBundle\Security\SecurityAuthenticationData;
 use ParkManager\Bundle\CoreBundle\Security\AdministratorUser;
+use ParkManager\Bundle\CoreBundle\Security\AuthenticationFinder;
 use ParkManager\Bundle\CoreBundle\Security\ClientUser;
+use ParkManager\Bundle\CoreBundle\Security\SecurityAuthenticationData;
 use ParkManager\Bundle\CoreBundle\Security\UserProvider;
 use PHPUnit\Framework\TestCase;
 use stdClass;

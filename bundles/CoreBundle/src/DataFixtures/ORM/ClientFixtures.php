@@ -12,11 +12,11 @@ namespace ParkManager\Bundle\CoreBundle\DataFixtures\ORM;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use ParkManager\Bundle\CoreBundle\UseCase\BatchCommand;
-use ParkManager\Bundle\CoreBundle\UseCase\Client\RegisterClient;
 use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Security\ClientUser;
+use ParkManager\Bundle\CoreBundle\UseCase\BatchCommand;
+use ParkManager\Bundle\CoreBundle\UseCase\Client\RegisterClient;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 

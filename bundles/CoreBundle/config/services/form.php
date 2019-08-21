@@ -12,10 +12,10 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use ParkManager\Bundle\CoreBundle\Form\Type\DefaultMessageBusExtension;
 use ParkManager\Bundle\CoreBundle\Form\Type\Security\ChangePasswordType;
-use ParkManager\Bundle\CoreBundle\Form\Type\Security\SplitTokenType;
 use ParkManager\Bundle\CoreBundle\Form\Type\Security\SecurityUserHashedPasswordType;
+use ParkManager\Bundle\CoreBundle\Form\Type\Security\SplitTokenType;
 
-return function (ContainerConfigurator $c) {
+return static function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
         ->autowire()
         ->autoconfigure()

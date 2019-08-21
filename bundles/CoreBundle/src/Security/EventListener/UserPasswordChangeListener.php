@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Security\EventListener;
 
+use ParkManager\Bundle\CoreBundle\Event\UserPasswordWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordWasChanged;
-use ParkManager\Bundle\CoreBundle\Event\UserPasswordWasChanged;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as EventDispatcher;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface as MessageSubscriber;
 

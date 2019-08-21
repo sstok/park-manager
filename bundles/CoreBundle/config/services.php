@@ -10,18 +10,18 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use ParkManager\Bundle\CoreBundle\Doctrine\DoctrineDbalAuthenticationFinder;
-use ParkManager\Bundle\CoreBundle\Http\ArgumentResolver\FormFactoryResolver;
-use Rollerworks\Component\SplitToken\Argon2SplitTokenFactory;
+use ParkManager\Bundle\CoreBundle\Common\ApplicationContext;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\AutoServiceConfigurator;
 use ParkManager\Bundle\CoreBundle\Doctrine\Administrator\DoctrineOrmAdministratorRepository;
 use ParkManager\Bundle\CoreBundle\Doctrine\Client\DoctrineOrmClientRepository;
-use ParkManager\Bundle\CoreBundle\Http\ArgumentResolver\ApplicationContextResolver;
-use ParkManager\Bundle\CoreBundle\Http\SectionsLoader;
-use ParkManager\Bundle\CoreBundle\Common\ApplicationContext;
+use ParkManager\Bundle\CoreBundle\Doctrine\DoctrineDbalAuthenticationFinder;
 use ParkManager\Bundle\CoreBundle\EventListener\ApplicationSectionListener;
+use ParkManager\Bundle\CoreBundle\Http\ArgumentResolver\ApplicationContextResolver;
+use ParkManager\Bundle\CoreBundle\Http\ArgumentResolver\FormFactoryResolver;
+use ParkManager\Bundle\CoreBundle\Http\SectionsLoader;
+use Rollerworks\Component\SplitToken\Argon2SplitTokenFactory;
 
-return function (ContainerConfigurator $c) {
+return static function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
         ->autoconfigure()
         ->autowire()
