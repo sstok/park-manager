@@ -12,7 +12,7 @@ namespace ParkManager\Module\WebhostingModule\Infrastructure\Doctrine\Package;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Component\DomainEvent\EventEmitter;
-use ParkManager\Module\CoreModule\Infrastructure\Doctrine\EventSourcedEntityRepository;
+use ParkManager\Module\CoreModule\Doctrine\EventSourcedEntityRepository;
 use ParkManager\Module\WebhostingModule\Domain\Package\Exception\WebhostingPackageNotFound;
 use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackage;
 use ParkManager\Module\WebhostingModule\Domain\Package\WebhostingPackageId;

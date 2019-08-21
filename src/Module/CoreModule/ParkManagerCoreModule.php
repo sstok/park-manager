@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\CoreModule;
 
-use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\DependencyExtension;
-use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\EnvVariableResource;
-use ParkManager\Module\CoreModule\Infrastructure\DependencyInjection\Module\AbstractParkManagerModule;
-use ParkManager\Module\CoreModule\Infrastructure\Http\CookiesRequestMatcher;
+use ParkManager\Module\CoreModule\DependencyInjection\DependencyExtension;
+use ParkManager\Module\CoreModule\DependencyInjection\EnvVariableResource;
+use ParkManager\Module\CoreModule\DependencyInjection\Module\AbstractParkManagerModule;
+use ParkManager\Module\CoreModule\Http\CookiesRequestMatcher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpFoundation\RequestMatcher;
@@ -60,7 +60,8 @@ class ParkManagerCoreModule extends AbstractParkManagerModule
     protected function getDoctrineOrmMappings(): array
     {
         $mapping = parent::getDoctrineOrmMappings();
-        $mapping[realpath(__DIR__ . '/Infrastructure/Doctrine/SecurityMapping')] = 'Rollerworks\\Component\\SplitToken';
+        $mapping[realpath(__DIR__ . '/Doctrine/SecurityMapping')] = 'Rollerworks\\Component\\SplitToken';
+
         return $mapping;
     }
 }

@@ -12,7 +12,7 @@ namespace ParkManager\Module\WebhostingModule\Tests\Infrastructure\Doctrine\Doma
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
-use ParkManager\Module\CoreModule\Test\Infrastructure\Doctrine\EntityRepositoryTestCase;
+use ParkManager\Module\CoreModule\Test\Doctrine\EntityRepositoryTestCase;
 use ParkManager\Module\WebhostingModule\Domain\Account\Exception\WebhostingAccountNotFound;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccount;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;

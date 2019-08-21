@@ -12,7 +12,7 @@ namespace ParkManager\Module\WebhostingModule\Infrastructure\Doctrine\Account;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Component\DomainEvent\EventEmitter;
-use ParkManager\Module\CoreModule\Infrastructure\Doctrine\EventSourcedEntityRepository;
+use ParkManager\Module\CoreModule\Doctrine\EventSourcedEntityRepository;
 use ParkManager\Module\WebhostingModule\Domain\Account\Exception\CannotRemoveActiveWebhostingAccount;
 use ParkManager\Module\WebhostingModule\Domain\Account\Exception\WebhostingAccountNotFound;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccount;

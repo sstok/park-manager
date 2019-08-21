@@ -108,7 +108,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/",
+            "ParkManager\\Module\\CoreModule\\": "src/Module/CoreModule",
             "ParkManager\\": "src/"
         },
         "exclude-from-classmap": [

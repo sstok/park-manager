@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Module\WebhostingModule\Infrastructure\Doctrine\Account;
 
-use ParkManager\Module\CoreModule\Infrastructure\Doctrine\DomainIdType;
+use ParkManager\Module\CoreModule\Doctrine\DomainIdType;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccountId;
 
 final class WebhostingAccountIdType extends DomainIdType

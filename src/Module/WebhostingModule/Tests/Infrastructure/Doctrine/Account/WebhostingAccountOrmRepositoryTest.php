@@ -12,8 +12,8 @@ namespace ParkManager\Module\WebhostingModule\Tests\Infrastructure\Doctrine\Acco
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Module\CoreModule\Domain\Shared\OwnerId;
+use ParkManager\Module\CoreModule\Test\Doctrine\EntityRepositoryTestCase;
 use ParkManager\Module\CoreModule\Test\Domain\EventSourcedRepositoryTestHelper;
-use ParkManager\Module\CoreModule\Test\Infrastructure\Doctrine\EntityRepositoryTestCase;
 use ParkManager\Module\WebhostingModule\Domain\Account\Exception\CannotRemoveActiveWebhostingAccount;
 use ParkManager\Module\WebhostingModule\Domain\Account\Exception\WebhostingAccountNotFound;
 use ParkManager\Module\WebhostingModule\Domain\Account\WebhostingAccount;
