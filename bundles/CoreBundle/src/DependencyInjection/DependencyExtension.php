@@ -21,6 +21,7 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use function class_exists;
 
+/** @internal */
 final class DependencyExtension extends Extension implements PrependExtensionInterface
 {
     use ExtensionPathResolver;

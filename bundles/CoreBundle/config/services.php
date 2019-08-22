@@ -10,16 +10,13 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use ParkManager\Bundle\CoreBundle\Context\ApplicationContext;
-use ParkManager\Bundle\CoreBundle\DependencyInjection\AutoServiceConfigurator;
-use ParkManager\Bundle\CoreBundle\Doctrine\Administrator\DoctrineOrmAdministratorRepository;
-use ParkManager\Bundle\CoreBundle\Doctrine\Client\DoctrineOrmClientRepository;
 use ParkManager\Bundle\CoreBundle\Doctrine\DoctrineDbalAuthenticationFinder;
 use ParkManager\Bundle\CoreBundle\EventListener\ApplicationSectionListener;
 use ParkManager\Bundle\CoreBundle\ArgumentResolver\ApplicationContextResolver;
 use ParkManager\Bundle\CoreBundle\ArgumentResolver\FormFactoryResolver;
 use ParkManager\Bundle\CoreBundle\Routing\SectionsLoader;
 use Rollerworks\Component\SplitToken\Argon2SplitTokenFactory;
+use Rollerworks\Component\SplitToken\SplitTokenFactory;
 
 return static function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
@@ -28,11 +25,11 @@ return static function (ContainerConfigurator $c) {
         ->private()
         ->bind('$eventBus', ref('park_manager.event_bus'));
 
-    $autoDi = new AutoServiceConfigurator($di);
+    $di->load('ParkManager\\Bundle\\CoreBundle\\', __DIR__ . '/../src/*')
+        ->exclude([__DIR__ . '/../src/{DependencyInjection,Entity,Test,Http,UseCase,DataFixtures}']);
 
-    $autoDi->set(Argon2SplitTokenFactory::class);
-    $autoDi->set('park_manager.repository.administrator', DoctrineOrmAdministratorRepository::class);
-    $autoDi->set('park_manager.repository.client_user', DoctrineOrmClientRepository::class);
+    $di->set(Argon2SplitTokenFactory::class)
+        ->alias(SplitTokenFactory::class, Argon2SplitTokenFactory::class);
 
     // Authentication finders
     $di->set('park_manager.query_finder.administrator', DoctrineDbalAuthenticationFinder::class)
@@ -47,8 +44,6 @@ return static function (ContainerConfigurator $c) {
         ->arg('$primaryHost', '%park_manager.config.primary_host%')
         ->arg('$isSecure', '%park_manager.config.is_secure%');
 
-    $autoDi->set('park_manager.application_context', ApplicationContext::class);
-
     $di->set(ApplicationSectionListener::class)
         ->tag('kernel.event_subscriber')
         ->tag('kernel.reset', ['method' => 'reset'])
@@ -62,13 +57,8 @@ return static function (ContainerConfigurator $c) {
         ->tag('controller.argument_value_resolver', ['priority' => 30]);
 
     $di->set(ApplicationContextResolver::class)
-        ->args([ref('park_manager.application_context')])
         ->tag('controller.argument_value_resolver', ['priority' => 30]);
 
-    // UseCases
     $di->load('ParkManager\\Bundle\\CoreBundle\\UseCase\\', __DIR__ . '/../src/UseCase/**/*Handler.php')
         ->tag('messenger.message_handler', ['bus' => 'park_manager.command_bus']);
-
-    // Actions
-    $di->load('ParkManager\\Bundle\\CoreBundle\\Action\\', __DIR__ . '/../src/Action/**/*Action.php');
 };
