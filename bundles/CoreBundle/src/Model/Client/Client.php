@@ -13,6 +13,7 @@ namespace ParkManager\Bundle\CoreBundle\Model\Client;
 use Assert\Assertion;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientEmailAddressChangeWasRequested;
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientNameWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordResetWasRequested;
@@ -26,37 +27,85 @@ use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
 
+/**
+ * @ORM\Entity()
+ * @ORM\Table(
+ *     name="client",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="client_email_address_uniq", columns={"email_address"}),
+ *         @ORM\UniqueConstraint(name="client_email_canonical_uniq", columns={"email_canonical"}),
+ *     }
+ * )
+ */
 class Client implements RecordsDomainEvents
 {
     use DomainEventsCollectionTrait;
 
     public const DEFAULT_ROLES = ['ROLE_USER'];
 
-    /** @var ClientId */
+    /**
+     * @ORM\Id()
+     * @ORM\Column(type="park_manager_client_id")
+     * @ORM\GeneratedValue(strategy="NONE")
+     *
+     * @var ClientId
+     */
     protected $id;
 
-    /** @var EmailAddress */
+    /**
+     * @ORM\Embedded(class="ParkManager\Bundle\CoreBundle\Model\EmailAddress", columnPrefix="email_")
+     *
+     * @var EmailAddress
+     */
     protected $email;
 
-    /** @var string */
+    /**
+     * @ORM\Column(name="display_name", type="string")
+     *
+     * @var string
+     */
     protected $displayName;
 
-    /** @var bool */
+    /**
+     * @ORM\Column(name="login_enabled", type="boolean")
+     *
+     * @var bool
+     */
     protected $loginEnabled = true;
 
-    /** @var Collection */
+    /**
+     * @ORM\Column(type="array_collection")
+     *
+     * @var Collection
+     */
     protected $roles;
 
-    /** @var SplitTokenValueHolder|null */
+    /**
+     * @ORM\Embedded(class="Rollerworks\Component\SplitToken\SplitTokenValueHolder", columnPrefix="email_change_")
+     *
+     * @var SplitTokenValueHolder|null
+     */
     protected $emailAddressChangeToken;
 
-    /** @var string|null */
+    /**
+     * @ORM\Column(name="auth_password", type="text", nullable=true)
+     *
+     * @var string|null
+     */
     protected $password;
 
-    /** @var bool */
+    /**
+     * @ORM\Column(name="password_reset_enabled", type="boolean")
+     *
+     * @var bool
+     */
     protected $passwordResetEnabled = true;
 
-    /** @var SplitTokenValueHolder|null */
+    /**
+     * @ORM\Embedded(class="Rollerworks\Component\SplitToken\SplitTokenValueHolder", columnPrefix="password_reset_")
+     *
+     * @var SplitTokenValueHolder|null
+     */
     protected $passwordResetToken;
 
     protected function __construct(ClientId $id, EmailAddress $email, string $displayName)

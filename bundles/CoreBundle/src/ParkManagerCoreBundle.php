@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle;
 
-use DirectoryIterator;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\DependencyExtension;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\EnvVariableResource;
@@ -20,8 +19,6 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use function dirname;
-use function file_exists;
-use function realpath;
 
 class ParkManagerCoreBundle extends Bundle
 {
@@ -41,30 +38,9 @@ class ParkManagerCoreBundle extends Bundle
 
     public function build(ContainerBuilder $container): void
     {
-        $namespace = $this->getNamespace();
-        $path      = $this->getPath() . '/src/Doctrine/';
-
-        $mappings = [];
-
-        if (file_exists($path)) {
-            foreach (new DirectoryIterator($path) as $node) {
-                if ($node->isDot()) {
-                    continue;
-                }
-
-                $basename  = $node->getBasename();
-                $directory = $path . $basename . '/Mapping';
-
-                if (file_exists($directory)) {
-                    $mappings[$directory] = $namespace . '\\Model\\' . $basename;
-                }
-            }
-        }
-
-        $mappings[realpath(__DIR__ . '/Doctrine/SecurityMapping')] = 'Rollerworks\\Component\\SplitToken';
-        $mappings[realpath(__DIR__ . '/Doctrine/Mapping')] = $namespace . '\\Model';
-
-        $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mappings));
+        $path = $this->getPath() . '/src/Model/';
+        $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver([$this->getPath() . '/src/Doctrine/SecurityMapping' => 'Rollerworks\\Component\\SplitToken']));
+        $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver([$path => $this->getNamespace() . '\\Model'], [$path]));
     }
 
     public static function setAppConfiguration(ContainerBuilder $container): void

@@ -13,6 +13,7 @@ namespace ParkManager\Bundle\CoreBundle\Model\Administrator;
 use Assert\Assertion;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorNameWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordResetWasRequested;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordWasChanged;
@@ -25,31 +26,69 @@ use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
 
 /**
+ * @ORM\Entity()
+ * @ORM\Table(name="administrator",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="administrator_email_address_uniq", columns={"email_address"}),
+ *         @ORM\UniqueConstraint(name="administrator_email_canonical_uniq", columns={"email_canonical"}),
+ *     }
+ * )
+ *
  * @final
  */
 class Administrator implements RecordsDomainEvents
 {
     use DomainEventsCollectionTrait;
 
-    /** @var AdministratorId */
+    /**
+     * @ORM\Id()
+     * @ORM\Column(type="park_manager_administrator_id")
+     * @ORM\GeneratedValue(strategy="NONE")
+     *
+     * @var AdministratorId
+     */
     private $id;
 
-    /** @var EmailAddress */
+    /**
+     * @ORM\Embedded(class="ParkManager\Bundle\CoreBundle\Model\EmailAddress", columnPrefix="email_")
+     *
+     * @var EmailAddress
+     */
     private $email;
 
-    /** @var string */
+    /**
+     * @ORM\Column(name="display_name", type="string")
+     *
+     * @var string
+     */
     private $displayName;
 
-    /** @var bool */
+    /**
+     * @ORM\Column(name="login_enabled", type="boolean")
+     *
+     * @var bool
+     */
     private $loginEnabled = true;
 
-    /** @var Collection */
+    /**
+     * @ORM\Column(type="array_collection")
+     *
+     * @var Collection
+     */
     private $roles;
 
-    /** @var string|null */
+    /**
+     * @ORM\Column(name="auth_password", type="text", nullable=true)
+     *
+     * @var string|null
+     */
     private $password;
 
-    /** @var SplitTokenValueHolder|null */
+    /**
+     * @ORM\Embedded(class="Rollerworks\Component\SplitToken\SplitTokenValueHolder", columnPrefix="password_reset_")
+     *
+     * @var SplitTokenValueHolder|null
+     */
     private $passwordResetToken;
 
     public const DEFAULT_ROLES = ['ROLE_ADMIN'];

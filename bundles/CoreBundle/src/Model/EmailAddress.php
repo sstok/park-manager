@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Model;
 
+use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Bundle\CoreBundle\Model\Exception\MalformedEmailAddress;
 use Symfony\Component\Mime\Address;
 use const IDNA_DEFAULT;
@@ -22,12 +23,41 @@ use function mb_strrpos;
 use function mb_substr;
 use function sprintf;
 
+/**
+ * @ORM\Embeddable()
+ */
 final class EmailAddress
 {
+    /**
+     * Length by official standard.
+     *
+     * @ORM\Column(type="string", type="string", length=254, nullable=false)
+     *
+     * @var string
+     */
     private $address;
+
+    /**
+     * @ORM\Column(type="string", type="string", length=254, nullable=false)
+     *
+     * @var string
+     */
     private $canonical;
+
+    /**
+     * @ORM\Column(type="string", type="string", length=254, nullable=true)
+     *
+     * @var string
+     */
     private $name;
 
+    /**
+     * Unmapped.
+     *
+     * Label is already part of the original value and unimportant.
+     *
+     * @var string
+     */
     private $label = '';
 
     public function __construct(string $address, ?string $name = null)
