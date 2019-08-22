@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\EventListener;
 
-use ParkManager\Bundle\CoreBundle\Common\TwigResponse;
 use ParkManager\Bundle\CoreBundle\EventListener\TwigResponseListener;
+use ParkManager\Bundle\CoreBundle\Http\Response\TwigResponse;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;

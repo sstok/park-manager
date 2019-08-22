@@ -8,31 +8,31 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Http\ArgumentResolver;
+namespace ParkManager\Bundle\CoreBundle\ArgumentResolver;
 
 use Generator;
-use ParkManager\Bundle\CoreBundle\Common\ApplicationContext;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-final class ApplicationContextResolver implements ArgumentValueResolverInterface
+final class FormFactoryResolver implements ArgumentValueResolverInterface
 {
-    /** @var ApplicationContext */
-    private $context;
+    /** @var FormFactoryInterface */
+    private $formFactory;
 
-    public function __construct(ApplicationContext $context)
+    public function __construct(FormFactoryInterface $formFactory)
     {
-        $this->context = $context;
+        $this->formFactory = $formFactory;
     }
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        return ! $argument->isVariadic() && $argument->getType() === ApplicationContext::class;
+        return ! $argument->isVariadic() && $argument->getType() === FormFactoryInterface::class;
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument): Generator
     {
-        yield $this->context;
+        yield $this->formFactory;
     }
 }

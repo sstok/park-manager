@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\EventListener;
 
-use ParkManager\Bundle\CoreBundle\Common\ApplicationContext;
+use ParkManager\Bundle\CoreBundle\Context\ApplicationContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;

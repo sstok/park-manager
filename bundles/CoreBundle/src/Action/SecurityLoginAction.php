@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Action;
 
-use ParkManager\Bundle\CoreBundle\Common\ApplicationContext;
-use ParkManager\Bundle\CoreBundle\Common\TwigResponse;
+use ParkManager\Bundle\CoreBundle\Context\ApplicationContext;
+use ParkManager\Bundle\CoreBundle\Http\Response\TwigResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;

@@ -8,10 +8,10 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Tests\Common\Form\ConfirmationHandler;
+namespace ParkManager\Bundle\CoreBundle\Tests\Form\ConfirmationHandler;
 
 use BadMethodCallException;
-use ParkManager\Bundle\CoreBundle\Common\Form\ConfirmationHandler\CheckedConfirmationHandler;
+use ParkManager\Bundle\CoreBundle\Form\ConfirmationHandler\CheckedConfirmationHandler;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;

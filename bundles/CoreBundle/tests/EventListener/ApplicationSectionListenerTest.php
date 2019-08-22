@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\EventListener;
 
-use ParkManager\Bundle\CoreBundle\Common\ApplicationContext;
+use ParkManager\Bundle\CoreBundle\Context\ApplicationContext;
 use ParkManager\Bundle\CoreBundle\EventListener\ApplicationSectionListener;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;

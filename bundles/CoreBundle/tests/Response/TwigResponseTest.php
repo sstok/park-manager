@@ -8,9 +8,9 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Tests\Common;
+namespace ParkManager\Bundle\CoreBundle\Tests\Response;
 
-use ParkManager\Bundle\CoreBundle\Common\TwigResponse;
+use ParkManager\Bundle\CoreBundle\Http\Response\TwigResponse;
 use PHPUnit\Framework\TestCase;
 
 /**

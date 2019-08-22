@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\EventListener;
 
-use ParkManager\Bundle\CoreBundle\Common\TwigResponse;
+use ParkManager\Bundle\CoreBundle\Http\Response\TwigResponse;
 use Psr\Container\ContainerInterface as Container;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;

@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Common\Form\ConfirmationHandler;
+namespace ParkManager\Bundle\CoreBundle\Form\ConfirmationHandler;
 
 use BadMethodCallException;
 use Symfony\Component\HttpFoundation\Request;

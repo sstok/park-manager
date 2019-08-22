@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Action;
 
-use ParkManager\Bundle\CoreBundle\Common\TwigResponse;
+use ParkManager\Bundle\CoreBundle\Http\Response\TwigResponse;
 
 final class HomepageAction
 {

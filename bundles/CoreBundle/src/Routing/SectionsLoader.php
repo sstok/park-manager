@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Http;
+namespace ParkManager\Bundle\CoreBundle\Routing;
 
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
