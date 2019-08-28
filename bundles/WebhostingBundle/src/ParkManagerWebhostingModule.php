@@ -10,19 +10,37 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\WebhostingBundle;
 
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Doctrine\DBAL\Types\Type;
-use ParkManager\Bundle\WebhostingBundle\Infrastructure\DependencyInjection\Compiler\CapabilitiesPass;
-use ParkManager\Bundle\WebhostingBundle\Infrastructure\Doctrine\Package\WebhostingCapabilitiesType;
-use ParkManager\Bundle\WebhostingBundle\Infrastructure\Service\Package\CapabilitiesFactory;
+use ParkManager\Bundle\WebhostingBundle\DependencyInjection\Compiler\CapabilitiesPass;
+use ParkManager\Bundle\WebhostingBundle\DependencyInjection\DependencyExtension;
+use ParkManager\Bundle\WebhostingBundle\Doctrine\Package\WebhostingCapabilitiesType;
+use ParkManager\Bundle\WebhostingBundle\Package\CapabilitiesFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use function realpath;
+use function dirname;
 
 final class ParkManagerWebhostingModule extends Bundle
 {
+    public function getPath(): string
+    {
+        return dirname(__DIR__);
+    }
+
+    public function getContainerExtension(): ?ExtensionInterface
+    {
+        if ($this->extension === null) {
+            $this->extension = new DependencyExtension();
+        }
+
+        return $this->extension;
+    }
+
     public function build(ContainerBuilder $container): void
     {
-        parent::build($container);
+        $path = $this->getPath() . '/src/Model/';
+        $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver([$path => $this->getNamespace() . '\\Model'], [$path]));
 
         $container->addCompilerPass(new CapabilitiesPass());
     }
@@ -34,8 +52,8 @@ final class ParkManagerWebhostingModule extends Bundle
         }
 
         /** @var WebhostingCapabilitiesType $type */
-        $type = Type::getType('webhosting_capabilities');
-        $type->setCapabilitiesFactory($this->container->get(CapabilitiesFactory::class));
+        //$type = Type::getType('webhosting_capabilities');
+        //$type->setCapabilitiesFactory($this->container->get(CapabilitiesFactory::class));
     }
 
     public function shutdown(): void
@@ -45,14 +63,5 @@ final class ParkManagerWebhostingModule extends Bundle
             $type = Type::getType('webhosting_capabilities');
             $type->setCapabilitiesFactory(null);
         }
-    }
-
-    protected function getDoctrineOrmMappings(): array
-    {
-        $mapping = parent::getDoctrineOrmMappings();
-
-        $mapping[realpath(__DIR__ . '/Infrastructure/Doctrine/RootMapping')] = 'ParkManager\Module\WebhostingModule\Domain';
-
-        return $mapping;
     }
 }

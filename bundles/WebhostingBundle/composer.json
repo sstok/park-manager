@@ -1,7 +1,7 @@
 {
-    "name": "park-manager/webhosting-module",
-    "type": "park-manager-module",
-    "description": "Park-Manager Webhosting Module",
+    "name": "park-manager/webhosting-bundle",
+    "type": "symfony-bundle",
+    "description": "Park-Manager WebhostingBundle",
     "homepage": "http://www.park-manager.com/",
     "license": "MPL-2.0",
     "authors": [
@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "park-manager/core-module": "^0.3"
+        "park-manager/core-bundle": "^0.3"
     },
     "config": {
         "preferred-install": {
@@ -26,15 +26,15 @@
     },
     "autoload": {
         "psr-4": {
-            "ParkManager\\Module\\WebhostingModule\\": ""
+            "ParkManager\\Bundle\\WebhostingBundle\\": "src/"
         },
         "exclude-from-classmap": [
-            "Tests/"
+            "tests/"
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "ParkManager\\Module\\WebhostingModule\\Tests\\": "Tests"
+            "ParkManager\\Bundle\\WebhostingBundle\\": "tests/"
         }
     }
 }
