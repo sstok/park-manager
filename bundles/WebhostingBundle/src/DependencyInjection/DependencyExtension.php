@@ -37,8 +37,8 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
         $this->initBundlePath();
 
         $loader = $this->getServiceLoader($container, $this->bundlePath . '/config');
-        //$loader->load('services.php');
-        //$loader->load('services/*.php', 'glob');
+        $loader->load('services.php');
+        $loader->load('services/*.php', 'glob');
 
         if (class_exists(DoctrineFixturesBundle::class)) {
             $loader->load('data_fixtures.php');

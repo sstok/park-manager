@@ -52,8 +52,8 @@ final class ParkManagerWebhostingModule extends Bundle
         }
 
         /** @var WebhostingCapabilitiesType $type */
-        //$type = Type::getType('webhosting_capabilities');
-        //$type->setCapabilitiesFactory($this->container->get(CapabilitiesFactory::class));
+        $type = Type::getType('webhosting_capabilities');
+        $type->setCapabilitiesFactory($this->container->get(CapabilitiesFactory::class));
     }
 
     public function shutdown(): void
