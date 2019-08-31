@@ -10,6 +10,10 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use ParkManager\Bundle\CoreBundle\Context\ApplicationContext;
+use ParkManager\Bundle\CoreBundle\DependencyInjection\AutoServiceConfigurator;
+use ParkManager\Bundle\CoreBundle\Doctrine\Administrator\DoctrineOrmAdministratorRepository;
+use ParkManager\Bundle\CoreBundle\Doctrine\Client\DoctrineOrmClientRepository;
 use ParkManager\Bundle\CoreBundle\Doctrine\DoctrineDbalAuthenticationFinder;
 use ParkManager\Bundle\CoreBundle\EventListener\ApplicationSectionListener;
 use ParkManager\Bundle\CoreBundle\ArgumentResolver\ApplicationContextResolver;
@@ -25,11 +29,14 @@ return static function (ContainerConfigurator $c) {
         ->private()
         ->bind('$eventBus', ref('park_manager.event_bus'));
 
+    $autoDi = new AutoServiceConfigurator($di);
+
     $di->load('ParkManager\\Bundle\\CoreBundle\\', __DIR__ . '/../src/*')
         ->exclude([__DIR__ . '/../src/{DependencyInjection,Entity,Test,Http,UseCase,DataFixtures}']);
 
-    $di->set(Argon2SplitTokenFactory::class)
-        ->alias(SplitTokenFactory::class, Argon2SplitTokenFactory::class);
+    $autoDi->set(Argon2SplitTokenFactory::class);
+    $autoDi->set('park_manager.repository.administrator', DoctrineOrmAdministratorRepository::class);
+    $autoDi->set('park_manager.repository.client_user', DoctrineOrmClientRepository::class);
 
     // Authentication finders
     $di->set('park_manager.query_finder.administrator', DoctrineDbalAuthenticationFinder::class)
@@ -43,6 +50,8 @@ return static function (ContainerConfigurator $c) {
         ->arg('$loader', ref('routing.resolver'))
         ->arg('$primaryHost', '%park_manager.config.primary_host%')
         ->arg('$isSecure', '%park_manager.config.is_secure%');
+
+    $autoDi->set('park_manager.application_context', ApplicationContext::class);
 
     $di->set(ApplicationSectionListener::class)
         ->tag('kernel.event_subscriber')
