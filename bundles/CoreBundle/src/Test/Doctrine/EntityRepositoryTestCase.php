@@ -19,37 +19,6 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
     {
         parent::setUp();
         self::bootKernel();
-
-        $this->setUpDatabaseTransaction();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->tearDownDatabaseTransaction();
-        parent::tearDown();
-    }
-
-    protected function assertInTransaction(?string $manager = null): void
-    {
-        self::assertTrue($this->getEntityManager($manager)->getConnection()->getTransactionNestingLevel() > 0, 'Expected to be in a transactional');
-    }
-
-    protected function setUpDatabaseTransaction(?string $manager = null): void
-    {
-        $em = $this->getEntityManager($manager);
-        while ($em->getConnection()->getTransactionNestingLevel() > 0) {
-            $em->rollback();
-        }
-
-        $em->beginTransaction();
-    }
-
-    protected function tearDownDatabaseTransaction(?string $manager = null): void
-    {
-        $em = $this->getEntityManager($manager);
-        while ($em->getConnection()->getTransactionNestingLevel() > 0) {
-            $em->rollback();
-        }
     }
 
     protected function getEntityManager(?string $manager = 'doctrine.orm.default_entity_manager'): EntityManagerInterface

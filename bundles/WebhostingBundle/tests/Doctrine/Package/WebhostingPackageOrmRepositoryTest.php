@@ -65,7 +65,6 @@ final class WebhostingPackageOrmRepositoryTest extends EntityRepositoryTestCase
         $package = $repository->get($id);
 
         $repository->remove($package);
-        $this->assertInTransaction();
 
         $repository->get($id2);
 
@@ -92,7 +91,6 @@ final class WebhostingPackageOrmRepositoryTest extends EntityRepositoryTestCase
         $package->withMetadata(['title' => 'Supper Gold XL']);
 
         $repository->save($package);
-        $this->assertInTransaction();
     }
 
     private function setUpPackage2(WebhostingPackageOrmRepository $repository): void
@@ -103,6 +101,5 @@ final class WebhostingPackageOrmRepositoryTest extends EntityRepositoryTestCase
                 new Capabilities(new MonthlyTrafficQuota(50))
             )
         );
-        $this->assertInTransaction();
     }
 }

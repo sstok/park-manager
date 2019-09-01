@@ -17,8 +17,8 @@ use ParkManager\Bundle\WebhostingBundle\Model\DomainName\Exception\CannotTransfe
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="domain_name", schema="webhosting", uniqueConstraints={
- *         @ORM\UniqueConstraint(name="domain_name_primary_marking_idx", columns={"account", "is_primary"}),
+ * @ORM\Table(name="domain_name", schema="webhosting", indexes={
+ *         @ORM\Index(name="domain_name_primary_marking_idx", columns={"account", "is_primary"}),
  *     }
  * )
  */

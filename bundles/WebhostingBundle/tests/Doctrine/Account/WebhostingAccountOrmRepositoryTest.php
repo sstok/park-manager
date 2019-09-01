@@ -100,7 +100,6 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
 
         // Later another process will perform the removal operation
         $repository->remove($account);
-        $this->assertInTransaction();
 
         // Assert actually removed
         $this->expectException(WebhostingAccountNotFound::class);
@@ -140,7 +139,6 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
                 new Capabilities()
             )
         );
-        $this->assertInTransaction();
     }
 
     private function setUpAccount2(WebhostingAccountOrmRepository $repository): void
@@ -152,6 +150,5 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
                 $this->package
             )
         );
-        $this->assertInTransaction();
     }
 }
