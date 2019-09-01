@@ -2,7 +2,7 @@
 
 <!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/7.2/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.4/phpunit.xsd"
          colors="true" verbose="true"
          bootstrap="config/bootstrap.php"
          beStrictAboutOutputDuringTests="true"
@@ -14,14 +14,13 @@
 >
     <testsuites>
         <testsuite name="Park-Manager Test Suite">
-            <!--<directory>src/Module/*/Tests</directory>-->
-
-            <directory>src/Module/CoreModule/Tests</directory>
+            <directory>bundles/*/tests</directory>
         </testsuite>
     </testsuites>
 
     <groups>
         <exclude>
+            <group>slow</group>
             <group>functional</group>
         </exclude>
     </groups>
@@ -36,19 +35,20 @@
 
     <filter>
         <whitelist>
-            <directory>src/</directory>
+            <directory>bundles/</directory>
             <exclude>
                 <directory>vendor/</directory>
                 <directory>vendor-bin/</directory>
+                <directory>src/</directory>
                 <directory>templates/</directory>
                 <directory>translations/</directory>
                 <directory>public/</directory>
                 <directory>var/</directory>
                 <directory>etc/</directory>
                 <directory>config/</directory>
-                <directory>src/Module/*/templates</directory>
-                <directory>src/Module/*/translations</directory>
-                <directory>src/Module/*/Tests</directory>
+                <directory>bundles/*/templates</directory>
+                <directory>bundles/*/translations</directory>
+                <directory>bundles/*/tests</directory>
             </exclude>
         </whitelist>
     </filter>
