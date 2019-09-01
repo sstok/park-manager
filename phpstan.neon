@@ -25,6 +25,7 @@ parameters:
 
     symfony:
         container_xml_path: %currentWorkingDirectory%/var/cache/dev/srcParkManager_KernelDevDebugContainer.xml
+        constant_hassers: false
 
     ignoreErrors:
         - '#__construct\(\) does not call parent constructor from .+#' # Perfectly valid reason.
