@@ -15,7 +15,7 @@ return [
     Rollerworks\Bundle\RouteAutofillBundle\RollerworksRouteAutofillBundle::class => ['all' => true],
     Rollerworks\Bundle\MessageBusFormBundle\RollerworksMessageBusFormBundle::class => ['all' => true],
     ParkManager\Bundle\CoreBundle\ParkManagerCoreBundle::class => ['all' => true],
-    ParkManager\Module\WebhostingModule\ParkManagerWebhostingModule::class => ['disabled' => true],
+    ParkManager\Bundle\WebhostingBundle\ParkManagerWebhostingModule::class => ['all' => true],
     DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
     Liip\TestFixturesBundle\LiipTestFixturesBundle::class => ['dev' => true, 'test' => true],

@@ -109,6 +109,7 @@
     "autoload": {
         "psr-4": {
             "ParkManager\\Bundle\\CoreBundle\\": "bundles/CoreBundle/src",
+            "ParkManager\\Bundle\\WebhostingBundle\\": "bundles/WebhostingBundle/src",
             "ParkManager\\": "src/"
         },
         "exclude-from-classmap": [
@@ -117,7 +118,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "ParkManager\\Bundle\\CoreBundle\\Tests\\": "bundles/CoreBundle/tests/"
+            "ParkManager\\Bundle\\CoreBundle\\Tests\\": "bundles/CoreBundle/tests/",
+            "ParkManager\\Bundle\\WebhostingBundle\\Tests\\": "bundles/WebhostingBundle/tests/"
         }
     },
     "minimum-stability": "dev",

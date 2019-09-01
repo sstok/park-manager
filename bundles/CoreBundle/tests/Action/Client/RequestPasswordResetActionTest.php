@@ -10,8 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\Action\Client;
 
-use Liip\TestFixturesBundle\Test\FixturesTrait;
-use ParkManager\Bundle\CoreBundle\DataFixtures\ORM\ClientFixtures;
 use Symfony\Component\Panther\PantherTestCase;
 
 /**
@@ -19,13 +17,9 @@ use Symfony\Component\Panther\PantherTestCase;
  */
 final class RequestPasswordResetActionTest extends PantherTestCase
 {
-    use FixturesTrait;
-
     /** @test */
     public function it_requests_a_password_reset()
     {
-        $this->loadFixtures([ClientFixtures::class]);
-
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/password-reset');
@@ -50,8 +44,6 @@ final class RequestPasswordResetActionTest extends PantherTestCase
     /** @test */
     public function it_requests_a_password_reset_when_one_was_already_requested()
     {
-        $this->loadFixtures([ClientFixtures::class]);
-
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/password-reset');

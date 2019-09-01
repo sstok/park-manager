@@ -10,8 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\Action\Client;
 
-use Liip\TestFixturesBundle\Test\FixturesTrait;
-use ParkManager\Bundle\CoreBundle\DataFixtures\ORM\ClientFixtures;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Panther\PantherTestCase;
 
@@ -20,13 +18,10 @@ use Symfony\Component\Panther\PantherTestCase;
  */
 final class ConfirmPasswordResetActionTest extends PantherTestCase
 {
-    use FixturesTrait;
-
     /** @test */
     public function it_resets_a_password()
     {
         $client = static::createClient();
-        $this->loadFixtures([ClientFixtures::class]);
 
         $client->request('GET', '/password-reset');
         $client->submitForm('submit', ['request_user_password_reset[email]' => 'jane@example.com']);
@@ -49,7 +44,6 @@ final class ConfirmPasswordResetActionTest extends PantherTestCase
     public function it_fails_with_an_invalid_token()
     {
         $client = static::createClient();
-        $this->loadFixtures([ClientFixtures::class]);
 
         $client->request('GET', '/password-reset/confirm/FooBangBar0100010101');
 
