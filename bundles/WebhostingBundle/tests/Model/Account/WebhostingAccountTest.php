@@ -15,15 +15,15 @@ use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 use ParkManager\Bundle\CoreBundle\Test\Domain\EventsRecordingEntityAssertionTrait;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\Event\WebhostingAccountCapabilitiesWasChanged;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\Event\WebhostingAccountOwnerWasSwitched;
-use ParkManager\Bundle\WebhostingBundle\Model\Account\Event\WebhostingAccountPackageAssignmentWasChanged;
+use ParkManager\Bundle\WebhostingBundle\Model\Account\Event\WebhostingAccountPlanAssignmentWasChanged;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\Event\WebhostingAccountWasMarkedForRemoval;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\Event\WebhostingAccountWasRegistered;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccount;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\Capabilities;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\WebhostingPackage;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\WebhostingPackageId;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PackageCapability\MonthlyTrafficQuota;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\MonthlyTrafficQuota;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -38,21 +38,21 @@ final class WebhostingAccountTest extends TestCase
     private const OWNER_ID1 = '2a9cd25c-97ca-11e7-9683-acbc32b58315';
     private const OWNER_ID2 = 'ce18c388-9ba2-11e7-b15f-acbc32b58315';
 
-    private const PACKAGE_ID_1 = '654665ea-9869-11e7-9563-acbc32b58315';
-    private const PACKAGE_ID_2 = 'f5788aae-9aed-11e7-a3c9-acbc32b58315';
+    private const PLAN_ID_1 = '654665ea-9869-11e7-9563-acbc32b58315';
+    private const PLAN_ID_2 = 'f5788aae-9aed-11e7-a3c9-acbc32b58315';
 
     /** @test */
     public function it_registers_an_webhosting_account(): void
     {
         $id           = WebhostingAccountId::create();
         $capabilities = new Capabilities();
-        $package      = $this->createWebhostingPackage($capabilities);
+        $plan      = $this->createWebhostingPlan($capabilities);
 
-        $account = WebhostingAccount::register($id, $owner = OwnerId::fromString(self::OWNER_ID1), $package);
+        $account = WebhostingAccount::register($id, $owner = OwnerId::fromString(self::OWNER_ID1), $plan);
 
         self::assertEquals($id, $account->id());
         self::assertEquals($owner, $account->owner());
-        self::assertSame($package, $account->package());
+        self::assertSame($plan, $account->plan());
         self::assertSame($capabilities, $account->capabilities());
         self::assertDomainEvents($account, [new WebhostingAccountWasRegistered($id, $owner)]);
     }
@@ -68,77 +68,77 @@ final class WebhostingAccountTest extends TestCase
         self::assertEquals($id, $account->id());
         self::assertEquals($owner, $account->owner());
         self::assertSame($capabilities, $account->capabilities());
-        self::assertNull($account->package());
+        self::assertNull($account->plan());
         self::assertDomainEvents($account, [new WebhostingAccountWasRegistered($id, $owner)]);
     }
 
     /** @test */
-    public function it_allows_changing_package_assignment(): void
+    public function it_allows_changing_plan_assignment(): void
     {
         $id2           = WebhostingAccountId::create();
         $capabilities1 = new Capabilities();
         $capabilities2 = new Capabilities(new MonthlyTrafficQuota(50));
-        $package1      = $this->createWebhostingPackage($capabilities1);
-        $package2      = $this->createWebhostingPackage($capabilities2, self::PACKAGE_ID_2);
-        $account1      = WebhostingAccount::register(WebhostingAccountId::create(), OwnerId::fromString(self::OWNER_ID1), $package1);
-        $account2      = WebhostingAccount::register($id2, OwnerId::fromString(self::OWNER_ID1), $package1);
+        $plan1      = $this->createWebhostingPlan($capabilities1);
+        $plan2      = $this->createWebhostingPlan($capabilities2, self::PLAN_ID_2);
+        $account1      = WebhostingAccount::register(WebhostingAccountId::create(), OwnerId::fromString(self::OWNER_ID1), $plan1);
+        $account2      = WebhostingAccount::register($id2, OwnerId::fromString(self::OWNER_ID1), $plan1);
         self::resetDomainEvents($account1, $account2);
 
-        $account1->assignPackage($package1);
-        $account2->assignPackage($package2);
+        $account1->assignPlan($plan1);
+        $account2->assignPlan($plan2);
 
-        self::assertSame($package1, $account1->package(), 'Package should not change');
-        self::assertSame($package1->capabilities(), $account1->capabilities(), 'Capabilities should not change');
+        self::assertSame($plan1, $account1->plan(), 'Plan should not change');
+        self::assertSame($plan1->capabilities(), $account1->capabilities(), 'Capabilities should not change');
         self::assertNoDomainEvents($account1);
 
-        self::assertSame($package2, $account2->package());
-        self::assertSame($package1->capabilities(), $account2->capabilities());
-        self::assertDomainEvents($account2, [new WebhostingAccountPackageAssignmentWasChanged($id2, $package2)]);
+        self::assertSame($plan2, $account2->plan());
+        self::assertSame($plan1->capabilities(), $account2->capabilities());
+        self::assertDomainEvents($account2, [new WebhostingAccountPlanAssignmentWasChanged($id2, $plan2)]);
     }
 
     /** @test */
-    public function it_allows_changing_package_assignment_with_capabilities(): void
+    public function it_allows_changing_plan_assignment_with_capabilities(): void
     {
         $id2           = WebhostingAccountId::create();
         $capabilities1 = new Capabilities();
         $capabilities2 = new Capabilities(new MonthlyTrafficQuota(50));
-        $package1      = $this->createWebhostingPackage($capabilities1);
-        $package2      = $this->createWebhostingPackage($capabilities2, self::PACKAGE_ID_2);
-        $account1      = WebhostingAccount::register(WebhostingAccountId::create(), OwnerId::fromString(self::OWNER_ID1), $package1);
-        $account2      = WebhostingAccount::register($id2, OwnerId::fromString(self::OWNER_ID1), $package1);
+        $plan1      = $this->createWebhostingPlan($capabilities1);
+        $plan2      = $this->createWebhostingPlan($capabilities2, self::PLAN_ID_2);
+        $account1      = WebhostingAccount::register(WebhostingAccountId::create(), OwnerId::fromString(self::OWNER_ID1), $plan1);
+        $account2      = WebhostingAccount::register($id2, OwnerId::fromString(self::OWNER_ID1), $plan1);
         self::resetDomainEvents($account1, $account2);
 
-        $account1->assignPackageWithCapabilities($package1);
-        $account2->assignPackageWithCapabilities($package2);
+        $account1->assignPlanWithCapabilities($plan1);
+        $account2->assignPlanWithCapabilities($plan2);
 
-        self::assertSame($package1, $account1->package(), 'Package should not change');
-        self::assertSame($package1->capabilities(), $account1->capabilities(), 'Capabilities should not change');
+        self::assertSame($plan1, $account1->plan(), 'Plan should not change');
+        self::assertSame($plan1->capabilities(), $account1->capabilities(), 'Capabilities should not change');
         self::assertNoDomainEvents($account1);
 
-        self::assertSame($package2, $account2->package());
-        self::assertSame($package2->capabilities(), $account2->capabilities());
+        self::assertSame($plan2, $account2->plan());
+        self::assertSame($plan2->capabilities(), $account2->capabilities());
         self::assertDomainEvents(
             $account2,
-            [WebhostingAccountPackageAssignmentWasChanged::withCapabilities($id2, $package2)]
+            [WebhostingAccountPlanAssignmentWasChanged::withCapabilities($id2, $plan2)]
         );
     }
 
     /** @test */
-    public function it_updates_account_when_assigning_package_capabilities_are_different(): void
+    public function it_updates_account_when_assigning_plan_capabilities_are_different(): void
     {
         $id      = WebhostingAccountId::create();
-        $package = $this->createWebhostingPackage(new Capabilities());
-        $account = WebhostingAccount::register($id, OwnerId::fromString(self::OWNER_ID1), $package);
+        $plan = $this->createWebhostingPlan(new Capabilities());
+        $account = WebhostingAccount::register($id, OwnerId::fromString(self::OWNER_ID1), $plan);
         self::resetDomainEvents($account);
 
-        $package->changeCapabilities($newCapabilities = new Capabilities(new MonthlyTrafficQuota(50)));
-        $account->assignPackageWithCapabilities($package);
+        $plan->changeCapabilities($newCapabilities = new Capabilities(new MonthlyTrafficQuota(50)));
+        $account->assignPlanWithCapabilities($plan);
 
-        self::assertSame($package, $account->package());
-        self::assertSame($package->capabilities(), $account->capabilities());
+        self::assertSame($plan, $account->plan());
+        self::assertSame($plan->capabilities(), $account->capabilities());
         self::assertDomainEvents(
             $account,
-            [WebhostingAccountPackageAssignmentWasChanged::withCapabilities($id, $package)]
+            [WebhostingAccountPlanAssignmentWasChanged::withCapabilities($id, $plan)]
         );
     }
 
@@ -146,13 +146,13 @@ final class WebhostingAccountTest extends TestCase
     public function it_allows_assigning_custom_specification(): void
     {
         $id      = WebhostingAccountId::create();
-        $package = $this->createWebhostingPackage(new Capabilities());
-        $account = WebhostingAccount::register($id, OwnerId::fromString(self::OWNER_ID1), $package);
+        $plan = $this->createWebhostingPlan(new Capabilities());
+        $account = WebhostingAccount::register($id, OwnerId::fromString(self::OWNER_ID1), $plan);
         self::resetDomainEvents($account);
 
         $account->assignCustomCapabilities($newCapabilities = new Capabilities(new MonthlyTrafficQuota(50)));
 
-        self::assertNull($account->package());
+        self::assertNull($account->plan());
         self::assertSame($newCapabilities, $account->capabilities());
         self::assertDomainEvents($account, [new WebhostingAccountCapabilitiesWasChanged($id, $newCapabilities)]);
     }
@@ -166,7 +166,7 @@ final class WebhostingAccountTest extends TestCase
 
         $account->assignCustomCapabilities($newCapabilities = new Capabilities(new MonthlyTrafficQuota(50)));
 
-        self::assertNull($account->package());
+        self::assertNull($account->plan());
         self::assertSame($newCapabilities, $account->capabilities());
         self::assertDomainEvents($account, [new WebhostingAccountCapabilitiesWasChanged($id, $newCapabilities)]);
     }
@@ -181,7 +181,7 @@ final class WebhostingAccountTest extends TestCase
 
         $account->assignCustomCapabilities($capabilities);
 
-        self::assertNull($account->package());
+        self::assertNull($account->plan());
         self::assertSame($capabilities, $account->capabilities());
         self::assertNoDomainEvents($account);
     }
@@ -192,12 +192,12 @@ final class WebhostingAccountTest extends TestCase
         $account1 = WebhostingAccount::register(
             WebhostingAccountId::fromString(self::ACCOUNT_ID),
             OwnerId::fromString(self::OWNER_ID1),
-            $this->createWebhostingPackage(new Capabilities())
+            $this->createWebhostingPlan(new Capabilities())
         );
         $account2 = WebhostingAccount::register(
             $id2 = WebhostingAccountId::fromString(self::ACCOUNT_ID),
             OwnerId::fromString(self::OWNER_ID1),
-            $this->createWebhostingPackage(new Capabilities())
+            $this->createWebhostingPlan(new Capabilities())
         );
         self::resetDomainEvents($account1, $account2);
 
@@ -217,12 +217,12 @@ final class WebhostingAccountTest extends TestCase
         $account1 = WebhostingAccount::register(
             WebhostingAccountId::fromString(self::ACCOUNT_ID),
             OwnerId::fromString(self::OWNER_ID1),
-            $this->createWebhostingPackage(new Capabilities())
+            $this->createWebhostingPlan(new Capabilities())
         );
         $account2 = WebhostingAccount::register(
             $id2 = WebhostingAccountId::fromString(self::ACCOUNT_ID),
             OwnerId::fromString(self::OWNER_ID1),
-            $this->createWebhostingPackage(new Capabilities())
+            $this->createWebhostingPlan(new Capabilities())
         );
         self::resetDomainEvents($account1, $account2);
 
@@ -240,12 +240,12 @@ final class WebhostingAccountTest extends TestCase
         $account1 = WebhostingAccount::register(
             WebhostingAccountId::fromString(self::ACCOUNT_ID),
             OwnerId::fromString(self::OWNER_ID1),
-            $this->createWebhostingPackage(new Capabilities())
+            $this->createWebhostingPlan(new Capabilities())
         );
         $account2 = WebhostingAccount::register(
             $id2 = WebhostingAccountId::fromString(self::ACCOUNT_ID),
             OwnerId::fromString(self::OWNER_ID1),
-            $this->createWebhostingPackage(new Capabilities())
+            $this->createWebhostingPlan(new Capabilities())
         );
         self::resetDomainEvents($account1, $account2);
 
@@ -266,8 +266,8 @@ final class WebhostingAccountTest extends TestCase
         self::assertFalse($account2->isExpired($date->modify('+2 days')));
     }
 
-    private function createWebhostingPackage(Capabilities $capabilities, string $id = self::PACKAGE_ID_1): WebhostingPackage
+    private function createWebhostingPlan(Capabilities $capabilities, string $id = self::PLAN_ID_1): WebhostingPlan
     {
-        return WebhostingPackage::create(WebhostingPackageId::fromString($id), $capabilities);
+        return WebhostingPlan::create(WebhostingPlanId::fromString($id), $capabilities);
     }
 }

@@ -12,7 +12,7 @@ namespace ParkManager\Bundle\WebhostingBundle\Tests\Model\Account\Event;
 
 use ParkManager\Bundle\WebhostingBundle\Model\Account\Event\WebhostingAccountCapabilitiesWasChanged;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
 use PHPUnit\Framework\TestCase;
 
 /**

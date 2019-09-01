@@ -15,25 +15,25 @@ use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountRepositor
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\WebhostingDomainName;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\WebhostingDomainNameRepository;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\WebhostingPackageRepository;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanRepository;
 
 final class RegisterWebhostingAccountHandler
 {
     private $accountRepository;
-    private $packageRepository;
+    private $planRepository;
     private $domainNameRepository;
 
-    public function __construct(WebhostingAccountRepository $accountRepository, WebhostingPackageRepository $packageRepository, WebhostingDomainNameRepository $domainNameRepository)
+    public function __construct(WebhostingAccountRepository $accountRepository, WebhostingPlanRepository $planRepository, WebhostingDomainNameRepository $domainNameRepository)
     {
         $this->accountRepository    = $accountRepository;
-        $this->packageRepository    = $packageRepository;
+        $this->planRepository       = $planRepository;
         $this->domainNameRepository = $domainNameRepository;
     }
 
     public function __invoke(RegisterWebhostingAccount $command): void
     {
         $domainName = $command->domainName();
-        $packageId  = $command->package();
+        $planId     = $command->plan();
 
         $currentRegistration = $this->domainNameRepository->findByFullName($domainName);
 
@@ -41,11 +41,11 @@ final class RegisterWebhostingAccountHandler
             throw DomainNameAlreadyInUse::byAccountId($domainName, $currentRegistration->account()->id());
         }
 
-        if ($packageId !== null) {
+        if ($planId !== null) {
             $account = WebhostingAccount::register(
                 $command->id(),
                 $command->owner(),
-                $this->packageRepository->get($packageId)
+                $this->planRepository->get($planId)
             );
         } else {
             $account = WebhostingAccount::registerWithCustomCapabilities(

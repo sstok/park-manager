@@ -13,8 +13,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\AutoServiceConfigurator;
 use ParkManager\Bundle\WebhostingBundle\Doctrine\Account\WebhostingAccountOrmRepository;
 use ParkManager\Bundle\WebhostingBundle\Doctrine\DomainName\WebhostingDomainNameOrmRepository;
-use ParkManager\Bundle\WebhostingBundle\Doctrine\Package\WebhostingPackageOrmRepository;
-use ParkManager\Bundle\WebhostingBundle\Package\CapabilitiesFactory;
+use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\WebhostingPlanOrmRepository;
+use ParkManager\Bundle\WebhostingBundle\Plan\CapabilitiesFactory;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
@@ -38,5 +38,5 @@ return function (ContainerConfigurator $c) {
 
     $autoDi->set(WebhostingAccountOrmRepository::class);
     $autoDi->set(WebhostingDomainNameOrmRepository::class);
-    $autoDi->set(WebhostingPackageOrmRepository::class);
+    $autoDi->set(WebhostingPlanOrmRepository::class);
 };

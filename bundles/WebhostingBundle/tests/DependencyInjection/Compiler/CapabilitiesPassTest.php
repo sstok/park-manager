@@ -12,9 +12,9 @@ namespace ParkManager\Bundle\WebhostingBundle\Tests\DependencyInjection\Compiler
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use ParkManager\Bundle\WebhostingBundle\DependencyInjection\Compiler\CapabilitiesPass;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PackageCapability\MonthlyTrafficQuota;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PackageCapability\MonthlyTrafficQuotaApplier;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PackageCapability\MonthlyTrafficQuotaGuard;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\MonthlyTrafficQuota;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\MonthlyTrafficQuotaApplier;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\MonthlyTrafficQuotaGuard;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
@@ -29,13 +29,13 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
         $this->compile();
 
         $this->assertContainerBuilderNotHasService(MonthlyTrafficQuota::class);
-        $this->assertContainerBuilderHasParameter('park_manager.webhosting.package_capabilities', []);
+        $this->assertContainerBuilderHasParameter('park_manager.webhosting.plan_capabilities', []);
         $this->assertContainerBuilderHasServiceLocator(
-            'park_manager.webhosting.package_capability_guards',
+            'park_manager.webhosting.plan_capabilty_guards',
             []
         );
         $this->assertContainerBuilderHasServiceLocator(
-            'park_manager.webhosting.package_capability_configuration_appliers',
+            'park_manager.webhosting.plan_capabilty_configuration_appliers',
             []
         );
     }
@@ -51,15 +51,15 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
         $this->compile();
 
         $this->assertContainerBuilderNotHasService(MonthlyTrafficQuota::class);
-        $this->assertContainerBuilderHasParameter('park_manager.webhosting.package_capabilities', [
+        $this->assertContainerBuilderHasParameter('park_manager.webhosting.plan_capabilities', [
             'MonthlyTrafficQuota' => MonthlyTrafficQuota::class,
         ]);
         $this->assertContainerBuilderHasServiceLocator(
-            'park_manager.webhosting.package_capability_guards',
+            'park_manager.webhosting.plan_capabilty_guards',
             ['MonthlyTrafficQuota' => MonthlyTrafficQuotaGuard::class]
         );
         $this->assertContainerBuilderHasServiceLocator(
-            'park_manager.webhosting.package_capability_configuration_appliers',
+            'park_manager.webhosting.plan_capabilty_configuration_appliers',
             []
         );
     }
@@ -75,15 +75,15 @@ final class CapabilitiesPassTest extends AbstractCompilerPassTestCase
         $this->compile();
 
         $this->assertContainerBuilderNotHasService(MonthlyTrafficQuota::class);
-        $this->assertContainerBuilderHasParameter('park_manager.webhosting.package_capabilities', [
+        $this->assertContainerBuilderHasParameter('park_manager.webhosting.plan_capabilities', [
             'MonthlyTrafficQuota' => MonthlyTrafficQuota::class,
         ]);
         $this->assertContainerBuilderHasServiceLocator(
-            'park_manager.webhosting.package_capability_guards',
+            'park_manager.webhosting.plan_capabilty_guards',
             []
         );
         $this->assertContainerBuilderHasServiceLocator(
-            'park_manager.webhosting.package_capability_configuration_appliers',
+            'park_manager.webhosting.plan_capabilty_configuration_appliers',
             ['MonthlyTrafficQuota' => MonthlyTrafficQuotaApplier::class]
         );
     }

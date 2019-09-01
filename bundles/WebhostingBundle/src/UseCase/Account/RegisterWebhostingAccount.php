@@ -13,32 +13,32 @@ namespace ParkManager\Bundle\WebhostingBundle\UseCase\Account;
 use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\Capabilities;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\WebhostingPackageId;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 
 final class RegisterWebhostingAccount
 {
     private $id;
     private $domainName;
     private $owner;
-    private $package;
+    private $plan;
     private $capabilities;
 
-    private function __construct(string $id, string $owner, DomainName $domainName, ?string $package, ?Capabilities $capabilities)
+    private function __construct(string $id, string $owner, DomainName $domainName, ?string $planId, ?Capabilities $capabilities)
     {
         $this->id           = WebhostingAccountId::fromString($id);
         $this->domainName   = $domainName;
         $this->capabilities = $capabilities;
         $this->owner        = OwnerId::fromString($owner);
 
-        if ($package !== null) {
-            $this->package = WebhostingPackageId::fromString($package);
+        if ($planId !== null) {
+            $this->plan = WebhostingPlanId::fromString($planId);
         }
     }
 
-    public static function withPackage(string $id, DomainName $domainName, string $owner, string $packageId): self
+    public static function withPlan(string $id, DomainName $domainName, string $owner, string $planId): self
     {
-        return new self($id, $owner, $domainName, $packageId, null);
+        return new self($id, $owner, $domainName, $planId, null);
     }
 
     public static function withCustomCapabilities(string $id, DomainName $domainName, string $owner, Capabilities $capabilities): self
@@ -61,9 +61,9 @@ final class RegisterWebhostingAccount
         return $this->capabilities;
     }
 
-    public function package(): ?WebhostingPackageId
+    public function plan(): ?WebhostingPlanId
     {
-        return $this->package;
+        return $this->plan;
     }
 
     public function domainName(): DomainName

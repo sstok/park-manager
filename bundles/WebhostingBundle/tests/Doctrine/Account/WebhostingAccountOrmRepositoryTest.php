@@ -19,10 +19,10 @@ use ParkManager\Bundle\WebhostingBundle\Model\Account\Exception\CannotRemoveActi
 use ParkManager\Bundle\WebhostingBundle\Model\Account\Exception\WebhostingAccountNotFound;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccount;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\Capabilities;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\WebhostingPackage;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\WebhostingPackageId;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PackageCapability\MonthlyTrafficQuota;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\MonthlyTrafficQuota;
 
 /**
  * @internal
@@ -34,30 +34,30 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
     use EventSourcedRepositoryTestHelper;
 
     private const OWNER_ID1   = '3f8da982-a528-11e7-a2da-acbc32b58315';
-    private const PACKAGE_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
+    private const PLAN_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
 
     private const ACCOUNT_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
     private const ACCOUNT_ID2 = '47f6db14-a69c-11e7-be13-acbc32b58315';
 
     /** @var Capabilities */
-    private $packageCapabilities;
+    private $planCapabilities;
 
-    /** @var WebhostingPackage */
-    private $package;
+    /** @var WebhostingPlan */
+    private $plan;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->packageCapabilities = new Capabilities(new MonthlyTrafficQuota(50));
-        $this->package             = WebhostingPackage::create(
-            WebhostingPackageId::fromString(self::PACKAGE_ID1),
-            $this->packageCapabilities
+        $this->planCapabilities = new Capabilities(new MonthlyTrafficQuota(50));
+        $this->plan             = WebhostingPlan::create(
+            WebhostingPlanId::fromString(self::PLAN_ID1),
+            $this->planCapabilities
         );
 
         $em = $this->getEntityManager();
         $em->transactional(function (EntityManagerInterface $em) {
-            $em->persist($this->package);
+            $em->persist($this->plan);
         });
     }
 
@@ -76,12 +76,12 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         self::assertEquals($id, $account->id());
         self::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account->owner());
         self::assertEquals(new Capabilities(), $account->capabilities());
-        self::assertNull($account->package());
+        self::assertNull($account->plan());
 
         self::assertEquals($id2, $account2->id());
         self::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account2->owner());
-        self::assertEquals($this->packageCapabilities, $account2->capabilities());
-        self::assertEquals($this->package, $account2->package());
+        self::assertEquals($this->planCapabilities, $account2->capabilities());
+        self::assertEquals($this->plan, $account2->plan());
     }
 
     /** @test */
@@ -147,7 +147,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
             WebhostingAccount::register(
                 WebhostingAccountId::fromString(self::ACCOUNT_ID2),
                 OwnerId::fromString(self::OWNER_ID1),
-                $this->package
+                $this->plan
             )
         );
     }

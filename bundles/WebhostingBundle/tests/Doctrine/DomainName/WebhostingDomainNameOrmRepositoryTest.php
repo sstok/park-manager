@@ -22,7 +22,7 @@ use ParkManager\Bundle\WebhostingBundle\Model\DomainName\Exception\CannotRemoveP
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\Exception\WebhostingDomainNameNotFound;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\WebhostingDomainName;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\WebhostingDomainNameId;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
 
 /**
  * @internal

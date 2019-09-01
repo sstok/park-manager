@@ -15,9 +15,9 @@ use ParkManager\Bundle\CoreBundle\DependencyInjection\Traits\DoctrineDbalTypesCo
 use ParkManager\Bundle\CoreBundle\DependencyInjection\Traits\ExtensionPathResolver;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\Traits\RoutesImporterTrait;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\Traits\ServiceLoaderTrait;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\Capability;
-use ParkManager\Bundle\WebhostingBundle\Package\CapabilityGuard;
-use ParkManager\Bundle\WebhostingBundle\Package\PackageConfigurationApplier;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capability;
+use ParkManager\Bundle\WebhostingBundle\Plan\CapabilityConfigurationApplier;
+use ParkManager\Bundle\WebhostingBundle\Plan\CapabilityGuard;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -48,7 +48,7 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
             ->addTag('park_manager.webhosting_capability');
         $container->registerForAutoconfiguration(CapabilityGuard::class)
             ->addTag('park_manager.webhosting_capability_guard');
-        $container->registerForAutoconfiguration(PackageConfigurationApplier::class)
+        $container->registerForAutoconfiguration(CapabilityConfigurationApplier::class)
             ->addTag('park_manager.webhosting_capability_config_applier');
     }
 

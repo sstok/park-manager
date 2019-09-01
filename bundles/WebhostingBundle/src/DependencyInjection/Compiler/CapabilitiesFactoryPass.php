@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\WebhostingBundle\DependencyInjection\Compiler;
 
-use ParkManager\Bundle\WebhostingBundle\Package\CapabilitiesFactory;
+use ParkManager\Bundle\WebhostingBundle\Plan\CapabilitiesFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -18,13 +18,13 @@ final class CapabilitiesFactoryPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (! $container->has(CapabilitiesFactory::class) || ! $container->hasParameter('park_manager.webhosting.package_capabilities')) {
+        if (! $container->has(CapabilitiesFactory::class) || ! $container->hasParameter('park_manager.webhosting.plan_capabilities')) {
             return;
         }
 
         $capabilitiesById = [];
 
-        foreach ($container->getParameter('park_manager.webhosting.package_capabilities') as $name => $class) {
+        foreach ($container->getParameter('park_manager.webhosting.plan_capabilities') as $name => $class) {
             $capabilitiesById[$class::id()] = $class;
         }
 

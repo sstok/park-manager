@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\WebhostingBundle\DependencyInjection\Compiler;
 
-use ParkManager\Bundle\WebhostingBundle\Model\Package\Capability;
-use ParkManager\Bundle\WebhostingBundle\Package\CapabilityGuard;
-use ParkManager\Bundle\WebhostingBundle\Package\PackageConfigurationApplier;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capability;
+use ParkManager\Bundle\WebhostingBundle\Plan\CapabilityConfigurationApplier;
+use ParkManager\Bundle\WebhostingBundle\Plan\CapabilityGuard;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -42,14 +42,14 @@ final class CapabilitiesPass implements CompilerPassInterface
         $this->collectCapabilities($container);
 
         $container->setAlias(
-            'park_manager.webhosting.package_capability_guards',
+            'park_manager.webhosting.plan_capabilty_guards',
             (string) ServiceLocatorTagPass::register($container, $this->guardServices)
         );
         $container->setAlias(
-            'park_manager.webhosting.package_capability_configuration_appliers',
+            'park_manager.webhosting.plan_capabilty_configuration_appliers',
             (string) ServiceLocatorTagPass::register($container, $this->applierServices)
         );
-        $container->setParameter('park_manager.webhosting.package_capabilities', $this->capabilities);
+        $container->setParameter('park_manager.webhosting.plan_capabilities', $this->capabilities);
     }
 
     private function collectCapabilityGuards(ContainerBuilder $container): void
@@ -65,7 +65,7 @@ final class CapabilitiesPass implements CompilerPassInterface
     {
         foreach ($container->findTaggedServiceIds(self::CAPABILITY_CONFIG_APPLIER_TAG) as $class => $tags) {
             $name = $this->getClassName($class, 'Applier');
-            $this->assertServiceClass($name, $class, PackageConfigurationApplier::class);
+            $this->assertServiceClass($name, $class, CapabilityConfigurationApplier::class);
             $this->applierServices[$name] = new Reference($class);
         }
     }

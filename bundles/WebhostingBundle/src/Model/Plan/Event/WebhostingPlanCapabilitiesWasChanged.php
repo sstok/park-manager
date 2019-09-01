@@ -8,23 +8,23 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\WebhostingBundle\Model\Account\Event;
+namespace ParkManager\Bundle\WebhostingBundle\Model\Plan\Event;
 
-use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 
-final class WebhostingAccountCapabilitiesWasChanged
+final class WebhostingPlanCapabilitiesWasChanged
 {
     private $id;
     private $capabilities;
 
-    public function __construct(WebhostingAccountId $id, Capabilities $capabilities)
+    public function __construct(WebhostingPlanId $id, Capabilities $capabilities)
     {
         $this->id           = $id;
         $this->capabilities = $capabilities;
     }
 
-    public function id(): WebhostingAccountId
+    public function id(): WebhostingPlanId
     {
         return $this->id;
     }

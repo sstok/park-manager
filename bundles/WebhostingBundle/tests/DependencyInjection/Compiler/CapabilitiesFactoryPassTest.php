@@ -12,8 +12,8 @@ namespace ParkManager\Bundle\WebhostingBundle\Tests\DependencyInjection\Compiler
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use ParkManager\Bundle\WebhostingBundle\DependencyInjection\Compiler\CapabilitiesFactoryPass;
-use ParkManager\Bundle\WebhostingBundle\Package\CapabilitiesFactory;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PackageCapability\MonthlyTrafficQuota;
+use ParkManager\Bundle\WebhostingBundle\Plan\CapabilitiesFactory;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\MonthlyTrafficQuota;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -25,7 +25,7 @@ final class CapabilitiesFactoryPassTest extends AbstractCompilerPassTestCase
     public function it_compiles_with_no_CapabilitiesFactory_registered(): void
     {
         $this->container->setParameter(
-            'park_manager.webhosting.package_capabilities',
+            'park_manager.webhosting.plan_capabilities',
             ['MonthlyTrafficQuota' => MonthlyTrafficQuota::class]
         );
 
@@ -38,7 +38,7 @@ final class CapabilitiesFactoryPassTest extends AbstractCompilerPassTestCase
     public function it_sets_CapabilitiesFactory_mapping(): void
     {
         $this->container->setParameter(
-            'park_manager.webhosting.package_capabilities',
+            'park_manager.webhosting.plan_capabilities',
             ['MonthlyTrafficQuota' => MonthlyTrafficQuota::class]
         );
         $this->container->register(CapabilitiesFactory::class);

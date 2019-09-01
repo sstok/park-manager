@@ -14,8 +14,8 @@ use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappi
 use Doctrine\DBAL\Types\Type;
 use ParkManager\Bundle\WebhostingBundle\DependencyInjection\Compiler\CapabilitiesPass;
 use ParkManager\Bundle\WebhostingBundle\DependencyInjection\DependencyExtension;
-use ParkManager\Bundle\WebhostingBundle\Doctrine\Package\WebhostingCapabilitiesType;
-use ParkManager\Bundle\WebhostingBundle\Package\CapabilitiesFactory;
+use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\WebhostingCapabilitiesType;
+use ParkManager\Bundle\WebhostingBundle\Plan\CapabilitiesFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

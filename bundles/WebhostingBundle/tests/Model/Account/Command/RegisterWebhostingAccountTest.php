@@ -13,9 +13,9 @@ namespace ParkManager\Bundle\WebhostingBundle\Tests\Model\Account\Command;
 use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\Capabilities;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\WebhostingPackageId;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PackageCapability\MonthlyTrafficQuota;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\MonthlyTrafficQuota;
 use ParkManager\Bundle\WebhostingBundle\UseCase\Account\RegisterWebhostingAccount;
 use PHPUnit\Framework\TestCase;
 
@@ -26,21 +26,21 @@ final class RegisterWebhostingAccountTest extends TestCase
 {
     private const ACCOUNT_ID = 'b288e23c-97c5-11e7-b51a-acbc32b58315';
     private const OWNER_ID   = '2a9cd25c-97ca-11e7-9683-acbc32b58315';
-    private const PACKAGE_ID = '654665ea-9869-11e7-9563-acbc32b58315';
+    private const PLAN_ID    = '654665ea-9869-11e7-9563-acbc32b58315';
 
     /** @test */
-    public function its_constructable_with_package(): void
+    public function its_constructable_with_plan(): void
     {
-        $command = RegisterWebhostingAccount::withPackage(
+        $command = RegisterWebhostingAccount::withPlan(
             self::ACCOUNT_ID,
             $domainName = new DomainName('example', 'com'),
             self::OWNER_ID,
-            self::PACKAGE_ID
+            self::PLAN_ID
         );
 
         self::assertEquals(WebhostingAccountId::fromString(self::ACCOUNT_ID), $command->id());
         self::assertEquals(OwnerId::fromString(self::OWNER_ID), $command->owner());
-        self::assertEquals(WebhostingPackageId::fromString(self::PACKAGE_ID), $command->package());
+        self::assertEquals(WebhostingPlanId::fromString(self::PLAN_ID), $command->plan());
         self::assertEquals($domainName, $command->domainName());
         self::assertNull($command->customCapabilities());
     }
@@ -59,6 +59,6 @@ final class RegisterWebhostingAccountTest extends TestCase
         self::assertEquals(OwnerId::fromString(self::OWNER_ID), $command->owner());
         self::assertEquals($capabilities, $command->customCapabilities());
         self::assertEquals($domainName, $command->domainName());
-        self::assertNull($command->package());
+        self::assertNull($command->plan());
     }
 }
