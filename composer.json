@@ -88,7 +88,8 @@
         "symfony/stopwatch": "*",
         "symfony/var-dumper": "*",
         "symfony/web-profiler-bundle": "*",
-        "vimeo/psalm": "^3.0"
+        "vimeo/psalm": "^3.0",
+        "weirdan/doctrine-psalm-plugin": "^0.5"
     },
     "config": {
         "preferred-install": {

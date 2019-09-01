@@ -62,7 +62,7 @@ class ChangePasswordType extends AbstractType
             ->setAllowedTypes('password_constraints', [Constraint::class . '[]', Constraint::class]);
     }
 
-    public function getBlockPrefix(): ?string
+    public function getBlockPrefix(): string
     {
         return 'change_user_password';
     }

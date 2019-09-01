@@ -28,12 +28,12 @@ class RequestPasswordResetType extends AbstractType
             ]);
     }
 
-    public function getBlockPrefix(): ?string
+    public function getBlockPrefix(): string
     {
         return 'request_user_password_reset';
     }
 
-    public function getParent(): string
+    public function getParent(): ?string
     {
         return MessageFormType::class;
     }

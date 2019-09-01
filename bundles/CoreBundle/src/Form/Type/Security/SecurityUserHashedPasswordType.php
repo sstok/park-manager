@@ -44,7 +44,7 @@ final class SecurityUserHashedPasswordType extends AbstractType
             ->setAllowedTypes('user_class', ['string']);
     }
 
-    public function getParent(): string
+    public function getParent(): ?string
     {
         return HashedPasswordType::class;
     }

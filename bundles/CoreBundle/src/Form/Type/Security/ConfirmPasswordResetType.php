@@ -75,7 +75,7 @@ final class ConfirmPasswordResetType extends AbstractType
         return 'confirm_user_password_reset';
     }
 
-    public function getParent(): string
+    public function getParent(): ?string
     {
         return MessageFormType::class;
     }

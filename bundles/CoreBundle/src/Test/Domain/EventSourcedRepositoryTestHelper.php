@@ -10,29 +10,19 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Test\Domain;
 
-use ParkManager\Component\DomainEvent\EventEmitter;
-use Prophecy\Argument;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 trait EventSourcedRepositoryTestHelper
 {
-    protected function createEventsExpectingEventBus(int $expectedEventsCount = -1): EventEmitter
+    protected function createEventsExpectingEventBus(): MessageBusInterface
     {
-        $eventBusProphecy = $this->prophesize(EventEmitter::class);
-
-        if ($expectedEventsCount === -1) {
-            $eventBusProphecy->emit(Argument::any())->shouldBeCalled();
-        } else {
-            $eventBusProphecy->emit(Argument::any())->shouldBeCalledTimes($expectedEventsCount);
-        }
-
-        return $eventBusProphecy->reveal();
-    }
-
-    protected function createNoExpectedEventsDispatchedEventBus(): EventEmitter
-    {
-        $eventBusProphecy = $this->prophesize(EventEmitter::class);
-        $eventBusProphecy->emit(Argument::any())->shouldNotBeCalled();
-
-        return $eventBusProphecy->reveal();
+        return new class implements MessageBusInterface
+        {
+            public function dispatch($message, array $stamps = []): Envelope
+            {
+                return new Envelope($message, $stamps);
+            }
+        };
     }
 }

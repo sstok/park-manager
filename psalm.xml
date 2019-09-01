@@ -4,10 +4,12 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+
     errorBaseline="psalm-baseline.xml"
 >
     <projectFiles>
         <directory name="src"/>
+        <directory name="bundles"/>
         <ignoreFiles>
             <directory name="vendor"/>
         </ignoreFiles>
@@ -19,7 +21,7 @@
         <MoreSpecificImplementedParamType>
             <errorLevel type="suppress">
                 <!-- Required as transformers are able to enforce stronger types -->
-                <directory name="src/Module/CoreModule/Infrastructure/UserInterface/Web/Form/DataTransformer" />
+                <directory name="bundles/CoreBundle/src/Form/DataTransformer"/>
             </errorLevel>
         </MoreSpecificImplementedParamType>
 
@@ -47,23 +49,18 @@
         <PossiblyUndefinedMethod>
             <errorLevel type="suppress">
                 <!-- Tests are always checked or at least will produce an error -->
-                <directory name="src/Module/CoreModule/Tests" />
+                <directory name="bundles/*/tests"/>
             </errorLevel>
         </PossiblyUndefinedMethod>
 
-        <PossiblyNullOperand>
-            <errorLevel type="suppress">
-                <!-- Fields are always initialized when calling load() or prepend(), any other public method usage is not supported. -->
-                <file name="src/Module/CoreModule/Infrastructure/DependencyInjection/Module/ParkManagerModuleDependencyExtension.php" />
-            </errorLevel>
-        </PossiblyNullOperand>
+        <PossiblyNullOperand/>
 
         <PossiblyNullReference>
             <errorLevel type="suppress">
                 <!-- Tests are always checked or at least will produce an error -->
-                <directory name="src/Module/*/Tests" />
+                <directory name="bundles/*/tests"/>
 
-                <file name="src/Module/CoreModule/Infrastructure/Security/Guard/FormAuthenticator.php" />
+                <file name="bundles/CoreBundle/src/Security/Guard/FormAuthenticator.php"/>
             </errorLevel>
         </PossiblyNullReference>
 
@@ -83,7 +80,11 @@
         <InvalidStringClass errorLevel="info"/>
     </issueHandlers>
     <stubs>
-        <file name=".github/.psalm-stubs/symfony-di-dsl.php" />
+        <file name=".github/.psalm-stubs/symfony-di-dsl.php"/>
     </stubs>
 
-<plugins><pluginClass class="Psalm\PhpUnitPlugin\Plugin"/></plugins></psalm>
+    <plugins>
+        <!--<pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>-->
+        <pluginClass class="Weirdan\DoctrinePsalmPlugin\Plugin"/>
+    </plugins>
+</psalm>

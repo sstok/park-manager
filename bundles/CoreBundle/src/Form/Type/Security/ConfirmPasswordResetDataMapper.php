@@ -26,7 +26,7 @@ final class ConfirmPasswordResetDataMapper implements DataMapperInterface
 
     public function __construct(callable $commandBuilder)
     {
-        $this->commandBuilder    = $commandBuilder;
+        $this->commandBuilder = $commandBuilder;
     }
 
     public function mapDataToForms($data, $forms): void
@@ -38,7 +38,6 @@ final class ConfirmPasswordResetDataMapper implements DataMapperInterface
         }
 
         foreach ($forms as $form) {
-            $propertyPath = $form->getPropertyPath();
             $config = $form->getConfig();
 
             if (! $empty && $config->getMapped()) {

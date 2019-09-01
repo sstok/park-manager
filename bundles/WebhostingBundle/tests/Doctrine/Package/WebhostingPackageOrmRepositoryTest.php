@@ -79,7 +79,7 @@ final class WebhostingPackageOrmRepositoryTest extends EntityRepositoryTestCase
     {
         return new WebhostingPackageOrmRepository(
             $this->getEntityManager(),
-            $this->createEventsExpectingEventBus($expectedEventsCount)
+            $this->createEventsExpectingEventBus()
         );
     }
 

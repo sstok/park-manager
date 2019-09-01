@@ -19,8 +19,6 @@ parameters:
         - vendor/
         - templates/
         - translations/
-        - %currentWorkingDirectory%/src/Module/WebhostingModule/** # Disabled for now
-        - %currentWorkingDirectory%/src/*/*/Tests/**
         - %currentWorkingDirectory%/bundles/*/tests/**
 
     checkNullables: false # To many false positives

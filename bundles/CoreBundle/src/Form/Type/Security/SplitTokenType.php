@@ -69,7 +69,7 @@ final class SplitTokenType extends AbstractType
         $resolver->setDefault('data_class', null);
     }
 
-    public function getParent(): string
+    public function getParent(): ?string
     {
         return HiddenType::class;
     }

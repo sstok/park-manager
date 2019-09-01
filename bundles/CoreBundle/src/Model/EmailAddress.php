@@ -47,7 +47,7 @@ final class EmailAddress
     /**
      * @ORM\Column(type="string", type="string", length=254, nullable=true)
      *
-     * @var string
+     * @var string|null
      */
     private $name;
 

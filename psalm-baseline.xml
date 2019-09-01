@@ -1,135 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files>
-  <file src="src/Bridge/PhpUnit/DefinitionEqualsServiceLocatorConstraint.php">
-    <PossiblyNullArrayAccess occurrences="1">
-      <code>$definition-&gt;getFactory()[0]</code>
-    </PossiblyNullArrayAccess>
-  </file>
-  <file src="src/Module/CoreModule/Application/Service/EventListener/ClientPasswordResetRequestListener.php">
-    <PossiblyNullArgument occurrences="1">
-      <code>$event-&gt;token()-&gt;getExpirationTime()</code>
-    </PossiblyNullArgument>
-  </file>
-  <file src="src/Module/CoreModule/Application/Service/Mailer/RecipientEnvelope.php">
-    <InvalidNullableReturnType occurrences="3">
-      <code>string</code>
+<files psalm-version="dev-master@f20dc16295f15eb79a752f135e02f8dd6d0e38d3">
+  <file src="bundles/CoreBundle/src/Context/ApplicationContext.php">
+    <InvalidNullableReturnType occurrences="2">
       <code>string</code>
       <code>string</code>
     </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="3">
-      <code>return $this-&gt;locale;</code>
-      <code>return $this-&gt;encryptionKey;</code>
-      <code>return $this-&gt;encryptionType;</code>
+    <NullableReturnStatement occurrences="2">
+      <code>$this-&gt;activeSection</code>
+      <code>$this-&gt;activeSection</code>
     </NullableReturnStatement>
   </file>
-  <file src="src/Module/CoreModule/Domain/Client/Client.php">
-    <PossiblyNullReference occurrences="1">
-      <code>$this-&gt;emailAddressChangeToken</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/Module/CoreModule/Infrastructure/DependencyInjection/Configuration.php">
+  <file src="bundles/CoreBundle/src/DependencyInjection/Configuration.php">
     <PossiblyUndefinedMethod occurrences="1">
       <code>children</code>
     </PossiblyUndefinedMethod>
   </file>
-  <file src="src/Module/CoreModule/Infrastructure/DependencyInjection/DependencyExtension.php">
-    <PossiblyNullOperand occurrences="2">
-      <code>$configDir</code>
-      <code>$configDir</code>
+  <file src="bundles/CoreBundle/src/DependencyInjection/DependencyExtension.php">
+    <PossiblyNullOperand occurrences="4">
+      <code>$this-&gt;bundlePath</code>
+      <code>$this-&gt;bundlePath</code>
+      <code>$this-&gt;bundlePath</code>
+      <code>$this-&gt;bundlePath</code>
     </PossiblyNullOperand>
   </file>
-  <file src="src/Module/CoreModule/Infrastructure/DependencyInjection/Module/ParkManagerModuleDependencyExtension.php">
-    <MoreSpecificImplementedParamType occurrences="1">
-      <code>$configs</code>
-    </MoreSpecificImplementedParamType>
-    <PossiblyNullArgument occurrences="1">
-      <code>$this-&gt;moduleDir</code>
-    </PossiblyNullArgument>
-    <PossiblyNullOperand occurrences="7">
-      <code>$this-&gt;moduleDir</code>
-      <code>$this-&gt;moduleDir</code>
-      <code>$this-&gt;moduleDir</code>
-      <code>$this-&gt;moduleDir</code>
-      <code>$this-&gt;moduleDir</code>
-      <code>$this-&gt;moduleDir</code>
-      <code>$this-&gt;moduleDir</code>
-    </PossiblyNullOperand>
+  <file src="bundles/CoreBundle/src/Doctrine/Administrator/DoctrineOrmAdministratorRepository.php">
+    <ImplementedReturnTypeMismatch occurrences="1">
+      <code>Administrator</code>
+    </ImplementedReturnTypeMismatch>
   </file>
-  <file src="src/Module/CoreModule/Infrastructure/Doctrine/EntityRepository.php">
-    <TypeCoercion occurrences="6">
-      <code>$entityManager</code>
+  <file src="bundles/CoreBundle/src/Doctrine/Client/DoctrineOrmClientRepository.php">
+    <ImplementedReturnTypeMismatch occurrences="1">
+      <code>Client</code>
+    </ImplementedReturnTypeMismatch>
+  </file>
+  <file src="bundles/CoreBundle/src/Doctrine/EntityRepository.php">
+    <PropertyTypeCoercion occurrences="1">
       <code>$entityManager-&gt;getMetadataFactory()-&gt;getMetadataFor($className)</code>
-      <code>$entityManager</code>
-      <code>$entityManager-&gt;getMetadataFactory()-&gt;getMetadataFor($className)</code>
-      <code>$entityManager</code>
-      <code>$entityManager-&gt;getMetadataFactory()-&gt;getMetadataFor($className)</code>
-    </TypeCoercion>
+    </PropertyTypeCoercion>
   </file>
-  <file src="src/Module/CoreModule/Infrastructure/Doctrine/EventSourcedEntityRepository.php">
-    <TypeCoercion occurrences="4">
-      <code>$entityManager</code>
-      <code>$entityManager</code>
-      <code>$entityManager</code>
-      <code>$entityManager</code>
-    </TypeCoercion>
+  <file src="bundles/CoreBundle/src/Doctrine/EventSourcedEntityRepository.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$className</code>
+    </ArgumentTypeCoercion>
   </file>
-  <file src="src/Module/CoreModule/Infrastructure/Resources/config/services.php">
-    <UndefinedFunction occurrences="1">
-      <code>ref('park_manager.event_bus')</code>
-    </UndefinedFunction>
+  <file src="bundles/CoreBundle/src/Form/Type/Security/ChangePasswordDataMapper.php">
+    <PossiblyInvalidArgument occurrences="2">
+      <code>$forms</code>
+      <code>$forms</code>
+    </PossiblyInvalidArgument>
   </file>
-  <file src="src/Module/CoreModule/Infrastructure/Resources/config/services/console.php">
-    <UndefinedFunction occurrences="1">
-      <code>ref('park_manager.command_bus')</code>
-    </UndefinedFunction>
+  <file src="bundles/CoreBundle/src/Form/Type/Security/ConfirmPasswordResetDataMapper.php">
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$forms</code>
+    </PossiblyInvalidArgument>
   </file>
-  <file src="src/Module/CoreModule/Infrastructure/Resources/config/services/form.php">
-    <UndefinedFunction occurrences="1">
-      <code>ref('park_manager.command_bus')</code>
-    </UndefinedFunction>
-  </file>
-  <file src="src/Module/CoreModule/Infrastructure/Resources/config/services/messenger.php">
-    <UndefinedFunction occurrences="1">
-      <code>ref('security.authorization_checker')</code>
-    </UndefinedFunction>
-  </file>
-  <file src="src/Module/CoreModule/Infrastructure/Resources/config/services/security.php">
-    <UndefinedFunction occurrences="1">
-      <code>ref('park_manager.repository.administrator')</code>
-    </UndefinedFunction>
-  </file>
-  <file src="src/Module/CoreModule/Infrastructure/Resources/config/services/twig.php">
-    <UndefinedFunction occurrences="1">
-      <code>ref('park_manager.application_context')</code>
-    </UndefinedFunction>
-  </file>
-  <file src="src/Module/CoreModule/Infrastructure/Security/Guard/BrowserKitAuthenticator.php">
-    <MoreSpecificImplementedParamType occurrences="2">
-      <code>$credentials</code>
-      <code>$credentials</code>
-    </MoreSpecificImplementedParamType>
-  </file>
-  <file src="src/Module/CoreModule/Infrastructure/Security/Guard/FormAuthenticator.php">
-    <MoreSpecificImplementedParamType occurrences="2">
-      <code>$credentials</code>
-      <code>$user</code>
-    </MoreSpecificImplementedParamType>
-    <PossiblyNullArgument occurrences="1">
-      <code>$request-&gt;getSession()</code>
-    </PossiblyNullArgument>
+  <file src="bundles/CoreBundle/src/Form/Type/Security/ConfirmPasswordResetType.php">
     <PossiblyNullReference occurrences="1">
-      <code>$request-&gt;getSession()</code>
+      <code>getName</code>
     </PossiblyNullReference>
   </file>
-  <file src="src/Module/CoreModule/Infrastructure/Security/SecurityUser.php">
-    <LessSpecificImplementedReturnType occurrences="1">
-      <code>array</code>
-    </LessSpecificImplementedReturnType>
+  <file src="bundles/CoreBundle/src/Form/Type/Security/RequestPasswordResetDataMapper.php">
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$forms</code>
+    </PossiblyInvalidArgument>
+  </file>
+  <file src="bundles/CoreBundle/src/Routing/SectionsLoader.php">
+    <PossiblyFalseReference occurrences="1">
+      <code>load</code>
+    </PossiblyFalseReference>
+  </file>
+  <file src="bundles/CoreBundle/src/Security/Guard/BrowserKitAuthenticator.php">
+    <MoreSpecificImplementedParamType occurrences="2">
+      <code>$credentials</code>
+      <code>$credentials</code>
+    </MoreSpecificImplementedParamType>
+  </file>
+  <file src="bundles/CoreBundle/src/Security/Guard/FormAuthenticator.php">
+    <MoreSpecificImplementedParamType occurrences="2">
+      <code>$credentials</code>
+      <code>$user</code>
+    </MoreSpecificImplementedParamType>
+  </file>
+  <file src="bundles/CoreBundle/src/Security/SecurityUser.php">
     <MoreSpecificImplementedParamType occurrences="1">
       <code>$user</code>
     </MoreSpecificImplementedParamType>
   </file>
-  <file src="src/Module/CoreModule/Infrastructure/Security/UserProvider.php">
+  <file src="bundles/CoreBundle/src/Security/UserProvider.php">
     <LessSpecificReturnStatement occurrences="1"/>
     <MoreSpecificImplementedParamType occurrences="1">
       <code>$user</code>
@@ -138,371 +95,240 @@
       <code>SecurityUser</code>
     </MoreSpecificReturnType>
   </file>
-  <file src="src/Module/CoreModule/Infrastructure/UserInterface/Web/Common/ApplicationContext.php">
-    <InvalidNullableReturnType occurrences="2">
-      <code>string</code>
-      <code>string</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="2">
-      <code>return $this-&gt;activeSection;</code>
-      <code>return $this-&gt;activeSection;</code>
-    </NullableReturnStatement>
-  </file>
-  <file src="src/Module/CoreModule/Infrastructure/UserInterface/Web/Form/Type/Security/ChangePasswordDataMapper.php">
-    <PossiblyInvalidArgument occurrences="2">
-      <code>$forms</code>
-      <code>$forms</code>
-    </PossiblyInvalidArgument>
-  </file>
-  <file src="src/Module/CoreModule/Infrastructure/UserInterface/Web/Form/Type/Security/ChangePasswordType.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
-      <code>?string</code>
-    </ImplementedReturnTypeMismatch>
-  </file>
-  <file src="src/Module/CoreModule/Infrastructure/UserInterface/Web/Form/Type/Security/ConfirmPasswordResetDataMapper.php">
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$forms</code>
-    </PossiblyInvalidArgument>
-  </file>
-  <file src="src/Module/CoreModule/Infrastructure/UserInterface/Web/Form/Type/Security/RequestPasswordResetDataMapper.php">
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$forms</code>
-    </PossiblyInvalidArgument>
-  </file>
-  <file src="src/Module/CoreModule/Infrastructure/UserInterface/Web/Form/Type/Security/RequestPasswordResetType.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
-      <code>?string</code>
-    </ImplementedReturnTypeMismatch>
-  </file>
-  <file src="src/Module/CoreModule/Test/Domain/EventSourcedRepositoryTestHelper.php">
-    <UndefinedClass occurrences="4">
-      <code>EventEmitter</code>
-      <code>EventEmitter</code>
-      <code>EventEmitter</code>
-      <code>EventEmitter</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/CoreModule/Test/Domain/EventsRecordingEntityAssertionTrait.php">
+  <file src="bundles/CoreBundle/src/Test/Domain/EventsRecordingEntityAssertionTrait.php">
     <InvalidArgument occurrences="1">
       <code>$expectedEvents</code>
     </InvalidArgument>
   </file>
-  <file src="src/Module/CoreModule/Test/Domain/MockRepository.php">
-    <InvalidCast occurrences="1">
-      <code>(string) $id</code>
-    </InvalidCast>
-    <ReservedWord occurrences="2">
-      <code>array&lt;string,string&lt;object&gt;&gt;</code>
-      <code>array&lt;string,string&lt;object&gt;&gt;</code>
-    </ReservedWord>
-    <TypeCoercion occurrences="33">
-      <code>$this-&gt;storedById</code>
-      <code>$this-&gt;savedById</code>
-      <code>$this-&gt;removedById</code>
-      <code>$this-&gt;storedById</code>
-      <code>$this-&gt;savedById</code>
-      <code>$this-&gt;removedById</code>
-      <code>$this-&gt;storedById</code>
-      <code>$this-&gt;savedById</code>
-      <code>$this-&gt;removedById</code>
-      <code>$this-&gt;storedById</code>
-      <code>$this-&gt;savedById</code>
-      <code>$this-&gt;removedById</code>
-      <code>$this-&gt;storedById</code>
-      <code>$this-&gt;savedById</code>
-      <code>$this-&gt;removedById</code>
-      <code>$this-&gt;storedById</code>
-      <code>$this-&gt;savedById</code>
-      <code>$this-&gt;removedById</code>
-      <code>$this-&gt;storedById</code>
-      <code>$this-&gt;savedById</code>
-      <code>$this-&gt;removedById</code>
-      <code>$this-&gt;storedById</code>
-      <code>$this-&gt;savedById</code>
-      <code>$this-&gt;removedById</code>
-      <code>$this-&gt;storedById</code>
-      <code>$this-&gt;savedById</code>
-      <code>$this-&gt;removedById</code>
-      <code>$this-&gt;storedById</code>
-      <code>$this-&gt;savedById</code>
-      <code>$this-&gt;removedById</code>
-      <code>$this-&gt;storedById</code>
-      <code>$this-&gt;savedById</code>
-      <code>$this-&gt;removedById</code>
-    </TypeCoercion>
+  <file src="bundles/CoreBundle/src/Test/Domain/MockRepository.php">
+    <PossiblyInvalidCast occurrences="1">
+      <code>$id</code>
+    </PossiblyInvalidCast>
   </file>
-  <file src="src/Module/CoreModule/Tests/Application/Command/Client/ConfirmEmailAddressChangeHandlerTest.php">
-    <UndefinedClass occurrences="1">
-      <code>$this-&gt;fullToken-&gt;token()</code>
-    </UndefinedClass>
+  <file src="bundles/CoreBundle/tests/Action/Client/RequestPasswordResetActionTest.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$email</code>
+    </PossiblyNullArgument>
   </file>
-  <file src="src/Module/CoreModule/Tests/Application/Command/Client/ConfirmPasswordResetHandlerTest.php">
-    <UndefinedClass occurrences="1">
-      <code>$this-&gt;fullToken-&gt;token()</code>
-    </UndefinedClass>
+  <file src="bundles/CoreBundle/tests/EventListener/ApplicationSectionListenerTest.php">
+    <LessSpecificReturnStatement occurrences="2">
+      <code>$contextProphecy-&gt;reveal()</code>
+      <code>$contextProphecy-&gt;reveal()</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="2">
+      <code>ApplicationContext</code>
+      <code>ApplicationContext</code>
+    </MoreSpecificReturnType>
+    <TooManyTemplateParams occurrences="2">
+      <code>$this-&gt;prophesize(ApplicationContext::class)</code>
+      <code>$this-&gt;prophesize(ApplicationContext::class)</code>
+    </TooManyTemplateParams>
   </file>
-  <file src="src/Module/CoreModule/Tests/Application/Command/Client/RequestEmailAddressChangeTest.php">
-    <UndefinedClass occurrences="2">
-      <code>$this-&gt;fullToken-&gt;token()</code>
-      <code>$splitToken-&gt;token()</code>
-    </UndefinedClass>
+  <file src="bundles/CoreBundle/tests/EventListener/TwigResponseListenerTest.php">
+    <LessSpecificReturnStatement occurrences="2">
+      <code>$containerProphecy-&gt;reveal()</code>
+      <code>$containerProphecy-&gt;reveal()</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="2">
+      <code>ContainerInterface</code>
+      <code>ContainerInterface</code>
+    </MoreSpecificReturnType>
+    <TooManyArguments occurrences="2">
+      <code>willReturn</code>
+      <code>willReturn</code>
+    </TooManyArguments>
+    <TooManyTemplateParams occurrences="3">
+      <code>$this-&gt;prophesize(ContainerInterface::class)</code>
+      <code>$this-&gt;prophesize(Environment::class)</code>
+      <code>$this-&gt;prophesize(ContainerInterface::class)</code>
+    </TooManyTemplateParams>
   </file>
-  <file src="src/Module/CoreModule/Tests/Application/Query/Administrator/GetAdministratorWithPasswordResetTokenHandlerTest.php">
-    <UndefinedClass occurrences="1">
-      <code>$this-&gt;fullToken-&gt;token()</code>
-    </UndefinedClass>
+  <file src="bundles/CoreBundle/tests/Form/ConfirmationHandler/CheckedConfirmationHandlerTest.php">
+    <LessSpecificReturnStatement occurrences="2">
+      <code>$tokenManagerProphecy-&gt;reveal()</code>
+      <code>$tokenManagerProphecy-&gt;reveal()</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="2">
+      <code>CsrfTokenManagerInterface</code>
+      <code>CsrfTokenManagerInterface</code>
+    </MoreSpecificReturnType>
+    <TooManyArguments occurrences="4">
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+    </TooManyArguments>
+    <TooManyTemplateParams occurrences="2">
+      <code>$this-&gt;prophesize(CsrfTokenManagerInterface::class)</code>
+      <code>$this-&gt;prophesize(CsrfTokenManagerInterface::class)</code>
+    </TooManyTemplateParams>
   </file>
-  <file src="src/Module/CoreModule/Tests/Application/Query/Client/GetClientWithPasswordResetTokenHandlerTest.php">
-    <UndefinedClass occurrences="1">
-      <code>$this-&gt;fullToken-&gt;token()</code>
-    </UndefinedClass>
+  <file src="bundles/CoreBundle/tests/Form/ConfirmationHandler/ConfirmationHandlerTest.php">
+    <LessSpecificReturnStatement occurrences="2">
+      <code>$tokenManagerProphecy-&gt;reveal()</code>
+      <code>$tokenManagerProphecy-&gt;reveal()</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="2">
+      <code>CsrfTokenManagerInterface</code>
+      <code>CsrfTokenManagerInterface</code>
+    </MoreSpecificReturnType>
+    <TooManyArguments occurrences="4">
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+    </TooManyArguments>
+    <TooManyTemplateParams occurrences="2">
+      <code>$this-&gt;prophesize(CsrfTokenManagerInterface::class)</code>
+      <code>$this-&gt;prophesize(CsrfTokenManagerInterface::class)</code>
+    </TooManyTemplateParams>
   </file>
-  <file src="src/Module/CoreModule/Tests/Domain/Administrator/AdministratorTest.php">
+  <file src="bundles/CoreBundle/tests/Form/Type/Security/SplitTokenTypeTest.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>1</code>
+    </InvalidScalarArgument>
+  </file>
+  <file src="bundles/CoreBundle/tests/Model/Administrator/AdministratorTest.php">
     <PossiblyInvalidArgument occurrences="1">
       <code>SplitToken::TOKEN_CHAR_LENGTH</code>
     </PossiblyInvalidArgument>
-    <UndefinedClass occurrences="1">
-      <code>$token-&gt;token()</code>
-    </UndefinedClass>
   </file>
-  <file src="src/Module/CoreModule/Tests/Domain/Client/ClientTest.php">
+  <file src="bundles/CoreBundle/tests/Model/Client/ClientTest.php">
     <PossiblyInvalidArgument occurrences="1">
       <code>SplitToken::TOKEN_CHAR_LENGTH</code>
     </PossiblyInvalidArgument>
-    <UndefinedClass occurrences="1">
-      <code>$token-&gt;token()</code>
-    </UndefinedClass>
   </file>
-  <file src="src/Module/CoreModule/Tests/Infrastructure/Security/SecurityUserTest.php">
+  <file src="bundles/CoreBundle/tests/Security/EventListener/AuthenticationTokenTokenPasswordChangedListenerTest.php">
+    <LessSpecificReturnStatement occurrences="4">
+      <code>$userProviderProphecy-&gt;reveal()</code>
+      <code>$tokenStorageProphecy-&gt;reveal()</code>
+      <code>$userProviderProphecy-&gt;reveal()</code>
+      <code>$tokenStorageProphecy-&gt;reveal()</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="4">
+      <code>UserProviderInterface</code>
+      <code>TokenStorageInterface</code>
+      <code>UserProviderInterface</code>
+      <code>TokenStorageInterface</code>
+    </MoreSpecificReturnType>
+    <TooManyArguments occurrences="3">
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+    </TooManyArguments>
+    <TooManyTemplateParams occurrences="4">
+      <code>$this-&gt;prophesize(UserProviderInterface::class)</code>
+      <code>$this-&gt;prophesize(TokenStorageInterface::class)</code>
+      <code>$this-&gt;prophesize(UserProviderInterface::class)</code>
+      <code>$this-&gt;prophesize(TokenStorageInterface::class)</code>
+    </TooManyTemplateParams>
+  </file>
+  <file src="bundles/CoreBundle/tests/Security/SecurityUserTest.php">
     <PossiblyNullArgument occurrences="1">
       <code>$id</code>
     </PossiblyNullArgument>
   </file>
-  <file src="src/Module/WebhostingModule/Application/Account/RegisterWebhostingAccountHandler.php">
-    <PossiblyNullArgument occurrences="1">
-      <code>$command-&gt;customCapabilities()</code>
-    </PossiblyNullArgument>
+  <file src="bundles/CoreBundle/tests/UseCase/Client/RequestEmailAddressChangeTest.php">
+    <LessSpecificReturnStatement occurrences="2">
+      <code>$confirmationMailerProphecy-&gt;reveal()</code>
+      <code>$confirmationMailerProphecy-&gt;reveal()</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="2">
+      <code>EmailAddressChangeRequestMailer</code>
+      <code>EmailAddressChangeRequestMailer</code>
+    </MoreSpecificReturnType>
+    <TooManyTemplateParams occurrences="2">
+      <code>$this-&gt;prophesize(EmailAddressChangeRequestMailer::class)</code>
+      <code>$this-&gt;prophesize(EmailAddressChangeRequestMailer::class)</code>
+    </TooManyTemplateParams>
   </file>
-  <file src="src/Module/WebhostingModule/Domain/Account/Event/WebhostingAccountCapabilitiesWasChanged.php">
-    <UndefinedClass occurrences="1">
-      <code>DomainEvent</code>
-    </UndefinedClass>
+  <file src="bundles/CoreBundle/tests/UseCase/Client/RequestPasswordResetHandlerTest.php">
+    <LessSpecificReturnStatement occurrences="2">
+      <code>$mailerProphecy-&gt;reveal()</code>
+      <code>$mailerProphecy-&gt;reveal()</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="2">
+      <code>PasswordResetMailer</code>
+      <code>PasswordResetMailer</code>
+    </MoreSpecificReturnType>
+    <TooManyTemplateParams occurrences="2">
+      <code>$this-&gt;prophesize(PasswordResetMailer::class)</code>
+      <code>$this-&gt;prophesize(PasswordResetMailer::class)</code>
+    </TooManyTemplateParams>
   </file>
-  <file src="src/Module/WebhostingModule/Domain/Account/Event/WebhostingAccountOwnerWasSwitched.php">
-    <UndefinedClass occurrences="1">
-      <code>DomainEvent</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Domain/Account/Event/WebhostingAccountPackageAssignmentWasChanged.php">
-    <UndefinedClass occurrences="1">
-      <code>DomainEvent</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Domain/Account/Event/WebhostingAccountWasMarkedForRemoval.php">
-    <UndefinedClass occurrences="1">
-      <code>DomainEvent</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Domain/Account/Event/WebhostingAccountWasRegistered.php">
-    <UndefinedClass occurrences="1">
-      <code>DomainEvent</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Domain/Account/WebhostingAccount.php">
-    <MissingDependency occurrences="7">
-      <code>Event\WebhostingAccountWasRegistered</code>
-      <code>Event\WebhostingAccountWasRegistered</code>
-      <code>Event\WebhostingAccountPackageAssignmentWasChanged</code>
-      <code>Event\WebhostingAccountPackageAssignmentWasChanged</code>
-      <code>Event\WebhostingAccountCapabilitiesWasChanged</code>
-      <code>Event\WebhostingAccountOwnerWasSwitched</code>
-      <code>Event\WebhostingAccountWasMarkedForRemoval</code>
-    </MissingDependency>
-  </file>
-  <file src="src/Module/WebhostingModule/Domain/Package/Event/WebhostingPackageCapabilitiesWasChanged.php">
-    <UndefinedClass occurrences="1">
-      <code>DomainEvent</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Domain/Package/Event/WebhostingPackageWasCreated.php">
-    <UndefinedClass occurrences="1">
-      <code>DomainEvent</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Domain/Package/WebhostingPackage.php">
-    <MissingDependency occurrences="2">
-      <code>WebhostingPackageWasCreated</code>
-      <code>WebhostingPackageCapabilitiesWasChanged</code>
-    </MissingDependency>
-  </file>
-  <file src="src/Module/WebhostingModule/Infrastructure/DependencyInjection/Compiler/CapabilitiesPass.php">
+  <file src="bundles/WebhostingBundle/src/DependencyInjection/Compiler/CapabilitiesPass.php">
     <PossiblyFalseOperand occurrences="1">
       <code>mb_strrpos($class, '\\')</code>
     </PossiblyFalseOperand>
   </file>
-  <file src="src/Module/WebhostingModule/Infrastructure/DependencyInjection/Configuration.php">
-    <PossiblyUndefinedMethod occurrences="2">
+  <file src="bundles/WebhostingBundle/src/DependencyInjection/Configuration.php">
+    <PossiblyUndefinedMethod occurrences="1">
       <code>children</code>
-      <code>canBeDisabled</code>
     </PossiblyUndefinedMethod>
   </file>
-  <file src="src/Module/WebhostingModule/Infrastructure/DependencyInjection/DependencyExtension.php">
+  <file src="bundles/WebhostingBundle/src/DependencyInjection/DependencyExtension.php">
+    <PossiblyNullOperand occurrences="2">
+      <code>$this-&gt;bundlePath</code>
+      <code>$this-&gt;bundlePath</code>
+    </PossiblyNullOperand>
+  </file>
+  <file src="bundles/WebhostingBundle/src/Doctrine/Account/WebhostingAccountOrmRepository.php">
+    <ImplementedReturnTypeMismatch occurrences="1">
+      <code>WebhostingAccount|null</code>
+    </ImplementedReturnTypeMismatch>
+  </file>
+  <file src="bundles/WebhostingBundle/src/Doctrine/DomainName/WebhostingDomainNameOrmRepository.php">
+    <ImplementedReturnTypeMismatch occurrences="1">
+      <code>WebhostingDomainName|null</code>
+    </ImplementedReturnTypeMismatch>
+  </file>
+  <file src="bundles/WebhostingBundle/src/Doctrine/Package/WebhostingPackageOrmRepository.php">
+    <ImplementedReturnTypeMismatch occurrences="1">
+      <code>WebhostingPackage|null</code>
+    </ImplementedReturnTypeMismatch>
+  </file>
+  <file src="bundles/WebhostingBundle/src/ParkManagerWebhostingModule.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;container-&gt;get(CapabilitiesFactory::class)</code>
+    </ArgumentTypeCoercion>
+  </file>
+  <file src="bundles/WebhostingBundle/src/UseCase/Account/RegisterWebhostingAccountHandler.php">
     <PossiblyNullArgument occurrences="1">
-      <code>$configuration</code>
+      <code>$command-&gt;customCapabilities()</code>
     </PossiblyNullArgument>
   </file>
-  <file src="src/Module/WebhostingModule/Infrastructure/Doctrine/Account/WebhostingAccountOrmRepository.php">
-    <InvalidArgument occurrences="1">
-      <code>$eventEmitter</code>
-    </InvalidArgument>
-    <UndefinedClass occurrences="1">
-      <code>EventEmitter</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Infrastructure/Doctrine/Package/WebhostingPackageOrmRepository.php">
-    <InvalidArgument occurrences="1">
-      <code>$eventEmitter</code>
-    </InvalidArgument>
-    <UndefinedClass occurrences="1">
-      <code>EventEmitter</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Infrastructure/Resources/config/services/account.php">
-    <UndefinedClass occurrences="1">
-      <code>EventEmitter</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Infrastructure/Resources/config/services/core.php">
-    <UndefinedClass occurrences="1">
-      <code>MessageBusConfigurator</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Infrastructure/Resources/config/services/domain_name.php">
-    <UndefinedFunction occurrences="1">
-      <code>ref('doctrine.orm.entity_manager')</code>
-    </UndefinedFunction>
-  </file>
-  <file src="src/Module/WebhostingModule/Infrastructure/Resources/config/services/package.php">
-    <UndefinedClass occurrences="1">
-      <code>EventEmitter</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Infrastructure/Service/Package/AccountCapabilitiesRestrictionGuard.php">
-    <UndefinedClass occurrences="1">
-      <code>ServiceMessages</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Infrastructure/Service/Package/Capability/MonthlyTrafficQuotaApplier.php">
-    <UndefinedClass occurrences="1">
-      <code>ServiceMessages</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Infrastructure/ServiceBus/Middleware/AccountCapabilitiesRestrictionGuardMiddleware.php">
-    <UndefinedClass occurrences="1">
-      <code>Middleware</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/ParkManagerWebhostingModule.php">
-    <TypeCoercion occurrences="1">
-      <code>$this-&gt;container-&gt;get(CapabilitiesFactory::class)</code>
-    </TypeCoercion>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Domain/Account/Event/WebhostingAccountCapabilitiesWasChangedTest.php">
-    <MissingDependency occurrences="1">
-      <code>WebhostingAccountCapabilitiesWasChanged</code>
-    </MissingDependency>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Domain/Account/Event/WebhostingAccountOwnerWasSwitchedTest.php">
-    <MissingDependency occurrences="1">
-      <code>WebhostingAccountOwnerWasSwitched</code>
-    </MissingDependency>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Domain/Account/Event/WebhostingAccountPackageAssignmentWasChangedTest.php">
-    <MissingDependency occurrences="2">
-      <code>WebhostingAccountPackageAssignmentWasChanged</code>
-      <code>WebhostingAccountPackageAssignmentWasChanged</code>
-    </MissingDependency>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Domain/Account/Event/WebhostingAccountWasRegisteredTest.php">
-    <MissingDependency occurrences="1">
-      <code>WebhostingAccountWasRegistered</code>
-    </MissingDependency>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Domain/Account/WebhostingAccountTest.php">
-    <MissingDependency occurrences="9">
-      <code>WebhostingAccountWasRegistered</code>
-      <code>WebhostingAccountWasRegistered</code>
-      <code>WebhostingAccountPackageAssignmentWasChanged</code>
-      <code>WebhostingAccountPackageAssignmentWasChanged</code>
-      <code>WebhostingAccountPackageAssignmentWasChanged</code>
-      <code>WebhostingAccountCapabilitiesWasChanged</code>
-      <code>WebhostingAccountCapabilitiesWasChanged</code>
-      <code>WebhostingAccountOwnerWasSwitched</code>
-      <code>WebhostingAccountWasMarkedForRemoval</code>
-    </MissingDependency>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Domain/Package/Event/WebhostingPackageCapabilitiesWasChangedTest.php">
-    <MissingDependency occurrences="1">
-      <code>WebhostingPackageCapabilitiesWasChanged</code>
-    </MissingDependency>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Domain/Package/Event/WebhostingPackageWasCreatedTest.php">
-    <MissingDependency occurrences="1">
-      <code>WebhostingPackageWasCreated</code>
-    </MissingDependency>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Domain/Package/WebhostingPackageTest.php">
-    <MissingDependency occurrences="2">
-      <code>WebhostingPackageWasCreated</code>
-      <code>WebhostingPackageCapabilitiesWasChanged</code>
-    </MissingDependency>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Fixtures/Infrastructure/PackageCapability/AllowingWithWarningsGuard.php">
-    <UndefinedClass occurrences="2">
-      <code>ServiceMessages</code>
-      <code>$messages</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Fixtures/Infrastructure/PackageCapability/DenyingGuard.php">
-    <UndefinedClass occurrences="2">
-      <code>ServiceMessages</code>
-      <code>$messages</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Fixtures/Infrastructure/PackageCapability/MonthlyTrafficQuotaApplier.php">
-    <UndefinedClass occurrences="1">
-      <code>ServiceMessages</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Fixtures/Infrastructure/PackageCapability/MonthlyTrafficQuotaGuard.php">
-    <UndefinedClass occurrences="1">
-      <code>ServiceMessages</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Infrastructure/Doctrine/DomainName/WebhostingDomainNameOrmRepositoryTest.php">
-    <PossiblyNullReference occurrences="1">
-      <code>$domainName3</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Infrastructure/Doctrine/Package/WebhostingCapabilitiesTypeTest.php">
+  <file src="bundles/WebhostingBundle/tests/Doctrine/Package/WebhostingCapabilitiesTypeTest.php">
     <PossiblyNullArgument occurrences="2">
       <code>$type-&gt;convertToDatabaseValue(new Capabilities(), $platform)</code>
       <code>$type-&gt;convertToDatabaseValue(new Capabilities(new MonthlyTrafficQuota(50)), $platform)</code>
     </PossiblyNullArgument>
   </file>
-  <file src="src/Module/WebhostingModule/Tests/Infrastructure/ServiceBus/Middleware/CapabilityCoveringCommandValidatorTest.php">
-    <UndefinedClass occurrences="4">
-      <code>ServiceMessages</code>
-      <code>ServiceMessages</code>
-      <code>ServiceMessages</code>
-      <code>ServiceMessages</code>
-    </UndefinedClass>
-  </file>
-  <file src="src/Module/WebhostingModule/Tests/Service/Package/AccountCapabilitiesGuardTest.php">
-    <UndefinedClass occurrences="3">
-      <code>ServiceMessages</code>
-      <code>ServiceMessages</code>
-      <code>ServiceMessages</code>
-    </UndefinedClass>
+  <file src="bundles/WebhostingBundle/tests/Model/Account/Handler/RegisterWebhostingAccountHandlerTest.php">
+    <LessSpecificReturnStatement occurrences="5">
+      <code>$accountRepositoryProphecy-&gt;reveal()</code>
+      <code>$accountRepositoryProphecy-&gt;reveal()</code>
+      <code>$packageRepositoryProphecy-&gt;reveal()</code>
+      <code>$domainNameRepositoryProphecy-&gt;reveal()</code>
+      <code>$domainNameRepositoryProphecy-&gt;reveal()</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="5">
+      <code>WebhostingAccountRepository</code>
+      <code>WebhostingAccountRepository</code>
+      <code>WebhostingPackageRepository</code>
+      <code>WebhostingDomainNameRepository</code>
+      <code>WebhostingDomainNameRepository</code>
+    </MoreSpecificReturnType>
+    <TooManyArguments occurrences="3">
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+    </TooManyArguments>
+    <TooManyTemplateParams occurrences="5">
+      <code>$this-&gt;prophesize(WebhostingAccountRepository::class)</code>
+      <code>$this-&gt;prophesize(WebhostingAccountRepository::class)</code>
+      <code>$this-&gt;prophesize(WebhostingPackageRepository::class)</code>
+      <code>$this-&gt;prophesize(WebhostingDomainNameRepository::class)</code>
+      <code>$this-&gt;prophesize(WebhostingDomainNameRepository::class)</code>
+    </TooManyTemplateParams>
   </file>
 </files>

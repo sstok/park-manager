@@ -19,12 +19,12 @@ composer-validate: ensure
 	@sh -c "${QA_DOCKER_COMMAND} composer validate"
 #	@sh -c "${QA_DOCKER_COMMAND} composer normalize"
 
-	@for direc in $$(gfind src -mindepth 2 -type f -name composer.json -printf '%h\n'); \
+	@for direc in $$(gfind bundles -mindepth 2 -type f -name composer.json -printf '%h\n'); \
 	do \
 		sh -c "${QA_DOCKER_COMMAND} composer validate --working-dir=$${direc}"; \
 	done;
 
-#	@for direc in $$(gfind src -mindepth 2 -type f -name composer.json -printf '%h\n'); \
+#	@for direc in $$(gfind bundles -mindepth 2 -type f -name composer.json -printf '%h\n'); \
 #	do \
 #		sh -c "${QA_DOCKER_COMMAND} composer validate --working-dir=$${direc}"; \
 #		sh -c "${QA_DOCKER_COMMAND} composer normalize --working-dir=$${direc}"; \
@@ -47,12 +47,12 @@ endif
 
 lint-yaml:
 	@echo "Validating YAML files"
-	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:yaml -vv src/"
+	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:yaml -vv bundles/"
 	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:yaml -vv config/"
 
 lint-twig:
 	@echo "Validating Twig files"
-	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:twig -vv src/"
+	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:twig -vv bundles/"
 	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:twig -vv templates/"
 
 composer-install: fetch ensure clean
@@ -78,7 +78,7 @@ phpstan: ensure
 	sh -c "${QA_DOCKER_COMMAND} phpstan analyse"
 
 psalm: ensure
-	sh -c "${QA_DOCKER_COMMAND} psalm --show-info=false"
+	sh -c "${QA_DOCKER_COMMAND} vendor/bin/psalm --show-info=false"
 
 infection: ensure
 	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr vendor/bin/phpunit --verbose --log-junit=var/phpunit.junit.xml --coverage-xml var/coverage-xml/"
