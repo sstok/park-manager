@@ -15,26 +15,23 @@ use ParkManager\Bundle\WebhostingBundle\Model\Plan\Exception\ConstraintNotRegist
 
 final class ConstraintsFactory
 {
-    private $constraintsById;
+    private $constraintsByName;
 
-    public function __construct(array $constraintsById)
+    public function __construct(array $constraintsByName)
     {
-        $this->constraintsById = $constraintsById;
+        $this->constraintsByName = $constraintsByName;
     }
 
-    /**
-     * Reconstitutes a Constraints set from storage.
-     */
     public function reconstituteFromStorage(array $constraints): Constraints
     {
         $constraintsInstances = [];
 
-        foreach ($constraints as $id => $configuration) {
-            if (! isset($this->constraintsById[$id])) {
-                throw ConstraintNotRegistered::withId($id);
+        foreach ($constraints as $name => $configuration) {
+            if (! isset($this->constraintsByName[$name])) {
+                throw ConstraintNotRegistered::withName($name);
             }
 
-            $constraintsInstances[] = $this->constraintsById[$id]::reconstituteFromArray($configuration);
+            $constraintsInstances[] = $this->constraintsByName[$name]::reconstituteFromArray($configuration);
         }
 
         return new Constraints(...$constraintsInstances);

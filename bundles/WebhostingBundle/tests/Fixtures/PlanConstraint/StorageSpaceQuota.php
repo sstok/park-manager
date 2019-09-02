@@ -16,11 +16,6 @@ final class StorageSpaceQuota implements Constraint
 {
     private $limit;
 
-    public static function id(): string
-    {
-        return 'b9ea5838-97c7-11e7-a1a1-acbc32b58315';
-    }
-
     public function __construct(string $limit)
     {
         $this->limit = $limit;

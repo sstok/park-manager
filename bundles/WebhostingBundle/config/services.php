@@ -34,8 +34,7 @@ return function (ContainerConfigurator $c) {
     $di->load('ParkManager\\Bundle\\WebhostingBundle\\UseCase\\', __DIR__ . '/../src/UseCase/**/*Handler.php')
         ->tag('messenger.message_handler', ['bus' => 'park_manager.command_bus']);
 
-    // ConstraintsFactory alias needs to be public for Doctrine type in ParkManagerWebhostingModule::boot()
-    $di->set(ConstraintsFactory::class)->arg(0, []);
+    $di->set(ConstraintsFactory::class)->arg(0, '%park_manager.webhosting.plan_constraints%');
     $di->set(ConstraintsTypeConfigurator::class);
 
     $autoDi->set(WebhostingAccountOrmRepository::class)

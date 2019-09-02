@@ -16,11 +16,6 @@ final class MonthlyTrafficQuota implements Constraint
 {
     private $limit;
 
-    public static function id(): string
-    {
-        return '04da51e0-97c8-11e7-b2eb-acbc32b58315';
-    }
-
     public function __construct(int $limit)
     {
         $this->limit = $limit;

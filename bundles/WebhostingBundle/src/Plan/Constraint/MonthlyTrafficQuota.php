@@ -21,11 +21,6 @@ final class MonthlyTrafficQuota implements Constraint
         $this->quota = $quota;
     }
 
-    public static function id(): string
-    {
-        return 'f9eeab0e-a38f-11e7-939d-acbc32b58315';
-    }
-
     public function configuration(): array
     {
         return ['quota' => $this->quota];

@@ -17,6 +17,9 @@ use Traversable;
 use function array_merge;
 use function array_values;
 use function get_class;
+use function ksort;
+use function strrpos;
+use function substr;
 
 final class Constraints implements IteratorAggregate
 {
@@ -29,10 +32,13 @@ final class Constraints implements IteratorAggregate
     public function __construct(Constraint ...$constraints)
     {
         foreach ($constraints as $constraint) {
-            $class                                       = get_class($constraint);
-            $this->constraints[$class]                   = $constraint;
-            $this->constraintsIndexed[$constraint::id()] = $constraint->configuration();
+            $constraintName = self::getConstraintName($constraint);
+
+            $this->constraints[$constraintName] = $constraint;
+            $this->constraintsIndexed[$constraintName] = $constraint->configuration();
         }
+
+        ksort($this->constraintsIndexed);
     }
 
     public function add(Constraint ...$constraints): self
@@ -46,7 +52,7 @@ final class Constraints implements IteratorAggregate
         $constraintsList = $this->constraints;
 
         foreach ($constraints as $constraint) {
-            unset($constraintsList[get_class($constraint)]);
+            unset($constraintsList[self::getConstraintName($constraint)]);
         }
 
         return new self(...array_values($constraintsList));
@@ -84,5 +90,12 @@ final class Constraints implements IteratorAggregate
 
         // Leave values of the array are expected to be scalar. So strict comparison is possible.
         return $this->constraintsIndexed === $other->constraintsIndexed;
+    }
+
+    public static function getConstraintName(Constraint $constraint): string
+    {
+        $class = get_class($constraint);
+
+        return substr($class, strrpos($class, '\\') + 1);
     }
 }

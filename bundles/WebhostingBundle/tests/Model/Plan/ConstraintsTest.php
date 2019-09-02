@@ -15,7 +15,6 @@ use ParkManager\Bundle\WebhostingBundle\Model\Plan\Exception\ConstraintNotInSet;
 use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTrafficQuota;
 use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\StorageSpaceQuota;
 use PHPUnit\Framework\TestCase;
-use function get_class;
 use function iterator_to_array;
 
 /**
@@ -26,14 +25,13 @@ final class ConstraintsTest extends TestCase
     /** @test */
     public function its_constructable(): void
     {
-        $constraint   = new StorageSpaceQuota('9B');
-        $constraint2  = new MonthlyTrafficQuota(50);
+        $constraint  = new StorageSpaceQuota('9B');
         $constraints = new Constraints($constraint, $constraint);
 
         self::assertConstraintsEquals([$constraint], $constraints);
-        self::assertTrue($constraints->has(get_class($constraint)));
-        self::assertFalse($constraints->has(get_class($constraint2)));
-        self::assertEquals($constraint, $constraints->get(StorageSpaceQuota::class));
+        self::assertTrue($constraints->has('StorageSpaceQuota'));
+        self::assertFalse($constraints->has('MonthlyTrafficQuota'));
+        self::assertEquals($constraint, $constraints->get('StorageSpaceQuota'));
     }
 
     /** @test */
@@ -79,8 +77,9 @@ final class ConstraintsTest extends TestCase
     private static function assertConstraintsEquals(array $constraints, Constraints $constraintsSet): void
     {
         $processedConstraints = [];
+
         foreach ($constraints as $constraint) {
-            $processedConstraints[get_class($constraint)] = $constraint;
+            $processedConstraints[Constraints::getConstraintName($constraint)] = $constraint;
         }
 
         self::assertEquals($processedConstraints, iterator_to_array($constraintsSet));

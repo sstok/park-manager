@@ -16,11 +16,6 @@ use function sprintf;
 
 final class ConstraintNotRegistered extends RuntimeException
 {
-    public static function withId(string $id): self
-    {
-        return new self(sprintf('Webhosting Plan Constraint with id "%s" is not registered.', $id));
-    }
-
     public static function withName(string $name): self
     {
         if (! class_exists($name)) {

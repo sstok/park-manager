@@ -25,15 +25,6 @@ namespace ParkManager\Bundle\WebhostingBundle\Model\Plan;
 interface Constraint
 {
     /**
-     * Returns a unique id (UUID) for storage mapping.
-     *
-     * This must never change! Moving/renaming the
-     * Constraint class should not require updating
-     * the database.
-     */
-    public static function id(): string;
-
-    /**
      * Return the current configuration of this Constraint.
      *
      * The configuration must be in a format that can be stored

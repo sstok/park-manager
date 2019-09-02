@@ -43,7 +43,7 @@ final class WebhostingPlanConstraintsTypeTest extends TestCase
         self::assertNull($type->convertToDatabaseValue(null, $platform));
         self::assertJsonStringEqualsJsonString('[]', $type->convertToDatabaseValue(new Constraints(), $platform));
         self::assertJsonStringEqualsJsonString(
-            '{"' . MonthlyTrafficQuota::id() . '":{"limit":50}}',
+            '{"MonthlyTrafficQuota":{"limit":50}}',
             $type->convertToDatabaseValue(new Constraints(new MonthlyTrafficQuota(50)), $platform)
         );
     }
@@ -59,7 +59,7 @@ final class WebhostingPlanConstraintsTypeTest extends TestCase
         self::assertEquals(new Constraints(), $type->convertToPHPValue('{}', $platform));
         self::assertEquals(
             new Constraints(new MonthlyTrafficQuota(50)),
-            $type->convertToPHPValue('{"' . MonthlyTrafficQuota::id() . '":{"limit":50}}', $platform)
+            $type->convertToPHPValue('{"MonthlyTrafficQuota":{"limit":50}}', $platform)
         );
     }
 
@@ -80,8 +80,8 @@ final class WebhostingPlanConstraintsTypeTest extends TestCase
     private function createConstraintsFactory(): ConstraintsFactory
     {
         return new ConstraintsFactory([
-            MonthlyTrafficQuota::id() => MonthlyTrafficQuota::class,
-            StorageSpaceQuota::id() => StorageSpaceQuota::class,
+            'MonthlyTrafficQuota' => MonthlyTrafficQuota::class,
+            'StorageSpaceQuota' => StorageSpaceQuota::class,
         ]);
     }
 }
