@@ -36,3 +36,4 @@ parameters:
         ## False positive
         - '#Property Doctrine\\ORM\\EntityRepository\:\:\$_em \(Doctrine\\ORM\\EntityManager\) does not accept Doctrine\\ORM\\EntityManagerInterface#' # Doctrine PHPDoc bug
         - '#Property Doctrine\\ORM\\EntityRepository\:\:\$_class \(Doctrine\\ORM\\Mapping\\ClassMetadata\) does not accept Doctrine\\Common\\Persistence\\Mapping\\ClassMetadata#'
+        - '#Parameter \#1 \$configurator of method Symfony\\Component\\DependencyInjection\\Loader\\Configurator\\ServiceConfigurator\:\:configurator\(\) expects array\|string, Symfony\\Component\\DependencyInjection\\Loader\\Configurator\\ReferenceConfigurator given#'
