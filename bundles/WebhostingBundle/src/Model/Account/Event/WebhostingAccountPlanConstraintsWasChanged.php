@@ -8,25 +8,25 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\WebhostingBundle\Model\Plan\Event;
+namespace ParkManager\Bundle\WebhostingBundle\Model\Account\Event;
 
+use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 
-final class WebhostingPlanWasCreated
+final class WebhostingAccountPlanConstraintsWasChanged
 {
-    private $planId;
+    private $id;
     private $constraints;
 
-    public function __construct(WebhostingPlanId $id, Constraints $constraints)
+    public function __construct(WebhostingAccountId $id, Constraints $constraints)
     {
-        $this->planId    = $id;
+        $this->id           = $id;
         $this->constraints = $constraints;
     }
 
-    public function id(): WebhostingPlanId
+    public function id(): WebhostingAccountId
     {
-        return $this->planId;
+        return $this->id;
     }
 
     public function constraints(): Constraints

@@ -13,9 +13,9 @@ namespace ParkManager\Bundle\WebhostingBundle\Tests\Model\Account\Command;
 use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\MonthlyTrafficQuota;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTrafficQuota;
 use ParkManager\Bundle\WebhostingBundle\UseCase\Account\RegisterWebhostingAccount;
 use PHPUnit\Framework\TestCase;
 
@@ -42,22 +42,22 @@ final class RegisterWebhostingAccountTest extends TestCase
         self::assertEquals(OwnerId::fromString(self::OWNER_ID), $command->owner());
         self::assertEquals(WebhostingPlanId::fromString(self::PLAN_ID), $command->plan());
         self::assertEquals($domainName, $command->domainName());
-        self::assertNull($command->customCapabilities());
+        self::assertNull($command->customConstraints());
     }
 
     /** @test */
-    public function its_constructable_with_custom_capabilities(): void
+    public function its_constructable_with_custom_constraints(): void
     {
-        $command = RegisterWebhostingAccount::withCustomCapabilities(
+        $command = RegisterWebhostingAccount::withCustomConstraints(
             self::ACCOUNT_ID,
             $domainName = new DomainName('example', 'com'),
             self::OWNER_ID,
-            $capabilities = new Capabilities(new MonthlyTrafficQuota(50))
+            $constraints = new Constraints(new MonthlyTrafficQuota(50))
         );
 
         self::assertEquals(WebhostingAccountId::fromString(self::ACCOUNT_ID), $command->id());
         self::assertEquals(OwnerId::fromString(self::OWNER_ID), $command->owner());
-        self::assertEquals($capabilities, $command->customCapabilities());
+        self::assertEquals($constraints, $command->customConstraints());
         self::assertEquals($domainName, $command->domainName());
         self::assertNull($command->plan());
     }

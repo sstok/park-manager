@@ -13,11 +13,11 @@ namespace ParkManager\Bundle\WebhostingBundle\Tests\Doctrine\Plan;
 use ParkManager\Bundle\CoreBundle\Test\Doctrine\EntityRepositoryTestCase;
 use ParkManager\Bundle\CoreBundle\Test\Domain\EventSourcedRepositoryTestHelper;
 use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\WebhostingPlanOrmRepository;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Exception\WebhostingPlanNotFound;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\MonthlyTrafficQuota;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTrafficQuota;
 
 /**
  * @internal
@@ -46,11 +46,11 @@ final class WebhostingPlaneOrmRepositoryTest extends EntityRepositoryTestCase
 
         self::assertEquals($id, $plan->id());
         self::assertEquals(['title' => 'Supper Gold XL'], $plan->metadata());
-        self::assertEquals(new Capabilities(new MonthlyTrafficQuota(5)), $plan->capabilities());
+        self::assertEquals(new Constraints(new MonthlyTrafficQuota(5)), $plan->constraints());
 
         self::assertEquals($id2, $plan2->id());
         self::assertEquals([], $plan2->metadata());
-        self::assertEquals(new Capabilities(new MonthlyTrafficQuota(50)), $plan2->capabilities());
+        self::assertEquals(new Constraints(new MonthlyTrafficQuota(50)), $plan2->constraints());
     }
 
     /** @test */
@@ -86,7 +86,7 @@ final class WebhostingPlaneOrmRepositoryTest extends EntityRepositoryTestCase
     {
         $plan = WebhostingPlan::create(
             WebhostingPlanId::fromString(self::PLAN_ID1),
-            new Capabilities(new MonthlyTrafficQuota(5))
+            new Constraints(new MonthlyTrafficQuota(5))
         );
         $plan->withMetadata(['title' => 'Supper Gold XL']);
 
@@ -98,7 +98,7 @@ final class WebhostingPlaneOrmRepositoryTest extends EntityRepositoryTestCase
         $repository->save(
             WebhostingPlan::create(
                 WebhostingPlanId::fromString(self::PLAN_ID2),
-                new Capabilities(new MonthlyTrafficQuota(50))
+                new Constraints(new MonthlyTrafficQuota(50))
             )
         );
     }

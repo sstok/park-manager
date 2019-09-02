@@ -13,20 +13,20 @@ namespace ParkManager\Bundle\WebhostingBundle\Model\Plan\Event;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 
-final class WebhostingPlanWasCreated
+final class WebhostingPlanConstraintsWasChanged
 {
-    private $planId;
+    private $id;
     private $constraints;
 
     public function __construct(WebhostingPlanId $id, Constraints $constraints)
     {
-        $this->planId    = $id;
+        $this->id           = $id;
         $this->constraints = $constraints;
     }
 
     public function id(): WebhostingPlanId
     {
-        return $this->planId;
+        return $this->id;
     }
 
     public function constraints(): Constraints

@@ -13,9 +13,9 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\AutoServiceConfigurator;
 use ParkManager\Bundle\WebhostingBundle\Doctrine\Account\WebhostingAccountOrmRepository;
 use ParkManager\Bundle\WebhostingBundle\Doctrine\DomainName\WebhostingDomainNameOrmRepository;
-use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\CapabilitiesTypeConfigurator;
+use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\ConstraintsTypeConfigurator;
 use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\WebhostingPlanOrmRepository;
-use ParkManager\Bundle\WebhostingBundle\Plan\CapabilitiesFactory;
+use ParkManager\Bundle\WebhostingBundle\Plan\ConstraintsFactory;
 
 return function (ContainerConfigurator $c) {
     $di = $c->services()->defaults()
@@ -34,15 +34,15 @@ return function (ContainerConfigurator $c) {
     $di->load('ParkManager\\Bundle\\WebhostingBundle\\UseCase\\', __DIR__ . '/../src/UseCase/**/*Handler.php')
         ->tag('messenger.message_handler', ['bus' => 'park_manager.command_bus']);
 
-    // CapabilitiesFactory alias needs to be public for Doctrine type in ParkManagerWebhostingModule::boot()
-    $di->set(CapabilitiesFactory::class)->arg(0, []);
-    $di->set(CapabilitiesTypeConfigurator::class);
+    // ConstraintsFactory alias needs to be public for Doctrine type in ParkManagerWebhostingModule::boot()
+    $di->set(ConstraintsFactory::class)->arg(0, []);
+    $di->set(ConstraintsTypeConfigurator::class);
 
     $autoDi->set(WebhostingAccountOrmRepository::class)
-        ->configurator(ref(CapabilitiesTypeConfigurator::class));
+        ->configurator(ref(ConstraintsTypeConfigurator::class));
 
     $autoDi->set(WebhostingDomainNameOrmRepository::class);
 
     $autoDi->set(WebhostingPlanOrmRepository::class)
-        ->configurator(ref(CapabilitiesTypeConfigurator::class));
+        ->configurator(ref(ConstraintsTypeConfigurator::class));
 };

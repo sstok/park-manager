@@ -19,10 +19,10 @@ use ParkManager\Bundle\WebhostingBundle\Model\Account\Exception\CannotRemoveActi
 use ParkManager\Bundle\WebhostingBundle\Model\Account\Exception\WebhostingAccountNotFound;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccount;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\MonthlyTrafficQuota;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTrafficQuota;
 
 /**
  * @internal
@@ -39,8 +39,8 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
     private const ACCOUNT_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
     private const ACCOUNT_ID2 = '47f6db14-a69c-11e7-be13-acbc32b58315';
 
-    /** @var Capabilities */
-    private $planCapabilities;
+    /** @var Constraints */
+    private $planConstraints;
 
     /** @var WebhostingPlan */
     private $plan;
@@ -49,10 +49,10 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
     {
         parent::setUp();
 
-        $this->planCapabilities = new Capabilities(new MonthlyTrafficQuota(50));
+        $this->planConstraints = new Constraints(new MonthlyTrafficQuota(50));
         $this->plan             = WebhostingPlan::create(
             WebhostingPlanId::fromString(self::PLAN_ID1),
-            $this->planCapabilities
+            $this->planConstraints
         );
 
         $em = $this->getEntityManager();
@@ -75,12 +75,12 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
 
         self::assertEquals($id, $account->id());
         self::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account->owner());
-        self::assertEquals(new Capabilities(), $account->capabilities());
+        self::assertEquals(new Constraints(), $account->planConstraints());
         self::assertNull($account->plan());
 
         self::assertEquals($id2, $account2->id());
         self::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account2->owner());
-        self::assertEquals($this->planCapabilities, $account2->capabilities());
+        self::assertEquals($this->planConstraints, $account2->planConstraints());
         self::assertEquals($this->plan, $account2->plan());
     }
 
@@ -133,10 +133,10 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
     private function setUpAccount1(WebhostingAccountOrmRepository $repository): void
     {
         $repository->save(
-            WebhostingAccount::registerWithCustomCapabilities(
+            WebhostingAccount::registerWithCustomConstraints(
                 WebhostingAccountId::fromString(self::ACCOUNT_ID1),
                 OwnerId::fromString(self::OWNER_ID1),
-                new Capabilities()
+                new Constraints()
             )
         );
     }

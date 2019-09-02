@@ -13,7 +13,7 @@ namespace ParkManager\Bundle\WebhostingBundle\UseCase\Account;
 use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 
 final class RegisterWebhostingAccount
@@ -22,13 +22,13 @@ final class RegisterWebhostingAccount
     private $domainName;
     private $owner;
     private $plan;
-    private $capabilities;
+    private $constraints;
 
-    private function __construct(string $id, string $owner, DomainName $domainName, ?string $planId, ?Capabilities $capabilities)
+    private function __construct(string $id, string $owner, DomainName $domainName, ?string $planId, ?Constraints $constraints)
     {
         $this->id           = WebhostingAccountId::fromString($id);
         $this->domainName   = $domainName;
-        $this->capabilities = $capabilities;
+        $this->constraints = $constraints;
         $this->owner        = OwnerId::fromString($owner);
 
         if ($planId !== null) {
@@ -41,9 +41,9 @@ final class RegisterWebhostingAccount
         return new self($id, $owner, $domainName, $planId, null);
     }
 
-    public static function withCustomCapabilities(string $id, DomainName $domainName, string $owner, Capabilities $capabilities): self
+    public static function withCustomConstraints(string $id, DomainName $domainName, string $owner, Constraints $constraints): self
     {
-        return new self($id, $owner, $domainName, null, $capabilities);
+        return new self($id, $owner, $domainName, null, $constraints);
     }
 
     public function id(): WebhostingAccountId
@@ -56,9 +56,9 @@ final class RegisterWebhostingAccount
         return $this->owner;
     }
 
-    public function customCapabilities(): ?Capabilities
+    public function customConstraints(): ?Constraints
     {
-        return $this->capabilities;
+        return $this->constraints;
     }
 
     public function plan(): ?WebhostingPlanId

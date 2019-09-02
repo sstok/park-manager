@@ -48,10 +48,10 @@ final class RegisterWebhostingAccountHandler
                 $this->planRepository->get($planId)
             );
         } else {
-            $account = WebhostingAccount::registerWithCustomCapabilities(
+            $account = WebhostingAccount::registerWithCustomConstraints(
                 $command->id(),
                 $command->owner(),
-                $command->customCapabilities()
+                $command->customConstraints()
             );
         }
 

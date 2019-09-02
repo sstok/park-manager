@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\WebhostingBundle\Model\Account\Event;
 
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 
@@ -20,8 +20,8 @@ final class WebhostingAccountPlanAssignmentWasChanged
     private $accountId;
     private $plan;
 
-    /** @var Capabilities|null */
-    private $capabilities;
+    /** @var Constraints|null */
+    private $constraints;
 
     public function __construct(WebhostingAccountId $id, WebhostingPlan $plan)
     {
@@ -29,10 +29,10 @@ final class WebhostingAccountPlanAssignmentWasChanged
         $this->plan   = $plan->id();
     }
 
-    public static function withCapabilities(WebhostingAccountId $id, WebhostingPlan $plan): self
+    public static function withConstraints(WebhostingAccountId $id, WebhostingPlan $plan): self
     {
         $event               = new self($id, $plan);
-        $event->capabilities = $plan->capabilities();
+        $event->constraints = $plan->constraints();
 
         return $event;
     }
@@ -47,8 +47,8 @@ final class WebhostingAccountPlanAssignmentWasChanged
         return $this->plan;
     }
 
-    public function capabilities(): ?Capabilities
+    public function constraints(): ?Constraints
     {
-        return $this->capabilities;
+        return $this->constraints;
     }
 }

@@ -12,11 +12,11 @@ namespace ParkManager\Bundle\WebhostingBundle\Tests\Model\Account\Event;
 
 use ParkManager\Bundle\WebhostingBundle\Model\Account\Event\WebhostingAccountPlanAssignmentWasChanged;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\MonthlyTrafficQuota;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\StorageSpaceQuota;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTrafficQuota;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\StorageSpaceQuota;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,27 +37,27 @@ final class WebhostingAccountPlanAssignmentWasChangedTest extends TestCase
 
         self::assertTrue($id->equals($event->id()));
         self::assertEquals($plan->id(), $event->plan());
-        self::assertNull($event->capabilities());
+        self::assertNull($event->constraints());
     }
 
     /** @test */
-    public function its_constructable_with_capabilities_provided(): void
+    public function its_constructable_with_constraints_provided(): void
     {
-        $event = WebhostingAccountPlanAssignmentWasChanged::withCapabilities(
+        $event = WebhostingAccountPlanAssignmentWasChanged::withConstraints(
             $id = $this->createAccountId(),
             $plan = $this->createWebhostingPlan()
         );
 
         self::assertTrue($id->equals($event->id()));
         self::assertEquals($plan->id(), $event->plan());
-        self::assertEquals($plan->capabilities(), $event->capabilities());
+        self::assertEquals($plan->constraints(), $event->constraints());
     }
 
     private function createWebhostingPlan(): WebhostingPlan
     {
         return WebhostingPlan::create(
             WebhostingPlanId::fromString(self::WEBHOSTING_PLAN_ID),
-            new Capabilities(new StorageSpaceQuota('5G'), new MonthlyTrafficQuota(50))
+            new Constraints(new StorageSpaceQuota('5G'), new MonthlyTrafficQuota(50))
         );
     }
 

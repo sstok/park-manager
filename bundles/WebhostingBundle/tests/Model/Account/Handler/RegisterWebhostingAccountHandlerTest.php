@@ -18,11 +18,11 @@ use ParkManager\Bundle\WebhostingBundle\Model\DomainName;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\WebhostingDomainName;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\WebhostingDomainNameRepository;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanRepository;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\MonthlyTrafficQuota;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTrafficQuota;
 use ParkManager\Bundle\WebhostingBundle\UseCase\Account\RegisterWebhostingAccount;
 use ParkManager\Bundle\WebhostingBundle\UseCase\Account\RegisterWebhostingAccountHandler;
 use PHPUnit\Framework\TestCase;
@@ -42,11 +42,11 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     /** @test */
     public function it_handles_registration_of_account_with_plan(): void
     {
-        $capabilities         = new Capabilities(new MonthlyTrafficQuota(50));
+        $constraints         = new Constraints(new MonthlyTrafficQuota(50));
         $domainName           = new DomainName('example', '.com');
-        $webhostingPlan    = WebhostingPlan::create(WebhostingPlanId::fromString(self::PLAN_ID1), $capabilities);
+        $webhostingPlan    = WebhostingPlan::create(WebhostingPlanId::fromString(self::PLAN_ID1), $constraints);
         $planRepository    = $this->createPlanRepository($webhostingPlan);
-        $accountRepository    = $this->createAccountRepositoryThatSaves($capabilities, $webhostingPlan);
+        $accountRepository    = $this->createAccountRepositoryThatSaves($constraints, $webhostingPlan);
         $domainNameRepository = $this->createDomainNameRepositoryThatSaves($domainName, self::ACCOUNT_ID1);
         $handler              = new RegisterWebhostingAccountHandler($accountRepository, $planRepository, $domainNameRepository);
 
@@ -61,21 +61,21 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     }
 
     /** @test */
-    public function it_handles_registration_of_account_with_custom_capabilities(): void
+    public function it_handles_registration_of_account_with_custom_constraints(): void
     {
-        $capabilities         = new Capabilities(new MonthlyTrafficQuota(50));
+        $constraints         = new Constraints(new MonthlyTrafficQuota(50));
         $domainName           = new DomainName('example', '.com');
         $planRepository    = $this->createNullPlanRepository();
-        $accountRepository    = $this->createAccountRepositoryThatSaves($capabilities);
+        $accountRepository    = $this->createAccountRepositoryThatSaves($constraints);
         $domainNameRepository = $this->createDomainNameRepositoryThatSaves($domainName, self::ACCOUNT_ID1);
         $handler              = new RegisterWebhostingAccountHandler($accountRepository, $planRepository, $domainNameRepository);
 
         $handler(
-            RegisterWebhostingAccount::withCustomCapabilities(
+            RegisterWebhostingAccount::withCustomConstraints(
                 self::ACCOUNT_ID1,
                 new DomainName('example', '.com'),
                 self::OWNER_ID1,
-                $capabilities
+                $constraints
             )
         );
     }
@@ -103,15 +103,15 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
         );
     }
 
-    private function createAccountRepositoryThatSaves(Capabilities $capabilities, ?WebhostingPlan $plan = null, string $id = self::ACCOUNT_ID1, string $owner = self::OWNER_ID1): WebhostingAccountRepository
+    private function createAccountRepositoryThatSaves(Constraints $constraints, ?WebhostingPlan $plan = null, string $id = self::ACCOUNT_ID1, string $owner = self::OWNER_ID1): WebhostingAccountRepository
     {
         $accountRepositoryProphecy = $this->prophesize(WebhostingAccountRepository::class);
         $accountRepositoryProphecy->save(
             Argument::that(
-                static function (WebhostingAccount $account) use ($capabilities, $id, $owner, $plan) {
+                static function (WebhostingAccount $account) use ($constraints, $id, $owner, $plan) {
                     self::assertEquals(WebhostingAccountId::fromString($id), $account->id());
                     self::assertEquals(OwnerId::fromString($owner), $account->owner());
-                    self::assertEquals($capabilities, $account->capabilities());
+                    self::assertEquals($constraints, $account->planConstraints());
                     self::assertEquals($plan, $account->plan());
 
                     return true;

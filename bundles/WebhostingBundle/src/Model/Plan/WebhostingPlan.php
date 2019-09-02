@@ -13,7 +13,7 @@ namespace ParkManager\Bundle\WebhostingBundle\Model\Plan;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Bundle\CoreBundle\Model\DomainEventsCollectionTrait;
 use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanCapabilitiesWasChanged;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanConstraintsWasChanged;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanWasCreated;
 
 /**
@@ -34,11 +34,11 @@ class WebhostingPlan implements RecordsDomainEvents
     protected $id;
 
     /**
-     * @ORM\Column(name="capabilities", type="webhosting_capabilities", nullable=true)
+     * @ORM\Column(name="constraints", type="webhosting_plan_constraints", nullable=true)
      *
-     * @var Capabilities
+     * @var Constraints
      */
-    protected $capabilities;
+    protected $constraints;
 
     /**
      * @ORM\Column(name="metadata", type="json")
@@ -47,19 +47,19 @@ class WebhostingPlan implements RecordsDomainEvents
      */
     private $metadata = [];
 
-    protected function __construct(WebhostingPlanId $id, Capabilities $capabilities)
+    protected function __construct(WebhostingPlanId $id, Constraints $constraints)
     {
         $this->id           = $id;
-        $this->capabilities = $capabilities;
+        $this->constraints = $constraints;
     }
 
     /**
      * @return static
      */
-    public static function create(WebhostingPlanId $id, Capabilities $capabilities)
+    public static function create(WebhostingPlanId $id, Constraints $constraints)
     {
-        $instance = new static($id, $capabilities);
-        $instance->recordThat(new WebhostingPlanWasCreated($id, $capabilities));
+        $instance = new static($id, $constraints);
+        $instance->recordThat(new WebhostingPlanWasCreated($id, $constraints));
 
         return $instance;
     }
@@ -69,19 +69,19 @@ class WebhostingPlan implements RecordsDomainEvents
         return $this->id;
     }
 
-    public function capabilities(): Capabilities
+    public function constraints(): Constraints
     {
-        return $this->capabilities;
+        return $this->constraints;
     }
 
-    public function changeCapabilities(Capabilities $capabilities): void
+    public function changeConstraints(Constraints $constraints): void
     {
-        if ($capabilities->equals($this->capabilities)) {
+        if ($constraints->equals($this->constraints)) {
             return;
         }
 
-        $this->capabilities = $capabilities;
-        $this->recordThat(new WebhostingPlanCapabilitiesWasChanged($this->id, $capabilities));
+        $this->constraints = $constraints;
+        $this->recordThat(new WebhostingPlanConstraintsWasChanged($this->id, $constraints));
     }
 
     /**

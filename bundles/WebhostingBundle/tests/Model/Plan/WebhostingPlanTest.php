@@ -11,13 +11,13 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\WebhostingBundle\Tests\Model\Plan;
 
 use ParkManager\Bundle\CoreBundle\Test\Domain\EventsRecordingEntityAssertionTrait;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanCapabilitiesWasChanged;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanConstraintsWasChanged;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanWasCreated;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\MonthlyTrafficQuota;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanCapability\StorageSpaceQuota;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTrafficQuota;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\StorageSpaceQuota;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,30 +34,30 @@ final class WebhostingPlanTest extends TestCase
     {
         $plan = WebhostingPlan::create(
             $id = WebhostingPlanId::fromString(self::ID1),
-            $capabilities = new Capabilities()
+            $constraints = new Constraints()
         );
 
-        self::assertEquals($capabilities, $plan->capabilities());
-        self::assertDomainEvents($plan, [new WebhostingPlanWasCreated($id, $capabilities)]);
+        self::assertEquals($constraints, $plan->constraints());
+        self::assertDomainEvents($plan, [new WebhostingPlanWasCreated($id, $constraints)]);
         self::assertEquals([], $plan->metadata());
     }
 
     /** @test */
-    public function it_allows_changing_capabilities(): void
+    public function it_allows_changing_constraints(): void
     {
         $plan = $this->createPlan();
-        $plan->changeCapabilities(
-            $capabilities = new Capabilities(new StorageSpaceQuota('5G'), new MonthlyTrafficQuota(50))
+        $plan->changeConstraints(
+            $constraints = new Constraints(new StorageSpaceQuota('5G'), new MonthlyTrafficQuota(50))
         );
         $id = $plan->id();
 
         $plan2 = $this->createPlan();
-        $plan2->changeCapabilities($plan2->capabilities());
+        $plan2->changeConstraints($plan2->constraints());
 
-        self::assertEquals($capabilities, $plan->capabilities());
+        self::assertEquals($constraints, $plan->constraints());
         self::assertDomainEvents(
             $plan,
-            [new WebhostingPlanCapabilitiesWasChanged($id, $capabilities)]
+            [new WebhostingPlanConstraintsWasChanged($id, $constraints)]
         );
         self::assertNoDomainEvents($plan2);
     }
@@ -74,7 +74,7 @@ final class WebhostingPlanTest extends TestCase
 
     private function createPlan(): WebhostingPlan
     {
-        $plan = WebhostingPlan::create(WebhostingPlanId::fromString(self::ID1), new Capabilities());
+        $plan = WebhostingPlan::create(WebhostingPlanId::fromString(self::ID1), new Constraints());
         static::resetDomainEvents($plan);
 
         return $plan;

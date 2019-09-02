@@ -12,9 +12,9 @@ namespace ParkManager\Bundle\WebhostingBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Doctrine\DBAL\Types\Type;
-use ParkManager\Bundle\WebhostingBundle\DependencyInjection\Compiler\CapabilitiesPass;
+use ParkManager\Bundle\WebhostingBundle\DependencyInjection\Compiler\PlanConstraintsPass;
 use ParkManager\Bundle\WebhostingBundle\DependencyInjection\DependencyExtension;
-use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\WebhostingCapabilitiesType;
+use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\WebhostingPlanConstraintsType;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -40,15 +40,15 @@ final class ParkManagerWebhostingModule extends Bundle
     {
         $path = $this->getPath() . '/src/Model/';
         $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver([$path => $this->getNamespace() . '\\Model'], [$path]));
-        $container->addCompilerPass(new CapabilitiesPass());
+        $container->addCompilerPass(new PlanConstraintsPass());
     }
 
     public function shutdown(): void
     {
-        if (Type::hasType('webhosting_capabilities')) {
-            /** @var WebhostingCapabilitiesType $type */
-            $type = Type::getType('webhosting_capabilities');
-            $type->setCapabilitiesFactory(null);
+        if (Type::hasType('webhosting_plan_constraints')) {
+            /** @var WebhostingPlanConstraintsType $type */
+            $type = Type::getType('webhosting_plan_constraints');
+            $type->setConstraintsFactory(null);
         }
     }
 }

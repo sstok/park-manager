@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\WebhostingBundle\Tests\Model\Plan\Event;
 
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanWasCreated;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanConstraintsWasChanged;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTrafficQuota;
 use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\StorageSpaceQuota;
@@ -20,15 +20,15 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-final class WebhostingPlanWasCreatedTest extends TestCase
+final class WebhostingPlanConstraintsWasChangedTest extends TestCase
 {
-    private const WEBHOSTING_PLAN_ID = 'b3e3846a-97c6-11e7-bf67-acbc32b58315';
+    private const PLAN_ID = 'b3e3846a-97c6-11e7-bf67-acbc32b58315';
 
     /** @test */
     public function its_constructable(): void
     {
-        $event = new WebhostingPlanWasCreated(
-            $id = WebhostingPlanId::fromString(self::WEBHOSTING_PLAN_ID),
+        $event = new WebhostingPlanConstraintsWasChanged(
+            $id = WebhostingPlanId::fromString(self::PLAN_ID),
             $constraints = new Constraints(new StorageSpaceQuota('5G'), new MonthlyTrafficQuota(50))
         );
 

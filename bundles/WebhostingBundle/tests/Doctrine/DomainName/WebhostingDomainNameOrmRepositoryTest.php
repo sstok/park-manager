@@ -22,7 +22,7 @@ use ParkManager\Bundle\WebhostingBundle\Model\DomainName\Exception\CannotRemoveP
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\Exception\WebhostingDomainNameNotFound;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\WebhostingDomainName;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\WebhostingDomainNameId;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 
 /**
  * @internal
@@ -59,16 +59,16 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     {
         parent::setUp();
 
-        $this->account1 = WebhostingAccount::registerWithCustomCapabilities(
+        $this->account1 = WebhostingAccount::registerWithCustomConstraints(
             WebhostingAccountId::fromString(self::ACCOUNT_ID1),
             OwnerId::fromString(self::OWNER_ID1),
-            new Capabilities()
+            new Constraints()
         );
 
-        $this->account2 = WebhostingAccount::registerWithCustomCapabilities(
+        $this->account2 = WebhostingAccount::registerWithCustomConstraints(
             WebhostingAccountId::fromString(self::ACCOUNT_ID2),
             OwnerId::fromString(self::OWNER_ID1),
-            new Capabilities()
+            new Constraints()
         );
 
         $em = $this->getEntityManager();

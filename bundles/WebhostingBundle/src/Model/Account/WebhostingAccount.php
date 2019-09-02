@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Bundle\CoreBundle\Model\DomainEventsCollectionTrait;
 use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Capabilities;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
 
 /**
@@ -46,11 +46,11 @@ class WebhostingAccount implements RecordsDomainEvents
     protected $plan;
 
     /**
-     * @ORM\Column(type="webhosting_capabilities")
+     * @ORM\Column(name="plan_constraints", type="webhosting_plan_constraints")
      *
-     * @var Capabilities
+     * @var Constraints
      */
-    protected $capabilities;
+    protected $planConstraints;
 
     /**
      * @ORM\Column(name="owner_id", type="park_manager_owner_id")
@@ -82,19 +82,19 @@ class WebhostingAccount implements RecordsDomainEvents
     public static function register(WebhostingAccountId $id, OwnerId $owner, WebhostingPlan $plan): self
     {
         $account = new static($id, $owner);
-        // Store the capabilities as part of the webhosting account
-        // The plan can be changed at any time, but the capabilities are immutable.
-        $account->capabilities = $plan->capabilities();
-        $account->plan      = $plan;
+        // Store the constraints as part of the webhosting account
+        // The plan can be changed at any time, but the constraints are immutable.
+        $account->planConstraints = $plan->constraints();
+        $account->plan            = $plan;
         $account->recordThat(new Event\WebhostingAccountWasRegistered($id, $owner));
 
         return $account;
     }
 
-    public static function registerWithCustomCapabilities(WebhostingAccountId $id, OwnerId $owner, Capabilities $capabilities): self
+    public static function registerWithCustomConstraints(WebhostingAccountId $id, OwnerId $owner, Constraints $constraints): self
     {
-        $account               = new static($id, $owner);
-        $account->capabilities = $capabilities;
+        $account                  = new static($id, $owner);
+        $account->planConstraints = $constraints;
         $account->recordThat(new Event\WebhostingAccountWasRegistered($id, $owner));
 
         return $account;
@@ -115,14 +115,14 @@ class WebhostingAccount implements RecordsDomainEvents
         return $this->plan;
     }
 
-    public function capabilities(): Capabilities
+    public function planConstraints(): Constraints
     {
-        return $this->capabilities;
+        return $this->planConstraints;
     }
 
     /**
      * Change the webhosting plan assignment, withing using
-     * the plan Capabilities of the webhosting plan.
+     * the plan Constraints of the webhosting plan.
      */
     public function assignPlan(WebhostingPlan $plan): void
     {
@@ -136,34 +136,34 @@ class WebhostingAccount implements RecordsDomainEvents
 
     /**
      * Change the webhosting plan assignment, and
-     * set the Capabilities of the webhosting plan.
+     * set the Constraints of the webhosting plan.
      */
-    public function assignPlanWithCapabilities(WebhostingPlan $plan): void
+    public function assignPlanWithConstraints(WebhostingPlan $plan): void
     {
-        if ($plan === $this->plan && $this->capabilities->equals($plan->capabilities())) {
+        if ($plan === $this->plan && $this->planConstraints->equals($plan->constraints())) {
             return;
         }
 
-        $this->plan      = $plan;
-        $this->capabilities = $plan->capabilities();
-        $this->recordThat(Event\WebhostingAccountPlanAssignmentWasChanged::withCapabilities($this->id, $plan));
+        $this->plan            = $plan;
+        $this->planConstraints = $plan->constraints();
+        $this->recordThat(Event\WebhostingAccountPlanAssignmentWasChanged::withConstraints($this->id, $plan));
     }
 
     /**
-     * Change the webhosting account Capabilities.
+     * Change the webhosting account Constraints.
      *
      * This removes the plan assignment and makes the account's
-     * Capabilities exclusive.
+     * Constraints exclusive.
      */
-    public function assignCustomCapabilities(Capabilities $capabilities): void
+    public function assignCustomConstraints(Constraints $constraints): void
     {
-        if ($this->plan === null && $this->capabilities->equals($capabilities)) {
+        if ($this->plan === null && $this->planConstraints->equals($constraints)) {
             return;
         }
 
-        $this->plan      = null;
-        $this->capabilities = $capabilities;
-        $this->recordThat(new Event\WebhostingAccountCapabilitiesWasChanged($this->id, $capabilities));
+        $this->plan            = null;
+        $this->planConstraints = $constraints;
+        $this->recordThat(new Event\WebhostingAccountPlanConstraintsWasChanged($this->id, $constraints));
     }
 
     public function switchOwner(OwnerId $owner): void
