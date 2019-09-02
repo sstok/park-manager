@@ -13,37 +13,37 @@ namespace ParkManager\Bundle\WebhostingBundle\UseCase\Account;
 use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\Capabilities;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\WebhostingPackageId;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 
 final class RegisterWebhostingAccount
 {
     private $id;
     private $domainName;
     private $owner;
-    private $package;
-    private $capabilities;
+    private $plan;
+    private $constraints;
 
-    private function __construct(string $id, string $owner, DomainName $domainName, ?string $package, ?Capabilities $capabilities)
+    private function __construct(string $id, string $owner, DomainName $domainName, ?string $planId, ?Constraints $constraints)
     {
         $this->id           = WebhostingAccountId::fromString($id);
         $this->domainName   = $domainName;
-        $this->capabilities = $capabilities;
+        $this->constraints = $constraints;
         $this->owner        = OwnerId::fromString($owner);
 
-        if ($package !== null) {
-            $this->package = WebhostingPackageId::fromString($package);
+        if ($planId !== null) {
+            $this->plan = WebhostingPlanId::fromString($planId);
         }
     }
 
-    public static function withPackage(string $id, DomainName $domainName, string $owner, string $packageId): self
+    public static function withPlan(string $id, DomainName $domainName, string $owner, string $planId): self
     {
-        return new self($id, $owner, $domainName, $packageId, null);
+        return new self($id, $owner, $domainName, $planId, null);
     }
 
-    public static function withCustomCapabilities(string $id, DomainName $domainName, string $owner, Capabilities $capabilities): self
+    public static function withCustomConstraints(string $id, DomainName $domainName, string $owner, Constraints $constraints): self
     {
-        return new self($id, $owner, $domainName, null, $capabilities);
+        return new self($id, $owner, $domainName, null, $constraints);
     }
 
     public function id(): WebhostingAccountId
@@ -56,14 +56,14 @@ final class RegisterWebhostingAccount
         return $this->owner;
     }
 
-    public function customCapabilities(): ?Capabilities
+    public function customConstraints(): ?Constraints
     {
-        return $this->capabilities;
+        return $this->constraints;
     }
 
-    public function package(): ?WebhostingPackageId
+    public function plan(): ?WebhostingPlanId
     {
-        return $this->package;
+        return $this->plan;
     }
 
     public function domainName(): DomainName

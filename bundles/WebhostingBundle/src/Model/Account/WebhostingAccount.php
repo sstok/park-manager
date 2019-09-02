@@ -15,8 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Bundle\CoreBundle\Model\DomainEventsCollectionTrait;
 use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\Capabilities;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\WebhostingPackage;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
 
 /**
  * @ORM\Entity()
@@ -36,21 +36,21 @@ class WebhostingAccount implements RecordsDomainEvents
     protected $id;
 
     /**
-     * The WebhostingPackage is null for an exclusive webhosting package.
+     * The WebhostingPlan is null for an exclusive webhosting plan.
      *
-     * @ORM\ManyToOne(targetEntity="ParkManager\Bundle\WebhostingBundle\Model\Package\WebhostingPackage")
-     * @ORM\JoinColumn(nullable=true, name="package_id", referencedColumnName="id", onDelete="RESTRICT")
+     * @ORM\ManyToOne(targetEntity="ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan")
+     * @ORM\JoinColumn(nullable=true, name="plan_id", referencedColumnName="id", onDelete="RESTRICT")
      *
-     * @var WebhostingPackage|null
+     * @var WebhostingPlan|null
      */
-    protected $package;
+    protected $plan;
 
     /**
-     * @ORM\Column(type="webhosting_capabilities")
+     * @ORM\Column(name="plan_constraints", type="webhosting_plan_constraints")
      *
-     * @var Capabilities
+     * @var Constraints
      */
-    protected $capabilities;
+    protected $planConstraints;
 
     /**
      * @ORM\Column(name="owner_id", type="park_manager_owner_id")
@@ -79,22 +79,22 @@ class WebhostingAccount implements RecordsDomainEvents
         $this->owner = $owner;
     }
 
-    public static function register(WebhostingAccountId $id, OwnerId $owner, WebhostingPackage $package): self
+    public static function register(WebhostingAccountId $id, OwnerId $owner, WebhostingPlan $plan): self
     {
         $account = new static($id, $owner);
-        // Store the capabilities as part of the webhosting account
-        // The package can be changed at any time, but the capabilities are immutable.
-        $account->capabilities = $package->capabilities();
-        $account->package      = $package;
+        // Store the constraints as part of the webhosting account
+        // The plan can be changed at any time, but the constraints are immutable.
+        $account->planConstraints = $plan->constraints();
+        $account->plan            = $plan;
         $account->recordThat(new Event\WebhostingAccountWasRegistered($id, $owner));
 
         return $account;
     }
 
-    public static function registerWithCustomCapabilities(WebhostingAccountId $id, OwnerId $owner, Capabilities $capabilities): self
+    public static function registerWithCustomConstraints(WebhostingAccountId $id, OwnerId $owner, Constraints $constraints): self
     {
-        $account               = new static($id, $owner);
-        $account->capabilities = $capabilities;
+        $account                  = new static($id, $owner);
+        $account->planConstraints = $constraints;
         $account->recordThat(new Event\WebhostingAccountWasRegistered($id, $owner));
 
         return $account;
@@ -110,60 +110,60 @@ class WebhostingAccount implements RecordsDomainEvents
         return $this->owner;
     }
 
-    public function package(): ?WebhostingPackage
+    public function plan(): ?WebhostingPlan
     {
-        return $this->package;
+        return $this->plan;
     }
 
-    public function capabilities(): Capabilities
+    public function planConstraints(): Constraints
     {
-        return $this->capabilities;
+        return $this->planConstraints;
     }
 
     /**
-     * Change the webhosting package assignment, withing using
-     * the package Capabilities of the webhosting package.
+     * Change the webhosting plan assignment, withing using
+     * the plan Constraints of the webhosting plan.
      */
-    public function assignPackage(WebhostingPackage $package): void
+    public function assignPlan(WebhostingPlan $plan): void
     {
-        if ($package === $this->package) {
+        if ($plan === $this->plan) {
             return;
         }
 
-        $this->package = $package;
-        $this->recordThat(new Event\WebhostingAccountPackageAssignmentWasChanged($this->id, $package));
+        $this->plan = $plan;
+        $this->recordThat(new Event\WebhostingAccountPlanAssignmentWasChanged($this->id, $plan));
     }
 
     /**
-     * Change the webhosting package assignment, and
-     * set the Capabilities of the webhosting package.
+     * Change the webhosting plan assignment, and
+     * set the Constraints of the webhosting plan.
      */
-    public function assignPackageWithCapabilities(WebhostingPackage $package): void
+    public function assignPlanWithConstraints(WebhostingPlan $plan): void
     {
-        if ($package === $this->package && $this->capabilities->equals($package->capabilities())) {
+        if ($plan === $this->plan && $this->planConstraints->equals($plan->constraints())) {
             return;
         }
 
-        $this->package      = $package;
-        $this->capabilities = $package->capabilities();
-        $this->recordThat(Event\WebhostingAccountPackageAssignmentWasChanged::withCapabilities($this->id, $package));
+        $this->plan            = $plan;
+        $this->planConstraints = $plan->constraints();
+        $this->recordThat(Event\WebhostingAccountPlanAssignmentWasChanged::withConstraints($this->id, $plan));
     }
 
     /**
-     * Change the webhosting account Capabilities.
+     * Change the webhosting account Constraints.
      *
-     * This removes the package assignment and makes the account's
-     * Capabilities exclusive.
+     * This removes the plan assignment and makes the account's
+     * Constraints exclusive.
      */
-    public function assignCustomCapabilities(Capabilities $capabilities): void
+    public function assignCustomConstraints(Constraints $constraints): void
     {
-        if ($this->package === null && $this->capabilities->equals($capabilities)) {
+        if ($this->plan === null && $this->planConstraints->equals($constraints)) {
             return;
         }
 
-        $this->package      = null;
-        $this->capabilities = $capabilities;
-        $this->recordThat(new Event\WebhostingAccountCapabilitiesWasChanged($this->id, $capabilities));
+        $this->plan            = null;
+        $this->planConstraints = $constraints;
+        $this->recordThat(new Event\WebhostingAccountPlanConstraintsWasChanged($this->id, $constraints));
     }
 
     public function switchOwner(OwnerId $owner): void

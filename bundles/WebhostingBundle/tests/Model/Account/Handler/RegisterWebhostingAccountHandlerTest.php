@@ -18,11 +18,11 @@ use ParkManager\Bundle\WebhostingBundle\Model\DomainName;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\WebhostingDomainName;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\WebhostingDomainNameRepository;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\Capabilities;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\WebhostingPackage;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\WebhostingPackageId;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\WebhostingPackageRepository;
-use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PackageCapability\MonthlyTrafficQuota;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanRepository;
+use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTrafficQuota;
 use ParkManager\Bundle\WebhostingBundle\UseCase\Account\RegisterWebhostingAccount;
 use ParkManager\Bundle\WebhostingBundle\UseCase\Account\RegisterWebhostingAccountHandler;
 use PHPUnit\Framework\TestCase;
@@ -33,49 +33,49 @@ use Prophecy\Argument;
  */
 final class RegisterWebhostingAccountHandlerTest extends TestCase
 {
-    private const OWNER_ID1   = '3f8da982-a528-11e7-a2da-acbc32b58315';
-    private const PACKAGE_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
+    private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
+    private const PLAN_ID1  = '2570c850-a5e0-11e7-868d-acbc32b58315';
 
     private const ACCOUNT_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
     private const ACCOUNT_ID2 = '696d345c-a5e1-11e7-9856-acbc32b58315';
 
     /** @test */
-    public function it_handles_registration_of_account_with_package(): void
+    public function it_handles_registration_of_account_with_plan(): void
     {
-        $capabilities         = new Capabilities(new MonthlyTrafficQuota(50));
+        $constraints         = new Constraints(new MonthlyTrafficQuota(50));
         $domainName           = new DomainName('example', '.com');
-        $webhostingPackage    = WebhostingPackage::create(WebhostingPackageId::fromString(self::PACKAGE_ID1), $capabilities);
-        $packageRepository    = $this->createPackageRepository($webhostingPackage);
-        $accountRepository    = $this->createAccountRepositoryThatSaves($capabilities, $webhostingPackage);
+        $webhostingPlan    = WebhostingPlan::create(WebhostingPlanId::fromString(self::PLAN_ID1), $constraints);
+        $planRepository    = $this->createPlanRepository($webhostingPlan);
+        $accountRepository    = $this->createAccountRepositoryThatSaves($constraints, $webhostingPlan);
         $domainNameRepository = $this->createDomainNameRepositoryThatSaves($domainName, self::ACCOUNT_ID1);
-        $handler              = new RegisterWebhostingAccountHandler($accountRepository, $packageRepository, $domainNameRepository);
+        $handler              = new RegisterWebhostingAccountHandler($accountRepository, $planRepository, $domainNameRepository);
 
         $handler(
-            RegisterWebhostingAccount::withPackage(
+            RegisterWebhostingAccount::withPlan(
                 self::ACCOUNT_ID1,
                 $domainName,
                 self::OWNER_ID1,
-                self::PACKAGE_ID1
+                self::PLAN_ID1
             )
         );
     }
 
     /** @test */
-    public function it_handles_registration_of_account_with_custom_capabilities(): void
+    public function it_handles_registration_of_account_with_custom_constraints(): void
     {
-        $capabilities         = new Capabilities(new MonthlyTrafficQuota(50));
+        $constraints         = new Constraints(new MonthlyTrafficQuota(50));
         $domainName           = new DomainName('example', '.com');
-        $packageRepository    = $this->createNullPackageRepository();
-        $accountRepository    = $this->createAccountRepositoryThatSaves($capabilities);
+        $planRepository    = $this->createNullPlanRepository();
+        $accountRepository    = $this->createAccountRepositoryThatSaves($constraints);
         $domainNameRepository = $this->createDomainNameRepositoryThatSaves($domainName, self::ACCOUNT_ID1);
-        $handler              = new RegisterWebhostingAccountHandler($accountRepository, $packageRepository, $domainNameRepository);
+        $handler              = new RegisterWebhostingAccountHandler($accountRepository, $planRepository, $domainNameRepository);
 
         $handler(
-            RegisterWebhostingAccount::withCustomCapabilities(
+            RegisterWebhostingAccount::withCustomConstraints(
                 self::ACCOUNT_ID1,
                 new DomainName('example', '.com'),
                 self::OWNER_ID1,
-                $capabilities
+                $constraints
             )
         );
     }
@@ -85,34 +85,34 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     {
         $domainName           = new DomainName('example', '.com');
         $accountId2           = WebhostingAccountId::fromString(self::ACCOUNT_ID2);
-        $packageRepository    = $this->createNullPackageRepository();
+        $planRepository    = $this->createNullPlanRepository();
         $accountRepository    = $this->createAccountRepositoryWithoutSave();
         $domainNameRepository = $this->createDomainNameRepositoryWithExistingRegistration($domainName, $accountId2);
-        $handler              = new RegisterWebhostingAccountHandler($accountRepository, $packageRepository, $domainNameRepository);
+        $handler              = new RegisterWebhostingAccountHandler($accountRepository, $planRepository, $domainNameRepository);
 
         $this->expectException(DomainNameAlreadyInUse::class);
         $this->expectExceptionMessage(DomainNameAlreadyInUse::byAccountId($domainName, $accountId2)->getMessage());
 
         $handler(
-            RegisterWebhostingAccount::withPackage(
+            RegisterWebhostingAccount::withPlan(
                 self::ACCOUNT_ID1,
                 $domainName,
                 self::OWNER_ID1,
-                self::PACKAGE_ID1
+                self::PLAN_ID1
             )
         );
     }
 
-    private function createAccountRepositoryThatSaves(Capabilities $capabilities, ?WebhostingPackage $package = null, string $id = self::ACCOUNT_ID1, string $owner = self::OWNER_ID1): WebhostingAccountRepository
+    private function createAccountRepositoryThatSaves(Constraints $constraints, ?WebhostingPlan $plan = null, string $id = self::ACCOUNT_ID1, string $owner = self::OWNER_ID1): WebhostingAccountRepository
     {
         $accountRepositoryProphecy = $this->prophesize(WebhostingAccountRepository::class);
         $accountRepositoryProphecy->save(
             Argument::that(
-                static function (WebhostingAccount $account) use ($capabilities, $id, $owner, $package) {
+                static function (WebhostingAccount $account) use ($constraints, $id, $owner, $plan) {
                     self::assertEquals(WebhostingAccountId::fromString($id), $account->id());
                     self::assertEquals(OwnerId::fromString($owner), $account->owner());
-                    self::assertEquals($capabilities, $account->capabilities());
-                    self::assertEquals($package, $account->package());
+                    self::assertEquals($constraints, $account->planConstraints());
+                    self::assertEquals($plan, $account->plan());
 
                     return true;
                 }
@@ -130,17 +130,17 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
         return $accountRepositoryProphecy->reveal();
     }
 
-    private function createNullPackageRepository(): WebhostingPackageRepository
+    private function createNullPlanRepository(): WebhostingPlanRepository
     {
-        return $this->createMock(WebhostingPackageRepository::class);
+        return $this->createMock(WebhostingPlanRepository::class);
     }
 
-    private function createPackageRepository(WebhostingPackage $package): WebhostingPackageRepository
+    private function createPlanRepository(WebhostingPlan $plan): WebhostingPlanRepository
     {
-        $packageRepositoryProphecy = $this->prophesize(WebhostingPackageRepository::class);
-        $packageRepositoryProphecy->get($package->id())->willReturn($package);
+        $planRepositoryProphecy = $this->prophesize(WebhostingPlanRepository::class);
+        $planRepositoryProphecy->get($plan->id())->willReturn($plan);
 
-        return $packageRepositoryProphecy->reveal();
+        return $planRepositoryProphecy->reveal();
     }
 
     private function createDomainNameRepositoryThatSaves(DomainName $expectedDomain, string $accountId): WebhostingDomainNameRepository

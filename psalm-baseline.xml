@@ -282,7 +282,7 @@
       <code>WebhostingDomainName|null</code>
     </ImplementedReturnTypeMismatch>
   </file>
-  <file src="bundles/WebhostingBundle/src/Doctrine/Package/WebhostingPackageOrmRepository.php">
+  <file src="bundles/WebhostingBundle/src/Doctrine/Plan/WebhostingPackageOrmRepository.php">
     <ImplementedReturnTypeMismatch occurrences="1">
       <code>WebhostingPackage|null</code>
     </ImplementedReturnTypeMismatch>
@@ -297,7 +297,7 @@
       <code>$command-&gt;customCapabilities()</code>
     </PossiblyNullArgument>
   </file>
-  <file src="bundles/WebhostingBundle/tests/Doctrine/Package/WebhostingCapabilitiesTypeTest.php">
+  <file src="bundles/WebhostingBundle/tests/Doctrine/Plan/WebhostingCapabilitiesTypeTest.php">
     <PossiblyNullArgument occurrences="2">
       <code>$type-&gt;convertToDatabaseValue(new Capabilities(), $platform)</code>
       <code>$type-&gt;convertToDatabaseValue(new Capabilities(new MonthlyTrafficQuota(50)), $platform)</code>

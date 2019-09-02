@@ -15,9 +15,10 @@ use ParkManager\Bundle\CoreBundle\DependencyInjection\Traits\DoctrineDbalTypesCo
 use ParkManager\Bundle\CoreBundle\DependencyInjection\Traits\ExtensionPathResolver;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\Traits\RoutesImporterTrait;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\Traits\ServiceLoaderTrait;
-use ParkManager\Bundle\WebhostingBundle\Model\Package\Capability;
-use ParkManager\Bundle\WebhostingBundle\Package\CapabilityGuard;
-use ParkManager\Bundle\WebhostingBundle\Package\PackageConfigurationApplier;
+use ParkManager\Bundle\WebhostingBundle\DependencyInjection\Compiler\PlanConstraintsPass;
+use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraint;
+use ParkManager\Bundle\WebhostingBundle\Plan\ConstraintApplier;
+use ParkManager\Bundle\WebhostingBundle\Plan\ConstraintValidator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -44,12 +45,12 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
             $loader->load('data_fixtures.php');
         }
 
-        $container->registerForAutoconfiguration(Capability::class)
-            ->addTag('park_manager.webhosting_capability');
-        $container->registerForAutoconfiguration(CapabilityGuard::class)
-            ->addTag('park_manager.webhosting_capability_guard');
-        $container->registerForAutoconfiguration(PackageConfigurationApplier::class)
-            ->addTag('park_manager.webhosting_capability_config_applier');
+        $container->registerForAutoconfiguration(Constraint::class)
+            ->addTag(PlanConstraintsPass::CONSTRAINT_TAG);
+        $container->registerForAutoconfiguration(ConstraintValidator::class)
+            ->addTag(PlanConstraintsPass::CONSTRAINT_VALIDATOR_TAG);
+        $container->registerForAutoconfiguration(ConstraintApplier::class)
+            ->addTag(PlanConstraintsPass::CONSTRAINT_APPLIER_TAG);
     }
 
     public function getAlias(): string
