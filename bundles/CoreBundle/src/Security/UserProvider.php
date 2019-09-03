@@ -22,15 +22,15 @@ use function sprintf;
 final class UserProvider implements UserProviderInterface
 {
     /** @var AuthenticationFinder */
-    private $finder;
+    private $repository;
 
     /** @var string */
     private $userClass;
 
     public function __construct(AuthenticationFinder $repository, string $userClass)
     {
-        $this->finder    = $repository;
-        $this->userClass = $userClass;
+        $this->repository = $repository;
+        $this->userClass  = $userClass;
 
         if (! is_subclass_of($userClass, SecurityUser::class, true)) {
             throw new InvalidArgumentException(
@@ -41,7 +41,7 @@ final class UserProvider implements UserProviderInterface
 
     public function loadUserByUsername($username): SecurityUser
     {
-        $user = $this->finder->findAuthenticationByEmail($username);
+        $user = $this->repository->findAuthenticationByEmail($username);
 
         if ($user === null) {
             $e = new UsernameNotFoundException();
@@ -50,19 +50,19 @@ final class UserProvider implements UserProviderInterface
             throw $e;
         }
 
-        return $this->createUser($user);
+        return $user;
     }
 
     /**
      * @param SecurityUser $user
      */
-    public function refreshUser(UserInterface $user): SecurityUser
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (! $user instanceof $this->userClass) {
             throw new UnsupportedUserException(sprintf('Expected an instance of %s, but got "%s".', $this->userClass, get_class($user)));
         }
 
-        $storedUser = $this->finder->findAuthenticationById($user->getUsername());
+        $storedUser = $this->repository->findAuthenticationById($user->getUsername());
 
         if ($storedUser === null) {
             $e = new UsernameNotFoundException();
@@ -71,21 +71,11 @@ final class UserProvider implements UserProviderInterface
             throw $e;
         }
 
-        return $this->createUser($storedUser);
+        return $storedUser;
     }
 
     public function supportsClass($class): bool
     {
         return $this->userClass === $class;
-    }
-
-    private function createUser(SecurityAuthenticationData $user): SecurityUser
-    {
-        return new $this->userClass(
-            $user->id,
-            (string) $user->password,
-            $user->loginEnabled,
-            $user->roles
-        );
     }
 }

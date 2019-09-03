@@ -38,12 +38,6 @@ return static function (ContainerConfigurator $c) {
     $autoDi->set('park_manager.repository.administrator', DoctrineOrmAdministratorRepository::class);
     $autoDi->set('park_manager.repository.client_user', DoctrineOrmClientRepository::class);
 
-    // Authentication finders
-    $di->set('park_manager.query_finder.administrator', DoctrineDbalAuthenticationFinder::class)
-        ->arg('$table', 'administrator');
-    $di->set('park_manager.query_finder.client', DoctrineDbalAuthenticationFinder::class)
-        ->arg('$table', 'client');
-
     // RoutingLoader
     $di->set(SectionsLoader::class)
         ->tag('routing.loader')

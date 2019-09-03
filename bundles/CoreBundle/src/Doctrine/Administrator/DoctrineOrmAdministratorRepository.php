@@ -18,12 +18,14 @@ use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorRepository;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\AdministratorNotFound;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Bundle\CoreBundle\Security\AuthenticationFinder;
+use ParkManager\Bundle\CoreBundle\Security\SecurityUser;
 use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 
 /**
  * @method Administrator find($id, $lockMode = null, $lockVersion = null)
  */
-final class DoctrineOrmAdministratorRepository extends EventSourcedEntityRepository implements AdministratorRepository
+final class DoctrineOrmAdministratorRepository extends EventSourcedEntityRepository implements AdministratorRepository, AuthenticationFinder
 {
     public function __construct(EntityManagerInterface $entityManager, MessageBus $eventBus, string $className = Administrator::class)
     {
@@ -81,5 +83,37 @@ final class DoctrineOrmAdministratorRepository extends EventSourcedEntityReposit
         }
 
         return $administrator;
+    }
+
+    public function findAuthenticationByEmail(string $email): ?SecurityUser
+    {
+        /** @var Administrator $administrator */
+        $administrator = $this->createQueryBuilder('u')
+            ->where('u.email.canonical = :email')
+            ->getQuery()
+            ->setParameter('email', $email)
+            ->getOneOrNullResult();
+
+        if ($administrator !== null) {
+            return $administrator->toSecurityUser();
+        }
+
+        return null;
+    }
+
+    public function findAuthenticationById(string $id): ?SecurityUser
+    {
+        /** @var Administrator $administrator */
+        $administrator = $this->createQueryBuilder('u')
+            ->where('u.id = :id')
+            ->getQuery()
+            ->setParameter('id', $id)
+            ->getOneOrNullResult();
+
+        if ($administrator !== null) {
+            return $administrator->toSecurityUser();
+        }
+
+        return null;
     }
 }

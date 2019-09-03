@@ -12,7 +12,7 @@ namespace ParkManager\Bundle\CoreBundle\Security;
 
 interface AuthenticationFinder
 {
-    public function findAuthenticationByEmail(string $email): ?SecurityAuthenticationData;
+    public function findAuthenticationByEmail(string $email): ?SecurityUser;
 
-    public function findAuthenticationById(string $id): ?SecurityAuthenticationData;
+    public function findAuthenticationById(string $id): ?SecurityUser;
 }

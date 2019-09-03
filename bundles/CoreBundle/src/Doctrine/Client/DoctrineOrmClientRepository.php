@@ -19,13 +19,15 @@ use ParkManager\Bundle\CoreBundle\Model\Client\Exception\ClientNotFound;
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Bundle\CoreBundle\Security\AuthenticationFinder;
+use ParkManager\Bundle\CoreBundle\Security\SecurityUser;
 use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 
 /**
  * @method Client find($id, $lockMode = null, $lockVersion = null)
  * @method Client findOneBy(array $criteria, array $orderBy = null)
  */
-class DoctrineOrmClientRepository extends EntityRepository implements ClientRepository
+class DoctrineOrmClientRepository extends EntityRepository implements ClientRepository, AuthenticationFinder
 {
     protected $eventBus;
 
@@ -103,5 +105,37 @@ class DoctrineOrmClientRepository extends EntityRepository implements ClientRepo
         }
 
         return $client;
+    }
+
+    public function findAuthenticationByEmail(string $email): ?SecurityUser
+    {
+        /** @var Client $client */
+        $client = $this->createQueryBuilder('u')
+            ->where('u.email.canonical = :email')
+            ->getQuery()
+            ->setParameter('email', $email)
+            ->getOneOrNullResult();
+
+        if ($client !== null) {
+            return $client->toSecurityUser();
+        }
+
+        return null;
+    }
+
+    public function findAuthenticationById(string $id): ?SecurityUser
+    {
+        /** @var Client $client */
+        $client = $this->createQueryBuilder('u')
+            ->where('u.id = :id')
+            ->getQuery()
+            ->setParameter('id', $id)
+            ->getOneOrNullResult();
+
+        if ($client !== null) {
+            return $client->toSecurityUser();
+        }
+
+        return null;
     }
 }

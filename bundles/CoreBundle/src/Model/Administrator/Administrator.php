@@ -22,6 +22,8 @@ use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\CannotDisableSup
 use ParkManager\Bundle\CoreBundle\Model\DomainEventsCollectionTrait;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
+use ParkManager\Bundle\CoreBundle\Security\AdministratorUser;
+use ParkManager\Bundle\CoreBundle\Security\SecurityUser;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
 
@@ -244,5 +246,10 @@ class Administrator implements RecordsDomainEvents
     public function clearPasswordReset(): void
     {
         $this->passwordResetToken = null;
+    }
+
+    public function toSecurityUser(): SecurityUser
+    {
+        return new AdministratorUser($this->id->toString(), $this->password ?? '', $this->loginEnabled, $this->roles->toArray());
     }
 }

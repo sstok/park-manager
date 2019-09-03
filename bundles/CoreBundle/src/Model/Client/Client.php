@@ -24,6 +24,8 @@ use ParkManager\Bundle\CoreBundle\Model\Client\Exception\PasswordResetConfirmati
 use ParkManager\Bundle\CoreBundle\Model\DomainEventsCollectionTrait;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
+use ParkManager\Bundle\CoreBundle\Security\ClientUser;
+use ParkManager\Bundle\CoreBundle\Security\SecurityUser;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
 
@@ -262,5 +264,10 @@ class Client implements RecordsDomainEvents
     public function passwordResetToken(): ?SplitTokenValueHolder
     {
         return $this->passwordResetToken;
+    }
+
+    public function toSecurityUser(): SecurityUser
+    {
+        return new ClientUser($this->id->toString(), $this->password ?? '', $this->loginEnabled, $this->roles->toArray());
     }
 }

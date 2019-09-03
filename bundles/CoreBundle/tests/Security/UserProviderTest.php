@@ -14,7 +14,7 @@ use InvalidArgumentException;
 use ParkManager\Bundle\CoreBundle\Security\AdministratorUser;
 use ParkManager\Bundle\CoreBundle\Security\AuthenticationFinder;
 use ParkManager\Bundle\CoreBundle\Security\ClientUser;
-use ParkManager\Bundle\CoreBundle\Security\SecurityAuthenticationData;
+use ParkManager\Bundle\CoreBundle\Security\SecurityUser;
 use ParkManager\Bundle\CoreBundle\Security\UserProvider;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -38,12 +38,12 @@ final class UserProviderTest extends TestCase
     private function createNullFinderStub(): AuthenticationFinder
     {
         return new class() implements AuthenticationFinder {
-            public function findAuthenticationByEmail(string $email): ?SecurityAuthenticationData
+            public function findAuthenticationByEmail(string $email): ?SecurityUser
             {
                 return null;
             }
 
-            public function findAuthenticationById(string $id): ?SecurityAuthenticationData
+            public function findAuthenticationById(string $id): ?SecurityUser
             {
                 return null;
             }
@@ -103,43 +103,43 @@ final class UserProviderTest extends TestCase
     private function createSingleUserFinderStub(): AuthenticationFinder
     {
         return new class() implements AuthenticationFinder {
-            public function findAuthenticationByEmail(string $email): ?SecurityAuthenticationData
+            public function findAuthenticationByEmail(string $email): ?SecurityUser
             {
                 if ($email === 'foobar@example.com') {
-                    return new SecurityAuthenticationData('1', 'maybe', true, ['ROLE_USER']);
+                    return new ClientUser('1', 'maybe', true, ['ROLE_USER']);
                 }
 
                 if ($email === 'bar@example.com') {
-                    return new SecurityAuthenticationData('2', null, true, ['ROLE_USER']);
+                    return new ClientUser('2', '', true, ['ROLE_USER']);
                 }
 
                 if ($email === 'foo@example.com') {
-                    return new SecurityAuthenticationData('3', 'nope', false, ['ROLE_USER']);
+                    return new ClientUser('3', 'nope', false, ['ROLE_USER']);
                 }
 
                 if ($email === 'moo@example.com') {
-                    return new SecurityAuthenticationData('4', 'nope', true, ['ROLE_USER', 'ROLE_RESELLER']);
+                    return new ClientUser('4', 'nope', true, ['ROLE_USER', 'ROLE_RESELLER']);
                 }
 
                 return null;
             }
 
-            public function findAuthenticationById(string $id): ?SecurityAuthenticationData
+            public function findAuthenticationById(string $id): ?SecurityUser
             {
                 if ($id === '1') {
-                    return new SecurityAuthenticationData('1', null, true, ['ROLE_USER2']);
+                    return new ClientUser('1', '', true, ['ROLE_USER2']);
                 }
 
                 if ($id === '2') {
-                    return new SecurityAuthenticationData('2', 'maybe', false, ['ROLE_USER2']);
+                    return new ClientUser('2', 'maybe', false, ['ROLE_USER2']);
                 }
 
                 if ($id === '3') {
-                    return new SecurityAuthenticationData('3', 'nope2', true, ['ROLE_USER2']);
+                    return new ClientUser('3', 'nope2', true, ['ROLE_USER2']);
                 }
 
                 if ($id === '4') {
-                    return new SecurityAuthenticationData('4', 'nope2', true, ['ROLE_USER2', 'ROLE_RESELLER2']);
+                    return new ClientUser('4', 'nope2', true, ['ROLE_USER2', 'ROLE_RESELLER2']);
                 }
 
                 return null;
