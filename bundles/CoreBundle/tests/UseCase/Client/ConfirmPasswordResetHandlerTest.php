@@ -49,9 +49,9 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
 
         $repository->assertEntitiesWereSaved();
         $repository->assertHasEntityWithEvents(
-            $client->id(),
+            $client->getId(),
             [
-                new ClientPasswordWasChanged($client->id(), 'my-password'),
+                new ClientPasswordWasChanged($client->getId(), 'my-password'),
             ]
         );
     }
@@ -84,7 +84,7 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
         try {
             $handler(new ConfirmPasswordReset($this->token, 'my-password'));
         } catch (PasswordResetConfirmationRejected $e) {
-            $repository->assertHasEntityWithEvents($client->id(), []);
+            $repository->assertHasEntityWithEvents($client->getId(), []);
         }
     }
 }

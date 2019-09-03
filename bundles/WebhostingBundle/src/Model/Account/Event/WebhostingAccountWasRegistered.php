@@ -15,22 +15,23 @@ use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
 
 final class WebhostingAccountWasRegistered
 {
-    private $accountId;
-    private $owner;
+    /**
+     * READ-ONLY.
+     *
+     * @var WebhostingAccountId
+     */
+    public $id;
+
+    /**
+     * READ-ONLY.
+     *
+     * @var OwnerId
+     */
+    public $owner;
 
     public function __construct(WebhostingAccountId $id, OwnerId $owner)
     {
-        $this->accountId = $id;
-        $this->owner     = $owner;
-    }
-
-    public function id(): WebhostingAccountId
-    {
-        return $this->accountId;
-    }
-
-    public function owner(): OwnerId
-    {
-        return $this->owner;
+        $this->id    = $id;
+        $this->owner = $owner;
     }
 }

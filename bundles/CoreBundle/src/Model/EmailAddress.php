@@ -29,47 +29,49 @@ use function sprintf;
 final class EmailAddress
 {
     /**
+     * READ-ONLY.
+     *
      * Length by official standard.
      *
      * @ORM\Column(type="string", type="string", length=254, nullable=false)
      *
      * @var string
      */
-    private $address;
+    public $address;
 
     /**
+     * READ-ONLY.
+     *
      * @ORM\Column(type="string", type="string", length=254, nullable=false)
      *
      * @var string
      */
-    private $canonical;
+    public $canonical;
 
     /**
+     * READ-ONLY.
+     *
      * @ORM\Column(type="string", type="string", length=254, nullable=true)
      *
      * @var string|null
      */
-    private $name;
+    public $name;
 
     /**
-     * Unmapped.
+     * READ-ONLY.
      *
+     * Unmapped.
      * Label is already part of the original value and unimportant.
      *
      * @var string
      */
-    private $label = '';
+    public $label = '';
 
     public function __construct(string $address, ?string $name = null)
     {
         $this->address   = $address;
         $this->canonical = $this->canonicalize($address, $this->label);
         $this->name      = $name;
-    }
-
-    public function address(): string
-    {
-        return $this->address;
     }
 
     public function toString(): string
@@ -80,21 +82,6 @@ final class EmailAddress
     public function __toString(): string
     {
         return $this->address;
-    }
-
-    public function canonical(): string
-    {
-        return $this->canonical;
-    }
-
-    public function label(): string
-    {
-        return $this->label;
-    }
-
-    public function name(): ?string
-    {
-        return $this->name;
     }
 
     public function toMimeAddress(): Address

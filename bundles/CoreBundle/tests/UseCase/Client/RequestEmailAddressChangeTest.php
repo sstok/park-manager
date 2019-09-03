@@ -54,20 +54,20 @@ final class RequestEmailAddressChangeTest extends TestCase
 
         $repository->assertEntitiesWereSaved();
         $repository->assertHasEntityWithEvents(
-            $client->id(),
+            $client->getId(),
             [
                 new ClientEmailAddressChangeWasRequested(
-                    $client->id(),
+                    $client->getId(),
                     FakeSplitTokenFactory::instance()->generate()->expireAt(new DateTimeImmutable('+ 10 seconds')),
                     new EmailAddress('John2@example.com')
                 ),
             ],
             static function (ClientEmailAddressChangeWasRequested $expected, ClientEmailAddressChangeWasRequested $actual) {
-                self::assertTrue($expected->id()->equals($actual->id()));
-                self::assertTrue($expected->token()->equals($actual->token()));
-                self::assertEquals($expected->getNewEmail(), $actual->getNewEmail());
+                self::assertTrue($expected->id->equals($actual->id));
+                self::assertTrue($expected->token->equals($actual->token));
+                self::assertEquals($expected->newEmail, $actual->newEmail);
 
-                $token = $expected->token()->toValueHolder();
+                $token = $expected->token->toValueHolder();
                 self::assertFalse($token->isExpired(new DateTimeImmutable('+ 5 seconds')));
                 self::assertTrue($token->isExpired(new DateTimeImmutable('+ 11 seconds')));
             }

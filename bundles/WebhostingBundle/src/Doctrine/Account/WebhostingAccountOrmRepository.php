@@ -49,7 +49,7 @@ final class WebhostingAccountOrmRepository extends EventSourcedEntityRepository 
     public function remove(WebhostingAccount $account): void
     {
         if (! $account->isMarkedForRemoval()) {
-            throw CannotRemoveActiveWebhostingAccount::withId($account->id());
+            throw CannotRemoveActiveWebhostingAccount::withId($account->getId());
         }
 
         $this->_em->remove($account);

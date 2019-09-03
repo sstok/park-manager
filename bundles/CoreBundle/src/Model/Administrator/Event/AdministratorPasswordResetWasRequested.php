@@ -15,25 +15,23 @@ use Rollerworks\Component\SplitToken\SplitToken;
 
 final class AdministratorPasswordResetWasRequested
 {
-    /** @var AdministratorId */
-    private $id;
+    /**
+     * READ-ONLY.
+     *
+     * @var AdministratorId
+     */
+    public $id;
 
-    /** @var SplitToken */
-    private $token;
+    /**
+     * READ-ONLY.
+     *
+     * @var SplitToken
+     */
+    public $token;
 
     public function __construct(AdministratorId $id, SplitToken $token)
     {
         $this->id    = $id;
         $this->token = $token;
-    }
-
-    public function getId(): AdministratorId
-    {
-        return $this->id;
-    }
-
-    public function getToken(): SplitToken
-    {
-        return $this->token;
     }
 }

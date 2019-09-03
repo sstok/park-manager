@@ -15,11 +15,19 @@ use Rollerworks\Component\SplitToken\SplitToken;
 
 final class ClientPasswordResetWasRequested
 {
-    /** @var ClientId */
-    private $id;
+    /**
+     * READ-ONLY.
+     *
+     * @var ClientId
+     */
+    public $id;
 
-    /** @var SplitToken */
-    private $token;
+    /**
+     * READ-ONLY.
+     *
+     * @var SplitToken
+     */
+    public $token;
 
     public function __construct(ClientId $id, SplitToken $token)
     {

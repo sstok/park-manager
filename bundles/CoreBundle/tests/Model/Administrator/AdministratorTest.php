@@ -67,7 +67,7 @@ final class AdministratorTest extends TestCase
         self::assertEquals($email, $user->getEmailAddress());
     }
 
-    public function testChangeDislayName(): void
+    public function testChangeDisplayName(): void
     {
         $user = $this->registerAdministrator();
         $user->changeName('Jane Doe');

@@ -17,38 +17,38 @@ use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 
 final class WebhostingAccountPlanAssignmentWasChanged
 {
-    private $accountId;
-    private $plan;
+    /**
+     * READ-ONLY.
+     *
+     * @var WebhostingAccountId
+     */
+    public $account;
 
-    /** @var Constraints|null */
-    private $constraints;
+    /**
+     * READ-ONLY.
+     *
+     * @var WebhostingPlanId
+     */
+    public $plan;
+
+    /**
+     * READ-ONLY.
+     *
+     * @var Constraints|null
+     */
+    public $planConstraints;
 
     public function __construct(WebhostingAccountId $id, WebhostingPlan $plan)
     {
-        $this->accountId = $id;
-        $this->plan   = $plan->id();
+        $this->account = $id;
+        $this->plan    = $plan->getId();
     }
 
     public static function withConstraints(WebhostingAccountId $id, WebhostingPlan $plan): self
     {
-        $event               = new self($id, $plan);
-        $event->constraints = $plan->constraints();
+        $event                  = new self($id, $plan);
+        $event->planConstraints = $plan->getConstraints();
 
         return $event;
-    }
-
-    public function id(): WebhostingAccountId
-    {
-        return $this->accountId;
-    }
-
-    public function plan(): WebhostingPlanId
-    {
-        return $this->plan;
-    }
-
-    public function constraints(): ?Constraints
-    {
-        return $this->constraints;
     }
 }

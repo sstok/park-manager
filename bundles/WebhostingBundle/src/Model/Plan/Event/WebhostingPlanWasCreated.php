@@ -15,22 +15,23 @@ use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 
 final class WebhostingPlanWasCreated
 {
-    private $planId;
-    private $constraints;
+    /**
+     * READ-ONLY.
+     *
+     * @var WebhostingPlanId
+     */
+    public $id;
+
+    /**
+     * READ-ONLY.
+     *
+     * @var Constraints
+     */
+    public $constraints;
 
     public function __construct(WebhostingPlanId $id, Constraints $constraints)
     {
-        $this->planId    = $id;
+        $this->id          = $id;
         $this->constraints = $constraints;
-    }
-
-    public function id(): WebhostingPlanId
-    {
-        return $this->planId;
-    }
-
-    public function constraints(): Constraints
-    {
-        return $this->constraints;
     }
 }

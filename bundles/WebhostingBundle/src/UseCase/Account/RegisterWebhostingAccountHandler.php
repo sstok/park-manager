@@ -32,30 +32,29 @@ final class RegisterWebhostingAccountHandler
 
     public function __invoke(RegisterWebhostingAccount $command): void
     {
-        $domainName = $command->domainName();
-        $planId     = $command->plan();
+        $currentRegistration = $this->domainNameRepository->findByFullName($command->domainName);
 
-        $currentRegistration = $this->domainNameRepository->findByFullName($domainName);
+        $planId = $command->plan;
 
         if ($currentRegistration !== null) {
-            throw DomainNameAlreadyInUse::byAccountId($domainName, $currentRegistration->account()->id());
+            throw DomainNameAlreadyInUse::byAccountId($command->domainName, $currentRegistration->getAccount()->getId());
         }
 
         if ($planId !== null) {
             $account = WebhostingAccount::register(
-                $command->id(),
-                $command->owner(),
+                $command->id,
+                $command->owner,
                 $this->planRepository->get($planId)
             );
         } else {
             $account = WebhostingAccount::registerWithCustomConstraints(
-                $command->id(),
-                $command->owner(),
-                $command->customConstraints()
+                $command->id,
+                $command->owner,
+                $command->customConstraints
             );
         }
 
-        $primaryDomainName = WebhostingDomainName::registerPrimary($account, $domainName);
+        $primaryDomainName = WebhostingDomainName::registerPrimary($account, $command->domainName);
 
         $this->accountRepository->save($account);
         $this->domainNameRepository->save($primaryDomainName);

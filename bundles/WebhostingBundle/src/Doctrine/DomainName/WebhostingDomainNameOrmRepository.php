@@ -46,7 +46,7 @@ final class WebhostingDomainNameOrmRepository extends EntityRepository implement
     {
         if ($domainName->isPrimary()) {
             try {
-                $primaryDomainName = $this->getPrimaryOf($domainName->account()->id());
+                $primaryDomainName = $this->getPrimaryOf($domainName->getAccount()->getId());
             } catch (WebhostingAccountNotFound $e) {
                 $primaryDomainName = $domainName;
             }
@@ -61,7 +61,7 @@ final class WebhostingDomainNameOrmRepository extends EntityRepository implement
                         ->set('d.primary', 'false')
                         ->where('d.id = :id')
                         ->getQuery()
-                        ->execute(['id' => $primaryDomainName->id()]);
+                        ->execute(['id' => $primaryDomainName->getId()]);
 
                     $this->_em->refresh($primaryDomainName);
                     $this->_em->persist($domainName);
@@ -78,8 +78,8 @@ final class WebhostingDomainNameOrmRepository extends EntityRepository implement
     {
         if ($domainName->isPrimary()) {
             throw DomainName\Exception\CannotRemovePrimaryDomainName::of(
-                $domainName->id(),
-                $domainName->account()->id()
+                $domainName->getId(),
+                $domainName->getAccount()->getId()
             );
         }
 
@@ -104,7 +104,7 @@ final class WebhostingDomainNameOrmRepository extends EntityRepository implement
         return $this->createQueryBuilder('d')
             ->where('d.domainName.name = :name AND d.domainName.tld = :tld')
             ->getQuery()
-            ->setParameters(['name' => $name->name(), 'tld' => $name->tld()])
+            ->setParameters(['name' => $name->name, 'tld' => $name->tld])
             ->getOneOrNullResult();
     }
 }

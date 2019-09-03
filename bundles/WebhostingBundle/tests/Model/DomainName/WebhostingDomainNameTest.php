@@ -37,10 +37,10 @@ final class WebhostingDomainNameTest extends TestCase
         $webhostingDomainName2 = WebhostingDomainName::registerPrimary($account2, $domainName2);
 
         self::assertNotEquals($webhostingDomainName, $webhostingDomainName2);
-        self::assertEquals($domainName, $webhostingDomainName->domainName());
-        self::assertEquals($domainName2, $webhostingDomainName2->domainName());
-        self::assertEquals($account, $webhostingDomainName->account());
-        self::assertEquals($account2, $webhostingDomainName->account());
+        self::assertEquals($domainName, $webhostingDomainName->getDomainName());
+        self::assertEquals($domainName2, $webhostingDomainName2->getDomainName());
+        self::assertEquals($account, $webhostingDomainName->getAccount());
+        self::assertEquals($account2, $webhostingDomainName->getAccount());
         self::assertTrue($webhostingDomainName->isPrimary());
         self::assertTrue($webhostingDomainName2->isPrimary());
     }
@@ -53,8 +53,8 @@ final class WebhostingDomainNameTest extends TestCase
 
         $webhostingDomainName = WebhostingDomainName::registerSecondary($account, $domainName2);
 
-        self::assertEquals($domainName2, $webhostingDomainName->domainName());
-        self::assertEquals($account, $webhostingDomainName->account());
+        self::assertEquals($domainName2, $webhostingDomainName->getDomainName());
+        self::assertEquals($account, $webhostingDomainName->getAccount());
         self::assertFalse($webhostingDomainName->isPrimary());
     }
 
@@ -67,7 +67,7 @@ final class WebhostingDomainNameTest extends TestCase
         $webhostingDomainName = WebhostingDomainName::registerSecondary($account, $domainName);
         $webhostingDomainName->markPrimary();
 
-        self::assertEquals($domainName, $webhostingDomainName->domainName());
+        self::assertEquals($domainName, $webhostingDomainName->getDomainName());
         self::assertTrue($webhostingDomainName->isPrimary());
     }
 
@@ -81,7 +81,7 @@ final class WebhostingDomainNameTest extends TestCase
 
         $webhostingDomainName->changeName($name = new DomainName('example', 'com'));
 
-        self::assertEquals($name, $webhostingDomainName->domainName());
+        self::assertEquals($name, $webhostingDomainName->getDomainName());
     }
 
     /** @test */
@@ -95,7 +95,7 @@ final class WebhostingDomainNameTest extends TestCase
 
         $webhostingDomainName->transferToAccount($account2);
 
-        self::assertEquals($account2, $webhostingDomainName->account());
+        self::assertEquals($account2, $webhostingDomainName->getAccount());
     }
 
     /** @test */
@@ -107,7 +107,7 @@ final class WebhostingDomainNameTest extends TestCase
 
         $this->expectException(CannotTransferPrimaryDomainName::class);
         $this->expectExceptionMessage(
-            CannotTransferPrimaryDomainName::of($webhostingDomainName->id(), $account1->id(), $account2->id())->getMessage()
+            CannotTransferPrimaryDomainName::of($webhostingDomainName->getId(), $account1->getId(), $account2->getId())->getMessage()
         );
 
         $webhostingDomainName->transferToAccount($account2);
@@ -118,7 +118,7 @@ final class WebhostingDomainNameTest extends TestCase
         $account = $this->createMock(WebhostingAccount::class);
         $account
             ->expects(self::any())
-            ->method('id')
+            ->method('getId')
             ->willReturn(WebhostingAccountId::fromString($id));
 
         return $account;

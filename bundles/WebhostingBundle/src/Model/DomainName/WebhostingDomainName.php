@@ -81,17 +81,17 @@ class WebhostingDomainName
         return new static($account, $domainName);
     }
 
-    public function id(): WebhostingDomainNameId
+    public function getId(): WebhostingDomainNameId
     {
         return $this->id;
     }
 
-    public function domainName(): DomainName
+    public function getDomainName(): DomainName
     {
         return $this->domainName;
     }
 
-    public function account(): WebhostingAccount
+    public function getAccount(): WebhostingAccount
     {
         return $this->account;
     }
@@ -112,7 +112,7 @@ class WebhostingDomainName
         // issuing the transfer, meaning the primary marking was not persisted
         // yet for the old owner. But checking this further is not worth it.
         if ($this->isPrimary()) {
-            throw CannotTransferPrimaryDomainName::of($this->id, $this->account->id(), $account->id());
+            throw CannotTransferPrimaryDomainName::of($this->id, $this->account->getId(), $account->getId());
         }
 
         $this->account = $account;

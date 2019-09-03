@@ -25,7 +25,7 @@ final class ConfirmPasswordResetHandler
 
     public function __invoke(ConfirmPasswordReset $command): void
     {
-        $token         = $command->token();
+        $token         = $command->token;
         $administrator = $this->repository->getByPasswordResetToken($token->selector());
         $exception     = null;
 
@@ -33,7 +33,7 @@ final class ConfirmPasswordResetHandler
         // making the overall process unpredictable.
 
         try {
-            $administrator->confirmPasswordReset($token, $command->password());
+            $administrator->confirmPasswordReset($token, $command->password);
             $this->repository->save($administrator);
         } catch (PasswordResetConfirmationRejected $e) {
             $this->repository->save($administrator);

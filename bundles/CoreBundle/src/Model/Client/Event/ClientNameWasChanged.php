@@ -14,22 +14,23 @@ use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
 
 final class ClientNameWasChanged
 {
-    private $id;
-    private $displayName;
+    /**
+     * READ-ONLY.
+     *
+     * @var ClientId
+     */
+    public $id;
+
+    /**
+     * READ-ONLY.
+     *
+     * @var string
+     */
+    public $displayName;
 
     public function __construct(ClientId $id, string $displayName)
     {
         $this->id          = $id;
         $this->displayName = $displayName;
-    }
-
-    public function id(): ClientId
-    {
-        return $this->id;
-    }
-
-    public function displayName(): string
-    {
-        return $this->displayName;
     }
 }

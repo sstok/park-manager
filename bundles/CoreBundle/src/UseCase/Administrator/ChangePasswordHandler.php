@@ -23,8 +23,8 @@ final class ChangePasswordHandler
 
     public function __invoke(ChangePassword $command): void
     {
-        $administrator = $this->repository->get($command->id());
-        $administrator->changePassword($command->password());
+        $administrator = $this->repository->get($command->id);
+        $administrator->changePassword($command->password);
 
         $this->repository->save($administrator);
     }

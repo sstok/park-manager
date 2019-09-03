@@ -44,13 +44,13 @@ final class WebhostingPlaneOrmRepositoryTest extends EntityRepositoryTestCase
         $plan  = $repository->get($id);
         $plan2 = $repository->get($id2);
 
-        self::assertEquals($id, $plan->id());
-        self::assertEquals(['title' => 'Supper Gold XL'], $plan->metadata());
-        self::assertEquals(new Constraints(new MonthlyTrafficQuota(5)), $plan->constraints());
+        self::assertEquals($id, $plan->getId());
+        self::assertEquals(['title' => 'Supper Gold XL'], $plan->getMetadata());
+        self::assertEquals(new Constraints(new MonthlyTrafficQuota(5)), $plan->getConstraints());
 
-        self::assertEquals($id2, $plan2->id());
-        self::assertEquals([], $plan2->metadata());
-        self::assertEquals(new Constraints(new MonthlyTrafficQuota(50)), $plan2->constraints());
+        self::assertEquals($id2, $plan2->getId());
+        self::assertEquals([], $plan2->getMetadata());
+        self::assertEquals(new Constraints(new MonthlyTrafficQuota(50)), $plan2->getConstraints());
     }
 
     /** @test */

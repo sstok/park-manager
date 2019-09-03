@@ -67,7 +67,7 @@ class DoctrineOrmClientRepository extends EntityRepository implements ClientRepo
         $client = $this->createQueryBuilder('u')
             ->where('u.email.canonical = :email')
             ->getQuery()
-            ->setParameter('email', $email->canonical())
+            ->setParameter('email', $email->canonical)
             ->getOneOrNullResult();
 
         if ($client === null) {

@@ -73,15 +73,15 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         $account  = $repository->get($id);
         $account2 = $repository->get($id2);
 
-        self::assertEquals($id, $account->id());
-        self::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account->owner());
-        self::assertEquals(new Constraints(), $account->planConstraints());
-        self::assertNull($account->plan());
+        self::assertEquals($id, $account->getId());
+        self::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account->getOwner());
+        self::assertEquals(new Constraints(), $account->getPlanConstraints());
+        self::assertNull($account->getPlan());
 
-        self::assertEquals($id2, $account2->id());
-        self::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account2->owner());
-        self::assertEquals($this->planConstraints, $account2->planConstraints());
-        self::assertEquals($this->plan, $account2->plan());
+        self::assertEquals($id2, $account2->getId());
+        self::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account2->getOwner());
+        self::assertEquals($this->planConstraints, $account2->getPlanConstraints());
+        self::assertEquals($this->plan, $account2->getPlan());
     }
 
     /** @test */

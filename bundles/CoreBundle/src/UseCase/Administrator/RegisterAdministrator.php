@@ -15,17 +15,33 @@ use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 
 final class RegisterAdministrator
 {
-    /** @var AdministratorId */
-    private $id;
+    /**
+     * READ-ONLY.
+     *
+     * @var AdministratorId
+     */
+    public $id;
 
-    /** @var EmailAddress */
-    private $email;
+    /**
+     * READ-ONLY.
+     *
+     * @var EmailAddress
+     */
+    public $email;
 
-    /** @var string */
-    private $displayName;
+    /**
+     * READ-ONLY.
+     *
+     * @var string
+     */
+    public $displayName;
 
-    /** @var string|null */
-    private $password;
+    /**
+     * READ-ONLY.
+     *
+     * @var string|null
+     */
+    public $password;
 
     /**
      * @param string|null $password Null (no password) or an encoded password string (not plain)
@@ -36,25 +52,5 @@ final class RegisterAdministrator
         $this->email       = new EmailAddress($email);
         $this->displayName = $displayName;
         $this->password    = $password;
-    }
-
-    public function id(): AdministratorId
-    {
-        return $this->id;
-    }
-
-    public function email(): EmailAddress
-    {
-        return $this->email;
-    }
-
-    public function displayName(): string
-    {
-        return $this->displayName;
-    }
-
-    public function password(): ?string
-    {
-        return $this->password;
     }
 }

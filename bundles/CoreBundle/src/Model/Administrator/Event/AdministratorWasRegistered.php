@@ -15,34 +15,31 @@ use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 
 final class AdministratorWasRegistered
 {
-    /** @var AdministratorId */
-    private $id;
+    /**
+     * READ-ONLY.
+     *
+     * @var AdministratorId
+     */
+    public $id;
 
-    /** @var EmailAddress */
-    private $email;
+    /**
+     * READ-ONLY.
+     *
+     * @var EmailAddress
+     */
+    public $email;
 
-    /** @var string */
-    private $name;
+    /**
+     * READ-ONLY.
+     *
+     * @var string
+     */
+    public $name;
 
     public function __construct(AdministratorId $id, EmailAddress $email, string $name)
     {
         $this->id    = $id;
         $this->email = $email;
         $this->name  = $name;
-    }
-
-    public function getId(): AdministratorId
-    {
-        return $this->id;
-    }
-
-    public function getEmail(): EmailAddress
-    {
-        return $this->email;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
     }
 }

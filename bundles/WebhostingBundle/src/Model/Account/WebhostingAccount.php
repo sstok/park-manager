@@ -84,7 +84,7 @@ class WebhostingAccount implements RecordsDomainEvents
         $account = new static($id, $owner);
         // Store the constraints as part of the webhosting account
         // The plan can be changed at any time, but the constraints are immutable.
-        $account->planConstraints = $plan->constraints();
+        $account->planConstraints = $plan->getConstraints();
         $account->plan            = $plan;
         $account->recordThat(new Event\WebhostingAccountWasRegistered($id, $owner));
 
@@ -100,22 +100,22 @@ class WebhostingAccount implements RecordsDomainEvents
         return $account;
     }
 
-    public function id(): WebhostingAccountId
+    public function getId(): WebhostingAccountId
     {
         return $this->id;
     }
 
-    public function owner(): OwnerId
+    public function getOwner(): OwnerId
     {
         return $this->owner;
     }
 
-    public function plan(): ?WebhostingPlan
+    public function getPlan(): ?WebhostingPlan
     {
         return $this->plan;
     }
 
-    public function planConstraints(): Constraints
+    public function getPlanConstraints(): Constraints
     {
         return $this->planConstraints;
     }
@@ -140,12 +140,12 @@ class WebhostingAccount implements RecordsDomainEvents
      */
     public function assignPlanWithConstraints(WebhostingPlan $plan): void
     {
-        if ($plan === $this->plan && $this->planConstraints->equals($plan->constraints())) {
+        if ($plan === $this->plan && $this->planConstraints->equals($plan->getConstraints())) {
             return;
         }
 
         $this->plan            = $plan;
-        $this->planConstraints = $plan->constraints();
+        $this->planConstraints = $plan->getConstraints();
         $this->recordThat(Event\WebhostingAccountPlanAssignmentWasChanged::withConstraints($this->id, $plan));
     }
 

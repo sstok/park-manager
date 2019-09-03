@@ -46,7 +46,7 @@ final class RequestPasswordResetHandler
         );
 
         try {
-            $administrator = $this->repository->getByEmail($command->email());
+            $administrator = $this->repository->getByEmail($command->email);
         } catch (AdministratorNotFound $e) {
             // No account with this e-mail address. To prevent exposing existence simply do nothing.
             return;

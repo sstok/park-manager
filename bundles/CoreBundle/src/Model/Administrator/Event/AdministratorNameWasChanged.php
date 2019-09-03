@@ -14,11 +14,19 @@ use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
 
 final class AdministratorNameWasChanged
 {
-    /** @var AdministratorId */
-    private $id;
+    /**
+     * READ-ONLY.
+     *
+     * @var AdministratorId
+     */
+    public $id;
 
-    /** @var string */
-    private $name;
+    /**
+     * READ-ONLY.
+     *
+     * @var string
+     */
+    public $name;
 
     public function __construct(AdministratorId $id, string $name)
     {

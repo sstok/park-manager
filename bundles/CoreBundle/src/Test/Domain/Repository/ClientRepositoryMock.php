@@ -31,7 +31,7 @@ final class ClientRepositoryMock implements ClientRepository
     {
         return [
             'email' => static function (Client $client) {
-                return $client->email()->canonical();
+                return $client->getEmail()->canonical;
             },
         ];
     }
@@ -40,10 +40,10 @@ final class ClientRepositoryMock implements ClientRepository
     {
         return [
             ClientPasswordResetWasRequested::class => static function (ClientPasswordResetWasRequested $e) {
-                return $e->token()->selector();
+                return $e->token->selector();
             },
             ClientEmailAddressChangeWasRequested::class => static function (ClientEmailAddressChangeWasRequested $e) {
-                return $e->token()->selector();
+                return $e->token->selector();
             },
         ];
     }
@@ -60,7 +60,7 @@ final class ClientRepositoryMock implements ClientRepository
 
     public function getByEmail(EmailAddress $email): Client
     {
-        return $this->mockDoGetByField('email', $email->canonical());
+        return $this->mockDoGetByField('email', $email->canonical);
     }
 
     public function getByPasswordResetToken(string $selector): Client

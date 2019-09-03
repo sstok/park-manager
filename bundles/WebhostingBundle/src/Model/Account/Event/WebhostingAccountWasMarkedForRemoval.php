@@ -14,15 +14,15 @@ use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
 
 final class WebhostingAccountWasMarkedForRemoval
 {
-    private $id;
+    /**
+     * READ-ONLY.
+     *
+     * @var WebhostingAccountId
+     */
+    public $account;
 
     public function __construct(WebhostingAccountId $id)
     {
-        $this->id = $id;
-    }
-
-    public function id(): WebhostingAccountId
-    {
-        return $this->id;
+        $this->account = $id;
     }
 }

@@ -44,7 +44,7 @@ final class RequestPasswordResetHandlerTest extends TestCase
         $handler(new RequestPasswordReset('Jane@example.com'));
 
         $repository->assertHasEntity(
-            $client->id(),
+            $client->getId(),
             static function (Client $entity) {
                 $events = $entity->releaseEvents();
 
@@ -65,7 +65,7 @@ final class RequestPasswordResetHandlerTest extends TestCase
     private function expectMailIsSend(Client $client): PasswordResetMailer
     {
         $mailerProphecy = $this->prophesize(PasswordResetMailer::class);
-        $mailerProphecy->send($client->email(), Argument::any())->shouldBeCalled();
+        $mailerProphecy->send($client->getEmail(), Argument::any())->shouldBeCalled();
 
         return $mailerProphecy->reveal();
     }

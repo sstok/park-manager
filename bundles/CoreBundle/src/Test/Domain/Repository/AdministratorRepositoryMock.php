@@ -29,7 +29,7 @@ final class AdministratorRepositoryMock implements AdministratorRepository
     {
         return [
             'email' => static function (Administrator $client) {
-                return $client->getEmailAddress()->canonical();
+                return $client->getEmailAddress()->canonical;
             },
         ];
     }
@@ -38,7 +38,7 @@ final class AdministratorRepositoryMock implements AdministratorRepository
     {
         return [
             AdministratorPasswordResetWasRequested::class => static function (AdministratorPasswordResetWasRequested $e) {
-                return $e->getToken()->selector();
+                return $e->token->selector();
             },
         ];
     }
@@ -60,7 +60,7 @@ final class AdministratorRepositoryMock implements AdministratorRepository
 
     public function getByEmail(EmailAddress $email): Administrator
     {
-        return $this->mockDoGetByField('email', $email->canonical());
+        return $this->mockDoGetByField('email', $email->canonical);
     }
 
     public function getByPasswordResetToken(string $selector): Administrator

@@ -28,13 +28,13 @@ final class ChangeClientPasswordHandlerTest extends TestCase
         $repository = new ClientRepositoryMock([$client]);
 
         $handler = new ChangeClientPasswordHandler($repository);
-        $handler(new ChangeClientPassword($client->id()->toString(), 'new-password'));
+        $handler(new ChangeClientPassword($client->getId()->toString(), 'new-password'));
 
         $repository->assertEntitiesWereSaved();
         $repository->assertHasEntityWithEvents(
-            $client->id(),
+            $client->getId(),
             [
-                new ClientPasswordWasChanged($client->id(), 'new-password'),
+                new ClientPasswordWasChanged($client->getId(), 'new-password'),
             ]
         );
     }
@@ -46,13 +46,13 @@ final class ChangeClientPasswordHandlerTest extends TestCase
         $repository = new ClientRepositoryMock([$client]);
 
         $handler = new ChangeClientPasswordHandler($repository);
-        $handler(new ChangeClientPassword($client->id()->toString(), null));
+        $handler(new ChangeClientPassword($client->getId()->toString(), null));
 
         $repository->assertEntitiesWereSaved();
         $repository->assertHasEntityWithEvents(
-            $client->id(),
+            $client->getId(),
             [
-                new ClientPasswordWasChanged($client->id(), null),
+                new ClientPasswordWasChanged($client->getId(), null),
             ]
         );
     }

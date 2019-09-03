@@ -41,8 +41,8 @@ final class RegisterAdministratorHandlerTest extends TestCase
         $repo->assertHasEntityWithEvents(
             self::ID_NEW,
             [
-                new AdministratorWasRegistered($command->id(), $command->email(), $command->displayName()),
-                new AdministratorPasswordWasChanged($command->id(), $command->password()),
+                new AdministratorWasRegistered($command->id, $command->email, $command->displayName),
+                new AdministratorPasswordWasChanged($command->id, $command->password),
             ]
         );
     }
@@ -59,7 +59,7 @@ final class RegisterAdministratorHandlerTest extends TestCase
         $repo->assertHasEntityWithEvents(
             self::ID_NEW,
             [
-                new AdministratorWasRegistered($command->id(), $command->email(), $command->displayName()),
+                new AdministratorWasRegistered($command->id, $command->email, $command->displayName),
             ]
         );
     }

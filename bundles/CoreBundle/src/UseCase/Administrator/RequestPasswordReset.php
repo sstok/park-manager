@@ -14,16 +14,15 @@ use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 
 final class RequestPasswordReset
 {
-    /** @var EmailAddress */
-    private $email;
+    /**
+     * READ-ONLY.
+     *
+     * @var EmailAddress
+     */
+    public $email;
 
     public function __construct(string $email)
     {
         $this->email = new EmailAddress($email);
-    }
-
-    public function email(): EmailAddress
-    {
-        return $this->email;
     }
 }

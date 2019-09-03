@@ -14,11 +14,19 @@ use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
 
 final class ChangePassword
 {
-    /** @var AdministratorId */
-    private $id;
+    /**
+     * READ-ONLY.
+     *
+     * @var AdministratorId
+     */
+    public $id;
 
-    /** @var string|null */
-    private $password;
+    /**
+     * READ-ONLY.
+     *
+     * @var string|null
+     */
+    public $password;
 
     /**
      * @param string|null $password The password in hash-encoded format or null
@@ -28,19 +36,5 @@ final class ChangePassword
     {
         $this->id       = AdministratorId::fromString($id);
         $this->password = $password;
-    }
-
-    public function id(): AdministratorId
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string|null The password in hash-encoded format or null
-     *                     to disable password based authentication
-     */
-    public function password(): ?string
-    {
-        return $this->password;
     }
 }

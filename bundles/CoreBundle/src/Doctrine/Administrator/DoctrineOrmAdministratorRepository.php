@@ -60,7 +60,7 @@ final class DoctrineOrmAdministratorRepository extends EventSourcedEntityReposit
         $administrator = $this->createQueryBuilder('u')
             ->where('u.email.canonical = :email')
             ->getQuery()
-            ->setParameter('email', $email->canonical())
+            ->setParameter('email', $email->canonical)
             ->getOneOrNullResult();
 
         if ($administrator === null) {

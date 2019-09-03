@@ -15,29 +15,31 @@ use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 
 final class ClientWasRegistered
 {
-    private $id;
-    private $email;
-    private $displayName;
+    /**
+     * READ-ONLY.
+     *
+     * @var ClientId
+     */
+    public $id;
+
+    /**
+     * READ-ONLY.
+     *
+     * @var EmailAddress
+     */
+    public $email;
+
+    /**
+     * READ-ONLY.
+     *
+     * @var string
+     */
+    public $displayName;
 
     public function __construct(ClientId $id, EmailAddress $email, string $displayName)
     {
         $this->id          = $id;
         $this->email       = $email;
         $this->displayName = $displayName;
-    }
-
-    public function id(): ClientId
-    {
-        return $this->id;
-    }
-
-    public function email(): EmailAddress
-    {
-        return $this->email;
-    }
-
-    public function displayName(): string
-    {
-        return $this->displayName;
     }
 }

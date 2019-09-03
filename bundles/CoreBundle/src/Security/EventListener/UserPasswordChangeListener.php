@@ -33,8 +33,8 @@ final class UserPasswordChangeListener implements MessageSubscriber
     {
         $this->eventDispatcher->dispatch(
             new UserPasswordWasChanged(
-                $message->getId()->toString(),
-                $message->getPassword()
+                $message->id->toString(),
+                $message->password
             )
         );
     }

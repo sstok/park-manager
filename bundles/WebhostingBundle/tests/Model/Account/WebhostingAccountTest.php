@@ -50,10 +50,10 @@ final class WebhostingAccountTest extends TestCase
 
         $account = WebhostingAccount::register($id, $owner = OwnerId::fromString(self::OWNER_ID1), $plan);
 
-        self::assertEquals($id, $account->id());
-        self::assertEquals($owner, $account->owner());
-        self::assertSame($plan, $account->plan());
-        self::assertSame($constraints, $account->planConstraints());
+        self::assertEquals($id, $account->getId());
+        self::assertEquals($owner, $account->getOwner());
+        self::assertSame($plan, $account->getPlan());
+        self::assertSame($constraints, $account->getPlanConstraints());
         self::assertDomainEvents($account, [new WebhostingAccountWasRegistered($id, $owner)]);
     }
 
@@ -65,10 +65,10 @@ final class WebhostingAccountTest extends TestCase
 
         $account = WebhostingAccount::registerWithCustomConstraints($id, $owner = OwnerId::fromString(self::OWNER_ID1), $constraints);
 
-        self::assertEquals($id, $account->id());
-        self::assertEquals($owner, $account->owner());
-        self::assertSame($constraints, $account->planConstraints());
-        self::assertNull($account->plan());
+        self::assertEquals($id, $account->getId());
+        self::assertEquals($owner, $account->getOwner());
+        self::assertSame($constraints, $account->getPlanConstraints());
+        self::assertNull($account->getPlan());
         self::assertDomainEvents($account, [new WebhostingAccountWasRegistered($id, $owner)]);
     }
 
@@ -87,12 +87,12 @@ final class WebhostingAccountTest extends TestCase
         $account1->assignPlan($plan1);
         $account2->assignPlan($plan2);
 
-        self::assertSame($plan1, $account1->plan(), 'Plan should not change');
-        self::assertSame($plan1->constraints(), $account1->planConstraints(), 'Constraints should not change');
+        self::assertSame($plan1, $account1->getPlan(), 'Plan should not change');
+        self::assertSame($plan1->getConstraints(), $account1->getPlanConstraints(), 'Constraints should not change');
         self::assertNoDomainEvents($account1);
 
-        self::assertSame($plan2, $account2->plan());
-        self::assertSame($plan1->constraints(), $account2->planConstraints());
+        self::assertSame($plan2, $account2->getPlan());
+        self::assertSame($plan1->getConstraints(), $account2->getPlanConstraints());
         self::assertDomainEvents($account2, [new WebhostingAccountPlanAssignmentWasChanged($id2, $plan2)]);
     }
 
@@ -111,12 +111,12 @@ final class WebhostingAccountTest extends TestCase
         $account1->assignPlanWithConstraints($plan1);
         $account2->assignPlanWithConstraints($plan2);
 
-        self::assertSame($plan1, $account1->plan(), 'Plan should not change');
-        self::assertSame($plan1->constraints(), $account1->planConstraints(), 'Constraints should not change');
+        self::assertSame($plan1, $account1->getPlan(), 'Plan should not change');
+        self::assertSame($plan1->getConstraints(), $account1->getPlanConstraints(), 'Constraints should not change');
         self::assertNoDomainEvents($account1);
 
-        self::assertSame($plan2, $account2->plan());
-        self::assertSame($plan2->constraints(), $account2->planConstraints());
+        self::assertSame($plan2, $account2->getPlan());
+        self::assertSame($plan2->getConstraints(), $account2->getPlanConstraints());
         self::assertDomainEvents(
             $account2,
             [WebhostingAccountPlanAssignmentWasChanged::withConstraints($id2, $plan2)]
@@ -134,8 +134,8 @@ final class WebhostingAccountTest extends TestCase
         $plan->changeConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
         $account->assignPlanWithConstraints($plan);
 
-        self::assertSame($plan, $account->plan());
-        self::assertSame($plan->constraints(), $account->planConstraints());
+        self::assertSame($plan, $account->getPlan());
+        self::assertSame($plan->getConstraints(), $account->getPlanConstraints());
         self::assertDomainEvents(
             $account,
             [WebhostingAccountPlanAssignmentWasChanged::withConstraints($id, $plan)]
@@ -152,8 +152,8 @@ final class WebhostingAccountTest extends TestCase
 
         $account->assignCustomConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
 
-        self::assertNull($account->plan());
-        self::assertSame($newConstraints, $account->planConstraints());
+        self::assertNull($account->getPlan());
+        self::assertSame($newConstraints, $account->getPlanConstraints());
         self::assertDomainEvents($account, [new WebhostingAccountPlanConstraintsWasChanged($id, $newConstraints)]);
     }
 
@@ -166,8 +166,8 @@ final class WebhostingAccountTest extends TestCase
 
         $account->assignCustomConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
 
-        self::assertNull($account->plan());
-        self::assertSame($newConstraints, $account->planConstraints());
+        self::assertNull($account->getPlan());
+        self::assertSame($newConstraints, $account->getPlanConstraints());
         self::assertDomainEvents($account, [new WebhostingAccountPlanConstraintsWasChanged($id, $newConstraints)]);
     }
 
@@ -181,8 +181,8 @@ final class WebhostingAccountTest extends TestCase
 
         $account->assignCustomConstraints($Constraints);
 
-        self::assertNull($account->plan());
-        self::assertSame($Constraints, $account->planConstraints());
+        self::assertNull($account->getPlan());
+        self::assertSame($Constraints, $account->getPlanConstraints());
         self::assertNoDomainEvents($account);
     }
 
@@ -204,10 +204,10 @@ final class WebhostingAccountTest extends TestCase
         $account1->switchOwner($owner1 = OwnerId::fromString(self::OWNER_ID1));
         $account2->switchOwner($owner2 = OwnerId::fromString(self::OWNER_ID2));
 
-        self::assertEquals($owner1, $account1->owner());
+        self::assertEquals($owner1, $account1->getOwner());
         self::assertNoDomainEvents($account1);
 
-        self::assertEquals($owner2, $account2->owner());
+        self::assertEquals($owner2, $account2->getOwner());
         self::assertDomainEvents($account2, [new WebhostingAccountOwnerWasSwitched($id2, $owner1, $owner2)]);
     }
 

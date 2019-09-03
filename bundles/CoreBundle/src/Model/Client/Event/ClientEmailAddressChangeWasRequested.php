@@ -16,34 +16,31 @@ use Rollerworks\Component\SplitToken\SplitToken;
 
 final class ClientEmailAddressChangeWasRequested
 {
-    /** @var ClientId */
-    private $id;
+    /**
+     * READ-ONLY.
+     *
+     * @var ClientId
+     */
+    public $id;
 
-    /** @var SplitToken */
-    private $token;
+    /**
+     * READ-ONLY.
+     *
+     * @var SplitToken
+     */
+    public $token;
 
-    /** @var EmailAddress */
-    private $newEmail;
+    /**
+     * READ-ONLY.
+     *
+     * @var EmailAddress
+     */
+    public $newEmail;
 
     public function __construct(ClientId $id, SplitToken $token, EmailAddress $newEmail)
     {
         $this->id       = $id;
         $this->token    = $token;
         $this->newEmail = $newEmail;
-    }
-
-    public function id(): ClientId
-    {
-        return $this->id;
-    }
-
-    public function token(): SplitToken
-    {
-        return $this->token;
-    }
-
-    public function getNewEmail(): EmailAddress
-    {
-        return $this->newEmail;
     }
 }

@@ -64,12 +64,12 @@ class WebhostingPlan implements RecordsDomainEvents
         return $instance;
     }
 
-    public function id(): WebhostingPlanId
+    public function getId(): WebhostingPlanId
     {
         return $this->id;
     }
 
-    public function constraints(): Constraints
+    public function getConstraints(): Constraints
     {
         return $this->constraints;
     }
@@ -100,7 +100,7 @@ class WebhostingPlan implements RecordsDomainEvents
         $this->metadata = $metadata;
     }
 
-    public function metadata(): array
+    public function getMetadata(): array
     {
         return $this->metadata;
     }

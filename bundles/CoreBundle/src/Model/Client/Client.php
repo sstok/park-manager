@@ -127,12 +127,17 @@ class Client implements RecordsDomainEvents
         return $client;
     }
 
-    public function id(): ClientId
+    public function getId(): ClientId
     {
         return $this->id;
     }
 
-    public function email(): EmailAddress
+    public function getDisplayName(): string
+    {
+        return $this->displayName;
+    }
+
+    public function getEmail(): EmailAddress
     {
         return $this->email;
     }
@@ -159,11 +164,11 @@ class Client implements RecordsDomainEvents
 
     public function requestEmailChange(EmailAddress $email, SplitToken $token): bool
     {
-        if (! SplitTokenValueHolder::mayReplaceCurrentToken($this->emailAddressChangeToken, ['email' => $email->address()])) {
+        if (! SplitTokenValueHolder::mayReplaceCurrentToken($this->emailAddressChangeToken, ['email' => $email->address])) {
             return false;
         }
 
-        $this->emailAddressChangeToken = $token->toValueHolder()->withMetadata(['email' => $email->address()]);
+        $this->emailAddressChangeToken = $token->toValueHolder()->withMetadata(['email' => $email->address]);
         $this->recordThat(new ClientEmailAddressChangeWasRequested($this->id, $token, $email));
 
         return true;
@@ -261,7 +266,7 @@ class Client implements RecordsDomainEvents
         $this->passwordResetEnabled = true;
     }
 
-    public function passwordResetToken(): ?SplitTokenValueHolder
+    public function getPasswordResetToken(): ?SplitTokenValueHolder
     {
         return $this->passwordResetToken;
     }

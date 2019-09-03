@@ -44,7 +44,7 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     {
         $constraints         = new Constraints(new MonthlyTrafficQuota(50));
         $domainName           = new DomainName('example', '.com');
-        $webhostingPlan    = WebhostingPlan::create(WebhostingPlanId::fromString(self::PLAN_ID1), $constraints);
+        $webhostingPlan    = new WebhostingPlan(WebhostingPlanId::fromString(self::PLAN_ID1), $constraints);
         $planRepository    = $this->createPlanRepository($webhostingPlan);
         $accountRepository    = $this->createAccountRepositoryThatSaves($constraints, $webhostingPlan);
         $domainNameRepository = $this->createDomainNameRepositoryThatSaves($domainName, self::ACCOUNT_ID1);
@@ -109,10 +109,10 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
         $accountRepositoryProphecy->save(
             Argument::that(
                 static function (WebhostingAccount $account) use ($constraints, $id, $owner, $plan) {
-                    self::assertEquals(WebhostingAccountId::fromString($id), $account->id());
-                    self::assertEquals(OwnerId::fromString($owner), $account->owner());
-                    self::assertEquals($constraints, $account->planConstraints());
-                    self::assertEquals($plan, $account->plan());
+                    self::assertEquals(WebhostingAccountId::fromString($id), $account->getId());
+                    self::assertEquals(OwnerId::fromString($owner), $account->getOwner());
+                    self::assertEquals($constraints, $account->getPlanConstraints());
+                    self::assertEquals($plan, $account->getPlan());
 
                     return true;
                 }
@@ -138,7 +138,7 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     private function createPlanRepository(WebhostingPlan $plan): WebhostingPlanRepository
     {
         $planRepositoryProphecy = $this->prophesize(WebhostingPlanRepository::class);
-        $planRepositoryProphecy->get($plan->id())->willReturn($plan);
+        $planRepositoryProphecy->get($plan->getId())->willReturn($plan);
 
         return $planRepositoryProphecy->reveal();
     }
@@ -150,8 +150,8 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
         $domainNameRepositoryProphecy->save(
             Argument::that(
                 static function (WebhostingDomainName $domain) use ($expectedDomain, $accountId) {
-                    self::assertEquals($expectedDomain, $domain->domainName());
-                    self::assertEquals(WebhostingAccountId::fromString($accountId), $domain->account()->id());
+                    self::assertEquals($expectedDomain, $domain->getDomainName());
+                    self::assertEquals(WebhostingAccountId::fromString($accountId), $domain->getAccount()->getId());
 
                     return true;
                 }
@@ -166,13 +166,13 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
         $existingAccount = $this->createMock(WebhostingAccount::class);
         $existingAccount
             ->expects(self::any())
-            ->method('id')
+            ->method('getId')
             ->willReturn($existingAccountId);
 
         $existingDomain = $this->createMock(WebhostingDomainName::class);
         $existingDomain
             ->expects(self::any())
-            ->method('account')
+            ->method('getAccount')
             ->willReturn($existingAccount);
 
         $domainNameRepositoryProphecy = $this->prophesize(WebhostingDomainNameRepository::class);

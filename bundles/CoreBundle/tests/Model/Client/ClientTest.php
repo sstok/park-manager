@@ -52,8 +52,8 @@ final class ClientTest extends TestCase
             'Jane Doe'
         );
 
-        self::assertEquals($id, $client->id());
-        self::assertEquals($email, $client->email());
+        self::assertEquals($id, $client->getId());
+        self::assertEquals($email, $client->getEmail());
     }
 
     /** @test */
@@ -62,7 +62,7 @@ final class ClientTest extends TestCase
         $client = $this->registerClient();
         $client->changeEmail($email = new EmailAddress('Doh@example.com'));
 
-        self::assertEquals($email, $client->email());
+        self::assertEquals($email, $client->getEmail());
     }
 
     private function registerClient(?string $password = null): Client
@@ -80,7 +80,7 @@ final class ClientTest extends TestCase
         $client = $this->registerClient();
         $client->changeName('Jenny');
 
-        self::assertDomainEvents($client, [new ClientNameWasChanged($client->id(), 'Jenny')]);
+        self::assertDomainEvents($client, [new ClientNameWasChanged($client->getId(), 'Jenny')]);
     }
 
     /** @test */
@@ -109,7 +109,7 @@ final class ClientTest extends TestCase
 
         $client->changePassword('security-is-null');
 
-        self::assertDomainEvents($client, [new ClientPasswordWasChanged($client->id(), 'security-is-null')]);
+        self::assertDomainEvents($client, [new ClientPasswordWasChanged($client->getId(), 'security-is-null')]);
     }
 
     /** @test */
@@ -118,7 +118,7 @@ final class ClientTest extends TestCase
         $client = $this->registerClient('security-is-null');
         $client->changePassword(null);
 
-        self::assertDomainEvents($client, [new ClientPasswordWasChanged($client->id(), null)]);
+        self::assertDomainEvents($client, [new ClientPasswordWasChanged($client->getId(), null)]);
     }
 
     /** @test */
@@ -139,7 +139,7 @@ final class ClientTest extends TestCase
         $client  = $this->registerClient();
 
         self::assertTrue($client->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token));
-        self::assertEquals(new EmailAddress('john@example.com'), $client->email());
+        self::assertEquals(new EmailAddress('john@example.com'), $client->getEmail());
     }
 
     private function createTimeLimitedSplitToken(DateTimeImmutable $expiresAt): SplitToken
@@ -169,7 +169,7 @@ final class ClientTest extends TestCase
         // Second usage is prohibited, so try a second time.
         $this->assertEmailChangeThrowsRejected($client, $token);
 
-        self::assertEquals($email, $client->email());
+        self::assertEquals($email, $client->getEmail());
     }
 
     private function assertEmailChangeThrowsRejected(Client $client, SplitToken $token): void
@@ -202,7 +202,7 @@ final class ClientTest extends TestCase
         // Second attempt is prohibited, so try a second time (with correct token)!
         $this->assertEmailChangeThrowsRejected($client, $correctToken);
 
-        self::assertEquals(new EmailAddress('john@example.com'), $client->email());
+        self::assertEquals(new EmailAddress('john@example.com'), $client->getEmail());
     }
 
     private function generateSecondToken(): SplitToken
@@ -217,7 +217,7 @@ final class ClientTest extends TestCase
         $client  = $this->registerClient();
 
         $this->assertEmailChangeThrowsRejected($client, $token);
-        self::assertEquals(new EmailAddress('john@example.com'), $client->email());
+        self::assertEquals(new EmailAddress('john@example.com'), $client->getEmail());
     }
 
     /** @test */
@@ -245,7 +245,7 @@ final class ClientTest extends TestCase
         $token   = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
         $client  = $this->registerClient('pass-my-word');
         $client->requestPasswordReset($token);
-        $id = $client->id();
+        $id = $client->getId();
 
         $client->confirmPasswordReset($token2 = $this->getTokenString($token), 'new-password');
 
@@ -306,7 +306,7 @@ final class ClientTest extends TestCase
         $this->assertPasswordResetThrowsRejected($client, $token);
         self::assertDomainEvents(
             $client,
-            [new ClientPasswordResetWasRequested($client->id(), $token)]
+            [new ClientPasswordResetWasRequested($client->getId(), $token)]
         );
     }
 }

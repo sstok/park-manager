@@ -18,33 +18,27 @@ use Doctrine\ORM\Mapping as ORM;
 final class DomainName
 {
     /**
+     * READ-ONLY.
+     *
      * @ORM\Column(type="string")
      *
      * @var string
      */
-    private $name;
+    public $name;
 
     /**
+     * READ-ONLY.
+     *
      * @ORM\Column(type="string")
      *
      * @var string
      */
-    private $tld;
+    public $tld;
 
     public function __construct(string $name, string $tld)
     {
         $this->name = $name;
         $this->tld  = $tld;
-    }
-
-    public function name(): string
-    {
-        return $this->name;
-    }
-
-    public function tld(): string
-    {
-        return $this->tld;
     }
 
     public function toString(): string

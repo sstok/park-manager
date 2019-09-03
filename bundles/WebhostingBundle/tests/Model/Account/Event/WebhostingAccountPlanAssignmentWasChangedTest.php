@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 final class WebhostingAccountPlanAssignmentWasChangedTest extends TestCase
 {
     private const WEBHOSTING_PLAN_ID = 'b3e3846a-97c6-11e7-bf67-acbc32b58315';
-    private const ACCOUNT_ID            = 'b288e23c-97c5-11e7-b51a-acbc32b58315';
+    private const ACCOUNT_ID         = 'b288e23c-97c5-11e7-b51a-acbc32b58315';
 
     /** @test */
     public function its_constructable(): void
@@ -35,9 +35,9 @@ final class WebhostingAccountPlanAssignmentWasChangedTest extends TestCase
             $plan = $this->createWebhostingPlan()
         );
 
-        self::assertTrue($id->equals($event->id()));
-        self::assertEquals($plan->id(), $event->plan());
-        self::assertNull($event->constraints());
+        self::assertTrue($id->equals($event->account));
+        self::assertEquals($plan->getId(), $event->plan);
+        self::assertNull($event->planConstraints);
     }
 
     /** @test */
@@ -48,9 +48,9 @@ final class WebhostingAccountPlanAssignmentWasChangedTest extends TestCase
             $plan = $this->createWebhostingPlan()
         );
 
-        self::assertTrue($id->equals($event->id()));
-        self::assertEquals($plan->id(), $event->plan());
-        self::assertEquals($plan->constraints(), $event->constraints());
+        self::assertTrue($id->equals($event->account));
+        self::assertEquals($plan->getId(), $event->plan);
+        self::assertEquals($plan->getConstraints(), $event->planConstraints);
     }
 
     private function createWebhostingPlan(): WebhostingPlan

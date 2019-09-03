@@ -26,10 +26,8 @@ final class RegisterAdministratorHandler
 
     public function __invoke(RegisterAdministrator $command): void
     {
-        $email = $command->email();
-
         try {
-            $administrator = $this->repository->getByEmail($email);
+            $administrator = $this->repository->getByEmail($command->email);
 
             throw new AdministratorEmailAddressAlreadyInUse($administrator->getId());
         } catch (AdministratorNotFound $e) {
@@ -38,10 +36,10 @@ final class RegisterAdministratorHandler
 
         $this->repository->save(
             Administrator::register(
-                $command->id(),
-                $email,
-                $command->displayName(),
-                $command->password()
+                $command->id,
+                $command->email,
+                $command->displayName,
+                $command->password
             )
         );
     }

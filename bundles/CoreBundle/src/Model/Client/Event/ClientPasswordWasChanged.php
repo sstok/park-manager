@@ -14,22 +14,23 @@ use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
 
 final class ClientPasswordWasChanged
 {
-    private $id;
-    private $password;
+    /**
+     * READ-ONLY.
+     *
+     * @var ClientId
+     */
+    public $id;
+
+    /**
+     * READ-ONLY.
+     *
+     * @var string|null
+     */
+    public $password;
 
     public function __construct(ClientId $id, ?string $newPassword)
     {
         $this->id       = $id;
         $this->password = $newPassword;
-    }
-
-    public function getId(): ClientId
-    {
-        return $this->id;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
     }
 }

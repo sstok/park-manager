@@ -14,25 +14,23 @@ use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
 
 final class AdministratorPasswordWasChanged
 {
-    /** @var AdministratorId */
-    private $id;
+    /**
+     * READ-ONLY.
+     *
+     * @var AdministratorId
+     */
+    public $id;
 
-    /** @var string|null */
-    private $newPassword;
+    /**
+     * READ-ONLY.
+     *
+     * @var string|null
+     */
+    public $newPassword;
 
     public function __construct(AdministratorId $id, ?string $newPassword)
     {
         $this->id          = $id;
         $this->newPassword = $newPassword;
-    }
-
-    public function getId(): AdministratorId
-    {
-        return $this->id;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->newPassword;
     }
 }
