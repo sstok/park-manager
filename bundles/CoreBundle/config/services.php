@@ -32,7 +32,7 @@ return static function (ContainerConfigurator $c) {
     $autoDi = new AutoServiceConfigurator($di);
 
     $di->load('ParkManager\\Bundle\\CoreBundle\\', __DIR__ . '/../src/*')
-        ->exclude([__DIR__ . '/../src/{DependencyInjection,Entity,Test,Http,UseCase,DataFixtures}']);
+        ->exclude([__DIR__ . '/../src/{DependencyInjection,Model,Test,Http,UseCase,DataFixtures}']);
 
     $autoDi->set(Argon2SplitTokenFactory::class);
     $autoDi->set('park_manager.repository.administrator', DoctrineOrmAdministratorRepository::class);
