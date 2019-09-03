@@ -21,7 +21,7 @@ use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 /**
  * @method WebhostingPlan|null find($id, $lockMode = null, $lockVersion = null)
  */
-final class WebhostingPlanOrmRepository extends EventSourcedEntityRepository implements WebhostingPlanRepository
+class WebhostingPlanOrmRepository extends EventSourcedEntityRepository implements WebhostingPlanRepository
 {
     public function __construct(EntityManagerInterface $entityManager, MessageBus $eventBus, string $className = WebhostingPlan::class)
     {

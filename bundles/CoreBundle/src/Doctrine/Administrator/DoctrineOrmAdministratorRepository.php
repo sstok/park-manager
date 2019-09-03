@@ -25,7 +25,7 @@ use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 /**
  * @method Administrator find($id, $lockMode = null, $lockVersion = null)
  */
-final class DoctrineOrmAdministratorRepository extends EventSourcedEntityRepository implements AdministratorRepository, AuthenticationFinder
+class DoctrineOrmAdministratorRepository extends EventSourcedEntityRepository implements AdministratorRepository, AuthenticationFinder
 {
     public function __construct(EntityManagerInterface $entityManager, MessageBus $eventBus, string $className = Administrator::class)
     {

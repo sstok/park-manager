@@ -22,7 +22,7 @@ use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 /**
  * @method WebhostingAccount|null find($id, $lockMode = null, $lockVersion = null)
  */
-final class WebhostingAccountOrmRepository extends EventSourcedEntityRepository implements WebhostingAccountRepository
+class WebhostingAccountOrmRepository extends EventSourcedEntityRepository implements WebhostingAccountRepository
 {
     public function __construct(EntityManagerInterface $entityManager, MessageBus $eventBus, string $className = WebhostingAccount::class)
     {

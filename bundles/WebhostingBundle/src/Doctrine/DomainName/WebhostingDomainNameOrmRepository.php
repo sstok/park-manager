@@ -24,7 +24,7 @@ use ParkManager\Bundle\WebhostingBundle\Model\DomainName\WebhostingDomainNameRep
 /**
  * @method WebhostingDomainName|null find($id, $lockMode = null, $lockVersion = null)
  */
-final class WebhostingDomainNameOrmRepository extends EntityRepository implements WebhostingDomainNameRepository
+class WebhostingDomainNameOrmRepository extends EntityRepository implements WebhostingDomainNameRepository
 {
     public function __construct(EntityManagerInterface $entityManager, string $className = WebhostingDomainName::class)
     {
