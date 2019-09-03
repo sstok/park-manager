@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Bundle\CoreBundle\Model\DomainEventsCollectionTrait;
 use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanConstraintsWasChanged;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanWasCreated;
 
 /**
  * @ORM\Entity()
@@ -47,21 +46,10 @@ class WebhostingPlan implements RecordsDomainEvents
      */
     private $metadata = [];
 
-    protected function __construct(WebhostingPlanId $id, Constraints $constraints)
+    public function __construct(WebhostingPlanId $id, Constraints $constraints)
     {
         $this->id           = $id;
         $this->constraints = $constraints;
-    }
-
-    /**
-     * @return static
-     */
-    public static function create(WebhostingPlanId $id, Constraints $constraints)
-    {
-        $instance = new static($id, $constraints);
-        $instance->recordThat(new WebhostingPlanWasCreated($id, $constraints));
-
-        return $instance;
     }
 
     public function getId(): WebhostingPlanId

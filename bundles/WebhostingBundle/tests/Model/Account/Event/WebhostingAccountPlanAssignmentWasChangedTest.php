@@ -55,7 +55,7 @@ final class WebhostingAccountPlanAssignmentWasChangedTest extends TestCase
 
     private function createWebhostingPlan(): WebhostingPlan
     {
-        return WebhostingPlan::create(
+        return new WebhostingPlan(
             WebhostingPlanId::fromString(self::WEBHOSTING_PLAN_ID),
             new Constraints(new StorageSpaceQuota('5G'), new MonthlyTrafficQuota(50))
         );

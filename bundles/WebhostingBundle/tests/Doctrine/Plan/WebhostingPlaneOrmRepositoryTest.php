@@ -84,7 +84,7 @@ final class WebhostingPlaneOrmRepositoryTest extends EntityRepositoryTestCase
 
     private function setUpPlan1(WebhostingPlanOrmRepository $repository): void
     {
-        $plan = WebhostingPlan::create(
+        $plan = new WebhostingPlan(
             WebhostingPlanId::fromString(self::PLAN_ID1),
             new Constraints(new MonthlyTrafficQuota(5))
         );
@@ -96,7 +96,7 @@ final class WebhostingPlaneOrmRepositoryTest extends EntityRepositoryTestCase
     private function setUpPlan2(WebhostingPlanOrmRepository $repository): void
     {
         $repository->save(
-            WebhostingPlan::create(
+            new WebhostingPlan(
                 WebhostingPlanId::fromString(self::PLAN_ID2),
                 new Constraints(new MonthlyTrafficQuota(50))
             )

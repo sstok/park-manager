@@ -50,7 +50,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         parent::setUp();
 
         $this->planConstraints = new Constraints(new MonthlyTrafficQuota(50));
-        $this->plan             = WebhostingPlan::create(
+        $this->plan             = new WebhostingPlan(
             WebhostingPlanId::fromString(self::PLAN_ID1),
             $this->planConstraints
         );

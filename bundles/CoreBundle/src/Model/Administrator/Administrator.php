@@ -14,7 +14,6 @@ use Assert\Assertion;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorNameWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordResetWasRequested;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorWasRegistered;
@@ -117,6 +116,11 @@ class Administrator implements RecordsDomainEvents
         return $this->id;
     }
 
+    public function getDisplayName(): string
+    {
+        return $this->displayName;
+    }
+
     public function getEmailAddress(): EmailAddress
     {
         return $this->email;
@@ -129,10 +133,7 @@ class Administrator implements RecordsDomainEvents
 
     public function changeName(string $displayName): void
     {
-        if ($this->displayName !== $displayName) {
-            $this->recordThat(new AdministratorNameWasChanged($this->id, $displayName));
-            $this->displayName = $displayName;
-        }
+        $this->displayName = $displayName;
     }
 
     public function isLoginEnabled(): bool

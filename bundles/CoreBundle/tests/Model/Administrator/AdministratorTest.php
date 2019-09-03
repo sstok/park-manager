@@ -14,7 +14,6 @@ use Assert\AssertionFailedException;
 use DateTimeImmutable;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
-use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorNameWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordResetWasRequested;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorWasRegistered;
@@ -72,7 +71,7 @@ final class AdministratorTest extends TestCase
         $user = $this->registerAdministrator();
         $user->changeName('Jane Doe');
 
-        self::assertDomainEvents($user, [new AdministratorNameWasChanged($user->getId(), 'Jane Doe')]);
+        self::assertEquals('Jane Doe', $user->getDisplayName());
     }
 
     public function testDisableAccess(): void

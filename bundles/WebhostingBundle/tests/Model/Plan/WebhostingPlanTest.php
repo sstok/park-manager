@@ -13,7 +13,6 @@ namespace ParkManager\Bundle\WebhostingBundle\Tests\Model\Plan;
 use ParkManager\Bundle\CoreBundle\Test\Domain\EventsRecordingEntityAssertionTrait;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanConstraintsWasChanged;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanWasCreated;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTrafficQuota;
@@ -32,13 +31,12 @@ final class WebhostingPlanTest extends TestCase
     /** @test */
     public function it_registers_a_webhosting_plan(): void
     {
-        $plan = WebhostingPlan::create(
+        $plan = new WebhostingPlan(
             $id = WebhostingPlanId::fromString(self::ID1),
             $constraints = new Constraints()
         );
 
         self::assertEquals($constraints, $plan->getConstraints());
-        self::assertDomainEvents($plan, [new WebhostingPlanWasCreated($id, $constraints)]);
         self::assertEquals([], $plan->getMetadata());
     }
 
@@ -74,9 +72,6 @@ final class WebhostingPlanTest extends TestCase
 
     private function createPlan(): WebhostingPlan
     {
-        $plan = WebhostingPlan::create(WebhostingPlanId::fromString(self::ID1), new Constraints());
-        static::resetDomainEvents($plan);
-
-        return $plan;
+        return new WebhostingPlan(WebhostingPlanId::fromString(self::ID1), new Constraints());
     }
 }

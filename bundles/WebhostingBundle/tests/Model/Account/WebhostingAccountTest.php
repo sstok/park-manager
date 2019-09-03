@@ -268,6 +268,6 @@ final class WebhostingAccountTest extends TestCase
 
     private function createWebhostingPlan(Constraints $Constraints, string $id = self::PLAN_ID_1): WebhostingPlan
     {
-        return WebhostingPlan::create(WebhostingPlanId::fromString($id), $Constraints);
+        return new WebhostingPlan(WebhostingPlanId::fromString($id), $Constraints);
     }
 }
