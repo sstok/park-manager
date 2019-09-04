@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return function (ContainerConfigurator $c) {
+return function (ContainerConfigurator $c): void {
 //    $di = $c->services()->defaults()
 //        ->autowire()
 //        ->autoconfigure()

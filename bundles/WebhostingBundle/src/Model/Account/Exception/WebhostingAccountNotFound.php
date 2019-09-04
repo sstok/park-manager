@@ -12,12 +12,11 @@ namespace ParkManager\Bundle\WebhostingBundle\Model\Account\Exception;
 
 use InvalidArgumentException;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
-use function sprintf;
 
 final class WebhostingAccountNotFound extends InvalidArgumentException
 {
     public static function withId(WebhostingAccountId $id): self
     {
-        return new self(sprintf('Webhosting account with id "%s" does not exist.', $id->toString()));
+        return new self(\sprintf('Webhosting account with id "%s" does not exist.', $id->toString()));
     }
 }

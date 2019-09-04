@@ -13,17 +13,16 @@ namespace ParkManager\Bundle\CoreBundle\Model\Client\Exception;
 use InvalidArgumentException;
 use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
-use function sprintf;
 
 final class ClientNotFound extends InvalidArgumentException
 {
     public static function withId(ClientId $clientId): self
     {
-        return new self(sprintf('ClientUser with id "%s" does not exist.', $clientId->toString()));
+        return new self(\sprintf('ClientUser with id "%s" does not exist.', $clientId->toString()));
     }
 
     public static function withEmail(EmailAddress $address): self
     {
-        return new self(sprintf('ClientUser with email "%s" does not exist.', $address->toString()));
+        return new self(\sprintf('ClientUser with email "%s" does not exist.', $address->toString()));
     }
 }

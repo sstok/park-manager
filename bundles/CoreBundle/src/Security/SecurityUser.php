@@ -13,7 +13,6 @@ namespace ParkManager\Bundle\CoreBundle\Security;
 use Serializable;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use function get_class;
 use function serialize;
 use function unserialize;
 
@@ -35,13 +34,13 @@ abstract class SecurityUser implements UserInterface, EquatableInterface, Serial
     {
         $this->username = $id;
         $this->password = $password;
-        $this->enabled  = $enabled;
-        $this->roles    = $roles;
+        $this->enabled = $enabled;
+        $this->roles = $roles;
     }
 
     public function serialize(): string
     {
-        return serialize([
+        return \serialize([
             'username' => $this->getUsername(),
             'password' => $this->getPassword(),
             'enabled' => $this->isEnabled(),
@@ -51,12 +50,12 @@ abstract class SecurityUser implements UserInterface, EquatableInterface, Serial
 
     public function unserialize($serialized): void
     {
-        $data = unserialize($serialized, ['allowed_classes' => false]);
+        $data = \unserialize($serialized, ['allowed_classes' => false]);
 
         $this->username = $data['username'];
         $this->password = $data['password'];
-        $this->enabled  = $data['enabled'];
-        $this->roles    = $data['roles'];
+        $this->enabled = $data['enabled'];
+        $this->roles = $data['roles'];
     }
 
     public function getRoles(): array
@@ -99,7 +98,7 @@ abstract class SecurityUser implements UserInterface, EquatableInterface, Serial
      */
     public function isEqualTo(UserInterface $user): bool
     {
-        if (get_class($user) !== static::class) {
+        if (\get_class($user) !== static::class) {
             return false;
         }
 

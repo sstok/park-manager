@@ -30,7 +30,7 @@ final class AdministratorPasswordWasChanged
 
     public function __construct(AdministratorId $id, ?string $newPassword)
     {
-        $this->id          = $id;
+        $this->id = $id;
         $this->newPassword = $newPassword;
     }
 }

@@ -38,11 +38,11 @@ final class RequestEmailAddressChangeTest extends TestCase
     protected function setUp(): void
     {
         $this->fullToken = FakeSplitTokenFactory::instance()->generate();
-        $this->token     = FakeSplitTokenFactory::instance()->fromString($this->fullToken->token()->getString());
+        $this->token = FakeSplitTokenFactory::instance()->fromString($this->fullToken->token()->getString());
     }
 
     /** @test */
-    public function it_handles_emailAddress_change_request(): void
+    public function it_handles_email_address_change_request(): void
     {
         $handler = new RequestEmailAddressChangeHandler(
             $repository = new ClientRepositoryMock([$client = ClientRepositoryMock::createClient()]),
@@ -62,7 +62,7 @@ final class RequestEmailAddressChangeTest extends TestCase
                     new EmailAddress('John2@example.com')
                 ),
             ],
-            static function (ClientEmailAddressChangeWasRequested $expected, ClientEmailAddressChangeWasRequested $actual) {
+            static function (ClientEmailAddressChangeWasRequested $expected, ClientEmailAddressChangeWasRequested $actual): void {
                 self::assertTrue($expected->id->equals($actual->id));
                 self::assertTrue($expected->token->equals($actual->token));
                 self::assertEquals($expected->newEmail, $actual->newEmail);
@@ -75,7 +75,7 @@ final class RequestEmailAddressChangeTest extends TestCase
     }
 
     /** @test */
-    public function it_handles_emailAddress_change_request_with_emailAddress_already_in_use(): void
+    public function it_handles_email_address_change_request_with_email_address_already_in_use(): void
     {
         $handler = new RequestEmailAddressChangeHandler(
             $repository = new ClientRepositoryMock([

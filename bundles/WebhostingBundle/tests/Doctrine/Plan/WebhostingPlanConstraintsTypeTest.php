@@ -37,12 +37,12 @@ final class WebhostingPlanConstraintsTypeTest extends TestCase
     /** @test */
     public function it_converts_to_database_value(): void
     {
-        $type     = $this->getDbalType();
+        $type = $this->getDbalType();
         $platform = $this->createPlatform();
 
-        self::assertNull($type->convertToDatabaseValue(null, $platform));
-        self::assertJsonStringEqualsJsonString('[]', $type->convertToDatabaseValue(new Constraints(), $platform));
-        self::assertJsonStringEqualsJsonString(
+        static::assertNull($type->convertToDatabaseValue(null, $platform));
+        static::assertJsonStringEqualsJsonString('[]', $type->convertToDatabaseValue(new Constraints(), $platform));
+        static::assertJsonStringEqualsJsonString(
             '{"MonthlyTrafficQuota":{"limit":50}}',
             $type->convertToDatabaseValue(new Constraints(new MonthlyTrafficQuota(50)), $platform)
         );
@@ -51,13 +51,13 @@ final class WebhostingPlanConstraintsTypeTest extends TestCase
     /** @test */
     public function it_converts_from_database_value_to_php_value(): void
     {
-        $type     = $this->getDbalType();
+        $type = $this->getDbalType();
         $platform = $this->createPlatform();
 
-        self::assertEquals(new Constraints(), $type->convertToPHPValue(null, $platform));
-        self::assertEquals(new Constraints(), $type->convertToPHPValue('[]', $platform));
-        self::assertEquals(new Constraints(), $type->convertToPHPValue('{}', $platform));
-        self::assertEquals(
+        static::assertEquals(new Constraints(), $type->convertToPHPValue(null, $platform));
+        static::assertEquals(new Constraints(), $type->convertToPHPValue('[]', $platform));
+        static::assertEquals(new Constraints(), $type->convertToPHPValue('{}', $platform));
+        static::assertEquals(
             new Constraints(new MonthlyTrafficQuota(50)),
             $type->convertToPHPValue('{"MonthlyTrafficQuota":{"limit":50}}', $platform)
         );
@@ -70,8 +70,8 @@ final class WebhostingPlanConstraintsTypeTest extends TestCase
 
     private function getDbalType(): WebhostingPlanConstraintsType
     {
-        /** @var WebhostingPlanConstraintsType $type */
         $type = Type::getType('webhosting_plan_constraints');
+        \assert($type instanceof WebhostingPlanConstraintsType);
         $type->setConstraintsFactory($this->createConstraintsFactory());
 
         return $type;

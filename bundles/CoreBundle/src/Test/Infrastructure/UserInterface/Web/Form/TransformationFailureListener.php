@@ -14,10 +14,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use function array_replace;
-use function gettype;
-use function is_scalar;
-use function strtr;
 
 class TransformationFailureListener implements EventSubscriberInterface
 {
@@ -42,12 +38,12 @@ class TransformationFailureListener implements EventSubscriberInterface
             }
         }
 
-        $clientDataAsString = is_scalar($form->getViewData()) ? (string) $form->getViewData() : gettype($form->getViewData());
-        $config             = $form->getConfig();
+        $clientDataAsString = \is_scalar($form->getViewData()) ? (string) $form->getViewData() : \gettype($form->getViewData());
+        $config = $form->getConfig();
 
-        $messageTemplate   = $config->getOption('invalid_message');
-        $messageParameters = array_replace(['{{ value }}' => $clientDataAsString], $config->getOption('invalid_message_parameters'));
-        $message           = strtr($messageTemplate, $messageParameters);
+        $messageTemplate = $config->getOption('invalid_message');
+        $messageParameters = \array_replace(['{{ value }}' => $clientDataAsString], $config->getOption('invalid_message_parameters'));
+        $message = \strtr($messageTemplate, $messageParameters);
 
         $form->addError(new FormError($message, $messageTemplate, $messageParameters, null, $form->getTransformationFailure()));
     }

@@ -16,26 +16,32 @@ use ParkManager\Bundle\CoreBundle\Security\EventListener\UserPasswordChangeListe
 use ParkManager\Bundle\CoreBundle\Security\Guard\FormAuthenticator;
 use ParkManager\Bundle\CoreBundle\Security\UserProvider;
 
-return static function (ContainerConfigurator $c) {
+return static function (ContainerConfigurator $c): void {
     $di = $c->services()->defaults()
         ->autowire()
         ->autoconfigure(false)
-        ->private();
+        ->private()
+    ;
 
     $di->set('park_manager.security.user_provider.administrator', UserProvider::class)
-        ->args([ref('park_manager.repository.administrator'), AdministratorUser::class]);
+        ->args([ref('park_manager.repository.administrator'), AdministratorUser::class])
+    ;
 
     $di->set('park_manager.security.user_provider.client_user', UserProvider::class)
-        ->args([ref('park_manager.repository.client_user'), ClientUser::class]);
+        ->args([ref('park_manager.repository.client_user'), ClientUser::class])
+    ;
 
     $di->set('park_manager.security.guard.form.administrator', FormAuthenticator::class)
         ->arg('$loginRoute', 'park_manager.admin.security_login')
-        ->arg('$defaultSuccessRoute', 'park_manager.admin.home');
+        ->arg('$defaultSuccessRoute', 'park_manager.admin.home')
+    ;
 
     $di->set('park_manager.security.guard.form.client', FormAuthenticator::class)
         ->arg('$loginRoute', 'park_manager.client.security_login')
-        ->arg('$defaultSuccessRoute', 'home');
+        ->arg('$defaultSuccessRoute', 'home')
+    ;
 
     $di->set(UserPasswordChangeListener::class)
-        ->tag('messenger.message_handler', ['bus' => 'park_manager.event_bus']);
+        ->tag('messenger.message_handler', ['bus' => 'park_manager.event_bus'])
+    ;
 };

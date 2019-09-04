@@ -20,7 +20,7 @@ final class RequestEmailAddressChange
 
     public function __construct(string $id, string $email)
     {
-        $this->id    = ClientId::fromString($id);
+        $this->id = ClientId::fromString($id);
         $this->email = new EmailAddress($email);
     }
 

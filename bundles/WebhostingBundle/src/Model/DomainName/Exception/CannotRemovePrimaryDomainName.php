@@ -13,14 +13,13 @@ namespace ParkManager\Bundle\WebhostingBundle\Model\DomainName\Exception;
 use InvalidArgumentException;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\WebhostingDomainNameId;
-use function sprintf;
 
 final class CannotRemovePrimaryDomainName extends InvalidArgumentException
 {
     public static function of(WebhostingDomainNameId $domainName, WebhostingAccountId $accountId): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'Webhosting domain-name "%s" of account %s is marked as primary and cannot be removed.',
                 $domainName->toString(),
                 $accountId->toString()

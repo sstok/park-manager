@@ -13,21 +13,18 @@ namespace ParkManager\Bundle\CoreBundle\Test\Domain;
 use PHPUnit\Framework\Assert;
 use ReflectionMethod;
 use ReflectionObject;
-use function get_class;
-use function is_object;
-use function method_exists;
 
 final class DomainMessageAssertion
 {
     public static function assertMessagesAreEqual(object $expected, object $actual): void
     {
-        Assert::assertInstanceOf(get_class($expected), $actual);
+        Assert::assertInstanceOf(\get_class($expected), $actual);
 
         foreach (self::findPublicEventMethods($expected) as $method) {
-            $result       = $expected->{$method}();
+            $result = $expected->{$method}();
             $secondResult = $actual->{$method}();
 
-            if (is_object($result) && method_exists($result, 'equals') && $result->equals($secondResult)) {
+            if (\is_object($result) && \method_exists($result, 'equals') && $result->equals($secondResult)) {
                 continue;
             }
 

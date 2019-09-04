@@ -33,7 +33,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
 {
     use EventSourcedRepositoryTestHelper;
 
-    private const OWNER_ID1   = '3f8da982-a528-11e7-a2da-acbc32b58315';
+    private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
     private const PLAN_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
 
     private const ACCOUNT_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
@@ -50,13 +50,13 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         parent::setUp();
 
         $this->planConstraints = new Constraints(new MonthlyTrafficQuota(50));
-        $this->plan             = new WebhostingPlan(
+        $this->plan = new WebhostingPlan(
             WebhostingPlanId::fromString(self::PLAN_ID1),
             $this->planConstraints
         );
 
         $em = $this->getEntityManager();
-        $em->transactional(function (EntityManagerInterface $em) {
+        $em->transactional(function (EntityManagerInterface $em): void {
             $em->persist($this->plan);
         });
     }
@@ -68,20 +68,20 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         $this->setUpAccount1($repository);
         $this->setUpAccount2($repository);
 
-        $id       = WebhostingAccountId::fromString(self::ACCOUNT_ID1);
-        $id2      = WebhostingAccountId::fromString(self::ACCOUNT_ID2);
-        $account  = $repository->get($id);
+        $id = WebhostingAccountId::fromString(self::ACCOUNT_ID1);
+        $id2 = WebhostingAccountId::fromString(self::ACCOUNT_ID2);
+        $account = $repository->get($id);
         $account2 = $repository->get($id2);
 
-        self::assertEquals($id, $account->getId());
-        self::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account->getOwner());
-        self::assertEquals(new Constraints(), $account->getPlanConstraints());
-        self::assertNull($account->getPlan());
+        static::assertEquals($id, $account->getId());
+        static::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account->getOwner());
+        static::assertEquals(new Constraints(), $account->getPlanConstraints());
+        static::assertNull($account->getPlan());
 
-        self::assertEquals($id2, $account2->getId());
-        self::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account2->getOwner());
-        self::assertEquals($this->planConstraints, $account2->getPlanConstraints());
-        self::assertEquals($this->plan, $account2->getPlan());
+        static::assertEquals($id2, $account2->getId());
+        static::assertEquals(OwnerId::fromString(self::OWNER_ID1), $account2->getOwner());
+        static::assertEquals($this->planConstraints, $account2->getPlanConstraints());
+        static::assertEquals($this->plan, $account2->getPlan());
     }
 
     /** @test */
@@ -91,7 +91,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         $this->setUpAccount1($repository);
         $this->setUpAccount2($repository);
 
-        $id      = WebhostingAccountId::fromString(self::ACCOUNT_ID1);
+        $id = WebhostingAccountId::fromString(self::ACCOUNT_ID1);
         $account = $repository->get($id);
 
         // Mark for removal, then store this status.
@@ -113,7 +113,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
         $repository = $this->createRepository(1);
         $this->setUpAccount1($repository);
 
-        $id      = WebhostingAccountId::fromString(self::ACCOUNT_ID1);
+        $id = WebhostingAccountId::fromString(self::ACCOUNT_ID1);
         $account = $repository->get($id);
 
         $this->expectException(CannotRemoveActiveWebhostingAccount::class);

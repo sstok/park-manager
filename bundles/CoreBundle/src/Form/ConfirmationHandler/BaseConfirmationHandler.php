@@ -15,8 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
-use function array_merge;
-use function is_string;
 
 /**
  * @internal
@@ -39,7 +37,7 @@ abstract class BaseConfirmationHandler
     public function __construct(Environment $twig, CsrfTokenManagerInterface $tokenManager)
     {
         $this->tokenManager = $tokenManager;
-        $this->twig         = $twig;
+        $this->twig = $twig;
     }
 
     /**
@@ -105,14 +103,14 @@ abstract class BaseConfirmationHandler
 
         $extraVariables['token'] = $this->tokenManager->getToken($this->tokenId)->getValue();
 
-        return $this->twig->render($template, array_merge($extraVariables, $this->templateContext));
+        return $this->twig->render($template, \array_merge($extraVariables, $this->templateContext));
     }
 
     protected function checkToken()
     {
         $token = $this->request->request->get('_token');
 
-        if (! is_string($token)) {
+        if (! \is_string($token)) {
             $valid = false;
         } else {
             $valid = $this->tokenManager->isTokenValid(new CsrfToken($this->tokenId, $token));

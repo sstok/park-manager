@@ -15,6 +15,6 @@ use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 
 final class OwnerIdType extends DomainIdType
 {
-    public const NAME         = 'park_manager_owner_id';
+    public const NAME = 'park_manager_owner_id';
     public const OBJECT_CLASS = OwnerId::class;
 }

@@ -17,8 +17,7 @@ trait EventSourcedRepositoryTestHelper
 {
     protected function createEventsExpectingEventBus(): MessageBusInterface
     {
-        return new class implements MessageBusInterface
-        {
+        return new class() implements MessageBusInterface {
             public function dispatch($message, array $stamps = []): Envelope
             {
                 return new Envelope($message, $stamps);

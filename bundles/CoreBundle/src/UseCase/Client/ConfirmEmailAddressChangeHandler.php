@@ -25,8 +25,8 @@ final class ConfirmEmailAddressChangeHandler
 
     public function __invoke(ConfirmEmailAddressChange $command): void
     {
-        $token     = $command->token();
-        $client    = $this->repository->getByEmailAddressChangeToken($token->selector());
+        $token = $command->token();
+        $client = $this->repository->getByEmailAddressChangeToken($token->selector());
         $exception = null;
 
         // Cannot use finally here as the exception triggers the global exception handler

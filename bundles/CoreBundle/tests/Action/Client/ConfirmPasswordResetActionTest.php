@@ -19,14 +19,14 @@ use Symfony\Component\Panther\PantherTestCase;
 final class ConfirmPasswordResetActionTest extends PantherTestCase
 {
     /** @test */
-    public function it_resets_a_password()
+    public function it_resets_a_password(): void
     {
         $client = static::createClient();
 
         $client->request('GET', '/password-reset');
         $client->submitForm('submit', ['request_user_password_reset[email]' => 'jane@example.com']);
-        /** @var TemplatedEmail $email */
         $email = self::getMailerMessage(0);
+        \assert($email instanceof TemplatedEmail);
 
         $client->request('GET', $email->getContext()['url']);
         $client->submitForm('submit', [
@@ -41,7 +41,7 @@ final class ConfirmPasswordResetActionTest extends PantherTestCase
     }
 
     /** @test */
-    public function it_fails_with_an_invalid_token()
+    public function it_fails_with_an_invalid_token(): void
     {
         $client = static::createClient();
 

@@ -15,8 +15,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\DependencyInjection\Loader\Configurator\DefaultsConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ServiceConfigurator;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ServicesConfigurator;
-use function class_implements;
-use function in_array;
 
 final class AutoServiceConfigurator
 {
@@ -55,8 +53,8 @@ final class AutoServiceConfigurator
             $this->di->alias($class, $id);
         }
 
-        foreach (class_implements($class) as $interface) {
-            if (in_array($interface, self::INTERFACES_IGNORE_LIST, true)) {
+        foreach (\class_implements($class) as $interface) {
+            if (\in_array($interface, self::INTERFACES_IGNORE_LIST, true)) {
                 continue;
             }
 

@@ -41,7 +41,8 @@ final class SecurityUserHashedPasswordType extends AbstractType
                     return $encoded;
                 };
             })
-            ->setAllowedTypes('user_class', ['string']);
+            ->setAllowedTypes('user_class', ['string'])
+        ;
     }
 
     public function getParent(): ?string

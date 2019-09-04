@@ -16,7 +16,7 @@ use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanConstraintsWasChanged;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\Table(name="plan", schema="webhosting")
  */
 class WebhostingPlan implements RecordsDomainEvents
@@ -24,7 +24,7 @@ class WebhostingPlan implements RecordsDomainEvents
     use DomainEventsCollectionTrait;
 
     /**
-     * @ORM\Id()
+     * @ORM\Id
      * @ORM\Column(type="park_manager_webhosting_plan_id")
      * @ORM\GeneratedValue(strategy="NONE")
      *
@@ -48,7 +48,7 @@ class WebhostingPlan implements RecordsDomainEvents
 
     public function __construct(WebhostingPlanId $id, Constraints $constraints)
     {
-        $this->id           = $id;
+        $this->id = $id;
         $this->constraints = $constraints;
     }
 

@@ -47,9 +47,9 @@ final class RegisterClient
 
     public function __construct(ClientId $id, EmailAddress $primaryEmail, string $displayName, ?string $password = null)
     {
-        $this->id           = $id;
+        $this->id = $id;
         $this->primaryEmail = $primaryEmail;
-        $this->displayName  = $displayName;
-        $this->password     = $password;
+        $this->displayName = $displayName;
+        $this->password = $password;
     }
 }

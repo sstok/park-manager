@@ -13,8 +13,6 @@ namespace ParkManager\Bundle\CoreBundle\Form\Type\Security;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormInterface;
-use function is_array;
-use function iterator_to_array;
 
 /**
  * @internal
@@ -33,7 +31,7 @@ final class ConfirmPasswordResetDataMapper implements DataMapperInterface
     {
         $empty = $data === null || $data === [];
 
-        if (! $empty && ! is_array($data)) {
+        if (! $empty && ! \is_array($data)) {
             throw new UnexpectedTypeException($data, 'array or empty');
         }
 
@@ -51,7 +49,7 @@ final class ConfirmPasswordResetDataMapper implements DataMapperInterface
     public function mapFormsToData($forms, &$data): void
     {
         /** @var FormInterface[] $formsArray */
-        $formsArray = iterator_to_array($forms);
+        $formsArray = \iterator_to_array($forms);
 
         $data = ($this->commandBuilder)(
             $formsArray['reset_token']->getData(),

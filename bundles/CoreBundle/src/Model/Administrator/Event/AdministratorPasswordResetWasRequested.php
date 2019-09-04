@@ -31,7 +31,7 @@ final class AdministratorPasswordResetWasRequested
 
     public function __construct(AdministratorId $id, SplitToken $token)
     {
-        $this->id    = $id;
+        $this->id = $id;
         $this->token = $token;
     }
 }

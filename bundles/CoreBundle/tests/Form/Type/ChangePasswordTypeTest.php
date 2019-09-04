@@ -64,7 +64,7 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
     /** @test */
     public function it_hashes_password(): void
     {
-        $form  = $this->factory->create(ChangePasswordType::class, null, [
+        $form = $this->factory->create(ChangePasswordType::class, null, [
             'user_class' => ClientUser::class,
             'command_builder' => $this->getCommandBuilder(),
             'user_id' => 1,
@@ -73,14 +73,14 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
             'password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there']],
         ]);
 
-        self::assertTrue($form->isValid());
-        self::assertEquals(new ChangeUserPassword('1', 'encoded(Hello there)'), $form->getData());
+        static::assertTrue($form->isValid());
+        static::assertEquals(new ChangeUserPassword('1', 'encoded(Hello there)'), $form->getData());
     }
 
     /** @test */
     public function it_does_not_change_user_id(): void
     {
-        $form  = $this->factory->create(ChangePasswordType::class, null, [
+        $form = $this->factory->create(ChangePasswordType::class, null, [
             'user_class' => ClientUser::class,
             'command_builder' => $this->getCommandBuilder(),
             'user_id' => 1,
@@ -89,21 +89,21 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
             'password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there'], 'user_id' => '2'],
         ]);
 
-        self::assertTrue($form->isValid());
-        self::assertEquals(new ChangeUserPassword('1', 'encoded(Hello there)'), $form->getData());
+        static::assertTrue($form->isValid());
+        static::assertEquals(new ChangeUserPassword('1', 'encoded(Hello there)'), $form->getData());
     }
 
     /** @test */
     public function it_does_not_accept_invalid_input(): void
     {
-        $form  = $this->factory->create(ChangePasswordType::class, null, [
+        $form = $this->factory->create(ChangePasswordType::class, null, [
             'user_class' => ClientUser::class,
             'command_builder' => $this->getCommandBuilder(),
             'user_id' => 1,
         ]);
         $form->submit(['password' => 'Hello there']);
 
-        self::assertEquals(new ChangeUserPassword('1', ''), $form->getData());
+        static::assertEquals(new ChangeUserPassword('1', ''), $form->getData());
     }
 
     /** @test */
@@ -115,8 +115,8 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
             'user_id' => 1,
         ]);
 
-        self::assertFalse($form->isSubmitted());
-        self::assertNull($form->getData());
+        static::assertFalse($form->isSubmitted());
+        static::assertNull($form->getData());
     }
 
     private function getCommandBuilder(): Closure
@@ -137,7 +137,7 @@ class ChangeUserPassword
 
     public function __construct(string $id, string $password)
     {
-        $this->id       = $id;
+        $this->id = $id;
         $this->password = $password;
     }
 }

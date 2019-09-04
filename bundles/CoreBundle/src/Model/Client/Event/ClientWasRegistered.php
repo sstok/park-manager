@@ -38,8 +38,8 @@ final class ClientWasRegistered
 
     public function __construct(ClientId $id, EmailAddress $email, string $displayName)
     {
-        $this->id          = $id;
-        $this->email       = $email;
+        $this->id = $id;
+        $this->email = $email;
         $this->displayName = $displayName;
     }
 }

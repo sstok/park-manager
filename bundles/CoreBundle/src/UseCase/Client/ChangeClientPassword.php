@@ -26,7 +26,7 @@ final class ChangeClientPassword
      */
     public function __construct(string $id, ?string $password)
     {
-        $this->id       = ClientId::fromString($id);
+        $this->id = ClientId::fromString($id);
         $this->password = $password;
     }
 

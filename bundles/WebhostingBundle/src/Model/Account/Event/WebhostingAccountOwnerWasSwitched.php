@@ -40,6 +40,6 @@ final class WebhostingAccountOwnerWasSwitched
     {
         $this->newOwner = $newOwner;
         $this->oldOwner = $oldOwner;
-        $this->account  = $id;
+        $this->account = $id;
     }
 }

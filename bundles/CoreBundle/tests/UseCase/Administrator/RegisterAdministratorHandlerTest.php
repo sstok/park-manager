@@ -26,13 +26,13 @@ use PHPUnit\Framework\TestCase;
  */
 final class RegisterAdministratorHandlerTest extends TestCase
 {
-    private const ID_NEW      = '01dd5964-5426-11e7-be03-acbc32b58315';
+    private const ID_NEW = '01dd5964-5426-11e7-be03-acbc32b58315';
     private const ID_EXISTING = 'a0816f44-6545-11e7-a234-acbc32b58315';
 
     /** @test */
     public function handle_registration_of_new_administrator(): void
     {
-        $repo    = new AdministratorRepositoryMock();
+        $repo = new AdministratorRepositoryMock();
         $handler = new RegisterAdministratorHandler($repo);
 
         $command = new RegisterAdministrator(self::ID_NEW, 'John@example.com', 'My', 'my-password');
@@ -50,7 +50,7 @@ final class RegisterAdministratorHandlerTest extends TestCase
     /** @test */
     public function handle_registration_without_password(): void
     {
-        $repo    = new AdministratorRepositoryMock();
+        $repo = new AdministratorRepositoryMock();
         $handler = new RegisterAdministratorHandler($repo);
 
         $command = new RegisterAdministrator(self::ID_NEW, 'John@example.com', 'My', null);

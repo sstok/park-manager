@@ -22,7 +22,7 @@ final class UserPasswordWasChanged extends Event
 
     public function __construct(string $id, ?string $newPassword = null)
     {
-        $this->id       = $id;
+        $this->id = $id;
         $this->password = $newPassword;
     }
 

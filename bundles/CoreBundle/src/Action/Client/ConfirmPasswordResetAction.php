@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class ConfirmPasswordResetAction
 {
     /**
-     * @return TwigResponse|RouteRedirectResponse
+     * @return RouteRedirectResponse|TwigResponse
      */
     public function __invoke(Request $request, string $token, FormFactoryInterface $formFactory)
     {
@@ -35,7 +35,8 @@ final class ConfirmPasswordResetAction
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.client.security_login')
-                ->withFlash('success', 'flash.password_reset_accepted');
+                ->withFlash('success', 'flash.password_reset_accepted')
+            ;
         }
 
         $response = new TwigResponse('@ParkManagerCore/client/security/password_reset_confirm.html.twig', $form);

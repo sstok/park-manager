@@ -15,7 +15,6 @@ use ParkManager\Bundle\WebhostingBundle\Model\Plan\Exception\ConstraintNotInSet;
 use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTrafficQuota;
 use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\StorageSpaceQuota;
 use PHPUnit\Framework\TestCase;
-use function iterator_to_array;
 
 /**
  * @internal
@@ -25,19 +24,19 @@ final class ConstraintsTest extends TestCase
     /** @test */
     public function its_constructable(): void
     {
-        $constraint  = new StorageSpaceQuota('9B');
+        $constraint = new StorageSpaceQuota('9B');
         $constraints = new Constraints($constraint, $constraint);
 
         self::assertConstraintsEquals([$constraint], $constraints);
-        self::assertTrue($constraints->has('StorageSpaceQuota'));
-        self::assertFalse($constraints->has('MonthlyTrafficQuota'));
-        self::assertEquals($constraint, $constraints->get('StorageSpaceQuota'));
+        static::assertTrue($constraints->has('StorageSpaceQuota'));
+        static::assertFalse($constraints->has('MonthlyTrafficQuota'));
+        static::assertEquals($constraint, $constraints->get('StorageSpaceQuota'));
     }
 
     /** @test */
     public function it_throws_when_getting_unset_constraint(): void
     {
-        $constraint   = new StorageSpaceQuota('9B');
+        $constraint = new StorageSpaceQuota('9B');
         $constraints = new Constraints($constraint);
 
         $this->expectException(ConstraintNotInSet::class);
@@ -49,13 +48,13 @@ final class ConstraintsTest extends TestCase
     /** @test */
     public function it_allows_adding_and_returns_new_set(): void
     {
-        $constraint  = new StorageSpaceQuota('9B');
+        $constraint = new StorageSpaceQuota('9B');
         $constraint2 = new MonthlyTrafficQuota(50);
 
-        $constraints    = new Constraints($constraint);
+        $constraints = new Constraints($constraint);
         $constraintsNew = $constraints->add($constraint2);
 
-        self::assertNotSame($constraints, $constraintsNew);
+        static::assertNotSame($constraints, $constraintsNew);
         self::assertConstraintsEquals([$constraint], $constraints);
         self::assertConstraintsEquals([$constraint, $constraint2], $constraintsNew);
     }
@@ -63,13 +62,13 @@ final class ConstraintsTest extends TestCase
     /** @test */
     public function it_allows_removing_and_returns_new_set(): void
     {
-        $constraint  = new StorageSpaceQuota('9B');
+        $constraint = new StorageSpaceQuota('9B');
         $constraint2 = new MonthlyTrafficQuota(50);
 
-        $constraints    = new Constraints($constraint, $constraint2);
+        $constraints = new Constraints($constraint, $constraint2);
         $constraintsNew = $constraints->remove($constraint);
 
-        self::assertNotSame($constraints, $constraintsNew);
+        static::assertNotSame($constraints, $constraintsNew);
         self::assertConstraintsEquals([$constraint, $constraint2], $constraints);
         self::assertConstraintsEquals([$constraint2], $constraintsNew);
     }
@@ -82,6 +81,6 @@ final class ConstraintsTest extends TestCase
             $processedConstraints[Constraints::getConstraintName($constraint)] = $constraint;
         }
 
-        self::assertEquals($processedConstraints, iterator_to_array($constraintsSet));
+        static::assertEquals($processedConstraints, \iterator_to_array($constraintsSet));
     }
 }

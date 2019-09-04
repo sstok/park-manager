@@ -31,7 +31,7 @@ final class WebhostingAccountPlanConstraintsWasChanged
 
     public function __construct(WebhostingAccountId $id, Constraints $constraints)
     {
-        $this->account     = $id;
+        $this->account = $id;
         $this->constraints = $constraints;
     }
 }

@@ -18,47 +18,93 @@
     <file>bin</file>
 
     <exclude-pattern>src/Migrations</exclude-pattern>
-    <exclude-pattern>*/Tests/Fixtures/*</exclude-pattern>
-    <exclude-pattern>*/config/*</exclude-pattern> <!-- Needs refining; no importing namespaced functions -->
-    <exclude-pattern>*/Resources/*</exclude-pattern> <!-- Needs refining; no importing namespaced functions -->
+    <exclude-pattern>*/config/*</exclude-pattern>
 
-    <rule ref="Doctrine">
-        <exclude name="Generic.Formatting.DisallowMultipleStatements.SameLine"/>
-        <exclude name="Generic.Formatting.MultipleStatementAlignment"/>
-
-        <exclude name="Squiz.Arrays.ArrayDeclaration.KeySpecified"/>
-        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType"/>
-        <exclude name="Squiz.Commenting.FunctionComment.ThrowsNoFullStop"/>
-
-        <exclude name="Squiz.WhiteSpace.ScopeClosingBrace.ContentBefore"/>
-        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.ContentAfterBrace"/>
-
-        <exclude name="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming"/>
-        <exclude name="SlevomatCodingStandard.ControlStructures.AssignmentInCondition.AssignmentInCondition"/> <!-- This needs some work -->
-        <exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit"/>
-        <exclude name="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException"/>
-
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint"/>
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingPropertyTypeHint"/>
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint"/>
-
-        <!-- BROKEN -->
-        <exclude name="SlevomatCodingStandard.Namespaces.NamespaceSpacing"/>
-
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification"/>
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversablePropertyTypeHintSpecification"/>
+    <rule ref="Generic.CodeAnalysis.EmptyStatement">
+        <!-- But allow empty catch -->
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedCatch"/>
     </rule>
-
-    <rule ref="SlevomatCodingStandard.Namespaces.NamespaceSpacing">
+    <!-- Forbid useless empty method overrides -->
+    <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
+    <!-- Forbid inline HTML in PHP code -->
+    <rule ref="Generic.Files.InlineHTML"/>
+    <!-- Forbid deprecated functions -->
+    <rule ref="Generic.PHP.DeprecatedFunctions"/>
+    <!-- Forbid alias functions, i.e. `sizeof()`, `delete()` -->
+    <rule ref="Generic.PHP.ForbiddenFunctions">
         <properties>
-            <property name="linesCountBeforeNamespace" value="2" />
+            <property name="forbiddenFunctions" type="array">
+                <element key="chop" value="rtrim"/>
+                <element key="close" value="closedir"/>
+                <element key="compact" value="null"/>
+                <element key="delete" value="unset"/>
+                <element key="doubleval" value="floatval"/>
+                <element key="extract" value="null"/>
+                <element key="fputs" value="fwrite"/>
+                <element key="ini_alter" value="ini_set"/>
+                <element key="is_double" value="is_float"/>
+                <element key="is_integer" value="is_int"/>
+                <element key="is_long" value="is_int"/>
+                <element key="is_null" value="null"/>
+                <element key="is_real" value="is_float"/>
+                <element key="is_writeable" value="is_writable"/>
+                <element key="join" value="implode"/>
+                <element key="key_exists" value="array_key_exists"/>
+                <element key="pos" value="current"/>
+                <element key="settype" value="null"/>
+                <element key="show_source" value="highlight_file"/>
+                <element key="sizeof" value="count"/>
+                <element key="strchr" value="strstr"/>
+            </property>
         </properties>
     </rule>
-
-    <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
-        <exclude-pattern>*/Tests/*</exclude-pattern>
+    <!-- Forbid LSB for constants (static::FOO) -->
+    <!-- XX This needs fixing in Doctrine types -->
+    <!--<rule ref="SlevomatCodingStandard.Classes.DisallowLateStaticBindingForConstants"/>-->
+    <!-- Forbid dead code -->
+    <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements"/>
+    <!-- Forbid prefix and suffix "Abstract" for abstract classes -->
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming"/>
+    <!-- Forbid prefix and suffix "Exception" for exception classes -->
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming"/>
+    <!-- Forbid prefix and suffix "Interface" for interfaces -->
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming"/>
+    <!-- Forbid suffix "Trait" for interfaces -->
+    <!--<rule ref="SlevomatCodingStandard.Classes.SuperfluousTraitNaming"/>-->
+    <!-- Forbid useless comments -->
+    <rule ref="SlevomatCodingStandard.Commenting.ForbiddenComments">
+        <properties>
+            <property name="forbiddenCommentPatterns" type="array">
+                <element value="~^(?:(?!private|protected|static)\S+ )?(?:con|de)structor\.\z~i"/>
+                <element value="~^Created by .+\.\z~i"/>
+                <element value="~^(User|Date|Time): \S+\z~i"/>
+                <element value="~^\S+ [gs]etter\.\z~i"/>
+                <element value="~^Class \S+\z~i"/>
+            </property>
+        </properties>
     </rule>
+    <!-- Forbid useless unreachable catch blocks -->
+    <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
+    <!-- Require using Throwable instead of Exception -->
+    <rule ref="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly"/>
+    <!-- Require closures not referencing $this be static -->
+    <rule ref="SlevomatCodingStandard.Functions.StaticClosure"/>
+    <!-- Forbid unused variables passed to closures via `use` -->
+    <rule ref="SlevomatCodingStandard.Functions.UnusedInheritedVariablePassedToClosure"/>
+    <!-- Require the usage of assignment operators, eg `+=`, `.=` when possible -->
+    <rule ref="SlevomatCodingStandard.Operators.RequireCombinedAssignmentOperator"/>
+    <!-- forbid argument unpacking for functions specialized by PHP VM -->
+    <rule ref="SlevomatCodingStandard.PHP.OptimizedFunctionsWithoutUnpacking"/>
+    <!-- Require /* @var type $foo */ and similar simple inline annotations to be replaced by assert() -->
+    <!--<rule ref="SlevomatCodingStandard.PHP.RequireExplicitAssertion"/>-->
+    <!-- Forbid duplicated variables assignments -->
+    <rule ref="SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable"/>
+    <!-- Forbid useless variables -->
+    <rule ref="SlevomatCodingStandard.Variables.UselessVariable"/>
+    <!-- Forbid dead code -->
+    <rule ref="Squiz.PHP.NonExecutableCode"/>
+    <!-- Forbid `$this` inside static function -->
+    <rule ref="Squiz.Scope.StaticThisUsage"/>
 
     <rule ref="Squiz.Classes.ClassFileName.NoMatch">
         <exclude-pattern>*/Tests/*</exclude-pattern>
@@ -74,11 +120,5 @@
 
     <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements.WriteOnlyProperty">
         <exclude-pattern>*/Tests/*</exclude-pattern>
-    </rule>
-
-    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing">
-        <properties>
-            <property name="spacesCountBeforeColon" value="0"/>
-        </properties>
     </rule>
 </ruleset>

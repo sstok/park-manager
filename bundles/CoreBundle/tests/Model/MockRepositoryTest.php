@@ -16,7 +16,6 @@ use ParkManager\Bundle\CoreBundle\Tests\Model\Mock\EmailChanged;
 use ParkManager\Bundle\CoreBundle\Tests\Model\Mock\MockEntity;
 use ParkManager\Bundle\CoreBundle\Tests\Model\Mock\MockIdentity;
 use PHPUnit\Framework\TestCase;
-use function mb_strtolower;
 
 /**
  * @internal
@@ -61,10 +60,10 @@ final class MockRepositoryTest extends TestCase
 
         $repository->assertNoEntitiesWereSaved();
         $repository->assertNoEntitiesWereRemoved();
-        $repository->assertHasEntity($entity1->id(), static function () { });
-        $repository->assertHasEntity($entity2->id(), static function () { });
-        self::assertSame($entity1, $repository->get($entity1->id()));
-        self::assertSame($entity2, $repository->get($entity2->id()));
+        $repository->assertHasEntity($entity1->id(), static function (): void { });
+        $repository->assertHasEntity($entity2->id(), static function (): void { });
+        static::assertSame($entity1, $repository->get($entity1->id()));
+        static::assertSame($entity2, $repository->get($entity2->id()));
     }
 
     /** @test */
@@ -92,17 +91,17 @@ final class MockRepositoryTest extends TestCase
             }
         };
 
-        self::assertSame($entity1, $repository->getByLastName('John'));
-        self::assertSame($entity2, $repository->getByLastName('Jane'));
+        static::assertSame($entity1, $repository->getByLastName('John'));
+        static::assertSame($entity2, $repository->getByLastName('Jane'));
     }
 
     /** @test */
     public function it_gets_entity_by_field_property(): void
     {
-        $entity1       = new MockEntity('fc86687e-0875-11e9-9701-acbc32b58315');
+        $entity1 = new MockEntity('fc86687e-0875-11e9-9701-acbc32b58315');
         $entity1->name = 'John';
 
-        $entity2       = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315');
+        $entity2 = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315');
         $entity2->name = 'Jane';
 
         $repository = new class([$entity1, $entity2]) {
@@ -124,8 +123,8 @@ final class MockRepositoryTest extends TestCase
             }
         };
 
-        self::assertSame($entity1, $repository->getByName('John'));
-        self::assertSame($entity2, $repository->getByName('Jane'));
+        static::assertSame($entity1, $repository->getByName('John'));
+        static::assertSame($entity2, $repository->getByName('Jane'));
     }
 
     /** @test */
@@ -144,7 +143,7 @@ final class MockRepositoryTest extends TestCase
 
             protected function getFieldsIndexMapping(): array
             {
-                return ['last_name' => static function (MockEntity $entity) { return mb_strtolower($entity->lastName()); }];
+                return ['last_name' => static function (MockEntity $entity) { return \mb_strtolower($entity->lastName()); }];
             }
 
             public function getByLastName(string $name): MockEntity
@@ -153,8 +152,8 @@ final class MockRepositoryTest extends TestCase
             }
         };
 
-        self::assertSame($entity1, $repository->getByLastName('john'));
-        self::assertSame($entity2, $repository->getByLastName('jane'));
+        static::assertSame($entity1, $repository->getByLastName('john'));
+        static::assertSame($entity2, $repository->getByLastName('jane'));
     }
 
     /** @test */
@@ -185,8 +184,8 @@ final class MockRepositoryTest extends TestCase
             }
         };
 
-        self::assertSame($entity1, $repository->getByEmail('John@example.com'));
-        self::assertSame($entity2, $repository->getByEmail('Jane@example.com'));
+        static::assertSame($entity1, $repository->getByEmail('John@example.com'));
+        static::assertSame($entity2, $repository->getByEmail('Jane@example.com'));
     }
 
     /** @test */
@@ -218,17 +217,17 @@ final class MockRepositoryTest extends TestCase
             }
         };
 
-        self::assertSame($entity1, $repository->getByEmail('John2@example.com'));
-        self::assertSame($entity2, $repository->getByEmail('Jane@example.com'));
+        static::assertSame($entity1, $repository->getByEmail('John2@example.com'));
+        static::assertSame($entity2, $repository->getByEmail('Jane@example.com'));
     }
 
     /** @test */
     public function it_saves_entity(): void
     {
-        $entity1       = new MockEntity('fc86687e-0875-11e9-9701-acbc32b58315');
+        $entity1 = new MockEntity('fc86687e-0875-11e9-9701-acbc32b58315');
         $entity1->name = 'John';
 
-        $entity2       = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315');
+        $entity2 = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315');
         $entity2->name = 'Jane';
 
         $repository = new class([$entity1, $entity2]) {
@@ -261,8 +260,8 @@ final class MockRepositoryTest extends TestCase
 
         $repository->assertEntitiesWereSaved();
         $repository->assertNoEntitiesWereRemoved();
-        self::assertSame($entity1, $repository->getByName('Jones'));
-        self::assertSame($entity2, $repository->getByName('Jane'));
+        static::assertSame($entity1, $repository->getByName('Jones'));
+        static::assertSame($entity2, $repository->getByName('Jane'));
     }
 
     /** @test */
@@ -294,8 +293,8 @@ final class MockRepositoryTest extends TestCase
         $repository->assertNoEntitiesWereSaved();
 
         $repository->assertEntitiesWereRemoved([$entity1]);
-        $repository->assertHasEntity($entity2->id(), static function () { });
-        self::assertSame($entity2, $repository->get($entity2->id()));
+        $repository->assertHasEntity($entity2->id(), static function (): void { });
+        static::assertSame($entity2, $repository->get($entity2->id()));
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('No, I has not have that key: ' . $entity1->id());

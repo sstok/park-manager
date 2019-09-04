@@ -33,7 +33,8 @@ final class ConfirmPasswordResetType extends AbstractType
                 'password_confirm' => true,
                 'password_constraints' => $options['password_constraints'],
                 'user_class' => $options['user_class'],
-            ]);
+            ])
+        ;
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
@@ -67,7 +68,8 @@ final class ConfirmPasswordResetType extends AbstractType
                 },
             ])
             ->setAllowedTypes('user_class', ['string'])
-            ->setAllowedTypes('password_constraints', ['array', Constraint::class]);
+            ->setAllowedTypes('password_constraints', ['array', Constraint::class])
+        ;
     }
 
     public function getBlockPrefix(): string

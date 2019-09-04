@@ -27,7 +27,7 @@ final class UserPasswordChangeListener implements MessageSubscriber
     }
 
     /**
-     * @param ClientPasswordWasChanged|AdministratorPasswordWasChanged $message
+     * @param AdministratorPasswordWasChanged|ClientPasswordWasChanged $message
      */
     public function __invoke(object $message): void
     {
@@ -42,6 +42,7 @@ final class UserPasswordChangeListener implements MessageSubscriber
     public static function getHandledMessages(): iterable
     {
         yield ClientPasswordWasChanged::class;
+
         yield AdministratorPasswordWasChanged::class;
     }
 }

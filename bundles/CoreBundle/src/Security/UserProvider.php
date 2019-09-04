@@ -15,9 +15,6 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use function get_class;
-use function is_subclass_of;
-use function sprintf;
 
 final class UserProvider implements UserProviderInterface
 {
@@ -30,11 +27,11 @@ final class UserProvider implements UserProviderInterface
     public function __construct(AuthenticationFinder $repository, string $userClass)
     {
         $this->repository = $repository;
-        $this->userClass  = $userClass;
+        $this->userClass = $userClass;
 
-        if (! is_subclass_of($userClass, SecurityUser::class, true)) {
+        if (! \is_subclass_of($userClass, SecurityUser::class, true)) {
             throw new InvalidArgumentException(
-                sprintf('Expected UserClass (%s) to be a child of "%s"', $userClass, SecurityUser::class)
+                \sprintf('Expected UserClass (%s) to be a child of "%s"', $userClass, SecurityUser::class)
             );
         }
     }
@@ -59,7 +56,7 @@ final class UserProvider implements UserProviderInterface
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (! $user instanceof $this->userClass) {
-            throw new UnsupportedUserException(sprintf('Expected an instance of %s, but got "%s".', $this->userClass, get_class($user)));
+            throw new UnsupportedUserException(\sprintf('Expected an instance of %s, but got "%s".', $this->userClass, \get_class($user)));
         }
 
         $storedUser = $this->repository->findAuthenticationById($user->getUsername());

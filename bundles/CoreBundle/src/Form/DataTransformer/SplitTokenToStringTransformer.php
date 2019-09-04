@@ -10,12 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Form\DataTransformer;
 
-use Exception;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use function is_string;
 
 final class SplitTokenToStringTransformer implements DataTransformerInterface
 {
@@ -33,7 +31,7 @@ final class SplitTokenToStringTransformer implements DataTransformerInterface
     public function transform($token): string
     {
         // If a string was passed assume transformation in the Form failed
-        if ($token === null || is_string($token)) {
+        if ($token === null || \is_string($token)) {
             return '';
         }
 
@@ -49,7 +47,7 @@ final class SplitTokenToStringTransformer implements DataTransformerInterface
      */
     public function reverseTransform($token): ?SplitToken
     {
-        if (! is_string($token)) {
+        if (! \is_string($token)) {
             throw new TransformationFailedException('Expected a string.');
         }
 
@@ -59,7 +57,7 @@ final class SplitTokenToStringTransformer implements DataTransformerInterface
 
         try {
             return $this->splitTokenFactory->fromString($token);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             throw new TransformationFailedException('Invalid SplitToken provided.', 0, $e);
         }
     }

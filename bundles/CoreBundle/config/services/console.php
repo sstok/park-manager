@@ -12,12 +12,14 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use ParkManager\Bundle\CoreBundle\Console\Command\RegisterAdministratorCommand;
 
-return static function (ContainerConfigurator $c) {
+return static function (ContainerConfigurator $c): void {
     $di = $c->services()->defaults()
         ->autowire()
         ->private()
-        ->bind('$commandBus', ref('park_manager.command_bus'));
+        ->bind('$commandBus', ref('park_manager.command_bus'))
+    ;
 
     $di->set(RegisterAdministratorCommand::class)
-        ->tag('console.command', ['command' => 'park-manager:administrator:register']);
+        ->tag('console.command', ['command' => 'park-manager:administrator:register'])
+    ;
 };

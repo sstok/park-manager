@@ -22,7 +22,7 @@ final class ConfirmPasswordReset
     public $token;
 
     /**
-     * READ-ONLY. The password provided in hash-encoded format
+     * READ-ONLY. The password provided in hash-encoded format.
      *
      * @var string
      */
@@ -33,7 +33,7 @@ final class ConfirmPasswordReset
      */
     public function __construct(SplitToken $token, string $password)
     {
-        $this->token    = $token;
+        $this->token = $token;
         $this->password = $password;
     }
 }

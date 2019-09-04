@@ -12,11 +12,6 @@ namespace ParkManager\Bundle\CoreBundle\Test\Domain;
 
 use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use PHPUnit\Framework\Assert;
-use function array_map;
-use function count;
-use function get_class;
-use function implode;
-use function sprintf;
 
 trait EventsRecordingEntityAssertionTrait
 {
@@ -26,7 +21,7 @@ trait EventsRecordingEntityAssertionTrait
 
         foreach ($expectedEvents as $i => $event) {
             Assert::assertArrayHasKey($i, $events, 'Event must exist at position.');
-            Assert::assertEquals(get_class($events[$i]), get_class($event), 'Event at position must be of same type');
+            Assert::assertEquals(\get_class($events[$i]), \get_class($event), 'Event at position must be of same type');
 
             if ($comparator !== null) {
                 $comparator($event, $events[$i]);
@@ -37,16 +32,16 @@ trait EventsRecordingEntityAssertionTrait
         }
 
         Assert::assertCount(
-            $c = count($expectedEvents),
+            $c = \count($expectedEvents),
             $events,
-            sprintf('Expected exactly %d events, but %d were recorded (%s).', $c, count($events), implode(', ', array_map('get_class', $events)))
+            \sprintf('Expected exactly %d events, but %d were recorded (%s).', $c, \count($events), \implode(', ', \array_map('get_class', $events)))
         );
     }
 
     protected static function assertNoDomainEvents(RecordsDomainEvents $entity): void
     {
         $events = $entity->releaseEvents();
-        Assert::assertCount(0, $events, sprintf('Expected exactly no events.'));
+        Assert::assertCount(0, $events, \sprintf('Expected exactly no events.'));
     }
 
     protected static function resetDomainEvents(RecordsDomainEvents ...$entities): void

@@ -13,8 +13,6 @@ namespace ParkManager\Bundle\CoreBundle\Http\Response;
 use InvalidArgumentException;
 use Symfony\Component\Form\FormInterface as Form;
 use Symfony\Component\HttpFoundation\Response;
-use function is_array;
-use function sprintf;
 
 class TwigResponse extends Response
 {
@@ -43,9 +41,9 @@ class TwigResponse extends Response
      */
     public function setTemplateVariables($variables): void
     {
-        if (! is_array($variables)) {
+        if (! \is_array($variables)) {
             if (! $variables instanceof Form) {
-                throw new InvalidArgumentException(sprintf('TwigResponse $variables expects an array or %s object.', Form::class));
+                throw new InvalidArgumentException(\sprintf('TwigResponse $variables expects an array or %s object.', Form::class));
             }
 
             $variables = ['form' => $variables->createView()];

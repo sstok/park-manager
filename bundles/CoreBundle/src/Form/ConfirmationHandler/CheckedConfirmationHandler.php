@@ -10,12 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Form\ConfirmationHandler;
 
-use function is_scalar;
-use function mb_strlen;
-use function mb_strtolower;
-use function substr_compare;
-use function trim;
-
 /**
  * The CheckedConfirmationHandler works same as the ConfirmationHandler except
  * that it requires a matching value is provided to reduce mistakenly confirming.
@@ -47,9 +41,9 @@ final class CheckedConfirmationHandler extends BaseConfirmationHandler
      */
     public function configure(string $title, string $message, string $requiredValue, string $yesButtonLabel): self
     {
-        $this->templateContext['title']          = $title;
-        $this->templateContext['message']        = $message;
-        $this->templateContext['yes_btn_label']  = $yesButtonLabel;
+        $this->templateContext['title'] = $title;
+        $this->templateContext['message'] = $message;
+        $this->templateContext['yes_btn_label'] = $yesButtonLabel;
         $this->templateContext['required_value'] = $requiredValue;
 
         return $this;
@@ -68,17 +62,17 @@ final class CheckedConfirmationHandler extends BaseConfirmationHandler
 
         $providedValue = $this->request->request->get('_value', '');
 
-        if (! is_scalar($providedValue)) {
+        if (! \is_scalar($providedValue)) {
             $providedValue = '';
         }
 
         $this->templateContext['provided_value'] = $providedValue = (string) $providedValue;
 
         // Remove spaces and lowercase the input (this is about sanity not strictness)
-        $requiredValue = mb_strtolower(trim($this->templateContext['required_value']));
-        $providedValue = mb_strtolower(trim($providedValue));
+        $requiredValue = \mb_strtolower(\trim($this->templateContext['required_value']));
+        $providedValue = \mb_strtolower(\trim($providedValue));
 
-        if ($providedValue === '' || substr_compare($providedValue, $requiredValue, -mb_strlen($requiredValue, '8bit')) !== 0) {
+        if ($providedValue === '' || \substr_compare($providedValue, $requiredValue, -\mb_strlen($requiredValue, '8bit')) !== 0) {
             $this->templateContext['error'] = 'Value does not match expected "{{ value }}".';
 
             return false;

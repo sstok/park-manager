@@ -22,7 +22,6 @@ use ParkManager\Bundle\WebhostingBundle\Plan\ConstraintValidator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use function class_exists;
 
 final class DependencyExtension extends Extension implements PrependExtensionInterface
 {
@@ -41,16 +40,19 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
         $loader->load('services.php');
         $loader->load('{services}/*.php', 'glob');
 
-        if (class_exists(DoctrineFixturesBundle::class)) {
+        if (\class_exists(DoctrineFixturesBundle::class)) {
             $loader->load('data_fixtures.php');
         }
 
         $container->registerForAutoconfiguration(Constraint::class)
-            ->addTag(PlanConstraintsPass::CONSTRAINT_TAG);
+            ->addTag(PlanConstraintsPass::CONSTRAINT_TAG)
+        ;
         $container->registerForAutoconfiguration(ConstraintValidator::class)
-            ->addTag(PlanConstraintsPass::CONSTRAINT_VALIDATOR_TAG);
+            ->addTag(PlanConstraintsPass::CONSTRAINT_VALIDATOR_TAG)
+        ;
         $container->registerForAutoconfiguration(ConstraintApplier::class)
-            ->addTag(PlanConstraintsPass::CONSTRAINT_APPLIER_TAG);
+            ->addTag(PlanConstraintsPass::CONSTRAINT_APPLIER_TAG)
+        ;
     }
 
     public function getAlias(): string
@@ -58,7 +60,7 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
         return self::EXTENSION_ALIAS;
     }
 
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $this->initBundlePath();
         $this->registerDoctrineDbalTypes($container, $this->bundlePath . '/src');

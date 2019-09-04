@@ -18,13 +18,12 @@ use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\WebhostingPlanConstraintsT
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use function dirname;
 
 final class ParkManagerWebhostingModule extends Bundle
 {
     public function getPath(): string
     {
-        return dirname(__DIR__);
+        return \dirname(__DIR__);
     }
 
     public function getContainerExtension(): ?ExtensionInterface
@@ -45,10 +44,12 @@ final class ParkManagerWebhostingModule extends Bundle
 
     public function shutdown(): void
     {
-        if (Type::hasType('webhosting_plan_constraints')) {
-            /** @var WebhostingPlanConstraintsType $type */
-            $type = Type::getType('webhosting_plan_constraints');
-            $type->setConstraintsFactory(null);
+        if (! Type::hasType('webhosting_plan_constraints')) {
+            return;
         }
+
+        $type = Type::getType('webhosting_plan_constraints');
+        \assert($type instanceof WebhostingPlanConstraintsType);
+        $type->setConstraintsFactory(null);
     }
 }

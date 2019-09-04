@@ -13,7 +13,7 @@ namespace ParkManager\Bundle\WebhostingBundle\Model;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Embeddable()
+ * @ORM\Embeddable
  */
 final class DomainName
 {
@@ -38,7 +38,7 @@ final class DomainName
     public function __construct(string $name, string $tld)
     {
         $this->name = $name;
-        $this->tld  = $tld;
+        $this->tld = $tld;
     }
 
     public function toString(): string

@@ -17,7 +17,7 @@ use RuntimeException;
  */
 final class SecurityLogoutAction
 {
-    public function __invoke()
+    public function __invoke(): void
     {
         throw new RuntimeException('You must activate the logout in your security firewall configuration.');
     }

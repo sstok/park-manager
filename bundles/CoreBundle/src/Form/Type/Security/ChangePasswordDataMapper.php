@@ -12,7 +12,6 @@ namespace ParkManager\Bundle\CoreBundle\Form\Type\Security;
 
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormInterface;
-use function iterator_to_array;
 
 /**
  * @internal
@@ -30,7 +29,7 @@ final class ChangePasswordDataMapper implements DataMapperInterface
     public function mapDataToForms($data, $forms): void
     {
         /** @var FormInterface[] $formsArray */
-        $formsArray = iterator_to_array($forms);
+        $formsArray = \iterator_to_array($forms);
 
         $formsArray['user_id']->setData($formsArray['user_id']->getConfig()->getData());
         $formsArray['password']->setData($data['password'] ?? '');
@@ -39,7 +38,7 @@ final class ChangePasswordDataMapper implements DataMapperInterface
     public function mapFormsToData($forms, &$data): void
     {
         /** @var FormInterface[] $formsArray */
-        $formsArray = iterator_to_array($forms);
+        $formsArray = \iterator_to_array($forms);
 
         $data = ($this->commandBuilder)(
             (string) $formsArray['user_id']->getConfig()->getData(),

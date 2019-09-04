@@ -48,8 +48,8 @@ final class AuthenticationTokenTokenPasswordChangedListener
             return;
         }
 
-        /** @var SecurityUser $user */
         $user = $this->userProvider->refreshUser($user);
+        \assert($user instanceof SecurityUser);
 
         if (! $user->isEnabled()) {
             return;

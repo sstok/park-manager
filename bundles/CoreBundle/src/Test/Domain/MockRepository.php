@@ -14,13 +14,6 @@ use Closure;
 use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use PHPUnit\Framework\Assert;
 use Throwable;
-use function array_values;
-use function get_class;
-use function mb_strpos;
-use function mb_substr;
-use function method_exists;
-use function sprintf;
-use function ucfirst;
 
 /**
  * Helps to quickly set-up an in-memory repository.
@@ -82,27 +75,13 @@ trait MockRepository
             $this->storedByField[$mapping][$this->getValueWithGetter($entity, $getter)] = $entity;
         }
 
-        if ($entity instanceof RecordsDomainEvents && $eventMapping = $this->getEventsIndexMapping()) {
-            $eventsByClass = [];
-
-            foreach ($entity->getEvents() as $event) {
-                $eventsByClass[get_class($event)] = $event;
-            }
-
-            foreach ($eventMapping as $eventName => $getter) {
-                if (! isset($eventsByClass[$eventName])) {
-                    continue;
-                }
-
-                $this->storedByEvents[$eventName][$this->getValueWithGetter($eventsByClass[$eventName], $getter)] = $entity;
-            }
+        if ($entity instanceof RecordsDomainEvents) {
+            $this->setByEventsInMockedStorage($entity);
         }
     }
 
     /**
-     * @param string|Closure $getter
-     *
-     * @return mixed
+     * @param Closure|string $getter
      */
     private function getValueWithGetter(object $object, $getter)
     {
@@ -110,11 +89,31 @@ trait MockRepository
             return $getter($object);
         }
 
-        if (mb_strpos($getter, '#') === 0) {
-            return $object->{mb_substr($getter, 1)};
+        if (\mb_strpos($getter, '#') === 0) {
+            return $object->{\mb_substr($getter, 1)};
         }
 
-        return $object->{(method_exists($object, $getter) ? $getter : 'get' . ucfirst($getter))}();
+        return $object->{(\method_exists($object, $getter) ? $getter : 'get' . \ucfirst($getter))}();
+    }
+
+    private function setByEventsInMockedStorage(object $entity): void
+    {
+        $eventMapping = $this->getEventsIndexMapping();
+        $eventsByClass = [];
+
+        if (! $eventMapping) {
+            return;
+        }
+
+        foreach ($entity->getEvents() as $event) {
+            $eventsByClass[\get_class($event)] = $event;
+        }
+
+        foreach ($eventMapping as $eventName => $getter) {
+            if (isset($eventsByClass[$eventName])) {
+                $this->storedByEvents[$eventName][$this->getValueWithGetter($eventsByClass[$eventName], $getter)] = $entity;
+            }
+        }
     }
 
     /**
@@ -152,9 +151,6 @@ trait MockRepository
         ++$this->mockWasRemoved;
     }
 
-    /**
-     * @return mixed
-     */
     protected function mockDoGetById(object $id)
     {
         if (! isset($this->storedById[$id->toString()])) {
@@ -173,11 +169,6 @@ trait MockRepository
         }
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return mixed
-     */
     protected function mockDoGetByField(string $key, $value)
     {
         if (! isset($this->storedByField[$key][$value])) {
@@ -190,11 +181,6 @@ trait MockRepository
         return $entity;
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return mixed
-     */
     protected function mockDoGetByEvent(string $event, $value)
     {
         if (! isset($this->storedByEvents[$event][$value])) {
@@ -208,8 +194,6 @@ trait MockRepository
     }
 
     /**
-     * @param mixed $key
-     *
      * @throws Throwable
      */
     abstract protected function throwOnNotFound($key): void;
@@ -224,21 +208,21 @@ trait MockRepository
         Assert::assertGreaterThan(0, $this->mockWasSaved, 'Entities were expected to be stored');
 
         if ($entities) {
-            Assert::assertEquals($entities, array_values($this->savedById));
+            Assert::assertEquals($entities, \array_values($this->savedById));
         }
     }
 
     public function assertNoEntitiesWereRemoved(): void
     {
         if ($this->mockWasRemoved > 0) {
-            Assert::fail(sprintf('No entities were expected to be removed, but %d entities were removed.', $this->mockWasSaved));
+            Assert::fail(\sprintf('No entities were expected to be removed, but %d entities were removed.', $this->mockWasSaved));
         }
     }
 
     public function assertEntitiesWereRemoved(array $entities): void
     {
         Assert::assertGreaterThan(0, $this->mockWasRemoved, 'No entities were removed');
-        Assert::assertEquals($entities, array_values($this->removedById));
+        Assert::assertEquals($entities, \array_values($this->removedById));
     }
 
     public function assertHasEntity($id, Closure $excepted): void
@@ -249,7 +233,7 @@ trait MockRepository
     }
 
     /**
-     * @param string|object $id
+     * @param object|string $id
      * @param object[]      $exceptedEvents
      */
     public function assertHasEntityWithEvents($id, array $exceptedEvents, ?callable $assertionValidator = null): void

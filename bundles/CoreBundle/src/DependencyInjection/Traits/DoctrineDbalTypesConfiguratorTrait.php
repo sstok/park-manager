@@ -14,11 +14,6 @@ use Doctrine\DBAL\Types\Type as DbalType;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
-use function class_exists;
-use function is_subclass_of;
-use function mb_substr;
-use function preg_replace;
-use function str_replace;
 
 trait DoctrineDbalTypesConfiguratorTrait
 {
@@ -32,23 +27,25 @@ trait DoctrineDbalTypesConfiguratorTrait
         $finder->name('*.php');
         $finder->files();
 
-        $namespace = preg_replace('/\\\DependencyInjection\\\DependencyExtension$/', '', static::class) . '\\Doctrine\\';
-        $types     = [];
+        $namespace = \preg_replace('/\\\DependencyInjection\\\DependencyExtension$/', '', static::class) . '\\Doctrine\\';
+        $types = [];
 
         foreach ($finder as $node) {
-            $className = $namespace . str_replace('/', '\\', mb_substr($node->getRelativePathname(), 0, -4));
+            $className = $namespace . \str_replace('/', '\\', \mb_substr($node->getRelativePathname(), 0, -4));
 
-            if (class_exists($className) && is_subclass_of($className, DbalType::class)) {
-                $r = new ReflectionClass($className);
-
-                if ($r->isAbstract() || $r->isInterface() || $r->isTrait()) {
-                    continue;
-                }
-
-                /** @var DbalType $type */
-                $type                    = $r->newInstanceWithoutConstructor();
-                $types[$type->getName()] = ['class' => $className];
+            if (! \class_exists($className) || ! \is_subclass_of($className, DbalType::class)) {
+                continue;
             }
+
+            $r = new ReflectionClass($className);
+
+            if ($r->isAbstract() || $r->isInterface() || $r->isTrait()) {
+                continue;
+            }
+
+            $type = $r->newInstanceWithoutConstructor();
+            \assert($type instanceof DbalType);
+            $types[$type->getName()] = ['class' => $className];
         }
 
         $container->prependExtensionConfig('doctrine', [

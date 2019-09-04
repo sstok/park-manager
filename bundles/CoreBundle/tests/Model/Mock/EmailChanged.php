@@ -21,7 +21,7 @@ final class EmailChanged
     public function __construct(MockIdentity $id, string $email)
     {
         $this->email = $email;
-        $this->id    = $id;
+        $this->id = $id;
     }
 
     public function getId(): MockIdentity

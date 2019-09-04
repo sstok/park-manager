@@ -31,7 +31,7 @@ final class WebhostingAccountWasRegistered
 
     public function __construct(WebhostingAccountId $id, OwnerId $owner)
     {
-        $this->id    = $id;
+        $this->id = $id;
         $this->owner = $owner;
     }
 }

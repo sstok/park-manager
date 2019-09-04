@@ -13,17 +13,16 @@ namespace ParkManager\Bundle\CoreBundle\Model\Administrator\Exception;
 use InvalidArgumentException;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
-use function sprintf;
 
 final class AdministratorNotFound extends InvalidArgumentException
 {
     public static function withId(AdministratorId $id): self
     {
-        return new self(sprintf('Administrator with id "%s" does not exist.', $id->toString()));
+        return new self(\sprintf('Administrator with id "%s" does not exist.', $id->toString()));
     }
 
     public static function withEmail(EmailAddress $email): self
     {
-        return new self(sprintf('Administrator with email address "%s" does not exist.', $email->toString()));
+        return new self(\sprintf('Administrator with email address "%s" does not exist.', $email->toString()));
     }
 }

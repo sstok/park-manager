@@ -22,43 +22,49 @@ final class OwnerIdTest extends TestCase
     private const USER_ID = '783d3266-955a-11e8-8b48-4a0003ae49a0';
 
     /** @test */
-    public function it_creates_from_userId(): void
+    public function it_creates_from_user_id(): void
     {
         $userId = ClientId::fromString(self::USER_ID);
-        $id     = OwnerId::fromUserId($userId);
+        $id = OwnerId::fromUserId($userId);
 
-        self::assertTrue($id->equals(OwnerId::fromUserId(ClientId::fromString(self::USER_ID))));
-        self::assertFalse($id->equals(OwnerId::fromUserId(ClientId::fromString('fb676f62-955a-11e8-8ef5-4a0003ae49a0'))));
-        self::assertFalse($id->equals($userId));
+        static::assertTrue($id->equals(OwnerId::fromUserId(ClientId::fromString(self::USER_ID))));
+        static::assertFalse($id->equals(OwnerId::fromUserId(ClientId::fromString('fb676f62-955a-11e8-8ef5-4a0003ae49a0'))));
+        static::assertFalse($id->equals($userId));
 
-        self::assertTrue($id->is(OwnerId::PERSONAL));
-        self::assertFalse($id->is(OwnerId::INTERNAL));
-        self::assertFalse($id->is(OwnerId::PRIVATE));
+        static::assertTrue($id->is(OwnerId::PERSONAL));
+        static::assertFalse($id->is(OwnerId::INTERNAL));
+        static::assertFalse($id->is(OwnerId::PRIVATE));
     }
 
-    public function testInternal(): void
+    /**
+     * @test
+     */
+    public function internal(): void
     {
         $id = OwnerId::internal();
 
-        self::assertTrue($id->equals(OwnerId::internal()));
-        self::assertFalse($id->equals(OwnerId::private()));
-        self::assertFalse($id->equals(OwnerId::fromUserId(ClientId::fromString(self::USER_ID))));
+        static::assertTrue($id->equals(OwnerId::internal()));
+        static::assertFalse($id->equals(OwnerId::private()));
+        static::assertFalse($id->equals(OwnerId::fromUserId(ClientId::fromString(self::USER_ID))));
 
-        self::assertTrue($id->is(OwnerId::INTERNAL));
-        self::assertFalse($id->is(OwnerId::PRIVATE));
-        self::assertFalse($id->is(OwnerId::PERSONAL));
+        static::assertTrue($id->is(OwnerId::INTERNAL));
+        static::assertFalse($id->is(OwnerId::PRIVATE));
+        static::assertFalse($id->is(OwnerId::PERSONAL));
     }
 
-    public function testPrivate(): void
+    /**
+     * @test
+     */
+    public function private(): void
     {
         $id = OwnerId::private();
 
-        self::assertTrue($id->equals(OwnerId::private()));
-        self::assertFalse($id->equals(OwnerId::internal()));
-        self::assertFalse($id->equals(OwnerId::fromUserId(ClientId::fromString(self::USER_ID))));
+        static::assertTrue($id->equals(OwnerId::private()));
+        static::assertFalse($id->equals(OwnerId::internal()));
+        static::assertFalse($id->equals(OwnerId::fromUserId(ClientId::fromString(self::USER_ID))));
 
-        self::assertTrue($id->is(OwnerId::PRIVATE));
-        self::assertFalse($id->is(OwnerId::INTERNAL));
-        self::assertFalse($id->is(OwnerId::PERSONAL));
+        static::assertTrue($id->is(OwnerId::PRIVATE));
+        static::assertFalse($id->is(OwnerId::INTERNAL));
+        static::assertFalse($id->is(OwnerId::PERSONAL));
     }
 }

@@ -18,22 +18,16 @@ use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
-use function class_exists;
-use function is_a;
-use function mb_strlen;
-use function mb_strrpos;
-use function mb_substr;
-use function sprintf;
 
 final class PlanConstraintsPass implements CompilerPassInterface
 {
-    private $constraints       = [];
+    private $constraints = [];
     private $validatorServices = [];
-    private $applierServices   = [];
+    private $applierServices = [];
 
-    public const CONSTRAINT_TAG           = 'park_manager.webhosting_plan_constraint';
+    public const CONSTRAINT_TAG = 'park_manager.webhosting_plan_constraint';
     public const CONSTRAINT_VALIDATOR_TAG = 'park_manager.webhosting_plan_constraint_validator';
-    public const CONSTRAINT_APPLIER_TAG   = 'park_manager.webhosting_plan_constraint_config_applier';
+    public const CONSTRAINT_APPLIER_TAG = 'park_manager.webhosting_plan_constraint_config_applier';
 
     public function process(ContainerBuilder $container): void
     {
@@ -78,13 +72,13 @@ final class PlanConstraintsPass implements CompilerPassInterface
 
             if (isset($this->validatorServices[$name], $this->applierServices[$name])) {
                 throw new InvalidArgumentException(
-                    sprintf('Webhosting Plan Constraint "%s" can not have a Validator *and* Applier.', $name)
+                    \sprintf('Webhosting Plan Constraint "%s" can not have a Validator *and* Applier.', $name)
                 );
             }
 
             if (! isset($this->validatorServices[$name]) && ! isset($this->applierServices[$name])) {
                 throw new InvalidArgumentException(
-                    sprintf('Webhosting Plan Constraint "%s" requires a %1$sValidator *or* %1$sApplier is registered.', $name)
+                    \sprintf('Webhosting Plan Constraint "%s" requires a %1$sValidator *or* %1$sApplier is registered.', $name)
                 );
             }
 
@@ -96,17 +90,17 @@ final class PlanConstraintsPass implements CompilerPassInterface
     private function getClassName(string $class, ?string $suffix = null): string
     {
         if ($suffix !== null) {
-            $class = mb_substr($class, 0, -mb_strlen($suffix));
+            $class = \mb_substr($class, 0, -\mb_strlen($suffix));
         }
 
-        return mb_substr($class, mb_strrpos($class, '\\') + 1);
+        return \mb_substr($class, \mb_strrpos($class, '\\') + 1);
     }
 
     private function assertServiceClass(string $constraintName, string $className, string $expectedInterface): void
     {
-        if (! class_exists($className)) {
+        if (! \class_exists($className)) {
             throw new InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Webhosting Plan Constraint %s is incorrectly configured. Class %s cannot be found.',
                     $constraintName,
                     $className
@@ -114,9 +108,9 @@ final class PlanConstraintsPass implements CompilerPassInterface
             );
         }
 
-        if (! is_a($className, $expectedInterface, true)) {
+        if (! \is_a($className, $expectedInterface, true)) {
             throw new InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Webhosting Plan Constraint %s is incorrectly configured. Class %s does not implement interface %s.',
                     $constraintName,
                     $className,

@@ -27,7 +27,7 @@ use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\Table(name="administrator",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="administrator_email_address_uniq", columns={"email_address"}),
@@ -42,7 +42,7 @@ class Administrator implements RecordsDomainEvents
     use DomainEventsCollectionTrait;
 
     /**
-     * @ORM\Id()
+     * @ORM\Id
      * @ORM\Column(type="park_manager_administrator_id")
      * @ORM\GeneratedValue(strategy="NONE")
      *
@@ -96,9 +96,9 @@ class Administrator implements RecordsDomainEvents
 
     private function __construct(AdministratorId $id, EmailAddress $email, string $displayName)
     {
-        $this->id          = $id;
-        $this->email       = $email;
-        $this->roles       = new ArrayCollection(self::DEFAULT_ROLES);
+        $this->id = $id;
+        $this->email = $email;
+        $this->roles = new ArrayCollection(self::DEFAULT_ROLES);
         $this->displayName = $displayName;
     }
 

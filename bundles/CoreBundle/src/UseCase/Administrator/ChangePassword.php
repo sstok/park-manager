@@ -34,7 +34,7 @@ final class ChangePassword
      */
     public function __construct(string $id, ?string $password)
     {
-        $this->id       = AdministratorId::fromString($id);
+        $this->id = AdministratorId::fromString($id);
         $this->password = $password;
     }
 }

@@ -28,9 +28,9 @@ final class RequestPasswordResetHandler
 
     public function __construct(AdministratorRepository $Administrators, SplitTokenFactory $tokenFactory, int $tokenTTL = 3600)
     {
-        $this->repository   = $Administrators;
+        $this->repository = $Administrators;
         $this->tokenFactory = $tokenFactory;
-        $this->tokenTTL     = $tokenTTL;
+        $this->tokenTTL = $tokenTTL;
     }
 
     public function __invoke(RequestPasswordReset $command): void

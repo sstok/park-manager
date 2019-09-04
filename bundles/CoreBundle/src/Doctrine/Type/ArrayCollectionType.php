@@ -14,10 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
-use function is_resource;
-use function json_decode;
-use function json_encode;
-use function stream_get_contents;
 
 final class ArrayCollectionType extends JsonType
 {
@@ -30,7 +26,7 @@ final class ArrayCollectionType extends JsonType
             return null;
         }
 
-        return json_encode($value->toArray());
+        return \json_encode($value->toArray());
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ArrayCollection
@@ -39,9 +35,9 @@ final class ArrayCollectionType extends JsonType
             return new ArrayCollection();
         }
 
-        $value = is_resource($value) ? stream_get_contents($value) : $value;
+        $value = \is_resource($value) ? \stream_get_contents($value) : $value;
 
-        return new ArrayCollection(json_decode($value, true));
+        return new ArrayCollection(\json_decode($value, true));
     }
 
     public function getName(): string

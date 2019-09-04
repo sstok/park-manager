@@ -35,7 +35,7 @@ final class OwnerId
     use UuidTrait;
 
     public const INTERNAL = '9667ac52-9038-11e8-b175-4a0003ae49a0';
-    public const PRIVATE  = 'ae0efe1e-9038-11e8-9ebe-4a0003ae49a0';
+    public const PRIVATE = 'ae0efe1e-9038-11e8-9ebe-4a0003ae49a0';
     public const PERSONAL = 'personal';
 
     public static function internal(): self

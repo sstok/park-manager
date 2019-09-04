@@ -17,11 +17,12 @@ use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\ConstraintsTypeConfigurato
 use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\WebhostingPlanOrmRepository;
 use ParkManager\Bundle\WebhostingBundle\Plan\ConstraintsFactory;
 
-return function (ContainerConfigurator $c) {
+return function (ContainerConfigurator $c): void {
     $di = $c->services()->defaults()
         ->autowire()
         ->autoconfigure()
-        ->private();
+        ->private()
+    ;
 
     $autoDi = new AutoServiceConfigurator($di);
 
@@ -29,19 +30,23 @@ return function (ContainerConfigurator $c) {
         ->exclude([
             __DIR__ . '/../src/{DependencyInjection,Model,Test,UseCase,DataFixtures}',
             __DIR__ . '/../src/Doctrine/*/{Type}',
-        ]);
+        ])
+    ;
 
     $di->load('ParkManager\\Bundle\\WebhostingBundle\\UseCase\\', __DIR__ . '/../src/UseCase/**/*Handler.php')
-        ->tag('messenger.message_handler', ['bus' => 'park_manager.command_bus']);
+        ->tag('messenger.message_handler', ['bus' => 'park_manager.command_bus'])
+    ;
 
     $di->set(ConstraintsFactory::class)->arg(0, '%park_manager.webhosting.plan_constraints%');
     $di->set(ConstraintsTypeConfigurator::class);
 
     $autoDi->set(WebhostingAccountOrmRepository::class)
-        ->configurator(ref(ConstraintsTypeConfigurator::class));
+        ->configurator(ref(ConstraintsTypeConfigurator::class))
+    ;
 
     $autoDi->set(WebhostingDomainNameOrmRepository::class);
 
     $autoDi->set(WebhostingPlanOrmRepository::class)
-        ->configurator(ref(ConstraintsTypeConfigurator::class));
+        ->configurator(ref(ConstraintsTypeConfigurator::class))
+    ;
 };

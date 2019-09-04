@@ -61,7 +61,8 @@ class DoctrineOrmAdministratorRepository extends EventSourcedEntityRepository im
             ->where('u.email.canonical = :email')
             ->getQuery()
             ->setParameter('email', $email->canonical)
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
 
         if ($administrator === null) {
             throw AdministratorNotFound::withEmail($email);
@@ -76,7 +77,8 @@ class DoctrineOrmAdministratorRepository extends EventSourcedEntityRepository im
             ->where('u.passwordResetToken.selector = :selector')
             ->getQuery()
             ->setParameter('selector', $selector)
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
 
         if ($administrator === null) {
             throw new PasswordResetTokenNotAccepted();
@@ -92,7 +94,8 @@ class DoctrineOrmAdministratorRepository extends EventSourcedEntityRepository im
             ->where('u.email.canonical = :email')
             ->getQuery()
             ->setParameter('email', $email)
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
 
         if ($administrator !== null) {
             return $administrator->toSecurityUser();
@@ -108,7 +111,8 @@ class DoctrineOrmAdministratorRepository extends EventSourcedEntityRepository im
             ->where('u.id = :id')
             ->getQuery()
             ->setParameter('id', $id)
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
 
         if ($administrator !== null) {
             return $administrator->toSecurityUser();

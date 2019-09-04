@@ -55,10 +55,10 @@ final class RegisterWebhostingAccount
 
     private function __construct(string $id, string $owner, DomainName $domainName, ?string $planId, ?Constraints $constraints)
     {
-        $this->id                = WebhostingAccountId::fromString($id);
-        $this->domainName        = $domainName;
+        $this->id = WebhostingAccountId::fromString($id);
+        $this->domainName = $domainName;
         $this->customConstraints = $constraints;
-        $this->owner             = OwnerId::fromString($owner);
+        $this->owner = OwnerId::fromString($owner);
 
         if ($planId !== null) {
             $this->plan = WebhostingPlanId::fromString($planId);

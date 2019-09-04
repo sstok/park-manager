@@ -12,10 +12,6 @@ namespace ParkManager\Bundle\CoreBundle\DependencyInjection\Traits;
 
 use LogicException;
 use ReflectionClass;
-use function dirname;
-use function realpath;
-use function sprintf;
-use function substr;
 
 trait ExtensionPathResolver
 {
@@ -27,16 +23,18 @@ trait ExtensionPathResolver
 
     final protected function initBundlePath(): void
     {
-        if ($this->bundlePath === null) {
-            $r = new ReflectionClass(static::class);
-            $namespace = $r->getNamespaceName();
-
-            if (substr($namespace, -20) !== '\\DependencyInjection') {
-                throw new LogicException(sprintf('The namespace "%s" is expected to end with "\\DependencyInjection".', $namespace));
-            }
-
-            $this->bundleNamespace = substr($namespace, 0, -20);
-            $this->bundlePath      = realpath(dirname($r->getFileName(), 3));
+        if ($this->bundlePath !== null) {
+            return;
         }
+
+        $r = new ReflectionClass(static::class);
+        $namespace = $r->getNamespaceName();
+
+        if (\mb_substr($namespace, -20) !== '\\DependencyInjection') {
+            throw new LogicException(\sprintf('The namespace "%s" is expected to end with "\\DependencyInjection".', $namespace));
+        }
+
+        $this->bundleNamespace = \mb_substr($namespace, 0, -20);
+        $this->bundlePath = \realpath(\dirname($r->getFileName(), 3));
     }
 }

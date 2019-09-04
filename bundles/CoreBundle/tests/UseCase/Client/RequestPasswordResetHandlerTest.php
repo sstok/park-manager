@@ -20,7 +20,6 @@ use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestPasswordResetHandler;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
-use function array_pop;
 
 /**
  * @internal
@@ -45,13 +44,13 @@ final class RequestPasswordResetHandlerTest extends TestCase
 
         $repository->assertHasEntity(
             $client->getId(),
-            static function (Client $entity) {
+            static function (Client $entity): void {
                 $events = $entity->releaseEvents();
 
                 self::assertCount(1, $events);
 
-                /** @var ClientPasswordResetWasRequested $event */
-                $event = array_pop($events);
+                $event = \array_pop($events);
+                \assert($event instanceof ClientPasswordResetWasRequested);
 
                 self::assertInstanceOf(ClientPasswordResetWasRequested::class, $event);
 

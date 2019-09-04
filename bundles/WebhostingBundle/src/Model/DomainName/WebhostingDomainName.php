@@ -16,16 +16,16 @@ use ParkManager\Bundle\WebhostingBundle\Model\DomainName;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\Exception\CannotTransferPrimaryDomainName;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\Table(name="domain_name", schema="webhosting", indexes={
- *         @ORM\Index(name="domain_name_primary_marking_idx", columns={"account", "is_primary"}),
- *     }
+ *     @ORM\Index(name="domain_name_primary_marking_idx", columns={"account", "is_primary"}),
+ * }
  * )
  */
 class WebhostingDomainName
 {
     /**
-     * @ORM\Id()
+     * @ORM\Id
      * @ORM\Column(type="park_manager_webhosting_domain_name_id")
      * @ORM\GeneratedValue(strategy="NONE")
      *
@@ -57,9 +57,9 @@ class WebhostingDomainName
 
     public function __construct(WebhostingAccount $account, DomainName $domainName)
     {
-        $this->account    = $account;
+        $this->account = $account;
         $this->domainName = $domainName;
-        $this->id         = WebhostingDomainNameId::create();
+        $this->id = WebhostingDomainNameId::create();
     }
 
     /**
@@ -67,7 +67,7 @@ class WebhostingDomainName
      */
     public static function registerPrimary(WebhostingAccount $account, DomainName $domainName)
     {
-        $instance          = new static($account, $domainName);
+        $instance = new static($account, $domainName);
         $instance->primary = true;
 
         return $instance;

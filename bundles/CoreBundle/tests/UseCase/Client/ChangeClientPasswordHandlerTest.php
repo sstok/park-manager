@@ -24,7 +24,7 @@ final class ChangeClientPasswordHandlerTest extends TestCase
     /** @test */
     public function it_changes_password(): void
     {
-        $client     = ClientRepositoryMock::createClient();
+        $client = ClientRepositoryMock::createClient();
         $repository = new ClientRepositoryMock([$client]);
 
         $handler = new ChangeClientPasswordHandler($repository);
@@ -42,7 +42,7 @@ final class ChangeClientPasswordHandlerTest extends TestCase
     /** @test */
     public function it_changes_password_to_null(): void
     {
-        $client     = ClientRepositoryMock::createClient();
+        $client = ClientRepositoryMock::createClient();
         $repository = new ClientRepositoryMock([$client]);
 
         $handler = new ChangeClientPasswordHandler($repository);

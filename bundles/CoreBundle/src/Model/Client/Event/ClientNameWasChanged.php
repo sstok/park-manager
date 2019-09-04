@@ -30,7 +30,7 @@ final class ClientNameWasChanged
 
     public function __construct(ClientId $id, string $displayName)
     {
-        $this->id          = $id;
+        $this->id = $id;
         $this->displayName = $displayName;
     }
 }

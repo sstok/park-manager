@@ -25,9 +25,9 @@ final class ConfirmPasswordResetHandler
 
     public function __invoke(ConfirmPasswordReset $command): void
     {
-        $token       = $command->token();
-        $client      = $this->repository->getByPasswordResetToken($token->selector());
-        $exception   = null;
+        $token = $command->token();
+        $client = $this->repository->getByPasswordResetToken($token->selector());
+        $exception = null;
 
         // Cannot use finally here as the exception triggers the global exception handler
         // making the overall process unpredictable.

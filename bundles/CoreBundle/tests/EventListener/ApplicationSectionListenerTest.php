@@ -32,8 +32,8 @@ final class ApplicationSectionListenerTest extends TestCase
         );
 
         $event = $this->createMock(GetResponseEvent::class);
-        $event->expects(self::once())->method('isMasterRequest')->willReturn(true);
-        $event->expects(self::any())->method('getRequest')->willReturn(new Request());
+        $event->expects(static::once())->method('isMasterRequest')->willReturn(true);
+        $event->expects(static::any())->method('getRequest')->willReturn(new Request());
 
         $listener->onKernelRequest($event);
     }
@@ -47,8 +47,8 @@ final class ApplicationSectionListenerTest extends TestCase
         );
 
         $event = $this->createMock(GetResponseEvent::class);
-        $event->expects(self::once())->method('isMasterRequest')->willReturn(false);
-        $event->expects(self::never())->method('getRequest');
+        $event->expects(static::once())->method('isMasterRequest')->willReturn(false);
+        $event->expects(static::never())->method('getRequest');
 
         $listener->onKernelRequest($event);
     }
@@ -65,8 +65,8 @@ final class ApplicationSectionListenerTest extends TestCase
         );
 
         $event = $this->createMock(GetResponseEvent::class);
-        $event->expects(self::once())->method('isMasterRequest')->willReturn(true);
-        $event->expects(self::any())->method('getRequest')->willReturn(Request::create('/admin/'));
+        $event->expects(static::once())->method('isMasterRequest')->willReturn(true);
+        $event->expects(static::any())->method('getRequest')->willReturn(Request::create('/admin/'));
 
         $listener->onKernelRequest($event);
     }

@@ -26,7 +26,7 @@ final class EmailAddressChangeRequestMailerImp implements EmailAddressChangeRequ
 
     public function __construct(MailerInterface $mailer, UrlGenerator $urlGenerator)
     {
-        $this->mailer       = $mailer;
+        $this->mailer = $mailer;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -38,7 +38,8 @@ final class EmailAddressChangeRequestMailerImp implements EmailAddressChangeRequ
             ->context([
                 'url' => $this->urlGenerator->generate('', ['token' => $splitToken->token()], UrlGenerator::ABSOLUTE_URL),
                 'expiration_date' => $splitToken->getExpirationTime(),
-            ]);
+            ])
+        ;
 
         $this->mailer->send($email);
     }

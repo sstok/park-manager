@@ -12,7 +12,6 @@ namespace ParkManager\Bundle\CoreBundle\Http;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher;
-use function preg_match;
 
 /**
  * Compares a pre-defined set of checks against a Request instance.
@@ -42,7 +41,7 @@ final class CookiesRequestMatcher extends RequestMatcher
         }
 
         foreach ($this->cookies as $key => $pattern) {
-            if (! preg_match('{' . $pattern . '}', (string) $request->cookies->get($key, ''))) {
+            if (! \preg_match('{' . $pattern . '}', (string) $request->cookies->get($key, ''))) {
                 return false;
             }
         }

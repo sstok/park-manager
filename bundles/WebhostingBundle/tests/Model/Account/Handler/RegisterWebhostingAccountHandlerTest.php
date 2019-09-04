@@ -34,7 +34,7 @@ use Prophecy\Argument;
 final class RegisterWebhostingAccountHandlerTest extends TestCase
 {
     private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
-    private const PLAN_ID1  = '2570c850-a5e0-11e7-868d-acbc32b58315';
+    private const PLAN_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
 
     private const ACCOUNT_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
     private const ACCOUNT_ID2 = '696d345c-a5e1-11e7-9856-acbc32b58315';
@@ -42,13 +42,13 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     /** @test */
     public function it_handles_registration_of_account_with_plan(): void
     {
-        $constraints         = new Constraints(new MonthlyTrafficQuota(50));
-        $domainName           = new DomainName('example', '.com');
-        $webhostingPlan    = new WebhostingPlan(WebhostingPlanId::fromString(self::PLAN_ID1), $constraints);
-        $planRepository    = $this->createPlanRepository($webhostingPlan);
-        $accountRepository    = $this->createAccountRepositoryThatSaves($constraints, $webhostingPlan);
+        $constraints = new Constraints(new MonthlyTrafficQuota(50));
+        $domainName = new DomainName('example', '.com');
+        $webhostingPlan = new WebhostingPlan(WebhostingPlanId::fromString(self::PLAN_ID1), $constraints);
+        $planRepository = $this->createPlanRepository($webhostingPlan);
+        $accountRepository = $this->createAccountRepositoryThatSaves($constraints, $webhostingPlan);
         $domainNameRepository = $this->createDomainNameRepositoryThatSaves($domainName, self::ACCOUNT_ID1);
-        $handler              = new RegisterWebhostingAccountHandler($accountRepository, $planRepository, $domainNameRepository);
+        $handler = new RegisterWebhostingAccountHandler($accountRepository, $planRepository, $domainNameRepository);
 
         $handler(
             RegisterWebhostingAccount::withPlan(
@@ -63,12 +63,12 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     /** @test */
     public function it_handles_registration_of_account_with_custom_constraints(): void
     {
-        $constraints         = new Constraints(new MonthlyTrafficQuota(50));
-        $domainName           = new DomainName('example', '.com');
-        $planRepository    = $this->createNullPlanRepository();
-        $accountRepository    = $this->createAccountRepositoryThatSaves($constraints);
+        $constraints = new Constraints(new MonthlyTrafficQuota(50));
+        $domainName = new DomainName('example', '.com');
+        $planRepository = $this->createNullPlanRepository();
+        $accountRepository = $this->createAccountRepositoryThatSaves($constraints);
         $domainNameRepository = $this->createDomainNameRepositoryThatSaves($domainName, self::ACCOUNT_ID1);
-        $handler              = new RegisterWebhostingAccountHandler($accountRepository, $planRepository, $domainNameRepository);
+        $handler = new RegisterWebhostingAccountHandler($accountRepository, $planRepository, $domainNameRepository);
 
         $handler(
             RegisterWebhostingAccount::withCustomConstraints(
@@ -83,12 +83,12 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     /** @test */
     public function it_checks_domain_is_not_already_registered(): void
     {
-        $domainName           = new DomainName('example', '.com');
-        $accountId2           = WebhostingAccountId::fromString(self::ACCOUNT_ID2);
-        $planRepository    = $this->createNullPlanRepository();
-        $accountRepository    = $this->createAccountRepositoryWithoutSave();
+        $domainName = new DomainName('example', '.com');
+        $accountId2 = WebhostingAccountId::fromString(self::ACCOUNT_ID2);
+        $planRepository = $this->createNullPlanRepository();
+        $accountRepository = $this->createAccountRepositoryWithoutSave();
         $domainNameRepository = $this->createDomainNameRepositoryWithExistingRegistration($domainName, $accountId2);
-        $handler              = new RegisterWebhostingAccountHandler($accountRepository, $planRepository, $domainNameRepository);
+        $handler = new RegisterWebhostingAccountHandler($accountRepository, $planRepository, $domainNameRepository);
 
         $this->expectException(DomainNameAlreadyInUse::class);
         $this->expectExceptionMessage(DomainNameAlreadyInUse::byAccountId($domainName, $accountId2)->getMessage());
@@ -165,15 +165,17 @@ final class RegisterWebhostingAccountHandlerTest extends TestCase
     {
         $existingAccount = $this->createMock(WebhostingAccount::class);
         $existingAccount
-            ->expects(self::any())
+            ->expects(static::any())
             ->method('getId')
-            ->willReturn($existingAccountId);
+            ->willReturn($existingAccountId)
+        ;
 
         $existingDomain = $this->createMock(WebhostingDomainName::class);
         $existingDomain
-            ->expects(self::any())
+            ->expects(static::any())
             ->method('getAccount')
-            ->willReturn($existingAccount);
+            ->willReturn($existingAccount)
+        ;
 
         $domainNameRepositoryProphecy = $this->prophesize(WebhostingDomainNameRepository::class);
         $domainNameRepositoryProphecy->findByFullName($expectedDomain)->willReturn($existingDomain);

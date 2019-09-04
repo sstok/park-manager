@@ -48,9 +48,9 @@ final class RegisterAdministrator
      */
     public function __construct(string $id, string $email, string $displayName, ?string $password = null)
     {
-        $this->id          = AdministratorId::fromString($id);
-        $this->email       = new EmailAddress($email);
+        $this->id = AdministratorId::fromString($id);
+        $this->email = new EmailAddress($email);
         $this->displayName = $displayName;
-        $this->password    = $password;
+        $this->password = $password;
     }
 }

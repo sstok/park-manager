@@ -28,9 +28,9 @@ final class RequestEmailAddressChangeHandler
      */
     public function __construct(ClientRepository $repository, ConfirmationMailer $mailer, SplitTokenFactory $tokenFactory, int $tokenTTL = 3600)
     {
-        $this->tokenTTL           = $tokenTTL;
-        $this->repository         = $repository;
-        $this->splitTokenFactory  = $tokenFactory;
+        $this->tokenTTL = $tokenTTL;
+        $this->repository = $repository;
+        $this->splitTokenFactory = $tokenFactory;
         $this->confirmationMailer = $mailer;
     }
 
@@ -48,11 +48,11 @@ final class RequestEmailAddressChangeHandler
             // No-op
         }
 
-        $id     = $command->id();
+        $id = $command->id();
         $client = $this->repository->get($id);
 
         $tokenExpiration = new DateTimeImmutable('+ ' . $this->tokenTTL . ' seconds');
-        $splitToken      = $this->splitTokenFactory->generate()->expireAt($tokenExpiration);
+        $splitToken = $this->splitTokenFactory->generate()->expireAt($tokenExpiration);
 
         if ($client->requestEmailChange($email, $splitToken)) {
             $this->repository->save($client);

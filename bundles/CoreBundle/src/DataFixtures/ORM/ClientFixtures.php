@@ -30,11 +30,11 @@ final class ClientFixtures extends Fixture
 
     public function __construct(MessageBusInterface $commandBus, EncoderFactoryInterface $encoderFactory)
     {
-        $this->commandBus     = $commandBus;
+        $this->commandBus = $commandBus;
         $this->encoderFactory = $encoderFactory;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $this->commandBus->dispatch(
             new BatchCommand(

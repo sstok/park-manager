@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Form\Type\Security;
 
-use Exception;
 use ParkManager\Bundle\CoreBundle\Form\DataTransformer\SplitTokenToStringTransformer;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
 use Symfony\Component\Form\AbstractType;
@@ -21,7 +20,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use function is_string;
 
 final class SplitTokenType extends AbstractType
 {
@@ -34,7 +32,7 @@ final class SplitTokenType extends AbstractType
     public function __construct(SplitTokenFactory $splitTokenFactory, TranslatorInterface $translator)
     {
         $this->splitTokenFactory = $splitTokenFactory;
-        $this->translator        = $translator;
+        $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -42,20 +40,22 @@ final class SplitTokenType extends AbstractType
         // Ensure that the Model data is always SplitToken object.
         // If it's invalid map to an form error.
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $data = $event->getData();
 
-            if (is_string($data)) {
-                try {
-                    $event->setData($this->splitTokenFactory->fromString($data));
-                } catch (Exception $e) {
-                    $form = $event->getForm();
-                    $config = $form->getConfig();
+            if (! \is_string($data)) {
+                return;
+            }
 
-                    $form->addError(
-                        new FormError($this->translator->trans($config->getOption('invalid_message'), [], 'validators'), null, [], null, $e)
-                    );
-                }
+            try {
+                $event->setData($this->splitTokenFactory->fromString($data));
+            } catch (\Throwable $e) {
+                $form = $event->getForm();
+                $config = $form->getConfig();
+
+                $form->addError(
+                    new FormError($this->translator->trans($config->getOption('invalid_message'), [], 'validators'), null, [], null, $e)
+                );
             }
         });
 

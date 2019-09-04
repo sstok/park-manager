@@ -25,8 +25,8 @@ final class ConstraintsTypeConfigurator
 
     public function __invoke(): void
     {
-        /** @var WebhostingPlanConstraintsType $type */
         $type = Type::getType('webhosting_plan_constraints');
+        \assert($type instanceof WebhostingPlanConstraintsType);
         $type->setConstraintsFactory($this->constraintsFactory);
     }
 }

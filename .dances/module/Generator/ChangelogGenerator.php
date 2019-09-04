@@ -23,21 +23,21 @@ final class ChangelogGenerator implements Generator
         $this->filesystem = $filesystem;
     }
 
-    public function generate(array $configuration)
+    public function generate(array $configuration): void
     {
         $this->filesystem->dumpFile(
             'CHANGELOG.md',
             <<<'BODY'
-Change Log
-==========
+                Change Log
+                ==========
+                
+                All notable changes to this publication will be documented in this file.
+                
+                ## 1.0.0 - ????-??-??
+                
+                First stable release.
 
-All notable changes to this publication will be documented in this file.
-
-## 1.0.0 - ????-??-??
-
-First stable release.
-
-BODY
+                BODY
         );
     }
 }

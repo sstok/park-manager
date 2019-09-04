@@ -12,7 +12,6 @@ namespace Dance\Generator;
 
 use SkeletonDancer\Generator;
 use SkeletonDancer\Service\Filesystem;
-use function implode;
 
 final class GitConfigGenerator implements Generator
 {
@@ -24,12 +23,12 @@ final class GitConfigGenerator implements Generator
         $this->filesystem = $filesystem;
     }
 
-    public function generate(array $configuration)
+    public function generate(array $configuration): void
     {
         $this->filesystem->dumpFile('.gitignore', "/vendor/\nphpunit.xml\n");
         $this->filesystem->dumpFile(
             '.gitattributes',
-            implode(
+            \implode(
                 "\n",
                 [
                     "# Always use LF\ncore.autocrlf=lf",

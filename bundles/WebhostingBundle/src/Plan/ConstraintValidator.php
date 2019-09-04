@@ -28,9 +28,9 @@ use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraint;
 interface ConstraintValidator
 {
     /**
-     * @param Constraint      $constraint Constraint configuration (as assigned)
-     * @param array           $context    Additional information about the operation
-     *                                    (implement dependent - not required)
+     * @param Constraint $constraint Constraint configuration (as assigned)
+     * @param array      $context    Additional information about the operation
+     *                               (implement dependent - not required)
      *
      * @throws ConstraintExceeded (instance) when a constraint is violated
      */

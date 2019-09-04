@@ -18,7 +18,7 @@ use Symfony\Component\Panther\PantherTestCase;
 final class RequestPasswordResetActionTest extends PantherTestCase
 {
     /** @test */
-    public function it_requests_a_password_reset()
+    public function it_requests_a_password_reset(): void
     {
         $client = static::createClient();
 
@@ -42,7 +42,7 @@ final class RequestPasswordResetActionTest extends PantherTestCase
     }
 
     /** @test */
-    public function it_requests_a_password_reset_when_one_was_already_requested()
+    public function it_requests_a_password_reset_when_one_was_already_requested(): void
     {
         $client = static::createClient();
 

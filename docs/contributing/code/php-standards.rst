@@ -11,7 +11,7 @@ When contributing code to Park-Manager, you must follow its coding standards.
     The Front-end follows a different set of standards, which you can find in
     :doc:`/contributing/code/front-end-standards`
 
-The Park-Manager Coding Standard is a set of rules for `PHP_CodeSniffer <https://github.com/squizlabs/PHP_CodeSniffer>`_.
+The Park-Manager Coding Standard is a set of rules for PHP-CS-Fixer and `PHP_CodeSniffer <https://github.com/squizlabs/PHP_CodeSniffer>`_.
 It is based on `PSR-1 <https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md>`_
 and `PSR-2 <https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md>`_,
 with some noticeable exceptions/differences/extensions.
@@ -27,7 +27,6 @@ Introduction
 - Abstract exception class names and exception interface names should be suffixed with ``Exception``;
 - Interfaces must not be suffixed with ``Interface``;
 - Concrete exception class names should not be suffixed with ``Exception``;
-- Align equals (``=``) signs in assignments;
 - Align chained method calls over multiple lines;
 - Add spaces around a concatenation operator ``$foo = 'Hello ' . 'World!';``;
 - Add spaces between assignment, control and return statements;
@@ -43,6 +42,7 @@ Introduction
 - Omit phpDoc for parameters/returns with native types, unless adding description;
 - Don't use ``@author``, ``@since`` and similar annotations that duplicate Git information;
 - Don't wrap definitions (class/interface/trait/function and closures);
+- Don't Align equals (``=``) signs in assignments;
 - Assignment in condition is not allowed.
 
 .. tip::
@@ -51,13 +51,13 @@ Introduction
 
     .. code-block:: bash
 
-        $ vendor/bin/cs
+        $ make cs-check
 
     Some of the violations can be automatically fixed by running:
 
     .. code-block:: bash
 
-        $ vendor/bin/phpcbf
+        $ make cs
 
 Function Deceleration Order
 ---------------------------

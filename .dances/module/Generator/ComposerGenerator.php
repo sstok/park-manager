@@ -15,8 +15,6 @@ use SkeletonDancer\Service\Filesystem;
 use SkeletonDancer\StringUtil;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
-use function json_encode;
-use function str_replace;
 
 final class ComposerGenerator implements Generator
 {
@@ -28,7 +26,7 @@ final class ComposerGenerator implements Generator
         $this->filesystem = $filesystem;
     }
 
-    final public function generate(array $answers): void
+    public function generate(array $answers): void
     {
         $composer = [
             'name' => 'park-manager/' . $this->generatePackageSubName($answers),
@@ -63,12 +61,12 @@ final class ComposerGenerator implements Generator
         $this->filesystem->dumpFile(
             'composer.json',
             // Add extra newline to content to fix content mismatch when dumping
-            json_encode($composer, JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES) . "\n"
+            \json_encode($composer, JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES) . "\n"
         );
     }
 
     private function generatePackageSubName(array $answers): string
     {
-        return str_replace('_', '-', StringUtil::underscore($answers['module_name'])) . '-module';
+        return \str_replace('_', '-', StringUtil::underscore($answers['module_name'])) . '-module';
     }
 }

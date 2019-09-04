@@ -16,8 +16,8 @@ final class ConstraintsFactoryResetter
 {
     public function reset(): void
     {
-        /** @var WebhostingPlanConstraintsType $type */
         $type = Type::getType('webhosting_plan_constraints');
+        \assert($type instanceof WebhostingPlanConstraintsType);
         $type->setConstraintsFactory(null);
     }
 }

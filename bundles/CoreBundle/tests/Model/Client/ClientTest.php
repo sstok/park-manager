@@ -24,7 +24,6 @@ use ParkManager\Bundle\CoreBundle\Test\Domain\EventsRecordingEntityAssertionTrai
 use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;
-use function str_repeat;
 
 /**
  * @internal
@@ -52,8 +51,8 @@ final class ClientTest extends TestCase
             'Jane Doe'
         );
 
-        self::assertEquals($id, $client->getId());
-        self::assertEquals($email, $client->getEmail());
+        static::assertEquals($id, $client->getId());
+        static::assertEquals($email, $client->getEmail());
     }
 
     /** @test */
@@ -62,7 +61,7 @@ final class ClientTest extends TestCase
         $client = $this->registerClient();
         $client->changeEmail($email = new EmailAddress('Doh@example.com'));
 
-        self::assertEquals($email, $client->getEmail());
+        static::assertEquals($email, $client->getEmail());
     }
 
     private function registerClient(?string $password = null): Client
@@ -89,7 +88,7 @@ final class ClientTest extends TestCase
         $client = $this->registerClient();
         $client->disable();
 
-        self::assertFalse($client->isEnabled());
+        static::assertFalse($client->isEnabled());
     }
 
     /** @test */
@@ -99,7 +98,7 @@ final class ClientTest extends TestCase
         $client->disable();
         $client->enable();
 
-        self::assertTrue($client->isEnabled());
+        static::assertTrue($client->isEnabled());
     }
 
     /** @test */
@@ -135,11 +134,11 @@ final class ClientTest extends TestCase
     /** @test */
     public function request_email_change(): void
     {
-        $token   = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
-        $client  = $this->registerClient();
+        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $client = $this->registerClient();
 
-        self::assertTrue($client->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token));
-        self::assertEquals(new EmailAddress('john@example.com'), $client->getEmail());
+        static::assertTrue($client->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token));
+        static::assertEquals(new EmailAddress('john@example.com'), $client->getEmail());
     }
 
     private function createTimeLimitedSplitToken(DateTimeImmutable $expiresAt): SplitToken
@@ -150,18 +149,18 @@ final class ClientTest extends TestCase
     /** @test */
     public function ignores_email_change_token_when_already_set_with_same_information(): void
     {
-        $token   = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
-        $client  = $this->registerClient();
+        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $client = $this->registerClient();
 
-        self::assertTrue($client->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token));
-        self::assertFalse($client->requestEmailChange($email, $token));
+        static::assertTrue($client->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token));
+        static::assertFalse($client->requestEmailChange($email, $token));
     }
 
     /** @test */
     public function changes_email_when_confirmation_token_is_correct(): void
     {
-        $token   = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
-        $client  = $this->registerClient();
+        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $client = $this->registerClient();
         $client->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token);
 
         $client->confirmEmailChange($this->getTokenString($token));
@@ -169,7 +168,7 @@ final class ClientTest extends TestCase
         // Second usage is prohibited, so try a second time.
         $this->assertEmailChangeThrowsRejected($client, $token);
 
-        self::assertEquals($email, $client->getEmail());
+        static::assertEquals($email, $client->getEmail());
     }
 
     private function assertEmailChangeThrowsRejected(Client $client, SplitToken $token): void
@@ -177,7 +176,7 @@ final class ClientTest extends TestCase
         try {
             $client->confirmEmailChange($token);
 
-            $this->fail('EmailChangeConfirmationRejected was expected');
+            static::fail('EmailChangeConfirmationRejected was expected');
         } catch (EmailChangeConfirmationRejected $e) {
             $this->addToAssertionCount(1);
         }
@@ -202,48 +201,48 @@ final class ClientTest extends TestCase
         // Second attempt is prohibited, so try a second time (with correct token)!
         $this->assertEmailChangeThrowsRejected($client, $correctToken);
 
-        self::assertEquals(new EmailAddress('john@example.com'), $client->getEmail());
+        static::assertEquals(new EmailAddress('john@example.com'), $client->getEmail());
     }
 
     private function generateSecondToken(): SplitToken
     {
-        return FakeSplitTokenFactory::instance(str_repeat('na', SplitToken::TOKEN_CHAR_LENGTH))->generate();
+        return FakeSplitTokenFactory::instance(\str_repeat('na', SplitToken::TOKEN_CHAR_LENGTH))->generate();
     }
 
     /** @test */
     public function rejects_email_change_confirmation_when_token_was_not_set(): void
     {
-        $token   = FakeSplitTokenFactory::instance()->generate();
-        $client  = $this->registerClient();
+        $token = FakeSplitTokenFactory::instance()->generate();
+        $client = $this->registerClient();
 
         $this->assertEmailChangeThrowsRejected($client, $token);
-        self::assertEquals(new EmailAddress('john@example.com'), $client->getEmail());
+        static::assertEquals(new EmailAddress('john@example.com'), $client->getEmail());
     }
 
     /** @test */
-    public function request_passwordReset_confirmation_token(): void
+    public function request_password_reset_confirmation_token(): void
     {
-        $token   = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
-        $client  = $this->registerClient('pass-my-word');
+        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $client = $this->registerClient('pass-my-word');
 
-        self::assertTrue($client->requestPasswordReset($token));
+        static::assertTrue($client->requestPasswordReset($token));
     }
 
     /** @test */
-    public function reject_passwordReset_confirmation_when_token_already_set_with_and_not_expired(): void
+    public function reject_password_reset_confirmation_when_token_already_set_with_and_not_expired(): void
     {
-        $token   = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
-        $client  = $this->registerClient('pass-my-word');
+        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $client = $this->registerClient('pass-my-word');
 
-        self::assertTrue($client->requestPasswordReset($token));
-        self::assertFalse($client->requestPasswordReset($token));
+        static::assertTrue($client->requestPasswordReset($token));
+        static::assertFalse($client->requestPasswordReset($token));
     }
 
     /** @test */
     public function changes_password_when_token_is_correct(): void
     {
-        $token   = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
-        $client  = $this->registerClient('pass-my-word');
+        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $client = $this->registerClient('pass-my-word');
         $client->requestPasswordReset($token);
         $id = $client->getId();
 
@@ -281,7 +280,7 @@ final class ClientTest extends TestCase
         try {
             $client->confirmPasswordReset($token, 'new-password');
 
-            $this->fail('PasswordResetConfirmationRejected was expected');
+            static::fail('PasswordResetConfirmationRejected was expected');
         } catch (PasswordResetConfirmationRejected $e) {
             $this->addToAssertionCount(1);
         }
@@ -299,8 +298,8 @@ final class ClientTest extends TestCase
     /** @test */
     public function password_reset_is_rejected_when_token_has_expired(): void
     {
-        $token   = $this->createTimeLimitedSplitToken(new DateTimeImmutable('- 5 minutes UTC'));
-        $client  = $this->registerClient('pass-my-word');
+        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('- 5 minutes UTC'));
+        $client = $this->registerClient('pass-my-word');
         $client->requestPasswordReset($token);
 
         $this->assertPasswordResetThrowsRejected($client, $token);

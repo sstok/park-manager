@@ -25,9 +25,9 @@ final class SectionsLoader extends Loader
      */
     public function __construct(LoaderResolverInterface $loader, ?string $primaryHost, bool $isSecure)
     {
-        $this->loader      = $loader;
+        $this->loader = $loader;
         $this->primaryHost = $primaryHost;
-        $this->isSecure    = $isSecure;
+        $this->isSecure = $isSecure;
     }
 
     public function load($resource, $type = null): RouteCollection
@@ -48,8 +48,8 @@ final class SectionsLoader extends Loader
     private function loadResource(string $resource): RouteCollection
     {
         $loader = $this->loader->resolve($resource, 'rollerworks_autowiring');
-        /** @var RouteCollection $collection */
         $collection = $loader->load($resource, 'rollerworks_autowiring');
+        \assert($collection instanceof RouteCollection);
 
         if ($this->isSecure) {
             $collection->setSchemes(['https']);

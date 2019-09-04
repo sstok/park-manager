@@ -29,48 +29,48 @@ final class TwigResponseListenerTest extends TestCase
     public function it_ignores_other_responses(): void
     {
         $container = $this->createUnusedContainer();
-        $listener  = new TwigResponseListener($container);
+        $listener = new TwigResponseListener($container);
 
         $event = $this->createEvent($response = new Response());
         $listener->onKernelResponse($event);
 
-        self::assertSame($response, $event->getResponse());
+        static::assertSame($response, $event->getResponse());
     }
 
     /** @test */
     public function it_ignores_empty_response(): void
     {
         $container = $this->createUnusedContainer();
-        $listener  = new TwigResponseListener($container);
+        $listener = new TwigResponseListener($container);
 
         $event = $this->createEvent(new TwigResponse('Nope', [], 204));
         $listener->onKernelResponse($event);
 
-        self::assertSame('', $event->getResponse()->getContent());
+        static::assertSame('', $event->getResponse()->getContent());
     }
 
     /** @test */
     public function it_ignores_when_content_is_already_set(): void
     {
         $container = $this->createUnusedContainer();
-        $listener  = new TwigResponseListener($container);
+        $listener = new TwigResponseListener($container);
 
         $event = $this->createEvent((new TwigResponse('Nope'))->setContent('Something'));
         $listener->onKernelResponse($event);
 
-        self::assertSame('Something', $event->getResponse()->getContent());
+        static::assertSame('Something', $event->getResponse()->getContent());
     }
 
     /** @test */
     public function it_renders_twig_template(): void
     {
         $container = $this->createUsedContainer('@CoreBundle/client/show_user.html.twig', ['He' => 'you']);
-        $listener  = new TwigResponseListener($container);
+        $listener = new TwigResponseListener($container);
 
         $event = $this->createEvent(new TwigResponse('@CoreBundle/client/show_user.html.twig', ['He' => 'you']));
         $listener->onKernelResponse($event);
 
-        self::assertSame('It was like this when I got here.', $event->getResponse()->getContent());
+        static::assertSame('It was like this when I got here.', $event->getResponse()->getContent());
     }
 
     private function createUnusedContainer(): ContainerInterface

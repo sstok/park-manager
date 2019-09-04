@@ -30,7 +30,7 @@ use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\Table(
  *     name="client",
  *     uniqueConstraints={
@@ -46,7 +46,7 @@ class Client implements RecordsDomainEvents
     public const DEFAULT_ROLES = ['ROLE_USER'];
 
     /**
-     * @ORM\Id()
+     * @ORM\Id
      * @ORM\Column(type="park_manager_client_id")
      * @ORM\GeneratedValue(strategy="NONE")
      *
@@ -112,10 +112,10 @@ class Client implements RecordsDomainEvents
 
     protected function __construct(ClientId $id, EmailAddress $email, string $displayName)
     {
-        $this->id          = $id;
-        $this->email       = $email;
+        $this->id = $id;
+        $this->email = $email;
         $this->displayName = $displayName;
-        $this->roles       = new ArrayCollection(static::DEFAULT_ROLES);
+        $this->roles = new ArrayCollection(static::DEFAULT_ROLES);
     }
 
     public static function register(ClientId $id, EmailAddress $email, string $displayName, ?string $password = null): self
@@ -258,7 +258,7 @@ class Client implements RecordsDomainEvents
     public function disablePasswordReset(): void
     {
         $this->passwordResetEnabled = false;
-        $this->passwordResetToken   = null;
+        $this->passwordResetToken = null;
     }
 
     public function enablePasswordReset(): void

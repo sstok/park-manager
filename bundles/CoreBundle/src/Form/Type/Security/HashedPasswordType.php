@@ -18,17 +18,13 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraint;
-use function array_merge;
-use function gettype;
-use function is_string;
-use function sodium_memzero;
 
 final class HashedPasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $passwordOptions         = $options['password_options'] + ['required' => $options['required']];
-        $passwordOptions['attr'] = array_merge(
+        $passwordOptions = $options['password_options'] + ['required' => $options['required']];
+        $passwordOptions['attr'] = \array_merge(
             $passwordOptions['attr'] ?? [],
             [
                 'autocomplete' => 'off',
@@ -65,12 +61,12 @@ final class HashedPasswordType extends AbstractType
                         return null;
                     }
 
-                    if (! is_string($value)) {
-                        throw new TransformationFailedException('Expected string got "' . gettype($value) . '"');
+                    if (! \is_string($value)) {
+                        throw new TransformationFailedException('Expected string got "' . \gettype($value) . '"');
                     }
 
                     $encodePassword = $encoder($value);
-                    sodium_memzero($value);
+                    \sodium_memzero($value);
 
                     return $encodePassword;
                 }

@@ -29,8 +29,6 @@ interface Constraint
      *
      * The configuration must be in a format that can be stored
      * in JSON and be reconstitute using reconstituteFromArray().
-     *
-     * @return array
      */
     public function configuration(): array;
 
@@ -39,8 +37,6 @@ interface Constraint
      *
      * Note: the provided values come directly from
      * storage and are not transformed yet.
-     *
-     * @param array $from
      *
      * @return static
      */

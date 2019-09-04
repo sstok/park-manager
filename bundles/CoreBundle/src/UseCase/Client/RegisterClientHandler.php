@@ -23,7 +23,7 @@ final class RegisterClientHandler
         $this->clientRepository = $clientRepository;
     }
 
-    public function __invoke(RegisterClient $command)
+    public function __invoke(RegisterClient $command): void
     {
         $this->clientRepository->save(
             Client::register(

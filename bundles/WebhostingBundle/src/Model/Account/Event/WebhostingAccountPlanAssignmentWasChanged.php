@@ -41,12 +41,12 @@ final class WebhostingAccountPlanAssignmentWasChanged
     public function __construct(WebhostingAccountId $id, WebhostingPlan $plan)
     {
         $this->account = $id;
-        $this->plan    = $plan->getId();
+        $this->plan = $plan->getId();
     }
 
     public static function withConstraints(WebhostingAccountId $id, WebhostingPlan $plan): self
     {
-        $event                  = new self($id, $plan);
+        $event = new self($id, $plan);
         $event->planConstraints = $plan->getConstraints();
 
         return $event;

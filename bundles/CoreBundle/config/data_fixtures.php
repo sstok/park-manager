@@ -10,12 +10,13 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-return static function (ContainerConfigurator $c) {
+return static function (ContainerConfigurator $c): void {
     $di = $c->services()->defaults()
         ->autowire()
         ->autoconfigure()
         ->private()
-        ->bind('$commandBus', ref('park_manager.command_bus'));
+        ->bind('$commandBus', ref('park_manager.command_bus'))
+    ;
 
     $di->load('ParkManager\\Bundle\\CoreBundle\\DataFixtures\\', __DIR__ . '/../src/DataFixtures');
 };

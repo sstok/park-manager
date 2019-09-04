@@ -12,47 +12,45 @@ namespace ParkManager\Bundle\CoreBundle\Tests\Security;
 
 use ParkManager\Bundle\CoreBundle\Security\SecurityUser;
 use PHPUnit\Framework\TestCase;
-use function serialize;
-use function unserialize;
 
 /**
  * @internal
  */
 final class SecurityUserTest extends TestCase
 {
-    private const ID1      = '930c3fd0-3bd1-11e7-bb9b-acdc32b58315';
-    private const ID2      = 'c831846c-53f6-11e7-aceb-acbc32b58315';
+    private const ID1 = '930c3fd0-3bd1-11e7-bb9b-acdc32b58315';
+    private const ID2 = 'c831846c-53f6-11e7-aceb-acbc32b58315';
     private const PASSWORD = 'my-password-is-better-then-your-password';
 
     /** @test */
-    public function its_username_equals_UserId(): void
+    public function its_username_equals_User_id(): void
     {
-        $securityUser  = $this->createSecurityUser();
+        $securityUser = $this->createSecurityUser();
         $securityUser2 = $this->createSecurityUser(self::ID2);
 
-        self::assertSame(self::ID1, $securityUser->getUsername());
-        self::assertSame(self::ID2, $securityUser2->getUsername());
-        self::assertSame(self::ID1, $securityUser->getId());
-        self::assertSame(self::ID2, $securityUser2->getId());
+        static::assertSame(self::ID1, $securityUser->getUsername());
+        static::assertSame(self::ID2, $securityUser2->getUsername());
+        static::assertSame(self::ID1, $securityUser->getId());
+        static::assertSame(self::ID2, $securityUser2->getId());
     }
 
     /** @test */
     public function its_password_is_equals_when_provided(): void
     {
-        self::assertSame(self::PASSWORD, $this->createSecurityUser()->getPassword());
+        static::assertSame(self::PASSWORD, $this->createSecurityUser()->getPassword());
     }
 
     /** @test */
     public function its_password_is_empty_when_not_provided(): void
     {
-        self::assertSame('', $this->createSecurityUser(self::ID1, null)->getPassword());
+        static::assertSame('', $this->createSecurityUser(self::ID1, null)->getPassword());
     }
 
     /** @test */
     public function it_has_roles(): void
     {
-        self::assertSame(['ROLE_USER'], $this->createSecurityUser()->getRoles());
-        self::assertSame(['ROLE_ADMIN'], $this->createSecurityUserSecond()->getRoles());
+        static::assertSame(['ROLE_USER'], $this->createSecurityUser()->getRoles());
+        static::assertSame(['ROLE_ADMIN'], $this->createSecurityUserSecond()->getRoles());
     }
 
     /** @test */
@@ -61,7 +59,7 @@ final class SecurityUserTest extends TestCase
         $securityUser1 = $this->createSecurityUser();
         $securityUser2 = $this->createSecurityUser();
 
-        self::assertTrue($securityUser1->isEqualTo($securityUser2));
+        static::assertTrue($securityUser1->isEqualTo($securityUser2));
     }
 
     /** @test */
@@ -74,20 +72,20 @@ final class SecurityUserTest extends TestCase
         $securityUser5 = new SecurityUserExtended(self::ID1, self::PASSWORD, true, ['ROLE_USER', 'ROLE_OPERATOR']); // Role
         $securityUser6 = new SecurityUserExtended(self::ID1, self::PASSWORD, false, ['ROLE_USER']); // Status
 
-        self::assertFalse($securityUser1->isEqualTo($securityUser2), 'ID should must mismatch');
-        self::assertFalse($securityUser1->isEqualTo($securityUser3), 'Password should must mismatch');
-        self::assertFalse($securityUser1->isEqualTo($securityUser4), 'Class should be of same instance');
-        self::assertFalse($securityUser1->isEqualTo($securityUser6), 'Enabled status should should mismatch');
-        self::assertTrue($securityUser1->isEqualTo($securityUser5), 'Roles should should not mismatch');
+        static::assertFalse($securityUser1->isEqualTo($securityUser2), 'ID should must mismatch');
+        static::assertFalse($securityUser1->isEqualTo($securityUser3), 'Password should must mismatch');
+        static::assertFalse($securityUser1->isEqualTo($securityUser4), 'Class should be of same instance');
+        static::assertFalse($securityUser1->isEqualTo($securityUser6), 'Enabled status should should mismatch');
+        static::assertTrue($securityUser1->isEqualTo($securityUser5), 'Roles should should not mismatch');
     }
 
     /** @test */
     public function its_serializable(): void
     {
         $securityUser = new SecurityUserExtended(self::ID1, self::PASSWORD, false, ['ROLE_USER', 'ROLE_OPERATOR']);
-        $unserialized = unserialize(serialize($securityUser), []);
+        $unserialized = \unserialize(\serialize($securityUser), []);
 
-        self::assertTrue($securityUser->isEqualTo($unserialized));
+        static::assertTrue($securityUser->isEqualTo($unserialized));
     }
 
     private function createSecurityUser(?string $id = self::ID1, ?string $password = self::PASSWORD): SecurityUser

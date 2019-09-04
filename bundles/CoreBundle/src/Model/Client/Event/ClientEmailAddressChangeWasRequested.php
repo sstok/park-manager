@@ -39,8 +39,8 @@ final class ClientEmailAddressChangeWasRequested
 
     public function __construct(ClientId $id, SplitToken $token, EmailAddress $newEmail)
     {
-        $this->id       = $id;
-        $this->token    = $token;
+        $this->id = $id;
+        $this->token = $token;
         $this->newEmail = $newEmail;
     }
 }

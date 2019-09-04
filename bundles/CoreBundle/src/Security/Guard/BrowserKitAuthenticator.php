@@ -22,7 +22,6 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
-use function strtr;
 
 /**
  * The BrowserKitAuthenticator is only to be used during BrowserKit tests.
@@ -93,7 +92,7 @@ final class BrowserKitAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         $data = [
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
+            'message' => \strtr($exception->getMessageKey(), $exception->getMessageData()),
         ];
 
         return new JsonResponse($data, Response::HTTP_FORBIDDEN);

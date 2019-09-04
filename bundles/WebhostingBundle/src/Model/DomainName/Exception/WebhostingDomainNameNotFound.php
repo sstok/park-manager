@@ -12,12 +12,11 @@ namespace ParkManager\Bundle\WebhostingBundle\Model\DomainName\Exception;
 
 use InvalidArgumentException;
 use ParkManager\Bundle\WebhostingBundle\Model\DomainName\WebhostingDomainNameId;
-use function sprintf;
 
 final class WebhostingDomainNameNotFound extends InvalidArgumentException
 {
     public static function withId(WebhostingDomainNameId $id): self
     {
-        return new self(sprintf('Webhosting domain-name with id "%s" does not exist.', $id->toString()));
+        return new self(\sprintf('Webhosting domain-name with id "%s" does not exist.', $id->toString()));
     }
 }

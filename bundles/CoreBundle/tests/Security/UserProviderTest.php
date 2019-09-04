@@ -74,8 +74,8 @@ final class UserProviderTest extends TestCase
     {
         $provider = new UserProvider($this->createNullFinderStub(), ClientUser::class);
 
-        self::assertTrue($provider->supportsClass(ClientUser::class));
-        self::assertFalse($provider->supportsClass(AdministratorUser::class));
+        static::assertTrue($provider->supportsClass(ClientUser::class));
+        static::assertFalse($provider->supportsClass(AdministratorUser::class));
     }
 
     /** @test */
@@ -83,10 +83,10 @@ final class UserProviderTest extends TestCase
     {
         $provider = new UserProvider($this->createSingleUserFinderStub(), ClientUser::class);
 
-        self::assertEquals(new ClientUser('1', 'maybe', true, ['ROLE_USER']), $provider->loadUserByUsername('foobar@example.com'));
-        self::assertEquals(new ClientUser('2', '', true, ['ROLE_USER']), $provider->loadUserByUsername('bar@example.com'));
-        self::assertEquals(new ClientUser('3', 'nope', false, ['ROLE_USER']), $provider->loadUserByUsername('foo@example.com'));
-        self::assertEquals(new ClientUser('4', 'nope', true, ['ROLE_USER', 'ROLE_RESELLER']), $provider->loadUserByUsername('moo@example.com'));
+        static::assertEquals(new ClientUser('1', 'maybe', true, ['ROLE_USER']), $provider->loadUserByUsername('foobar@example.com'));
+        static::assertEquals(new ClientUser('2', '', true, ['ROLE_USER']), $provider->loadUserByUsername('bar@example.com'));
+        static::assertEquals(new ClientUser('3', 'nope', false, ['ROLE_USER']), $provider->loadUserByUsername('foo@example.com'));
+        static::assertEquals(new ClientUser('4', 'nope', true, ['ROLE_USER', 'ROLE_RESELLER']), $provider->loadUserByUsername('moo@example.com'));
     }
 
     /** @test */
@@ -94,10 +94,10 @@ final class UserProviderTest extends TestCase
     {
         $provider = new UserProvider($this->createSingleUserFinderStub(), ClientUser::class);
 
-        self::assertEquals(new ClientUser('1', '', true, ['ROLE_USER2']), $provider->refreshUser($provider->loadUserByUsername('foobar@example.com')));
-        self::assertEquals(new ClientUser('2', 'maybe', false, ['ROLE_USER2']), $provider->refreshUser($provider->loadUserByUsername('bar@example.com')));
-        self::assertEquals(new ClientUser('3', 'nope2', true, ['ROLE_USER2']), $provider->refreshUser($provider->loadUserByUsername('foo@example.com')));
-        self::assertEquals(new ClientUser('4', 'nope2', true, ['ROLE_USER2', 'ROLE_RESELLER2']), $provider->refreshUser($provider->loadUserByUsername('moo@example.com')));
+        static::assertEquals(new ClientUser('1', '', true, ['ROLE_USER2']), $provider->refreshUser($provider->loadUserByUsername('foobar@example.com')));
+        static::assertEquals(new ClientUser('2', 'maybe', false, ['ROLE_USER2']), $provider->refreshUser($provider->loadUserByUsername('bar@example.com')));
+        static::assertEquals(new ClientUser('3', 'nope2', true, ['ROLE_USER2']), $provider->refreshUser($provider->loadUserByUsername('foo@example.com')));
+        static::assertEquals(new ClientUser('4', 'nope2', true, ['ROLE_USER2', 'ROLE_RESELLER2']), $provider->refreshUser($provider->loadUserByUsername('moo@example.com')));
     }
 
     private function createSingleUserFinderStub(): AuthenticationFinder

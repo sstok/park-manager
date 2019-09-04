@@ -36,9 +36,9 @@ final class RegisterAdministratorCommand extends Command
     {
         parent::__construct();
 
-        $this->validator       = $validator;
+        $this->validator = $validator;
         $this->passwordEncoder = $passwordEncoder;
-        $this->commandBus      = $commandBus;
+        $this->commandBus = $commandBus;
     }
 
     protected function configure(): void
@@ -46,9 +46,10 @@ final class RegisterAdministratorCommand extends Command
         $this
             ->setDescription('Registers a new Administrator user')
             ->setHelp(<<<'EOT'
-The <info>%command.name%</info> command registers a new Administrator user.
-EOT
-        );
+                The <info>%command.name%</info> command registers a new Administrator user.
+                EOT
+        )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -56,7 +57,7 @@ EOT
         $io = new SymfonyStyle($input, $output);
 
         $displayName = $io->ask('Display name');
-        $email       = $io->ask('E-mail address', null, function ($value) {
+        $email = $io->ask('E-mail address', null, function ($value) {
             $violationList = $this->validator->validate($value, [new NotBlank(), new Email()]);
 
             if ($violationList->count() > 0) {
@@ -67,7 +68,8 @@ EOT
         });
 
         $password = $this->passwordEncoder->getEncoder(AdministratorUser::class)
-            ->encodePassword($io->askHidden('Password'), '');
+            ->encodePassword($io->askHidden('Password'), '')
+        ;
 
         $this->commandBus->dispatch(
             new RegisterAdministrator(AdministratorId::create()->toString(), $email, $displayName, $password)

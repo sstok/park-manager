@@ -48,7 +48,8 @@ class ChangePasswordType extends AbstractType
 
                     return $encoded;
                 },
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -59,7 +60,8 @@ class ChangePasswordType extends AbstractType
             ->setDefault('empty_data', null)
             ->setAllowedTypes('user_class', ['string'])
             ->setAllowedTypes('command_builder', [Closure::class])
-            ->setAllowedTypes('password_constraints', [Constraint::class . '[]', Constraint::class]);
+            ->setAllowedTypes('password_constraints', [Constraint::class . '[]', Constraint::class])
+        ;
     }
 
     public function getBlockPrefix(): string

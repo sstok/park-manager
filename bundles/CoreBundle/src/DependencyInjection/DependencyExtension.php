@@ -19,7 +19,6 @@ use ParkManager\Bundle\CoreBundle\Twig\AppContextGlobal;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use function class_exists;
 
 /** @internal */
 final class DependencyExtension extends Extension implements PrependExtensionInterface
@@ -44,7 +43,7 @@ final class DependencyExtension extends Extension implements PrependExtensionInt
         $loader->load('services.php');
         $loader->load('services/*.php', 'glob');
 
-        if (class_exists(DoctrineFixturesBundle::class)) {
+        if (\class_exists(DoctrineFixturesBundle::class)) {
             $loader->load('data_fixtures.php');
         }
 

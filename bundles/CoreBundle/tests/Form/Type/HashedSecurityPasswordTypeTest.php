@@ -47,8 +47,8 @@ final class HashedSecurityPasswordTypeTest extends TypeTestCase
         $form = $builder->getForm();
         $form->submit(['password' => ['password' => 'Hello there']]);
 
-        self::assertTrue($form->isValid());
-        self::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
+        static::assertTrue($form->isValid());
+        static::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
     }
 
     /** @test */
@@ -68,8 +68,8 @@ final class HashedSecurityPasswordTypeTest extends TypeTestCase
 
         $form = $builder->getForm();
 
-        self::assertFalse($form->isSubmitted());
-        self::assertEquals(['name' => 'Ruby'], $form->getData());
+        static::assertFalse($form->isSubmitted());
+        static::assertEquals(['name' => 'Ruby'], $form->getData());
     }
 
     /** @test */
@@ -86,7 +86,7 @@ final class HashedSecurityPasswordTypeTest extends TypeTestCase
         $form = $builder->getForm();
         $form->submit(['password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there']]]);
 
-        self::assertTrue($form->isValid());
-        self::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
+        static::assertTrue($form->isValid());
+        static::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
     }
 }

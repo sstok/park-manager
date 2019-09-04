@@ -23,6 +23,6 @@ final class RequestPasswordResetTest extends TestCase
     {
         $command = new RequestPasswordReset('jane@example.com');
 
-        self::assertEquals('jane@example.com', $command->email());
+        static::assertEquals('jane@example.com', $command->email());
     }
 }

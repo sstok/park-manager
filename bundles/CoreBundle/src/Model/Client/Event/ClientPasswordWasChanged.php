@@ -30,7 +30,7 @@ final class ClientPasswordWasChanged
 
     public function __construct(ClientId $id, ?string $newPassword)
     {
-        $this->id       = $id;
+        $this->id = $id;
         $this->password = $newPassword;
     }
 }

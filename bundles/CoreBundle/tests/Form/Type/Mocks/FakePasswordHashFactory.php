@@ -27,7 +27,7 @@ final class FakePasswordHashFactory implements EncoderFactoryInterface
     public function __construct(string $userClass = ClientUser::class)
     {
         $this->userClass = $userClass;
-        $this->encoder   = new class() implements PasswordEncoderInterface {
+        $this->encoder = new class() implements PasswordEncoderInterface {
             public function encodePassword($raw, $salt): string
             {
                 return 'encoded(' . $raw . ')';

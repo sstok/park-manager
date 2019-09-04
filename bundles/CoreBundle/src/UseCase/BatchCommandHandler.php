@@ -22,7 +22,7 @@ final class BatchCommandHandler
         $this->commandBus = $commandBus;
     }
 
-    public function __invoke(BatchCommand $batch)
+    public function __invoke(BatchCommand $batch): void
     {
         foreach ($batch->commands as $command) {
             $this->commandBus->dispatch($command);

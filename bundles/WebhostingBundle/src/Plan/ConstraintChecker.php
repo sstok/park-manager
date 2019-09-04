@@ -25,7 +25,7 @@ final class ConstraintChecker
     public function __construct(ContainerInterface $constraintValidators, WebhostingAccountRepository $accountRepository)
     {
         $this->constraintValidators = $constraintValidators;
-        $this->accountRepository    = $accountRepository;
+        $this->accountRepository = $accountRepository;
     }
 
     /**
@@ -39,8 +39,8 @@ final class ConstraintChecker
             return;
         }
 
-        /** @var ConstraintValidator $validator */
         $validator = $this->constraintValidators->get($constraintName);
+        \assert($validator instanceof ConstraintValidator);
         $validator->validate($accountId, $constraints->get($constraintName), $context);
     }
 }

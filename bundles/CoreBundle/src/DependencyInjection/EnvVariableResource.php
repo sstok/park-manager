@@ -25,7 +25,7 @@ final class EnvVariableResource implements SelfCheckingResourceInterface
     public function __construct(string $envName)
     {
         $this->resource = $envName;
-        $this->value    = $_ENV[$envName] ?? null;
+        $this->value = $_ENV[$envName] ?? null;
     }
 
     public function __toString(): string
@@ -35,16 +35,16 @@ final class EnvVariableResource implements SelfCheckingResourceInterface
 
     public function isFresh($timestamp): bool
     {
-        return ($_ENV[$this->resource] ?? null) === $this->value;
+        return $this->value === ($_ENV[$this->resource] ?? null);
     }
 
     public function serialize(): string
     {
-        return serialize([$this->resource, $this->value]);
+        return \serialize([$this->resource, $this->value]);
     }
 
     public function unserialize($serialized): void
     {
-        [$this->resource, $this->value] = unserialize($serialized, ['allowed_classes' => false]);
+        [$this->resource, $this->value] = \unserialize($serialized, ['allowed_classes' => false]);
     }
 }

@@ -28,8 +28,8 @@ final class ConfirmationHandler extends BaseConfirmationHandler
      */
     public function configure(string $title, string $message, string $yesButtonLabel): self
     {
-        $this->templateContext['title']         = $title;
-        $this->templateContext['message']       = $message;
+        $this->templateContext['title'] = $title;
+        $this->templateContext['message'] = $message;
         $this->templateContext['yes_btn_label'] = $yesButtonLabel;
 
         return $this;

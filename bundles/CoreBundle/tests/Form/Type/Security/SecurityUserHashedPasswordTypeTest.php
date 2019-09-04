@@ -75,13 +75,14 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
     {
         $form = $this->factory->createBuilder()
             ->add('password', SecurityUserHashedPasswordType::class, ['user_class' => ClientUser::class])
-            ->getForm();
+            ->getForm()
+        ;
 
         $form->submit([
             'password' => ['password' => 'Hello there'],
         ]);
 
-        self::assertTrue($form->isValid());
-        self::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
+        static::assertTrue($form->isValid());
+        static::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
     }
 }

@@ -36,8 +36,8 @@ final class WebhostingPlanTest extends TestCase
             $constraints = new Constraints()
         );
 
-        self::assertEquals($constraints, $plan->getConstraints());
-        self::assertEquals([], $plan->getMetadata());
+        static::assertEquals($constraints, $plan->getConstraints());
+        static::assertEquals([], $plan->getMetadata());
     }
 
     /** @test */
@@ -52,7 +52,7 @@ final class WebhostingPlanTest extends TestCase
         $plan2 = $this->createPlan();
         $plan2->changeConstraints($plan2->getConstraints());
 
-        self::assertEquals($constraints, $plan->getConstraints());
+        static::assertEquals($constraints, $plan->getConstraints());
         self::assertDomainEvents(
             $plan,
             [new WebhostingPlanConstraintsWasChanged($id, $constraints)]
@@ -67,7 +67,7 @@ final class WebhostingPlanTest extends TestCase
         $plan->withMetadata(['label' => 'Gold']);
 
         self::assertNoDomainEvents($plan);
-        self::assertEquals(['label' => 'Gold'], $plan->getMetadata());
+        static::assertEquals(['label' => 'Gold'], $plan->getMetadata());
     }
 
     private function createPlan(): WebhostingPlan

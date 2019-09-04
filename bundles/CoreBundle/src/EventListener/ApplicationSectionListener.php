@@ -29,7 +29,7 @@ final class ApplicationSectionListener implements EventSubscriberInterface
      */
     public function __construct(array $sectionMatchers, ApplicationContext $applicationContext)
     {
-        $this->sectionMatchers    = $sectionMatchers;
+        $this->sectionMatchers = $sectionMatchers;
         $this->applicationContext = $applicationContext;
     }
 

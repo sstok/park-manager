@@ -12,7 +12,6 @@ namespace ParkManager\Bundle\CoreBundle\Form\Type\Security;
 
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormInterface;
-use function iterator_to_array;
 
 /**
  * @internal
@@ -35,7 +34,7 @@ final class RequestPasswordResetDataMapper implements DataMapperInterface
     public function mapFormsToData($forms, &$data): void
     {
         /** @var FormInterface[] $formsArray */
-        $formsArray = iterator_to_array($forms);
+        $formsArray = \iterator_to_array($forms);
 
         $data = ($this->commandBuilder)((string) $formsArray['email']->getData());
     }

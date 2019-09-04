@@ -69,9 +69,10 @@ composer-install-dev: fetch ensure clean
 	mv _composer.json composer.json
 
 cs:
-	sh -c "docker-compose run --rm php vendor/bin/phpcbf"
+	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=false --diff"
 
 cs-check:
+	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --diff --dry-run"
 	sh -c "docker-compose run --rm php vendor/bin/phpcs"
 
 phpstan: ensure

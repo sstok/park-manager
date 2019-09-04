@@ -11,12 +11,11 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\WebhostingBundle\Model\Plan\Exception;
 
 use InvalidArgumentException;
-use function sprintf;
 
 final class ConstraintNotInSet extends InvalidArgumentException
 {
     public static function withName(string $name): self
     {
-        return new self(sprintf('Webhosting Plan Constraint %s cannot be found in Constraints set.', $name));
+        return new self(\sprintf('Webhosting Plan Constraint %s cannot be found in Constraints set.', $name));
     }
 }

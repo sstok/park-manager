@@ -15,6 +15,6 @@ use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
 
 final class AdministratorIdType extends DomainIdType
 {
-    public const NAME         = 'park_manager_administrator_id';
+    public const NAME = 'park_manager_administrator_id';
     public const OBJECT_CLASS = AdministratorId::class;
 }

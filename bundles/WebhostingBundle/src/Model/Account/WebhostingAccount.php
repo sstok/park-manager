@@ -19,7 +19,7 @@ use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\Table(name="account", schema="webhosting")
  */
 class WebhostingAccount implements RecordsDomainEvents
@@ -27,7 +27,7 @@ class WebhostingAccount implements RecordsDomainEvents
     use DomainEventsCollectionTrait;
 
     /**
-     * @ORM\Id()
+     * @ORM\Id
      * @ORM\Column(type="park_manager_webhosting_account_id")
      * @ORM\GeneratedValue(strategy="NONE")
      *
@@ -75,7 +75,7 @@ class WebhostingAccount implements RecordsDomainEvents
 
     protected function __construct(WebhostingAccountId $id, OwnerId $owner)
     {
-        $this->id    = $id;
+        $this->id = $id;
         $this->owner = $owner;
     }
 
@@ -85,7 +85,7 @@ class WebhostingAccount implements RecordsDomainEvents
         // Store the constraints as part of the webhosting account
         // The plan can be changed at any time, but the constraints are immutable.
         $account->planConstraints = $plan->getConstraints();
-        $account->plan            = $plan;
+        $account->plan = $plan;
         $account->recordThat(new Event\WebhostingAccountWasRegistered($id, $owner));
 
         return $account;
@@ -93,7 +93,7 @@ class WebhostingAccount implements RecordsDomainEvents
 
     public static function registerWithCustomConstraints(WebhostingAccountId $id, OwnerId $owner, Constraints $constraints): self
     {
-        $account                  = new static($id, $owner);
+        $account = new static($id, $owner);
         $account->planConstraints = $constraints;
         $account->recordThat(new Event\WebhostingAccountWasRegistered($id, $owner));
 
@@ -144,7 +144,7 @@ class WebhostingAccount implements RecordsDomainEvents
             return;
         }
 
-        $this->plan            = $plan;
+        $this->plan = $plan;
         $this->planConstraints = $plan->getConstraints();
         $this->recordThat(Event\WebhostingAccountPlanAssignmentWasChanged::withConstraints($this->id, $plan));
     }
@@ -161,7 +161,7 @@ class WebhostingAccount implements RecordsDomainEvents
             return;
         }
 
-        $this->plan            = null;
+        $this->plan = null;
         $this->planConstraints = $constraints;
         $this->recordThat(new Event\WebhostingAccountPlanConstraintsWasChanged($this->id, $constraints));
     }

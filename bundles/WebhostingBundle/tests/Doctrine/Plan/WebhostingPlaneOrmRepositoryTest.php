@@ -38,19 +38,19 @@ final class WebhostingPlaneOrmRepositoryTest extends EntityRepositoryTestCase
         $this->setUpPlan1($repository);
         $this->setUpPlan2($repository);
 
-        $id  = WebhostingPlanId::fromString(self::PLAN_ID1);
+        $id = WebhostingPlanId::fromString(self::PLAN_ID1);
         $id2 = WebhostingPlanId::fromString(self::PLAN_ID2);
 
-        $plan  = $repository->get($id);
+        $plan = $repository->get($id);
         $plan2 = $repository->get($id2);
 
-        self::assertEquals($id, $plan->getId());
-        self::assertEquals(['title' => 'Supper Gold XL'], $plan->getMetadata());
-        self::assertEquals(new Constraints(new MonthlyTrafficQuota(5)), $plan->getConstraints());
+        static::assertEquals($id, $plan->getId());
+        static::assertEquals(['title' => 'Supper Gold XL'], $plan->getMetadata());
+        static::assertEquals(new Constraints(new MonthlyTrafficQuota(5)), $plan->getConstraints());
 
-        self::assertEquals($id2, $plan2->getId());
-        self::assertEquals([], $plan2->getMetadata());
-        self::assertEquals(new Constraints(new MonthlyTrafficQuota(50)), $plan2->getConstraints());
+        static::assertEquals($id2, $plan2->getId());
+        static::assertEquals([], $plan2->getMetadata());
+        static::assertEquals(new Constraints(new MonthlyTrafficQuota(50)), $plan2->getConstraints());
     }
 
     /** @test */
@@ -60,8 +60,8 @@ final class WebhostingPlaneOrmRepositoryTest extends EntityRepositoryTestCase
         $this->setUpPlan1($repository);
         $this->setUpPlan2($repository);
 
-        $id      = WebhostingPlanId::fromString(self::PLAN_ID1);
-        $id2     = WebhostingPlanId::fromString(self::PLAN_ID2);
+        $id = WebhostingPlanId::fromString(self::PLAN_ID1);
+        $id2 = WebhostingPlanId::fromString(self::PLAN_ID2);
         $plan = $repository->get($id);
 
         $repository->remove($plan);

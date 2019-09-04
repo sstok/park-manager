@@ -25,10 +25,10 @@ final class ModuleGenerator implements Generator
     public function __construct(Twig_Environment $twig, Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
-        $this->twig       = $twig;
+        $this->twig = $twig;
     }
 
-    public function generate(array $answers)
+    public function generate(array $answers): void
     {
         $this->filesystem->mkdir(
             [

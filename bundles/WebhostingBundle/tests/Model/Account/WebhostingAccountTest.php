@@ -44,79 +44,79 @@ final class WebhostingAccountTest extends TestCase
     /** @test */
     public function it_registers_an_webhosting_account(): void
     {
-        $id           = WebhostingAccountId::create();
+        $id = WebhostingAccountId::create();
         $constraints = new Constraints();
-        $plan      = $this->createWebhostingPlan($constraints);
+        $plan = $this->createWebhostingPlan($constraints);
 
         $account = WebhostingAccount::register($id, $owner = OwnerId::fromString(self::OWNER_ID1), $plan);
 
-        self::assertEquals($id, $account->getId());
-        self::assertEquals($owner, $account->getOwner());
-        self::assertSame($plan, $account->getPlan());
-        self::assertSame($constraints, $account->getPlanConstraints());
+        static::assertEquals($id, $account->getId());
+        static::assertEquals($owner, $account->getOwner());
+        static::assertSame($plan, $account->getPlan());
+        static::assertSame($constraints, $account->getPlanConstraints());
         self::assertDomainEvents($account, [new WebhostingAccountWasRegistered($id, $owner)]);
     }
 
     /** @test */
     public function it_registers_an_webhosting_account_with_custom_constraints(): void
     {
-        $id           = WebhostingAccountId::create();
+        $id = WebhostingAccountId::create();
         $constraints = new Constraints();
 
         $account = WebhostingAccount::registerWithCustomConstraints($id, $owner = OwnerId::fromString(self::OWNER_ID1), $constraints);
 
-        self::assertEquals($id, $account->getId());
-        self::assertEquals($owner, $account->getOwner());
-        self::assertSame($constraints, $account->getPlanConstraints());
-        self::assertNull($account->getPlan());
+        static::assertEquals($id, $account->getId());
+        static::assertEquals($owner, $account->getOwner());
+        static::assertSame($constraints, $account->getPlanConstraints());
+        static::assertNull($account->getPlan());
         self::assertDomainEvents($account, [new WebhostingAccountWasRegistered($id, $owner)]);
     }
 
     /** @test */
     public function it_allows_changing_plan_assignment(): void
     {
-        $id2           = WebhostingAccountId::create();
+        $id2 = WebhostingAccountId::create();
         $constraints1 = new Constraints();
         $constraints2 = new Constraints(new MonthlyTrafficQuota(50));
-        $plan1      = $this->createWebhostingPlan($constraints1);
-        $plan2      = $this->createWebhostingPlan($constraints2, self::PLAN_ID_2);
-        $account1      = WebhostingAccount::register(WebhostingAccountId::create(), OwnerId::fromString(self::OWNER_ID1), $plan1);
-        $account2      = WebhostingAccount::register($id2, OwnerId::fromString(self::OWNER_ID1), $plan1);
+        $plan1 = $this->createWebhostingPlan($constraints1);
+        $plan2 = $this->createWebhostingPlan($constraints2, self::PLAN_ID_2);
+        $account1 = WebhostingAccount::register(WebhostingAccountId::create(), OwnerId::fromString(self::OWNER_ID1), $plan1);
+        $account2 = WebhostingAccount::register($id2, OwnerId::fromString(self::OWNER_ID1), $plan1);
         self::resetDomainEvents($account1, $account2);
 
         $account1->assignPlan($plan1);
         $account2->assignPlan($plan2);
 
-        self::assertSame($plan1, $account1->getPlan(), 'Plan should not change');
-        self::assertSame($plan1->getConstraints(), $account1->getPlanConstraints(), 'Constraints should not change');
+        static::assertSame($plan1, $account1->getPlan(), 'Plan should not change');
+        static::assertSame($plan1->getConstraints(), $account1->getPlanConstraints(), 'Constraints should not change');
         self::assertNoDomainEvents($account1);
 
-        self::assertSame($plan2, $account2->getPlan());
-        self::assertSame($plan1->getConstraints(), $account2->getPlanConstraints());
+        static::assertSame($plan2, $account2->getPlan());
+        static::assertSame($plan1->getConstraints(), $account2->getPlanConstraints());
         self::assertDomainEvents($account2, [new WebhostingAccountPlanAssignmentWasChanged($id2, $plan2)]);
     }
 
     /** @test */
     public function it_allows_changing_plan_assignment_with_constraints(): void
     {
-        $id2           = WebhostingAccountId::create();
+        $id2 = WebhostingAccountId::create();
         $constraints1 = new Constraints();
         $constraints2 = new Constraints(new MonthlyTrafficQuota(50));
-        $plan1      = $this->createWebhostingPlan($constraints1);
-        $plan2      = $this->createWebhostingPlan($constraints2, self::PLAN_ID_2);
-        $account1      = WebhostingAccount::register(WebhostingAccountId::create(), OwnerId::fromString(self::OWNER_ID1), $plan1);
-        $account2      = WebhostingAccount::register($id2, OwnerId::fromString(self::OWNER_ID1), $plan1);
+        $plan1 = $this->createWebhostingPlan($constraints1);
+        $plan2 = $this->createWebhostingPlan($constraints2, self::PLAN_ID_2);
+        $account1 = WebhostingAccount::register(WebhostingAccountId::create(), OwnerId::fromString(self::OWNER_ID1), $plan1);
+        $account2 = WebhostingAccount::register($id2, OwnerId::fromString(self::OWNER_ID1), $plan1);
         self::resetDomainEvents($account1, $account2);
 
         $account1->assignPlanWithConstraints($plan1);
         $account2->assignPlanWithConstraints($plan2);
 
-        self::assertSame($plan1, $account1->getPlan(), 'Plan should not change');
-        self::assertSame($plan1->getConstraints(), $account1->getPlanConstraints(), 'Constraints should not change');
+        static::assertSame($plan1, $account1->getPlan(), 'Plan should not change');
+        static::assertSame($plan1->getConstraints(), $account1->getPlanConstraints(), 'Constraints should not change');
         self::assertNoDomainEvents($account1);
 
-        self::assertSame($plan2, $account2->getPlan());
-        self::assertSame($plan2->getConstraints(), $account2->getPlanConstraints());
+        static::assertSame($plan2, $account2->getPlan());
+        static::assertSame($plan2->getConstraints(), $account2->getPlanConstraints());
         self::assertDomainEvents(
             $account2,
             [WebhostingAccountPlanAssignmentWasChanged::withConstraints($id2, $plan2)]
@@ -126,7 +126,7 @@ final class WebhostingAccountTest extends TestCase
     /** @test */
     public function it_updates_account_when_assigning_plan_Constraints_are_different(): void
     {
-        $id      = WebhostingAccountId::create();
+        $id = WebhostingAccountId::create();
         $plan = $this->createWebhostingPlan(new Constraints());
         $account = WebhostingAccount::register($id, OwnerId::fromString(self::OWNER_ID1), $plan);
         self::resetDomainEvents($account);
@@ -134,8 +134,8 @@ final class WebhostingAccountTest extends TestCase
         $plan->changeConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
         $account->assignPlanWithConstraints($plan);
 
-        self::assertSame($plan, $account->getPlan());
-        self::assertSame($plan->getConstraints(), $account->getPlanConstraints());
+        static::assertSame($plan, $account->getPlan());
+        static::assertSame($plan->getConstraints(), $account->getPlanConstraints());
         self::assertDomainEvents(
             $account,
             [WebhostingAccountPlanAssignmentWasChanged::withConstraints($id, $plan)]
@@ -145,44 +145,44 @@ final class WebhostingAccountTest extends TestCase
     /** @test */
     public function it_allows_assigning_custom_specification(): void
     {
-        $id      = WebhostingAccountId::create();
+        $id = WebhostingAccountId::create();
         $plan = $this->createWebhostingPlan(new Constraints());
         $account = WebhostingAccount::register($id, OwnerId::fromString(self::OWNER_ID1), $plan);
         self::resetDomainEvents($account);
 
         $account->assignCustomConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
 
-        self::assertNull($account->getPlan());
-        self::assertSame($newConstraints, $account->getPlanConstraints());
+        static::assertNull($account->getPlan());
+        static::assertSame($newConstraints, $account->getPlanConstraints());
         self::assertDomainEvents($account, [new WebhostingAccountPlanConstraintsWasChanged($id, $newConstraints)]);
     }
 
     /** @test */
     public function it_allows_changing_custom_specification(): void
     {
-        $id      = WebhostingAccountId::create();
+        $id = WebhostingAccountId::create();
         $account = WebhostingAccount::registerWithCustomConstraints($id, OwnerId::fromString(self::OWNER_ID1), new Constraints());
         self::resetDomainEvents($account);
 
         $account->assignCustomConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
 
-        self::assertNull($account->getPlan());
-        self::assertSame($newConstraints, $account->getPlanConstraints());
+        static::assertNull($account->getPlan());
+        static::assertSame($newConstraints, $account->getPlanConstraints());
         self::assertDomainEvents($account, [new WebhostingAccountPlanConstraintsWasChanged($id, $newConstraints)]);
     }
 
     /** @test */
     public function it_does_not_update_account_Constraints_when_assigning_Constraints_are_same(): void
     {
-        $id           = WebhostingAccountId::create();
+        $id = WebhostingAccountId::create();
         $Constraints = new Constraints();
-        $account      = WebhostingAccount::registerWithCustomConstraints($id, OwnerId::fromString(self::OWNER_ID1), $Constraints);
+        $account = WebhostingAccount::registerWithCustomConstraints($id, OwnerId::fromString(self::OWNER_ID1), $Constraints);
         self::resetDomainEvents($account);
 
         $account->assignCustomConstraints($Constraints);
 
-        self::assertNull($account->getPlan());
-        self::assertSame($Constraints, $account->getPlanConstraints());
+        static::assertNull($account->getPlan());
+        static::assertSame($Constraints, $account->getPlanConstraints());
         self::assertNoDomainEvents($account);
     }
 
@@ -204,10 +204,10 @@ final class WebhostingAccountTest extends TestCase
         $account1->switchOwner($owner1 = OwnerId::fromString(self::OWNER_ID1));
         $account2->switchOwner($owner2 = OwnerId::fromString(self::OWNER_ID2));
 
-        self::assertEquals($owner1, $account1->getOwner());
+        static::assertEquals($owner1, $account1->getOwner());
         self::assertNoDomainEvents($account1);
 
-        self::assertEquals($owner2, $account2->getOwner());
+        static::assertEquals($owner2, $account2->getOwner());
         self::assertDomainEvents($account2, [new WebhostingAccountOwnerWasSwitched($id2, $owner1, $owner2)]);
     }
 
@@ -229,8 +229,8 @@ final class WebhostingAccountTest extends TestCase
         $account2->markForRemoval();
         $account2->markForRemoval();
 
-        self::assertFalse($account1->isMarkedForRemoval());
-        self::assertTrue($account2->isMarkedForRemoval());
+        static::assertFalse($account1->isMarkedForRemoval());
+        static::assertTrue($account2->isMarkedForRemoval());
         self::assertDomainEvents($account2, [new WebhostingAccountWasMarkedForRemoval($id2)]);
     }
 
@@ -251,19 +251,19 @@ final class WebhostingAccountTest extends TestCase
 
         $account2->setExpirationDate($date = new DateTimeImmutable('now +6 days'));
 
-        self::assertFalse($account1->isExpired());
-        self::assertFalse($account1->isExpired($date->modify('+2 days')));
+        static::assertFalse($account1->isExpired());
+        static::assertFalse($account1->isExpired($date->modify('+2 days')));
 
-        self::assertFalse($account2->isExpired($date->modify('-10 days')));
-        self::assertTrue($account2->isExpired($date));
-        self::assertTrue($account2->isExpired($date->modify('+2 days')));
+        static::assertFalse($account2->isExpired($date->modify('-10 days')));
+        static::assertTrue($account2->isExpired($date));
+        static::assertTrue($account2->isExpired($date->modify('+2 days')));
 
         $account1->removeExpirationDate();
         $account2->removeExpirationDate();
 
-        self::assertFalse($account1->isExpired());
-        self::assertFalse($account2->isExpired($date));
-        self::assertFalse($account2->isExpired($date->modify('+2 days')));
+        static::assertFalse($account1->isExpired());
+        static::assertFalse($account2->isExpired($date));
+        static::assertFalse($account2->isExpired($date->modify('+2 days')));
     }
 
     private function createWebhostingPlan(Constraints $Constraints, string $id = self::PLAN_ID_1): WebhostingPlan

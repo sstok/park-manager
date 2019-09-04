@@ -54,14 +54,15 @@ class WebhostingDomainNameOrmRepository extends EntityRepository implements Webh
             // If there is a primary marking for another DomainName (within in this account)
             // remove the primary marking for that DomainName.
             if ($primaryDomainName !== $domainName) {
-                $this->_em->transactional(function () use ($domainName, $primaryDomainName) {
+                $this->_em->transactional(function () use ($domainName, $primaryDomainName): void {
                     // There is no setter function for the Model as this is an implementation detail.
                     $this->_em->createQueryBuilder()
                         ->update($this->_entityName, 'd')
                         ->set('d.primary', 'false')
                         ->where('d.id = :id')
                         ->getQuery()
-                        ->execute(['id' => $primaryDomainName->getId()]);
+                        ->execute(['id' => $primaryDomainName->getId()])
+                    ;
 
                     $this->_em->refresh($primaryDomainName);
                     $this->_em->persist($domainName);
@@ -93,7 +94,8 @@ class WebhostingDomainNameOrmRepository extends EntityRepository implements Webh
                 ->where('d.account = :id AND d.primary = true')
                 ->getQuery()
                 ->setParameters(['id' => $id->toString()])
-                ->getSingleResult();
+                ->getSingleResult()
+            ;
         } catch (NoResultException $e) {
             throw WebhostingAccountNotFound::withId($id);
         }
@@ -105,6 +107,7 @@ class WebhostingDomainNameOrmRepository extends EntityRepository implements Webh
             ->where('d.domainName.name = :name AND d.domainName.tld = :tld')
             ->getQuery()
             ->setParameters(['name' => $name->name, 'tld' => $name->tld])
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
     }
 }

@@ -68,7 +68,8 @@ class DoctrineOrmClientRepository extends EntityRepository implements ClientRepo
             ->where('u.email.canonical = :email')
             ->getQuery()
             ->setParameter('email', $email->canonical)
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
 
         if ($client === null) {
             throw ClientNotFound::withEmail($email);
@@ -83,7 +84,8 @@ class DoctrineOrmClientRepository extends EntityRepository implements ClientRepo
             ->where('u.emailAddressChangeToken.selector = :selector')
             ->getQuery()
             ->setParameter('selector', $selector)
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
 
         if ($client === null) {
             throw new EmailChangeConfirmationRejected();
@@ -98,7 +100,8 @@ class DoctrineOrmClientRepository extends EntityRepository implements ClientRepo
             ->where('u.passwordResetToken.selector = :selector')
             ->getQuery()
             ->setParameter('selector', $selector)
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
 
         if ($client === null) {
             throw new PasswordResetTokenNotAccepted();
@@ -114,7 +117,8 @@ class DoctrineOrmClientRepository extends EntityRepository implements ClientRepo
             ->where('u.email.canonical = :email')
             ->getQuery()
             ->setParameter('email', $email)
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
 
         if ($client !== null) {
             return $client->toSecurityUser();
@@ -130,7 +134,8 @@ class DoctrineOrmClientRepository extends EntityRepository implements ClientRepo
             ->where('u.id = :id')
             ->getQuery()
             ->setParameter('id', $id)
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
 
         if ($client !== null) {
             return $client->toSecurityUser();

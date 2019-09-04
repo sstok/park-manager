@@ -47,9 +47,9 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
 
     protected function setUp(): void
     {
-        $this->commandHandler    = static function (ConfirmUserPasswordReset $command) { };
+        $this->commandHandler = static function (ConfirmUserPasswordReset $command): void { };
         $this->splitTokenFactory = new FakeSplitTokenFactory();
-        $this->encoderFactory    = new FakePasswordHashFactory();
+        $this->encoderFactory = new FakePasswordHashFactory();
 
         parent::setUp();
     }
@@ -74,7 +74,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     public function it_builds_a_confirm_command(): void
     {
         $token = $this->splitTokenFactory->fromString(FakeSplitTokenFactory::FULL_TOKEN);
-        $form  = $this->factory->create(ConfirmPasswordResetType::class, ['reset_token' => $token], [
+        $form = $this->factory->create(ConfirmPasswordResetType::class, ['reset_token' => $token], [
             'command_bus' => 'command_bus',
             'command_message_factory' => $this->getCommandBuilder(),
             'user_class' => ClientUser::class,
@@ -84,12 +84,12 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
             'reset_token' => FakeSplitTokenFactory::FULL_TOKEN,
         ]);
 
-        self::assertTrue($form->isValid());
-        self::assertEquals(new ConfirmUserPasswordReset($token, 'encoded(Hello there)'), $this->dispatchedCommand);
+        static::assertTrue($form->isValid());
+        static::assertEquals(new ConfirmUserPasswordReset($token, 'encoded(Hello there)'), $this->dispatchedCommand);
 
         $formViewVars = $form->createView()->vars;
-        self::assertArrayHasKey('token_invalid', $formViewVars);
-        self::assertFalse($formViewVars['token_invalid']);
+        static::assertArrayHasKey('token_invalid', $formViewVars);
+        static::assertFalse($formViewVars['token_invalid']);
     }
 
     /** @test */
@@ -101,8 +101,8 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
             'user_class' => ClientUser::class,
         ]);
 
-        self::assertFalse($form->isSubmitted());
-        self::assertNull($form->getData());
+        static::assertFalse($form->isSubmitted());
+        static::assertNull($form->getData());
     }
 
     /** @test */
@@ -125,8 +125,8 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         ]);
 
         $formViewVars = $form->createView()->vars;
-        self::assertArrayHasKey('token_invalid', $formViewVars);
-        self::assertTrue($formViewVars['token_invalid']);
+        static::assertArrayHasKey('token_invalid', $formViewVars);
+        static::assertTrue($formViewVars['token_invalid']);
     }
 
     /**
@@ -135,7 +135,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
      */
     public function it_handles_errors(Throwable $error, $expectedErrors): void
     {
-        $this->commandHandler = static function () use ($error) {
+        $this->commandHandler = static function () use ($error): void {
             throw $error;
         };
 
@@ -195,7 +195,7 @@ class ConfirmUserPasswordReset
 
     public function __construct(SplitToken $token, string $password)
     {
-        $this->token    = $token;
+        $this->token = $token;
         $this->password = $password;
     }
 

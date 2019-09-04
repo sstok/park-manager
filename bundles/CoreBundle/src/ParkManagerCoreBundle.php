@@ -18,13 +18,12 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use function dirname;
 
 class ParkManagerCoreBundle extends Bundle
 {
     public function getPath(): string
     {
-        return dirname(__DIR__);
+        return \dirname(__DIR__);
     }
 
     public function getContainerExtension(): ?ExtensionInterface
@@ -48,7 +47,7 @@ class ParkManagerCoreBundle extends Bundle
         $container->addResource(new EnvVariableResource('PRIMARY_HOST'));
         $container->addResource(new EnvVariableResource('ENABLE_HTTPS'));
 
-        $isSecure    = (($_ENV['ENABLE_HTTPS'] ?? 'false') === 'true');
+        $isSecure = (($_ENV['ENABLE_HTTPS'] ?? 'false') === 'true');
         $primaryHost = $_ENV['PRIMARY_HOST'] ?? null;
 
         $container->setParameter('park_manager.config.primary_host', $_ENV['PRIMARY_HOST'] ?? '');
@@ -61,12 +60,15 @@ class ParkManagerCoreBundle extends Bundle
 
         $container->register('park_manager.section.private.request_matcher', CookiesRequestMatcher::class)
             ->setArguments(['^/(?!(api|admin)/)'])
-            ->addMethodCall('matchCookies', [['_private_section' => '^true$']]);
+            ->addMethodCall('matchCookies', [['_private_section' => '^true$']])
+        ;
 
-        if ($primaryHost !== null) {
-            $container->getDefinition('park_manager.section.admin.request_matcher')->setArgument(1, $primaryHost);
-            $container->getDefinition('park_manager.section.private.request_matcher')->setArgument(1, $primaryHost);
-            $container->getDefinition('park_manager.section.api.request_matcher')->setArguments(['/', '^api\.']);
+        if ($primaryHost === null) {
+            return;
         }
+
+        $container->getDefinition('park_manager.section.admin.request_matcher')->setArgument(1, $primaryHost);
+        $container->getDefinition('park_manager.section.private.request_matcher')->setArgument(1, $primaryHost);
+        $container->getDefinition('park_manager.section.api.request_matcher')->setArguments(['/', '^api\.']);
     }
 }

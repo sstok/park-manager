@@ -44,9 +44,11 @@ final class PlanConstraintsPassTest extends AbstractCompilerPassTestCase
     public function it_processes_constraints_with_validators(): void
     {
         $this->registerService(MonthlyTrafficQuotaValidator::class, MonthlyTrafficQuotaValidator::class)
-            ->addTag(PlanConstraintsPass::CONSTRAINT_VALIDATOR_TAG);
+            ->addTag(PlanConstraintsPass::CONSTRAINT_VALIDATOR_TAG)
+        ;
         $this->registerService(MonthlyTrafficQuota::class, MonthlyTrafficQuota::class)
-            ->addTag(PlanConstraintsPass::CONSTRAINT_TAG);
+            ->addTag(PlanConstraintsPass::CONSTRAINT_TAG)
+        ;
 
         $this->compile();
 
@@ -68,9 +70,11 @@ final class PlanConstraintsPassTest extends AbstractCompilerPassTestCase
     public function it_processes_constraints_with_appliers(): void
     {
         $this->registerService(MonthlyTrafficQuotaApplier::class, MonthlyTrafficQuotaApplier::class)
-            ->addTag(PlanConstraintsPass::CONSTRAINT_APPLIER_TAG);
+            ->addTag(PlanConstraintsPass::CONSTRAINT_APPLIER_TAG)
+        ;
         $this->registerService(MonthlyTrafficQuota::class, MonthlyTrafficQuota::class)
-            ->addTag(PlanConstraintsPass::CONSTRAINT_TAG);
+            ->addTag(PlanConstraintsPass::CONSTRAINT_TAG)
+        ;
 
         $this->compile();
 
@@ -92,7 +96,8 @@ final class PlanConstraintsPassTest extends AbstractCompilerPassTestCase
     public function it_checks_a_validator_or_applier_is_set(): void
     {
         $this->registerService(MonthlyTrafficQuota::class, MonthlyTrafficQuota::class)
-            ->addTag(PlanConstraintsPass::CONSTRAINT_TAG);
+            ->addTag(PlanConstraintsPass::CONSTRAINT_TAG)
+        ;
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -107,11 +112,14 @@ final class PlanConstraintsPassTest extends AbstractCompilerPassTestCase
     public function it_checks_only_a_validator_or_applier_is_set(): void
     {
         $this->registerService(MonthlyTrafficQuotaValidator::class, MonthlyTrafficQuotaValidator::class)
-            ->addTag(PlanConstraintsPass::CONSTRAINT_VALIDATOR_TAG);
+            ->addTag(PlanConstraintsPass::CONSTRAINT_VALIDATOR_TAG)
+        ;
         $this->registerService(MonthlyTrafficQuotaApplier::class, MonthlyTrafficQuotaApplier::class)
-            ->addTag(PlanConstraintsPass::CONSTRAINT_APPLIER_TAG);
+            ->addTag(PlanConstraintsPass::CONSTRAINT_APPLIER_TAG)
+        ;
         $this->registerService(MonthlyTrafficQuota::class, MonthlyTrafficQuota::class)
-            ->addTag(PlanConstraintsPass::CONSTRAINT_TAG);
+            ->addTag(PlanConstraintsPass::CONSTRAINT_TAG)
+        ;
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Webhosting Plan Constraint "MonthlyTrafficQuota" can not have a Validator *and* Applier.');
@@ -123,9 +131,11 @@ final class PlanConstraintsPassTest extends AbstractCompilerPassTestCase
     public function it_checks_service_class_exists(): void
     {
         $this->registerService('\MonthlyTrafficQuotaValidator', '\MonthlyTrafficQuotaValidator')
-            ->addTag(PlanConstraintsPass::CONSTRAINT_VALIDATOR_TAG);
+            ->addTag(PlanConstraintsPass::CONSTRAINT_VALIDATOR_TAG)
+        ;
         $this->registerService(MonthlyTrafficQuota::class, MonthlyTrafficQuota::class)
-            ->addTag(PlanConstraintsPass::CONSTRAINT_TAG);
+            ->addTag(PlanConstraintsPass::CONSTRAINT_TAG)
+        ;
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(

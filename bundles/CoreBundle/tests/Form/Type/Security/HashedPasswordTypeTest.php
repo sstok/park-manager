@@ -30,14 +30,15 @@ final class HashedPasswordTypeTest extends TypeTestCase
                     return 'encoded(' . $raw . ')';
                 },
             ])
-            ->getForm();
+            ->getForm()
+        ;
 
         $form->submit([
             'password' => ['password' => 'Hello there'],
         ]);
 
-        self::assertTrue($form->isValid());
-        self::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
+        static::assertTrue($form->isValid());
+        static::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
     }
 
     /** @test */
@@ -50,13 +51,14 @@ final class HashedPasswordTypeTest extends TypeTestCase
                 },
                 'password_confirm' => true,
             ])
-            ->getForm();
+            ->getForm()
+        ;
 
         $form->submit([
             'password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there']],
         ]);
 
-        self::assertTrue($form->isValid());
-        self::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
+        static::assertTrue($form->isValid());
+        static::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
     }
 }

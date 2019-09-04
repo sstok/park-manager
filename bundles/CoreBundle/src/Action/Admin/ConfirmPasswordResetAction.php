@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class ConfirmPasswordResetAction
 {
     /**
-     * @return TwigResponse|RouteRedirectResponse
+     * @return RouteRedirectResponse|TwigResponse
      */
     public function __invoke(Request $request, string $token, FormFactoryInterface $formFactory)
     {

@@ -26,49 +26,49 @@ final class WebhostingDomainNameTest extends TestCase
     private const ACCOUNT_ID2 = 'cfa42746-a6ac-11e7-bff0-acbc32b58315';
 
     /** @test */
-    public function it_registers_primary_domainName(): void
+    public function it_registers_primary_domain_name(): void
     {
-        $domainName  = new DomainName('example', 'com');
+        $domainName = new DomainName('example', 'com');
         $domainName2 = new DomainName('example', 'net');
-        $account     = $this->createAccount(self::ACCOUNT_ID1);
-        $account2    = $this->createAccount(self::ACCOUNT_ID2);
+        $account = $this->createAccount(self::ACCOUNT_ID1);
+        $account2 = $this->createAccount(self::ACCOUNT_ID2);
 
-        $webhostingDomainName  = WebhostingDomainName::registerPrimary($account, $domainName);
+        $webhostingDomainName = WebhostingDomainName::registerPrimary($account, $domainName);
         $webhostingDomainName2 = WebhostingDomainName::registerPrimary($account2, $domainName2);
 
-        self::assertNotEquals($webhostingDomainName, $webhostingDomainName2);
-        self::assertEquals($domainName, $webhostingDomainName->getDomainName());
-        self::assertEquals($domainName2, $webhostingDomainName2->getDomainName());
-        self::assertEquals($account, $webhostingDomainName->getAccount());
-        self::assertEquals($account2, $webhostingDomainName->getAccount());
-        self::assertTrue($webhostingDomainName->isPrimary());
-        self::assertTrue($webhostingDomainName2->isPrimary());
+        static::assertNotEquals($webhostingDomainName, $webhostingDomainName2);
+        static::assertEquals($domainName, $webhostingDomainName->getDomainName());
+        static::assertEquals($domainName2, $webhostingDomainName2->getDomainName());
+        static::assertEquals($account, $webhostingDomainName->getAccount());
+        static::assertEquals($account2, $webhostingDomainName->getAccount());
+        static::assertTrue($webhostingDomainName->isPrimary());
+        static::assertTrue($webhostingDomainName2->isPrimary());
     }
 
     /** @test */
-    public function it_registers_secondary_domainName(): void
+    public function it_registers_secondary_domain_name(): void
     {
         $domainName2 = new DomainName('example', 'net');
-        $account     = $this->createAccount(self::ACCOUNT_ID1);
+        $account = $this->createAccount(self::ACCOUNT_ID1);
 
         $webhostingDomainName = WebhostingDomainName::registerSecondary($account, $domainName2);
 
-        self::assertEquals($domainName2, $webhostingDomainName->getDomainName());
-        self::assertEquals($account, $webhostingDomainName->getAccount());
-        self::assertFalse($webhostingDomainName->isPrimary());
+        static::assertEquals($domainName2, $webhostingDomainName->getDomainName());
+        static::assertEquals($account, $webhostingDomainName->getAccount());
+        static::assertFalse($webhostingDomainName->isPrimary());
     }
 
     /** @test */
     public function it_can_upgrade_secondary_to_primary(): void
     {
         $domainName = new DomainName('example', 'com');
-        $account    = $this->createAccount(self::ACCOUNT_ID1);
+        $account = $this->createAccount(self::ACCOUNT_ID1);
 
         $webhostingDomainName = WebhostingDomainName::registerSecondary($account, $domainName);
         $webhostingDomainName->markPrimary();
 
-        self::assertEquals($domainName, $webhostingDomainName->getDomainName());
-        self::assertTrue($webhostingDomainName->isPrimary());
+        static::assertEquals($domainName, $webhostingDomainName->getDomainName());
+        static::assertTrue($webhostingDomainName->isPrimary());
     }
 
     /** @test */
@@ -81,13 +81,13 @@ final class WebhostingDomainNameTest extends TestCase
 
         $webhostingDomainName->changeName($name = new DomainName('example', 'com'));
 
-        self::assertEquals($name, $webhostingDomainName->getDomainName());
+        static::assertEquals($name, $webhostingDomainName->getDomainName());
     }
 
     /** @test */
-    public function it_can_transfer_secondary_domainName(): void
+    public function it_can_transfer_secondary_domain_name(): void
     {
-        $account2             = $this->createAccount(self::ACCOUNT_ID2);
+        $account2 = $this->createAccount(self::ACCOUNT_ID2);
         $webhostingDomainName = WebhostingDomainName::registerSecondary(
             $this->createAccount(self::ACCOUNT_ID1),
             new DomainName('example', 'com')
@@ -95,14 +95,14 @@ final class WebhostingDomainNameTest extends TestCase
 
         $webhostingDomainName->transferToAccount($account2);
 
-        self::assertEquals($account2, $webhostingDomainName->getAccount());
+        static::assertEquals($account2, $webhostingDomainName->getAccount());
     }
 
     /** @test */
-    public function it_cannot_transfer_primary_domainName(): void
+    public function it_cannot_transfer_primary_domain_name(): void
     {
-        $account2             = $this->createAccount(self::ACCOUNT_ID2);
-        $account1             = $this->createAccount(self::ACCOUNT_ID1);
+        $account2 = $this->createAccount(self::ACCOUNT_ID2);
+        $account1 = $this->createAccount(self::ACCOUNT_ID1);
         $webhostingDomainName = WebhostingDomainName::registerPrimary($account1, new DomainName('example', 'com'));
 
         $this->expectException(CannotTransferPrimaryDomainName::class);
@@ -117,9 +117,10 @@ final class WebhostingDomainNameTest extends TestCase
     {
         $account = $this->createMock(WebhostingAccount::class);
         $account
-            ->expects(self::any())
+            ->expects(static::any())
             ->method('getId')
-            ->willReturn(WebhostingAccountId::fromString($id));
+            ->willReturn(WebhostingAccountId::fromString($id))
+        ;
 
         return $account;
     }

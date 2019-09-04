@@ -14,12 +14,6 @@ use ArrayIterator;
 use IteratorAggregate;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Exception\ConstraintNotInSet;
 use Traversable;
-use function array_merge;
-use function array_values;
-use function get_class;
-use function ksort;
-use function strrpos;
-use function substr;
 
 final class Constraints implements IteratorAggregate
 {
@@ -38,13 +32,13 @@ final class Constraints implements IteratorAggregate
             $this->constraintsIndexed[$constraintName] = $constraint->configuration();
         }
 
-        ksort($this->constraintsIndexed);
+        \ksort($this->constraintsIndexed);
     }
 
     public function add(Constraint ...$constraints): self
     {
         // Cannot unpack array with string keys (class uniqueness is guarded by the constructor)
-        return new self(...array_merge(array_values($this->constraints), $constraints));
+        return new self(...\array_merge(\array_values($this->constraints), $constraints));
     }
 
     public function remove(Constraint ...$constraints): self
@@ -55,7 +49,7 @@ final class Constraints implements IteratorAggregate
             unset($constraintsList[self::getConstraintName($constraint)]);
         }
 
-        return new self(...array_values($constraintsList));
+        return new self(...\array_values($constraintsList));
     }
 
     public function getIterator(): Traversable
@@ -94,8 +88,8 @@ final class Constraints implements IteratorAggregate
 
     public static function getConstraintName(Constraint $constraint): string
     {
-        $class = get_class($constraint);
+        $class = \get_class($constraint);
 
-        return substr($class, strrpos($class, '\\') + 1);
+        return \mb_substr($class, \mb_strrpos($class, '\\') + 1);
     }
 }

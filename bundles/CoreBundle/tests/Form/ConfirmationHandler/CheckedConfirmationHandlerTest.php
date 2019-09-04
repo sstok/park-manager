@@ -19,9 +19,6 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-use function implode;
-use function is_scalar;
-use function sprintf;
 
 /**
  * @internal
@@ -44,7 +41,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
         $confirmationHandler->configure('Confirm deleting', 'Are you sure?', $reqValue, 'Yes');
         $confirmationHandler->handleRequest($this->makePostRequest($value), ['id']);
 
-        self::assertTrue($confirmationHandler->isConfirmed(), sprintf('"%s" does not match for "%s"', $value, $reqValue));
+        static::assertTrue($confirmationHandler->isConfirmed(), \sprintf('"%s" does not match for "%s"', $value, $reqValue));
     }
 
     public function provideValidValues(): iterable
@@ -73,7 +70,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
 
         $confirmationHandler->handleRequest($this->makeGetRequest(), ['id']);
 
-        self::assertFalse($confirmationHandler->isConfirmed());
+        static::assertFalse($confirmationHandler->isConfirmed());
     }
 
     /** @test */
@@ -86,7 +83,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
 
         $confirmationHandler->handleRequest($this->makePostRequestWithoutToken(), ['id']);
 
-        self::assertFalse($confirmationHandler->isConfirmed());
+        static::assertFalse($confirmationHandler->isConfirmed());
     }
 
     /** @test */
@@ -99,12 +96,10 @@ final class CheckedConfirmationHandlerTest extends TestCase
 
         $confirmationHandler->handleRequest($this->makeInvalidPostRequest(), ['id']);
 
-        self::assertFalse($confirmationHandler->isConfirmed());
+        static::assertFalse($confirmationHandler->isConfirmed());
     }
 
     /**
-     * @param mixed $value
-     *
      * @test
      *
      * @dataProvider provideInvalidValues
@@ -119,10 +114,10 @@ final class CheckedConfirmationHandlerTest extends TestCase
         $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Everything', 'Yes');
         $confirmationHandler->handleRequest($this->makePostRequest($value), ['id']);
 
-        self::assertFalse($confirmationHandler->isConfirmed());
-        self::assertEquals(
+        static::assertFalse($confirmationHandler->isConfirmed());
+        static::assertEquals(
             '<form action="/user/1/delete"><h1>Confirm deleting</h1><p>Are you sure?</p>Value does not match expected &quot;Everything&quot;.<input type="hidden" name="_value" value="' .
-            (is_scalar($value) ? (string) $value : '') .
+            (\is_scalar($value) ? (string) $value : '') .
             '"><input type="hidden" name="_token" value="valid-token"><button type="submit">Yes</button><a href="">Cancel</a></form>',
             $confirmationHandler->render('checked_confirm.html.twig')
         );
@@ -166,17 +161,13 @@ final class CheckedConfirmationHandlerTest extends TestCase
         $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Everything', 'Yes');
         $confirmationHandler->setCancelUrl('/user/1/show');
 
-        self::assertFalse($confirmationHandler->isConfirmed());
-        self::assertEquals(
+        static::assertFalse($confirmationHandler->isConfirmed());
+        static::assertEquals(
             '<form action="/user/1/delete"><h1>Confirm deleting</h1><p>Are you sure?</p>Invalid CSRF token.<input type="hidden" name="_value" value=""><input type="hidden" name="_token" value="valid-token"><button type="submit">Yes</button><a href="/user/1/show">Cancel</a></form>',
             $confirmationHandler->render('checked_confirm.html.twig')
         );
     }
 
-    /**
-     * @param mixed $value
-     * @param array $attributes
-     */
     private function makePostRequest($value = 'everything', array $attributes = ['id' => self::ID1]): Request
     {
         $request = Request::create('/', 'POST');
@@ -214,7 +205,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
 
     private function createTokenId(array $ids): string
     {
-        return 'confirm.' . implode('~', $ids) . '~';
+        return 'confirm.' . \implode('~', $ids) . '~';
     }
 
     private function createTokenManagerWithInvalid(string $tokenId, bool $hasToken = true): CsrfTokenManagerInterface

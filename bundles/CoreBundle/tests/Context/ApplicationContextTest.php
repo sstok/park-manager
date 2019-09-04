@@ -71,19 +71,19 @@ final class ApplicationContextTest extends TestCase
         $context = new ApplicationContext();
 
         $context->setActiveSection('private');
-        self::assertEquals('client', $context->getActiveSection());
-        self::assertEquals('client', $context->getRouteNamePrefix());
-        self::assertTrue($context->isPrivateSection());
+        static::assertEquals('client', $context->getActiveSection());
+        static::assertEquals('client', $context->getRouteNamePrefix());
+        static::assertTrue($context->isPrivateSection());
 
         $context->setActiveSection('client');
-        self::assertEquals('client', $context->getActiveSection());
-        self::assertEquals('client', $context->getRouteNamePrefix());
-        self::assertFalse($context->isPrivateSection());
+        static::assertEquals('client', $context->getActiveSection());
+        static::assertEquals('client', $context->getRouteNamePrefix());
+        static::assertFalse($context->isPrivateSection());
 
         $context->setActiveSection('admin');
-        self::assertEquals('admin', $context->getActiveSection());
-        self::assertEquals('admin', $context->getRouteNamePrefix());
-        self::assertFalse($context->isPrivateSection());
+        static::assertEquals('admin', $context->getActiveSection());
+        static::assertEquals('admin', $context->getRouteNamePrefix());
+        static::assertFalse($context->isPrivateSection());
     }
 
     public function provideGetterMethods(): array

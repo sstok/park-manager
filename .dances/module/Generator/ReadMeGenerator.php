@@ -24,11 +24,11 @@ final class ReadMeGenerator implements Generator
 
     public function __construct(Twig_Environment $twig, Filesystem $filesystem)
     {
-        $this->twig       = $twig;
+        $this->twig = $twig;
         $this->filesystem = $filesystem;
     }
 
-    public function generate(array $answers)
+    public function generate(array $answers): void
     {
         $this->filesystem->dumpFile('README.md', $this->twig->render('readme.md.twig', $answers));
     }

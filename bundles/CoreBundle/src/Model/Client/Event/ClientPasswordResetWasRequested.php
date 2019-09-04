@@ -31,8 +31,8 @@ final class ClientPasswordResetWasRequested
 
     public function __construct(ClientId $id, SplitToken $token)
     {
-        $this->id              = $id;
-        $this->token           = $token;
+        $this->id = $id;
+        $this->token = $token;
     }
 
     public function id(): ClientId

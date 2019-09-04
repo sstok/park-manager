@@ -25,7 +25,8 @@ class RequestPasswordResetType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'label.email',
                 'constraints' => [new NotBlank(), new Email(['mode' => Email::VALIDATION_MODE_STRICT])],
-            ]);
+            ])
+        ;
     }
 
     public function getBlockPrefix(): string

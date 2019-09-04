@@ -12,7 +12,6 @@ namespace ParkManager\Bundle\CoreBundle\Context;
 
 use InvalidArgumentException;
 use RuntimeException;
-use function sprintf;
 
 /**
  * @final
@@ -35,16 +34,16 @@ class ApplicationContext
     public function setActiveSection(string $section): void
     {
         if (! isset(self::SECTIONS[$section])) {
-            throw new InvalidArgumentException(sprintf('Section "%s" is not supported.', $section));
+            throw new InvalidArgumentException(\sprintf('Section "%s" is not supported.', $section));
         }
 
         $this->privateSection = $section === 'private';
-        $this->activeSection  = $section === 'private' ? 'client' : $section;
+        $this->activeSection = $section === 'private' ? 'client' : $section;
     }
 
     public function reset(): void
     {
-        $this->activeSection  = null;
+        $this->activeSection = null;
         $this->privateSection = false;
     }
 

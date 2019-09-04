@@ -31,13 +31,13 @@ final class PlanConstrainedFormType extends AbstractType
 
     public function __construct(TranslatorInterface $translator, ConstraintChecker $constraintChecker)
     {
-        $this->translator        = $translator;
+        $this->translator = $translator;
         $this->constraintChecker = $constraintChecker;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             try {
                 $options['plan_validator']($this->constraintChecker, $event->getData());
             } catch (ConstraintExceeded $e) {

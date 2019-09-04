@@ -15,6 +15,6 @@ use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
 
 final class ClientIdType extends DomainIdType
 {
-    public const NAME         = 'park_manager_client_id';
+    public const NAME = 'park_manager_client_id';
     public const OBJECT_CLASS = ClientId::class;
 }

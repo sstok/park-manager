@@ -27,7 +27,7 @@ final class MockEntity implements RecordsDomainEvents
 
     public function __construct(string $id = 'fc86687e-0875-11e9-9701-acbc32b58315', string $name = 'Foobar')
     {
-        $this->id       = MockIdentity::fromString($id);
+        $this->id = MockIdentity::fromString($id);
         $this->lastName = $name;
     }
 

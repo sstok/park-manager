@@ -12,12 +12,11 @@ namespace ParkManager\Bundle\WebhostingBundle\Model\Plan\Exception;
 
 use InvalidArgumentException;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
-use function sprintf;
 
 final class WebhostingPlanNotFound extends InvalidArgumentException
 {
     public static function withId(WebhostingPlanId $id): self
     {
-        return new self(sprintf('Webhosting plan with id "%s" does not exist.', $id->toString()));
+        return new self(\sprintf('Webhosting plan with id "%s" does not exist.', $id->toString()));
     }
 }

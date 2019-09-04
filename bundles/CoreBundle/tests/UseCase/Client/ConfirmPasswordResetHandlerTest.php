@@ -18,7 +18,6 @@ use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordResetHandler;
 use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;
-use function str_rot13;
 
 /**
  * @internal
@@ -34,7 +33,7 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->fullToken = FakeSplitTokenFactory::instance()->generate();
-        $this->token     = FakeSplitTokenFactory::instance()->fromString($this->fullToken->token()->getString());
+        $this->token = FakeSplitTokenFactory::instance()->fromString($this->fullToken->token()->getString());
     }
 
     /** @test */
@@ -66,7 +65,7 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
         $handler = new ConfirmPasswordResetHandler($repository);
 
         try {
-            $invalidToken = FakeSplitTokenFactory::instance()->fromString(FakeSplitTokenFactory::SELECTOR . str_rot13(FakeSplitTokenFactory::VERIFIER));
+            $invalidToken = FakeSplitTokenFactory::instance()->fromString(FakeSplitTokenFactory::SELECTOR . \str_rot13(FakeSplitTokenFactory::VERIFIER));
             $handler(new ConfirmPasswordReset($invalidToken, 'my-password'));
         } catch (PasswordResetConfirmationRejected $e) {
             $repository->assertEntitiesWereSaved([$client]);
@@ -76,7 +75,7 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
     /** @test */
     public function it_handles_password_reset_confirmation_with_no_result(): void
     {
-        $client     = ClientRepositoryMock::createClient();
+        $client = ClientRepositoryMock::createClient();
         $repository = new ClientRepositoryMock([$client]);
 
         $handler = new ConfirmPasswordResetHandler($repository);

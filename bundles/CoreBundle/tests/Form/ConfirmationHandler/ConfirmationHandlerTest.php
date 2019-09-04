@@ -19,7 +19,6 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-use function implode;
 
 /**
  * @internal
@@ -38,7 +37,7 @@ final class ConfirmationHandlerTest extends TestCase
 
         $confirmationHandler->handleRequest($this->makePostRequest(), ['id']);
 
-        self::assertTrue($confirmationHandler->isConfirmed());
+        static::assertTrue($confirmationHandler->isConfirmed());
     }
 
     /** @test */
@@ -51,7 +50,7 @@ final class ConfirmationHandlerTest extends TestCase
 
         $confirmationHandler->handleRequest($this->makeGetRequest(), ['id']);
 
-        self::assertFalse($confirmationHandler->isConfirmed());
+        static::assertFalse($confirmationHandler->isConfirmed());
     }
 
     /** @test */
@@ -64,7 +63,7 @@ final class ConfirmationHandlerTest extends TestCase
 
         $confirmationHandler->handleRequest($this->makePostRequestWithoutToken(), ['id']);
 
-        self::assertFalse($confirmationHandler->isConfirmed());
+        static::assertFalse($confirmationHandler->isConfirmed());
     }
 
     /** @test */
@@ -77,7 +76,7 @@ final class ConfirmationHandlerTest extends TestCase
 
         $confirmationHandler->handleRequest($this->makeInvalidPostRequest(), ['id']);
 
-        self::assertFalse($confirmationHandler->isConfirmed());
+        static::assertFalse($confirmationHandler->isConfirmed());
     }
 
     /** @test */
@@ -105,8 +104,8 @@ final class ConfirmationHandlerTest extends TestCase
         $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Yes');
         $confirmationHandler->setCancelUrl('/user/1/show');
 
-        self::assertFalse($confirmationHandler->isConfirmed());
-        self::assertEquals(
+        static::assertFalse($confirmationHandler->isConfirmed());
+        static::assertEquals(
             '<form action="/user/1/delete"><h1>Confirm deleting</h1><p>Are you sure?</p><input type="hidden" name="_token" value="valid-token"><button type="submit">Yes</button><a href="/user/1/show">Cancel</a></form>',
             $confirmationHandler->render('confirm.html.twig')
         );
@@ -123,8 +122,8 @@ final class ConfirmationHandlerTest extends TestCase
         $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Yes');
         $confirmationHandler->setCancelUrl('/user/1/show');
 
-        self::assertFalse($confirmationHandler->isConfirmed());
-        self::assertEquals(
+        static::assertFalse($confirmationHandler->isConfirmed());
+        static::assertEquals(
             '<form action="/user/1/delete"><h1>Confirm deleting</h1><p>Are you sure?</p>Invalid CSRF token.<input type="hidden" name="_token" value="valid-token"><button type="submit">Yes</button><a href="/user/1/show">Cancel</a></form>',
             $confirmationHandler->render('confirm.html.twig')
         );
@@ -166,7 +165,7 @@ final class ConfirmationHandlerTest extends TestCase
 
     private function createTokenId(array $ids): string
     {
-        return 'confirm.' . implode('~', $ids) . '~';
+        return 'confirm.' . \implode('~', $ids) . '~';
     }
 
     private function createTokenManagerWithInvalid(string $tokenId, bool $hasToken = true): CsrfTokenManagerInterface

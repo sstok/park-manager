@@ -22,7 +22,7 @@ final class DefaultMessageBusExtension extends AbstractTypeExtension
         yield MessageFormType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('command_bus', static function (Options $options, $value) {
             return $value ?? 'park_manager.command_bus';

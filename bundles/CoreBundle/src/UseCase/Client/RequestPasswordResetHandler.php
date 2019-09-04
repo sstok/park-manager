@@ -32,10 +32,10 @@ final class RequestPasswordResetHandler
 
     public function __construct(ClientRepository $clients, SplitTokenFactory $tokenFactory, PasswordResetMailer $mailer, int $tokenTTL = 3600)
     {
-        $this->repository   = $clients;
+        $this->repository = $clients;
         $this->tokenFactory = $tokenFactory;
-        $this->tokenTTL     = $tokenTTL;
-        $this->mailer       = $mailer;
+        $this->tokenTTL = $tokenTTL;
+        $this->mailer = $mailer;
     }
 
     public function __invoke(RequestPasswordReset $command): void

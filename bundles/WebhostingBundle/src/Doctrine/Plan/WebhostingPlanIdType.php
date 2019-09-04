@@ -15,6 +15,6 @@ use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 
 final class WebhostingPlanIdType extends DomainIdType
 {
-    public const NAME         = 'park_manager_webhosting_plan_id';
+    public const NAME = 'park_manager_webhosting_plan_id';
     public const OBJECT_CLASS = WebhostingPlanId::class;
 }

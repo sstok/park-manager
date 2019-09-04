@@ -26,7 +26,7 @@ trait ServiceLoaderTrait
 {
     protected function getServiceLoader(ContainerBuilder $container, ...$servicesPath): DelegatingLoader
     {
-        $locator  = new FileLocator($servicesPath);
+        $locator = new FileLocator($servicesPath);
         $resolver = new LoaderResolver([
             new PhpFileLoader($container, $locator),
             new XmlFileLoader($container, $locator),

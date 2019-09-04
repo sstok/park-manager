@@ -25,8 +25,8 @@ use PHPUnit\Framework\TestCase;
 final class RegisterWebhostingAccountTest extends TestCase
 {
     private const ACCOUNT_ID = 'b288e23c-97c5-11e7-b51a-acbc32b58315';
-    private const OWNER_ID   = '2a9cd25c-97ca-11e7-9683-acbc32b58315';
-    private const PLAN_ID    = '654665ea-9869-11e7-9563-acbc32b58315';
+    private const OWNER_ID = '2a9cd25c-97ca-11e7-9683-acbc32b58315';
+    private const PLAN_ID = '654665ea-9869-11e7-9563-acbc32b58315';
 
     /** @test */
     public function its_constructable_with_plan(): void
@@ -38,11 +38,11 @@ final class RegisterWebhostingAccountTest extends TestCase
             self::PLAN_ID
         );
 
-        self::assertEquals(WebhostingAccountId::fromString(self::ACCOUNT_ID), $command->id);
-        self::assertEquals(OwnerId::fromString(self::OWNER_ID), $command->owner);
-        self::assertEquals(WebhostingPlanId::fromString(self::PLAN_ID), $command->plan);
-        self::assertEquals($domainName, $command->domainName);
-        self::assertNull($command->customConstraints);
+        static::assertEquals(WebhostingAccountId::fromString(self::ACCOUNT_ID), $command->id);
+        static::assertEquals(OwnerId::fromString(self::OWNER_ID), $command->owner);
+        static::assertEquals(WebhostingPlanId::fromString(self::PLAN_ID), $command->plan);
+        static::assertEquals($domainName, $command->domainName);
+        static::assertNull($command->customConstraints);
     }
 
     /** @test */
@@ -55,10 +55,10 @@ final class RegisterWebhostingAccountTest extends TestCase
             $constraints = new Constraints(new MonthlyTrafficQuota(50))
         );
 
-        self::assertEquals(WebhostingAccountId::fromString(self::ACCOUNT_ID), $command->id);
-        self::assertEquals(OwnerId::fromString(self::OWNER_ID), $command->owner);
-        self::assertEquals($constraints, $command->customConstraints);
-        self::assertEquals($domainName, $command->domainName);
-        self::assertNull($command->plan);
+        static::assertEquals(WebhostingAccountId::fromString(self::ACCOUNT_ID), $command->id);
+        static::assertEquals(OwnerId::fromString(self::OWNER_ID), $command->owner);
+        static::assertEquals($constraints, $command->customConstraints);
+        static::assertEquals($domainName, $command->domainName);
+        static::assertNull($command->plan);
     }
 }

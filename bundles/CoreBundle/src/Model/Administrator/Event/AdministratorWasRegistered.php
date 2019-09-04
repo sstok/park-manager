@@ -38,8 +38,8 @@ final class AdministratorWasRegistered
 
     public function __construct(AdministratorId $id, EmailAddress $email, string $name)
     {
-        $this->id    = $id;
+        $this->id = $id;
         $this->email = $email;
-        $this->name  = $name;
+        $this->name = $name;
     }
 }

@@ -24,9 +24,7 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
     protected function getEntityManager(?string $manager = 'doctrine.orm.default_entity_manager'): EntityManagerInterface
     {
         /** @var EntityManagerInterface $manager */
-        $manager = self::$container->get($manager ?? $this->getDefaultManagerName());
-
-        return $manager;
+        return self::$container->get($manager ?? $this->getDefaultManagerName());
     }
 
     protected function getDefaultManagerName(): string
