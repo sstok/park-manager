@@ -26,11 +26,11 @@ final class AdministratorPasswordWasChanged
      *
      * @var string|null
      */
-    public $newPassword;
+    public $password;
 
     public function __construct(AdministratorId $id, ?string $newPassword)
     {
         $this->id = $id;
-        $this->newPassword = $newPassword;
+        $this->password = $newPassword;
     }
 }

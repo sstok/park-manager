@@ -38,7 +38,7 @@ return static function (ContainerConfigurator $c): void {
 
     $di->set('park_manager.security.guard.form.client', FormAuthenticator::class)
         ->arg('$loginRoute', 'park_manager.client.security_login')
-        ->arg('$defaultSuccessRoute', 'home')
+        ->arg('$defaultSuccessRoute', 'park_manager.client.home')
     ;
 
     $di->set(UserPasswordChangeListener::class)
