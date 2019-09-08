@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\UseCase\Client;
 
 use ParkManager\Bundle\CoreBundle\Model\Client\ClientRepository;
-use ParkManager\Bundle\CoreBundle\Model\Client\Exception\PasswordResetConfirmationRejected;
+use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 
 final class ConfirmPasswordResetHandler
 {
@@ -35,7 +35,7 @@ final class ConfirmPasswordResetHandler
         try {
             $client->confirmPasswordReset($token, $command->password());
             $this->repository->save($client);
-        } catch (PasswordResetConfirmationRejected $e) {
+        } catch (PasswordResetTokenNotAccepted $e) {
             $this->repository->save($client);
 
             throw $e;

@@ -20,9 +20,9 @@ use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordResetWasReque
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientWasRegistered;
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\EmailChangeConfirmationRejected;
-use ParkManager\Bundle\CoreBundle\Model\Client\Exception\PasswordResetConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Model\DomainEventsCollectionTrait;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use ParkManager\Bundle\CoreBundle\Security\ClientUser;
 use ParkManager\Bundle\CoreBundle\Security\SecurityUser;
@@ -241,7 +241,7 @@ class Client implements RecordsDomainEvents
 
         try {
             if (! $token->matches($this->passwordResetToken)) {
-                throw new PasswordResetConfirmationRejected();
+                throw new PasswordResetTokenNotAccepted($this->passwordResetToken, $token);
             }
 
             $this->changePassword($newPassword);

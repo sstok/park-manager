@@ -17,8 +17,8 @@ use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientEmailAddressChangeWas
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordResetWasRequested;
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\ClientNotFound;
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\EmailChangeConfirmationRejected;
-use ParkManager\Bundle\CoreBundle\Model\Client\Exception\PasswordResetConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Bundle\CoreBundle\Test\Domain\MockRepository;
 
 final class ClientRepositoryMock implements ClientRepository
@@ -68,7 +68,7 @@ final class ClientRepositoryMock implements ClientRepository
         try {
             return $this->mockDoGetByEvent(ClientPasswordResetWasRequested::class, $selector);
         } catch (ClientNotFound $e) {
-            throw new PasswordResetConfirmationRejected();
+            throw new PasswordResetTokenNotAccepted();
         }
     }
 

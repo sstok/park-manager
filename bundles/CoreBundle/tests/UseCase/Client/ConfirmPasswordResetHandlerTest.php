@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Client;
 
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordWasChanged;
-use ParkManager\Bundle\CoreBundle\Model\Client\Exception\PasswordResetConfirmationRejected;
+use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\ClientRepositoryMock;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordReset;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordResetHandler;
@@ -67,7 +67,7 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
         try {
             $invalidToken = FakeSplitTokenFactory::instance()->fromString(FakeSplitTokenFactory::SELECTOR . \str_rot13(FakeSplitTokenFactory::VERIFIER));
             $handler(new ConfirmPasswordReset($invalidToken, 'my-password'));
-        } catch (PasswordResetConfirmationRejected $e) {
+        } catch (PasswordResetTokenNotAccepted $e) {
             $repository->assertEntitiesWereSaved([$client]);
         }
     }
@@ -82,7 +82,7 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
 
         try {
             $handler(new ConfirmPasswordReset($this->token, 'my-password'));
-        } catch (PasswordResetConfirmationRejected $e) {
+        } catch (PasswordResetTokenNotAccepted $e) {
             $repository->assertHasEntityWithEvents($client->getId(), []);
         }
     }

@@ -12,8 +12,8 @@ namespace ParkManager\Bundle\CoreBundle\Model\Client;
 
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\ClientNotFound;
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\EmailChangeConfirmationRejected;
-use ParkManager\Bundle\CoreBundle\Model\Client\Exception\PasswordResetConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 
 interface ClientRepository
 {
@@ -28,7 +28,7 @@ interface ClientRepository
     public function getByEmail(EmailAddress $email): Client;
 
     /**
-     * @throws PasswordResetConfirmationRejected When no client was found with the token-selector
+     * @throws PasswordResetTokenNotAccepted When no client was found with the token-selector
      */
     public function getByPasswordResetToken(string $selector): Client;
 

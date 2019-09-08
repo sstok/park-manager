@@ -18,8 +18,8 @@ use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientNameWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordResetWasRequested;
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\EmailChangeConfirmationRejected;
-use ParkManager\Bundle\CoreBundle\Model\Client\Exception\PasswordResetConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
+use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Bundle\CoreBundle\Test\Domain\EventsRecordingEntityAssertionTrait;
 use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
@@ -281,7 +281,7 @@ final class ClientTest extends TestCase
             $client->confirmPasswordReset($token, 'new-password');
 
             static::fail('PasswordResetConfirmationRejected was expected');
-        } catch (PasswordResetConfirmationRejected $e) {
+        } catch (PasswordResetTokenNotAccepted $e) {
             $this->addToAssertionCount(1);
         }
     }
