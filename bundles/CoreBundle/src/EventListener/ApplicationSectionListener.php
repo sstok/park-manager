@@ -13,7 +13,7 @@ namespace ParkManager\Bundle\CoreBundle\EventListener;
 use ParkManager\Bundle\CoreBundle\Context\ApplicationContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 final class ApplicationSectionListener implements EventSubscriberInterface
@@ -33,7 +33,7 @@ final class ApplicationSectionListener implements EventSubscriberInterface
         $this->applicationContext = $applicationContext;
     }
 
-    public function onKernelRequest(GetResponseEvent $event): void
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (! $event->isMasterRequest()) {
             return;

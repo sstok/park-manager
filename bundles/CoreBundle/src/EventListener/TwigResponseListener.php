@@ -13,7 +13,7 @@ namespace ParkManager\Bundle\CoreBundle\EventListener;
 use ParkManager\Bundle\CoreBundle\Http\Response\TwigResponse;
 use Psr\Container\ContainerInterface as Container;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -34,7 +34,7 @@ final class TwigResponseListener implements EventSubscriberInterface
         $this->container = $container;
     }
 
-    public function onKernelResponse(FilterResponseEvent $event): void
+    public function onKernelResponse(ResponseEvent $event): void
     {
         $response = $event->getResponse();
 

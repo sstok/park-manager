@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
  * @internal
@@ -31,7 +31,7 @@ final class ApplicationSectionListenerTest extends TestCase
             $this->doesNotExpectSectionIsSetContext()
         );
 
-        $event = $this->createMock(GetResponseEvent::class);
+        $event = $this->createMock(RequestEvent::class);
         $event->expects(static::once())->method('isMasterRequest')->willReturn(true);
         $event->expects(static::any())->method('getRequest')->willReturn(new Request());
 
@@ -46,7 +46,7 @@ final class ApplicationSectionListenerTest extends TestCase
             $this->doesNotExpectSectionIsSetContext()
         );
 
-        $event = $this->createMock(GetResponseEvent::class);
+        $event = $this->createMock(RequestEvent::class);
         $event->expects(static::once())->method('isMasterRequest')->willReturn(false);
         $event->expects(static::never())->method('getRequest');
 
@@ -64,7 +64,7 @@ final class ApplicationSectionListenerTest extends TestCase
             $this->expectSectionIsSetContext('admin')
         );
 
-        $event = $this->createMock(GetResponseEvent::class);
+        $event = $this->createMock(RequestEvent::class);
         $event->expects(static::once())->method('isMasterRequest')->willReturn(true);
         $event->expects(static::any())->method('getRequest')->willReturn(Request::create('/admin/'));
 

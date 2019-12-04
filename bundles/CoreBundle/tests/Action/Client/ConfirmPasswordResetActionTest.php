@@ -11,12 +11,12 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Tests\Action\Client;
 
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\Panther\PantherTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * @internal
  */
-final class ConfirmPasswordResetActionTest extends PantherTestCase
+final class ConfirmPasswordResetActionTest extends WebTestCase
 {
     /** @test */
     public function it_resets_a_password(): void

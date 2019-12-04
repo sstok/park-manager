@@ -37,6 +37,11 @@ final class FakePasswordHashFactory implements EncoderFactoryInterface
             {
                 return false;
             }
+
+            public function needsRehash(string $encoded): bool
+            {
+                return false;
+            }
         };
     }
 

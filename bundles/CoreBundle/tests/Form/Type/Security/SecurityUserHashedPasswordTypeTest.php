@@ -40,6 +40,14 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
             {
                 return false;
             }
+
+            /**
+             * {@inheritdoc}
+             */
+            public function needsRehash(string $encoded): bool
+            {
+                return false;
+            }
         };
 
         $this->encoderFactory = new class($encoder) implements EncoderFactoryInterface {

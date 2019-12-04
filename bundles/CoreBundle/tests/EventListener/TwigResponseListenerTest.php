@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Twig\Environment;
 
@@ -92,9 +92,9 @@ final class TwigResponseListenerTest extends TestCase
         return $containerProphecy->reveal();
     }
 
-    private function createEvent(Response $response): FilterResponseEvent
+    private function createEvent(Response $response): ResponseEvent
     {
-        return new FilterResponseEvent(
+        return new ResponseEvent(
             $this->createMock(HttpKernelInterface::class),
             new Request(),
             HttpKernelInterface::MASTER_REQUEST,

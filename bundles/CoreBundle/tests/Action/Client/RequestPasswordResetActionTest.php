@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\Action\Client;
 
-use Symfony\Component\Panther\PantherTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * @internal
  */
-final class RequestPasswordResetActionTest extends PantherTestCase
+final class RequestPasswordResetActionTest extends WebTestCase
 {
     /** @test */
     public function it_requests_a_password_reset(): void

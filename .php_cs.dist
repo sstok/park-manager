@@ -98,6 +98,7 @@ return PhpCsFixer\Config::create()
         ],
         'phpdoc_var_without_name' => false, // see phpdoc_to_comment
         'strict_comparison' => false,
+        'single_line_throw' => false,
         'yoda_style' => [
             'equal' => false,
             'identical' => false,
