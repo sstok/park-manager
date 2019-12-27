@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\Action\Client;
 
+use ParkManager\Bundle\CoreBundle\Test\WebTranslatedAssertionTrait;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -18,6 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 final class ConfirmPasswordResetActionTest extends WebTestCase
 {
+    use WebTranslatedAssertionTrait;
+
     /** @test */
     public function it_resets_a_password(): void
     {
@@ -37,7 +40,7 @@ final class ConfirmPasswordResetActionTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('park_manager.client.security_login');
-        self::assertSelectorTextContains('body div', 'flash.password_reset_accepted');
+        self::assertSelectorTranslatedTextContains('body div', 'flash.password_reset_accepted');
     }
 
     /** @test */
@@ -48,6 +51,6 @@ final class ConfirmPasswordResetActionTest extends WebTestCase
         $client->request('GET', '/password-reset/confirm/FooBangBar0100010101');
 
         self::assertRouteSame('park_manager.client.security_confirm_password_reset');
-        self::assertSelectorTextContains('body div', 'The verification token is invalid or expired.');
+        self::assertSelectorTranslatedTextContains('body div', 'password_reset.invalid_token', [], 'validators');
     }
 }

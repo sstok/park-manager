@@ -23,6 +23,7 @@ use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Translation\IdentityTranslator;
 use Throwable;
@@ -40,6 +41,9 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     /** @var FakePasswordHashFactory */
     private $encoderFactory;
 
+    /** @var UrlGeneratorInterface */
+    private $urlGenerator;
+
     protected static function getCommandName(): string
     {
         return ConfirmUserPasswordReset::class;
@@ -51,6 +55,10 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         $this->splitTokenFactory = new FakeSplitTokenFactory();
         $this->encoderFactory = new FakePasswordHashFactory();
 
+        $urlGeneratorProphecy = $this->prophesize(UrlGeneratorInterface::class);
+        $urlGeneratorProphecy->generate('request_password_reset')->willReturn('/password-reset/request');
+        $this->urlGenerator = $urlGeneratorProphecy->reveal();
+
         parent::setUp();
     }
 
@@ -60,6 +68,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
             $this->getMessageType(),
             new SplitTokenType($this->splitTokenFactory, new IdentityTranslator()),
             new SecurityUserHashedPasswordType($this->encoderFactory),
+            new ConfirmPasswordResetType($this->urlGenerator),
         ];
     }
 
@@ -78,6 +87,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
             'command_bus' => 'command_bus',
             'command_message_factory' => $this->getCommandBuilder(),
             'user_class' => ClientUser::class,
+            'request_route' => 'request_password_reset',
         ]);
         $form->submit([
             'password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there']],
@@ -112,6 +122,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
             'command_bus' => 'command_bus',
             'command_message_factory' => $this->getCommandBuilder(),
             'user_class' => ClientUser::class,
+            'request_route' => 'request_password_reset',
         ]);
         $form->submit([
             'password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there']],
@@ -120,7 +131,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
 
         $this->assertFormHasErrors($form, [
             '' => [
-                new FormError('password_reset.invalid_token', 'password_reset.invalid_token', ['{{ value }}' => 'NopeNopeNopeNopeNope']),
+                new FormError('password_reset.invalid_token', 'password_reset.invalid_token', ['{{ value }}' => 'NopeNopeNopeNopeNope', '{reset_url}' => '/password-reset/request']),
             ],
         ]);
 
@@ -144,6 +155,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
             'command_bus' => 'command_bus',
             'command_message_factory' => $this->getCommandBuilder(),
             'user_class' => ClientUser::class,
+            'request_route' => 'request_password_reset',
         ]);
         $form->submit([
             'password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there']],
@@ -158,14 +170,14 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         yield 'PasswordResetTokenNotAccepted with token' => [
             new PasswordResetTokenNotAccepted((new FakeSplitTokenFactory())->generate()->toValueHolder()),
             [
-                new FormError('password_reset.invalid_token'),
+                new FormError('password_reset.invalid_token', 'password_reset.invalid_token', ['{reset_url}' => '/password-reset/request']),
             ],
         ];
 
         yield 'PasswordResetTokenNotAccepted without token' => [
             new PasswordResetTokenNotAccepted(),
             [
-                new FormError('password_reset.no_token'),
+                new FormError('password_reset.no_token', 'password_reset.no_token', ['{reset_url}' => '/password-reset/request']),
             ],
         ];
 

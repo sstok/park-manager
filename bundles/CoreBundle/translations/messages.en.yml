@@ -3,7 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 label:
-    email: E-mail address
+    email: Email address
     current_password: Current Password
     password: Password
     password2: Repeat Password
@@ -11,23 +11,29 @@ label:
 button:
     login: Login
     change_password: Change password
+ui:
+    success: Success
+    error: Error
+    info: Information
+    warning: Warnning
 
 flash:
     password_reset_accepted: Password reset accepted. Please try to login with your new password.
     user_password_changed: Password changed.
     password_reset_send: |
-        If this e-mail address is valid (opted into account recovery), and no reset was requested recently,
-        <em>then</em> you should receive an e-mail. Otherwise check your spam-folder or try again.
+        If this email address is valid (opted into account recovery), and no reset was requested recently,
+        <em>then</em> you should receive an email. Otherwise check your spam-folder or try again.
 
 login:
     heading: Login
     admin_heading: Administrator Login
+    client_heading: Login
     forgot_password: Forgot your password?
-    forgot_password_admin: Forgot your password? Contact (another) super administrator or use the recovery console.
+    forgot_password_admin: Forgot your password? Contact super administrator or use the recovery console.
     help.trouble.button: Trouble logging in?
     help.trouble.html: |
         <ul>
-            <li>Check your e-mail address - did you change it recently?</li>
+            <li>Check your email address - did you change it recently?</li>
             <li>Check your password - note that your password is case sensitive!</li>
             <li>Check your computer clock - and synchronize if possible.</li>
             <li>Make sure cookies are accepted (for this website).</li>
@@ -39,16 +45,17 @@ password_reset:
     admin_heading: Administrator Password reset
     client_heading: Password reset
     paragraph.html: |
-        <p>To reset your password provide the (main) e-mail address associated with your account.</p>
-        <p>Please note that <b>no more then one reset request is accepted</b> within a reasonable time,
-            if you didn't receive an e-mail <b>check your spam folder or try again later.</b></p>
+        <p>To reset your password provide the (main) email address associated with your account.</p>
+    request_limit_notice.html: |
+        Please note that <b>no more then one reset request is accepted</b> within a reasonable time,
+        if you didn't receive an email <b>check your spam folder or try again later.</b>
     confirm.html: |
         <p>Provide your new password (twice to prevent typing errors).</p>
-        <p>You can safely remove the e-mail message with the reset link as this link can only be used once.</p>
+        <p>You can safely remove the email message with the reset link as this link can only be used once.</p>
     submit_button: Send reset
     confirm_button: Confirm reset
     error:
-        invalid_token: Invalid token provided, please copy the reset URL in the received e-mail (in full) and try again.
+        invalid_token: Invalid token provided, please copy the reset URL in the received email (in full) and try again.
         no_token: |
             Sorry but no results were found with this token.<br><a href="%reset_url%">Please try again</a>
 

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\Action\Client;
 
+use ParkManager\Bundle\CoreBundle\Test\WebTranslatedAssertionTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -17,6 +18,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 final class RequestPasswordResetActionTest extends WebTestCase
 {
+    use WebTranslatedAssertionTrait;
+
     /** @test */
     public function it_requests_a_password_reset(): void
     {
@@ -38,7 +41,7 @@ final class RequestPasswordResetActionTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('park_manager.client.security_login');
-        self::assertSelectorTextContains('body div', 'flash.password_reset_send');
+        self::assertSelectorTranslatedTextContains('body div', 'flash.password_reset_send');
     }
 
     /** @test */
@@ -56,6 +59,6 @@ final class RequestPasswordResetActionTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('park_manager.client.security_login');
-        self::assertSelectorTextContains('body div', 'flash.password_reset_send');
+        self::assertSelectorTranslatedTextContains('body div', 'flash.password_reset_send');
     }
 }

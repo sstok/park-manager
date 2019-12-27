@@ -18,19 +18,34 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
 final class ConfirmPasswordResetType extends AbstractType
 {
+    /** @var UrlGeneratorInterface */
+    private $urlGenerator;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator)
+    {
+        $this->urlGenerator = $urlGenerator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('reset_token', SplitTokenType::class, ['invalid_message' => 'password_reset.invalid_token'])
+            ->add('reset_token', SplitTokenType::class, [
+                'invalid_message' => 'password_reset.invalid_token',
+                'invalid_message_parameters' => [
+                    '{reset_url}' => ($routeName = $options['request_route']) ? $this->urlGenerator->generate($routeName) : '',
+                ],
+            ])
             ->add('password', SecurityUserHashedPasswordType::class, [
                 'required' => true,
                 'password_confirm' => true,
+                'label' => false,
                 'password_constraints' => $options['password_constraints'],
                 'user_class' => $options['user_class'],
             ])
@@ -55,20 +70,26 @@ final class ConfirmPasswordResetType extends AbstractType
         $resolver
             ->setRequired(['user_class'])
             ->setDefault('password_constraints', [])
+            ->setDefault('request_route', null)
             ->setDefault('exception_mapping', [
-                PasswordResetTokenNotAccepted::class => static function (PasswordResetTokenNotAccepted $e, Translator $translator) {
+                PasswordResetTokenNotAccepted::class => function (PasswordResetTokenNotAccepted $e, $translator, FormInterface $form) {
+                    $arguments = [
+                        '{reset_url}' => ($routeName = $form->getConfig()->getOption('request_route')) ? $this->urlGenerator->generate($routeName) : '',
+                    ];
+
                     if ($e->storedToken() === null) {
-                        return new FormError($translator->trans('password_reset.no_token', [], 'validators'), 'password_reset.no_token', [], null, $e);
+                        return new FormError('password_reset.no_token', null, $arguments, null, $e);
                     }
 
-                    return new FormError($translator->trans('password_reset.invalid_token', [], 'validators'), 'password_reset.invalid_token', [], null, $e);
+                    return new FormError('password_reset.invalid_token', null, $arguments, null, $e);
                 },
                 DisabledException::class => static function (DisabledException $e, Translator $translator) {
-                    return new FormError($translator->trans('password_reset.access_disabled', [], 'validators'), null, [], null, $e);
+                    return new FormError('password_reset.access_disabled', null, [], null, $e);
                 },
             ])
             ->setAllowedTypes('user_class', ['string'])
             ->setAllowedTypes('password_constraints', ['array', Constraint::class])
+            ->setAllowedTypes('request_route', ['string', 'null'])
         ;
     }
 

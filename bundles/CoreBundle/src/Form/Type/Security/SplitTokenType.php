@@ -53,9 +53,7 @@ final class SplitTokenType extends AbstractType
                 $form = $event->getForm();
                 $config = $form->getConfig();
 
-                $form->addError(
-                    new FormError($this->translator->trans($config->getOption('invalid_message'), [], 'validators'), null, [], null, $e)
-                );
+                $form->addError(new FormError($config->getOption('invalid_message'), null, $config->getOption('invalid_message_parameters'), null, $e));
             }
         });
 

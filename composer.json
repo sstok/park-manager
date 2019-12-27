@@ -30,6 +30,7 @@
         "doctrine/doctrine-migrations-bundle": "^2.0",
         "doctrine/orm": "^2.7",
         "egulias/email-validator": "^2.1",
+        "knplabs/knp-menu-bundle": "^3.0.0",
         "paragonie/constant_time_encoding": "^2.0",
         "paragonie/halite": "^4.4.2",
         "ramsey/uuid": "^3.0",
@@ -52,6 +53,7 @@
         "symfony/translation": "*",
         "symfony/twig-bundle": "*",
         "symfony/validator": "*",
+        "symfony/webpack-encore-bundle": "*",
         "symfony/yaml": "*"
     },
     "replace": {
