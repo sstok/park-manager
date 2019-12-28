@@ -37,12 +37,14 @@ class ParkManagerCoreBundle extends Bundle
 
     public function build(ContainerBuilder $container): void
     {
+        self::setAppConfiguration($container);
+
         $path = $this->getPath() . '/src/Model/';
         $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver([$this->getPath() . '/src/Doctrine/SecurityMapping' => 'Rollerworks\\Component\\SplitToken']));
         $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver([$path => $this->getNamespace() . '\\Model'], [$path]));
     }
 
-    public static function setAppConfiguration(ContainerBuilder $container): void
+    private static function setAppConfiguration(ContainerBuilder $container): void
     {
         $container->addResource(new EnvVariableResource('PRIMARY_HOST'));
         $container->addResource(new EnvVariableResource('ENABLE_HTTPS'));
