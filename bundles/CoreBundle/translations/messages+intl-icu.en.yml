@@ -57,7 +57,7 @@ password_reset:
     error:
         invalid_token: Invalid token provided, please copy the reset URL in the received email (in full) and try again.
         no_token: |
-            Sorry but no results were found with this token.<br><a href="%reset_url%">Please try again</a>
+            Sorry but no results were found with this token.<br><a href="{ reset_url }">Please try again</a>
 
 change_password:
     heading: Change your Password
