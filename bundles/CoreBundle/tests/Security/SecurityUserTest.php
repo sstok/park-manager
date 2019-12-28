@@ -71,12 +71,14 @@ final class SecurityUserTest extends TestCase
         $securityUser4 = $this->createSecurityUserSecond(); // Different class
         $securityUser5 = new SecurityUserExtended(self::ID1, self::PASSWORD, true, ['ROLE_USER', 'ROLE_OPERATOR']); // Role
         $securityUser6 = new SecurityUserExtended(self::ID1, self::PASSWORD, false, ['ROLE_USER']); // Status
+        $securityUser7 = new SecurityUserExtended(self::ID1, self::PASSWORD, true, ['ROLE_OPERATOR', 'ROLE_USER']); // Role
 
-        static::assertFalse($securityUser1->isEqualTo($securityUser2), 'ID should must mismatch');
-        static::assertFalse($securityUser1->isEqualTo($securityUser3), 'Password should must mismatch');
+        static::assertFalse($securityUser1->isEqualTo($securityUser2), 'ID should mismatch');
+        static::assertFalse($securityUser1->isEqualTo($securityUser3), 'Password should mismatch');
         static::assertFalse($securityUser1->isEqualTo($securityUser4), 'Class should be of same instance');
-        static::assertFalse($securityUser1->isEqualTo($securityUser6), 'Enabled status should should mismatch');
-        static::assertTrue($securityUser1->isEqualTo($securityUser5), 'Roles should should not mismatch');
+        static::assertFalse($securityUser1->isEqualTo($securityUser6), 'Enabled status should mismatch');
+        static::assertFalse($securityUser1->isEqualTo($securityUser5), 'Roles should mismatch');
+        static::assertTrue($securityUser5->isEqualTo($securityUser7), 'Roles order should not mismatch');
     }
 
     /** @test */

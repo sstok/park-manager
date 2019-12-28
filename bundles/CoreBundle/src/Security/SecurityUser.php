@@ -30,8 +30,13 @@ abstract class SecurityUser implements UserInterface, EquatableInterface, Serial
     protected $roles;
     protected $enabled;
 
+    /**
+     * @param string[] $roles
+     */
     public function __construct(string $id, string $password, bool $enabled, array $roles)
     {
+        \sort($roles, SORT_STRING);
+
         $this->username = $id;
         $this->password = $password;
         $this->enabled = $enabled;
@@ -111,7 +116,10 @@ abstract class SecurityUser implements UserInterface, EquatableInterface, Serial
             return false;
         }
 
-        /** @var static $user */
+        if ($user->getRoles() !== $this->getRoles()) {
+            return false;
+        }
+
         return ! ($user->isEnabled() !== $this->isEnabled());
     }
 }
