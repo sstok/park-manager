@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Test\Domain\Repository;
+namespace ParkManager\Bundle\CoreBundle\Test\Model\Repository;
 
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
@@ -17,7 +17,7 @@ use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswor
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\AdministratorNotFound;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\PasswordResetConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
-use ParkManager\Bundle\CoreBundle\Test\Domain\MockRepository;
+use ParkManager\Bundle\CoreBundle\Test\Model\MockRepository;
 
 final class AdministratorRepositoryMock implements AdministratorRepository
 {

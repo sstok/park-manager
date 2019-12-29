@@ -12,7 +12,7 @@ namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Client;
 
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
-use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\ClientRepositoryMock;
+use ParkManager\Bundle\CoreBundle\Test\Model\Repository\ClientRepositoryMock;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordReset;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordResetHandler;
 use PHPUnit\Framework\TestCase;

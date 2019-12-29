@@ -13,7 +13,7 @@ namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Client;
 use ParkManager\Bundle\CoreBundle\Model\Client\Client;
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
-use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\ClientRepositoryMock;
+use ParkManager\Bundle\CoreBundle\Test\Model\Repository\ClientRepositoryMock;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmEmailAddressChange;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmEmailAddressChangeHandler;
 use PHPUnit\Framework\TestCase;

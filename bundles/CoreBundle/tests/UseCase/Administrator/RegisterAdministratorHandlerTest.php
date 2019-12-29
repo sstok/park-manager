@@ -16,7 +16,7 @@ use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswor
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorWasRegistered;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\AdministratorEmailAddressAlreadyInUse;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
-use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\AdministratorRepositoryMock;
+use ParkManager\Bundle\CoreBundle\Test\Model\Repository\AdministratorRepositoryMock;
 use ParkManager\Bundle\CoreBundle\UseCase\Administrator\RegisterAdministrator;
 use ParkManager\Bundle\CoreBundle\UseCase\Administrator\RegisterAdministratorHandler;
 use PHPUnit\Framework\TestCase;

@@ -12,7 +12,7 @@ namespace ParkManager\Bundle\WebhostingBundle\Tests\Model\Account;
 
 use DateTimeImmutable;
 use ParkManager\Bundle\CoreBundle\Model\OwnerId;
-use ParkManager\Bundle\CoreBundle\Test\Domain\EventsRecordingEntityAssertionTrait;
+use ParkManager\Bundle\CoreBundle\Test\Model\EventsRecordingEntityAssertionTrait;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\Event\WebhostingAccountOwnerWasSwitched;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\Event\WebhostingAccountPlanAssignmentWasChanged;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\Event\WebhostingAccountPlanConstraintsWasChanged;

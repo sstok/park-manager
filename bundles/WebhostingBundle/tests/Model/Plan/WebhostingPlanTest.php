@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\WebhostingBundle\Tests\Model\Plan;
 
-use ParkManager\Bundle\CoreBundle\Test\Domain\EventsRecordingEntityAssertionTrait;
+use ParkManager\Bundle\CoreBundle\Test\Model\EventsRecordingEntityAssertionTrait;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanConstraintsWasChanged;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;

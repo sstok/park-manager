@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\CoreBundle\Test\Domain\Repository;
+namespace ParkManager\Bundle\CoreBundle\Test\Model\Repository;
 
 use ParkManager\Bundle\CoreBundle\Model\Client\Client;
 use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
@@ -19,7 +19,7 @@ use ParkManager\Bundle\CoreBundle\Model\Client\Exception\ClientNotFound;
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
-use ParkManager\Bundle\CoreBundle\Test\Domain\MockRepository;
+use ParkManager\Bundle\CoreBundle\Test\Model\MockRepository;
 
 final class ClientRepositoryMock implements ClientRepository
 {

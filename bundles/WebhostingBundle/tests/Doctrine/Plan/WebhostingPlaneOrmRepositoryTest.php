@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\WebhostingBundle\Tests\Doctrine\Plan;
 
 use ParkManager\Bundle\CoreBundle\Test\Doctrine\EntityRepositoryTestCase;
-use ParkManager\Bundle\CoreBundle\Test\Domain\EventSourcedRepositoryTestHelper;
+use ParkManager\Bundle\CoreBundle\Test\Model\EventSourcedRepositoryTestHelper;
 use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\WebhostingPlanOrmRepository;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Exception\WebhostingPlanNotFound;

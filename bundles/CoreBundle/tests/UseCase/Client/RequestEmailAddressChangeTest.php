@@ -14,7 +14,7 @@ use DateTimeImmutable;
 use ParkManager\Bundle\CoreBundle\Mailer\Client\EmailAddressChangeRequestMailer;
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientEmailAddressChangeWasRequested;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
-use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\ClientRepositoryMock;
+use ParkManager\Bundle\CoreBundle\Test\Model\Repository\ClientRepositoryMock;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestEmailAddressChange;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestEmailAddressChangeHandler;
 use PHPUnit\Framework\TestCase;

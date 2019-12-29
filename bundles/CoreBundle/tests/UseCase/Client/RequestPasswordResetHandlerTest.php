@@ -14,7 +14,7 @@ use DateTimeImmutable;
 use ParkManager\Bundle\CoreBundle\Mailer\Client\PasswordResetMailer;
 use ParkManager\Bundle\CoreBundle\Model\Client\Client;
 use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordResetWasRequested;
-use ParkManager\Bundle\CoreBundle\Test\Domain\Repository\ClientRepositoryMock;
+use ParkManager\Bundle\CoreBundle\Test\Model\Repository\ClientRepositoryMock;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestPasswordReset;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestPasswordResetHandler;
 use PHPUnit\Framework\TestCase;

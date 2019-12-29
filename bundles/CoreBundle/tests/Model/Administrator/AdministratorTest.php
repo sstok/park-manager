@@ -19,7 +19,7 @@ use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswor
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorWasRegistered;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\CannotDisableSuperAdministrator;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
-use ParkManager\Bundle\CoreBundle\Test\Domain\EventsRecordingEntityAssertionTrait;
+use ParkManager\Bundle\CoreBundle\Test\Model\EventsRecordingEntityAssertionTrait;
 use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;

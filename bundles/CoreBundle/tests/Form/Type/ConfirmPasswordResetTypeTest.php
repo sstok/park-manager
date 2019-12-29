@@ -16,7 +16,7 @@ use ParkManager\Bundle\CoreBundle\Form\Type\Security\SecurityUserHashedPasswordT
 use ParkManager\Bundle\CoreBundle\Form\Type\Security\SplitTokenType;
 use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Bundle\CoreBundle\Security\ClientUser;
-use ParkManager\Bundle\CoreBundle\Test\Infrastructure\UserInterface\Web\Form\TransformationFailureExtension;
+use ParkManager\Bundle\CoreBundle\Test\Form\TransformationFailureExtension;
 use ParkManager\Bundle\CoreBundle\Tests\Form\Type\Mocks\FakePasswordHashFactory;
 use Rollerworks\Bundle\MessageBusFormBundle\Test\MessageFormTestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;

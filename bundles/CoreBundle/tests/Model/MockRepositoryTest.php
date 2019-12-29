@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Tests\Model;
 
 use InvalidArgumentException;
-use ParkManager\Bundle\CoreBundle\Test\Domain\MockRepository;
+use ParkManager\Bundle\CoreBundle\Test\Model\MockRepository;
 use ParkManager\Bundle\CoreBundle\Tests\Model\Mock\EmailChanged;
 use ParkManager\Bundle\CoreBundle\Tests\Model\Mock\MockEntity;
 use ParkManager\Bundle\CoreBundle\Tests\Model\Mock\MockIdentity;

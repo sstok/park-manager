@@ -13,7 +13,7 @@ namespace ParkManager\Bundle\CoreBundle\Tests\Form\Type;
 use Closure;
 use ParkManager\Bundle\CoreBundle\Form\Type\Security\ChangePasswordType;
 use ParkManager\Bundle\CoreBundle\Security\ClientUser;
-use ParkManager\Bundle\CoreBundle\Test\Infrastructure\UserInterface\Web\Form\TransformationFailureExtension;
+use ParkManager\Bundle\CoreBundle\Test\Form\TransformationFailureExtension;
 use ParkManager\Bundle\CoreBundle\Tests\Form\Type\Mocks\FakePasswordHashFactory;
 use Rollerworks\Bundle\MessageBusFormBundle\Test\MessageFormTestCase;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
