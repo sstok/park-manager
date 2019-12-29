@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Bundle\WebhostingBundle\Tests\Model\Account\Command;
+namespace ParkManager\Bundle\WebhostingBundle\Tests\UseCase\Account;
 
 use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\WebhostingAccountId;
