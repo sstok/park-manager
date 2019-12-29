@@ -32,6 +32,8 @@ final class OwnerIdTest extends TestCase
         static::assertFalse($id->equals($userId));
 
         static::assertTrue($id->is(OwnerId::PERSONAL));
+        static::assertTrue($id->isOwnedBy($userId));
+        static::assertTrue($id->isOwnedBy(ClientId::fromString(self::USER_ID)));
         static::assertFalse($id->is(OwnerId::INTERNAL));
         static::assertFalse($id->is(OwnerId::PRIVATE));
     }

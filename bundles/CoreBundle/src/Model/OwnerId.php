@@ -13,22 +13,20 @@ namespace ParkManager\Bundle\CoreBundle\Model;
 use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
 
 /**
- * OwnerId is used to "soft link" an entity to either a specific AbstractUser, or system.
+ * OwnerId links an entity to either a Client user, the Internal system or Private Reseller.
  *
- * There are two special types: `internal` and `private`, which both use
- * a static id value to indicate there purpose.
+ * _This should only be used when the entity is not Client specific._
+ *
+ * The static IDs are used for the following:
  *
  * - Internal is managed by the system itself and used for platform configuration.
  *   Mainly the VirtualHost configuration of the hosting-management application
  *   is marked as `internal`, and reseller entry points.
  *
  * - Private marks the Entity is only accessible by Administrators, this used
- *   for corporate e-mail mailboxes and company owned websites.
+ *   for corporate email mailboxes and company owned websites.
  *
- * A `personal` id owner contains the AbstractUserId to realize a linkage between the
- * bounded contexts.
- *
- * Note: An Entity can only ever owned by a single user, not a group of users.
+ * A `personal` id owner contains the ClientId.
  */
 final class OwnerId
 {
@@ -53,6 +51,9 @@ final class OwnerId
         return self::fromString($id->toString());
     }
 
+    /**
+     * @param string $id Either one of the class constant's (INTERNAL, PRIVATE, PERSONAL) value
+     */
     public function is(string $id): bool
     {
         if ($this->stringValue === $id) {
@@ -60,5 +61,10 @@ final class OwnerId
         }
 
         return $id === self::PERSONAL && $this->stringValue !== self::INTERNAL && $this->stringValue !== self::PRIVATE;
+    }
+
+    public function isOwnedBy(ClientId $id): bool
+    {
+        return $id->toString() === $this->stringValue;
     }
 }
