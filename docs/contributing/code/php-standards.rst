@@ -27,6 +27,7 @@ Introduction
 - Abstract exception class names and exception interface names should be suffixed with ``Exception``;
 - Interfaces must not be suffixed with ``Interface``;
 - Concrete exception class names should not be suffixed with ``Exception``;
+- Use clear sentence constructs for exceptions ``TransformationFailed``, ``UsernameIsAlreadyTaken``, ``TypeNotAccepted``, etc;
 - Align chained method calls over multiple lines;
 - Add spaces around a concatenation operator ``$foo = 'Hello ' . 'World!';``;
 - Add spaces between assignment, control and return statements;
