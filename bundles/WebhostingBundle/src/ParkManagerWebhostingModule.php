@@ -11,10 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\WebhostingBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use Doctrine\DBAL\Types\Type;
 use ParkManager\Bundle\WebhostingBundle\DependencyInjection\Compiler\PlanConstraintsPass;
 use ParkManager\Bundle\WebhostingBundle\DependencyInjection\DependencyExtension;
-use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\WebhostingPlanConstraintsType;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -40,16 +38,5 @@ final class ParkManagerWebhostingModule extends Bundle
         $path = $this->getPath() . '/src/Model/';
         $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver([$path => $this->getNamespace() . '\\Model'], [$path]));
         $container->addCompilerPass(new PlanConstraintsPass());
-    }
-
-    public function shutdown(): void
-    {
-        if (! Type::hasType('webhosting_plan_constraints')) {
-            return;
-        }
-
-        $type = Type::getType('webhosting_plan_constraints');
-        \assert($type instanceof WebhostingPlanConstraintsType);
-        $type->setConstraintsFactory(null);
     }
 }

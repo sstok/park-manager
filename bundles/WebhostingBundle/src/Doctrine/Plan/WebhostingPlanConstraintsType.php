@@ -22,7 +22,7 @@ final class WebhostingPlanConstraintsType extends JsonType
     /** @var ConstraintsFactory|null */
     private $constraintsFactory;
 
-    public function setConstraintsFactory(?ConstraintsFactory $constraintsFactory): void
+    public function setConstraintsFactory(ConstraintsFactory $constraintsFactory): void
     {
         $this->constraintsFactory = $constraintsFactory;
     }
