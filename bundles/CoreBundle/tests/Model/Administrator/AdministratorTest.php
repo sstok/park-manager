@@ -14,12 +14,8 @@ use Assert\AssertionFailedException;
 use DateTimeImmutable;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
-use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordResetWasRequested;
-use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordWasChanged;
-use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorWasRegistered;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\CannotDisableSuperAdministrator;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
-use ParkManager\Bundle\CoreBundle\Test\Model\EventsRecordingEntityAssertionTrait;
 use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;
@@ -29,8 +25,6 @@ use Rollerworks\Component\SplitToken\SplitToken;
  */
 final class AdministratorTest extends TestCase
 {
-    use EventsRecordingEntityAssertionTrait;
-
     private const ID1 = '930c3fd0-3bd1-11e7-bb9b-acdc32b58315';
 
     /** @var FakeSplitTokenFactory */
@@ -46,18 +40,18 @@ final class AdministratorTest extends TestCase
      */
     public function registered(): void
     {
-        $user = Administrator::register($id = AdministratorId::fromString(self::ID1), $email = new EmailAddress('Jane@example.com'), 'Janet Doe');
+        $user = Administrator::register($id = AdministratorId::fromString(self::ID1), $email = new EmailAddress('Jane@example.com'), 'Janet Doe', 'wipPy');
 
         static::assertEquals($id, $user->getId());
         static::assertEquals($email, $user->getEmailAddress());
+        static::assertEquals('Janet Doe', $user->getDisplayName());
+        static::assertEquals('wipPy', $user->getPassword());
         static::assertTrue($user->isLoginEnabled());
 
         // Roles
         static::assertEquals(Administrator::DEFAULT_ROLES, $user->getRoles());
         static::assertTrue($user->hasRole('ROLE_ADMIN'));
         static::assertFalse($user->hasRole('ROLE_NOOP'));
-
-        self::assertDomainEvents($user, [new AdministratorWasRegistered($id, $email, 'Janet Doe')]);
     }
 
     /**
@@ -127,18 +121,7 @@ final class AdministratorTest extends TestCase
 
         $user->changePassword('security-is-null');
 
-        self::assertDomainEvents($user, [new AdministratorPasswordWasChanged($user->getId(), 'security-is-null')]);
-    }
-
-    /**
-     * @test
-     */
-    public function change_password_to_null(): void
-    {
-        $user = $this->registerAdministrator('security-is-null');
-        $user->changePassword(null);
-
-        self::assertDomainEvents($user, [new AdministratorPasswordWasChanged($user->getId(), null)]);
+        static::assertEquals('security-is-null', $user->getPassword());
     }
 
     /**
@@ -207,7 +190,7 @@ final class AdministratorTest extends TestCase
         $user = $this->registerAdministrator('pass-my-word');
         $user->requestPasswordReset($token);
 
-        self::assertDomainEvents($user, [new AdministratorPasswordResetWasRequested($user->getId(), $token)]);
+        static::assertEquals($token->toValueHolder(), $user->getPasswordResetToken());
     }
 
     /**
@@ -217,19 +200,12 @@ final class AdministratorTest extends TestCase
     {
         $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
         $user = $this->registerAdministrator('pass-my-word');
-        $id = $user->getId();
 
         $user->requestPasswordReset($token);
 
         static::assertTrue($user->confirmPasswordReset($token2 = $this->getTokenString($token), 'new-password'));
+        static::assertNull($user->getPasswordResetToken());
         static::assertFalse($user->confirmPasswordReset($token2, 'new2-password'));
-        self::assertDomainEvents(
-            $user,
-            [
-                new AdministratorPasswordResetWasRequested($id, $token),
-                new AdministratorPasswordWasChanged($id, 'new-password'),
-            ]
-        );
     }
 
     /**
@@ -241,19 +217,14 @@ final class AdministratorTest extends TestCase
         $invalidToken = $this->generateSecondToken();
 
         $user = $this->registerAdministrator('pass-my-word');
-        $id = $user->getId();
 
         $user->requestPasswordReset($correctToken);
 
         // Second attempt is prohibited, so try a second time (with correct token)!
         static::assertFalse($user->confirmPasswordReset($invalidToken, 'new-password'));
+        static::assertNull($user->getPasswordResetToken());
+
         static::assertFalse($user->confirmPasswordReset($correctToken, 'new-password'));
-        self::assertDomainEvents(
-            $user,
-            [
-                new AdministratorPasswordResetWasRequested($id, $correctToken),
-            ]
-        );
     }
 
     /**
@@ -264,7 +235,6 @@ final class AdministratorTest extends TestCase
         $user = $this->registerAdministrator('pass-my-word');
 
         static::assertFalse($user->confirmPasswordReset($this->splitTokenFactory->generate(), 'new-password'));
-        self::assertNoDomainEvents($user);
     }
 
     /** @test */
@@ -275,10 +245,7 @@ final class AdministratorTest extends TestCase
         $user->requestPasswordReset($token);
 
         static::assertFalse($user->confirmPasswordReset($token, 'new-password'));
-        self::assertDomainEvents(
-            $user,
-            [new AdministratorPasswordResetWasRequested($user->getId(), $token)]
-        );
+        static::assertNull($user->getPasswordResetToken());
     }
 
     private function registerAdministrator(?string $password = null): Administrator
@@ -288,9 +255,7 @@ final class AdministratorTest extends TestCase
             $email = new EmailAddress('Jane@example.com'),
             'Janet Doe'
         );
-
         $administrator->changePassword($password);
-        $administrator->releaseEvents();
 
         return $administrator;
     }

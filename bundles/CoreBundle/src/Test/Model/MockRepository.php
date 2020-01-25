@@ -20,17 +20,13 @@ use Throwable;
  */
 trait MockRepository
 {
-    use EventsRecordingEntityAssertionTrait {
-        resetDomainEvents as protected __resetDomainEvents;
-    }
-
-    /** @var object[]|RecordsDomainEvents[] */
+    /** @var object[] */
     protected $storedById = [];
 
-    /** @var object[]|RecordsDomainEvents[] */
+    /** @var object[] */
     protected $savedById = [];
 
-    /** @var object[]|RecordsDomainEvents[] */
+    /** @var object[] */
     protected $removedById = [];
 
     /**
@@ -49,9 +45,6 @@ trait MockRepository
 
     /** @var array<string,string<object>> [mapping-name][index-key] => {entity} */
     protected $storedByField = [];
-
-    /** @var array<string,string<object>> [mapping-name][index-key] => {entity} */
-    protected $storedByEvents = [];
 
     /**
      * @param object[] $initialEntities Array of initial entities (these are not counted as saved)
@@ -74,10 +67,6 @@ trait MockRepository
         foreach ($this->getFieldsIndexMapping() as $mapping => $getter) {
             $this->storedByField[$mapping][$this->getValueWithGetter($entity, $getter)] = $entity;
         }
-
-        if ($entity instanceof RecordsDomainEvents) {
-            $this->setByEventsInMockedStorage($entity);
-        }
     }
 
     /**
@@ -96,26 +85,6 @@ trait MockRepository
         return $object->{(\method_exists($object, $getter) ? $getter : 'get' . \ucfirst($getter))}();
     }
 
-    private function setByEventsInMockedStorage(object $entity): void
-    {
-        $eventMapping = $this->getEventsIndexMapping();
-        $eventsByClass = [];
-
-        if (! $eventMapping) {
-            return;
-        }
-
-        foreach ($entity->getEvents() as $event) {
-            $eventsByClass[\get_class($event)] = $event;
-        }
-
-        foreach ($eventMapping as $eventName => $getter) {
-            if (isset($eventsByClass[$eventName])) {
-                $this->storedByEvents[$eventName][$this->getValueWithGetter($eventsByClass[$eventName], $getter)] = $entity;
-            }
-        }
-    }
-
     /**
      * Returns a list fields (#property, method-name or Closure for extracting)
      * to use for mapping the entity in storage.
@@ -123,17 +92,6 @@ trait MockRepository
      * @return array [mapping-name] => '#property or method'
      */
     protected function getFieldsIndexMapping(): array
-    {
-        return [];
-    }
-
-    /**
-     * Returns a list events (#property, method-name or Closure for extracting)
-     * to use for mapping the entity in storage.
-     *
-     * @return array [event-name] => '#property or method'
-     */
-    protected function getEventsIndexMapping(): array
     {
         return [];
     }
@@ -230,21 +188,5 @@ trait MockRepository
         $key = (string) $id;
         Assert::assertArrayHasKey($key, $this->storedById);
         $excepted($this->storedById[$key]);
-    }
-
-    /**
-     * @param object|string $id
-     * @param object[]      $exceptedEvents
-     */
-    public function assertHasEntityWithEvents($id, array $exceptedEvents, ?callable $assertionValidator = null): void
-    {
-        $key = (string) $id;
-
-        Assert::arrayHasKey($key);
-
-        /** @var RecordsDomainEvents $entity */
-        $entity = $this->storedById[$key];
-
-        self::assertDomainEvents($entity, $exceptedEvents, $assertionValidator);
     }
 }

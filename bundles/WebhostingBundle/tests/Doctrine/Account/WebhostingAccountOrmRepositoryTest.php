@@ -13,7 +13,6 @@ namespace ParkManager\Bundle\WebhostingBundle\Tests\Doctrine\Account;
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Bundle\CoreBundle\Model\OwnerId;
 use ParkManager\Bundle\CoreBundle\Test\Doctrine\EntityRepositoryTestCase;
-use ParkManager\Bundle\CoreBundle\Test\Model\EventSourcedRepositoryTestHelper;
 use ParkManager\Bundle\WebhostingBundle\Doctrine\Account\WebhostingAccountOrmRepository;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\Exception\CannotRemoveActiveWebhostingAccount;
 use ParkManager\Bundle\WebhostingBundle\Model\Account\Exception\WebhostingAccountNotFound;
@@ -31,8 +30,6 @@ use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTra
  */
 final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
 {
-    use EventSourcedRepositoryTestHelper;
-
     private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
     private const PLAN_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
 
@@ -124,10 +121,7 @@ final class WebhostingAccountOrmRepositoryTest extends EntityRepositoryTestCase
 
     private function createRepository(int $expectedEventsCount): WebhostingAccountOrmRepository
     {
-        return new WebhostingAccountOrmRepository(
-            $this->getEntityManager(),
-            $this->createEventsExpectingEventBus()
-        );
+        return new WebhostingAccountOrmRepository($this->getEntityManager());
     }
 
     private function setUpAccount1(WebhostingAccountOrmRepository $repository): void

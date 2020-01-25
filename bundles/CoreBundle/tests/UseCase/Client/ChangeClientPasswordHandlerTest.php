@@ -10,11 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Client;
 
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordWasChanged;
+use ParkManager\Bundle\CoreBundle\Model\Client\Client;
 use ParkManager\Bundle\CoreBundle\Test\Model\Repository\ClientRepositoryMock;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ChangeClientPassword;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ChangeClientPasswordHandler;
 use PHPUnit\Framework\TestCase;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @internal
@@ -27,33 +28,13 @@ final class ChangeClientPasswordHandlerTest extends TestCase
         $client = ClientRepositoryMock::createClient();
         $repository = new ClientRepositoryMock([$client]);
 
-        $handler = new ChangeClientPasswordHandler($repository);
-        $handler(new ChangeClientPassword($client->getId()->toString(), 'new-password'));
+        $handler = new ChangeClientPasswordHandler($repository, $this->createMock(EventDispatcherInterface::class));
+        $handler(new ChangeClientPassword($id = $client->getId()->toString(), 'new-password'));
 
         $repository->assertEntitiesWereSaved();
-        $repository->assertHasEntityWithEvents(
-            $client->getId(),
-            [
-                new ClientPasswordWasChanged($client->getId(), 'new-password'),
-            ]
-        );
-    }
 
-    /** @test */
-    public function it_changes_password_to_null(): void
-    {
-        $client = ClientRepositoryMock::createClient();
-        $repository = new ClientRepositoryMock([$client]);
-
-        $handler = new ChangeClientPasswordHandler($repository);
-        $handler(new ChangeClientPassword($client->getId()->toString(), null));
-
-        $repository->assertEntitiesWereSaved();
-        $repository->assertHasEntityWithEvents(
-            $client->getId(),
-            [
-                new ClientPasswordWasChanged($client->getId(), null),
-            ]
-        );
+        $repository->assertHasEntity($id, function (Client $client): void {
+            self::assertEquals('new-password', $client->getPassword());
+        });
     }
 }

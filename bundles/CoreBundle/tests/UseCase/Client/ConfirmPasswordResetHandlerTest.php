@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Client;
 
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordWasChanged;
+use ParkManager\Bundle\CoreBundle\Model\Client\Client;
 use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Bundle\CoreBundle\Test\Model\Repository\ClientRepositoryMock;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\ConfirmPasswordReset;
@@ -44,15 +44,13 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
         $repository = new ClientRepositoryMock([$client]);
 
         $handler = new ConfirmPasswordResetHandler($repository);
-        $handler(new ConfirmPasswordReset($this->token, 'my-password'));
+        $handler(new ConfirmPasswordReset($this->token, 'new-password'));
 
         $repository->assertEntitiesWereSaved();
-        $repository->assertHasEntityWithEvents(
-            $client->getId(),
-            [
-                new ClientPasswordWasChanged($client->getId(), 'my-password'),
-            ]
-        );
+        $repository->assertHasEntity($client->getId()->toString(), function (Client $client): void {
+            self::assertEquals('new-password', $client->getPassword());
+            self::assertNull($client->getPasswordResetToken());
+        });
     }
 
     /** @test */
@@ -68,7 +66,9 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
             $invalidToken = FakeSplitTokenFactory::instance()->fromString(FakeSplitTokenFactory::SELECTOR . \str_rot13(FakeSplitTokenFactory::VERIFIER));
             $handler(new ConfirmPasswordReset($invalidToken, 'my-password'));
         } catch (PasswordResetTokenNotAccepted $e) {
-            $repository->assertEntitiesWereSaved([$client]);
+            $repository->assertHasEntity($client->getId()->toString(), function (Client $client): void {
+                self::assertNull($client->getPasswordResetToken());
+            });
         }
     }
 
@@ -83,7 +83,7 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
         try {
             $handler(new ConfirmPasswordReset($this->token, 'my-password'));
         } catch (PasswordResetTokenNotAccepted $e) {
-            $repository->assertHasEntityWithEvents($client->getId(), []);
+            $repository->assertNoEntitiesWereSaved();
         }
     }
 }

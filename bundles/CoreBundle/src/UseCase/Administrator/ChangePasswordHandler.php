@@ -10,21 +10,31 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\UseCase\Administrator;
 
+use ParkManager\Bundle\CoreBundle\Event\UserPasswordWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorRepository;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class ChangePasswordHandler
 {
     private $repository;
 
-    public function __construct(AdministratorRepository $repository)
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(AdministratorRepository $repository, EventDispatcherInterface $eventDispatcher)
     {
         $this->repository = $repository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(ChangePassword $command): void
     {
         $administrator = $this->repository->get($command->id);
         $administrator->changePassword($command->password);
+
+        $this->eventDispatcher->dispatch(new UserPasswordWasChanged($command->id->toString(), $command->password));
 
         $this->repository->save($administrator);
     }

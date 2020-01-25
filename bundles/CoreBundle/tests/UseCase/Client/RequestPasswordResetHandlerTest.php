@@ -13,7 +13,6 @@ namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Client;
 use DateTimeImmutable;
 use ParkManager\Bundle\CoreBundle\Mailer\Client\PasswordResetMailer;
 use ParkManager\Bundle\CoreBundle\Model\Client\Client;
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordResetWasRequested;
 use ParkManager\Bundle\CoreBundle\Test\Model\Repository\ClientRepositoryMock;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestPasswordReset;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestPasswordResetHandler;
@@ -45,16 +44,7 @@ final class RequestPasswordResetHandlerTest extends TestCase
         $repository->assertHasEntity(
             $client->getId(),
             static function (Client $entity): void {
-                $events = $entity->releaseEvents();
-
-                self::assertCount(1, $events);
-
-                $event = \array_pop($events);
-                \assert($event instanceof ClientPasswordResetWasRequested);
-
-                self::assertInstanceOf(ClientPasswordResetWasRequested::class, $event);
-
-                $valueHolder = $event->token()->toValueHolder();
+                $valueHolder = $entity->getPasswordResetToken();
                 self::assertFalse($valueHolder->isExpired(new DateTimeImmutable('+ 120 seconds')));
                 self::assertTrue($valueHolder->isExpired(new DateTimeImmutable('+ 125 seconds')));
             }
@@ -74,7 +64,6 @@ final class RequestPasswordResetHandlerTest extends TestCase
     {
         $client = ClientRepositoryMock::createClient();
         $client->requestPasswordReset($this->tokenFactory->generate());
-        $client->releaseEvents();
         $repository = new ClientRepositoryMock([$client]);
 
         $handler = new RequestPasswordResetHandler($repository, $this->tokenFactory, $this->expectMailIsNotSend());

@@ -10,13 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\Tests\Model\Mock;
 
-use ParkManager\Bundle\CoreBundle\Model\DomainEventsCollectionTrait;
-use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
-
-final class MockEntity implements RecordsDomainEvents
+final class MockEntity
 {
-    use DomainEventsCollectionTrait;
-
     /** @var MockIdentity */
     private $id;
 
@@ -39,10 +34,5 @@ final class MockEntity implements RecordsDomainEvents
     public function lastName()
     {
         return $this->lastName;
-    }
-
-    public function changeEmail(string $email): void
-    {
-        $this->recordThat(new EmailChanged($this->id, $email));
     }
 }

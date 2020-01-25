@@ -12,9 +12,7 @@ namespace ParkManager\Bundle\WebhostingBundle\Model\Account;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use ParkManager\Bundle\CoreBundle\Model\DomainEventsCollectionTrait;
 use ParkManager\Bundle\CoreBundle\Model\OwnerId;
-use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
 
@@ -22,10 +20,8 @@ use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
  * @ORM\Entity
  * @ORM\Table(name="account", schema="webhosting")
  */
-class WebhostingAccount implements RecordsDomainEvents
+class WebhostingAccount
 {
-    use DomainEventsCollectionTrait;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="park_manager_webhosting_account_id")
@@ -86,7 +82,6 @@ class WebhostingAccount implements RecordsDomainEvents
         // The plan can be changed at any time, but the constraints are immutable.
         $account->planConstraints = $plan->getConstraints();
         $account->plan = $plan;
-        $account->recordThat(new Event\WebhostingAccountWasRegistered($id, $owner));
 
         return $account;
     }
@@ -95,7 +90,6 @@ class WebhostingAccount implements RecordsDomainEvents
     {
         $account = new static($id, $owner);
         $account->planConstraints = $constraints;
-        $account->recordThat(new Event\WebhostingAccountWasRegistered($id, $owner));
 
         return $account;
     }
@@ -126,12 +120,7 @@ class WebhostingAccount implements RecordsDomainEvents
      */
     public function assignPlan(WebhostingPlan $plan): void
     {
-        if ($plan === $this->plan) {
-            return;
-        }
-
         $this->plan = $plan;
-        $this->recordThat(new Event\WebhostingAccountPlanAssignmentWasChanged($this->id, $plan));
     }
 
     /**
@@ -140,13 +129,8 @@ class WebhostingAccount implements RecordsDomainEvents
      */
     public function assignPlanWithConstraints(WebhostingPlan $plan): void
     {
-        if ($plan === $this->plan && $this->planConstraints->equals($plan->getConstraints())) {
-            return;
-        }
-
         $this->plan = $plan;
         $this->planConstraints = $plan->getConstraints();
-        $this->recordThat(Event\WebhostingAccountPlanAssignmentWasChanged::withConstraints($this->id, $plan));
     }
 
     /**
@@ -157,13 +141,8 @@ class WebhostingAccount implements RecordsDomainEvents
      */
     public function assignCustomConstraints(Constraints $constraints): void
     {
-        if ($this->plan === null && $this->planConstraints->equals($constraints)) {
-            return;
-        }
-
         $this->plan = null;
         $this->planConstraints = $constraints;
-        $this->recordThat(new Event\WebhostingAccountPlanConstraintsWasChanged($this->id, $constraints));
     }
 
     public function switchOwner(OwnerId $owner): void
@@ -172,7 +151,6 @@ class WebhostingAccount implements RecordsDomainEvents
             return;
         }
 
-        $this->recordThat(new Event\WebhostingAccountOwnerWasSwitched($this->id, $this->owner, $owner));
         $this->owner = $owner;
     }
 
@@ -210,12 +188,7 @@ class WebhostingAccount implements RecordsDomainEvents
      */
     public function markForRemoval(): void
     {
-        if ($this->markedForRemoval) {
-            return;
-        }
-
         $this->markedForRemoval = true;
-        $this->recordThat(new Event\WebhostingAccountWasMarkedForRemoval($this->id));
     }
 
     public function isMarkedForRemoval(): bool

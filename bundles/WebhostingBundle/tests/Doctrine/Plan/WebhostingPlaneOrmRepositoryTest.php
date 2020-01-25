@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\WebhostingBundle\Tests\Doctrine\Plan;
 
 use ParkManager\Bundle\CoreBundle\Test\Doctrine\EntityRepositoryTestCase;
-use ParkManager\Bundle\CoreBundle\Test\Model\EventSourcedRepositoryTestHelper;
 use ParkManager\Bundle\WebhostingBundle\Doctrine\Plan\WebhostingPlanOrmRepository;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Exception\WebhostingPlanNotFound;
@@ -26,15 +25,13 @@ use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTra
  */
 final class WebhostingPlaneOrmRepositoryTest extends EntityRepositoryTestCase
 {
-    use EventSourcedRepositoryTestHelper;
-
     private const PLAN_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
     private const PLAN_ID2 = '3bd0fa08-a756-11e7-bdf0-acbc32b58315';
 
     /** @test */
     public function it_gets_existing_plans(): void
     {
-        $repository = $this->createRepository(2);
+        $repository = $this->createRepository();
         $this->setUpPlan1($repository);
         $this->setUpPlan2($repository);
 
@@ -56,7 +53,7 @@ final class WebhostingPlaneOrmRepositoryTest extends EntityRepositoryTestCase
     /** @test */
     public function it_removes_an_existing_plan(): void
     {
-        $repository = $this->createRepository(2);
+        $repository = $this->createRepository();
         $this->setUpPlan1($repository);
         $this->setUpPlan2($repository);
 
@@ -74,12 +71,9 @@ final class WebhostingPlaneOrmRepositoryTest extends EntityRepositoryTestCase
         $repository->get($id);
     }
 
-    private function createRepository(int $expectedEventsCount): WebhostingPlanOrmRepository
+    private function createRepository(): WebhostingPlanOrmRepository
     {
-        return new WebhostingPlanOrmRepository(
-            $this->getEntityManager(),
-            $this->createEventsExpectingEventBus()
-        );
+        return new WebhostingPlanOrmRepository($this->getEntityManager());
     }
 
     private function setUpPlan1(WebhostingPlanOrmRepository $repository): void

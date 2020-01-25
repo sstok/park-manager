@@ -14,13 +14,9 @@ use Assert\AssertionFailedException;
 use DateTimeImmutable;
 use ParkManager\Bundle\CoreBundle\Model\Client\Client;
 use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientNameWasChanged;
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordResetWasRequested;
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
-use ParkManager\Bundle\CoreBundle\Test\Model\EventsRecordingEntityAssertionTrait;
 use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;
@@ -30,8 +26,6 @@ use Rollerworks\Component\SplitToken\SplitToken;
  */
 final class ClientTest extends TestCase
 {
-    use EventsRecordingEntityAssertionTrait;
-
     private const ID1 = '930c3fd0-3bd1-11e7-bb9b-acdc32b58315';
 
     /** @var FakeSplitTokenFactory */
@@ -68,18 +62,17 @@ final class ClientTest extends TestCase
     {
         $client = Client::register(ClientId::fromString(self::ID1), new EmailAddress('john@example.com'), 'Laural Doe');
         $client->changePassword($password);
-        $client->releaseEvents();
 
         return $client;
     }
 
     /** @test */
-    public function change_dislay_name(): void
+    public function change_display_name(): void
     {
         $client = $this->registerClient();
         $client->changeName('Jenny');
 
-        self::assertDomainEvents($client, [new ClientNameWasChanged($client->getId(), 'Jenny')]);
+        static::assertEquals('Jenny', $client->getDisplayName());
     }
 
     /** @test */
@@ -108,16 +101,7 @@ final class ClientTest extends TestCase
 
         $client->changePassword('security-is-null');
 
-        self::assertDomainEvents($client, [new ClientPasswordWasChanged($client->getId(), 'security-is-null')]);
-    }
-
-    /** @test */
-    public function change_password_to_null(): void
-    {
-        $client = $this->registerClient('security-is-null');
-        $client->changePassword(null);
-
-        self::assertDomainEvents($client, [new ClientPasswordWasChanged($client->getId(), null)]);
+        static::assertEquals('security-is-null', $client->getPassword());
     }
 
     /** @test */
@@ -244,17 +228,11 @@ final class ClientTest extends TestCase
         $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
         $client = $this->registerClient('pass-my-word');
         $client->requestPasswordReset($token);
-        $id = $client->getId();
 
         $client->confirmPasswordReset($token2 = $this->getTokenString($token), 'new-password');
 
-        self::assertDomainEvents(
-            $client,
-            [
-                new ClientPasswordResetWasRequested($id, $token),
-                new ClientPasswordWasChanged($id, 'new-password'),
-            ]
-        );
+        static::assertEquals('new-password', $client->getPassword());
+        static::assertNull($client->getPasswordResetToken());
     }
 
     /** @test */
@@ -265,14 +243,11 @@ final class ClientTest extends TestCase
 
         $client = $this->registerClient('pass-my-word');
         $client->requestPasswordReset($correctToken);
-        $client->releaseEvents();
 
         $this->assertPasswordResetThrowsRejected($client, $invalidToken);
 
         // Second attempt is prohibited, so try a second time (with correct token)!
         $this->assertPasswordResetThrowsRejected($client, $correctToken);
-
-        self::assertDomainEvents($client, []);
     }
 
     private function assertPasswordResetThrowsRejected(Client $client, SplitToken $token): void
@@ -292,7 +267,6 @@ final class ClientTest extends TestCase
         $client = $this->registerClient('pass-my-word');
 
         $this->assertPasswordResetThrowsRejected($client, $this->splitTokenFactory->generate());
-        self::assertNoDomainEvents($client);
     }
 
     /** @test */
@@ -303,9 +277,8 @@ final class ClientTest extends TestCase
         $client->requestPasswordReset($token);
 
         $this->assertPasswordResetThrowsRejected($client, $token);
-        self::assertDomainEvents(
-            $client,
-            [new ClientPasswordResetWasRequested($client->getId(), $token)]
-        );
+
+        static::assertEquals('pass-my-word', $client->getPassword());
+        static::assertNull($client->getPasswordResetToken());
     }
 }

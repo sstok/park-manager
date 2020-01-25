@@ -11,21 +11,20 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\WebhostingBundle\Doctrine\Plan;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Bundle\CoreBundle\Doctrine\EventSourcedEntityRepository;
+use ParkManager\Bundle\CoreBundle\Doctrine\EntityRepository;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Exception\WebhostingPlanNotFound;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanRepository;
-use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 
 /**
  * @method WebhostingPlan|null find($id, $lockMode = null, $lockVersion = null)
  */
-class WebhostingPlanOrmRepository extends EventSourcedEntityRepository implements WebhostingPlanRepository
+class WebhostingPlanOrmRepository extends EntityRepository implements WebhostingPlanRepository
 {
-    public function __construct(EntityManagerInterface $entityManager, MessageBus $eventBus, string $className = WebhostingPlan::class)
+    public function __construct(EntityManagerInterface $entityManager, string $className = WebhostingPlan::class)
     {
-        parent::__construct($entityManager, $eventBus, $className);
+        parent::__construct($entityManager, $className);
     }
 
     public function get(WebhostingPlanId $id): WebhostingPlan
@@ -42,12 +41,10 @@ class WebhostingPlanOrmRepository extends EventSourcedEntityRepository implement
     public function save(WebhostingPlan $plan): void
     {
         $this->_em->persist($plan);
-        $this->doDispatchEvents($plan);
     }
 
     public function remove(WebhostingPlan $plan): void
     {
         $this->_em->remove($plan);
-        $this->doDispatchEvents($plan);
     }
 }

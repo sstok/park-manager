@@ -12,8 +12,6 @@ namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Client;
 
 use DateTimeImmutable;
 use ParkManager\Bundle\CoreBundle\Mailer\Client\EmailAddressChangeRequestMailer;
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientEmailAddressChangeWasRequested;
-use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Test\Model\Repository\ClientRepositoryMock;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestEmailAddressChange;
 use ParkManager\Bundle\CoreBundle\UseCase\Client\RequestEmailAddressChangeHandler;
@@ -53,25 +51,10 @@ final class RequestEmailAddressChangeTest extends TestCase
         $handler(new RequestEmailAddressChange(self::USER_ID, 'John2@example.com'));
 
         $repository->assertEntitiesWereSaved();
-        $repository->assertHasEntityWithEvents(
-            $client->getId(),
-            [
-                new ClientEmailAddressChangeWasRequested(
-                    $client->getId(),
-                    FakeSplitTokenFactory::instance()->generate()->expireAt(new DateTimeImmutable('+ 10 seconds')),
-                    new EmailAddress('John2@example.com')
-                ),
-            ],
-            static function (ClientEmailAddressChangeWasRequested $expected, ClientEmailAddressChangeWasRequested $actual): void {
-                self::assertTrue($expected->id->equals($actual->id));
-                self::assertTrue($expected->token->equals($actual->token));
-                self::assertEquals($expected->newEmail, $actual->newEmail);
-
-                $token = $expected->token->toValueHolder();
-                self::assertFalse($token->isExpired(new DateTimeImmutable('+ 5 seconds')));
-                self::assertTrue($token->isExpired(new DateTimeImmutable('+ 11 seconds')));
-            }
-        );
+        $token = $client->getEmailAddressChangeToken();
+        static::assertEquals(['email' => 'John2@example.com'], $token->metadata());
+        static::assertFalse($token->isExpired(new DateTimeImmutable('+ 5 seconds')));
+        static::assertTrue($token->isExpired(new DateTimeImmutable('+ 3700 seconds')));
     }
 
     /** @test */

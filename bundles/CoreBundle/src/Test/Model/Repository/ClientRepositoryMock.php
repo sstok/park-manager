@@ -13,8 +13,6 @@ namespace ParkManager\Bundle\CoreBundle\Test\Model\Repository;
 use ParkManager\Bundle\CoreBundle\Model\Client\Client;
 use ParkManager\Bundle\CoreBundle\Model\Client\ClientId;
 use ParkManager\Bundle\CoreBundle\Model\Client\ClientRepository;
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientEmailAddressChangeWasRequested;
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordResetWasRequested;
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\ClientNotFound;
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
@@ -33,17 +31,15 @@ final class ClientRepositoryMock implements ClientRepository
             'email' => static function (Client $client) {
                 return $client->getEmail()->canonical;
             },
-        ];
-    }
+            'passwordResetToken' => static function (Client $client) {
+                $token = $client->getPasswordResetToken();
 
-    protected function getEventsIndexMapping(): array
-    {
-        return [
-            ClientPasswordResetWasRequested::class => static function (ClientPasswordResetWasRequested $e) {
-                return $e->token->selector();
+                return $token !== null ? $token->selector() : null;
             },
-            ClientEmailAddressChangeWasRequested::class => static function (ClientEmailAddressChangeWasRequested $e) {
-                return $e->token->selector();
+            'emailChangeToken' => static function (Client $client) {
+                $token = $client->getEmailAddressChangeToken();
+
+                return $token !== null ? $token->selector() : null;
             },
         ];
     }
@@ -66,7 +62,7 @@ final class ClientRepositoryMock implements ClientRepository
     public function getByPasswordResetToken(string $selector): Client
     {
         try {
-            return $this->mockDoGetByEvent(ClientPasswordResetWasRequested::class, $selector);
+            return $this->mockDoGetByField('passwordResetToken', $selector);
         } catch (ClientNotFound $e) {
             throw new PasswordResetTokenNotAccepted();
         }
@@ -75,7 +71,7 @@ final class ClientRepositoryMock implements ClientRepository
     public function getByEmailAddressChangeToken(string $selector): Client
     {
         try {
-            return $this->mockDoGetByEvent(ClientEmailAddressChangeWasRequested::class, $selector);
+            return $this->mockDoGetByField('emailChangeToken', $selector);
         } catch (ClientNotFound $e) {
             throw new EmailChangeConfirmationRejected();
         }

@@ -11,18 +11,13 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\WebhostingBundle\Model\Plan;
 
 use Doctrine\ORM\Mapping as ORM;
-use ParkManager\Bundle\CoreBundle\Model\DomainEventsCollectionTrait;
-use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanConstraintsWasChanged;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="plan", schema="webhosting")
  */
-class WebhostingPlan implements RecordsDomainEvents
+class WebhostingPlan
 {
-    use DomainEventsCollectionTrait;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="park_manager_webhosting_plan_id")
@@ -64,12 +59,7 @@ class WebhostingPlan implements RecordsDomainEvents
 
     public function changeConstraints(Constraints $constraints): void
     {
-        if ($constraints->equals($this->constraints)) {
-            return;
-        }
-
         $this->constraints = $constraints;
-        $this->recordThat(new WebhostingPlanConstraintsWasChanged($this->id, $constraints));
     }
 
     /**
@@ -80,8 +70,6 @@ class WebhostingPlan implements RecordsDomainEvents
      *
      * Not something that be used as a Domain policy. either,
      * don't use this for pricing or storing user-type limitations.
-     *
-     * Changing the metadata doesn't dispatch a Domain event.
      */
     public function withMetadata(array $metadata): void
     {

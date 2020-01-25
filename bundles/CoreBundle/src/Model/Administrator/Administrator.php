@@ -14,13 +14,8 @@ use Assert\Assertion;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordResetWasRequested;
-use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordWasChanged;
-use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorWasRegistered;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\CannotDisableSuperAdministrator;
-use ParkManager\Bundle\CoreBundle\Model\DomainEventsCollectionTrait;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
-use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use ParkManager\Bundle\CoreBundle\Security\AdministratorUser;
 use ParkManager\Bundle\CoreBundle\Security\SecurityUser;
 use Rollerworks\Component\SplitToken\SplitToken;
@@ -37,10 +32,8 @@ use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
  *
  * @final
  */
-class Administrator implements RecordsDomainEvents
+class Administrator
 {
-    use DomainEventsCollectionTrait;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="park_manager_administrator_id")
@@ -105,7 +98,6 @@ class Administrator implements RecordsDomainEvents
     public static function register(AdministratorId $id, EmailAddress $email, string $displayName, ?string $password = null): self
     {
         $user = new self($id, $email, $displayName);
-        $user->recordThat(new AdministratorWasRegistered($id, $email, $displayName));
         $user->changePassword($password);
 
         return $user;
@@ -191,17 +183,12 @@ class Administrator implements RecordsDomainEvents
             Assertion::notEmpty($password, 'Password can only null or a non-empty string.');
         }
 
-        if ($this->password !== $password) {
-            $this->password = $password;
-
-            $this->recordThat(new AdministratorPasswordWasChanged($this->id, $password));
-        }
+        $this->password = $password;
     }
 
     public function requestPasswordReset(SplitToken $token): bool
     {
         $this->passwordResetToken = $token->toValueHolder();
-        $this->recordThat(new AdministratorPasswordResetWasRequested($this->id, $token));
 
         return true;
     }
@@ -237,6 +224,11 @@ class Administrator implements RecordsDomainEvents
         } finally {
             $this->passwordResetToken = null;
         }
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
     }
 
     public function getPasswordResetToken(): ?SplitTokenValueHolder

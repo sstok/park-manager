@@ -25,7 +25,6 @@ return static function (ContainerConfigurator $c): void {
         ->autoconfigure()
         ->autowire()
         ->private()
-        ->bind('$eventBus', ref('park_manager.event_bus'))
     ;
 
     $autoDi = new AutoServiceConfigurator($di);

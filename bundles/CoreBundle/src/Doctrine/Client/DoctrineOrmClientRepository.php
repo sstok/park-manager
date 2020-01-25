@@ -21,7 +21,6 @@ use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Bundle\CoreBundle\Security\AuthenticationFinder;
 use ParkManager\Bundle\CoreBundle\Security\SecurityUser;
-use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 
 /**
  * @method Client find($id, $lockMode = null, $lockVersion = null)
@@ -29,12 +28,9 @@ use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
  */
 class DoctrineOrmClientRepository extends EntityRepository implements ClientRepository, AuthenticationFinder
 {
-    protected $eventBus;
-
-    public function __construct(EntityManagerInterface $entityManager, MessageBus $eventBus, string $className = Client::class)
+    public function __construct(EntityManagerInterface $entityManager, string $className = Client::class)
     {
         parent::__construct($entityManager, $className);
-        $this->eventBus = $eventBus;
     }
 
     public function get(ClientId $id): Client
@@ -51,10 +47,6 @@ class DoctrineOrmClientRepository extends EntityRepository implements ClientRepo
     public function save(Client $user): void
     {
         $this->_em->persist($user);
-
-        foreach ($user->releaseEvents() as $event) {
-            $this->eventBus->dispatch($event);
-        }
     }
 
     public function remove(Client $user): void

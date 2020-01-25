@@ -13,7 +13,6 @@ namespace ParkManager\Bundle\CoreBundle\Test\Model\Repository;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorRepository;
-use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordResetWasRequested;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\AdministratorNotFound;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\PasswordResetConfirmationRejected;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
@@ -31,14 +30,10 @@ final class AdministratorRepositoryMock implements AdministratorRepository
             'email' => static function (Administrator $client) {
                 return $client->getEmailAddress()->canonical;
             },
-        ];
-    }
+            'passwordResetToken' => static function (Administrator $administrator) {
+                $token = $administrator->getPasswordResetToken();
 
-    protected function getEventsIndexMapping(): array
-    {
-        return [
-            AdministratorPasswordResetWasRequested::class => static function (AdministratorPasswordResetWasRequested $e) {
-                return $e->token->selector();
+                return $token !== null ? $token->selector() : null;
             },
         ];
     }
@@ -66,7 +61,7 @@ final class AdministratorRepositoryMock implements AdministratorRepository
     public function getByPasswordResetToken(string $selector): Administrator
     {
         try {
-            return $this->mockDoGetByEvent(AdministratorPasswordResetWasRequested::class, $selector);
+            return $this->mockDoGetByField('passwordResetToken', $selector);
         } catch (AdministratorNotFound $e) {
             throw new PasswordResetConfirmationRejected();
         }

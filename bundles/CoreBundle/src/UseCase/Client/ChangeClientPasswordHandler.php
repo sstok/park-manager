@@ -10,21 +10,31 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\CoreBundle\UseCase\Client;
 
+use ParkManager\Bundle\CoreBundle\Event\UserPasswordWasChanged;
 use ParkManager\Bundle\CoreBundle\Model\Client\ClientRepository;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class ChangeClientPasswordHandler
 {
     private $repository;
 
-    public function __construct(ClientRepository $repository)
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    public function __construct(ClientRepository $repository, EventDispatcherInterface $eventDispatcher)
     {
         $this->repository = $repository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(ChangeClientPassword $command): void
     {
         $client = $this->repository->get($command->id());
         $client->changePassword($command->password());
+
+        $this->eventDispatcher->dispatch(new UserPasswordWasChanged($command->id()->toString(), $command->password()));
 
         $this->repository->save($client);
     }

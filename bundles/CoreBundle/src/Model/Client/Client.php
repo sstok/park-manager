@@ -14,16 +14,9 @@ use Assert\Assertion;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientEmailAddressChangeWasRequested;
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientNameWasChanged;
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordResetWasRequested;
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientPasswordWasChanged;
-use ParkManager\Bundle\CoreBundle\Model\Client\Event\ClientWasRegistered;
 use ParkManager\Bundle\CoreBundle\Model\Client\Exception\EmailChangeConfirmationRejected;
-use ParkManager\Bundle\CoreBundle\Model\DomainEventsCollectionTrait;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
-use ParkManager\Bundle\CoreBundle\Model\RecordsDomainEvents;
 use ParkManager\Bundle\CoreBundle\Security\ClientUser;
 use ParkManager\Bundle\CoreBundle\Security\SecurityUser;
 use Rollerworks\Component\SplitToken\SplitToken;
@@ -39,10 +32,8 @@ use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
  *     }
  * )
  */
-class Client implements RecordsDomainEvents
+class Client
 {
-    use DomainEventsCollectionTrait;
-
     public const DEFAULT_ROLES = ['ROLE_USER'];
 
     /**
@@ -121,7 +112,6 @@ class Client implements RecordsDomainEvents
     public static function register(ClientId $id, EmailAddress $email, string $displayName, ?string $password = null): self
     {
         $client = new static($id, $email, $displayName);
-        $client->recordThat(new ClientWasRegistered($id, $email, $displayName));
         $client->changePassword($password);
 
         return $client;
@@ -169,7 +159,6 @@ class Client implements RecordsDomainEvents
         }
 
         $this->emailAddressChangeToken = $token->toValueHolder()->withMetadata(['email' => $email->address]);
-        $this->recordThat(new ClientEmailAddressChangeWasRequested($this->id, $token, $email));
 
         return true;
     }
@@ -190,10 +179,7 @@ class Client implements RecordsDomainEvents
 
     public function changeName(string $displayName): void
     {
-        if ($this->displayName !== $displayName) {
-            $this->recordThat(new ClientNameWasChanged($this->id, $displayName));
-            $this->displayName = $displayName;
-        }
+        $this->displayName = $displayName;
     }
 
     /**
@@ -205,11 +191,7 @@ class Client implements RecordsDomainEvents
             Assertion::notEmpty($password, 'Password can only null or a non-empty string.');
         }
 
-        if ($this->password !== $password) {
-            $this->password = $password;
-
-            $this->recordThat(new ClientPasswordWasChanged($this->id, $password));
-        }
+        $this->password = $password;
     }
 
     /**
@@ -228,7 +210,6 @@ class Client implements RecordsDomainEvents
         }
 
         $this->passwordResetToken = $token->toValueHolder();
-        $this->recordThat(new ClientPasswordResetWasRequested($this->id, $token));
 
         return true;
     }
@@ -274,5 +255,15 @@ class Client implements RecordsDomainEvents
     public function toSecurityUser(): SecurityUser
     {
         return new ClientUser($this->id->toString(), $this->password ?? '', $this->loginEnabled, $this->roles->toArray());
+    }
+
+    public function getEmailAddressChangeToken(): ?SplitTokenValueHolder
+    {
+        return $this->emailAddressChangeToken;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
     }
 }

@@ -12,7 +12,6 @@ namespace ParkManager\Bundle\CoreBundle\Tests\Model;
 
 use InvalidArgumentException;
 use ParkManager\Bundle\CoreBundle\Test\Model\MockRepository;
-use ParkManager\Bundle\CoreBundle\Tests\Model\Mock\EmailChanged;
 use ParkManager\Bundle\CoreBundle\Tests\Model\Mock\MockEntity;
 use ParkManager\Bundle\CoreBundle\Tests\Model\Mock\MockIdentity;
 use PHPUnit\Framework\TestCase;
@@ -154,71 +153,6 @@ final class MockRepositoryTest extends TestCase
 
         static::assertSame($entity1, $repository->getByLastName('john'));
         static::assertSame($entity2, $repository->getByLastName('jane'));
-    }
-
-    /** @test */
-    public function it_gets_entity_by_event(): void
-    {
-        $entity1 = new MockEntity('fc86687e-0875-11e9-9701-acbc32b58315', 'John');
-        $entity1->changeEmail('John@example.com');
-
-        $entity2 = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315', 'Jane');
-        $entity2->changeEmail('Jane@example.com');
-
-        $repository = new class([$entity1, $entity2]) {
-            use MockRepository;
-
-            protected function throwOnNotFound($key): void
-            {
-                throw new InvalidArgumentException('No, I has not have that key: ' . $key);
-            }
-
-            protected function getEventsIndexMapping(): array
-            {
-                return [EmailChanged::class => 'email'];
-            }
-
-            public function getByEmail(string $email): MockEntity
-            {
-                return $this->mockDoGetByEvent(EmailChanged::class, $email);
-            }
-        };
-
-        static::assertSame($entity1, $repository->getByEmail('John@example.com'));
-        static::assertSame($entity2, $repository->getByEmail('Jane@example.com'));
-    }
-
-    /** @test */
-    public function it_gets_entity_by_event_with_multiple_fired(): void
-    {
-        $entity1 = new MockEntity('fc86687e-0875-11e9-9701-acbc32b58315', 'John');
-        $entity1->changeEmail('John@example.com');
-        $entity1->changeEmail('John2@example.com');
-
-        $entity2 = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315', 'Jane');
-        $entity2->changeEmail('Jane@example.com');
-
-        $repository = new class([$entity1, $entity2]) {
-            use MockRepository;
-
-            protected function throwOnNotFound($key): void
-            {
-                throw new InvalidArgumentException('No, I has not have that key: ' . $key);
-            }
-
-            protected function getEventsIndexMapping(): array
-            {
-                return [EmailChanged::class => 'email'];
-            }
-
-            public function getByEmail(string $email): MockEntity
-            {
-                return $this->mockDoGetByEvent(EmailChanged::class, $email);
-            }
-        };
-
-        static::assertSame($entity1, $repository->getByEmail('John2@example.com'));
-        static::assertSame($entity2, $repository->getByEmail('Jane@example.com'));
     }
 
     /** @test */

@@ -12,8 +12,6 @@ namespace ParkManager\Bundle\CoreBundle\Tests\UseCase\Administrator;
 
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
-use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorPasswordWasChanged;
-use ParkManager\Bundle\CoreBundle\Model\Administrator\Event\AdministratorWasRegistered;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Exception\AdministratorEmailAddressAlreadyInUse;
 use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Test\Model\Repository\AdministratorRepositoryMock;
@@ -35,33 +33,15 @@ final class RegisterAdministratorHandlerTest extends TestCase
         $repo = new AdministratorRepositoryMock();
         $handler = new RegisterAdministratorHandler($repo);
 
-        $command = new RegisterAdministrator(self::ID_NEW, 'John@example.com', 'My', 'my-password');
+        $command = new RegisterAdministrator(self::ID_NEW, 'John@example.com', 'My name', 'my-password');
         $handler($command);
 
-        $repo->assertHasEntityWithEvents(
-            self::ID_NEW,
-            [
-                new AdministratorWasRegistered($command->id, $command->email, $command->displayName),
-                new AdministratorPasswordWasChanged($command->id, $command->password),
-            ]
-        );
-    }
-
-    /** @test */
-    public function handle_registration_without_password(): void
-    {
-        $repo = new AdministratorRepositoryMock();
-        $handler = new RegisterAdministratorHandler($repo);
-
-        $command = new RegisterAdministrator(self::ID_NEW, 'John@example.com', 'My', null);
-        $handler($command);
-
-        $repo->assertHasEntityWithEvents(
-            self::ID_NEW,
-            [
-                new AdministratorWasRegistered($command->id, $command->email, $command->displayName),
-            ]
-        );
+        $repo->assertHasEntity(self::ID_NEW, function (Administrator $administrator): void {
+            self::assertEquals(AdministratorId::fromString(self::ID_NEW), $administrator->getId());
+            self::assertEquals(new EmailAddress('John@example.com'), $administrator->getEmailAddress());
+            self::assertEquals('My name', $administrator->getDisplayName());
+            self::assertEquals('my-password', $administrator->getPassword());
+        });
     }
 
     /** @test */

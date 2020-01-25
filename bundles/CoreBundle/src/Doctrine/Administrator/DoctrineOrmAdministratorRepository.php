@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Bundle\CoreBundle\Doctrine\Administrator;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Bundle\CoreBundle\Doctrine\EventSourcedEntityRepository;
+use ParkManager\Bundle\CoreBundle\Doctrine\EntityRepository;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\Administrator;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorId;
 use ParkManager\Bundle\CoreBundle\Model\Administrator\AdministratorRepository;
@@ -20,16 +20,15 @@ use ParkManager\Bundle\CoreBundle\Model\EmailAddress;
 use ParkManager\Bundle\CoreBundle\Model\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Bundle\CoreBundle\Security\AuthenticationFinder;
 use ParkManager\Bundle\CoreBundle\Security\SecurityUser;
-use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
 
 /**
  * @method Administrator find($id, $lockMode = null, $lockVersion = null)
  */
-class DoctrineOrmAdministratorRepository extends EventSourcedEntityRepository implements AdministratorRepository, AuthenticationFinder
+class DoctrineOrmAdministratorRepository extends EntityRepository implements AdministratorRepository, AuthenticationFinder
 {
-    public function __construct(EntityManagerInterface $entityManager, MessageBus $eventBus, string $className = Administrator::class)
+    public function __construct(EntityManagerInterface $entityManager, string $className = Administrator::class)
     {
-        parent::__construct($entityManager, $eventBus, $className);
+        parent::__construct($entityManager, $className);
     }
 
     public function get(AdministratorId $id): Administrator
@@ -46,8 +45,6 @@ class DoctrineOrmAdministratorRepository extends EventSourcedEntityRepository im
     public function save(Administrator $administrator): void
     {
         $this->_em->persist($administrator);
-
-        $this->doDispatchEvents($administrator);
     }
 
     public function remove(Administrator $administrator): void

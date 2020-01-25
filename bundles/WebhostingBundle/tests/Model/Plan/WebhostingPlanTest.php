@@ -10,9 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Bundle\WebhostingBundle\Tests\Model\Plan;
 
-use ParkManager\Bundle\CoreBundle\Test\Model\EventsRecordingEntityAssertionTrait;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\Constraints;
-use ParkManager\Bundle\WebhostingBundle\Model\Plan\Event\WebhostingPlanConstraintsWasChanged;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlan;
 use ParkManager\Bundle\WebhostingBundle\Model\Plan\WebhostingPlanId;
 use ParkManager\Bundle\WebhostingBundle\Tests\Fixtures\PlanConstraint\MonthlyTrafficQuota;
@@ -24,8 +22,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class WebhostingPlanTest extends TestCase
 {
-    use EventsRecordingEntityAssertionTrait;
-
     private const ID1 = '654665ea-9869-11e7-9563-acbc32b58315';
 
     /** @test */
@@ -47,17 +43,8 @@ final class WebhostingPlanTest extends TestCase
         $plan->changeConstraints(
             $constraints = new Constraints(new StorageSpaceQuota('5G'), new MonthlyTrafficQuota(50))
         );
-        $id = $plan->getId();
-
-        $plan2 = $this->createPlan();
-        $plan2->changeConstraints($plan2->getConstraints());
 
         static::assertEquals($constraints, $plan->getConstraints());
-        self::assertDomainEvents(
-            $plan,
-            [new WebhostingPlanConstraintsWasChanged($id, $constraints)]
-        );
-        self::assertNoDomainEvents($plan2);
     }
 
     /** @test */
@@ -66,7 +53,6 @@ final class WebhostingPlanTest extends TestCase
         $plan = $this->createPlan();
         $plan->withMetadata(['label' => 'Gold']);
 
-        self::assertNoDomainEvents($plan);
         static::assertEquals(['label' => 'Gold'], $plan->getMetadata());
     }
 
