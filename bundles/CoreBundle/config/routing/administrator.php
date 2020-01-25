@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace Symfony\Component\Routing\Loader\Configurator;
 
 use ParkManager\Bundle\CoreBundle\Action\Admin\ConfirmPasswordResetAction;
+use ParkManager\Bundle\CoreBundle\Action\Admin\SecurityLoginAction;
 use ParkManager\Bundle\CoreBundle\Action\HomepageAction;
-use ParkManager\Bundle\CoreBundle\Action\SecurityLoginAction;
 use ParkManager\Bundle\CoreBundle\Action\SecurityLogoutAction;
 
 return static function (RoutingConfigurator $routes) {

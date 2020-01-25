@@ -24,7 +24,7 @@ final class ConfirmPasswordResetActionTest extends WebTestCase
     /** @test */
     public function it_resets_a_password(): void
     {
-        $client = static::createClient();
+        $client = static::createClient([], ['HTTPS' => true]);
 
         $client->request('GET', '/password-reset');
         $client->submitForm('submit', ['request_user_password_reset[email]' => 'jane@example.com']);
@@ -46,7 +46,7 @@ final class ConfirmPasswordResetActionTest extends WebTestCase
     /** @test */
     public function it_fails_with_an_invalid_token(): void
     {
-        $client = static::createClient();
+        $client = static::createClient([], ['HTTPS' => true]);
 
         $client->request('GET', '/password-reset/confirm/FooBangBar0100010101');
 

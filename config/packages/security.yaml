@@ -41,26 +41,12 @@ security:
                 name:                 ADMIN_REMEMBERME
                 lifetime:             604800 # one week
                 path:                 admin/
-                domain:               '%park_manager.config.primary_host%'
-                secure:               '%park_manager.config.is_secure%'
+                secure:               true
                 httponly:             true
                 always_remember_me:   false
 
-        # Must be checked before the 'client' firewall as the pattern matches everything;
-        # But has some special conditions for the host and cookie presence.
-        private:
-            request_matcher: park_manager.section.private.request_matcher
-            provider: administrator
-            context: admin
-            anonymous: true
-
-            # The Admin section manages authentication; logout is disabled for this firewall
-            guard:
-                authenticators:
-                    - park_manager.security.guard.form.administrator
-
         api:
-            request_matcher: park_manager.section.api.request_matcher
+            pattern: '^/api/'
             provider: api
             anonymous: false
             stateless: true
@@ -89,7 +75,7 @@ security:
                 name:                 CLIENT_REMEMBERME
                 lifetime:             604800 # one week
                 path:                 /
-                secure:               '%park_manager.config.is_secure%'
+                secure:               true
                 httponly:             true
                 always_remember_me:   false
 
@@ -97,11 +83,11 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # Admin
-        - { path: '^/admin/login$', requires_channel: '%park_manager.config.requires_channel%', role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: '^/admin/password-reset/confirm', requires_channel: '%park_manager.config.requires_channel%', role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: '^/admin/', requires_channel: '%park_manager.config.requires_channel%', role: ROLE_ADMIN }
+        - { path: '^/admin/login$', requires_channel: https, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/admin/password-reset/confirm', requires_channel: https, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/admin/', requires_channel: https, role: ROLE_ADMIN }
 
         # Client
-        - { path: '^/login$', requires_channel: '%park_manager.config.requires_channel%', role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: '^/password-reset', requires_channel: '%park_manager.config.requires_channel%', role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: '^/', requires_channel: '%park_manager.config.requires_channel%', role: ROLE_USER }
+        - { path: '^/login$', requires_channel: https, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/password-reset', requires_channel: https, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/', requires_channel: https, role: ROLE_USER }

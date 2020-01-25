@@ -23,7 +23,7 @@ final class RequestPasswordResetActionTest extends WebTestCase
     /** @test */
     public function it_requests_a_password_reset(): void
     {
-        $client = static::createClient();
+        $client = static::createClient([], ['HTTPS' => true]);
 
         $crawler = $client->request('GET', '/password-reset');
         $form = $crawler->selectButton('submit')->form();
@@ -47,7 +47,7 @@ final class RequestPasswordResetActionTest extends WebTestCase
     /** @test */
     public function it_requests_a_password_reset_when_one_was_already_requested(): void
     {
-        $client = static::createClient();
+        $client = static::createClient([], ['HTTPS' => true]);
 
         $crawler = $client->request('GET', '/password-reset');
         $form = $crawler->selectButton('submit')->form();

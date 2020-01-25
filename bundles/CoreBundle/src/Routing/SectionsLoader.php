@@ -17,20 +17,16 @@ use Symfony\Component\Routing\RouteCollection;
 final class SectionsLoader extends Loader
 {
     private $loader;
-    private $primaryHost;
-    private $isSecure;
 
     /**
      * @param LoaderResolverInterface $loader Route loader resolver
      */
-    public function __construct(LoaderResolverInterface $loader, ?string $primaryHost, bool $isSecure)
+    public function __construct(LoaderResolverInterface $loader)
     {
         $this->loader = $loader;
-        $this->primaryHost = $primaryHost;
-        $this->isSecure = $isSecure;
     }
 
-    public function load($resource, $type = null): RouteCollection
+    public function load($resource, string $type = null): RouteCollection
     {
         $collection = new RouteCollection();
         $collection->addCollection($this->loadAdminSection());
@@ -40,7 +36,7 @@ final class SectionsLoader extends Loader
         return $collection;
     }
 
-    public function supports($resource, $type = null): bool
+    public function supports($resource, string $type = null): bool
     {
         return $type === 'park_manager_sections_loader';
     }
@@ -51,9 +47,7 @@ final class SectionsLoader extends Loader
         $collection = $loader->load($resource, 'rollerworks_autowiring');
         \assert($collection instanceof RouteCollection);
 
-        if ($this->isSecure) {
-            $collection->setSchemes(['https']);
-        }
+        $collection->setSchemes(['https']);
 
         return $collection;
     }
@@ -63,24 +57,13 @@ final class SectionsLoader extends Loader
         $admin = $this->loadResource('park_manager.admin_section.root');
         $admin->addPrefix('admin/');
 
-        if ($this->primaryHost !== null) {
-            $admin->setHost($this->primaryHost);
-        }
-
         return $admin;
     }
 
     private function loadApiSection(): RouteCollection
     {
         $api = $this->loadResource('park_manager.api_section.root');
-
-        if ($this->primaryHost !== null) {
-            $api->setHost('api.{host}');
-            $api->addRequirements(['host' => '.+']);
-            $api->addDefaults(['host' => $this->primaryHost]);
-        } else {
-            $api->addPrefix('api/');
-        }
+        $api->addPrefix('api/');
 
         return $api;
     }

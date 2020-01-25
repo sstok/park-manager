@@ -10,13 +10,10 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use ParkManager\Bundle\CoreBundle\ArgumentResolver\ApplicationContextResolver;
 use ParkManager\Bundle\CoreBundle\ArgumentResolver\FormFactoryResolver;
-use ParkManager\Bundle\CoreBundle\Context\ApplicationContext;
 use ParkManager\Bundle\CoreBundle\DependencyInjection\AutoServiceConfigurator;
 use ParkManager\Bundle\CoreBundle\Doctrine\Administrator\DoctrineOrmAdministratorRepository;
 use ParkManager\Bundle\CoreBundle\Doctrine\Client\DoctrineOrmClientRepository;
-use ParkManager\Bundle\CoreBundle\EventListener\ApplicationSectionListener;
 use ParkManager\Bundle\CoreBundle\Routing\SectionsLoader;
 use Rollerworks\Component\SplitToken\Argon2SplitTokenFactory;
 
@@ -37,31 +34,12 @@ return static function (ContainerConfigurator $c): void {
     $autoDi->set('park_manager.repository.administrator', DoctrineOrmAdministratorRepository::class);
     $autoDi->set('park_manager.repository.client_user', DoctrineOrmClientRepository::class);
 
-    // RoutingLoader
     $di->set(SectionsLoader::class)
         ->tag('routing.loader')
         ->arg('$loader', ref('routing.resolver'))
-        ->arg('$primaryHost', '%park_manager.config.primary_host%')
-        ->arg('$isSecure', '%park_manager.config.is_secure%')
-    ;
-
-    $autoDi->set('park_manager.application_context', ApplicationContext::class);
-
-    $di->set(ApplicationSectionListener::class)
-        ->tag('kernel.event_subscriber')
-        ->tag('kernel.reset', ['method' => 'reset'])
-        ->arg('$sectionMatchers', [
-            'admin' => ref('park_manager.section.admin.request_matcher'),
-            'private' => ref('park_manager.section.private.request_matcher'),
-            'client' => ref('park_manager.section.client.request_matcher'),
-        ])
     ;
 
     $di->set(FormFactoryResolver::class)
-        ->tag('controller.argument_value_resolver', ['priority' => 30])
-    ;
-
-    $di->set(ApplicationContextResolver::class)
         ->tag('controller.argument_value_resolver', ['priority' => 30])
     ;
 
