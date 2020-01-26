@@ -1,0 +1,27 @@
+{% extends 'admin/security/layout.html.twig' %}
+
+{% set page_heading = 'login.admin_heading'|trans %}
+{% if error is defined and error is not empty %}
+    {% set error = error.messageKey|trans(error.messageData, 'security')|e %}
+{% endif %}
+
+{% block content %}
+    <form action="{{ path(route) }}" method="post">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="_email_field">{{ 'label.email'|trans }}</label>
+            <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="_email" id="_email_field" value="{{ last_username }}" type="email" required autofocus>
+        </div>
+        <div class="mb-2">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="_password_field">{{ 'label.password'|trans }}</label>
+            <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" name="_password" id="_password_field" type="password" required>
+        </div>
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline w-full mb-4" name="_submit" type="submit">{{ 'button.login'|trans }}</button>
+        <p class="mt-5 mb-4 text-muted text-center">{{ 'login.forgot_password_admin'|trans }}</p>
+    </form>
+{% endblock content %}

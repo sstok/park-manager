@@ -13,8 +13,7 @@
     <arg value="nps"/>
 
     <file>src</file>
-    <file>bundles</file>
-    <file>.dances</file>
+    <file>tests</file>
     <file>bin</file>
 
     <exclude-pattern>src/Migrations</exclude-pattern>
@@ -107,18 +106,18 @@
     <rule ref="Squiz.Scope.StaticThisUsage"/>
 
     <rule ref="Squiz.Classes.ClassFileName.NoMatch">
-        <exclude-pattern>*/Tests/*</exclude-pattern>
+        <exclude-pattern>tests/*</exclude-pattern>
     </rule>
 
     <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
-        <exclude-pattern>*/Tests/*</exclude-pattern>
+        <exclude-pattern>tests/*</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedProperty">
-        <exclude-pattern>*/Tests/*</exclude-pattern>
+        <exclude-pattern>tests/*</exclude-pattern>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements.WriteOnlyProperty">
-        <exclude-pattern>*/Tests/*</exclude-pattern>
+        <exclude-pattern>tests/*</exclude-pattern>
     </rule>
 </ruleset>

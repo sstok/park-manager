@@ -36,7 +36,6 @@
         "ramsey/uuid": "^3.0",
         "rollerworks/messagebus-form-bundle": "^0.2@dev",
         "rollerworks/route-autofill-bundle": "^0.1.1",
-        "rollerworks/route-autowiring-bundle": "^1.2.0",
         "rollerworks/split-token": "^0.1.0",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/asset": "*",
@@ -71,12 +70,10 @@
         "symfony/symfony": "*"
     },
     "require-dev": {
-        "bamarni/composer-bin-plugin": "^1.2",
         "dama/doctrine-test-bundle": "^6.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
         "doctrine/doctrine-fixtures-bundle": "^3.2",
         "easycorp/easy-log-handler": "^1.0.7",
-        "matthiasnoback/symfony-config-test": "^4.0.1",
         "matthiasnoback/symfony-dependency-injection-test": "^4.0.0",
         "phpunit/phpunit": "^8.2.3",
         "psalm/plugin-phpunit": "^0.7",
@@ -111,18 +108,15 @@
     },
     "autoload": {
         "psr-4": {
-            "ParkManager\\Bundle\\CoreBundle\\": "bundles/CoreBundle/src",
-            "ParkManager\\Bundle\\WebhostingBundle\\": "bundles/WebhostingBundle/src",
             "ParkManager\\": "src/"
         },
         "exclude-from-classmap": [
-            ".dances/"
+            "tests/"
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "ParkManager\\Bundle\\CoreBundle\\Tests\\": "bundles/CoreBundle/tests/",
-            "ParkManager\\Bundle\\WebhostingBundle\\Tests\\": "bundles/WebhostingBundle/tests/"
+            "ParkManager\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "dev",

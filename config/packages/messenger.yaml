@@ -1,5 +1,12 @@
 framework:
     messenger:
+        default_bus: park_manager.command_bus
+        buses:
+            park_manager.command_bus:
+                middleware:
+                    - validation
+                    - doctrine_transaction
+
         # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
         # failure_transport: failed
 

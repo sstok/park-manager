@@ -24,12 +24,14 @@ class Kernel extends BaseKernel
     {
         $container->import('../config/packages/*.yaml');
         $container->import('../config/packages/' . $this->environment . '/*.yaml');
+        $container->import('../config/services.php');
+        $container->import('../config/{services}_' . $this->environment . '.php');
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void
     {
         $routes->import('../config/{routes}/' . $this->environment . '/*.yaml');
         $routes->import('../config/{routes}/*.yaml');
-        $routes->import('../config/routes.yaml');
+        $routes->import('../config/routes.php')->schemes(['https']);
     }
 }

@@ -12,15 +12,6 @@ Architecture
 The Park-Manager application is build on top of [Symfony][2] and uses [Docker][3] 
 for the actual hosting platform.
 
-Functionality is provided in the form of modules, the CoreModule provides 
-the absolute basics for any **hosting system**.
-
-Additionally Park-Manager provides Modules for:
-
-  * Webhosting
-  * DNS management
-  * Support tickets
-
 Installation
 ------------
 

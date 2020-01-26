@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+namespace ParkManager\Domain\Client;
+
+use ParkManager\Domain\Client\Exception\ClientNotFound;
+use ParkManager\Domain\Client\Exception\EmailChangeConfirmationRejected;
+use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
+
+interface ClientRepository
+{
+    /**
+     * @throws ClientNotFound When no client was found with the id
+     */
+    public function get(ClientId $id): Client;
+
+    /**
+     * @throws ClientNotFound When no client was found with the email
+     */
+    public function getByEmail(EmailAddress $email): Client;
+
+    /**
+     * @throws PasswordResetTokenNotAccepted When no client was found with the token-selector
+     */
+    public function getByPasswordResetToken(string $selector): Client;
+
+    /**
+     * @throws EmailChangeConfirmationRejected When no client was found with the token-selector
+     */
+    public function getByEmailAddressChangeToken(string $selector): Client;
+
+    public function save(Client $client): void;
+
+    public function remove(Client $client): void;
+}

@@ -5,11 +5,11 @@
     "amphp/byte-stream": {
         "version": "v1.7.1"
     },
-    "bamarni/composer-bin-plugin": {
-        "version": "v1.3.0"
-    },
     "beberlei/assert": {
         "version": "v3.x-dev"
+    },
+    "brick/math": {
+        "version": "0.8.11"
     },
     "composer/semver": {
         "version": "1.x-dev"
@@ -128,9 +128,6 @@
     "egulias/email-validator": {
         "version": "2.1.x-dev"
     },
-    "facebook/webdriver": {
-        "version": "1.8.x-dev"
-    },
     "felixfbecker/advanced-json-rpc": {
         "version": "v3.0.4"
     },
@@ -203,6 +200,9 @@
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
     },
+    "php-webdriver/webdriver": {
+        "version": "1.8.x-dev"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.x-dev"
     },
@@ -274,9 +274,6 @@
     },
     "rollerworks/route-autofill-bundle": {
         "version": "v0.1.2"
-    },
-    "rollerworks/route-autowiring-bundle": {
-        "version": "1.2.x-dev"
     },
     "rollerworks/split-token": {
         "version": "0.1.x-dev"

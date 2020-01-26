@@ -1,8 +1,0 @@
-framework:
-    messenger:
-        default_bus: park_manager.command_bus
-        buses:
-            park_manager.command_bus:
-                middleware:
-                    - validation
-                    - doctrine_transaction

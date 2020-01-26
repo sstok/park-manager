@@ -14,7 +14,7 @@
 >
     <testsuites>
         <testsuite name="Park-Manager Test Suite">
-            <directory>bundles/*/tests</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
@@ -35,20 +35,16 @@
 
     <filter>
         <whitelist>
-            <directory>bundles/</directory>
+            <directory>src/</directory>
             <exclude>
+                <file>src/Kernel.php</file>
                 <directory>vendor/</directory>
-                <directory>vendor-bin/</directory>
-                <directory>src/</directory>
+                <directory>tests/</directory>
                 <directory>templates/</directory>
                 <directory>translations/</directory>
                 <directory>public/</directory>
                 <directory>var/</directory>
-                <directory>etc/</directory>
                 <directory>config/</directory>
-                <directory>bundles/*/templates</directory>
-                <directory>bundles/*/translations</directory>
-                <directory>bundles/*/tests</directory>
             </exclude>
         </whitelist>
     </filter>

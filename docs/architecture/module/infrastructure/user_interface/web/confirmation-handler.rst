@@ -41,7 +41,7 @@ button, and shows some basic information like the selected item::
     }
 
     return $confirmationHandler->render(
-        '@ParkManagerCoreModule/confirmation.html.twig',
+        'confirmation.html.twig',
         ['additional-variables-passed-to-the-template']
     );
 

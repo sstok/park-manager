@@ -2,9 +2,9 @@ security:
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
 
-        'ParkManager\Bundle\CoreBundle\Security\AdministratorUser':
+        'ParkManager\Infrastructure\Security\AdministratorUser':
             algorithm: auto
-        'ParkManager\Bundle\CoreBundle\Security\ClientUser':
+        'ParkManager\Infrastructure\Security\ClientUser':
             algorithm: auto
 
     providers:

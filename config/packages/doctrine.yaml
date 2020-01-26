@@ -6,7 +6,33 @@ doctrine:
         charset: utf8
 
         url: '%env(resolve:DATABASE_URL)%'
+
+        types:
+            array_collection: 'ParkManager\Infrastructure\Doctrine\Type\ArrayCollectionType'
+            park_manager_administrator_id: 'ParkManager\Infrastructure\Doctrine\Type\AdministratorIdType'
+            park_manager_client_id: 'ParkManager\Infrastructure\Doctrine\Type\ClientIdType'
+            park_manager_owner_id: 'ParkManager\Infrastructure\Doctrine\Type\OwnerIdType'
+            #park_manager_domain_id: 'ParkManager\Infrastructure\Doctrine\Type\DomainIdType' # Don't initiate this
+
+            # Webhosting
+            webhosting_plan_constraints: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingPlanConstraintsType'
+            park_manager_webhosting_account_id: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingAccountIdType'
+            park_manager_webhosting_domain_name_id: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingDomainNameIdType'
+            park_manager_webhosting_plan_id: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingPlanIdType'
+
     orm:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-        auto_mapping: false
+        auto_mapping: true
+        mappings:
+            App:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Domain'
+                prefix: 'ParkManager\Domain'
+                alias: ParkManager
+            SecurityMapping:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Infrastructure/Doctrine/SecurityMapping'
+                prefix: 'Rollerworks\Component\SplitToken'

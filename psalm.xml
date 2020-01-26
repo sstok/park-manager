@@ -9,7 +9,6 @@
 >
     <projectFiles>
         <directory name="src"/>
-        <directory name="bundles"/>
         <ignoreFiles>
             <directory name="vendor"/>
         </ignoreFiles>
@@ -21,7 +20,7 @@
         <MoreSpecificImplementedParamType>
             <errorLevel type="suppress">
                 <!-- Required as transformers are able to enforce stronger types -->
-                <directory name="bundles/CoreBundle/src/Form/DataTransformer"/>
+                <directory name="src/UI/Web/Form/DataTransformer"/>
             </errorLevel>
         </MoreSpecificImplementedParamType>
 
@@ -49,7 +48,7 @@
         <PossiblyUndefinedMethod>
             <errorLevel type="suppress">
                 <!-- Tests are always checked or at least will produce an error -->
-                <directory name="bundles/*/tests"/>
+                <directory name="tests"/>
             </errorLevel>
         </PossiblyUndefinedMethod>
 
@@ -58,9 +57,9 @@
         <PossiblyNullReference>
             <errorLevel type="suppress">
                 <!-- Tests are always checked or at least will produce an error -->
-                <directory name="bundles/*/tests"/>
+                <directory name="tests"/>
 
-                <file name="bundles/CoreBundle/src/Security/Guard/FormAuthenticator.php"/>
+                <file name="src/Infrastructure/Security/Guard/FormAuthenticator.php"/>
             </errorLevel>
         </PossiblyNullReference>
 

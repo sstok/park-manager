@@ -19,17 +19,6 @@ composer-validate: ensure
 	@sh -c "${QA_DOCKER_COMMAND} composer validate"
 #	@sh -c "${QA_DOCKER_COMMAND} composer normalize"
 
-	@for direc in $$(gfind bundles -mindepth 2 -type f -name composer.json -printf '%h\n'); \
-	do \
-		sh -c "${QA_DOCKER_COMMAND} composer validate --working-dir=$${direc}"; \
-	done;
-
-#	@for direc in $$(gfind bundles -mindepth 2 -type f -name composer.json -printf '%h\n'); \
-#	do \
-#		sh -c "${QA_DOCKER_COMMAND} composer validate --working-dir=$${direc}"; \
-#		sh -c "${QA_DOCKER_COMMAND} composer normalize --working-dir=$${direc}"; \
-#	done;
-
 lint-xml:
 	@echo "Validating XML files"
 
@@ -38,7 +27,6 @@ ifeq (, $(shell which xmllint))
 else
 	@find . \( -name '*.xml' -or -name '*.xliff' -or -name '*.xlf' \) \
 			-not -path './vendor/*' \
-			-not -path './vendor-bin/*' \
 			-not -path './.*' \
 			-not -path './var/*' \
 			-type f \
@@ -47,19 +35,14 @@ endif
 
 lint-yaml:
 	@echo "Validating YAML files"
-	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:yaml -vv bundles/"
 	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:yaml -vv config/"
 
 lint-twig:
 	@echo "Validating Twig files"
-	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:twig -vv bundles/"
 	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:twig -vv templates/"
 
 composer-install: fetch ensure clean
 	sh -c "${QA_DOCKER_COMMAND} composer upgrade"
-
-composer-install-lowest: fetch ensure clean
-	sh -c "${QA_DOCKER_COMMAND} composer upgrade --prefer-lowest"
 
 composer-install-dev: fetch ensure clean
 	rm -f composer.lock

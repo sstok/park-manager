@@ -10,11 +10,9 @@ EOF;
 $finder = PhpCsFixer\Finder::create();
 $finder
     ->in([
-        __DIR__ . '/bundles',
         __DIR__ . '/src',
         __DIR__ . '/bin',
         __DIR__ . '/public',
-        __DIR__ . '/.dances',
     ])
     ->notPath('config/routing');
 
@@ -74,6 +72,7 @@ return PhpCsFixer\Config::create()
             'syntax' => 'short',
         ],
         'mb_str_functions' => true,
+        'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
         'native_function_invocation' => [
             'strict' => true,
         ],

@@ -1,0 +1,104 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+namespace ParkManager\Tests\Infrastructure\Twig;
+
+use ParkManager\Infrastructure\Twig\TwigResponseListener;
+use ParkManager\UI\Web\Response\TwigResponse;
+use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Twig\Environment;
+
+/**
+ * @internal
+ */
+final class TwigResponseListenerTest extends TestCase
+{
+    /** @test */
+    public function it_ignores_other_responses(): void
+    {
+        $container = $this->createUnusedContainer();
+        $listener = new \ParkManager\Infrastructure\Twig\TwigResponseListener($container);
+
+        $event = $this->createEvent($response = new Response());
+        $listener->onKernelResponse($event);
+
+        static::assertSame($response, $event->getResponse());
+    }
+
+    /** @test */
+    public function it_ignores_empty_response(): void
+    {
+        $container = $this->createUnusedContainer();
+        $listener = new \ParkManager\Infrastructure\Twig\TwigResponseListener($container);
+
+        $event = $this->createEvent(new TwigResponse('Nope', [], 204));
+        $listener->onKernelResponse($event);
+
+        static::assertSame('', $event->getResponse()->getContent());
+    }
+
+    /** @test */
+    public function it_ignores_when_content_is_already_set(): void
+    {
+        $container = $this->createUnusedContainer();
+        $listener = new TwigResponseListener($container);
+
+        $event = $this->createEvent((new TwigResponse('Nope'))->setContent('Something'));
+        $listener->onKernelResponse($event);
+
+        static::assertSame('Something', $event->getResponse()->getContent());
+    }
+
+    /** @test */
+    public function it_renders_twig_template(): void
+    {
+        $container = $this->createUsedContainer('client/show_user.html.twig', ['He' => 'you']);
+        $listener = new \ParkManager\Infrastructure\Twig\TwigResponseListener($container);
+
+        $event = $this->createEvent(new TwigResponse('client/show_user.html.twig', ['He' => 'you']));
+        $listener->onKernelResponse($event);
+
+        static::assertSame('It was like this when I got here.', $event->getResponse()->getContent());
+    }
+
+    private function createUnusedContainer(): ContainerInterface
+    {
+        $containerProphecy = $this->prophesize(ContainerInterface::class);
+        $containerProphecy->get('twig')->shouldNotBeCalled();
+
+        return $containerProphecy->reveal();
+    }
+
+    private function createUsedContainer(string $template, array $variables): ContainerInterface
+    {
+        $twig = $this->prophesize(Environment::class);
+        $twig->render($template, $variables)->willReturn('It was like this when I got here.');
+
+        $containerProphecy = $this->prophesize(ContainerInterface::class);
+        $containerProphecy->get('twig')->willReturn($twig->reveal());
+
+        return $containerProphecy->reveal();
+    }
+
+    private function createEvent(Response $response): ResponseEvent
+    {
+        return new ResponseEvent(
+            $this->createMock(HttpKernelInterface::class),
+            new Request(),
+            HttpKernelInterface::MASTER_REQUEST,
+            $response
+        );
+    }
+}

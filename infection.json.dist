@@ -5,8 +5,7 @@
             "src"
         ],
         "excludes": [
-            "Module\/*\/Test",
-            "Module\/*\/Tests"
+            "\/tests"
         ]
     },
     "logs": {
