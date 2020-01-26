@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Form\Type\Security;
 
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
-use Rollerworks\Bundle\MessageBusFormBundle\Type\MessageFormType;
+use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -70,6 +70,7 @@ final class ConfirmPasswordResetType extends AbstractType
             ->setRequired(['user_class'])
             ->setDefault('password_constraints', [])
             ->setDefault('request_route', null)
+            ->setDefault('disable_entity_mapping', true)
             ->setDefault('exception_mapping', [
                 PasswordResetTokenNotAccepted::class => function (PasswordResetTokenNotAccepted $e, $translator, FormInterface $form) {
                     $arguments = [

@@ -10,10 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Security;
 
-use Rollerworks\Bundle\MessageBusFormBundle\Type\MessageFormType;
+use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -31,6 +32,11 @@ class RequestPasswordResetType extends AbstractType
     public function getBlockPrefix(): string
     {
         return 'request_user_password_reset';
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefault('disable_entity_mapping', true);
     }
 
     public function getParent(): ?string

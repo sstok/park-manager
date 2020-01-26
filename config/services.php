@@ -49,7 +49,7 @@ return static function (ContainerConfigurator $c): void {
             __DIR__ . '/../src/Application/{Command,Event}',
             __DIR__ . '/../src/Infrastructure/Doctrine',
             __DIR__ . '/../src/Infrastructure/Security/*User.php',
-            __DIR__ . '/../src/UI/Web/Form/{ConfirmationHandler,DataTransformer}',
+            __DIR__ . '/../src/UI/Web/Form/{ConfirmationHandler,DataTransformer,DataMapper}',
             __DIR__ . '/../src/UI/Web/Response',
         ]);
 

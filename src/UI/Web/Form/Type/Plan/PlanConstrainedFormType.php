@@ -12,7 +12,7 @@ namespace ParkManager\UI\Web\Form\Type\Plan;
 
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintChecker;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintExceeded;
-use Rollerworks\Bundle\MessageBusFormBundle\Type\MessageFormType;
+use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;

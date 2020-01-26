@@ -32,7 +32,7 @@ final class RequestPasswordResetAction
     public function __invoke(Request $request, FormFactoryInterface $formFactory): object
     {
         $form = $formFactory->create(RequestPasswordResetType::class, null, [
-            'command_message_factory' => static function (array $data) {
+            'command_factory' => static function (array $data) {
                 return new RequestPasswordReset($data['email']);
             },
         ]);

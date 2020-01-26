@@ -15,7 +15,7 @@ use ParkManager\UI\Web\Form\Type\Security\ChangePasswordType;
 use ParkManager\Infrastructure\Security\ClientUser;
 use ParkManager\Tests\Form\TransformationFailureExtension;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHashFactory;
-use Rollerworks\Bundle\MessageBusFormBundle\Test\MessageFormTestCase;
+use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 
 /**

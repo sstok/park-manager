@@ -269,9 +269,6 @@
     "ramsey/uuid": {
         "version": "3.x-dev"
     },
-    "rollerworks/messagebus-form-bundle": {
-        "version": "v0.2.1"
-    },
     "rollerworks/route-autofill-bundle": {
         "version": "v0.1.2"
     },

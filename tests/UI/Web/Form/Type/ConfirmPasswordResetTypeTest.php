@@ -18,7 +18,7 @@ use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Infrastructure\Security\ClientUser;
 use ParkManager\Tests\Form\TransformationFailureExtension;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHashFactory;
-use Rollerworks\Bundle\MessageBusFormBundle\Test\MessageFormTestCase;
+use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Symfony\Component\Form\FormError;
@@ -84,8 +84,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     {
         $token = $this->splitTokenFactory->fromString(FakeSplitTokenFactory::FULL_TOKEN);
         $form = $this->factory->create(ConfirmPasswordResetType::class, ['reset_token' => $token], [
-            'command_bus' => 'command_bus',
-            'command_message_factory' => $this->getCommandBuilder(),
+            'command_factory' => $this->getCommandBuilder(),
             'user_class' => ClientUser::class,
             'request_route' => 'request_password_reset',
         ]);
@@ -106,8 +105,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     public function it_gives_null_for_model_password(): void
     {
         $form = $this->factory->create(ConfirmPasswordResetType::class, null, [
-            'command_bus' => 'command_bus',
-            'command_message_factory' => $this->getCommandBuilder(),
+            'command_factory' => $this->getCommandBuilder(),
             'user_class' => ClientUser::class,
         ]);
 
@@ -119,8 +117,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     public function it_sets_the_invalid_token_view_variable(): void
     {
         $form = $this->factory->create(ConfirmPasswordResetType::class, ['reset_token' => 'NopeNopeNopeNopeNope'], [
-            'command_bus' => 'command_bus',
-            'command_message_factory' => $this->getCommandBuilder(),
+            'command_factory' => $this->getCommandBuilder(),
             'user_class' => ClientUser::class,
             'request_route' => 'request_password_reset',
         ]);
@@ -152,8 +149,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
 
         $token = $this->splitTokenFactory->fromString(FakeSplitTokenFactory::FULL_TOKEN);
         $form = $this->factory->create(ConfirmPasswordResetType::class, ['reset_token' => $token], [
-            'command_bus' => 'command_bus',
-            'command_message_factory' => $this->getCommandBuilder(),
+            'command_factory' => $this->getCommandBuilder(),
             'user_class' => ClientUser::class,
             'request_route' => 'request_password_reset',
         ]);
