@@ -8,55 +8,55 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Application\Command\Webhosting\Account;
+namespace ParkManager\Application\Command\Webhosting\Space;
 
-use ParkManager\Domain\Webhosting\Account\WebhostingAccount;
-use ParkManager\Domain\Webhosting\Account\WebhostingAccountRepository;
 use ParkManager\Domain\Webhosting\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameRepository;
 use ParkManager\Domain\Webhosting\Plan\WebhostingPlanRepository;
+use ParkManager\Domain\Webhosting\Space\Space;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
-final class RegisterWebhostingAccountHandler
+final class RegisterWebhostingSpaceHandler
 {
-    private $accountRepository;
+    private $spaceRepository;
     private $planRepository;
     private $domainNameRepository;
 
-    public function __construct(WebhostingAccountRepository $accountRepository, WebhostingPlanRepository $planRepository, WebhostingDomainNameRepository $domainNameRepository)
+    public function __construct(WebhostingSpaceRepository $spaceRepository, WebhostingPlanRepository $planRepository, WebhostingDomainNameRepository $domainNameRepository)
     {
-        $this->accountRepository = $accountRepository;
+        $this->spaceRepository = $spaceRepository;
         $this->planRepository = $planRepository;
         $this->domainNameRepository = $domainNameRepository;
     }
 
-    public function __invoke(RegisterWebhostingAccount $command): void
+    public function __invoke(RegisterWebhostingSpace $command): void
     {
         $currentRegistration = $this->domainNameRepository->findByFullName($command->domainName);
 
         $planId = $command->plan;
 
         if ($currentRegistration !== null) {
-            throw DomainNameAlreadyInUse::byAccountId($command->domainName, $currentRegistration->getAccount()->getId());
+            throw DomainNameAlreadyInUse::bySpaceId($command->domainName, $currentRegistration->getSpace()->getId());
         }
 
         if ($planId !== null) {
-            $account = WebhostingAccount::register(
+            $space = Space::register(
                 $command->id,
                 $command->owner,
                 $this->planRepository->get($planId)
             );
         } else {
-            $account = WebhostingAccount::registerWithCustomConstraints(
+            $space = Space::registerWithCustomConstraints(
                 $command->id,
                 $command->owner,
                 $command->customConstraints
             );
         }
 
-        $primaryDomainName = WebhostingDomainName::registerPrimary($account, $command->domainName);
+        $primaryDomainName = WebhostingDomainName::registerPrimary($space, $command->domainName);
 
-        $this->accountRepository->save($account);
+        $this->spaceRepository->save($space);
         $this->domainNameRepository->save($primaryDomainName);
     }
 }

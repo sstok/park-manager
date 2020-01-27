@@ -11,18 +11,18 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\DomainName\Exception;
 
 use InvalidArgumentException;
-use ParkManager\Domain\Webhosting\Account\WebhostingAccountId;
 use ParkManager\Domain\Webhosting\DomainName;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 
 final class DomainNameAlreadyInUse extends InvalidArgumentException
 {
-    public static function byAccountId(DomainName $domainName, WebhostingAccountId $accountId): self
+    public static function bySpaceId(DomainName $domainName, WebhostingSpaceId $spaceId): self
     {
         return new self(
             \sprintf(
-                'Webhosting domain name "%s" is already in use by account %s.',
+                'Webhosting domain name "%s" is already in use by space %s.',
                 $domainName->toString(),
-                $accountId->toString()
+                $spaceId->toString()
             )
         );
     }

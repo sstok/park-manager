@@ -13,7 +13,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use ParkManager\Domain\Administrator\AdministratorRepository;
 use ParkManager\Domain\User\UserRepository;
 use ParkManager\Infrastructure\Doctrine\ConstraintsTypeConfigurator;
-use ParkManager\Infrastructure\Doctrine\Repository\WebhostingAccountOrmRepository;
+use ParkManager\Infrastructure\Doctrine\Repository\WebhostingSpaceOrmRepository;
 use ParkManager\Infrastructure\Doctrine\Repository\WebhostingPlanOrmRepository;
 use ParkManager\Infrastructure\Security\AdministratorUser;
 use ParkManager\Infrastructure\Security\User;
@@ -69,7 +69,7 @@ return static function (ContainerConfigurator $c): void {
     $di->set(ConstraintsFactory::class)->arg(0, []);
     $di->set(ConstraintsTypeConfigurator::class);
     $di->get(WebhostingPlanOrmRepository::class)->configurator(ref(ConstraintsTypeConfigurator::class));
-    $di->get(WebhostingAccountOrmRepository::class)->configurator(ref(ConstraintsTypeConfigurator::class));
+    $di->get(WebhostingSpaceOrmRepository::class)->configurator(ref(ConstraintsTypeConfigurator::class));
 
     // -- Security
     $di->set('park_manager.security.guard.form.administrator', FormAuthenticator::class)

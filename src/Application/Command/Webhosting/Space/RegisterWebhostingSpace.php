@@ -8,20 +8,20 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Application\Command\Webhosting\Account;
+namespace ParkManager\Application\Command\Webhosting\Space;
 
 use ParkManager\Domain\OwnerId;
-use ParkManager\Domain\Webhosting\Account\WebhostingAccountId;
 use ParkManager\Domain\Webhosting\DomainName;
 use ParkManager\Domain\Webhosting\Plan\Constraints;
 use ParkManager\Domain\Webhosting\Plan\WebhostingPlanId;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 
-final class RegisterWebhostingAccount
+final class RegisterWebhostingSpace
 {
     /**
      * READ-ONLY.
      *
-     * @var WebhostingAccountId
+     * @var WebhostingSpaceId
      */
     public $id;
 
@@ -55,7 +55,7 @@ final class RegisterWebhostingAccount
 
     private function __construct(string $id, string $owner, DomainName $domainName, ?string $planId, ?Constraints $constraints)
     {
-        $this->id = WebhostingAccountId::fromString($id);
+        $this->id = WebhostingSpaceId::fromString($id);
         $this->domainName = $domainName;
         $this->customConstraints = $constraints;
         $this->owner = OwnerId::fromString($owner);

@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Domain\Webhosting\Account;
+namespace ParkManager\Domain\Webhosting\Space;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,16 +18,16 @@ use ParkManager\Domain\Webhosting\Plan\WebhostingPlan;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="account", schema="webhosting")
+ * @ORM\Table(name="space", schema="webhosting")
  */
-class WebhostingAccount
+class Space
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="park_manager_webhosting_account_id")
+     * @ORM\Column(type="park_manager_webhosting_space_id")
      * @ORM\GeneratedValue(strategy="NONE")
      *
-     * @var WebhostingAccountId
+     * @var WebhostingSpaceId
      */
     protected $id;
 
@@ -69,32 +69,32 @@ class WebhostingAccount
      */
     private $markedForRemoval = false;
 
-    protected function __construct(WebhostingAccountId $id, OwnerId $owner)
+    protected function __construct(WebhostingSpaceId $id, OwnerId $owner)
     {
         $this->id = $id;
         $this->owner = $owner;
     }
 
-    public static function register(WebhostingAccountId $id, OwnerId $owner, WebhostingPlan $plan): self
+    public static function register(WebhostingSpaceId $id, OwnerId $owner, WebhostingPlan $plan): self
     {
-        $account = new static($id, $owner);
-        // Store the constraints as part of the webhosting account
+        $space = new static($id, $owner);
+        // Store the constraints as part of the webhosting space
         // The plan can be changed at any time, but the constraints are immutable.
-        $account->planConstraints = $plan->getConstraints();
-        $account->plan = $plan;
+        $space->planConstraints = $plan->getConstraints();
+        $space->plan = $plan;
 
-        return $account;
+        return $space;
     }
 
-    public static function registerWithCustomConstraints(WebhostingAccountId $id, OwnerId $owner, Constraints $constraints): self
+    public static function registerWithCustomConstraints(WebhostingSpaceId $id, OwnerId $owner, Constraints $constraints): self
     {
-        $account = new static($id, $owner);
-        $account->planConstraints = $constraints;
+        $space = new static($id, $owner);
+        $space->planConstraints = $constraints;
 
-        return $account;
+        return $space;
     }
 
-    public function getId(): WebhostingAccountId
+    public function getId(): WebhostingSpaceId
     {
         return $this->id;
     }
@@ -134,9 +134,9 @@ class WebhostingAccount
     }
 
     /**
-     * Change the webhosting account Constraints.
+     * Change the webhosting space Constraints.
      *
-     * This removes the plan assignment and makes the account's
+     * This removes the plan assignment and makes the space's
      * Constraints exclusive.
      */
     public function assignCustomConstraints(Constraints $constraints): void
@@ -155,10 +155,10 @@ class WebhostingAccount
     }
 
     /**
-     * Set the webhosting account to expire (be removed) on a specific
+     * Set the webhosting space to expire (be removed) on a specific
      * datetime.
      *
-     * Note: There is no promise the webhosting account will in fact
+     * Note: There is no promise the webhosting space will in fact
      * be removed on the specified date. This depends on other subsystems.
      */
     public function setExpirationDate(DateTimeImmutable $data): void
@@ -167,7 +167,7 @@ class WebhostingAccount
     }
 
     /**
-     * Remove the webhosting account's expiration date (if any).
+     * Remove the webhosting space's expiration date (if any).
      */
     public function removeExpirationDate(): void
     {
@@ -184,7 +184,7 @@ class WebhostingAccount
     }
 
     /**
-     * Mark the webhosting account for removal (this cannot be undone!).
+     * Mark the webhosting space for removal (this cannot be undone!).
      */
     public function markForRemoval(): void
     {

@@ -16,7 +16,7 @@ doctrine:
 
             # Webhosting
             webhosting_plan_constraints: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingPlanConstraintsType'
-            park_manager_webhosting_account_id: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingAccountIdType'
+            park_manager_webhosting_space_id: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingSpaceIdType'
             park_manager_webhosting_domain_name_id: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingDomainNameIdType'
             park_manager_webhosting_plan_id: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingPlanIdType'
 

@@ -11,18 +11,18 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\DomainName\Exception;
 
 use InvalidArgumentException;
-use ParkManager\Domain\Webhosting\Account\WebhostingAccountId;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 
 final class CannotRemovePrimaryDomainName extends InvalidArgumentException
 {
-    public static function of(WebhostingDomainNameId $domainName, WebhostingAccountId $accountId): self
+    public static function of(WebhostingDomainNameId $domainName, WebhostingSpaceId $spaceId): self
     {
         return new self(
             \sprintf(
-                'Webhosting domain-name "%s" of account %s is marked as primary and cannot be removed.',
+                'Webhosting domain-name "%s" of space %s is marked as primary and cannot be removed.',
                 $domainName->toString(),
-                $accountId->toString()
+                $spaceId->toString()
             )
         );
     }

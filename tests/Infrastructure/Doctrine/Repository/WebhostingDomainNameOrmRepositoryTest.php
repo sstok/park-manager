@@ -12,9 +12,9 @@ namespace ParkManager\Tests\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Domain\OwnerId;
-use ParkManager\Domain\Webhosting\Account\Exception\WebhostingAccountNotFound;
-use ParkManager\Domain\Webhosting\Account\WebhostingAccount;
-use ParkManager\Domain\Webhosting\Account\WebhostingAccountId;
+use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
+use ParkManager\Domain\Webhosting\Space\Space;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 use ParkManager\Domain\Webhosting\DomainName;
 use ParkManager\Domain\Webhosting\DomainName\Exception\CannotRemovePrimaryDomainName;
 use ParkManager\Domain\Webhosting\DomainName\Exception\WebhostingDomainNameNotFound;
@@ -33,18 +33,18 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
 {
     private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
 
-    private const ACCOUNT_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
-    private const ACCOUNT_ID2 = '47f6db14-a69c-11e7-be13-acbc32b58316';
-    private const ACCOUNT_NOOP = '30b26ae0-a6b5-11e7-b978-acbc32b58315';
+    private const SPACE_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
+    private const SPACE_ID2 = '47f6db14-a69c-11e7-be13-acbc32b58316';
+    private const SPACE_NOOP = '30b26ae0-a6b5-11e7-b978-acbc32b58315';
 
     /** @var WebhostingDomainNameOrmRepository */
     private $repository;
 
-    /** @var WebhostingAccount */
-    private $account1;
+    /** @var Space */
+    private $space1;
 
-    /** @var WebhostingAccount */
-    private $account2;
+    /** @var Space */
+    private $space2;
 
     /** @var WebhostingDomainNameId */
     private $id1;
@@ -59,31 +59,31 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     {
         parent::setUp();
 
-        $this->account1 = WebhostingAccount::registerWithCustomConstraints(
-            WebhostingAccountId::fromString(self::ACCOUNT_ID1),
+        $this->space1 = Space::registerWithCustomConstraints(
+            WebhostingSpaceId::fromString(self::SPACE_ID1),
             OwnerId::fromString(self::OWNER_ID1),
             new Constraints()
         );
 
-        $this->account2 = WebhostingAccount::registerWithCustomConstraints(
-            WebhostingAccountId::fromString(self::ACCOUNT_ID2),
+        $this->space2 = Space::registerWithCustomConstraints(
+            WebhostingSpaceId::fromString(self::SPACE_ID2),
             OwnerId::fromString(self::OWNER_ID1),
             new Constraints()
         );
 
         $em = $this->getEntityManager();
         $em->transactional(function (EntityManagerInterface $em): void {
-            $em->persist($this->account1);
-            $em->persist($this->account2);
+            $em->persist($this->space1);
+            $em->persist($this->space2);
         });
 
-        $webhostingDomainName1 = WebhostingDomainName::registerPrimary($this->account1, new DomainName('example', 'com'));
+        $webhostingDomainName1 = WebhostingDomainName::registerPrimary($this->space1, new DomainName('example', 'com'));
         $this->id1 = $webhostingDomainName1->getId();
 
-        $webhostingDomainName2 = WebhostingDomainName::registerPrimary($this->account2, new DomainName('example', 'net'));
+        $webhostingDomainName2 = WebhostingDomainName::registerPrimary($this->space2, new DomainName('example', 'net'));
         $this->id2 = $webhostingDomainName2->getId();
 
-        $webhostingDomainName3 = WebhostingDomainName::registerSecondary($this->account2, new DomainName('example', 'co.uk'));
+        $webhostingDomainName3 = WebhostingDomainName::registerSecondary($this->space2, new DomainName('example', 'co.uk'));
         $this->id3 = $webhostingDomainName3->getId();
 
         $this->repository = new WebhostingDomainNameOrmRepository($em);
@@ -101,34 +101,34 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
         $webhostingDomainName = $this->repository->get($this->id1);
 
         static::assertTrue($webhostingDomainName->getId()->equals($this->id1), 'ID should equal');
-        static::assertEquals($this->account1, $webhostingDomainName->getAccount());
+        static::assertEquals($this->space1, $webhostingDomainName->getSpace());
         static::assertEquals(new DomainName('example', 'com'), $webhostingDomainName->getDomainName());
         static::assertTrue($webhostingDomainName->isPrimary());
 
         $webhostingDomainName = $this->repository->get($this->id2);
 
         static::assertTrue($webhostingDomainName->getId()->equals($this->id2), 'ID should equal');
-        static::assertEquals($this->account2, $webhostingDomainName->getAccount());
+        static::assertEquals($this->space2, $webhostingDomainName->getSpace());
         static::assertEquals(new DomainName('example', 'net'), $webhostingDomainName->getDomainName());
         static::assertTrue($webhostingDomainName->isPrimary());
 
         $webhostingDomainName = $this->repository->get($this->id3);
 
         static::assertTrue($webhostingDomainName->getId()->equals($this->id3), 'ID should equal');
-        static::assertEquals($this->account2, $webhostingDomainName->getAccount());
+        static::assertEquals($this->space2, $webhostingDomainName->getSpace());
         static::assertEquals(new DomainName('example', 'co.uk'), $webhostingDomainName->getDomainName());
         static::assertFalse($webhostingDomainName->isPrimary());
     }
 
     /** @test */
-    public function it_gets_primary_of_account(): void
+    public function it_gets_primary_of_space(): void
     {
-        static::assertTrue($this->repository->getPrimaryOf($this->account1->getId())->getId()->equals($this->id1), 'ID should equal');
-        static::assertTrue($this->repository->getPrimaryOf($this->account2->getId())->getId()->equals($this->id2), 'ID should equal');
+        static::assertTrue($this->repository->getPrimaryOf($this->space1->getId())->getId()->equals($this->id1), 'ID should equal');
+        static::assertTrue($this->repository->getPrimaryOf($this->space2->getId())->getId()->equals($this->id2), 'ID should equal');
 
-        $this->expectException(WebhostingAccountNotFound::class);
+        $this->expectException(WebhostingSpaceNotFound::class);
         $this->expectExceptionMessage(
-            WebhostingAccountNotFound::withId($id = WebhostingAccountId::fromString(self::ACCOUNT_NOOP))->getMessage()
+            WebhostingSpaceNotFound::withId($id = WebhostingSpaceId::fromString(self::SPACE_NOOP))->getMessage()
         );
 
         $this->repository->getPrimaryOf($id);
@@ -172,7 +172,7 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
 
         $this->expectException(CannotRemovePrimaryDomainName::class);
         $this->expectExceptionMessage(
-            CannotRemovePrimaryDomainName::of($this->id1, $webhostingDomainName->getAccount()->getId())->getMessage()
+            CannotRemovePrimaryDomainName::of($this->id1, $webhostingDomainName->getSpace()->getId())->getMessage()
         );
 
         $this->repository->remove($webhostingDomainName);

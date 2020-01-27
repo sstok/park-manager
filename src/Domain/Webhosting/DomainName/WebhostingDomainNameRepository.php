@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\DomainName;
 
-use ParkManager\Domain\Webhosting\Account\Exception\WebhostingAccountNotFound;
-use ParkManager\Domain\Webhosting\Account\WebhostingAccountId;
 use ParkManager\Domain\Webhosting\DomainName;
 use ParkManager\Domain\Webhosting\DomainName\Exception\WebhostingDomainNameNotFound;
+use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 
 interface WebhostingDomainNameRepository
 {
@@ -23,23 +23,14 @@ interface WebhostingDomainNameRepository
     public function get(WebhostingDomainNameId $id): WebhostingDomainName;
 
     /**
-     * Get the primary DomainName of an webhosting account.
-     *
-     * @throws WebhostingAccountNotFound When no account was found with the id
+     * @throws WebhostingSpaceNotFound When no space was found with the id
      */
-    public function getPrimaryOf(WebhostingAccountId $id): WebhostingDomainName;
+    public function getPrimaryOf(WebhostingSpaceId $id): WebhostingDomainName;
 
-    /**
-     * Finds a WebhostingDomainName registration by it's full name.
-     */
     public function findByFullName(DomainName $name): ?WebhostingDomainName;
 
     /**
-     * Save the WebhostingDomainName in the repository.
-     *
-     * This will either store a new account or update an existing one.
-     *
-     * Note: Only one DomainName _per webhosting account_ can be marked primary,
+     * Note: Only one DomainName _per webhosting space_ can be marked primary,
      * any previously assigned primary domain name must have the primary
      * marking removed.
      */
@@ -49,7 +40,7 @@ interface WebhostingDomainNameRepository
      * Remove an webhosting domain-name registration from the repository.
      *
      * An WebhostingDomainName that's marked as primary cannot
-     * be deleted (unless the account is marked for removal).
+     * be deleted (unless the space is marked for removal).
      */
     public function remove(WebhostingDomainName $domainName): void;
 }

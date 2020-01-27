@@ -8,14 +8,14 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Domain\Webhosting\Account;
+namespace ParkManager\Domain\Webhosting\Space;
 
 use ParkManager\Domain\UuidTrait;
 
 /**
  * @codeCoverageIgnore
  */
-final class WebhostingAccountId
+final class WebhostingSpaceId
 {
     use UuidTrait;
 }

@@ -10,19 +10,19 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Webhosting\Constraint;
 
-use ParkManager\Domain\Webhosting\Account\WebhostingAccountId;
 use ParkManager\Domain\Webhosting\Plan\Constraint;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 
 /**
  * A ConstraintValidator validates the operation doesn't violate
  * the constraint.
  *
- * For example if a webhosting account is limited to 10 mailboxes
- * the validator must check if the current amount of mailboxes (within the account)
+ * For example if a webhosting space is limited to 10 mailboxes
+ * the validator must check if the current amount of mailboxes (within the space)
  * does not exceed this limit.
  *
- * Caution: The account's Constraints can be updated any moment, so when
- * the account already has 10 mailboxes and the Constraint was updated
+ * Caution: The space's Constraints can be updated any moment, so when
+ * the space already has 10 mailboxes and the Constraint was updated
  * to only allow 8 the validator still MUST throw an ConstraintExceeded.
  */
 interface ConstraintValidator
@@ -34,5 +34,5 @@ interface ConstraintValidator
      *
      * @throws ConstraintExceeded (instance) when a constraint is violated
      */
-    public function validate(WebhostingAccountId $accountId, Constraint $constraint, array $context = []): void;
+    public function validate(WebhostingSpaceId $spaceId, Constraint $constraint, array $context = []): void;
 }
