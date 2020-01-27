@@ -10,16 +10,17 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Security;
 
-use Closure;
+use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface as EncoderFactory;
 use Symfony\Component\Validator\Constraint;
 use function Sodium\memzero;
 
-class ChangePasswordType extends AbstractType
+final class ChangePasswordType extends AbstractType
 {
     /** @var EncoderFactory */
     private $encoderFactory;
@@ -31,10 +32,16 @@ class ChangePasswordType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event): void {
+            $data = $event->getData();
+
+            if (! \is_array($data)) {
+                $event->setData(['id' => (string) $data]);
+            }
+        }, 100);
+
         $userClass = $options['user_class'];
         $builder
-            ->setDataMapper(new ChangePasswordDataMapper($options['command_builder']))
-            ->add('user_id', HiddenType::class, ['data' => $options['user_id']])
             ->add('password', HashedPasswordType::class, [
                 'required' => true,
                 'password_confirm' => true,
@@ -54,16 +61,20 @@ class ChangePasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setRequired(['user_class', 'command_builder', 'user_id'])
+            ->setRequired(['user_class'])
             ->setDefault('password_constraints', [])
             ->setDefault('empty_data', null)
             ->setAllowedTypes('user_class', ['string'])
-            ->setAllowedTypes('command_builder', [Closure::class])
             ->setAllowedTypes('password_constraints', [Constraint::class . '[]', Constraint::class]);
     }
 
     public function getBlockPrefix(): string
     {
         return 'change_user_password';
+    }
+
+    public function getParent(): ?string
+    {
+        return MessageFormType::class;
     }
 }
