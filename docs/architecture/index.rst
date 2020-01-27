@@ -31,7 +31,7 @@ Topics
   Email storage, FTP, and web-server virtual-hosts.
 
 * The :doc:`/architecture/user_system` explains how to work with the different
-  user types (Client and Administrator, Reseller) and how to link ownership
+  user types (User and Administrator, Reseller) and how to link ownership
   of a "product".
 
 * The application is separated into tree :doc:`/architecture/sections`: Client,

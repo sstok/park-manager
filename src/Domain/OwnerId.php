@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain;
 
-use ParkManager\Domain\Client\ClientId;
+use ParkManager\Domain\User\UserId;
 
 /**
- * OwnerId links an entity to either a Client user, the Internal system or Private Reseller.
+ * OwnerId links an entity to either a User, the Internal system or Private Reseller.
  *
- * _This should only be used when the entity is not Client specific._
+ * _This should only be used when the entity is not User specific._
  *
  * The static IDs are used for the following:
  *
@@ -26,7 +26,7 @@ use ParkManager\Domain\Client\ClientId;
  * - Private marks the Entity is only accessible by Administrators, this used
  *   for corporate email mailboxes and company owned websites.
  *
- * A `personal` id owner contains the ClientId.
+ * A `personal` id owner contains the UserId.
  */
 final class OwnerId
 {
@@ -46,7 +46,7 @@ final class OwnerId
         return self::fromString(self::PRIVATE);
     }
 
-    public static function fromUserId(ClientId $id): self
+    public static function fromUserId(UserId $id): self
     {
         return self::fromString($id->toString());
     }
@@ -63,7 +63,7 @@ final class OwnerId
         return $id === self::PERSONAL && $this->stringValue !== self::INTERNAL && $this->stringValue !== self::PRIVATE;
     }
 
-    public function isOwnedBy(ClientId $id): bool
+    public function isOwnedBy(UserId $id): bool
     {
         return $id->toString() === $this->stringValue;
     }

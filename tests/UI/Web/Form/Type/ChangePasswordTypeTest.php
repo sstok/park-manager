@@ -12,7 +12,7 @@ namespace ParkManager\Tests\UI\Web\Form\Type;
 
 use Closure;
 use ParkManager\UI\Web\Form\Type\Security\ChangePasswordType;
-use ParkManager\Infrastructure\Security\ClientUser;
+use ParkManager\Infrastructure\Security\User;
 use ParkManager\Tests\Form\TransformationFailureExtension;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHashFactory;
 use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
@@ -67,7 +67,7 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
     public function it_hashes_password(): void
     {
         $form = $this->factory->create(ChangePasswordType::class, 1, [
-            'user_class' => ClientUser::class,
+            'user_class' => User::class,
             'command_factory' => $this->getCommandBuilder(),
         ]);
         $form->submit([
@@ -82,7 +82,7 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
     public function it_does_not_change_user_id(): void
     {
         $form = $this->factory->create(ChangePasswordType::class, 1, [
-            'user_class' => ClientUser::class,
+            'user_class' => User::class,
             'command_factory' => $this->getCommandBuilder(),
         ]);
         $form->submit([
@@ -97,7 +97,7 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
     public function it_does_not_accept_invalid_input(): void
     {
         $form = $this->factory->create(ChangePasswordType::class, 1, [
-            'user_class' => ClientUser::class,
+            'user_class' => User::class,
             'command_factory' => $this->getCommandBuilder(),
         ]);
         $form->submit(['password' => 'Hello there']);
@@ -110,7 +110,7 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
     public function it_gives_null_for_model_password(): void
     {
         $form = $this->factory->create(ChangePasswordType::class, 1, [
-            'user_class' => ClientUser::class,
+            'user_class' => User::class,
             'command_factory' => $this->getCommandBuilder(),
         ]);
 

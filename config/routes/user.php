@@ -10,18 +10,15 @@ declare(strict_types=1);
 
 namespace Symfony\Component\Routing\Loader\Configurator;
 
-use ParkManager\UI\Web\Action\Client\ConfirmPasswordResetAction;
-use ParkManager\UI\Web\Action\Client\RequestPasswordResetAction;
-use ParkManager\UI\Web\Action\Client\SecurityLoginAction;
 use ParkManager\UI\Web\Action\HomepageAction;
 use ParkManager\UI\Web\Action\SecurityLogoutAction;
 
 return static function (RoutingConfigurator $routes) {
-    $routes->import('../../src/UI/Web/Action/Client', 'annotation');
+    $routes->import('../../src/UI/Web/Action/User', 'annotation');
 
     $routes->add('park_manager.admin.security_logout', '/logout')
         ->controller(SecurityLogoutAction::class)
         ->methods(['GET']);
 
-    $routes->add('park_manager.client.home', '/')->controller(HomepageAction::class);
+    $routes->add('park_manager.user.home', '/')->controller(HomepageAction::class);
 };

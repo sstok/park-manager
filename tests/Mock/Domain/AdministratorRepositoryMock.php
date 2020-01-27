@@ -27,8 +27,8 @@ final class AdministratorRepositoryMock implements AdministratorRepository
     protected function getFieldsIndexMapping(): array
     {
         return [
-            'email' => static function (Administrator $client) {
-                return $client->getEmailAddress()->canonical;
+            'email' => static function (Administrator $administrator) {
+                return $administrator->getEmailAddress()->canonical;
             },
             'passwordResetToken' => static function (Administrator $administrator) {
                 $token = $administrator->getPasswordResetToken();

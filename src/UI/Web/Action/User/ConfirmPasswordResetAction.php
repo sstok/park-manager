@@ -8,10 +8,10 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\UI\Web\Action\Admin;
+namespace ParkManager\UI\Web\Action\User;
 
-use ParkManager\Application\Command\Administrator\ConfirmPasswordReset;
-use ParkManager\Infrastructure\Security\AdministratorUser;
+use ParkManager\Application\Command\User\ConfirmPasswordReset;
+use ParkManager\Infrastructure\Security\User;
 use ParkManager\UI\Web\Form\Type\Security\ConfirmPasswordResetType;
 use ParkManager\UI\Web\Response\TwigResponse;
 use Rollerworks\Bundle\RouteAutofillBundle\Response\RouteRedirectResponse;
@@ -24,7 +24,7 @@ final class ConfirmPasswordResetAction
     /**
      * @Route(
      *     path="/password-reset/confirm/{token}",
-     *     name="park_manager.admin.security_confirm_password_reset",
+     *     name="park_manager.user.security_confirm_password_reset",
      *     requirements={"token": ".+"},
      *     methods={"GET", "POST"}
      * )
@@ -35,7 +35,7 @@ final class ConfirmPasswordResetAction
     {
         $form = $formFactory->create(ConfirmPasswordResetType::class, ['reset_token' => $token], [
             'request_route' => 'park_manager.user.security_request_password_reset',
-            'user_class' => AdministratorUser::class,
+            'user_class' => User::class,
             'command_factory' => static function (array $data) {
                 return new ConfirmPasswordReset($data['reset_token'], $data['password']);
             },
@@ -43,10 +43,11 @@ final class ConfirmPasswordResetAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return new RouteRedirectResponse('park_manager.admin.security_login');
+            return RouteRedirectResponse::toRoute('park_manager.user.security_login')
+                ->withFlash('success', 'flash.password_reset_accepted');
         }
 
-        $response = new TwigResponse('admin/security/password_reset_confirm.html.twig', $form);
+        $response = new TwigResponse('user/security/password_reset_confirm.html.twig', $form);
         $response->setPrivate();
         $response->setMaxAge(1);
 
