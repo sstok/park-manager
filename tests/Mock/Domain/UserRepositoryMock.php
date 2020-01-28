@@ -17,10 +17,10 @@ use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
-use ParkManager\Tests\Mock\Domain\MockRepository;
 
 final class UserRepositoryMock implements UserRepository
 {
+    /** @use MockRepository<User> */
     use MockRepository;
 
     public const USER_ID1 = '01dd5964-5426-11e7-be03-acbc32b58315';

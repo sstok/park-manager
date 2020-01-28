@@ -16,6 +16,8 @@ use Throwable;
 
 /**
  * Helps to quickly set-up an in-memory repository.
+ *
+ * @template T
  */
 trait MockRepository
 {
@@ -46,7 +48,7 @@ trait MockRepository
     protected $storedByField = [];
 
     /**
-     * @param object[] $initialEntities Array of initial entities (these are not counted as saved)
+     * @psalm-param array<mixed,T> $initialEntities Array of initial entities (these are not counted as saved)
      */
     public function __construct(array $initialEntities = [])
     {
@@ -55,6 +57,9 @@ trait MockRepository
         }
     }
 
+    /**
+     * @param-param T $entity
+     */
     private function setInMockedStorage(object $entity): void
     {
         $this->storedById[$this->getValueWithGetter($entity, 'id')->toString()] = $entity;
@@ -66,6 +71,8 @@ trait MockRepository
 
     /**
      * @param Closure|string $getter
+     *
+     * @return mixed
      */
     private function getValueWithGetter(object $object, $getter)
     {
@@ -84,13 +91,16 @@ trait MockRepository
      * Returns a list fields (#property, method-name or Closure for extracting)
      * to use for mapping the entity in storage.
      *
-     * @return array [mapping-name] => '#property or method'
+     * @return array<string,string|\Closure> [mapping-name] => '#property or method'
      */
     protected function getFieldsIndexMapping(): array
     {
         return [];
     }
 
+    /**
+     * @psalm-param T $entity
+     */
     protected function mockDoSave(object $entity): void
     {
         $this->setInMockedStorage($entity);
@@ -98,6 +108,9 @@ trait MockRepository
         ++$this->mockWasSaved;
     }
 
+    /**
+     * @psalm-param T $entity
+     */
     protected function mockDoRemove(object $entity): void
     {
         $this->removedById[$this->getValueWithGetter($entity, 'id')->toString()] = $entity;
@@ -122,6 +135,11 @@ trait MockRepository
         }
     }
 
+    /**
+     * @psalm-return T
+     *
+     * @param string|float|int|null $value
+     */
     protected function mockDoGetByField(string $key, $value)
     {
         if (! isset($this->storedByField[$key][$value])) {
@@ -144,6 +162,9 @@ trait MockRepository
         Assert::assertEquals(0, $this->mockWasSaved, 'No entities were expected to be stored');
     }
 
+    /**
+     * @param-param array<int,T> $entities
+     */
     public function assertEntitiesWereSaved(array $entities = []): void
     {
         Assert::assertGreaterThan(0, $this->mockWasSaved, 'Entities were expected to be stored');
@@ -160,6 +181,9 @@ trait MockRepository
         }
     }
 
+    /**
+     * @param-param array<int,T> $entities
+     */
     public function assertEntitiesWereRemoved(array $entities): void
     {
         Assert::assertGreaterThan(0, $this->mockWasRemoved, 'No entities were removed');

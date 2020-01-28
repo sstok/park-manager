@@ -10,8 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain;
 
-use ParkManager\Tests\Domain\Mock\MockIdentity;
+use JsonSerializable;
+use ParkManager\Domain\UuidTrait;
 use PHPUnit\Framework\TestCase;
+use Serializable;
 
 /**
  * @internal
@@ -21,22 +23,22 @@ final class UuidTraitTest extends TestCase
     /** @test */
     public function it_allows_creating_new_instance(): void
     {
-        $id = MockIdentity::create();
+        $id = MockUuidIdentity::create();
 
-        static::assertInstanceOf(MockIdentity::class, $id);
+        static::assertInstanceOf(MockUuidIdentity::class, $id);
     }
 
     /** @test */
     public function it_allows_comparing(): void
     {
-        $id = MockIdentity::create();
-        $id2 = MockIdentity::create();
+        $id = MockUuidIdentity::create();
+        $id2 = MockUuidIdentity::create();
 
         static::assertTrue($id->equals($id));
         static::assertFalse($id->equals($id2));
         static::assertFalse($id->equals(false));
 
-        $id = MockIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
+        $id = MockUuidIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
 
         static::assertTrue($id->equals($id));
         static::assertFalse($id->equals($id2));
@@ -46,7 +48,7 @@ final class UuidTraitTest extends TestCase
     /** @test */
     public function it_can_be_cast_to_string(): void
     {
-        $id = MockIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
+        $id = MockUuidIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
 
         static::assertEquals('56253090-3960-11e7-94fd-acbc32b58315', (string) $id);
     }
@@ -54,7 +56,7 @@ final class UuidTraitTest extends TestCase
     /** @test */
     public function its_serializable(): void
     {
-        $id = MockIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
+        $id = MockUuidIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
         $serialized = \serialize($id);
 
         static::assertEquals($id, \unserialize($serialized, []));
@@ -63,9 +65,15 @@ final class UuidTraitTest extends TestCase
     /** @test */
     public function its_json_serializable(): void
     {
-        $id = MockIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
+        $id = MockUuidIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
         $serialized = \json_encode($id);
 
         static::assertEquals('56253090-3960-11e7-94fd-acbc32b58315', \json_decode($serialized, true));
     }
+}
+
+/** @internal */
+final class MockUuidIdentity implements Serializable, JsonSerializable
+{
+    use UuidTrait;
 }

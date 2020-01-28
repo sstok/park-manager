@@ -20,6 +20,7 @@ use ParkManager\Tests\Mock\Domain\MockRepository;
 
 final class AdministratorRepositoryMock implements AdministratorRepository
 {
+    /** @use MockRepository<Administrator> */
     use MockRepository;
 
     public const USER_ID1 = '126fb452-0a96-11e9-abf1-acbc32b58315';

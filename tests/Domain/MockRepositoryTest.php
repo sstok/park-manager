@@ -11,10 +11,11 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Domain;
 
 use InvalidArgumentException;
+use JsonSerializable;
+use ParkManager\Domain\UuidTrait;
 use ParkManager\Tests\Mock\Domain\MockRepository;
-use ParkManager\Tests\Domain\Mock\MockEntity;
-use ParkManager\Tests\Domain\Mock\MockIdentity;
 use PHPUnit\Framework\TestCase;
+use Serializable;
 
 /**
  * @internal
@@ -234,5 +235,39 @@ final class MockRepositoryTest extends TestCase
         $this->expectExceptionMessage('No, I has not have that key: ' . $entity1->id());
 
         $repository->get($entity1->id());
+    }
+}
+
+/** @internal */
+final class MockIdentity implements Serializable, JsonSerializable
+{
+    use UuidTrait;
+}
+
+/** @internal */
+final class MockEntity
+{
+    /** @var MockIdentity */
+    private $id;
+
+    /** @var string|null */
+    public $name;
+
+    private $lastName;
+
+    public function __construct(string $id = 'fc86687e-0875-11e9-9701-acbc32b58315', string $name = 'Foobar')
+    {
+        $this->id = MockIdentity::fromString($id);
+        $this->lastName = $name;
+    }
+
+    public function id(): MockIdentity
+    {
+        return $this->id;
+    }
+
+    public function lastName()
+    {
+        return $this->lastName;
     }
 }
