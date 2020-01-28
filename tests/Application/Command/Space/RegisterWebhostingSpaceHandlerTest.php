@@ -21,10 +21,10 @@ use ParkManager\Domain\Webhosting\DomainName;
 use ParkManager\Domain\Webhosting\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameRepository;
-use ParkManager\Domain\Webhosting\Plan\Constraints;
-use ParkManager\Domain\Webhosting\Plan\WebhostingPlan;
-use ParkManager\Domain\Webhosting\Plan\WebhostingPlanId;
-use ParkManager\Domain\Webhosting\Plan\WebhostingPlanRepository;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
+use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
+use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSetRepository;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
@@ -34,28 +34,28 @@ use Prophecy\Argument;
 final class RegisterWebhostingSpaceHandlerTest extends TestCase
 {
     private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
-    private const PLAN_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
+    private const SET_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
 
     private const SPACE_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
     private const SPACE_ID2 = '696d345c-a5e1-11e7-9856-acbc32b58315';
 
     /** @test */
-    public function it_handles_registration_of_space_with_plan(): void
+    public function it_handles_registration_of_space_with_constraintSet(): void
     {
         $constraints = new Constraints(new MonthlyTrafficQuota(50));
         $domainName = new DomainName('example', '.com');
-        $webhostingPlan = new WebhostingPlan(WebhostingPlanId::fromString(self::PLAN_ID1), $constraints);
-        $planRepository = $this->createPlanRepository($webhostingPlan);
-        $spaceRepository = $this->createSpaceRepositoryThatSaves($constraints, $webhostingPlan);
+        $constraintSet = new SharedConstraintSet(ConstraintSetId::fromString(self::SET_ID1), $constraints);
+        $constraintSetRepository = $this->createConstraintSetRepository($constraintSet);
+        $spaceRepository = $this->createSpaceRepositoryThatSaves($constraints, $constraintSet);
         $domainNameRepository = $this->createDomainNameRepositoryThatSaves($domainName, self::SPACE_ID1);
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository);
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $constraintSetRepository, $domainNameRepository);
 
         $handler(
-            RegisterWebhostingSpace::withPlan(
+            RegisterWebhostingSpace::withConstraintSet(
                 self::SPACE_ID1,
                 $domainName,
                 self::OWNER_ID1,
-                self::PLAN_ID1
+                self::SET_ID1
             )
         );
     }
@@ -65,10 +65,10 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
     {
         $constraints = new Constraints(new MonthlyTrafficQuota(50));
         $domainName = new DomainName('example', '.com');
-        $planRepository = $this->createNullPlanRepository();
+        $constraintSetRepository = $this->createNullConstraintSetRepository();
         $spaceRepository = $this->createSpaceRepositoryThatSaves($constraints);
         $domainNameRepository = $this->createDomainNameRepositoryThatSaves($domainName, self::SPACE_ID1);
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository);
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $constraintSetRepository, $domainNameRepository);
 
         $handler(
             RegisterWebhostingSpace::withCustomConstraints(
@@ -85,34 +85,34 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
     {
         $domainName = new DomainName('example', '.com');
         $spaceId2 = WebhostingSpaceId::fromString(self::SPACE_ID2);
-        $planRepository = $this->createNullPlanRepository();
+        $constraintSetRepository = $this->createNullConstraintSetRepository();
         $spaceRepository = $this->createSpaceRepositoryWithoutSave();
         $domainNameRepository = $this->createDomainNameRepositoryWithExistingRegistration($domainName, $spaceId2);
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository);
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $constraintSetRepository, $domainNameRepository);
 
         $this->expectException(DomainNameAlreadyInUse::class);
         $this->expectExceptionMessage(DomainNameAlreadyInUse::bySpaceId($domainName, $spaceId2)->getMessage());
 
         $handler(
-            RegisterWebhostingSpace::withPlan(
+            RegisterWebhostingSpace::withConstraintSet(
                 self::SPACE_ID1,
                 $domainName,
                 self::OWNER_ID1,
-                self::PLAN_ID1
+                self::SET_ID1
             )
         );
     }
 
-    private function createSpaceRepositoryThatSaves(Constraints $constraints, ?WebhostingPlan $plan = null, string $id = self::SPACE_ID1, string $owner = self::OWNER_ID1): WebhostingSpaceRepository
+    private function createSpaceRepositoryThatSaves(Constraints $constraints, ?SharedConstraintSet $constraintSet = null, string $id = self::SPACE_ID1, string $owner = self::OWNER_ID1): WebhostingSpaceRepository
     {
         $spaceRepositoryProphecy = $this->prophesize(WebhostingSpaceRepository::class);
         $spaceRepositoryProphecy->save(
             Argument::that(
-                static function (Space $space) use ($constraints, $id, $owner, $plan) {
+                static function (Space $space) use ($constraints, $id, $owner, $constraintSet) {
                     self::assertEquals(WebhostingSpaceId::fromString($id), $space->getId());
                     self::assertEquals(OwnerId::fromString($owner), $space->getOwner());
-                    self::assertEquals($constraints, $space->getPlanConstraints());
-                    self::assertEquals($plan, $space->getPlan());
+                    self::assertEquals($constraints, $space->getConstraints());
+                    self::assertEquals($constraintSet, $space->getAssignedConstraintSet());
 
                     return true;
                 }
@@ -130,17 +130,17 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         return $spaceRepositoryProphecy->reveal();
     }
 
-    private function createNullPlanRepository(): WebhostingPlanRepository
+    private function createNullConstraintSetRepository(): SharedConstraintSetRepository
     {
-        return $this->createMock(WebhostingPlanRepository::class);
+        return $this->createMock(SharedConstraintSetRepository::class);
     }
 
-    private function createPlanRepository(WebhostingPlan $plan): WebhostingPlanRepository
+    private function createConstraintSetRepository(SharedConstraintSet $constraintSet): SharedConstraintSetRepository
     {
-        $planRepositoryProphecy = $this->prophesize(WebhostingPlanRepository::class);
-        $planRepositoryProphecy->get($plan->getId())->willReturn($plan);
+        $constraintSetRepositoryProphecy = $this->prophesize(SharedConstraintSetRepository::class);
+        $constraintSetRepositoryProphecy->get($constraintSet->getId())->willReturn($constraintSet);
 
-        return $planRepositoryProphecy->reveal();
+        return $constraintSetRepositoryProphecy->reveal();
     }
 
     private function createDomainNameRepositoryThatSaves(DomainName $expectedDomain, string $spaceId): WebhostingDomainNameRepository

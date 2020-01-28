@@ -13,11 +13,11 @@ namespace ParkManager\Infrastructure\Doctrine\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
 use InvalidArgumentException;
-use ParkManager\Domain\Webhosting\Plan\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintsFactory;
 use RuntimeException;
 
-final class WebhostingPlanConstraintsType extends JsonType
+final class WebhostingConstraintsType extends JsonType
 {
     /** @var ConstraintsFactory|null */
     private $constraintsFactory;
@@ -56,6 +56,6 @@ final class WebhostingPlanConstraintsType extends JsonType
 
     public function getName(): string
     {
-        return 'webhosting_plan_constraints';
+        return 'webhosting_constraints';
     }
 }

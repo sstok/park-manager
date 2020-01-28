@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Domain\Webhosting\Plan\Exception;
+namespace ParkManager\Domain\Webhosting\Constraint\Exception;
 
 use InvalidArgumentException;
 
@@ -16,6 +16,6 @@ final class ConstraintNotInSet extends InvalidArgumentException
 {
     public static function withName(string $name): self
     {
-        return new self(\sprintf('Webhosting Plan Constraint %s cannot be found in Constraints set.', $name));
+        return new self(\sprintf('Webhosting Constraint %s cannot be found in Constraints set.', $name));
     }
 }

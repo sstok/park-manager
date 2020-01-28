@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\UI\Web\Form\Type\Plan;
+namespace ParkManager\UI\Web\Form\Type\Webhosting\Constraint;
 
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintChecker;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintExceeded;
@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class PlanConstrainedFormType extends AbstractType
+final class ConstrainedFormType extends AbstractType
 {
     /** @var TranslatorInterface */
     private $translator;
@@ -39,7 +39,7 @@ final class PlanConstrainedFormType extends AbstractType
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             try {
-                $options['plan_validator']($this->constraintChecker, $event->getData());
+                $options['constraints_validator']($this->constraintChecker, $event->getData());
             } catch (ConstraintExceeded $e) {
                 $event->getForm()->addError(
                     new FormError(
@@ -56,8 +56,8 @@ final class PlanConstrainedFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setRequired(['plan_validator']);
-        $resolver->setAllowedTypes('plan_validator', ['callable']);
+        $resolver->setRequired(['constraints_validator']);
+        $resolver->setAllowedTypes('constraints_validator', ['callable']);
     }
 
     public function getParent(): ?string

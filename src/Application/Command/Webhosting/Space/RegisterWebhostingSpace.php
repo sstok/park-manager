@@ -11,9 +11,9 @@ declare(strict_types=1);
 namespace ParkManager\Application\Command\Webhosting\Space;
 
 use ParkManager\Domain\OwnerId;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 use ParkManager\Domain\Webhosting\DomainName;
-use ParkManager\Domain\Webhosting\Plan\Constraints;
-use ParkManager\Domain\Webhosting\Plan\WebhostingPlanId;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 
 final class RegisterWebhostingSpace
@@ -42,9 +42,9 @@ final class RegisterWebhostingSpace
     /**
      * READ-ONLY.
      *
-     * @var WebhostingPlanId|null
+     * @var ConstraintSetId|null
      */
-    public $plan;
+    public $constraintSetId;
 
     /**
      * READ-ONLY.
@@ -53,21 +53,21 @@ final class RegisterWebhostingSpace
      */
     public $customConstraints;
 
-    private function __construct(string $id, string $owner, DomainName $domainName, ?string $planId, ?Constraints $constraints)
+    private function __construct(string $id, string $owner, DomainName $domainName, ?string $setId, ?Constraints $constraints)
     {
         $this->id = WebhostingSpaceId::fromString($id);
         $this->domainName = $domainName;
         $this->customConstraints = $constraints;
         $this->owner = OwnerId::fromString($owner);
 
-        if ($planId !== null) {
-            $this->plan = WebhostingPlanId::fromString($planId);
+        if ($setId !== null) {
+            $this->constraintSet = ConstraintSetId::fromString($setId);
         }
     }
 
-    public static function withPlan(string $id, DomainName $domainName, string $owner, string $planId): self
+    public static function withConstraintSet(string $id, DomainName $domainName, string $owner, string $setId): self
     {
-        return new self($id, $owner, $domainName, $planId, null);
+        return new self($id, $owner, $domainName, $setId, null);
     }
 
     public static function withCustomConstraints(string $id, DomainName $domainName, string $owner, Constraints $constraints): self

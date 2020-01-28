@@ -8,27 +8,27 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Domain\Webhosting\Plan;
+namespace ParkManager\Domain\Webhosting\Constraint;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="plan", schema="webhosting")
+ * @ORM\Table(name="constraints_set", schema="webhosting")
  */
-class WebhostingPlan
+class SharedConstraintSet
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="park_manager_webhosting_plan_id")
+     * @ORM\Column(type="park_manager_webhosting_constraints_set_id")
      * @ORM\GeneratedValue(strategy="NONE")
      *
-     * @var WebhostingPlanId
+     * @var ConstraintSetId
      */
     protected $id;
 
     /**
-     * @ORM\Column(name="constraints", type="webhosting_plan_constraints", nullable=true)
+     * @ORM\Column(name="constraints", type="webhosting_constraints", nullable=true)
      *
      * @var Constraints
      */
@@ -41,13 +41,13 @@ class WebhostingPlan
      */
     private $metadata = [];
 
-    public function __construct(WebhostingPlanId $id, Constraints $constraints)
+    public function __construct(ConstraintSetId $id, Constraints $constraints)
     {
         $this->id = $id;
         $this->constraints = $constraints;
     }
 
-    public function getId(): WebhostingPlanId
+    public function getId(): ConstraintSetId
     {
         return $this->id;
     }
@@ -63,13 +63,13 @@ class WebhostingPlan
     }
 
     /**
-     * Set some (scalar) metadata information for the webhosting plan.
+     * Set some (scalar) metadata information.
      *
      * This information should only contain informational values
      * (eg. the label, description, etc).
      *
      * Not something that be used as a Domain policy. either,
-     * don't use this for pricing or storing user-type limitations.
+     * don't use this for pricing or storing usage limitations.
      */
     public function withMetadata(array $metadata): void
     {

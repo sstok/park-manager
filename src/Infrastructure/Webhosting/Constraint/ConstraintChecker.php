@@ -33,7 +33,7 @@ final class ConstraintChecker
      */
     public function validate(WebhostingSpaceId $spaceId, string $constraintName, array $context = []): void
     {
-        $constraints = $this->spaceRepository->get($spaceId)->getPlanConstraints();
+        $constraints = $this->spaceRepository->get($spaceId)->getConstraints();
 
         if (! $constraints->has($constraintName)) {
             return;

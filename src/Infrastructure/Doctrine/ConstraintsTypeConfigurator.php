@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine;
 
 use Doctrine\DBAL\Types\Type;
-use ParkManager\Infrastructure\Doctrine\Type\WebhostingPlanConstraintsType;
+use ParkManager\Infrastructure\Doctrine\Type\WebhostingConstraintsType;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintsFactory;
 
 final class ConstraintsTypeConfigurator
@@ -26,8 +26,8 @@ final class ConstraintsTypeConfigurator
 
     public function __invoke(): void
     {
-        $type = Type::getType('webhosting_plan_constraints');
-        \assert($type instanceof WebhostingPlanConstraintsType);
+        $type = Type::getType('webhosting_constraints');
+        \assert($type instanceof WebhostingConstraintsType);
         $type->setConstraintsFactory($this->constraintsFactory);
     }
 }

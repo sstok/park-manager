@@ -13,8 +13,8 @@ namespace ParkManager\Domain\Webhosting\Space;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\OwnerId;
-use ParkManager\Domain\Webhosting\Plan\Constraints;
-use ParkManager\Domain\Webhosting\Plan\WebhostingPlan;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
 
 /**
  * @ORM\Entity
@@ -32,21 +32,19 @@ class Space
     protected $id;
 
     /**
-     * The WebhostingPlan is null for an exclusive webhosting plan.
+     * @ORM\ManyToOne(targetEntity=PredefinedConstraintsSet::class)
+     * @ORM\JoinColumn(nullable=true, name="constraint_set_ref", referencedColumnName="id", onDelete="RESTRICT")
      *
-     * @ORM\ManyToOne(targetEntity=WebhostingPlan::class)
-     * @ORM\JoinColumn(nullable=true, name="plan_id", referencedColumnName="id", onDelete="RESTRICT")
-     *
-     * @var WebhostingPlan|null
+     * @var SharedConstraintSet|null
      */
-    protected $plan;
+    protected $constraintSet;
 
     /**
-     * @ORM\Column(name="plan_constraints", type="webhosting_plan_constraints")
+     * @ORM\Column(name="assigned_constraints_ref", type="webhosting_constraints")
      *
      * @var Constraints
      */
-    protected $planConstraints;
+    protected $constraints;
 
     /**
      * @ORM\Column(name="owner_id", type="park_manager_owner_id")
@@ -75,13 +73,13 @@ class Space
         $this->owner = $owner;
     }
 
-    public static function register(WebhostingSpaceId $id, OwnerId $owner, WebhostingPlan $plan): self
+    public static function register(WebhostingSpaceId $id, OwnerId $owner, SharedConstraintSet $constraintSet): self
     {
         $space = new static($id, $owner);
         // Store the constraints as part of the webhosting space
-        // The plan can be changed at any time, but the constraints are immutable.
-        $space->planConstraints = $plan->getConstraints();
-        $space->plan = $plan;
+        // the assigned constraints are immutable.
+        $space->constraints = $constraintSet->getConstraints();
+        $space->constraintSet = $constraintSet;
 
         return $space;
     }
@@ -89,7 +87,7 @@ class Space
     public static function registerWithCustomConstraints(WebhostingSpaceId $id, OwnerId $owner, Constraints $constraints): self
     {
         $space = new static($id, $owner);
-        $space->planConstraints = $constraints;
+        $space->constraints = $constraints;
 
         return $space;
     }
@@ -104,45 +102,45 @@ class Space
         return $this->owner;
     }
 
-    public function getPlan(): ?WebhostingPlan
+    public function getAssignedConstraintSet(): ?SharedConstraintSet
     {
-        return $this->plan;
+        return $this->constraintSet;
     }
 
-    public function getPlanConstraints(): Constraints
+    public function getConstraints(): Constraints
     {
-        return $this->planConstraints;
-    }
-
-    /**
-     * Change the webhosting plan assignment, withing using
-     * the plan Constraints of the webhosting plan.
-     */
-    public function assignPlan(WebhostingPlan $plan): void
-    {
-        $this->plan = $plan;
+        return $this->constraints;
     }
 
     /**
-     * Change the webhosting plan assignment, and
-     * set the Constraints of the webhosting plan.
+     * Change the webhosting SharedConstraintSet assignment,
+     * withing using the actual Constraints of the set.
      */
-    public function assignPlanWithConstraints(WebhostingPlan $plan): void
+    public function assignConstraintSet(SharedConstraintSet $constraintSet): void
     {
-        $this->plan = $plan;
-        $this->planConstraints = $plan->getConstraints();
+        $this->constraintSet = $constraintSet;
+    }
+
+    /**
+     * Change the webhosting SharedConstraintSet assignment,
+     * and use the Constraints of the assigned set.
+     */
+    public function assignSetWithConstraints(SharedConstraintSet $plconstraintSetn): void
+    {
+        $this->constraintSet = $plconstraintSetn;
+        $this->constraints = $plconstraintSetn->getConstraints();
     }
 
     /**
      * Change the webhosting space Constraints.
      *
-     * This removes the plan assignment and makes the space's
+     * This removes the set's assignment and makes the space's
      * Constraints exclusive.
      */
     public function assignCustomConstraints(Constraints $constraints): void
     {
-        $this->plan = null;
-        $this->planConstraints = $constraints;
+        $this->constraintSet = null;
+        $this->constraints = $constraints;
     }
 
     public function switchOwner(OwnerId $owner): void

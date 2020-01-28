@@ -14,7 +14,7 @@ use ParkManager\Domain\Administrator\AdministratorRepository;
 use ParkManager\Domain\User\UserRepository;
 use ParkManager\Infrastructure\Doctrine\ConstraintsTypeConfigurator;
 use ParkManager\Infrastructure\Doctrine\Repository\WebhostingSpaceOrmRepository;
-use ParkManager\Infrastructure\Doctrine\Repository\WebhostingPlanOrmRepository;
+use ParkManager\Infrastructure\Doctrine\Repository\SharedConstraintSetOrmRepository;
 use ParkManager\Infrastructure\Security\AdministratorUser;
 use ParkManager\Infrastructure\Security\User;
 use ParkManager\Infrastructure\Security\Guard\FormAuthenticator;
@@ -68,7 +68,7 @@ return static function (ContainerConfigurator $c): void {
     // -- Webhosting
     $di->set(ConstraintsFactory::class)->arg(0, []);
     $di->set(ConstraintsTypeConfigurator::class);
-    $di->get(WebhostingPlanOrmRepository::class)->configurator(ref(ConstraintsTypeConfigurator::class));
+    $di->get(SharedConstraintSetOrmRepository::class)->configurator(ref(ConstraintsTypeConfigurator::class));
     $di->get(WebhostingSpaceOrmRepository::class)->configurator(ref(ConstraintsTypeConfigurator::class));
 
     // -- Security

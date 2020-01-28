@@ -17,9 +17,9 @@ use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSp
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
-use ParkManager\Domain\Webhosting\Plan\Constraints;
-use ParkManager\Domain\Webhosting\Plan\WebhostingPlan;
-use ParkManager\Domain\Webhosting\Plan\WebhostingPlanId;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
+use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 use ParkManager\Infrastructure\Doctrine\Repository\WebhostingSpaceOrmRepository;
 use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
 
@@ -31,30 +31,30 @@ use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
 final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
 {
     private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
-    private const PLAN_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
+    private const SET_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
 
     private const SPACE_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
     private const SPACE_ID2 = '47f6db14-a69c-11e7-be13-acbc32b58315';
 
     /** @var Constraints */
-    private $planConstraints;
+    private $constraintSetConstraints;
 
-    /** @var WebhostingPlan */
-    private $plan;
+    /** @var SharedConstraintSet */
+    private $constraintSet;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->planConstraints = new Constraints(new MonthlyTrafficQuota(50));
-        $this->plan = new WebhostingPlan(
-            WebhostingPlanId::fromString(self::PLAN_ID1),
-            $this->planConstraints
+        $this->constraintSetConstraints = new Constraints(new MonthlyTrafficQuota(50));
+        $this->constraintSet = new SharedConstraintSet(
+            ConstraintSetId::fromString(self::SET_ID1),
+            $this->constraintSetConstraints
         );
 
         $em = $this->getEntityManager();
         $em->transactional(function (EntityManagerInterface $em): void {
-            $em->persist($this->plan);
+            $em->persist($this->constraintSet);
         });
     }
 
@@ -72,13 +72,13 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
 
         static::assertEquals($id, $space->getId());
         static::assertEquals(OwnerId::fromString(self::OWNER_ID1), $space->getOwner());
-        static::assertEquals(new Constraints(), $space->getPlanConstraints());
-        static::assertNull($space->getPlan());
+        static::assertEquals(new Constraints(), $space->getConstraints());
+        static::assertNull($space->getAssignedConstraintSet());
 
         static::assertEquals($id2, $space2->getId());
         static::assertEquals(OwnerId::fromString(self::OWNER_ID1), $space2->getOwner());
-        static::assertEquals($this->planConstraints, $space2->getPlanConstraints());
-        static::assertEquals($this->plan, $space2->getPlan());
+        static::assertEquals($this->constraintSetConstraints, $space2->getConstraints());
+        static::assertEquals($this->constraintSet, $space2->getAssignedConstraintSet());
     }
 
     /** @test */
@@ -127,7 +127,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     private function setUpSpace1(WebhostingSpaceOrmRepository $repository): void
     {
         $repository->save(
-            WebhostingSpace::registerWithCustomConstraints(
+            Space::registerWithCustomConstraints(
                 WebhostingSpaceId::fromString(self::SPACE_ID1),
                 OwnerId::fromString(self::OWNER_ID1),
                 new Constraints()
@@ -141,7 +141,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
             Space::register(
                 WebhostingSpaceId::fromString(self::SPACE_ID2),
                 OwnerId::fromString(self::OWNER_ID1),
-                $this->plan
+                $this->constraintSet
             )
         );
     }

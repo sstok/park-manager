@@ -20,7 +20,7 @@ use ParkManager\Domain\Webhosting\DomainName\Exception\CannotRemovePrimaryDomain
 use ParkManager\Domain\Webhosting\DomainName\Exception\WebhostingDomainNameNotFound;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
-use ParkManager\Domain\Webhosting\Plan\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Infrastructure\Doctrine\Repository\WebhostingDomainNameOrmRepository;
 use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
 

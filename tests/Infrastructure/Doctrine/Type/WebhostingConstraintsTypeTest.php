@@ -14,23 +14,23 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\StorageSpaceQuota;
-use ParkManager\Domain\Webhosting\Plan\Constraints;
-use ParkManager\Infrastructure\Doctrine\Type\WebhostingPlanConstraintsType;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Infrastructure\Doctrine\Type\WebhostingConstraintsType;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintsFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class WebhostingPlanConstraintsTypeTest extends TestCase
+final class WebhostingConstraintsTypeTest extends TestCase
 {
     /**
      * @beforeClass
      */
     public static function setUpType(): void
     {
-        if (! Type::hasType('webhosting_plan_constraints')) {
-            Type::addType('webhosting_plan_constraints', WebhostingPlanConstraintsType::class);
+        if (! Type::hasType('webhosting_constraintSet_constraints')) {
+            Type::addType('webhosting_constraintSet_constraints', WebhostingConstraintsType::class);
         }
     }
 
@@ -68,10 +68,10 @@ final class WebhostingPlanConstraintsTypeTest extends TestCase
         return $this->createMock(AbstractPlatform::class);
     }
 
-    private function getDbalType(): WebhostingPlanConstraintsType
+    private function getDbalType(): WebhostingConstraintsType
     {
-        $type = Type::getType('webhosting_plan_constraints');
-        \assert($type instanceof WebhostingPlanConstraintsType);
+        $type = Type::getType('webhosting_constraintSet_constraints');
+        \assert($type instanceof WebhostingConstraintsType);
         $type->setConstraintsFactory($this->createConstraintsFactory());
 
         return $type;

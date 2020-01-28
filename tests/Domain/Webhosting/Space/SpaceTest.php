@@ -15,9 +15,9 @@ use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
-use ParkManager\Domain\Webhosting\Plan\Constraints;
-use ParkManager\Domain\Webhosting\Plan\WebhostingPlan;
-use ParkManager\Domain\Webhosting\Plan\WebhostingPlanId;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
+use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -30,22 +30,22 @@ final class SpaceTest extends TestCase
     private const OWNER_ID1 = '2a9cd25c-97ca-11e7-9683-acbc32b58315';
     private const OWNER_ID2 = 'ce18c388-9ba2-11e7-b15f-acbc32b58315';
 
-    private const PLAN_ID_1 = '654665ea-9869-11e7-9563-acbc32b58315';
-    private const PLAN_ID_2 = 'f5788aae-9aed-11e7-a3c9-acbc32b58315';
+    private const SET_ID_1 = '654665ea-9869-11e7-9563-acbc32b58315';
+    private const SET_ID_2 = 'f5788aae-9aed-11e7-a3c9-acbc32b58315';
 
     /** @test */
     public function it_registers_an_webhosting_space(): void
     {
         $id = WebhostingSpaceId::create();
         $constraints = new Constraints();
-        $plan = $this->createWebhostingPlan($constraints);
+        $constraintSet = $this->createSharedConstraintSet($constraints);
 
-        $space = Space::register($id, $owner = OwnerId::fromString(self::OWNER_ID1), $plan);
+        $space = Space::register($id, $owner = OwnerId::fromString(self::OWNER_ID1), $constraintSet);
 
         static::assertEquals($id, $space->getId());
         static::assertEquals($owner, $space->getOwner());
-        static::assertSame($plan, $space->getPlan());
-        static::assertSame($constraints, $space->getPlanConstraints());
+        static::assertSame($constraintSet, $space->getAssignedConstraintSet());
+        static::assertSame($constraints, $space->getConstraints());
     }
 
     /** @test */
@@ -58,77 +58,77 @@ final class SpaceTest extends TestCase
 
         static::assertEquals($id, $space->getId());
         static::assertEquals($owner, $space->getOwner());
-        static::assertSame($constraints, $space->getPlanConstraints());
-        static::assertNull($space->getPlan());
+        static::assertSame($constraints, $space->getConstraints());
+        static::assertNull($space->getAssignedConstraintSet());
     }
 
     /** @test */
-    public function it_allows_changing_plan_assignment(): void
+    public function it_allows_changing_constraintSet_assignment(): void
     {
         $id2 = WebhostingSpaceId::create();
         $constraints1 = new Constraints();
         $constraints2 = new Constraints(new MonthlyTrafficQuota(50));
-        $plan1 = $this->createWebhostingPlan($constraints1);
-        $plan2 = $this->createWebhostingPlan($constraints2, self::PLAN_ID_2);
-        $space1 = Space::register(WebhostingSpaceId::create(), OwnerId::fromString(self::OWNER_ID1), $plan1);
-        $space2 = Space::register($id2, OwnerId::fromString(self::OWNER_ID1), $plan1);
+        $constraintSet1 = $this->createSharedConstraintSet($constraints1);
+        $constraintSet2 = $this->createSharedConstraintSet($constraints2, self::SET_ID_2);
+        $space1 = Space::register(WebhostingSpaceId::create(), OwnerId::fromString(self::OWNER_ID1), $constraintSet1);
+        $space2 = Space::register($id2, OwnerId::fromString(self::OWNER_ID1), $constraintSet1);
 
-        $space1->assignPlan($plan1);
-        $space2->assignPlan($plan2);
+        $space1->assignConstraintSet($constraintSet1);
+        $space2->assignConstraintSet($constraintSet2);
 
-        static::assertSame($plan1, $space1->getPlan(), 'Plan should not change');
-        static::assertSame($plan1->getConstraints(), $space1->getPlanConstraints(), 'Constraints should not change');
+        static::assertSame($constraintSet1, $space1->getAssignedConstraintSet(), 'ConstraintSet should not change');
+        static::assertSame($constraintSet1->getConstraints(), $space1->getConstraints(), 'Constraints should not change');
 
-        static::assertSame($plan2, $space2->getPlan());
-        static::assertSame($plan1->getConstraints(), $space2->getPlanConstraints());
+        static::assertSame($constraintSet2, $space2->getAssignedConstraintSet());
+        static::assertSame($constraintSet1->getConstraints(), $space2->getConstraints());
     }
 
     /** @test */
-    public function it_allows_changing_plan_assignment_with_constraints(): void
+    public function it_allows_changing_constraintSet_assignment_with_constraints(): void
     {
         $id2 = WebhostingSpaceId::create();
         $constraints1 = new Constraints();
         $constraints2 = new Constraints(new MonthlyTrafficQuota(50));
-        $plan1 = $this->createWebhostingPlan($constraints1);
-        $plan2 = $this->createWebhostingPlan($constraints2, self::PLAN_ID_2);
-        $space1 = Space::register(WebhostingSpaceId::create(), OwnerId::fromString(self::OWNER_ID1), $plan1);
-        $space2 = Space::register($id2, OwnerId::fromString(self::OWNER_ID1), $plan1);
+        $constraintSet1 = $this->createSharedConstraintSet($constraints1);
+        $constraintSet2 = $this->createSharedConstraintSet($constraints2, self::SET_ID_2);
+        $space1 = Space::register(WebhostingSpaceId::create(), OwnerId::fromString(self::OWNER_ID1), $constraintSet1);
+        $space2 = Space::register($id2, OwnerId::fromString(self::OWNER_ID1), $constraintSet1);
 
-        $space1->assignPlanWithConstraints($plan1);
-        $space2->assignPlanWithConstraints($plan2);
+        $space1->assignSetWithConstraints($constraintSet1);
+        $space2->assignSetWithConstraints($constraintSet2);
 
-        static::assertSame($plan1, $space1->getPlan(), 'Plan should not change');
-        static::assertSame($plan1->getConstraints(), $space1->getPlanConstraints(), 'Constraints should not change');
+        static::assertSame($constraintSet1, $space1->getAssignedConstraintSet(), 'ConstraintSet should not change');
+        static::assertSame($constraintSet1->getConstraints(), $space1->getConstraints(), 'Constraints should not change');
 
-        static::assertSame($plan2, $space2->getPlan());
-        static::assertSame($plan2->getConstraints(), $space2->getPlanConstraints());
+        static::assertSame($constraintSet2, $space2->getAssignedConstraintSet());
+        static::assertSame($constraintSet2->getConstraints(), $space2->getConstraints());
     }
 
     /** @test */
-    public function it_updates_space_when_assigning_plan_Constraints_are_different(): void
+    public function it_updates_space_when_assigning_constraintSet_Constraints_are_different(): void
     {
         $id = WebhostingSpaceId::create();
-        $plan = $this->createWebhostingPlan(new Constraints());
-        $space = Space::register($id, OwnerId::fromString(self::OWNER_ID1), $plan);
+        $constraintSet = $this->createSharedConstraintSet(new Constraints());
+        $space = Space::register($id, OwnerId::fromString(self::OWNER_ID1), $constraintSet);
 
-        $plan->changeConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
-        $space->assignPlanWithConstraints($plan);
+        $constraintSet->changeConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
+        $space->assignSetWithConstraints($constraintSet);
 
-        static::assertSame($plan, $space->getPlan());
-        static::assertSame($plan->getConstraints(), $space->getPlanConstraints());
+        static::assertSame($constraintSet, $space->getAssignedConstraintSet());
+        static::assertSame($constraintSet->getConstraints(), $space->getConstraints());
     }
 
     /** @test */
     public function it_allows_assigning_custom_specification(): void
     {
         $id = WebhostingSpaceId::create();
-        $plan = $this->createWebhostingPlan(new Constraints());
-        $space = Space::register($id, OwnerId::fromString(self::OWNER_ID1), $plan);
+        $constraintSet = $this->createSharedConstraintSet(new Constraints());
+        $space = Space::register($id, OwnerId::fromString(self::OWNER_ID1), $constraintSet);
 
         $space->assignCustomConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
 
-        static::assertNull($space->getPlan());
-        static::assertSame($newConstraints, $space->getPlanConstraints());
+        static::assertNull($space->getAssignedConstraintSet());
+        static::assertSame($newConstraints, $space->getConstraints());
     }
 
     /** @test */
@@ -139,8 +139,8 @@ final class SpaceTest extends TestCase
 
         $space->assignCustomConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
 
-        static::assertNull($space->getPlan());
-        static::assertSame($newConstraints, $space->getPlanConstraints());
+        static::assertNull($space->getAssignedConstraintSet());
+        static::assertSame($newConstraints, $space->getConstraints());
     }
 
     /** @test */
@@ -152,8 +152,8 @@ final class SpaceTest extends TestCase
 
         $space->assignCustomConstraints($Constraints);
 
-        static::assertNull($space->getPlan());
-        static::assertSame($Constraints, $space->getPlanConstraints());
+        static::assertNull($space->getAssignedConstraintSet());
+        static::assertSame($Constraints, $space->getConstraints());
     }
 
     /** @test */
@@ -162,12 +162,12 @@ final class SpaceTest extends TestCase
         $space1 = Space::register(
             WebhostingSpaceId::fromString(self::SPACE_ID),
             OwnerId::fromString(self::OWNER_ID1),
-            $this->createWebhostingPlan(new Constraints())
+            $this->createSharedConstraintSet(new Constraints())
         );
         $space2 = Space::register(
             $id2 = WebhostingSpaceId::fromString(self::SPACE_ID),
             OwnerId::fromString(self::OWNER_ID1),
-            $this->createWebhostingPlan(new Constraints())
+            $this->createSharedConstraintSet(new Constraints())
         );
 
         $space1->switchOwner($owner1 = OwnerId::fromString(self::OWNER_ID1));
@@ -183,12 +183,12 @@ final class SpaceTest extends TestCase
         $space1 = Space::register(
             WebhostingSpaceId::fromString(self::SPACE_ID),
             OwnerId::fromString(self::OWNER_ID1),
-            $this->createWebhostingPlan(new Constraints())
+            $this->createSharedConstraintSet(new Constraints())
         );
         $space2 = Space::register(
             $id2 = WebhostingSpaceId::fromString(self::SPACE_ID),
             OwnerId::fromString(self::OWNER_ID1),
-            $this->createWebhostingPlan(new Constraints())
+            $this->createSharedConstraintSet(new Constraints())
         );
 
         $space2->markForRemoval();
@@ -204,12 +204,12 @@ final class SpaceTest extends TestCase
         $space1 = Space::register(
             WebhostingSpaceId::fromString(self::SPACE_ID),
             OwnerId::fromString(self::OWNER_ID1),
-            $this->createWebhostingPlan(new Constraints())
+            $this->createSharedConstraintSet(new Constraints())
         );
         $space2 = Space::register(
             $id2 = WebhostingSpaceId::fromString(self::SPACE_ID),
             OwnerId::fromString(self::OWNER_ID1),
-            $this->createWebhostingPlan(new Constraints())
+            $this->createSharedConstraintSet(new Constraints())
         );
 
         $space2->setExpirationDate($date = new DateTimeImmutable('now +6 days'));
@@ -229,8 +229,8 @@ final class SpaceTest extends TestCase
         static::assertFalse($space2->isExpired($date->modify('+2 days')));
     }
 
-    private function createWebhostingPlan(Constraints $Constraints, string $id = self::PLAN_ID_1): WebhostingPlan
+    private function createSharedConstraintSet(Constraints $Constraints, string $id = self::SET_ID_1): SharedConstraintSet
     {
-        return new WebhostingPlan(WebhostingPlanId::fromString($id), $Constraints);
+        return new SharedConstraintSet(ConstraintSetId::fromString($id), $Constraints);
     }
 }

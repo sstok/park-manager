@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Webhosting\Constraint;
 
-use ParkManager\Domain\Webhosting\Plan\Constraint;
+use ParkManager\Domain\Webhosting\Constraint\Constraint;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 
 /**

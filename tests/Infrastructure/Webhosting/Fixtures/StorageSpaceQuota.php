@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Webhosting\Fixtures;
 
-use ParkManager\Domain\Webhosting\Plan\Constraint;
+use ParkManager\Domain\Webhosting\Constraint\Constraint;
 
 final class StorageSpaceQuota implements Constraint
 {

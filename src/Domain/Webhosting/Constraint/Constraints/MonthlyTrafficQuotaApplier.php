@@ -8,9 +8,9 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Domain\Webhosting\Constraints;
+namespace ParkManager\Domain\Webhosting\Constraint\Constraints;
 
-use ParkManager\Domain\Webhosting\Plan\Constraint;
+use ParkManager\Domain\Webhosting\Constraint\Constraint;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintApplier;
 

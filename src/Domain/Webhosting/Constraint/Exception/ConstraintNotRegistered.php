@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Domain\Webhosting\Plan\Exception;
+namespace ParkManager\Domain\Webhosting\Constraint\Exception;
 
 use RuntimeException;
 
@@ -17,9 +17,9 @@ final class ConstraintNotRegistered extends RuntimeException
     public static function withName(string $name): self
     {
         if (! \class_exists($name)) {
-            return new self(\sprintf('Webhosting Plan Constraint %s cannot be found.', $name));
+            return new self(\sprintf('Webhosting Constraint %s cannot be found.', $name));
         }
 
-        return new self(\sprintf('Webhosting Plan Constraint %s is not registered.', $name));
+        return new self(\sprintf('Webhosting Constraint %s is not registered.', $name));
     }
 }
