@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Webhosting\Constraint;
 
-use ParkManager\Domain\Webhosting\Account\WebhostingAccountId;
-use ParkManager\Domain\Webhosting\Account\WebhostingAccountRepository;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 use Psr\Container\ContainerInterface;
 
 final class ConstraintChecker
@@ -19,21 +19,21 @@ final class ConstraintChecker
     /** @var ContainerInterface */
     private $constraintValidators;
 
-    /** @var WebhostingAccountRepository */
-    private $accountRepository;
+    /** @var WebhostingSpaceRepository */
+    private $spaceRepository;
 
-    public function __construct(ContainerInterface $constraintValidators, WebhostingAccountRepository $accountRepository)
+    public function __construct(ContainerInterface $constraintValidators, WebhostingSpaceRepository $spaceRepository)
     {
         $this->constraintValidators = $constraintValidators;
-        $this->accountRepository = $accountRepository;
+        $this->spaceRepository = $spaceRepository;
     }
 
     /**
      * @throws ConstraintExceeded
      */
-    public function validate(WebhostingAccountId $accountId, string $constraintName, array $context = []): void
+    public function validate(WebhostingSpaceId $spaceId, string $constraintName, array $context = []): void
     {
-        $constraints = $this->accountRepository->get($accountId)->getPlanConstraints();
+        $constraints = $this->spaceRepository->get($spaceId)->getConstraints();
 
         if (! $constraints->has($constraintName)) {
             return;
@@ -41,6 +41,6 @@ final class ConstraintChecker
 
         $validator = $this->constraintValidators->get($constraintName);
         \assert($validator instanceof ConstraintValidator);
-        $validator->validate($accountId, $constraints->get($constraintName), $context);
+        $validator->validate($spaceId, $constraints->get($constraintName), $context);
     }
 }

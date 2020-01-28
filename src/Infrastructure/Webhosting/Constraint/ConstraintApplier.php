@@ -10,17 +10,17 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Webhosting\Constraint;
 
-use ParkManager\Domain\Webhosting\Account\WebhostingAccount;
-use ParkManager\Domain\Webhosting\Plan\Constraint;
+use ParkManager\Domain\Webhosting\Constraint\Constraint;
+use ParkManager\Domain\Webhosting\Space\Space;
 
 /**
  * A ConstraintApplier applies the constraint's configuration
- * on the given webhosting account.
+ * on the given webhosting space.
  *
  * This sub-system should only be used when the constraint is enforced
  * outside of the webhosting system (like a filesystem quota).
  */
 interface ConstraintApplier
 {
-    public function apply(Constraint $configuration, WebhostingAccount $account, array $context = []): void;
+    public function apply(Constraint $configuration, Space $space, array $context = []): void;
 }

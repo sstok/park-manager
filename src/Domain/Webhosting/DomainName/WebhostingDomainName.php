@@ -11,16 +11,15 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\DomainName;
 
 use Doctrine\ORM\Mapping as ORM;
-use ParkManager\Domain\Webhosting\Account\WebhostingAccount;
 use ParkManager\Domain\Webhosting\DomainName;
 use ParkManager\Domain\Webhosting\DomainName\Exception\CannotTransferPrimaryDomainName;
+use ParkManager\Domain\Webhosting\Space\Space;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="domain_name", schema="webhosting", indexes={
- *     @ORM\Index(name="domain_name_primary_marking_idx", columns={"account", "is_primary"}),
- * }
- * )
+ *     @ORM\Index(name="domain_name_primary_marking_idx", columns={"space", "is_primary"}),
+ * })
  */
 class WebhostingDomainName
 {
@@ -34,12 +33,12 @@ class WebhostingDomainName
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=WebhostingAccount::class)
-     * @ORM\JoinColumn(onDelete="CASCADE", name="account", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity=Space::class)
+     * @ORM\JoinColumn(onDelete="CASCADE", name="space", referencedColumnName="id")
      *
-     * @var WebhostingAccount
+     * @var Space
      */
-    protected $account;
+    protected $space;
 
     /**
      * @ORM\Embedded(class=DomainName::class, columnPrefix="domain_")
@@ -55,30 +54,24 @@ class WebhostingDomainName
      */
     protected $primary = false;
 
-    public function __construct(WebhostingAccount $account, DomainName $domainName)
+    public function __construct(Space $space, DomainName $domainName)
     {
-        $this->account = $account;
+        $this->space = $space;
         $this->domainName = $domainName;
         $this->id = WebhostingDomainNameId::create();
     }
 
-    /**
-     * @return static
-     */
-    public static function registerPrimary(WebhostingAccount $account, DomainName $domainName)
+    public static function registerPrimary(Space $space, DomainName $domainName): self
     {
-        $instance = new static($account, $domainName);
+        $instance = new static($space, $domainName);
         $instance->primary = true;
 
         return $instance;
     }
 
-    /**
-     * @return static
-     */
-    public static function registerSecondary(WebhostingAccount $account, DomainName $domainName)
+    public static function registerSecondary(Space $space, DomainName $domainName): self
     {
-        return new static($account, $domainName);
+        return new static($space, $domainName);
     }
 
     public function getId(): WebhostingDomainNameId
@@ -91,9 +84,9 @@ class WebhostingDomainName
         return $this->domainName;
     }
 
-    public function getAccount(): WebhostingAccount
+    public function getSpace(): Space
     {
-        return $this->account;
+        return $this->space;
     }
 
     public function markPrimary(): void
@@ -106,16 +99,16 @@ class WebhostingDomainName
         return $this->primary;
     }
 
-    public function transferToAccount(WebhostingAccount $account): void
+    public function transferToSpace(Space $space): void
     {
         // It's still possible the primary marking was given directly before
         // issuing the transfer, meaning the primary marking was not persisted
         // yet for the old owner. But checking this further is not worth it.
         if ($this->isPrimary()) {
-            throw CannotTransferPrimaryDomainName::of($this->id, $this->account->getId(), $account->getId());
+            throw CannotTransferPrimaryDomainName::of($this->id, $this->space->getId(), $space->getId());
         }
 
-        $this->account = $account;
+        $this->space = $space;
     }
 
     public function changeName(DomainName $domainName): void

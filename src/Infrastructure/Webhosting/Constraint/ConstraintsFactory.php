@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Webhosting\Constraint;
 
-use ParkManager\Domain\Webhosting\Plan\Constraints;
-use ParkManager\Domain\Webhosting\Plan\Exception\ConstraintNotRegistered;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\Exception\ConstraintNotRegistered;
 
 final class ConstraintsFactory
 {

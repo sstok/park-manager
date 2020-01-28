@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Webhosting\Fixtures;
 
-use ParkManager\Domain\Webhosting\Account\WebhostingAccount;
-use ParkManager\Domain\Webhosting\Plan\Constraint;
+use ParkManager\Domain\Webhosting\Space\Space;
+use ParkManager\Domain\Webhosting\Constraint\Constraint;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintApplier;
 
 final class MonthlyTrafficQuotaApplier implements ConstraintApplier
 {
-    public function apply(Constraint $configuration, WebhostingAccount $account, array $context = []): void
+    public function apply(Constraint $configuration, Space $space, array $context = []): void
     {
     }
 }

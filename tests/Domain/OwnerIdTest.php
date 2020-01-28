@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain;
 
-use ParkManager\Domain\Client\ClientId;
+use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\OwnerId;
 use PHPUnit\Framework\TestCase;
 
@@ -24,16 +24,16 @@ final class OwnerIdTest extends TestCase
     /** @test */
     public function it_creates_from_user_id(): void
     {
-        $userId = ClientId::fromString(self::USER_ID);
+        $userId = UserId::fromString(self::USER_ID);
         $id = OwnerId::fromUserId($userId);
 
-        static::assertTrue($id->equals(OwnerId::fromUserId(ClientId::fromString(self::USER_ID))));
-        static::assertFalse($id->equals(OwnerId::fromUserId(ClientId::fromString('fb676f62-955a-11e8-8ef5-4a0003ae49a0'))));
+        static::assertTrue($id->equals(OwnerId::fromUserId(UserId::fromString(self::USER_ID))));
+        static::assertFalse($id->equals(OwnerId::fromUserId(UserId::fromString('fb676f62-955a-11e8-8ef5-4a0003ae49a0'))));
         static::assertFalse($id->equals($userId));
 
         static::assertTrue($id->is(OwnerId::PERSONAL));
         static::assertTrue($id->isOwnedBy($userId));
-        static::assertTrue($id->isOwnedBy(ClientId::fromString(self::USER_ID)));
+        static::assertTrue($id->isOwnedBy(UserId::fromString(self::USER_ID)));
         static::assertFalse($id->is(OwnerId::INTERNAL));
         static::assertFalse($id->is(OwnerId::PRIVATE));
     }
@@ -47,7 +47,7 @@ final class OwnerIdTest extends TestCase
 
         static::assertTrue($id->equals(OwnerId::internal()));
         static::assertFalse($id->equals(OwnerId::private()));
-        static::assertFalse($id->equals(OwnerId::fromUserId(ClientId::fromString(self::USER_ID))));
+        static::assertFalse($id->equals(OwnerId::fromUserId(UserId::fromString(self::USER_ID))));
 
         static::assertTrue($id->is(OwnerId::INTERNAL));
         static::assertFalse($id->is(OwnerId::PRIVATE));
@@ -63,7 +63,7 @@ final class OwnerIdTest extends TestCase
 
         static::assertTrue($id->equals(OwnerId::private()));
         static::assertFalse($id->equals(OwnerId::internal()));
-        static::assertFalse($id->equals(OwnerId::fromUserId(ClientId::fromString(self::USER_ID))));
+        static::assertFalse($id->equals(OwnerId::fromUserId(UserId::fromString(self::USER_ID))));
 
         static::assertTrue($id->is(OwnerId::PRIVATE));
         static::assertFalse($id->is(OwnerId::INTERNAL));

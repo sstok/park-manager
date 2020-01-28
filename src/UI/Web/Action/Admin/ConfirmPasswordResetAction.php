@@ -34,7 +34,7 @@ final class ConfirmPasswordResetAction
     public function __invoke(Request $request, string $token, FormFactoryInterface $formFactory)
     {
         $form = $formFactory->create(ConfirmPasswordResetType::class, ['reset_token' => $token], [
-            'request_route' => 'park_manager.client.security_request_password_reset',
+            'request_route' => 'park_manager.user.security_request_password_reset',
             'user_class' => AdministratorUser::class,
             'command_factory' => static function (array $data) {
                 return new ConfirmPasswordReset($data['reset_token'], $data['password']);

@@ -11,16 +11,16 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\DomainName\Exception;
 
 use InvalidArgumentException;
-use ParkManager\Domain\Webhosting\Account\WebhostingAccountId;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 
 final class CannotTransferPrimaryDomainName extends InvalidArgumentException
 {
-    public static function of(WebhostingDomainNameId $domainName, WebhostingAccountId $current, WebhostingAccountId $new): self
+    public static function of(WebhostingDomainNameId $domainName, WebhostingSpaceId $current, WebhostingSpaceId $new): self
     {
         return new self(
             \sprintf(
-                'Webhosting domain-name "%s" of account %s is marked as primary and cannot be transferred to account %s.',
+                'Webhosting domain-name "%s" of space %s is marked as primary and cannot be transferred to space %s.',
                 $domainName->toString(),
                 $current->toString(),
                 $new->toString()

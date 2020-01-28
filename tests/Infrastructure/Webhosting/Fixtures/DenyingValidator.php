@@ -10,15 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Webhosting\Fixtures;
 
-use ParkManager\Domain\Webhosting\Account\WebhostingAccountId;
-use ParkManager\Domain\Webhosting\Plan\Constraint;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Constraint\Constraint;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintValidator;
 
 final class DenyingValidator implements ConstraintValidator
 {
-    private $accountId;
+    private $spaceId;
 
-    public function validate(WebhostingAccountId $accountId, Constraint $constraint, array $context = []): void
+    public function validate(WebhostingSpaceId $spaceId, Constraint $constraint, array $context = []): void
     {
     }
 }

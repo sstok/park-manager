@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\UI\Web\Form\Type\Security;
 
 use ParkManager\UI\Web\Form\Type\Security\SecurityUserHashedPasswordType;
-use ParkManager\Infrastructure\Security\ClientUser;
+use ParkManager\Infrastructure\Security\User;
 use RuntimeException;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -60,7 +60,7 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
 
             public function getEncoder($user): PasswordEncoderInterface
             {
-                if ($user !== ClientUser::class) {
+                if ($user !== User::class) {
                     throw new RuntimeException('Nope, that is not the right user.');
                 }
 
@@ -82,7 +82,7 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
     public function it_hashes_password(): void
     {
         $form = $this->factory->createBuilder()
-            ->add('password', SecurityUserHashedPasswordType::class, ['user_class' => ClientUser::class])
+            ->add('password', SecurityUserHashedPasswordType::class, ['user_class' => User::class])
             ->getForm()
         ;
 

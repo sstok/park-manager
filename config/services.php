@@ -11,12 +11,12 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use ParkManager\Domain\Administrator\AdministratorRepository;
-use ParkManager\Domain\Client\ClientRepository;
+use ParkManager\Domain\User\UserRepository;
 use ParkManager\Infrastructure\Doctrine\ConstraintsTypeConfigurator;
-use ParkManager\Infrastructure\Doctrine\Repository\WebhostingAccountOrmRepository;
-use ParkManager\Infrastructure\Doctrine\Repository\WebhostingPlanOrmRepository;
+use ParkManager\Infrastructure\Doctrine\Repository\WebhostingSpaceOrmRepository;
+use ParkManager\Infrastructure\Doctrine\Repository\SharedConstraintSetOrmRepository;
 use ParkManager\Infrastructure\Security\AdministratorUser;
-use ParkManager\Infrastructure\Security\ClientUser;
+use ParkManager\Infrastructure\Security\User;
 use ParkManager\Infrastructure\Security\Guard\FormAuthenticator;
 use ParkManager\Infrastructure\Security\UserProvider;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintsFactory;
@@ -62,21 +62,21 @@ return static function (ContainerConfigurator $c): void {
     $di->set('park_manager.security.user_provider.administrator', UserProvider::class)
         ->args([ref(AdministratorRepository::class), AdministratorUser::class]);
 
-    $di->set('park_manager.security.user_provider.client_user', UserProvider::class)
-        ->args([ref(ClientRepository::class), ClientUser::class]);
+    $di->set('park_manager.security.user_provider.user_user', UserProvider::class)
+        ->args([ref(UserRepository::class), User::class]);
 
     // -- Webhosting
     $di->set(ConstraintsFactory::class)->arg(0, []);
     $di->set(ConstraintsTypeConfigurator::class);
-    $di->get(WebhostingPlanOrmRepository::class)->configurator(ref(ConstraintsTypeConfigurator::class));
-    $di->get(WebhostingAccountOrmRepository::class)->configurator(ref(ConstraintsTypeConfigurator::class));
+    $di->get(SharedConstraintSetOrmRepository::class)->configurator(ref(ConstraintsTypeConfigurator::class));
+    $di->get(WebhostingSpaceOrmRepository::class)->configurator(ref(ConstraintsTypeConfigurator::class));
 
     // -- Security
     $di->set('park_manager.security.guard.form.administrator', FormAuthenticator::class)
         ->arg('$loginRoute', 'park_manager.admin.security_login')
         ->arg('$defaultSuccessRoute', 'park_manager.admin.home');
 
-    $di->set('park_manager.security.guard.form.client', FormAuthenticator::class)
-        ->arg('$loginRoute', 'park_manager.client.security_login')
-        ->arg('$defaultSuccessRoute', 'park_manager.client.home');
+    $di->set('park_manager.security.guard.form.user', FormAuthenticator::class)
+        ->arg('$loginRoute', 'park_manager.user.security_login')
+        ->arg('$defaultSuccessRoute', 'park_manager.user.home');
 };

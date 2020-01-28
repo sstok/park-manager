@@ -12,13 +12,13 @@ namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
-use ParkManager\Domain\Webhosting\Account\Exception\WebhostingAccountNotFound;
-use ParkManager\Domain\Webhosting\Account\WebhostingAccountId;
 use ParkManager\Domain\Webhosting\DomainName;
 use ParkManager\Domain\Webhosting\DomainName\Exception\WebhostingDomainNameNotFound;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameRepository;
+use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 
 /**
  * @method WebhostingDomainName|null find($id, $lockMode = null, $lockVersion = null)
@@ -45,12 +45,12 @@ class WebhostingDomainNameOrmRepository extends EntityRepository implements Webh
     {
         if ($domainName->isPrimary()) {
             try {
-                $primaryDomainName = $this->getPrimaryOf($domainName->getAccount()->getId());
-            } catch (WebhostingAccountNotFound $e) {
+                $primaryDomainName = $this->getPrimaryOf($domainName->getSpace()->getId());
+            } catch (WebhostingSpaceNotFound $e) {
                 $primaryDomainName = $domainName;
             }
 
-            // If there is a primary marking for another DomainName (within in this account)
+            // If there is a primary marking for another DomainName (within in this space)
             // remove the primary marking for that DomainName.
             if ($primaryDomainName !== $domainName) {
                 $this->_em->transactional(function () use ($domainName, $primaryDomainName): void {
@@ -78,23 +78,23 @@ class WebhostingDomainNameOrmRepository extends EntityRepository implements Webh
         if ($domainName->isPrimary()) {
             throw DomainName\Exception\CannotRemovePrimaryDomainName::of(
                 $domainName->getId(),
-                $domainName->getAccount()->getId()
+                $domainName->getSpace()->getId()
             );
         }
 
         $this->_em->remove($domainName);
     }
 
-    public function getPrimaryOf(WebhostingAccountId $id): WebhostingDomainName
+    public function getPrimaryOf(WebhostingSpaceId $id): WebhostingDomainName
     {
         try {
             return $this->createQueryBuilder('d')
-                ->where('d.account = :id AND d.primary = true')
+                ->where('d.space = :id AND d.primary = true')
                 ->getQuery()
                 ->setParameters(['id' => $id->toString()])
                 ->getSingleResult();
         } catch (NoResultException $e) {
-            throw WebhostingAccountNotFound::withId($id);
+            throw WebhostingSpaceNotFound::withId($id);
         }
     }
 

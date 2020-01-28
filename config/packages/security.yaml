@@ -4,14 +4,14 @@ security:
 
         'ParkManager\Infrastructure\Security\AdministratorUser':
             algorithm: auto
-        'ParkManager\Infrastructure\Security\ClientUser':
+        'ParkManager\Infrastructure\Security\User':
             algorithm: auto
 
     providers:
         in_memory: { memory: ~ }
         administrator: { id: 'park_manager.security.user_provider.administrator' }
-        client: { id: 'park_manager.security.user_provider.client_user' }
-        api: { id: 'park_manager.security.user_provider.client_user' }
+        user: { id: 'park_manager.security.user_provider.user_user' }
+        api: { id: 'park_manager.security.user_provider.user_user' }
 
     firewalls:
         dev:
@@ -55,7 +55,7 @@ security:
 
         client:
             pattern: '^/'
-            provider: client
+            provider: user
             anonymous: true
 
             logout:
@@ -66,7 +66,7 @@ security:
                 target:               '/'
             guard:
                 authenticators:
-                    - park_manager.security.guard.form.client
+                    - park_manager.security.guard.form.user
 
             remember_me:
                 secret:               '%env(APP_SECRET)%'

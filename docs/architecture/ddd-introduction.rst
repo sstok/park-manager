@@ -205,7 +205,7 @@ In Domain Driven Design there are number of other other terms, for clarity
 you can find all there definitions here.
 
 * **Actor**: A user (in general terms) or system-process performing an action
-  within the system. Either an Administrator, Client or a background process.
+  within the system. Either an Administrator, User or a background process.
 
 * **MessageBus**: Handles Domain Messages, see also
   https://symfony.com/doc/current/messenger.html

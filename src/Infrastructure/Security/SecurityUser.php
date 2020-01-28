@@ -13,15 +13,13 @@ namespace ParkManager\Infrastructure\Security;
 use Serializable;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use function serialize;
-use function unserialize;
 
 /**
  * The SecurityUser wraps around a User-model and keeps only
  * the information related to authentication.
  *
  * To ensure password-encoders work properly this class must to be extended
- * for each each user-type (Client and Administrator).
+ * for each each user-type (User and Administrator).
  */
 abstract class SecurityUser implements UserInterface, EquatableInterface, Serializable
 {
