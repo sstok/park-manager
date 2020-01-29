@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\Administrator;
 
+use ParkManager\Application\Command\Administrator\RegisterAdministrator;
+use ParkManager\Application\Command\Administrator\RegisterAdministratorHandler;
 use ParkManager\Domain\Administrator\Administrator;
 use ParkManager\Domain\Administrator\AdministratorId;
 use ParkManager\Domain\Administrator\Exception\AdministratorEmailAddressAlreadyInUse;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Tests\Mock\Domain\AdministratorRepositoryMock;
-use ParkManager\Application\Command\Administrator\RegisterAdministrator;
-use ParkManager\Application\Command\Administrator\RegisterAdministratorHandler;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -11,11 +11,11 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Application\Command\User;
 
 use DateTimeImmutable;
+use ParkManager\Application\Command\User\RequestPasswordReset;
+use ParkManager\Application\Command\User\RequestPasswordResetHandler;
 use ParkManager\Application\Mailer\User\PasswordResetMailer;
 use ParkManager\Domain\User\User;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
-use ParkManager\Application\Command\User\RequestPasswordReset;
-use ParkManager\Application\Command\User\RequestPasswordResetHandler;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;

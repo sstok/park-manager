@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\Webhosting\Constraint;
 
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
+use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
 use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\StorageSpaceQuota;
-use ParkManager\Domain\Webhosting\Constraint\Constraints;
-use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
-use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,7 +25,7 @@ final class SharedConstraintSetTest extends TestCase
     private const ID1 = '654665ea-9869-11e7-9563-acbc32b58315';
 
     /** @test */
-    public function it_registers_a_webhosting_constraintSet(): void
+    public function it_registers_a_webhosting_constraint_set(): void
     {
         $constraintSet = new SharedConstraintSet(
             $id = ConstraintSetId::fromString(self::ID1),

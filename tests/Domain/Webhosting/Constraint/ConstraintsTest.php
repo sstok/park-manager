@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\Webhosting\Constraint;
 
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\StorageSpaceQuota;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Exception\ConstraintNotInSet;
+use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
+use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\StorageSpaceQuota;
 use PHPUnit\Framework\TestCase;
 
 /**

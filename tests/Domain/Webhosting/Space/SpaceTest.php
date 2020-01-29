@@ -11,12 +11,12 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Domain\Webhosting\Space;
 
 use DateTimeImmutable;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
+use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
-use ParkManager\Domain\Webhosting\Constraint\Constraints;
-use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
-use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
+use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
@@ -65,7 +65,7 @@ final class SpaceTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_changing_constraintSet_assignment(): void
+    public function it_allows_changing_constraint_set_assignment(): void
     {
         $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
         $constraints1 = new Constraints();
@@ -86,7 +86,7 @@ final class SpaceTest extends TestCase
     }
 
     /** @test */
-    public function it_allows_changing_constraintSet_assignment_with_constraints(): void
+    public function it_allows_changing_constraint_set_assignment_with_constraints(): void
     {
         $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
         $constraints1 = new Constraints();
@@ -107,7 +107,7 @@ final class SpaceTest extends TestCase
     }
 
     /** @test */
-    public function it_updates_space_when_assigning_constraintSet_Constraints_are_different(): void
+    public function it_updates_space_when_assigning_constraint_set_Constraints_are_different(): void
     {
         $constraintSet = $this->createSharedConstraintSet(new Constraints());
         $space = Space::register(

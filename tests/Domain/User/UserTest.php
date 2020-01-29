@@ -12,11 +12,11 @@ namespace ParkManager\Tests\Domain\User;
 
 use Assert\AssertionFailedException;
 use DateTimeImmutable;
-use ParkManager\Domain\User\User;
-use ParkManager\Domain\User\UserId;
-use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
+use ParkManager\Domain\User\User;
+use ParkManager\Domain\User\UserId;
 use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;

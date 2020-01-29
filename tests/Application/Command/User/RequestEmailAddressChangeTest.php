@@ -11,10 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Application\Command\User;
 
 use DateTimeImmutable;
-use ParkManager\Application\Mailer\User\EmailAddressChangeRequestMailer;
-use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use ParkManager\Application\Command\User\RequestEmailAddressChange;
 use ParkManager\Application\Command\User\RequestEmailAddressChangeHandler;
+use ParkManager\Application\Mailer\User\EmailAddressChangeRequestMailer;
+use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;

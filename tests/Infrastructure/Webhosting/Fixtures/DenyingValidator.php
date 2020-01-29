@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Webhosting\Fixtures;
 
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 use ParkManager\Domain\Webhosting\Constraint\Constraint;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintValidator;
 
 final class DenyingValidator implements ConstraintValidator

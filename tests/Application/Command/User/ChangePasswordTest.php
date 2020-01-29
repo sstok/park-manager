@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\User;
 
-use ParkManager\Domain\User\UserId;
 use ParkManager\Application\Command\User\ChangeUserPassword;
+use ParkManager\Domain\User\UserId;
 use PHPUnit\Framework\TestCase;
 
 /**

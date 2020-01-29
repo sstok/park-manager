@@ -2,19 +2,23 @@
 
 declare(strict_types=1);
 
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 namespace ParkManager\Tests\UI\Web\Form;
 
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use Symfony\Component\Form\FormError;
-use function is_object;
-use function sprintf;
 
 final class FormErrorComparator extends Comparator
 {
     public function accepts($expected, $actual): bool
     {
-        if (! is_object($expected) || ! is_object($actual)) {
+        if (! \is_object($expected) || ! \is_object($actual)) {
             return false;
         }
 
@@ -48,7 +52,7 @@ final class FormErrorComparator extends Comparator
             $exportedExpected = $this->exporter->export($expected),
             $exportedActual = $this->exporter->export($actual),
             false,
-            sprintf(
+            \sprintf(
                 'Failed asserting that %s matches expected %s.',
                 $exportedActual,
                 $exportedExpected

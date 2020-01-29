@@ -22,9 +22,6 @@ final class SpaceRepositoryMock implements WebhostingSpaceRepository
 {
     use MockRepository;
 
-    /**
-     * @inheritDoc
-     */
     public function get(WebhostingSpaceId $id): Space
     {
         return $this->mockDoGetById($id);
@@ -37,7 +34,7 @@ final class SpaceRepositoryMock implements WebhostingSpaceRepository
 
     public function remove(Space $space): void
     {
-        if (!$space->isMarkedForRemoval()) {
+        if (! $space->isMarkedForRemoval()) {
             throw new CannotRemoveActiveWebhostingSpace($space->getId());
         }
 

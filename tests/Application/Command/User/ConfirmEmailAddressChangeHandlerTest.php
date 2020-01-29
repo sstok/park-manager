@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\User;
 
-use ParkManager\Domain\User\User;
-use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
-use ParkManager\Domain\EmailAddress;
-use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use ParkManager\Application\Command\User\ConfirmEmailAddressChange;
 use ParkManager\Application\Command\User\ConfirmEmailAddressChangeHandler;
+use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
+use ParkManager\Domain\User\User;
+use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;

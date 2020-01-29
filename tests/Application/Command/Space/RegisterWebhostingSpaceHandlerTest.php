@@ -12,16 +12,16 @@ namespace ParkManager\Tests\Application\Command\Space;
 
 use ParkManager\Application\Command\Webhosting\Space\RegisterWebhostingSpace;
 use ParkManager\Application\Command\Webhosting\Space\RegisterWebhostingSpaceHandler;
-use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
-use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
+use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
 use ParkManager\Domain\Webhosting\DomainName;
 use ParkManager\Domain\Webhosting\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
-use ParkManager\Domain\Webhosting\Constraint\Constraints;
-use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
-use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
+use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
+use ParkManager\Domain\Webhosting\Space\Space;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SharedConstraintSetRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
@@ -123,9 +123,9 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         try {
             $handler(RegisterWebhostingSpace::withConstraintSet(self::SPACE_ID1, $domainName, UserRepositoryMock::USER_ID1, self::SET_ID1));
 
-            $this->fail('Exception to be thrown.');
+            static::fail('Exception to be thrown.');
         } catch (DomainNameAlreadyInUse $e) {
-            self::assertEquals(DomainNameAlreadyInUse::bySpaceId($domainName, $spaceId2), $e);
+            static::assertEquals(DomainNameAlreadyInUse::bySpaceId($domainName, $spaceId2), $e);
         }
 
         $spaceRepository->assertNoEntitiesWereSaved();

@@ -2,10 +2,14 @@
 
 declare(strict_types=1);
 
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 namespace ParkManager\Tests\UI\Web\Form;
 
-use Closure;
-use Psr\Container\ContainerInterface;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
@@ -14,10 +18,6 @@ use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Component\Translation\IdentityTranslator;
-use Symfony\Contracts\Service\ServiceLocatorTrait;
-use function ctype_digit;
-use function explode;
-use function is_callable;
 
 abstract class MessageFormTestCase extends TypeTestCase
 {
@@ -30,8 +30,8 @@ abstract class MessageFormTestCase extends TypeTestCase
     {
         $handlers = [
             static::getCommandName() => [
-                'handler' => function (object $command) {
-                    if (is_callable($this->commandHandler)) {
+                'handler' => function (object $command): void {
+                    if (\is_callable($this->commandHandler)) {
                         ($this->commandHandler)($command);
                         $this->dispatchedCommand = $command;
 
@@ -54,21 +54,21 @@ abstract class MessageFormTestCase extends TypeTestCase
      */
     protected function assertFormHasErrors(FormInterface $form, iterable $expectedErrors): void
     {
-        self::assertFalse($form->isValid());
-        self::assertNull($form->getTransformationFailure());
-        self::assertNull($this->dispatchedCommand);
+        static::assertFalse($form->isValid());
+        static::assertNull($form->getTransformationFailure());
+        static::assertNull($this->dispatchedCommand);
 
         foreach ($expectedErrors as $formPath => $formErrors) {
-            $formPath    = (string) $formPath;
+            $formPath = (string) $formPath;
             $currentForm = $form;
 
-            if ($formPath !== '' && ! ctype_digit($formPath)) {
-                foreach (explode('.', $formPath) as $child) {
+            if ($formPath !== '' && ! \ctype_digit($formPath)) {
+                foreach (\explode('.', $formPath) as $child) {
                     $currentForm = $currentForm->get($child);
                 }
             }
 
-            self::assertThat($currentForm->getErrors(), new IsFormErrorsEqual($formErrors));
+            static::assertThat($currentForm->getErrors(), new IsFormErrorsEqual($formErrors));
         }
     }
 }

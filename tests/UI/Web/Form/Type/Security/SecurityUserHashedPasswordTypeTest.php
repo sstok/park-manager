@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type\Security;
 
-use ParkManager\UI\Web\Form\Type\Security\SecurityUserHashedPasswordType;
 use ParkManager\Infrastructure\Security\User;
+use ParkManager\UI\Web\Form\Type\Security\SecurityUserHashedPasswordType;
 use RuntimeException;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -41,9 +41,6 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
                 return false;
             }
 
-            /**
-             * {@inheritdoc}
-             */
             public function needsRehash(string $encoded): bool
             {
                 return false;
@@ -83,8 +80,7 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
     {
         $form = $this->factory->createBuilder()
             ->add('password', SecurityUserHashedPasswordType::class, ['user_class' => User::class])
-            ->getForm()
-        ;
+            ->getForm();
 
         $form->submit([
             'password' => ['password' => 'Hello there'],

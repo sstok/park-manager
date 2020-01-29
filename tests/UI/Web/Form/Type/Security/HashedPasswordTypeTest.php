@@ -30,8 +30,7 @@ final class HashedPasswordTypeTest extends TypeTestCase
                     return 'encoded(' . $raw . ')';
                 },
             ])
-            ->getForm()
-        ;
+            ->getForm();
 
         $form->submit([
             'password' => ['password' => 'Hello there'],
@@ -51,8 +50,7 @@ final class HashedPasswordTypeTest extends TypeTestCase
                 },
                 'password_confirm' => true,
             ])
-            ->getForm()
-        ;
+            ->getForm();
 
         $form->submit([
             'password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there']],

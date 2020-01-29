@@ -11,11 +11,11 @@ declare(strict_types=1);
 namespace ParkManager\Tests\UI\Web\Form\Type;
 
 use Closure;
-use ParkManager\UI\Web\Form\Type\Security\ChangePasswordType;
 use ParkManager\Infrastructure\Security\User;
 use ParkManager\Tests\Form\TransformationFailureExtension;
-use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHashFactory;
 use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
+use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHashFactory;
+use ParkManager\UI\Web\Form\Type\Security\ChangePasswordType;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 
 /**

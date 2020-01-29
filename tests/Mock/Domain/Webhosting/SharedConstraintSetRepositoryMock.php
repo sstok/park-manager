@@ -22,9 +22,6 @@ final class SharedConstraintSetRepositoryMock implements SharedConstraintSetRepo
     /** @use MockRepository<SharedConstraintSet> */
     use MockRepository;
 
-    /**
-     * @inheritDoc
-     */
     public function get(ConstraintSetId $id): SharedConstraintSet
     {
         return $this->mockDoGetById($id);

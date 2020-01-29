@@ -12,11 +12,11 @@ namespace ParkManager\Tests\Infrastructure\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\StorageSpaceQuota;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Infrastructure\Doctrine\Type\WebhostingConstraintsType;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintsFactory;
+use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
+use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\StorageSpaceQuota;
 use PHPUnit\Framework\TestCase;
 
 /**

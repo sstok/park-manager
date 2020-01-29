@@ -72,8 +72,6 @@ trait MockRepository
 
     /**
      * @param Closure|string $getter
-     *
-     * @return mixed
      */
     private function getValueWithGetter(object $object, $getter)
     {
@@ -92,7 +90,7 @@ trait MockRepository
      * Returns a list fields (#property, method-name or Closure for extracting)
      * to use for mapping the entity in storage.
      *
-     * @return array<string,string|\Closure> [mapping-name] => '#property or method'
+     * @return array<string,\Closure|string> [mapping-name] => '#property or method'
      */
     protected function getFieldsIndexMapping(): array
     {
@@ -139,7 +137,7 @@ trait MockRepository
     /**
      * @psalm-return T
      *
-     * @param string|float|int|null $value
+     * @param float|int|string|null $value
      */
     protected function mockDoGetByField(string $key, $value)
     {
@@ -154,7 +152,7 @@ trait MockRepository
     }
 
     /**
-     * @param string|float|int|null $value
+     * @param float|int|string|null $value
      */
     protected function mockDoHasByField(string $key, $value): bool
     {

@@ -16,7 +16,6 @@ use ParkManager\Domain\Administrator\AdministratorRepository;
 use ParkManager\Domain\Administrator\Exception\AdministratorNotFound;
 use ParkManager\Domain\Administrator\Exception\PasswordResetConfirmationRejected;
 use ParkManager\Domain\EmailAddress;
-use ParkManager\Tests\Mock\Domain\MockRepository;
 
 final class AdministratorRepositoryMock implements AdministratorRepository
 {

@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\User;
 
+use ParkManager\Application\Command\User\ChangePasswordHandler;
+use ParkManager\Application\Command\User\ChangeUserPassword;
 use ParkManager\Domain\User\User;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
-use ParkManager\Application\Command\User\ChangeUserPassword;
-use ParkManager\Application\Command\User\ChangePasswordHandler;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 

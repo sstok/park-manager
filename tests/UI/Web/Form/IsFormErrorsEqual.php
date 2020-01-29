@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 namespace ParkManager\Tests\UI\Web\Form;
 
 use PHPUnit\Framework\Constraint\Constraint;
@@ -9,11 +15,6 @@ use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use Symfony\Component\Form\FormError;
-use function is_array;
-use function is_object;
-use function iterator_to_array;
-use function sprintf;
-use function trim;
 
 final class IsFormErrorsEqual extends Constraint
 {
@@ -21,7 +22,7 @@ final class IsFormErrorsEqual extends Constraint
     private $value;
 
     /**
-     * @param FormError[]|FormError $expected
+     * @param FormError|FormError[] $expected
      */
     public function __construct($expected)
     {
@@ -43,7 +44,7 @@ final class IsFormErrorsEqual extends Constraint
                 return false;
             }
 
-            throw new ExpectationFailedException(trim($description . "\n" . $f->getMessage()), $f);
+            throw new ExpectationFailedException(\trim($description . "\n" . $f->getMessage()), $f);
         }
 
         return true;
@@ -51,15 +52,15 @@ final class IsFormErrorsEqual extends Constraint
 
     public function toString(): string
     {
-        return sprintf('is equal to %s', $this->exporter()->export($this->value));
+        return \sprintf('is equal to %s', $this->exporter()->export($this->value));
     }
 
     private function ensureArray($other): array
     {
-        if (is_object($other) && $other instanceof FormError) {
+        if (\is_object($other) && $other instanceof FormError) {
             $other = [$other];
-        } elseif (! is_array($other)) {
-            $other = iterator_to_array($other);
+        } elseif (! \is_array($other)) {
+            $other = \iterator_to_array($other);
         }
 
         return $other;

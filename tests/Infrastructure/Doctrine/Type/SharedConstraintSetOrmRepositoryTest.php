@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Doctrine\Type;
 
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 use ParkManager\Domain\Webhosting\Constraint\Exception\ConstraintSetNotFound;
 use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
-use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 use ParkManager\Infrastructure\Doctrine\Repository\SharedConstraintSetOrmRepository;
 use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
+use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 
 /**
  * @internal
@@ -29,7 +29,7 @@ final class SharedConstraintSetOrmRepositoryTest extends EntityRepositoryTestCas
     private const SET_ID2 = '3bd0fa08-a756-11e7-bdf0-acbc32b58315';
 
     /** @test */
-    public function it_gets_existing_constraintSets(): void
+    public function it_gets_existing_constraint_sets(): void
     {
         $repository = $this->createRepository();
         $this->setUpConstraintSet1($repository);
@@ -51,7 +51,7 @@ final class SharedConstraintSetOrmRepositoryTest extends EntityRepositoryTestCas
     }
 
     /** @test */
-    public function it_removes_an_existing_constraintSet(): void
+    public function it_removes_an_existing_constraint_set(): void
     {
         $repository = $this->createRepository();
         $this->setUpConstraintSet1($repository);

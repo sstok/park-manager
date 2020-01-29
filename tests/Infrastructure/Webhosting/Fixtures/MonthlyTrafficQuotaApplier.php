@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Webhosting\Fixtures;
 
-use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Constraint\Constraint;
+use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintApplier;
 
 final class MonthlyTrafficQuotaApplier implements ConstraintApplier

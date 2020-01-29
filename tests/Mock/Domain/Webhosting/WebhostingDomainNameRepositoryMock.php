@@ -50,7 +50,7 @@ final class WebhostingDomainNameRepositoryMock implements WebhostingDomainNameRe
 
     public function getPrimaryOf(WebhostingSpaceId $id): WebhostingDomainName
     {
-        if (!$this->mockDoHasByField('space_primary_id', $id->toString())) {
+        if (! $this->mockDoHasByField('space_primary_id', $id->toString())) {
             throw WebhostingSpaceNotFound::withId($id);
         }
 
@@ -79,7 +79,7 @@ final class WebhostingDomainNameRepositoryMock implements WebhostingDomainNameRe
             // remove the primary marking for that DomainName.
             if ($primaryDomainName !== $domainName) {
                 // There is no setter function for the Model as this is an implementation detail.
-                (function () {
+                (function (): void {
                     $this->primary = false;
                 })->call($primaryDomainName);
 

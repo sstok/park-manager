@@ -12,12 +12,11 @@ namespace ParkManager\Tests\Application\Command\Space;
 
 use ParkManager\Application\Command\Webhosting\Space\RegisterWebhostingSpace;
 use ParkManager\Domain\User\UserId;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
-use ParkManager\Domain\OwnerId;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
-use ParkManager\Domain\Webhosting\DomainName;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
+use ParkManager\Domain\Webhosting\DomainName;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -30,7 +29,7 @@ final class RegisterWebhostingSpaceTest extends TestCase
     private const SET_ID = '654665ea-9869-11e7-9563-acbc32b58315';
 
     /** @test */
-    public function its_constructable_with_constraintSet(): void
+    public function its_constructable_with_constraint_set(): void
     {
         $command = RegisterWebhostingSpace::withConstraintSet(
             self::SPACE_ID,

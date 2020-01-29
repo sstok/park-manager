@@ -126,10 +126,10 @@ class Space
      * Change the webhosting SharedConstraintSet assignment,
      * and use the Constraints of the assigned set.
      */
-    public function assignSetWithConstraints(SharedConstraintSet $plconstraintSetn): void
+    public function assignSetWithConstraints(SharedConstraintSet $constraintSet): void
     {
-        $this->constraintSet = $plconstraintSetn;
-        $this->constraints = $plconstraintSetn->getConstraints();
+        $this->constraintSet = $constraintSet;
+        $this->constraints = $constraintSet->getConstraints();
     }
 
     /**

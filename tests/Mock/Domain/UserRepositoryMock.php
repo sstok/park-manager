@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain;
 
+use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
+use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
-use ParkManager\Domain\User\Exception\UserNotFound;
-use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
-use ParkManager\Domain\EmailAddress;
-use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
 
 final class UserRepositoryMock implements UserRepository
 {

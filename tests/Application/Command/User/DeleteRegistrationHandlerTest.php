@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\User;
 
-use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use ParkManager\Application\Command\User\DeleteRegistration;
 use ParkManager\Application\Command\User\DeleteRegistrationHandler;
+use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
 /**

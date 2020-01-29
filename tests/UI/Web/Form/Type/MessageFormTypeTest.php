@@ -27,8 +27,6 @@ use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
-use function explode;
-use function iterator_to_array;
 
 /**
  * @internal
@@ -41,7 +39,7 @@ final class MessageFormTypeTest extends TypeTestCase
     {
         $messageBus = $this->createMessageBus([
             StubCommand::class => [
-                'stub-handler' => function (StubCommand $command) {
+                'stub-handler' => function (StubCommand $command): void {
                     if ($command->id === 3) {
                         throw new FormRuntimeException('I have no idea how this happened.');
                     }
@@ -78,8 +76,8 @@ final class MessageFormTypeTest extends TypeTestCase
     {
         $form = $this->createFormForCommand();
 
-        self::assertNull($form->getTransformationFailure());
-        self::assertNull($this->dispatchedCommand);
+        static::assertNull($form->getTransformationFailure());
+        static::assertNull($this->dispatchedCommand);
     }
 
     private function createFormForCommand(): FormInterface
@@ -133,16 +131,16 @@ final class MessageFormTypeTest extends TypeTestCase
         $form = $this->createFormForCommand();
         $form->submit(['id' => $id, 'username' => 'Nero']);
 
-        self::assertFalse($form->isValid());
-        self::assertNull($form->getTransformationFailure());
-        self::assertNull($this->dispatchedCommand);
+        static::assertFalse($form->isValid());
+        static::assertNull($form->getTransformationFailure());
+        static::assertNull($this->dispatchedCommand);
 
         foreach ($expectedErrors as $formPath => $formErrors) {
-            $formPath    = (string) $formPath;
+            $formPath = (string) $formPath;
             $currentForm = $form;
 
             if ($formPath !== '') {
-                foreach (explode('.', $formPath) as $child) {
+                foreach (\explode('.', $formPath) as $child) {
                     $currentForm = $currentForm->get($child);
                 }
             }
@@ -152,7 +150,7 @@ final class MessageFormTypeTest extends TypeTestCase
                 $error->setOrigin($currentForm);
             }
 
-            self::assertEquals($formErrors, iterator_to_array($currentForm->getErrors()));
+            static::assertEquals($formErrors, \iterator_to_array($currentForm->getErrors()));
         }
     }
 
@@ -219,9 +217,9 @@ final class MessageFormTypeTest extends TypeTestCase
         $form = $this->createFormForCommand();
         $form->submit(['id' => '8', 'username' => 'Nero']);
 
-        self::assertTrue($form->isValid());
-        self::assertNull($form->getTransformationFailure());
-        self::assertEquals(new StubCommand(8, 'Nero', [
+        static::assertTrue($form->isValid());
+        static::assertNull($form->getTransformationFailure());
+        static::assertEquals(new StubCommand(8, 'Nero', [
             'name' => null,
             'contact' => [
                 'email' => null,

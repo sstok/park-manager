@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\Webhosting\DomainName;
 
-use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 use ParkManager\Domain\Webhosting\DomainName;
 use ParkManager\Domain\Webhosting\DomainName\Exception\CannotTransferPrimaryDomainName;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
+use ParkManager\Domain\Webhosting\Space\Space;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 use PHPUnit\Framework\TestCase;
 
 /**
