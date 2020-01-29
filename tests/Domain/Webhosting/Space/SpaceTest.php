@@ -12,12 +12,12 @@ namespace ParkManager\Tests\Domain\Webhosting\Space;
 
 use DateTimeImmutable;
 use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
-use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
 use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
+use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -39,8 +39,9 @@ final class SpaceTest extends TestCase
         $id = WebhostingSpaceId::create();
         $constraints = new Constraints();
         $constraintSet = $this->createSharedConstraintSet($constraints);
+        $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
 
-        $space = Space::register($id, $owner = OwnerId::fromString(self::OWNER_ID1), $constraintSet);
+        $space = Space::register($id, $owner, $constraintSet);
 
         static::assertEquals($id, $space->getId());
         static::assertEquals($owner, $space->getOwner());
@@ -51,10 +52,11 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_registers_an_webhosting_space_with_custom_constraints(): void
     {
+        $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
         $id = WebhostingSpaceId::create();
         $constraints = new Constraints();
 
-        $space = Space::registerWithCustomConstraints($id, $owner = OwnerId::fromString(self::OWNER_ID1), $constraints);
+        $space = Space::registerWithCustomConstraints($id, $owner, $constraints);
 
         static::assertEquals($id, $space->getId());
         static::assertEquals($owner, $space->getOwner());
@@ -65,13 +67,13 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_allows_changing_constraintSet_assignment(): void
     {
-        $id2 = WebhostingSpaceId::create();
+        $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
         $constraints1 = new Constraints();
         $constraints2 = new Constraints(new MonthlyTrafficQuota(50));
         $constraintSet1 = $this->createSharedConstraintSet($constraints1);
         $constraintSet2 = $this->createSharedConstraintSet($constraints2, self::SET_ID_2);
-        $space1 = Space::register(WebhostingSpaceId::create(), OwnerId::fromString(self::OWNER_ID1), $constraintSet1);
-        $space2 = Space::register($id2, OwnerId::fromString(self::OWNER_ID1), $constraintSet1);
+        $space1 = Space::register(WebhostingSpaceId::create(), $owner, $constraintSet1);
+        $space2 = Space::register(WebhostingSpaceId::create(), $owner, $constraintSet1);
 
         $space1->assignConstraintSet($constraintSet1);
         $space2->assignConstraintSet($constraintSet2);
@@ -86,13 +88,13 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_allows_changing_constraintSet_assignment_with_constraints(): void
     {
-        $id2 = WebhostingSpaceId::create();
+        $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
         $constraints1 = new Constraints();
         $constraints2 = new Constraints(new MonthlyTrafficQuota(50));
         $constraintSet1 = $this->createSharedConstraintSet($constraints1);
         $constraintSet2 = $this->createSharedConstraintSet($constraints2, self::SET_ID_2);
-        $space1 = Space::register(WebhostingSpaceId::create(), OwnerId::fromString(self::OWNER_ID1), $constraintSet1);
-        $space2 = Space::register($id2, OwnerId::fromString(self::OWNER_ID1), $constraintSet1);
+        $space1 = Space::register(WebhostingSpaceId::create(), $owner, $constraintSet1);
+        $space2 = Space::register(WebhostingSpaceId::create(), $owner, $constraintSet1);
 
         $space1->assignSetWithConstraints($constraintSet1);
         $space2->assignSetWithConstraints($constraintSet2);
@@ -107,9 +109,12 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_updates_space_when_assigning_constraintSet_Constraints_are_different(): void
     {
-        $id = WebhostingSpaceId::create();
         $constraintSet = $this->createSharedConstraintSet(new Constraints());
-        $space = Space::register($id, OwnerId::fromString(self::OWNER_ID1), $constraintSet);
+        $space = Space::register(
+            WebhostingSpaceId::create(),
+            UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
+            $constraintSet
+        );
 
         $constraintSet->changeConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
         $space->assignSetWithConstraints($constraintSet);
@@ -121,9 +126,12 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_allows_assigning_custom_specification(): void
     {
-        $id = WebhostingSpaceId::create();
         $constraintSet = $this->createSharedConstraintSet(new Constraints());
-        $space = Space::register($id, OwnerId::fromString(self::OWNER_ID1), $constraintSet);
+        $space = Space::register(
+            WebhostingSpaceId::create(),
+            UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
+            $constraintSet
+        );
 
         $space->assignCustomConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
 
@@ -134,8 +142,11 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_allows_changing_custom_specification(): void
     {
-        $id = WebhostingSpaceId::create();
-        $space = Space::registerWithCustomConstraints($id, OwnerId::fromString(self::OWNER_ID1), new Constraints());
+        $space = Space::registerWithCustomConstraints(
+            WebhostingSpaceId::create(),
+            UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
+            new Constraints()
+        );
 
         $space->assignCustomConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
 
@@ -146,32 +157,37 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_does_not_update_space_Constraints_when_assigning_Constraints_are_same(): void
     {
-        $id = WebhostingSpaceId::create();
-        $Constraints = new Constraints();
-        $space = Space::registerWithCustomConstraints($id, OwnerId::fromString(self::OWNER_ID1), $Constraints);
+        $constraints = new Constraints();
+        $space = Space::registerWithCustomConstraints(
+            WebhostingSpaceId::create(),
+            UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
+            $constraints
+        );
 
-        $space->assignCustomConstraints($Constraints);
+        $space->assignCustomConstraints($constraints);
 
         static::assertNull($space->getAssignedConstraintSet());
-        static::assertSame($Constraints, $space->getConstraints());
+        static::assertSame($constraints, $space->getConstraints());
     }
 
     /** @test */
     public function it_supports_switching_the_space_owner(): void
     {
+        $owner1 = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
+        $owner2 = UserRepositoryMock::createUser('joHn@example.com', self::OWNER_ID2);
         $space1 = Space::register(
             WebhostingSpaceId::fromString(self::SPACE_ID),
-            OwnerId::fromString(self::OWNER_ID1),
+            $owner1,
             $this->createSharedConstraintSet(new Constraints())
         );
         $space2 = Space::register(
             $id2 = WebhostingSpaceId::fromString(self::SPACE_ID),
-            OwnerId::fromString(self::OWNER_ID1),
+            $owner1,
             $this->createSharedConstraintSet(new Constraints())
         );
 
-        $space1->switchOwner($owner1 = OwnerId::fromString(self::OWNER_ID1));
-        $space2->switchOwner($owner2 = OwnerId::fromString(self::OWNER_ID2));
+        $space1->switchOwner($owner1);
+        $space2->switchOwner($owner2);
 
         static::assertEquals($owner1, $space1->getOwner());
         static::assertEquals($owner2, $space2->getOwner());
@@ -180,14 +196,15 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_allows_being_marked_for_removal(): void
     {
+        $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
         $space1 = Space::register(
             WebhostingSpaceId::fromString(self::SPACE_ID),
-            OwnerId::fromString(self::OWNER_ID1),
+            $owner,
             $this->createSharedConstraintSet(new Constraints())
         );
         $space2 = Space::register(
             $id2 = WebhostingSpaceId::fromString(self::SPACE_ID),
-            OwnerId::fromString(self::OWNER_ID1),
+            $owner,
             $this->createSharedConstraintSet(new Constraints())
         );
 
@@ -201,14 +218,15 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_can_expire(): void
     {
+        $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
         $space1 = Space::register(
             WebhostingSpaceId::fromString(self::SPACE_ID),
-            OwnerId::fromString(self::OWNER_ID1),
+            $owner,
             $this->createSharedConstraintSet(new Constraints())
         );
         $space2 = Space::register(
             $id2 = WebhostingSpaceId::fromString(self::SPACE_ID),
-            OwnerId::fromString(self::OWNER_ID1),
+            $owner,
             $this->createSharedConstraintSet(new Constraints())
         );
 
@@ -229,8 +247,8 @@ final class SpaceTest extends TestCase
         static::assertFalse($space2->isExpired($date->modify('+2 days')));
     }
 
-    private function createSharedConstraintSet(Constraints $Constraints, string $id = self::SET_ID_1): SharedConstraintSet
+    private function createSharedConstraintSet(Constraints $constraints, string $id = self::SET_ID_1): SharedConstraintSet
     {
-        return new SharedConstraintSet(ConstraintSetId::fromString($id), $Constraints);
+        return new SharedConstraintSet(ConstraintSetId::fromString($id), $constraints);
     }
 }

@@ -12,7 +12,7 @@ namespace ParkManager\Domain\Webhosting\Space;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use ParkManager\Domain\OwnerId;
+use ParkManager\Domain\User\User;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
 
@@ -32,7 +32,7 @@ class Space
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=PredefinedConstraintsSet::class)
+     * @ORM\ManyToOne(targetEntity=SharedConstraintSet::class)
      * @ORM\JoinColumn(nullable=true, name="constraint_set_ref", referencedColumnName="id", onDelete="RESTRICT")
      *
      * @var SharedConstraintSet|null
@@ -47,9 +47,10 @@ class Space
     protected $constraints;
 
     /**
-     * @ORM\Column(name="owner_id", type="park_manager_owner_id")
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=true, name="owner", referencedColumnName="id", onDelete="RESTRICT")
      *
-     * @var OwnerId
+     * @var User|null
      */
     protected $owner;
 
@@ -67,13 +68,13 @@ class Space
      */
     private $markedForRemoval = false;
 
-    protected function __construct(WebhostingSpaceId $id, OwnerId $owner)
+    protected function __construct(WebhostingSpaceId $id, ?User $owner)
     {
         $this->id = $id;
         $this->owner = $owner;
     }
 
-    public static function register(WebhostingSpaceId $id, OwnerId $owner, SharedConstraintSet $constraintSet): self
+    public static function register(WebhostingSpaceId $id, ?User $owner, SharedConstraintSet $constraintSet): self
     {
         $space = new static($id, $owner);
         // Store the constraints as part of the webhosting space
@@ -84,7 +85,7 @@ class Space
         return $space;
     }
 
-    public static function registerWithCustomConstraints(WebhostingSpaceId $id, OwnerId $owner, Constraints $constraints): self
+    public static function registerWithCustomConstraints(WebhostingSpaceId $id, ?User $owner, Constraints $constraints): self
     {
         $space = new static($id, $owner);
         $space->constraints = $constraints;
@@ -97,7 +98,7 @@ class Space
         return $this->id;
     }
 
-    public function getOwner(): OwnerId
+    public function getOwner(): ?User
     {
         return $this->owner;
     }
@@ -143,12 +144,8 @@ class Space
         $this->constraints = $constraints;
     }
 
-    public function switchOwner(OwnerId $owner): void
+    public function switchOwner(?User $owner): void
     {
-        if ($this->owner->equals($owner)) {
-            return;
-        }
-
         $this->owner = $owner;
     }
 

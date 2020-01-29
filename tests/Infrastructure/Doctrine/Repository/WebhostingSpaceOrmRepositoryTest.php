@@ -11,17 +11,19 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
-use ParkManager\Domain\OwnerId;
+use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\User\User;
+use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
+use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
-use ParkManager\Domain\Webhosting\Constraint\Constraints;
-use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
-use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 use ParkManager\Infrastructure\Doctrine\Repository\WebhostingSpaceOrmRepository;
 use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
+use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 
 /**
  * @internal
@@ -42,9 +44,14 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     /** @var SharedConstraintSet */
     private $constraintSet;
 
+    /** @var User */
+    private $user1;
+
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->user1 = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John');
 
         $this->constraintSetConstraints = new Constraints(new MonthlyTrafficQuota(50));
         $this->constraintSet = new SharedConstraintSet(
@@ -54,6 +61,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
 
         $em = $this->getEntityManager();
         $em->transactional(function (EntityManagerInterface $em): void {
+            $em->persist($this->user1);
             $em->persist($this->constraintSet);
         });
     }
@@ -61,7 +69,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     /** @test */
     public function it_gets_existing_spaces(): void
     {
-        $repository = $this->createRepository(2);
+        $repository = new WebhostingSpaceOrmRepository($this->getEntityManager());
         $this->setUpSpace1($repository);
         $this->setUpSpace2($repository);
 
@@ -71,12 +79,12 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         $space2 = $repository->get($id2);
 
         static::assertEquals($id, $space->getId());
-        static::assertEquals(OwnerId::fromString(self::OWNER_ID1), $space->getOwner());
+        static::assertEquals($this->user1, $space->getOwner());
         static::assertEquals(new Constraints(), $space->getConstraints());
         static::assertNull($space->getAssignedConstraintSet());
 
         static::assertEquals($id2, $space2->getId());
-        static::assertEquals(OwnerId::fromString(self::OWNER_ID1), $space2->getOwner());
+        static::assertEquals($this->user1, $space2->getOwner());
         static::assertEquals($this->constraintSetConstraints, $space2->getConstraints());
         static::assertEquals($this->constraintSet, $space2->getAssignedConstraintSet());
     }
@@ -84,7 +92,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     /** @test */
     public function it_removes_an_existing_model(): void
     {
-        $repository = $this->createRepository(3);
+        $repository = new WebhostingSpaceOrmRepository($this->getEntityManager());
         $this->setUpSpace1($repository);
         $this->setUpSpace2($repository);
 
@@ -107,7 +115,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     /** @test */
     public function it_checks_space_is_marked_for_removal(): void
     {
-        $repository = $this->createRepository(1);
+        $repository = new WebhostingSpaceOrmRepository($this->getEntityManager());
         $this->setUpSpace1($repository);
 
         $id = WebhostingSpaceId::fromString(self::SPACE_ID1);
@@ -119,17 +127,12 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         $repository->remove($space);
     }
 
-    private function createRepository(int $expectedEventsCount): WebhostingSpaceOrmRepository
-    {
-        return new \ParkManager\Infrastructure\Doctrine\Repository\WebhostingSpaceOrmRepository($this->getEntityManager());
-    }
-
     private function setUpSpace1(WebhostingSpaceOrmRepository $repository): void
     {
         $repository->save(
             Space::registerWithCustomConstraints(
                 WebhostingSpaceId::fromString(self::SPACE_ID1),
-                OwnerId::fromString(self::OWNER_ID1),
+                $this->user1,
                 new Constraints()
             )
         );
@@ -140,7 +143,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         $repository->save(
             Space::register(
                 WebhostingSpaceId::fromString(self::SPACE_ID2),
-                OwnerId::fromString(self::OWNER_ID1),
+                $this->user1,
                 $this->constraintSet
             )
         );

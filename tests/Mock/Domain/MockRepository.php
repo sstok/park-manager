@@ -21,13 +21,13 @@ use Throwable;
  */
 trait MockRepository
 {
-    /** @var object[] */
+    /** @var array<string,T> */
     protected $storedById = [];
 
-    /** @var object[] */
+    /** @var array<string,T> */
     protected $savedById = [];
 
-    /** @var object[] */
+    /** @var array<string,T> */
     protected $removedById = [];
 
     /**
@@ -65,7 +65,8 @@ trait MockRepository
         $this->storedById[$this->getValueWithGetter($entity, 'id')->toString()] = $entity;
 
         foreach ($this->getFieldsIndexMapping() as $mapping => $getter) {
-            $this->storedByField[$mapping][$this->getValueWithGetter($entity, $getter)] = $entity;
+            $withGetter = $this->getValueWithGetter($entity, $getter);
+            $this->storedByField[$mapping][$withGetter] = $entity;
         }
     }
 
@@ -153,6 +154,22 @@ trait MockRepository
     }
 
     /**
+     * @param string|float|int|null $value
+     */
+    protected function mockDoHasByField(string $key, $value): bool
+    {
+        if (! isset($this->storedByField[$key][$value])) {
+            return false;
+        }
+
+        if (isset($this->removedById[$this->getValueWithGetter($this->storedByField[$key][$value], 'id')->toString()])) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * @throws Throwable
      */
     abstract protected function throwOnNotFound($key): void;
@@ -172,6 +189,11 @@ trait MockRepository
         if ($entities) {
             Assert::assertEquals($entities, \array_values($this->savedById));
         }
+    }
+
+    public function assertEntitiesCountWasSaved(int $count): void
+    {
+        Assert::assertEquals($count, $this->mockWasSaved, 'Entities were expected to be stored');
     }
 
     public function assertNoEntitiesWereRemoved(): void
@@ -195,5 +217,16 @@ trait MockRepository
         $key = (string) $id;
         Assert::assertArrayHasKey($key, $this->storedById);
         $excepted($this->storedById[$key]);
+    }
+
+    public function assertHasEntityThat(Closure $excepted): void
+    {
+        foreach ($this->storedById as $entity) {
+            if ($excepted($entity)) {
+                return;
+            }
+        }
+
+        Assert::fail('No entity was found that gave a Closure condition.');
     }
 }

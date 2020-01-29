@@ -265,4 +265,14 @@ class User
     {
         return $this->password;
     }
+
+    public function __toString(): string
+    {
+        return $this->id->toString();
+    }
+
+    public function toString(): string
+    {
+        return $this->id->toString();
+    }
 }

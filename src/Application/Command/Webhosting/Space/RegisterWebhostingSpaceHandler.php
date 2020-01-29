@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Space;
 
+use ParkManager\Domain\User\UserRepository;
 use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSetRepository;
 use ParkManager\Domain\Webhosting\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
@@ -23,33 +24,37 @@ final class RegisterWebhostingSpaceHandler
     private $constraintSetRepository;
     private $domainNameRepository;
 
-    public function __construct(WebhostingSpaceRepository $spaceRepository, SharedConstraintSetRepository $constraintSetRepository, WebhostingDomainNameRepository $domainNameRepository)
+    /** @var UserRepository */
+    private $userRepository;
+
+    public function __construct(WebhostingSpaceRepository $spaceRepository, SharedConstraintSetRepository $constraintSetRepository, WebhostingDomainNameRepository $domainNameRepository, UserRepository $userRepository)
     {
         $this->spaceRepository = $spaceRepository;
         $this->constraintSetRepository = $constraintSetRepository;
         $this->domainNameRepository = $domainNameRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function __invoke(RegisterWebhostingSpace $command): void
     {
-        $currentRegistration = $this->domainNameRepository->findByFullName($command->domainName);
+        $owner = $command->owner === null ? null : $this->userRepository->get($command->owner);
 
-        $constraintSetId = $command->constraintSetId;
+        $currentRegistration = $this->domainNameRepository->findByFullName($command->domainName);
 
         if ($currentRegistration !== null) {
             throw DomainNameAlreadyInUse::bySpaceId($command->domainName, $currentRegistration->getSpace()->getId());
         }
 
-        if ($constraintSetId !== null) {
+        if ($command->constraintSetId !== null) {
             $space = Space::register(
                 $command->id,
-                $command->owner,
-                $this->constraintSetRepository->get($constraintSetId)
+                $owner,
+                $this->constraintSetRepository->get($command->constraintSetId)
             );
         } else {
             $space = Space::registerWithCustomConstraints(
                 $command->id,
-                $command->owner,
+                $owner,
                 $command->customConstraints
             );
         }

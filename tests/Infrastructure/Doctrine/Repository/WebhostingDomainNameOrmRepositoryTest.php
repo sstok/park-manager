@@ -11,16 +11,18 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Domain\OwnerId;
-use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
-use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\User\User;
+use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\DomainName;
 use ParkManager\Domain\Webhosting\DomainName\Exception\CannotRemovePrimaryDomainName;
 use ParkManager\Domain\Webhosting\DomainName\Exception\WebhostingDomainNameNotFound;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
-use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
+use ParkManager\Domain\Webhosting\Space\Space;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
 use ParkManager\Infrastructure\Doctrine\Repository\WebhostingDomainNameOrmRepository;
 use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
 
@@ -39,6 +41,9 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
 
     /** @var WebhostingDomainNameOrmRepository */
     private $repository;
+
+    /** @var User */
+    private $user1;
 
     /** @var Space */
     private $space1;
@@ -59,20 +64,23 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     {
         parent::setUp();
 
+        $this->user1 = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John');
+
         $this->space1 = Space::registerWithCustomConstraints(
             WebhostingSpaceId::fromString(self::SPACE_ID1),
-            OwnerId::fromString(self::OWNER_ID1),
+            $this->user1,
             new Constraints()
         );
 
         $this->space2 = Space::registerWithCustomConstraints(
             WebhostingSpaceId::fromString(self::SPACE_ID2),
-            OwnerId::fromString(self::OWNER_ID1),
+            $this->user1,
             new Constraints()
         );
 
         $em = $this->getEntityManager();
         $em->transactional(function (EntityManagerInterface $em): void {
+            $em->persist($this->user1);
             $em->persist($this->space1);
             $em->persist($this->space2);
         });
