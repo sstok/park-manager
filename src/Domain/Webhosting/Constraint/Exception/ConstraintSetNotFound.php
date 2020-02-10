@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Constraint\Exception;
 
-use InvalidArgumentException;
+use ParkManager\Domain\Exception\NotFoundException;
 use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 
-final class ConstraintSetNotFound extends InvalidArgumentException
+final class ConstraintSetNotFound extends NotFoundException
 {
     public static function withId(ConstraintSetId $id): self
     {

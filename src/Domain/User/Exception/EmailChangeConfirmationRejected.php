@@ -10,16 +10,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\User\Exception;
 
-use InvalidArgumentException;
+use ParkManager\Domain\Exception\NotFoundException;
 
-final class EmailChangeConfirmationRejected extends InvalidArgumentException
+final class EmailChangeConfirmationRejected extends NotFoundException
 {
     public function __construct()
     {
         parent::__construct(
-            'Failed to accept e-mail address change confirmation. ' .
-            'Token is invalid/expired or no request was registered.',
-            1
+            'Failed to accept e-mail address change confirmation. Token is invalid/expired or no request was registered.'
         );
     }
 }

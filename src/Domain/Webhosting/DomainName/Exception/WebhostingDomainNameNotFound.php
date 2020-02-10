@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\DomainName\Exception;
 
-use InvalidArgumentException;
+use ParkManager\Domain\Exception\NotFoundException;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
 
-final class WebhostingDomainNameNotFound extends InvalidArgumentException
+final class WebhostingDomainNameNotFound extends NotFoundException
 {
     public static function withId(WebhostingDomainNameId $id): self
     {

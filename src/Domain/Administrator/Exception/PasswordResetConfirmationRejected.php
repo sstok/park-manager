@@ -10,16 +10,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Administrator\Exception;
 
-use InvalidArgumentException;
+use ParkManager\Domain\Exception\NotFoundException;
 
-final class PasswordResetConfirmationRejected extends InvalidArgumentException
+final class PasswordResetConfirmationRejected extends NotFoundException
 {
     public function __construct()
     {
         parent::__construct(
-            'Failed to accept password-reset confirmation. ' .
-            'Token is invalid/expired or no token was set.',
-            1
+            'Failed to accept password-reset confirmation. Token is invalid/expired or no token was set.'
         );
     }
 }

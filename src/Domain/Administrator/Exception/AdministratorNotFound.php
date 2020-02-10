@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Administrator\Exception;
 
-use InvalidArgumentException;
 use ParkManager\Domain\Administrator\AdministratorId;
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\Exception\NotFoundException;
 
-final class AdministratorNotFound extends InvalidArgumentException
+final class AdministratorNotFound extends NotFoundException
 {
     public static function withId(AdministratorId $id): self
     {
