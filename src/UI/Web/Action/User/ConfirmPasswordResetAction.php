@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\User;
 
 use ParkManager\Application\Command\User\ConfirmPasswordReset;
-use ParkManager\Infrastructure\Security\User;
 use ParkManager\UI\Web\Form\Type\Security\ConfirmPasswordResetType;
 use ParkManager\UI\Web\Response\TwigResponse;
 use Rollerworks\Bundle\RouteAutofillBundle\Response\RouteRedirectResponse;
@@ -35,7 +34,6 @@ final class ConfirmPasswordResetAction
     {
         $form = $formFactory->create(ConfirmPasswordResetType::class, ['reset_token' => $token], [
             'request_route' => 'park_manager.user.security_request_password_reset',
-            'user_class' => User::class,
             'command_factory' => static function (array $data) {
                 return new ConfirmPasswordReset($data['reset_token'], $data['password']);
             },

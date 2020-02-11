@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type\Mocks;
 
-use ParkManager\Infrastructure\Security\User;
+use ParkManager\Infrastructure\Security\SecurityUser;
 use RuntimeException;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
@@ -24,9 +24,9 @@ final class FakePasswordHashFactory implements EncoderFactoryInterface
     /** @var string */
     private $userClass;
 
-    public function __construct(string $userClass = User::class)
+    public function __construct()
     {
-        $this->userClass = $userClass;
+        $this->userClass = SecurityUser::class;
         $this->encoder = new class() implements PasswordEncoderInterface {
             public function encodePassword($raw, $salt): string
             {

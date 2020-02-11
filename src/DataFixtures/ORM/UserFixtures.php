@@ -16,7 +16,7 @@ use ParkManager\Application\Command\BatchCommand;
 use ParkManager\Application\Command\User\RegisterUser;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\UserId;
-use ParkManager\Infrastructure\Security\User;
+use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
@@ -42,7 +42,7 @@ final class UserFixtures extends Fixture
                     UserId::create(),
                     new EmailAddress('jane@example.com'),
                     'Janet, Doe',
-                    $this->encoderFactory->getEncoder(User::class)->encodePassword('&ltr@Sec3re!+', null)
+                    $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword('&ltr@Sec3re!+', null)
                 )
             )
         );

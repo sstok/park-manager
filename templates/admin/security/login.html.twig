@@ -8,6 +8,7 @@
 {% block content %}
     <form action="{{ path(route) }}" method="post">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <input type="hidden" name="_admin" value="true">
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="_email_field">{{ 'label.email'|trans }}</label>
             <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="_email" id="_email_field" value="{{ last_username }}" type="email" required autofocus>

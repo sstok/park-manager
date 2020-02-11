@@ -16,7 +16,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\Administrator\Exception\CannotDisableSuperAdministrator;
 use ParkManager\Domain\EmailAddress;
-use ParkManager\Infrastructure\Security\AdministratorUser;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
@@ -85,7 +84,7 @@ class Administrator
      */
     private $passwordResetToken;
 
-    public const DEFAULT_ROLES = ['ROLE_ADMIN'];
+    public const DEFAULT_ROLES = ['ROLE_USER', 'ROLE_ADMIN'];
 
     private function __construct(AdministratorId $id, EmailAddress $email, string $displayName)
     {
@@ -243,6 +242,6 @@ class Administrator
 
     public function toSecurityUser(): SecurityUser
     {
-        return new AdministratorUser($this->id->toString(), $this->password ?? '', $this->loginEnabled, $this->roles->toArray());
+        return new SecurityUser($this->id->toString(), $this->password ?? '', $this->loginEnabled, $this->roles->toArray());
     }
 }

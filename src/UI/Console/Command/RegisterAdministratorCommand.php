@@ -13,7 +13,7 @@ namespace ParkManager\UI\Console\Command;
 use InvalidArgumentException;
 use ParkManager\Application\Command\Administrator\RegisterAdministrator;
 use ParkManager\Domain\Administrator\AdministratorId;
-use ParkManager\Infrastructure\Security\AdministratorUser;
+use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -66,7 +66,7 @@ final class RegisterAdministratorCommand extends Command
             return $value;
         });
 
-        $password = $this->passwordEncoder->getEncoder(AdministratorUser::class)
+        $password = $this->passwordEncoder->getEncoder(SecurityUser::class)
             ->encodePassword($io->askHidden('Password'), '');
 
         $this->commandBus->dispatch(

@@ -10,14 +10,16 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Security;
 
-use InvalidArgumentException;
-use ParkManager\Infrastructure\Security\AdministratorUser;
-use ParkManager\Infrastructure\Security\AuthenticationFinder;
+use ParkManager\Domain\Administrator\Administrator;
+use ParkManager\Domain\Administrator\AdministratorId;
+use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\User\User;
+use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Security\SecurityUser;
-use ParkManager\Infrastructure\Security\User;
 use ParkManager\Infrastructure\Security\UserProvider;
+use ParkManager\Tests\Mock\Domain\AdministratorRepositoryMock;
+use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
@@ -25,125 +27,78 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
  */
 final class UserProviderTest extends TestCase
 {
+    private const USER_ID1 = '01dd5964-5426-11e7-be03-acbc32b58315';
+    private const USER_ID2 = 'd398e0e4-b787-4647-b6ab-ab4bf2a2ed35';
+    private const USER_ID3 = '6052d014-5ea4-40d7-8595-95356ff1c1ed';
+
+    private const ADMIN_ID1 = 'e1f71214-81cc-4444-9bbc-d29abb0fb821';
+    private const ADMIN_ID2 = 'a5b9cfec-e4a7-4c65-9fff-07752ec06b8e';
+
     /** @test */
     public function it_throws_fails_when_no_result_was_found(): void
     {
-        $provider = new UserProvider($this->createNullFinderStub(), User::class);
+        $provider = new UserProvider(new UserRepositoryMock(), new AdministratorRepositoryMock());
 
         $this->expectException(UsernameNotFoundException::class);
 
-        $provider->loadUserByUsername('foobar@example.com');
-    }
-
-    private function createNullFinderStub(): AuthenticationFinder
-    {
-        return new class() implements AuthenticationFinder {
-            public function findAuthenticationByEmail(string $email): ?SecurityUser
-            {
-                return null;
-            }
-
-            public function findAuthenticationById(string $id): ?SecurityUser
-            {
-                return null;
-            }
-        };
+        $provider->loadUserByUsername("admin\0foobar@example.com");
     }
 
     /** @test */
     public function it_throws_fails_when_no_result_was_found_for_refreshing(): void
     {
-        $provider = new UserProvider($this->createNullFinderStub(), User::class);
+        $provider = new UserProvider(new UserRepositoryMock(), new AdministratorRepositoryMock());
 
         $this->expectException(UsernameNotFoundException::class);
 
-        $provider->refreshUser(new User('0', 'nope', true, []));
-    }
-
-    /** @test */
-    public function it_checks_security_user_class_inheritance(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected UserClass (stdClass) to be a child of');
-
-        new UserProvider($this->createNullFinderStub(), stdClass::class);
-    }
-
-    /** @test */
-    public function it_supports_only_a_configured_class(): void
-    {
-        $provider = new UserProvider($this->createNullFinderStub(), User::class);
-
-        static::assertTrue($provider->supportsClass(User::class));
-        static::assertFalse($provider->supportsClass(AdministratorUser::class));
+        $provider->refreshUser(new SecurityUser(self::USER_ID1, 'nope', true, ['ROLE_USER']));
     }
 
     /** @test */
     public function it_provides_a_security_user(): void
     {
-        $provider = new UserProvider($this->createSingleUserFinderStub(), User::class);
+        $provider = new UserProvider($this->createUserRepositoryStub(), $this->createAdminRepositoryStub());
 
-        static::assertEquals(new User('1', 'maybe', true, ['ROLE_USER']), $provider->loadUserByUsername('foobar@example.com'));
-        static::assertEquals(new User('2', '', true, ['ROLE_USER']), $provider->loadUserByUsername('bar@example.com'));
-        static::assertEquals(new User('3', 'nope', false, ['ROLE_USER']), $provider->loadUserByUsername('foo@example.com'));
-        static::assertEquals(new User('4', 'nope', true, ['ROLE_USER', 'ROLE_RESELLER']), $provider->loadUserByUsername('moo@example.com'));
+        static::assertEquals(new SecurityUser(self::USER_ID1, 'maybe', true, ['ROLE_USER']), $provider->loadUserByUsername("user\0foobar@example.com"));
+        static::assertEquals(new SecurityUser(self::USER_ID2, 'maybe', true, ['ROLE_USER']), $provider->loadUserByUsername("user\0bar@example.com"));
+        static::assertEquals(new SecurityUser(self::ADMIN_ID1, 'maybe', true, ['ROLE_USER', 'ROLE_ADMIN']), $provider->loadUserByUsername("admin\0foobar@example.com"));
+        static::assertEquals(new SecurityUser(self::ADMIN_ID2, 'nope3', true, ['ROLE_USER', 'ROLE_ADMIN']), $provider->loadUserByUsername("admin\0moo@example.com"));
+    }
+
+    private function createUserRepositoryStub(): UserRepositoryMock
+    {
+        return new UserRepositoryMock([
+            User::register(UserId::fromString(self::USER_ID1), new EmailAddress('foobar@example.com'), 'He', 'maybe'),
+            User::register(UserId::fromString(self::USER_ID2), new EmailAddress('bar@example.com'), 'He', 'maybe'),
+            User::register(UserId::fromString(self::USER_ID3), new EmailAddress('foo@example.com'), 'He', 'nope2'),
+        ]);
+    }
+
+    private function createAdminRepositoryStub(): AdministratorRepositoryMock
+    {
+        return new AdministratorRepositoryMock([
+            Administrator::register(AdministratorId::fromString(self::ADMIN_ID1), new EmailAddress('foobar@example.com'), 'He', 'maybe'),
+            Administrator::register(AdministratorId::fromString(self::ADMIN_ID2), new EmailAddress('moo@example.com'), 'He', 'nope3'),
+        ]);
     }
 
     /** @test */
     public function it_refreshes_a_security_user(): void
     {
-        $provider = new UserProvider($this->createSingleUserFinderStub(), User::class);
+        $provider = new UserProvider($userRepo = $this->createUserRepositoryStub(), $adminRepo = $this->createAdminRepositoryStub());
 
-        static::assertEquals(new User('1', '', true, ['ROLE_USER2']), $provider->refreshUser($provider->loadUserByUsername('foobar@example.com')));
-        static::assertEquals(new User('2', 'maybe', false, ['ROLE_USER2']), $provider->refreshUser($provider->loadUserByUsername('bar@example.com')));
-        static::assertEquals(new User('3', 'nope2', true, ['ROLE_USER2']), $provider->refreshUser($provider->loadUserByUsername('foo@example.com')));
-        static::assertEquals(new User('4', 'nope2', true, ['ROLE_USER2', 'ROLE_RESELLER2']), $provider->refreshUser($provider->loadUserByUsername('moo@example.com')));
-    }
+        $securityUser = $provider->loadUserByUsername("user\0foobar@example.com");
+        $user = $userRepo->get(UserId::fromString(self::USER_ID1));
+        $user->changePassword('new-password-is-here');
+        $userRepo->save($user);
 
-    private function createSingleUserFinderStub(): AuthenticationFinder
-    {
-        return new class() implements AuthenticationFinder {
-            public function findAuthenticationByEmail(string $email): ?SecurityUser
-            {
-                if ($email === 'foobar@example.com') {
-                    return new User('1', 'maybe', true, ['ROLE_USER']);
-                }
+        static::assertEquals(new SecurityUser(self::USER_ID1, 'new-password-is-here', true, ['ROLE_USER']), $provider->refreshUser($securityUser));
 
-                if ($email === 'bar@example.com') {
-                    return new User('2', '', true, ['ROLE_USER']);
-                }
+        $securityUser = $provider->loadUserByUsername("admin\0moo@example.com");
+        $admin = $adminRepo->get(AdministratorId::fromString(self::ADMIN_ID2));
+        $admin->disableLogin();
+        $adminRepo->save($admin);
 
-                if ($email === 'foo@example.com') {
-                    return new User('3', 'nope', false, ['ROLE_USER']);
-                }
-
-                if ($email === 'moo@example.com') {
-                    return new User('4', 'nope', true, ['ROLE_USER', 'ROLE_RESELLER']);
-                }
-
-                return null;
-            }
-
-            public function findAuthenticationById(string $id): ?SecurityUser
-            {
-                if ($id === '1') {
-                    return new User('1', '', true, ['ROLE_USER2']);
-                }
-
-                if ($id === '2') {
-                    return new User('2', 'maybe', false, ['ROLE_USER2']);
-                }
-
-                if ($id === '3') {
-                    return new User('3', 'nope2', true, ['ROLE_USER2']);
-                }
-
-                if ($id === '4') {
-                    return new User('4', 'nope2', true, ['ROLE_USER2', 'ROLE_RESELLER2']);
-                }
-
-                return null;
-            }
-        };
+        static::assertEquals(new SecurityUser(self::ADMIN_ID2, 'nope3', false, ['ROLE_USER', 'ROLE_ADMIN']), $provider->refreshUser($securityUser));
     }
 }

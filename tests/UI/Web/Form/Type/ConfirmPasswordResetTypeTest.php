@@ -12,7 +12,6 @@ namespace ParkManager\Tests\UI\Web\Form\Type;
 
 use Closure;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
-use ParkManager\Infrastructure\Security\User;
 use ParkManager\Tests\Form\TransformationFailureExtension;
 use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHashFactory;
@@ -85,7 +84,6 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         $token = $this->splitTokenFactory->fromString(FakeSplitTokenFactory::FULL_TOKEN);
         $form = $this->factory->create(ConfirmPasswordResetType::class, ['reset_token' => $token], [
             'command_factory' => $this->getCommandBuilder(),
-            'user_class' => User::class,
             'request_route' => 'request_password_reset',
         ]);
         $form->submit([
@@ -106,7 +104,6 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     {
         $form = $this->factory->create(ConfirmPasswordResetType::class, null, [
             'command_factory' => $this->getCommandBuilder(),
-            'user_class' => User::class,
         ]);
 
         static::assertFalse($form->isSubmitted());
@@ -118,7 +115,6 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     {
         $form = $this->factory->create(ConfirmPasswordResetType::class, ['reset_token' => 'NopeNopeNopeNopeNope'], [
             'command_factory' => $this->getCommandBuilder(),
-            'user_class' => User::class,
             'request_route' => 'request_password_reset',
         ]);
         $form->submit([
@@ -150,7 +146,6 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         $token = $this->splitTokenFactory->fromString(FakeSplitTokenFactory::FULL_TOKEN);
         $form = $this->factory->create(ConfirmPasswordResetType::class, ['reset_token' => $token], [
             'command_factory' => $this->getCommandBuilder(),
-            'user_class' => User::class,
             'request_route' => 'request_password_reset',
         ]);
         $form->submit([

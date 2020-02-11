@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
-use ParkManager\Infrastructure\Security\User as SecurityUser;
+use ParkManager\Infrastructure\Security\SecurityUser;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
 

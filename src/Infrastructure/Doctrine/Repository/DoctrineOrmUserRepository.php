@@ -18,14 +18,12 @@ use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
-use ParkManager\Infrastructure\Security\AuthenticationFinder;
-use ParkManager\Infrastructure\Security\SecurityUser;
 
 /**
  * @method User find($id, $lockMode = null, $lockVersion = null)
  * @method User findOneBy(array $criteria, array $orderBy = null)
  */
-class DoctrineOrmUserRepository extends EntityRepository implements UserRepository, AuthenticationFinder
+class DoctrineOrmUserRepository extends EntityRepository implements UserRepository
 {
     public function __construct(EntityManagerInterface $entityManager, string $className = User::class)
     {
@@ -96,37 +94,5 @@ class DoctrineOrmUserRepository extends EntityRepository implements UserReposito
         }
 
         return $user;
-    }
-
-    public function findAuthenticationByEmail(string $email): ?SecurityUser
-    {
-        /** @var User $user */
-        $user = $this->createQueryBuilder('u')
-            ->where('u.email.canonical = :email')
-            ->getQuery()
-            ->setParameter('email', $email)
-            ->getOneOrNullResult();
-
-        if ($user !== null) {
-            return $user->toSecurityUser();
-        }
-
-        return null;
-    }
-
-    public function findAuthenticationById(string $id): ?SecurityUser
-    {
-        /** @var User $user */
-        $user = $this->createQueryBuilder('u')
-            ->where('u.id = :id')
-            ->getQuery()
-            ->setParameter('id', $id)
-            ->getOneOrNullResult();
-
-        if ($user !== null) {
-            return $user->toSecurityUser();
-        }
-
-        return null;
     }
 }

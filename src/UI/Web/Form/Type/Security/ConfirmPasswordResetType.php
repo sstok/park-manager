@@ -47,7 +47,6 @@ final class ConfirmPasswordResetType extends AbstractType
                 'password_confirm' => true,
                 'label' => false,
                 'password_constraints' => $options['password_constraints'],
-                'user_class' => $options['user_class'],
             ]);
     }
 
@@ -67,7 +66,6 @@ final class ConfirmPasswordResetType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setRequired(['user_class'])
             ->setDefault('password_constraints', [])
             ->setDefault('request_route', null)
             ->setDefault('disable_entity_mapping', true)
@@ -87,7 +85,6 @@ final class ConfirmPasswordResetType extends AbstractType
                     return new FormError('password_reset.access_disabled', null, [], null, $e);
                 },
             ])
-            ->setAllowedTypes('user_class', ['string'])
             ->setAllowedTypes('password_constraints', ['array', Constraint::class])
             ->setAllowedTypes('request_route', ['string', 'null']);
     }

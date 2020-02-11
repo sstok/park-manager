@@ -17,16 +17,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * The SecurityUser wraps around a User-model and keeps only
  * the information related to authentication.
- *
- * To ensure password-encoders work properly this class must to be extended
- * for each each user-type (User and Administrator).
  */
-abstract class SecurityUser implements UserInterface, EquatableInterface, Serializable
+final class SecurityUser implements UserInterface, EquatableInterface, Serializable
 {
-    protected $username;
-    protected $password;
-    protected $roles;
-    protected $enabled;
+    private $username;
+    private $password;
+    private $roles;
+    private $enabled;
 
     /**
      * @param string[] $roles
@@ -101,7 +98,7 @@ abstract class SecurityUser implements UserInterface, EquatableInterface, Serial
      */
     public function isEqualTo(UserInterface $user): bool
     {
-        if (\get_class($user) !== static::class) {
+        if (! $user instanceof self) {
             return false;
         }
 
@@ -119,5 +116,15 @@ abstract class SecurityUser implements UserInterface, EquatableInterface, Serial
         }
 
         return ! ($user->isEnabled() !== $this->isEnabled());
+    }
+
+    public function isAdmin(): bool
+    {
+        return \in_array('ROLE_ADMIN', $this->getRoles(), true);
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->isAdmin() && \in_array('ROLE_SUPER_ADMIN', $this->getRoles(), true);
     }
 }

@@ -147,7 +147,7 @@ final class AdministratorTest extends TestCase
         $user->addRole('ROLE_SUPER_ADMIN');
         $user->addRole('ROLE_SUPER_ADMIN'); // Ensure there're no duplicates
 
-        static::assertEquals(['ROLE_ADMIN', 'ROLE_SUPER_ADMIN'], $user->getRoles());
+        static::assertEquals(['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'], $user->getRoles());
         static::assertTrue($user->hasRole('ROLE_ADMIN'));
         static::assertTrue($user->hasRole('ROLE_SUPER_ADMIN'));
     }

@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\User\Exception;
 
-use InvalidArgumentException;
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\Exception\NotFoundException;
 use ParkManager\Domain\User\UserId;
 
-final class UserNotFound extends InvalidArgumentException
+final class UserNotFound extends NotFoundException
 {
     public static function withId(UserId $userId): self
     {

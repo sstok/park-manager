@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Security;
 
+use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,19 +30,15 @@ final class SecurityUserHashedPasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setRequired(['user_class'])
             ->setDefault('algorithm', function (Options $options) {
-                $userClass = $options['user_class'];
-
-                return function ($value) use ($userClass) {
-                    $encoded = $this->encoderFactory->getEncoder($userClass)->encodePassword($value, '');
+                return function (string $value) {
+                    $encoded = $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword($value, '');
 
                     memzero($value);
 
                     return $encoded;
                 };
-            })
-            ->setAllowedTypes('user_class', ['string']);
+            });
     }
 
     public function getParent(): ?string

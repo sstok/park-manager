@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Security;
 
+use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,7 +41,6 @@ final class ChangePasswordType extends AbstractType
             }
         }, 100);
 
-        $userClass = $options['user_class'];
         $builder
             ->add('password', HashedPasswordType::class, [
                 'required' => true,
@@ -48,8 +48,8 @@ final class ChangePasswordType extends AbstractType
                 'password_options' => [
                     'constraints' => $options['password_constraints'],
                 ],
-                'algorithm' => function (string $value) use ($userClass) {
-                    $encoded = $this->encoderFactory->getEncoder($userClass)->encodePassword($value, '');
+                'algorithm' => function (string $value) {
+                    $encoded = $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword($value, '');
 
                     memzero($value);
 
@@ -61,10 +61,8 @@ final class ChangePasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setRequired(['user_class'])
             ->setDefault('password_constraints', [])
             ->setDefault('empty_data', null)
-            ->setAllowedTypes('user_class', ['string'])
             ->setAllowedTypes('password_constraints', [Constraint::class . '[]', Constraint::class]);
     }
 

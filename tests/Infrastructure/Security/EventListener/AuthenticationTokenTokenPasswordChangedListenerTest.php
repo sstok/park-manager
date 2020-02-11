@@ -68,9 +68,9 @@ final class AuthenticationTokenTokenPasswordChangedListenerTest extends TestCase
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
     }
 
-    private function createUser1(): TestSecurityUser
+    private function createUser1(): SecurityUser
     {
-        return new TestSecurityUser(self::ID1, 'pass-north', true, ['ROLE_USER']);
+        return new SecurityUser(self::ID1, 'pass-north', true, ['ROLE_USER']);
     }
 
     /** @test */
@@ -94,7 +94,7 @@ final class AuthenticationTokenTokenPasswordChangedListenerTest extends TestCase
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
     }
 
-    private function createUserProviderExpectsCurrentUser(TestSecurityUser $currentUser, TestSecurityUser $user): UserProviderInterface
+    private function createUserProviderExpectsCurrentUser(SecurityUser $currentUser, SecurityUser $user): UserProviderInterface
     {
         $userProviderProphecy = $this->prophesize(UserProviderInterface::class);
         $userProviderProphecy->refreshUser($currentUser)->willReturn($user)->shouldBeCalled();
@@ -102,16 +102,16 @@ final class AuthenticationTokenTokenPasswordChangedListenerTest extends TestCase
         return $userProviderProphecy->reveal();
     }
 
-    private function createUser1Disabled(): TestSecurityUser
+    private function createUser1Disabled(): SecurityUser
     {
-        return new TestSecurityUser(self::ID1, 'pass-north', false, ['ROLE_USER']);
+        return new SecurityUser(self::ID1, 'pass-north', false, ['ROLE_USER']);
     }
 
     /** @test */
     public function it_only_updates_token_when_current_user(): void
     {
         $userProvider = $this->createUserProvider();
-        $currentUser = new TestSecurityUser(self::ID2, 'pass-north', true, ['ROLE_USER']);
+        $currentUser = new SecurityUser(self::ID2, 'pass-north', true, ['ROLE_USER']);
         $tokenStorage = $this->createProvidingOnlyTokenStorage(new PostAuthenticationGuardToken($currentUser, 'main', ['ROLE_USER']));
 
         $listener = new AuthenticationTokenTokenPasswordChangedListener($userProvider, $tokenStorage);
@@ -140,8 +140,4 @@ final class AuthenticationTokenTokenPasswordChangedListenerTest extends TestCase
 
         return $tokenStorageProphecy->reveal();
     }
-}
-
-class TestSecurityUser extends SecurityUser
-{
 }
