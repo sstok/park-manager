@@ -48,7 +48,7 @@ final class RequestEmailAddressChangeTest extends TestCase
             FakeSplitTokenFactory::instance()
         );
 
-        $handler(new RequestEmailAddressChange(self::USER_ID, 'John2@example.com'));
+        $handler(new RequestEmailAddressChange(UserRepositoryMock::USER_ID1, 'John2@example.com'));
 
         $repository->assertEntitiesWereSaved();
         $token = $user->getEmailAddressChangeToken();

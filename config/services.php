@@ -10,12 +10,24 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use ParkManager\Domain\Administrator\Administrator;
+use ParkManager\Domain\Administrator\AdministratorId;
+use ParkManager\Domain\Administrator\AdministratorRepository;
+use ParkManager\Domain\User\User;
+use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\User\UserRepository;
+use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
+use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameRepository;
+use ParkManager\Domain\Webhosting\Space\Space;
+use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 use ParkManager\Infrastructure\Doctrine\ConstraintsTypeConfigurator;
 use ParkManager\Infrastructure\Doctrine\Repository\WebhostingSpaceOrmRepository;
 use ParkManager\Infrastructure\Doctrine\Repository\SharedConstraintSetOrmRepository;
 use ParkManager\Infrastructure\Security\Guard\FormAuthenticator;
 use ParkManager\Infrastructure\Security\UserProvider;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintsFactory;
+use ParkManager\UI\Web\ArgumentResolver\ModelResolver;
+use ParkManager\UI\Web\ArgumentResolver\SplitTokenResolver;
 use Rollerworks\Component\SplitToken\Argon2SplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
 
@@ -47,6 +59,27 @@ return static function (ContainerConfigurator $c): void {
             __DIR__ . '/../src/Infrastructure/Security/*User.php',
             __DIR__ . '/../src/UI/Web/Form/{ConfirmationHandler,DataTransformer,DataMapper}',
             __DIR__ . '/../src/UI/Web/Response',
+        ]);
+
+    $di->get(SplitTokenResolver::class)
+        ->tag('controller.argument_value_resolver', ['priority' => 255])
+        ->autoconfigure(false);
+
+    $di->get(ModelResolver::class)
+        ->tag('controller.argument_value_resolver', ['priority' => 255])
+        ->autoconfigure(false)
+        ->args([
+            service_locator([
+                Administrator::class => ref(AdministratorRepository::class),
+                User::class => ref(UserRepository::class),
+                Space::class => ref(WebhostingSpaceRepository::class),
+                WebhostingDomainNameId::class => ref(WebhostingDomainNameRepository::class),
+            ]),
+            [
+                AdministratorId::class => 'fromString',
+                UserId::class => 'fromString',
+                WebhostingDomainNameId::class => 'fromString',
+            ],
         ]);
 
     $di->set(Argon2SplitTokenFactory::class);

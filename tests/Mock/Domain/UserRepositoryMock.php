@@ -23,7 +23,7 @@ final class UserRepositoryMock implements UserRepository
     /** @use MockRepository<User> */
     use MockRepository;
 
-    public const USER_ID1 = '01dd5964-5426-11e7-be03-acbc32b58315';
+    public const USER_ID1 = 'dba1f6a0-3c5e-4cc2-9d10-2b8ddf3ce605';
 
     protected function getFieldsIndexMapping(): array
     {
