@@ -13,6 +13,9 @@ namespace ParkManager\Tests\Infrastructure\Doctrine;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * @group functional
+ */
 abstract class EntityRepositoryTestCase extends KernelTestCase
 {
     protected function setUp(): void

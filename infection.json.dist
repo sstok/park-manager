@@ -5,7 +5,8 @@
             "src"
         ],
         "excludes": [
-            "\/tests"
+            "\/tests",
+            "src\/UI\/Web\/Action"
         ]
     },
     "logs": {
@@ -16,5 +17,6 @@
         "IdenticalEqual": false,
         "NotIdenticalNotEqual": false,
         "This": false
-    }
+    },
+    "testFrameworkOptions": "--exclude-group functional"
 }

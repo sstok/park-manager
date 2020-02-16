@@ -16,6 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * @internal
+ *
+ * @group functional
  */
 final class ConfirmPasswordResetActionTest extends WebTestCase
 {

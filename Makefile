@@ -65,12 +65,13 @@ psalm: ensure
 	sh -c "${QA_DOCKER_COMMAND} vendor/bin/psalm --show-info=false"
 
 infection: ensure
-	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr vendor/bin/phpunit --verbose --log-junit=var/phpunit.junit.xml --coverage-xml var/coverage-xml/"
+	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --log-junit=var/junit.xml --coverage-xml var/coverage-xml/"
 	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr /tools/infection run --verbose --show-mutations --no-interaction --only-covered --coverage var/ --min-msi=84 --min-covered-msi=84"
 
 phpunit-coverage: ensure
+	docker-compose run --rm php bin/console cache:clear --env=test
 	docker-compose run --rm php make db-fixtures
-	docker-compose run --rm php phpdbg -qrr vendor/bin/phpunit --verbose --exclude-group "" --coverage-text --log-junit=var/phpunit.junit.xml --coverage-xml var/coverage-xml/
+	docker-compose run --rm php phpdbg -qrr vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --exclude-group "" --coverage-text --log-junit=var/phpunit.junit.xml --coverage-xml var/coverage-xml/
 
 db-fixtures:
 	bin/console doctrine:database:drop --force || true
@@ -80,8 +81,9 @@ db-fixtures:
 	bin/console doctrine:fixtures:load --no-interaction
 
 phpunit:
+	docker-compose run --rm php bin/console cache:clear --env=test
 	docker-compose run --rm php make db-fixtures
-	docker-compose run --rm php phpunit --verbose --exclude-group ""
+	docker-compose run --rm php vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --exclude-group ""
 
 ensure:
 	mkdir -p ${HOME}/.composer /tmp/tmp-phpqa-$(shell id -u)
