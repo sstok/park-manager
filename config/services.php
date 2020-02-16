@@ -24,6 +24,7 @@ use ParkManager\Infrastructure\Doctrine\ConstraintsTypeConfigurator;
 use ParkManager\Infrastructure\Doctrine\Repository\WebhostingSpaceOrmRepository;
 use ParkManager\Infrastructure\Doctrine\Repository\SharedConstraintSetOrmRepository;
 use ParkManager\Infrastructure\Security\Guard\FormAuthenticator;
+use ParkManager\Infrastructure\Security\PermissionExpressionProvider;
 use ParkManager\Infrastructure\Security\UserProvider;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintsFactory;
 use ParkManager\UI\Web\ArgumentResolver\ModelResolver;
@@ -57,9 +58,13 @@ return static function (ContainerConfigurator $c): void {
             __DIR__ . '/../src/Application/{Command,Event}',
             __DIR__ . '/../src/Infrastructure/Doctrine',
             __DIR__ . '/../src/Infrastructure/Security/*User.php',
+            __DIR__ . '/../src/Infrastructure/Security/Permission',
             __DIR__ . '/../src/UI/Web/Form/{ConfirmationHandler,DataTransformer,DataMapper}',
             __DIR__ . '/../src/UI/Web/Response',
         ]);
+
+    $di->load('ParkManager\\Infrastructure\\Security\\Permission\\', __DIR__ . '/../src/Infrastructure/Security/Permission/**/*Decider.php')
+        ->tag('park_manager.security.permission_decider');
 
     $di->get(SplitTokenResolver::class)
         ->tag('controller.argument_value_resolver', ['priority' => 255])
@@ -97,4 +102,8 @@ return static function (ContainerConfigurator $c): void {
     // -- Security
     $di->set('park_manager.security.user_provider', UserProvider::class);
     $di->set('park_manager.security.guard.form', FormAuthenticator::class);
+
+    $di->set(PermissionExpressionProvider::class)
+        ->tag('security.expression_language_provider')
+        ->autoconfigure(false);
 };

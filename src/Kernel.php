@@ -10,8 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager;
 
+use ParkManager\Infrastructure\DependencyInjection\Compiler\PermissionDeciderPass;
+use ParkManager\Infrastructure\DependencyInjection\Compiler\PermissionShortAliasPass;
+use ParkManager\Infrastructure\Security\PermissionDecider;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -34,4 +38,13 @@ class Kernel extends BaseKernel
         $routes->import('../config/{routes}/*.yaml');
         $routes->import('../config/routes.php')->schemes(['https']);
     }
+
+    protected function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new PermissionDeciderPass());
+        $container->addCompilerPass(new PermissionShortAliasPass());
+        $container->registerForAutoconfiguration(PermissionDecider::class)
+            ->addTag('park_manager.security.permission_decider'); // Needs CompilerPass
+    }
+
 }
