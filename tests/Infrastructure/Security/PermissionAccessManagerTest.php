@@ -35,7 +35,7 @@ final class PermissionAccessManagerTest extends TestCase
         $tokenStorage = $this->createTokenStorage();
         $manager = new PermissionAccessManager($tokenStorage, new Container(), []);
 
-        self::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide($this->createMock(Permission::class), null));
+        static::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide($this->createMock(Permission::class), null));
     }
 
     private function createTokenStorage(?TokenInterface $token = null): TokenStorageInterface
@@ -53,7 +53,7 @@ final class PermissionAccessManagerTest extends TestCase
         $tokenStorage = $this->createTokenStorage(null);
         $manager = new PermissionAccessManager($tokenStorage, new Container(), []);
 
-        self::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide($this->createMock(Permission::class), $token));
+        static::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide($this->createMock(Permission::class), $token));
     }
 
     private function createToken(bool $authenticated, $user = null): TokenInterface
@@ -71,7 +71,7 @@ final class PermissionAccessManagerTest extends TestCase
         $tokenStorage = $this->createTokenStorage($this->createToken(false));
         $manager = new PermissionAccessManager($tokenStorage, new Container(), []);
 
-        self::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide($this->createMock(Permission::class), null));
+        static::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide($this->createMock(Permission::class), null));
     }
 
     /** @test */
@@ -80,7 +80,7 @@ final class PermissionAccessManagerTest extends TestCase
         $tokenStorage = $this->createTokenStorage($this->createToken(true, 'Admin'));
         $manager = new PermissionAccessManager($tokenStorage, new Container(), []);
 
-        self::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide($this->createMock(Permission::class), null));
+        static::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide($this->createMock(Permission::class), null));
     }
 
     /** @test */
@@ -99,8 +99,8 @@ final class PermissionAccessManagerTest extends TestCase
         });
         $manager = new PermissionAccessManager($tokenStorage, $deciders, []);
 
-        self::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new MockPermission(PermissionDecider::DECIDE_ALLOW), null));
-        self::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide(new MockPermission(PermissionDecider::DECIDE_DENY), null));
+        static::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new MockPermission(PermissionDecider::DECIDE_ALLOW), null));
+        static::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide(new MockPermission(PermissionDecider::DECIDE_DENY), null));
     }
 
     /** @test */
@@ -109,8 +109,8 @@ final class PermissionAccessManagerTest extends TestCase
         $tokenStorage = $this->createTokenStorage($this->createToken(true, new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER'])));
         $manager = new PermissionAccessManager($tokenStorage, new Container(), []);
 
-        self::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new MockSelfPermission(PermissionDecider::DECIDE_ALLOW), null));
-        self::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide(new MockSelfPermission(PermissionDecider::DECIDE_DENY), null));
+        static::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new MockSelfPermission(PermissionDecider::DECIDE_ALLOW), null));
+        static::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide(new MockSelfPermission(PermissionDecider::DECIDE_DENY), null));
     }
 
     /** @test */
@@ -129,8 +129,8 @@ final class PermissionAccessManagerTest extends TestCase
         });
         $manager = new PermissionAccessManager($tokenStorage, $deciders, []);
 
-        self::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new MockAliasedPerission(PermissionDecider::DECIDE_ALLOW), null));
-        self::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide(new MockAliasedPerission(PermissionDecider::DECIDE_DENY), null));
+        static::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new MockAliasedPerission(PermissionDecider::DECIDE_ALLOW), null));
+        static::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide(new MockAliasedPerission(PermissionDecider::DECIDE_DENY), null));
     }
 
     /** @test */
@@ -149,8 +149,8 @@ final class PermissionAccessManagerTest extends TestCase
         });
         $manager = new PermissionAccessManager($tokenStorage, $deciders, ['is_owner' => MockAliasedPerission::class]);
 
-        self::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new PermissionExpression('is_owner', PermissionDecider::DECIDE_ALLOW), null));
-        self::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new PermissionExpression(MockPermission::class, PermissionDecider::DECIDE_ALLOW), null));
+        static::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new PermissionExpression('is_owner', PermissionDecider::DECIDE_ALLOW), null));
+        static::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new PermissionExpression(MockPermission::class, PermissionDecider::DECIDE_ALLOW), null));
     }
 
     /** @test */

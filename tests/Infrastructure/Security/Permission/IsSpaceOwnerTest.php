@@ -37,7 +37,7 @@ final class IsSpaceOwnerTest extends TestCase
         $token = $this->createAuthenticationToken($securityUser);
 
         $permission = new IsSpaceOwner(Space::registerWithCustomConstraints(WebhostingSpaceId::create(), null, new Constraints()));
-        self::assertEquals(PermissionDecider::DECIDE_DENY, $permission($token, $securityUser, $this->createMock(PermissionAccessManager::class)));
+        static::assertEquals(PermissionDecider::DECIDE_DENY, $permission($token, $securityUser, $this->createMock(PermissionAccessManager::class)));
     }
 
     private function createAuthenticationToken(SecurityUser $securityUser): AbstractToken
@@ -55,7 +55,7 @@ final class IsSpaceOwnerTest extends TestCase
         $token = $this->createAuthenticationToken($securityUser);
 
         $permission = new IsSpaceOwner(Space::registerWithCustomConstraints(WebhostingSpaceId::create(), null, new Constraints()));
-        self::assertEquals(PermissionDecider::DECIDE_ALLOW, $permission($token, $securityUser, $this->createMock(PermissionAccessManager::class)));
+        static::assertEquals(PermissionDecider::DECIDE_ALLOW, $permission($token, $securityUser, $this->createMock(PermissionAccessManager::class)));
     }
 
     /** @test */
@@ -65,7 +65,7 @@ final class IsSpaceOwnerTest extends TestCase
         $token = $this->createAuthenticationToken($securityUser);
 
         $permission = new IsSpaceOwner(Space::registerWithCustomConstraints(WebhostingSpaceId::create(), $this->getUser(), new Constraints()));
-        self::assertEquals(PermissionDecider::DECIDE_ALLOW, $permission($token, $securityUser, $this->createMock(PermissionAccessManager::class)));
+        static::assertEquals(PermissionDecider::DECIDE_ALLOW, $permission($token, $securityUser, $this->createMock(PermissionAccessManager::class)));
     }
 
     /** @test */
@@ -75,7 +75,7 @@ final class IsSpaceOwnerTest extends TestCase
         $token = $this->createAuthenticationToken($securityUser);
 
         $permission = new IsSpaceOwner(Space::registerWithCustomConstraints(WebhostingSpaceId::create(), $this->getUser(), new Constraints()));
-        self::assertEquals(PermissionDecider::DECIDE_ABSTAIN, $permission($token, $securityUser, $this->createMock(PermissionAccessManager::class)));
+        static::assertEquals(PermissionDecider::DECIDE_ABSTAIN, $permission($token, $securityUser, $this->createMock(PermissionAccessManager::class)));
     }
 
     private function getUser(): User

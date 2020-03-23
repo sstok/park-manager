@@ -19,10 +19,10 @@ final class PermissionExpressionProvider implements ExpressionFunctionProviderIn
     {
         return [
             new ExpressionFunction('permission', function ($arg) {
-                return sprintf('new \ParkManager\Infrastructure\Security\PermissionExpression(%s)', implode(', ', \func_get_args()));
+                return \sprintf('new \ParkManager\Infrastructure\Security\PermissionExpression(%s)', \implode(', ', \func_get_args()));
             }, function (array $variables, string $name, ...$arguments) {
                 return new PermissionExpression($name, ...$arguments);
-            })
+            }),
         ];
     }
 }

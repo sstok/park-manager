@@ -39,12 +39,11 @@ class Kernel extends BaseKernel
         $routes->import('../config/routes.php')->schemes(['https']);
     }
 
-    protected function build(ContainerBuilder $container)
+    protected function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new PermissionDeciderPass());
         $container->addCompilerPass(new PermissionShortAliasPass());
         $container->registerForAutoconfiguration(PermissionDecider::class)
             ->addTag('park_manager.security.permission_decider'); // Needs CompilerPass
     }
-
 }

@@ -24,7 +24,7 @@ final class PermissionDeciderPass implements CompilerPassInterface
         $collected = [];
 
         foreach ($container->findTaggedServiceIds('park_manager.security.permission_decider') as $serviceId => $tags) {
-            $className = substr($container->getDefinition($serviceId)->getClass(), 0, -7);
+            $className = \mb_substr($container->getDefinition($serviceId)->getClass(), 0, -7);
 
             $collected[$className] = new Reference($serviceId);
         }

@@ -17,7 +17,7 @@ namespace ParkManager\Infrastructure\Security;
  */
 final class PermissionExpression implements Permission
 {
-    /** @var string  */
+    /** @var string */
     public $name;
 
     /** @var array<int,mixed> */

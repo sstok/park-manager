@@ -14,7 +14,6 @@ use Psr\Container\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\RuntimeException;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @final
@@ -75,12 +74,12 @@ class PermissionAccessManager
             $class = $permission->getAlias();
         }
 
-        return ltrim($class, '\\');
+        return \ltrim($class, '\\');
     }
 
     private function resolvePermissionExpression(PermissionExpression $permission): Permission
     {
-        if (strpos($permission->name, '\\') !== false) {
+        if (\mb_strpos($permission->name, '\\') !== false) {
             return new $permission->name(...$permission->arguments);
         }
 
@@ -91,18 +90,18 @@ class PermissionAccessManager
         $name = $permission->name;
         $candidates = [];
 
-        foreach (array_keys($this->permissionsShortNames) as $shortName) {
-            if (strpos($shortName, $name) !== false || (levenshtein($name, $shortName) <= \strlen($name) / 3)) {
+        foreach (\array_keys($this->permissionsShortNames) as $shortName) {
+            if (\mb_strpos($shortName, $name) !== false || (\levenshtein($name, $shortName) <= \mb_strlen($name) / 3)) {
                 $candidates[] = $shortName;
             }
         }
 
         if ($candidates) {
-            sort($candidates);
+            \sort($candidates);
 
-            $message = sprintf("\nDid you e.g. mean \"%s\"", implode('", "', $candidates));
+            $message = \sprintf("\nDid you e.g. mean \"%s\"", \implode('", "', $candidates));
         } else {
-            $message = sprintf("\nSupported \"%s\"", implode('", "', array_keys($this->permissionsShortNames)));
+            $message = \sprintf("\nSupported \"%s\"", \implode('", "', \array_keys($this->permissionsShortNames)));
         }
 
         throw new RuntimeException(\sprintf('No Permission can be found for short-name "%s".', $permission->name) . $message);
