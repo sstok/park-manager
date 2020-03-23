@@ -543,11 +543,20 @@
             "tests/.gitignore"
         ]
     },
+    "symfony/polyfill-intl-grapheme": {
+        "version": "1.15-dev"
+    },
     "symfony/polyfill-intl-idn": {
         "version": "1.13.x-dev"
     },
+    "symfony/polyfill-intl-normalizer": {
+        "version": "1.15-dev"
+    },
     "symfony/polyfill-php73": {
         "version": "1.13.x-dev"
+    },
+    "symfony/polyfill-php80": {
+        "version": "1.15-dev"
     },
     "symfony/process": {
         "version": "5.1.x-dev"
@@ -610,6 +619,9 @@
     },
     "symfony/stopwatch": {
         "version": "5.1.x-dev"
+    },
+    "symfony/string": {
+        "version": "5.1-dev"
     },
     "symfony/translation": {
         "version": "3.3",
