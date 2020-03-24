@@ -68,6 +68,7 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
             'email' => $email,
             'password' => $request->request->get('_password'),
             'type' => $request->request->getBoolean('_admin', false) ? 'admin' : 'user',
+            'csrf_token' => $request->request->get('_csrf_token'),
         ];
     }
 
@@ -81,6 +82,10 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
 
         if ($email === null || ! \is_string($email)) {
             return null;
+        }
+
+        if (! $this->csrfTokenManager->isTokenValid(new CsrfToken('authenticate', $credentials['csrf_token']))) {
+            throw new InvalidCsrfTokenException();
         }
 
         return $userProvider->loadUserByUsername($credentials['type'] . "\0" . $email);
