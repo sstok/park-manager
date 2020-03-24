@@ -12,15 +12,15 @@ namespace ParkManager\DataFixtures\ORM;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use ParkManager\Application\Command\Administrator\RegisterAdministrator;
 use ParkManager\Application\Command\BatchCommand;
-use ParkManager\Application\Command\User\RegisterUser;
+use ParkManager\Domain\Administrator\AdministratorId;
 use ParkManager\Domain\EmailAddress;
-use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-final class UserFixtures extends Fixture
+final class AdminFixtures extends Fixture
 {
     /** @var MessageBusInterface */
     private $commandBus;
@@ -38,8 +38,8 @@ final class UserFixtures extends Fixture
     {
         $this->commandBus->dispatch(
             new BatchCommand(
-                new RegisterUser(
-                    UserId::create(),
+                new RegisterAdministrator(
+                    AdministratorId::create(),
                     new EmailAddress('jane@example.com'),
                     'Janet, Doe',
                     $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword('&ltr@Sec3re!+', null)

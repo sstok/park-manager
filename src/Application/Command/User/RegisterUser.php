@@ -52,4 +52,9 @@ final class RegisterUser
         $this->displayName = $displayName;
         $this->password = $password;
     }
+
+    public static function with(string $id, string $email, string $displayName, ?string $password = null): self
+    {
+        return new static(UserId::fromString($id), new EmailAddress($email), $displayName, $password);
+    }
 }

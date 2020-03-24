@@ -46,11 +46,19 @@ final class RegisterAdministrator
     /**
      * @param string|null $password Null (no password) or an encoded password string (not plain)
      */
-    public function __construct(string $id, string $email, string $displayName, ?string $password = null)
+    public function __construct(AdministratorId $id, EmailAddress $email, string $displayName, ?string $password = null)
     {
-        $this->id = AdministratorId::fromString($id);
-        $this->email = new EmailAddress($email);
+        $this->id = $id;
+        $this->email = $email;
         $this->displayName = $displayName;
         $this->password = $password;
+    }
+
+    /**
+     * @param string|null $password Null (no password) or an encoded password string (not plain)
+     */
+    public static function with(string $id, string $email, string $displayName, ?string $password = null): self
+    {
+        return new static(AdministratorId::fromString($id), new EmailAddress($email), $displayName, $password);
     }
 }
