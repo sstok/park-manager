@@ -1,15 +1,11 @@
-ifndef BUILD_ENV
-BUILD_ENV=php7.3
-endif
-
 QA_DOCKER_IMAGE=parkmanager/phpqa:latest
-QA_DOCKER_COMMAND=docker run --init --interactive --tty --rm --env "COMPOSER_HOME=/composer" --user "$(shell id -u):$(shell id -g)" --volume /tmp/tmp-phpqa-$(shell id -u):/tmp:delegated --volume "$(shell pwd):/project:delegated" --volume "${HOME}/.composer:/composer:delegated" --workdir /project ${QA_DOCKER_IMAGE}
+QA_DOCKER_COMMAND=docker run --init -t --rm --env "COMPOSER_HOME=/composer" --user "$(shell id -u):$(shell id -g)" --volume /tmp/tmp-phpqa-$(shell id -u):/tmp:delegated --volume "$(shell pwd):/project:delegated" --volume "${HOME}/.composer:/composer:delegated" --workdir /project ${QA_DOCKER_IMAGE}
 
 install: composer-install
-dist: composer-validate cs phpstan psalm test
-ci: check test
+ci: install check test
 check: composer-validate lint-xml lint-yaml lint-twig cs-check phpstan psalm
-test: phpunit-coverage # infection
+test: phpunit
+test-coverage: infection
 
 clean:
 	rm -rf var/
@@ -17,7 +13,7 @@ clean:
 composer-validate: ensure
 	@echo "Validating local composer files"
 	@sh -c "${QA_DOCKER_COMMAND} composer validate"
-#	@sh -c "${QA_DOCKER_COMMAND} composer normalize"
+	@sh -c "${QA_DOCKER_COMMAND} composer normalize"
 
 lint-xml:
 	@echo "Validating XML files"
@@ -35,26 +31,19 @@ endif
 
 lint-yaml:
 	@echo "Validating YAML files"
-	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:yaml -vv config/"
+	docker-compose run --rm php php bin/console lint:yaml -vv config/
 
 lint-twig:
 	@echo "Validating Twig files"
-	@sh -c "${QA_DOCKER_COMMAND} php bin/console lint:twig -vv templates/"
+	docker-compose run --rm php php bin/console lint:twig -vv templates/
 
-composer-install: fetch ensure clean
-	sh -c "${QA_DOCKER_COMMAND} composer upgrade"
+composer-install: clean
+	docker-compose run --rm php composer install
 
-composer-install-dev: fetch ensure clean
-	rm -f composer.lock
-	cp composer.json _composer.json
-	sh -c "${QA_DOCKER_COMMAND} composer config minimum-stability dev"
-	sh -c "${QA_DOCKER_COMMAND} composer upgrade --no-progress --no-interaction --no-suggest --optimize-autoloader --ansi"
-	mv _composer.json composer.json
-
-cs:
+cs: ensure
 	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --using-cache=false --diff"
 
-cs-check:
+cs-check: ensure
 	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --diff --dry-run"
 	sh -c "docker-compose run --rm php vendor/bin/phpcs"
 
@@ -65,14 +54,15 @@ phpstan: ensure
 psalm: ensure
 	sh -c "${QA_DOCKER_COMMAND} vendor/bin/psalm --show-info=false"
 
-infection: ensure
-	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --log-junit=var/junit.xml --coverage-xml var/coverage-xml/"
-	sh -c "${QA_DOCKER_COMMAND} phpdbg -qrr /tools/infection run --verbose --show-mutations --no-interaction --only-covered --coverage var/ --min-msi=84 --min-covered-msi=84"
+phpunit:
+	docker-compose run --rm php make in-docker-phpunit
 
-phpunit-coverage: ensure
-	docker-compose run --rm php bin/console cache:clear --env=test
-	docker-compose run --rm php make db-fixtures
-	docker-compose run --rm php phpdbg -qrr vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --exclude-group "" --coverage-text --log-junit=var/phpunit.junit.xml --coverage-xml var/coverage-xml/
+infection: clean
+	docker-compose run --rm php make in-docker-infection
+
+##
+# Private targets
+##
 
 db-fixtures:
 	bin/console doctrine:database:drop --force || true
@@ -81,13 +71,24 @@ db-fixtures:
 	bin/console doctrine:schema:update --force
 	bin/console doctrine:fixtures:load --no-interaction
 
-phpunit:
-	docker-compose run --rm php bin/console cache:clear --env=test
-	docker-compose run --rm php make db-fixtures
-	docker-compose run --rm php vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --exclude-group ""
+in-docker-phpunit:
+	bin/console cache:clear --env=test
+	make db-fixtures
+	vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --exclude-group ""
+
+in-docker-infection:
+	bin/console cache:clear --env=test
+	make db-fixtures
+	phpdbg -qrr vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --exclude-group "" --coverage-text --log-junit=var/junit.xml --coverage-xml var/coverage-xml/
+	phpdbg -qrr /usr/local/bin/infection run --verbose --show-mutations --no-interaction --only-covered --coverage var/ --min-msi=84 --min-covered-msi=84
+
+fetch:
+	docker pull "${QA_DOCKER_IMAGE}"
 
 ensure:
 	mkdir -p ${HOME}/.composer /tmp/tmp-phpqa-$(shell id -u)
 
-fetch:
-	docker pull "${QA_DOCKER_IMAGE}"
+.PHONY: clean composer-validate lint-xml lint-yaml lint-twig
+.PHONY: composer-install cs cs-check phpstan psalm phpunit infection
+.PHONY: db-fixtures in-docker-phpunit in-docker-infection fetch ensure
+

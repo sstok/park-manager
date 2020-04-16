@@ -63,6 +63,11 @@ RUN set -eux; \
 	composer clear-cache
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
+RUN set -eux; \
+    wget https://github.com/infection/infection/releases/download/0.16.0/infection.phar; \
+	chmod +x infection.phar; \
+	mv infection.phar /usr/local/bin/infection
+
 WORKDIR /srv/www
 
 #RUN mkdir -p var/cache var/logs var/sessions \
