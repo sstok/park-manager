@@ -55,6 +55,6 @@ final class RegisterUser
 
     public static function with(string $id, string $email, string $displayName, ?string $password = null): self
     {
-        return new static(UserId::fromString($id), new EmailAddress($email), $displayName, $password);
+        return new self(UserId::fromString($id), new EmailAddress($email), $displayName, $password);
     }
 }

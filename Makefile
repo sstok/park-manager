@@ -59,6 +59,7 @@ cs-check:
 	sh -c "docker-compose run --rm php vendor/bin/phpcs"
 
 phpstan: ensure
+	docker-compose run --rm php bin/console cache:clear --env=dev
 	sh -c "${QA_DOCKER_COMMAND} phpstan analyse"
 
 psalm: ensure

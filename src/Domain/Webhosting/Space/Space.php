@@ -76,7 +76,7 @@ class Space
 
     public static function register(WebhostingSpaceId $id, ?User $owner, SharedConstraintSet $constraintSet): self
     {
-        $space = new static($id, $owner);
+        $space = new self($id, $owner);
         // Store the constraints as part of the webhosting space
         // the assigned constraints are immutable.
         $space->constraints = $constraintSet->getConstraints();
@@ -87,7 +87,7 @@ class Space
 
     public static function registerWithCustomConstraints(WebhostingSpaceId $id, ?User $owner, Constraints $constraints): self
     {
-        $space = new static($id, $owner);
+        $space = new self($id, $owner);
         $space->constraints = $constraints;
 
         return $space;

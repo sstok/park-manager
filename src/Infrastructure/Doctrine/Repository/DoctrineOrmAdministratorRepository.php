@@ -19,7 +19,7 @@ use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
 
 /**
- * @method Administrator find($id, $lockMode = null, $lockVersion = null)
+ * @method Administrator|null find($id, $lockMode = null, $lockVersion = null)
  */
 class DoctrineOrmAdministratorRepository extends EntityRepository implements AdministratorRepository
 {

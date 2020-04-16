@@ -110,7 +110,7 @@ class User
 
     public static function register(UserId $id, EmailAddress $email, string $displayName, ?string $password = null): self
     {
-        $user = new static($id, $email, $displayName);
+        $user = new self($id, $email, $displayName);
         $user->changePassword($password);
 
         return $user;

@@ -63,7 +63,7 @@ class WebhostingDomainName
 
     public static function registerPrimary(Space $space, DomainName $domainName): self
     {
-        $instance = new static($space, $domainName);
+        $instance = new self($space, $domainName);
         $instance->primary = true;
 
         return $instance;
@@ -71,7 +71,7 @@ class WebhostingDomainName
 
     public static function registerSecondary(Space $space, DomainName $domainName): self
     {
-        return new static($space, $domainName);
+        return new self($space, $domainName);
     }
 
     public function getId(): WebhostingDomainNameId

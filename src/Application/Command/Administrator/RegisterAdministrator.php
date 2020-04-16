@@ -59,6 +59,6 @@ final class RegisterAdministrator
      */
     public static function with(string $id, string $email, string $displayName, ?string $password = null): self
     {
-        return new static(AdministratorId::fromString($id), new EmailAddress($email), $displayName, $password);
+        return new self(AdministratorId::fromString($id), new EmailAddress($email), $displayName, $password);
     }
 }

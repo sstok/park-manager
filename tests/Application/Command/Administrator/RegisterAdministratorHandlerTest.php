@@ -33,7 +33,7 @@ final class RegisterAdministratorHandlerTest extends TestCase
         $repo = new AdministratorRepositoryMock();
         $handler = new RegisterAdministratorHandler($repo);
 
-        $command = new RegisterAdministrator(self::ID_NEW, 'John@example.com', 'My name', 'my-password');
+        $command = RegisterAdministrator::with(self::ID_NEW, 'John@example.com', 'My name', 'my-password');
         $handler($command);
 
         $repo->assertHasEntity(self::ID_NEW, static function (Administrator $administrator): void {
@@ -60,6 +60,6 @@ final class RegisterAdministratorHandlerTest extends TestCase
 
         $this->expectException(AdministratorEmailAddressAlreadyInUse::class);
 
-        $handler(new RegisterAdministrator(self::ID_NEW, 'John@example.com', 'My', null));
+        $handler(RegisterAdministrator::with(self::ID_NEW, 'John@example.com', 'My', null));
     }
 }

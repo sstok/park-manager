@@ -20,8 +20,8 @@ use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
 
 /**
- * @method User find($id, $lockMode = null, $lockVersion = null)
- * @method User findOneBy(array $criteria, array $orderBy = null)
+ * @method User|null find($id, $lockMode = null, $lockVersion = null)
+ * @method User|null findOneBy(array $criteria, array $orderBy = null)
  */
 class DoctrineOrmUserRepository extends EntityRepository implements UserRepository
 {

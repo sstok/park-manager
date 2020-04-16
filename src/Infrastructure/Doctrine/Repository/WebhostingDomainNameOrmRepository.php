@@ -91,7 +91,7 @@ class WebhostingDomainNameOrmRepository extends EntityRepository implements Webh
             return $this->createQueryBuilder('d')
                 ->where('d.space = :id AND d.primary = true')
                 ->getQuery()
-                ->setParameters(['id' => $id->toString()])
+                ->setParameter('id', $id->toString())
                 ->getSingleResult();
         } catch (NoResultException $e) {
             throw WebhostingSpaceNotFound::withId($id);
@@ -103,7 +103,8 @@ class WebhostingDomainNameOrmRepository extends EntityRepository implements Webh
         return $this->createQueryBuilder('d')
             ->where('d.domainName.name = :name AND d.domainName.tld = :tld')
             ->getQuery()
-            ->setParameters(['name' => $name->name, 'tld' => $name->tld])
+            ->setParameter('name', $name->name)
+            ->setParameter('tld', $name->tld)
             ->getOneOrNullResult();
     }
 }
