@@ -21,7 +21,7 @@
         }
     ],
     "require": {
-        "php": "^7.3",
+        "php": "^7.4",
         "ext-mbstring": "*",
         "ext-sodium": "*",
         "beberlei/assert": "^3.0.0",

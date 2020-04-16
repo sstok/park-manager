@@ -1,4 +1,4 @@
-ARG PHP_VERSION=7.3
+ARG PHP_VERSION=7.4
 
 
 FROM php:${PHP_VERSION}-alpine
@@ -23,7 +23,7 @@ RUN set -eux; \
 		zlib-dev \
 	; \
 	\
-	docker-php-ext-configure zip --with-libzip; \
+	docker-php-ext-configure zip; \
 	docker-php-ext-install -j$(nproc) \
             pdo_pgsql \
 	        pgsql \
