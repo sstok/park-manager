@@ -36,6 +36,7 @@ lint-yaml:
 lint-twig:
 	@echo "Validating Twig files"
 	docker-compose run --rm php php bin/console lint:twig -vv templates/
+	sh -c "${QA_DOCKER_COMMAND} twigcs templates/"
 
 composer-install: clean
 	docker-compose run --rm php composer install
