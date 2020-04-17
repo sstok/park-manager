@@ -7,7 +7,6 @@ includes:
 parameters:
     #reportUnmatchedIgnoredErrors: false
 
-    tmpDir: %currentWorkingDirectory%/var/phpstan
     level: 5
     paths:
         - ./src

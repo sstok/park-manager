@@ -52,7 +52,7 @@ cs-check: ensure
 	sh -c "docker-compose run --rm php vendor/bin/phpcs"
 
 phpstan: ensure
-	docker-compose run --rm php bin/console cache:clear --env=dev
+	docker-compose run --user "$(shell id -u):$(shell id -g)" --rm php bin/console cache:clear --env=dev
 	sh -c "${QA_DOCKER_COMMAND} phpstan analyse"
 
 psalm: ensure
@@ -94,7 +94,7 @@ fetch:
 	docker pull "${QA_DOCKER_IMAGE}"
 
 ensure:
-	mkdir -p ${HOME}/.composer /tmp/tmp-phpqa-$(shell id -u)
+	mkdir -p ${HOME}/.composer /tmp/tmp-phpqa-$(shell id -u) var/
 
 .PHONY: clean composer-validate lint-xml lint-yaml lint-twig
 .PHONY: composer-install cs cs-check phpstan psalm phpunit infection
