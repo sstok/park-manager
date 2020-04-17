@@ -41,13 +41,13 @@ final class SharedConstraintSetOrmRepositoryTest extends EntityRepositoryTestCas
         $constraintSet = $repository->get($id);
         $constraintSet2 = $repository->get($id2);
 
-        static::assertEquals($id, $constraintSet->getId());
-        static::assertEquals(['title' => 'Supper Gold XL'], $constraintSet->getMetadata());
-        static::assertEquals(new Constraints(new MonthlyTrafficQuota(5)), $constraintSet->getConstraints());
+        self::assertEquals($id, $constraintSet->getId());
+        self::assertEquals(['title' => 'Supper Gold XL'], $constraintSet->getMetadata());
+        self::assertEquals(new Constraints(new MonthlyTrafficQuota(5)), $constraintSet->getConstraints());
 
-        static::assertEquals($id2, $constraintSet2->getId());
-        static::assertEquals([], $constraintSet2->getMetadata());
-        static::assertEquals(new Constraints(new MonthlyTrafficQuota(50)), $constraintSet2->getConstraints());
+        self::assertEquals($id2, $constraintSet2->getId());
+        self::assertEquals([], $constraintSet2->getMetadata());
+        self::assertEquals(new Constraints(new MonthlyTrafficQuota(50)), $constraintSet2->getConstraints());
     }
 
     /** @test */

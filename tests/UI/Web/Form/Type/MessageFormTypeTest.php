@@ -76,8 +76,8 @@ final class MessageFormTypeTest extends TypeTestCase
     {
         $form = $this->createFormForCommand();
 
-        static::assertNull($form->getTransformationFailure());
-        static::assertNull($this->dispatchedCommand);
+        self::assertNull($form->getTransformationFailure());
+        self::assertNull($this->dispatchedCommand);
     }
 
     private function createFormForCommand(): FormInterface
@@ -131,9 +131,9 @@ final class MessageFormTypeTest extends TypeTestCase
         $form = $this->createFormForCommand();
         $form->submit(['id' => $id, 'username' => 'Nero']);
 
-        static::assertFalse($form->isValid());
-        static::assertNull($form->getTransformationFailure());
-        static::assertNull($this->dispatchedCommand);
+        self::assertFalse($form->isValid());
+        self::assertNull($form->getTransformationFailure());
+        self::assertNull($this->dispatchedCommand);
 
         foreach ($expectedErrors as $formPath => $formErrors) {
             $formPath = (string) $formPath;
@@ -150,7 +150,7 @@ final class MessageFormTypeTest extends TypeTestCase
                 $error->setOrigin($currentForm);
             }
 
-            static::assertEquals($formErrors, \iterator_to_array($currentForm->getErrors()));
+            self::assertEquals($formErrors, \iterator_to_array($currentForm->getErrors()));
         }
     }
 
@@ -205,7 +205,7 @@ final class MessageFormTypeTest extends TypeTestCase
             ->add('username', TextType::class, ['required' => false])
             ->getForm();
 
-        $this->expectException(Exception::class);
+        $this->expectException(Throwable::class);
         $this->expectExceptionMessage('You know nothing');
 
         $form->submit(['id' => 42, 'username' => 'Nero']);
@@ -217,9 +217,9 @@ final class MessageFormTypeTest extends TypeTestCase
         $form = $this->createFormForCommand();
         $form->submit(['id' => '8', 'username' => 'Nero']);
 
-        static::assertTrue($form->isValid());
-        static::assertNull($form->getTransformationFailure());
-        static::assertEquals(new StubCommand(8, 'Nero', [
+        self::assertTrue($form->isValid());
+        self::assertNull($form->getTransformationFailure());
+        self::assertEquals(new StubCommand(8, 'Nero', [
             'name' => null,
             'contact' => [
                 'email' => null,

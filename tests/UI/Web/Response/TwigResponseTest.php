@@ -23,9 +23,9 @@ final class TwigResponseTest extends TestCase
     {
         $response = new TwigResponse('client/show_user.html.twig', ['foo' => 'bar']);
 
-        static::assertSame(200, $response->getStatusCode());
-        static::assertSame('client/show_user.html.twig', $response->getTemplate());
-        static::assertSame(['foo' => 'bar'], $response->getTemplateVariables());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame('client/show_user.html.twig', $response->getTemplate());
+        self::assertSame(['foo' => 'bar'], $response->getTemplateVariables());
     }
 
     /** @test */
@@ -33,9 +33,9 @@ final class TwigResponseTest extends TestCase
     {
         $response = new TwigResponse('client/show_user.html.twig', ['foo' => 'bar'], 400);
 
-        static::assertSame(400, $response->getStatusCode());
-        static::assertSame('client/show_user.html.twig', $response->getTemplate());
-        static::assertSame(['foo' => 'bar'], $response->getTemplateVariables());
+        self::assertSame(400, $response->getStatusCode());
+        self::assertSame('client/show_user.html.twig', $response->getTemplate());
+        self::assertSame(['foo' => 'bar'], $response->getTemplateVariables());
     }
 
     /** @test */
@@ -43,6 +43,6 @@ final class TwigResponseTest extends TestCase
     {
         $response = new TwigResponse('client/show_user.html.twig', ['foo' => 'bar'], 200, ['X-Foo' => 'bar']);
 
-        static::assertEquals('bar', $response->headers->get('X-Foo'));
+        self::assertEquals('bar', $response->headers->get('X-Foo'));
     }
 }

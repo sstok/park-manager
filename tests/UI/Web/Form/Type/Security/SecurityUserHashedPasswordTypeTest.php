@@ -86,7 +86,7 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
             'password' => ['password' => 'Hello there'],
         ]);
 
-        static::assertTrue($form->isValid());
-        static::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
+        self::assertTrue($form->isValid());
+        self::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
     }
 }

@@ -38,11 +38,11 @@ final class RegisterWebhostingSpaceTest extends TestCase
             self::SET_ID
         );
 
-        static::assertEquals(WebhostingSpaceId::fromString(self::SPACE_ID), $command->id);
-        static::assertEquals(UserId::fromString(self::USER_ID), $command->owner);
-        static::assertEquals(ConstraintSetId::fromString(self::SET_ID), $command->constraintSetId);
-        static::assertEquals($domainName, $command->domainName);
-        static::assertNull($command->customConstraints);
+        self::assertEquals(WebhostingSpaceId::fromString(self::SPACE_ID), $command->id);
+        self::assertEquals(UserId::fromString(self::USER_ID), $command->owner);
+        self::assertEquals(ConstraintSetId::fromString(self::SET_ID), $command->constraintSetId);
+        self::assertEquals($domainName, $command->domainName);
+        self::assertNull($command->customConstraints);
     }
 
     /** @test */
@@ -55,10 +55,10 @@ final class RegisterWebhostingSpaceTest extends TestCase
             $constraints = new Constraints(new MonthlyTrafficQuota(50))
         );
 
-        static::assertEquals(WebhostingSpaceId::fromString(self::SPACE_ID), $command->id);
-        static::assertEquals(UserId::fromString(self::USER_ID), $command->owner);
-        static::assertEquals($constraints, $command->customConstraints);
-        static::assertEquals($domainName, $command->domainName);
-        static::assertNull($command->constraintSetId);
+        self::assertEquals(WebhostingSpaceId::fromString(self::SPACE_ID), $command->id);
+        self::assertEquals(UserId::fromString(self::USER_ID), $command->owner);
+        self::assertEquals($constraints, $command->customConstraints);
+        self::assertEquals($domainName, $command->domainName);
+        self::assertNull($command->constraintSetId);
     }
 }

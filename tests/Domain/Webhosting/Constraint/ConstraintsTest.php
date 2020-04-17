@@ -28,9 +28,9 @@ final class ConstraintsTest extends TestCase
         $constraints = new Constraints($constraint, $constraint);
 
         self::assertConstraintsEquals([$constraint], $constraints);
-        static::assertTrue($constraints->has('StorageSpaceQuota'));
-        static::assertFalse($constraints->has('MonthlyTrafficQuota'));
-        static::assertEquals($constraint, $constraints->get('StorageSpaceQuota'));
+        self::assertTrue($constraints->has('StorageSpaceQuota'));
+        self::assertFalse($constraints->has('MonthlyTrafficQuota'));
+        self::assertEquals($constraint, $constraints->get('StorageSpaceQuota'));
     }
 
     /** @test */
@@ -54,7 +54,7 @@ final class ConstraintsTest extends TestCase
         $constraints = new Constraints($constraint);
         $constraintsNew = $constraints->add($constraint2);
 
-        static::assertNotSame($constraints, $constraintsNew);
+        self::assertNotSame($constraints, $constraintsNew);
         self::assertConstraintsEquals([$constraint], $constraints);
         self::assertConstraintsEquals([$constraint, $constraint2], $constraintsNew);
     }
@@ -68,7 +68,7 @@ final class ConstraintsTest extends TestCase
         $constraints = new Constraints($constraint, $constraint2);
         $constraintsNew = $constraints->remove($constraint);
 
-        static::assertNotSame($constraints, $constraintsNew);
+        self::assertNotSame($constraints, $constraintsNew);
         self::assertConstraintsEquals([$constraint, $constraint2], $constraints);
         self::assertConstraintsEquals([$constraint2], $constraintsNew);
     }
@@ -81,6 +81,6 @@ final class ConstraintsTest extends TestCase
             $processedConstraints[Constraints::getConstraintName($constraint)] = $constraint;
         }
 
-        static::assertEquals($processedConstraints, \iterator_to_array($constraintsSet));
+        self::assertEquals($processedConstraints, \iterator_to_array($constraintsSet));
     }
 }

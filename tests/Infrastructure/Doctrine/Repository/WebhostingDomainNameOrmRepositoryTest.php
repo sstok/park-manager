@@ -108,31 +108,31 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     {
         $webhostingDomainName = $this->repository->get($this->id1);
 
-        static::assertTrue($webhostingDomainName->getId()->equals($this->id1), 'ID should equal');
-        static::assertEquals($this->space1, $webhostingDomainName->getSpace());
-        static::assertEquals(new DomainName('example', 'com'), $webhostingDomainName->getDomainName());
-        static::assertTrue($webhostingDomainName->isPrimary());
+        self::assertTrue($webhostingDomainName->getId()->equals($this->id1), 'ID should equal');
+        self::assertEquals($this->space1, $webhostingDomainName->getSpace());
+        self::assertEquals(new DomainName('example', 'com'), $webhostingDomainName->getDomainName());
+        self::assertTrue($webhostingDomainName->isPrimary());
 
         $webhostingDomainName = $this->repository->get($this->id2);
 
-        static::assertTrue($webhostingDomainName->getId()->equals($this->id2), 'ID should equal');
-        static::assertEquals($this->space2, $webhostingDomainName->getSpace());
-        static::assertEquals(new DomainName('example', 'net'), $webhostingDomainName->getDomainName());
-        static::assertTrue($webhostingDomainName->isPrimary());
+        self::assertTrue($webhostingDomainName->getId()->equals($this->id2), 'ID should equal');
+        self::assertEquals($this->space2, $webhostingDomainName->getSpace());
+        self::assertEquals(new DomainName('example', 'net'), $webhostingDomainName->getDomainName());
+        self::assertTrue($webhostingDomainName->isPrimary());
 
         $webhostingDomainName = $this->repository->get($this->id3);
 
-        static::assertTrue($webhostingDomainName->getId()->equals($this->id3), 'ID should equal');
-        static::assertEquals($this->space2, $webhostingDomainName->getSpace());
-        static::assertEquals(new DomainName('example', 'co.uk'), $webhostingDomainName->getDomainName());
-        static::assertFalse($webhostingDomainName->isPrimary());
+        self::assertTrue($webhostingDomainName->getId()->equals($this->id3), 'ID should equal');
+        self::assertEquals($this->space2, $webhostingDomainName->getSpace());
+        self::assertEquals(new DomainName('example', 'co.uk'), $webhostingDomainName->getDomainName());
+        self::assertFalse($webhostingDomainName->isPrimary());
     }
 
     /** @test */
     public function it_gets_primary_of_space(): void
     {
-        static::assertTrue($this->repository->getPrimaryOf($this->space1->getId())->getId()->equals($this->id1), 'ID should equal');
-        static::assertTrue($this->repository->getPrimaryOf($this->space2->getId())->getId()->equals($this->id2), 'ID should equal');
+        self::assertTrue($this->repository->getPrimaryOf($this->space1->getId())->getId()->equals($this->id1), 'ID should equal');
+        self::assertTrue($this->repository->getPrimaryOf($this->space2->getId())->getId()->equals($this->id2), 'ID should equal');
 
         $this->expectException(WebhostingSpaceNotFound::class);
         $this->expectExceptionMessage(
@@ -150,13 +150,13 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
         $domainName3 = $this->repository->findByFullName(new DomainName('example', 'co.uk'));
         $domainName4 = $this->repository->findByFullName(new DomainName('example', 'noop'));
 
-        static::assertNotNull($domainName1);
-        static::assertNotNull($domainName2);
-        static::assertNull($domainName4);
+        self::assertNotNull($domainName1);
+        self::assertNotNull($domainName2);
+        self::assertNull($domainName4);
 
-        static::assertTrue($domainName1->getId()->equals($this->id1), 'ID should equal');
-        static::assertTrue($domainName2->getId()->equals($this->id2), 'ID should equal');
-        static::assertTrue($domainName3->getId()->equals($this->id3), 'ID should equal');
+        self::assertTrue($domainName1->getId()->equals($this->id1), 'ID should equal');
+        self::assertTrue($domainName2->getId()->equals($this->id2), 'ID should equal');
+        self::assertTrue($domainName3->getId()->equals($this->id3), 'ID should equal');
     }
 
     /** @test */
@@ -195,7 +195,7 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
         $secondaryDomainName->markPrimary();
         $this->repository->save($secondaryDomainName);
 
-        static::assertTrue($secondaryDomainName->isPrimary());
-        static::assertFalse($primaryDomainName->isPrimary());
+        self::assertTrue($secondaryDomainName->isPrimary());
+        self::assertFalse($primaryDomainName->isPrimary());
     }
 }

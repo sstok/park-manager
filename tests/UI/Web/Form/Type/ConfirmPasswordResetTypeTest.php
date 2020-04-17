@@ -91,12 +91,12 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
             'reset_token' => FakeSplitTokenFactory::FULL_TOKEN,
         ]);
 
-        static::assertTrue($form->isValid());
-        static::assertEquals(new ConfirmUserPasswordReset($token, 'encoded(Hello there)'), $this->dispatchedCommand);
+        self::assertTrue($form->isValid());
+        self::assertEquals(new ConfirmUserPasswordReset($token, 'encoded(Hello there)'), $this->dispatchedCommand);
 
         $formViewVars = $form->createView()->vars;
-        static::assertArrayHasKey('token_invalid', $formViewVars);
-        static::assertFalse($formViewVars['token_invalid']);
+        self::assertArrayHasKey('token_invalid', $formViewVars);
+        self::assertFalse($formViewVars['token_invalid']);
     }
 
     /** @test */
@@ -106,8 +106,8 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
             'command_factory' => $this->getCommandBuilder(),
         ]);
 
-        static::assertFalse($form->isSubmitted());
-        static::assertNull($form->getData());
+        self::assertFalse($form->isSubmitted());
+        self::assertNull($form->getData());
     }
 
     /** @test */
@@ -129,8 +129,8 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         ]);
 
         $formViewVars = $form->createView()->vars;
-        static::assertArrayHasKey('token_invalid', $formViewVars);
-        static::assertTrue($formViewVars['token_invalid']);
+        self::assertArrayHasKey('token_invalid', $formViewVars);
+        self::assertTrue($formViewVars['token_invalid']);
     }
 
     /**

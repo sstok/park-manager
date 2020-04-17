@@ -118,6 +118,6 @@
     </rule>
 
     <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements.WriteOnlyProperty">
-        <exclude-pattern>tests/*</exclude-pattern>
+        <exclude-pattern>*</exclude-pattern>
     </rule>
 </ruleset>

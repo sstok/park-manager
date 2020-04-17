@@ -24,11 +24,11 @@ final class EmailAddressTest extends TestCase
     {
         $value = new EmailAddress('info@example.com');
 
-        static::assertEquals('info@example.com', $value->address);
-        static::assertEquals('info@example.com', $value->toString());
-        static::assertEquals('info@example.com', $value->canonical);
-        static::assertEquals('', $value->name);
-        static::assertEquals('', $value->label);
+        self::assertEquals('info@example.com', $value->address);
+        self::assertEquals('info@example.com', $value->toString());
+        self::assertEquals('info@example.com', $value->canonical);
+        self::assertEquals('', $value->name);
+        self::assertEquals('', $value->label);
     }
 
     /** @test */
@@ -36,10 +36,10 @@ final class EmailAddressTest extends TestCase
     {
         $value = new EmailAddress('info@example.com', 'Janet Doe');
 
-        static::assertEquals('info@example.com', $value->address);
-        static::assertEquals('info@example.com', $value->canonical);
-        static::assertEquals('Janet Doe', $value->name);
-        static::assertEquals('', $value->label);
+        self::assertEquals('info@example.com', $value->address);
+        self::assertEquals('info@example.com', $value->canonical);
+        self::assertEquals('Janet Doe', $value->name);
+        self::assertEquals('', $value->label);
     }
 
     /** @test */
@@ -47,10 +47,10 @@ final class EmailAddressTest extends TestCase
     {
         $value = new EmailAddress('info@EXAMPLE.com');
 
-        static::assertEquals('info@EXAMPLE.com', $value->address);
-        static::assertEquals('info@example.com', $value->canonical);
-        static::assertEquals('', $value->name);
-        static::assertEquals('', $value->label);
+        self::assertEquals('info@EXAMPLE.com', $value->address);
+        self::assertEquals('info@example.com', $value->canonical);
+        self::assertEquals('', $value->name);
+        self::assertEquals('', $value->label);
     }
 
     /** @test */
@@ -60,10 +60,10 @@ final class EmailAddressTest extends TestCase
 
         // Note. Original value is not transformed as some IDN TLDs
         // are not supported natively (Emoji for example).
-        static::assertEquals('info@xn--tst-qla.de', $value->address);
-        static::assertEquals('info@täst.de', $value->canonical);
-        static::assertEquals('', $value->name);
-        static::assertEquals('', $value->label);
+        self::assertEquals('info@xn--tst-qla.de', $value->address);
+        self::assertEquals('info@täst.de', $value->canonical);
+        self::assertEquals('', $value->name);
+        self::assertEquals('', $value->label);
     }
 
     /** @test */
@@ -71,10 +71,10 @@ final class EmailAddressTest extends TestCase
     {
         $value = new EmailAddress('info+hello@example.com');
 
-        static::assertEquals('info+hello@example.com', $value->address);
-        static::assertEquals('info@example.com', $value->canonical);
-        static::assertEquals('', $value->name);
-        static::assertEquals('hello', $value->label);
+        self::assertEquals('info+hello@example.com', $value->address);
+        self::assertEquals('info@example.com', $value->canonical);
+        self::assertEquals('', $value->name);
+        self::assertEquals('hello', $value->label);
     }
 
     /** @test */
@@ -90,7 +90,7 @@ final class EmailAddressTest extends TestCase
     public function it_validates_idn_format(): void
     {
         $this->expectException(MalformedEmailAddress::class);
-        $this->expectExceptionMessageRegExp('/Malformed e-mail address "ok@xn--wat\.de" \(IDN Error reported \d+\)/');
+        $this->expectExceptionMessageMatches('/Malformed e-mail address "ok@xn--wat\.de" \(IDN Error reported \d+\)/');
 
         new EmailAddress('ok@xn--wat.de');
     }

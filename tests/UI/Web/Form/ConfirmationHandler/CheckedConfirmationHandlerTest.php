@@ -41,7 +41,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
         $confirmationHandler->configure('Confirm deleting', 'Are you sure?', $reqValue, 'Yes');
         $confirmationHandler->handleRequest($this->makePostRequest($value), ['id']);
 
-        static::assertTrue($confirmationHandler->isConfirmed(), \sprintf('"%s" does not match for "%s"', $value, $reqValue));
+        self::assertTrue($confirmationHandler->isConfirmed(), \sprintf('"%s" does not match for "%s"', $value, $reqValue));
     }
 
     public function provideValidValues(): iterable
@@ -70,11 +70,11 @@ final class CheckedConfirmationHandlerTest extends TestCase
 
         $confirmationHandler->handleRequest($this->makeGetRequest(), ['id']);
 
-        static::assertFalse($confirmationHandler->isConfirmed());
+        self::assertFalse($confirmationHandler->isConfirmed());
     }
 
     /** @test */
-    public function it_returns_request_was_not_submitted_when_CSRF_token_is_missing(): void
+    public function it_returns_request_was_not_submitted_when_csrf_token_is_missing(): void
     {
         $confirmationHandler = new CheckedConfirmationHandler(
             $this->createTwigEnvironment(),
@@ -83,11 +83,11 @@ final class CheckedConfirmationHandlerTest extends TestCase
 
         $confirmationHandler->handleRequest($this->makePostRequestWithoutToken(), ['id']);
 
-        static::assertFalse($confirmationHandler->isConfirmed());
+        self::assertFalse($confirmationHandler->isConfirmed());
     }
 
     /** @test */
-    public function it_returns_request_was_not_submitted_when_CSRF_token_is_invalid(): void
+    public function it_returns_request_was_not_submitted_when_csrf_token_is_invalid(): void
     {
         $confirmationHandler = new CheckedConfirmationHandler(
             $this->createTwigEnvironment(),
@@ -96,7 +96,7 @@ final class CheckedConfirmationHandlerTest extends TestCase
 
         $confirmationHandler->handleRequest($this->makeInvalidPostRequest(), ['id']);
 
-        static::assertFalse($confirmationHandler->isConfirmed());
+        self::assertFalse($confirmationHandler->isConfirmed());
     }
 
     /**
@@ -114,8 +114,8 @@ final class CheckedConfirmationHandlerTest extends TestCase
         $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Everything', 'Yes');
         $confirmationHandler->handleRequest($this->makePostRequest($value), ['id']);
 
-        static::assertFalse($confirmationHandler->isConfirmed());
-        static::assertEquals(
+        self::assertFalse($confirmationHandler->isConfirmed());
+        self::assertEquals(
             '<form action="/user/1/delete"><h1>Confirm deleting</h1><p>Are you sure?</p>Value does not match expected &quot;Everything&quot;.<input type="hidden" name="_value" value="' .
             (\is_scalar($value) ? (string) $value : '') .
             '"><input type="hidden" name="_token" value="valid-token"><button type="submit">Yes</button><a href="">Cancel</a></form>',
@@ -161,8 +161,8 @@ final class CheckedConfirmationHandlerTest extends TestCase
         $confirmationHandler->configure('Confirm deleting', 'Are you sure?', 'Everything', 'Yes');
         $confirmationHandler->setCancelUrl('/user/1/show');
 
-        static::assertFalse($confirmationHandler->isConfirmed());
-        static::assertEquals(
+        self::assertFalse($confirmationHandler->isConfirmed());
+        self::assertEquals(
             '<form action="/user/1/delete"><h1>Confirm deleting</h1><p>Are you sure?</p>Invalid CSRF token.<input type="hidden" name="_value" value=""><input type="hidden" name="_token" value="valid-token"><button type="submit">Yes</button><a href="/user/1/show">Cancel</a></form>',
             $confirmationHandler->render('checked_confirm.html.twig')
         );

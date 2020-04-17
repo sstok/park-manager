@@ -27,13 +27,13 @@ final class WebhostingDomainNameRepositoryMock implements WebhostingDomainNameRe
     protected function getFieldsIndexMapping(): array
     {
         return [
-            'name' => function (WebhostingDomainName $model) {
+            'name' => static function (WebhostingDomainName $model) {
                 return $model->getDomainName()->name;
             },
-            'full_name' => function (WebhostingDomainName $model) {
+            'full_name' => static function (WebhostingDomainName $model) {
                 return $model->getDomainName()->toString();
             },
-            'space_primary_id' => function (WebhostingDomainName $model) {
+            'space_primary_id' => static function (WebhostingDomainName $model) {
                 if ($model->isPrimary()) {
                     return (string) $model->getSpace()->getId();
                 }

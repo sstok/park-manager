@@ -52,9 +52,9 @@ final class RequestEmailAddressChangeTest extends TestCase
 
         $repository->assertEntitiesWereSaved();
         $token = $user->getEmailAddressChangeToken();
-        static::assertEquals(['email' => 'John2@example.com'], $token->metadata());
-        static::assertFalse($token->isExpired(new DateTimeImmutable('+ 5 seconds')));
-        static::assertTrue($token->isExpired(new DateTimeImmutable('+ 3700 seconds')));
+        self::assertEquals(['email' => 'John2@example.com'], $token->metadata());
+        self::assertFalse($token->isExpired(new DateTimeImmutable('+ 5 seconds')));
+        self::assertTrue($token->isExpired(new DateTimeImmutable('+ 3700 seconds')));
     }
 
     /** @test */

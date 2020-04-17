@@ -40,9 +40,9 @@ final class WebhostingConstraintsTypeTest extends TestCase
         $type = $this->getDbalType();
         $platform = $this->createPlatform();
 
-        static::assertNull($type->convertToDatabaseValue(null, $platform));
-        static::assertJsonStringEqualsJsonString('[]', $type->convertToDatabaseValue(new Constraints(), $platform));
-        static::assertJsonStringEqualsJsonString(
+        self::assertNull($type->convertToDatabaseValue(null, $platform));
+        self::assertJsonStringEqualsJsonString('[]', $type->convertToDatabaseValue(new Constraints(), $platform));
+        self::assertJsonStringEqualsJsonString(
             '{"MonthlyTrafficQuota":{"limit":50}}',
             $type->convertToDatabaseValue(new Constraints(new MonthlyTrafficQuota(50)), $platform)
         );
@@ -54,10 +54,10 @@ final class WebhostingConstraintsTypeTest extends TestCase
         $type = $this->getDbalType();
         $platform = $this->createPlatform();
 
-        static::assertEquals(new Constraints(), $type->convertToPHPValue(null, $platform));
-        static::assertEquals(new Constraints(), $type->convertToPHPValue('[]', $platform));
-        static::assertEquals(new Constraints(), $type->convertToPHPValue('{}', $platform));
-        static::assertEquals(
+        self::assertEquals(new Constraints(), $type->convertToPHPValue(null, $platform));
+        self::assertEquals(new Constraints(), $type->convertToPHPValue('[]', $platform));
+        self::assertEquals(new Constraints(), $type->convertToPHPValue('{}', $platform));
+        self::assertEquals(
             new Constraints(new MonthlyTrafficQuota(50)),
             $type->convertToPHPValue('{"MonthlyTrafficQuota":{"limit":50}}', $platform)
         );

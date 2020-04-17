@@ -32,8 +32,8 @@ final class SharedConstraintSetTest extends TestCase
             $constraints = new Constraints()
         );
 
-        static::assertEquals($constraints, $constraintSet->getConstraints());
-        static::assertEquals([], $constraintSet->getMetadata());
+        self::assertEquals($constraints, $constraintSet->getConstraints());
+        self::assertEquals([], $constraintSet->getMetadata());
     }
 
     /** @test */
@@ -44,7 +44,7 @@ final class SharedConstraintSetTest extends TestCase
             $constraints = new Constraints(new StorageSpaceQuota('5G'), new MonthlyTrafficQuota(50))
         );
 
-        static::assertEquals($constraints, $constraintSet->getConstraints());
+        self::assertEquals($constraints, $constraintSet->getConstraints());
     }
 
     /** @test */
@@ -53,7 +53,7 @@ final class SharedConstraintSetTest extends TestCase
         $constraintSet = $this->createConstraintSet();
         $constraintSet->withMetadata(['label' => 'Gold']);
 
-        static::assertEquals(['label' => 'Gold'], $constraintSet->getMetadata());
+        self::assertEquals(['label' => 'Gold'], $constraintSet->getMetadata());
     }
 
     private function createConstraintSet(): SharedConstraintSet

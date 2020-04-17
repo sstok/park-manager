@@ -72,8 +72,8 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
             'password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there']],
         ]);
 
-        static::assertTrue($form->isValid());
-        static::assertEquals(new ChangeUserPassword('1', 'encoded(Hello there)'), $this->dispatchedCommand);
+        self::assertTrue($form->isValid());
+        self::assertEquals(new ChangeUserPassword('1', 'encoded(Hello there)'), $this->dispatchedCommand);
     }
 
     /** @test */
@@ -86,8 +86,8 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
             'password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there'], 'user_id' => '2'],
         ]);
 
-        static::assertTrue($form->isValid());
-        static::assertEquals(new ChangeUserPassword('1', 'encoded(Hello there)'), $this->dispatchedCommand);
+        self::assertTrue($form->isValid());
+        self::assertEquals(new ChangeUserPassword('1', 'encoded(Hello there)'), $this->dispatchedCommand);
     }
 
     /** @test */
@@ -98,8 +98,8 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
         ]);
         $form->submit(['password' => 'Hello there']);
 
-        static::assertFalse($form->isValid());
-        static::assertNull($this->dispatchedCommand);
+        self::assertFalse($form->isValid());
+        self::assertNull($this->dispatchedCommand);
     }
 
     /** @test */
@@ -109,8 +109,8 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
             'command_factory' => $this->getCommandBuilder(),
         ]);
 
-        static::assertFalse($form->isSubmitted());
-        static::assertNull($this->dispatchedCommand);
+        self::assertFalse($form->isSubmitted());
+        self::assertNull($this->dispatchedCommand);
     }
 
     private function getCommandBuilder(): Closure

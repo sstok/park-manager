@@ -52,15 +52,15 @@ final class ModelResolverTest extends TestCase
     public function it_supports_registered_models(): void
     {
         $request = new Request();
-        static::assertTrue($this->resolver->supports($request, $this->createArgumentMetadata(Administrator::class)));
-        static::assertTrue($this->resolver->supports($request, $this->createArgumentMetadata(AdministratorId::class)));
-        static::assertTrue($this->resolver->supports($request, $this->createArgumentMetadata(UserId::class)));
-        static::assertTrue($this->resolver->supports($request, $this->createArgumentMetadata(EmailAddress::class)));
+        self::assertTrue($this->resolver->supports($request, $this->createArgumentMetadata(Administrator::class)));
+        self::assertTrue($this->resolver->supports($request, $this->createArgumentMetadata(AdministratorId::class)));
+        self::assertTrue($this->resolver->supports($request, $this->createArgumentMetadata(UserId::class)));
+        self::assertTrue($this->resolver->supports($request, $this->createArgumentMetadata(EmailAddress::class)));
 
         // Unsupported
-        static::assertFalse($this->resolver->supports($request, $this->createArgumentMetadata(Space::class)));
-        static::assertFalse($this->resolver->supports($request, $this->createArgumentMetadata(Request::class)));
-        static::assertFalse($this->resolver->supports($request, $this->createArgumentMetadata(EmailAddress::class, true)));
+        self::assertFalse($this->resolver->supports($request, $this->createArgumentMetadata(Space::class)));
+        self::assertFalse($this->resolver->supports($request, $this->createArgumentMetadata(Request::class)));
+        self::assertFalse($this->resolver->supports($request, $this->createArgumentMetadata(EmailAddress::class, true)));
     }
 
     private function createArgumentMetadata(string $type, $isVariadic = false): ArgumentMetadata
@@ -85,9 +85,9 @@ final class ModelResolverTest extends TestCase
             $resolved[] = $value;
         }
 
-        static::assertCount(1, $resolved);
+        self::assertCount(1, $resolved);
         self::assertInstanceof($class, $resolved[0]);
-        static::assertEquals($id, $resolved[0]->getId()->toString());
+        self::assertEquals($id, $resolved[0]->getId()->toString());
     }
 
     /** @test */
@@ -108,8 +108,8 @@ final class ModelResolverTest extends TestCase
             $resolved[] = $value;
         }
 
-        static::assertCount(1, $resolved);
+        self::assertCount(1, $resolved);
         self::assertInstanceof($class, $resolved[0]);
-        static::assertEquals($expected, $resolved[0]);
+        self::assertEquals($expected, $resolved[0]);
     }
 }

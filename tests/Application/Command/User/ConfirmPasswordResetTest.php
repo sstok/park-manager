@@ -29,7 +29,7 @@ final class ConfirmPasswordResetTest extends TestCase
 
         $command = new ConfirmPasswordReset($token, $password);
 
-        static::assertEquals($token, $command->token());
-        static::assertEquals('my-password-I-forgot', $command->password());
+        self::assertEquals($token, $command->token());
+        self::assertEquals('my-password-I-forgot', $command->password());
     }
 }

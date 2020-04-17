@@ -25,7 +25,7 @@ final class UuidTraitTest extends TestCase
     {
         $id = MockUuidIdentity::create();
 
-        static::assertInstanceOf(MockUuidIdentity::class, $id);
+        self::assertInstanceOf(MockUuidIdentity::class, $id);
     }
 
     /** @test */
@@ -34,15 +34,15 @@ final class UuidTraitTest extends TestCase
         $id = MockUuidIdentity::create();
         $id2 = MockUuidIdentity::create();
 
-        static::assertTrue($id->equals($id));
-        static::assertFalse($id->equals($id2));
-        static::assertFalse($id->equals(false));
+        self::assertTrue($id->equals($id));
+        self::assertFalse($id->equals($id2));
+        self::assertFalse($id->equals(false));
 
         $id = MockUuidIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
 
-        static::assertTrue($id->equals($id));
-        static::assertFalse($id->equals($id2));
-        static::assertFalse($id->equals(false));
+        self::assertTrue($id->equals($id));
+        self::assertFalse($id->equals($id2));
+        self::assertFalse($id->equals(false));
     }
 
     /** @test */
@@ -50,7 +50,7 @@ final class UuidTraitTest extends TestCase
     {
         $id = MockUuidIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
 
-        static::assertEquals('56253090-3960-11e7-94fd-acbc32b58315', (string) $id);
+        self::assertEquals('56253090-3960-11e7-94fd-acbc32b58315', (string) $id);
     }
 
     /** @test */
@@ -59,7 +59,7 @@ final class UuidTraitTest extends TestCase
         $id = MockUuidIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
         $serialized = \serialize($id);
 
-        static::assertEquals($id, \unserialize($serialized, []));
+        self::assertEquals($id, \unserialize($serialized, []));
     }
 
     /** @test */
@@ -68,7 +68,7 @@ final class UuidTraitTest extends TestCase
         $id = MockUuidIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
         $serialized = \json_encode($id);
 
-        static::assertEquals('56253090-3960-11e7-94fd-acbc32b58315', \json_decode($serialized, true));
+        self::assertEquals('56253090-3960-11e7-94fd-acbc32b58315', \json_decode($serialized, true));
     }
 }
 

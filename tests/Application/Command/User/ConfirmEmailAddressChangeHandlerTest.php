@@ -69,7 +69,7 @@ final class ConfirmEmailAddressChangeHandlerTest extends TestCase
             $invalidToken = FakeSplitTokenFactory::instance()->fromString(FakeSplitTokenFactory::SELECTOR . \str_rot13(FakeSplitTokenFactory::VERIFIER));
             $handler(new ConfirmEmailAddressChange($invalidToken));
 
-            static::fail('Exception was expected.');
+            self::fail('Exception was expected.');
         } catch (EmailChangeConfirmationRejected $e) {
             $repository->assertEntitiesWereSaved();
             $repository->assertHasEntity(
@@ -92,7 +92,7 @@ final class ConfirmEmailAddressChangeHandlerTest extends TestCase
         try {
             $handler(new ConfirmEmailAddressChange(FakeSplitTokenFactory::instance('nananananananannnannanananannananna-batman')->generate()));
 
-            static::fail('Exception was expected.');
+            self::fail('Exception was expected.');
         } catch (EmailChangeConfirmationRejected $e) {
             $repository->assertNoEntitiesWereSaved();
         }

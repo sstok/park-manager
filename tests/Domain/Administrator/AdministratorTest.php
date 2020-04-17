@@ -42,16 +42,16 @@ final class AdministratorTest extends TestCase
     {
         $user = Administrator::register($id = AdministratorId::fromString(self::ID1), $email = new EmailAddress('Jane@example.com'), 'Janet Doe', 'wipPy');
 
-        static::assertEquals($id, $user->getId());
-        static::assertEquals($email, $user->getEmailAddress());
-        static::assertEquals('Janet Doe', $user->getDisplayName());
-        static::assertEquals('wipPy', $user->getPassword());
-        static::assertTrue($user->isLoginEnabled());
+        self::assertEquals($id, $user->getId());
+        self::assertEquals($email, $user->getEmailAddress());
+        self::assertEquals('Janet Doe', $user->getDisplayName());
+        self::assertEquals('wipPy', $user->getPassword());
+        self::assertTrue($user->isLoginEnabled());
 
         // Roles
-        static::assertEquals(Administrator::DEFAULT_ROLES, $user->getRoles());
-        static::assertTrue($user->hasRole('ROLE_ADMIN'));
-        static::assertFalse($user->hasRole('ROLE_NOOP'));
+        self::assertEquals(Administrator::DEFAULT_ROLES, $user->getRoles());
+        self::assertTrue($user->hasRole('ROLE_ADMIN'));
+        self::assertFalse($user->hasRole('ROLE_NOOP'));
     }
 
     /**
@@ -62,7 +62,7 @@ final class AdministratorTest extends TestCase
         $user = $this->registerAdministrator();
         $user->changeEmail($email = new EmailAddress('Doh@example.com'));
 
-        static::assertEquals($email, $user->getEmailAddress());
+        self::assertEquals($email, $user->getEmailAddress());
     }
 
     /**
@@ -73,7 +73,7 @@ final class AdministratorTest extends TestCase
         $user = $this->registerAdministrator();
         $user->changeName('Jane Doe');
 
-        static::assertEquals('Jane Doe', $user->getDisplayName());
+        self::assertEquals('Jane Doe', $user->getDisplayName());
     }
 
     /**
@@ -84,7 +84,7 @@ final class AdministratorTest extends TestCase
         $user = $this->registerAdministrator();
         $user->disableLogin();
 
-        static::assertFalse($user->isLoginEnabled());
+        self::assertFalse($user->isLoginEnabled());
     }
 
     /**
@@ -96,7 +96,7 @@ final class AdministratorTest extends TestCase
         $user->disableLogin();
         $user->enableLogin();
 
-        static::assertTrue($user->isLoginEnabled());
+        self::assertTrue($user->isLoginEnabled());
     }
 
     /**
@@ -121,7 +121,7 @@ final class AdministratorTest extends TestCase
 
         $user->changePassword('security-is-null');
 
-        static::assertEquals('security-is-null', $user->getPassword());
+        self::assertEquals('security-is-null', $user->getPassword());
     }
 
     /**
@@ -147,9 +147,9 @@ final class AdministratorTest extends TestCase
         $user->addRole('ROLE_SUPER_ADMIN');
         $user->addRole('ROLE_SUPER_ADMIN'); // Ensure there're no duplicates
 
-        static::assertEquals(['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'], $user->getRoles());
-        static::assertTrue($user->hasRole('ROLE_ADMIN'));
-        static::assertTrue($user->hasRole('ROLE_SUPER_ADMIN'));
+        self::assertEquals(['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'], $user->getRoles());
+        self::assertTrue($user->hasRole('ROLE_ADMIN'));
+        self::assertTrue($user->hasRole('ROLE_SUPER_ADMIN'));
     }
 
     /**
@@ -162,9 +162,9 @@ final class AdministratorTest extends TestCase
 
         $user->removeRole('ROLE_SUPER_ADMIN');
 
-        static::assertEquals(Administrator::DEFAULT_ROLES, $user->getRoles());
-        static::assertTrue($user->hasRole('ROLE_ADMIN'));
-        static::assertFalse($user->hasRole('ROLE_SUPER_ADMIN'));
+        self::assertEquals(Administrator::DEFAULT_ROLES, $user->getRoles());
+        self::assertTrue($user->hasRole('ROLE_ADMIN'));
+        self::assertFalse($user->hasRole('ROLE_SUPER_ADMIN'));
     }
 
     /**
@@ -190,7 +190,7 @@ final class AdministratorTest extends TestCase
         $user = $this->registerAdministrator('pass-my-word');
         $user->requestPasswordReset($token);
 
-        static::assertEquals($token->toValueHolder(), $user->getPasswordResetToken());
+        self::assertEquals($token->toValueHolder(), $user->getPasswordResetToken());
     }
 
     /**
@@ -203,9 +203,9 @@ final class AdministratorTest extends TestCase
 
         $user->requestPasswordReset($token);
 
-        static::assertTrue($user->confirmPasswordReset($token2 = $this->getTokenString($token), 'new-password'));
-        static::assertNull($user->getPasswordResetToken());
-        static::assertFalse($user->confirmPasswordReset($token2, 'new2-password'));
+        self::assertTrue($user->confirmPasswordReset($token2 = $this->getTokenString($token), 'new-password'));
+        self::assertNull($user->getPasswordResetToken());
+        self::assertFalse($user->confirmPasswordReset($token2, 'new2-password'));
     }
 
     /**
@@ -221,10 +221,10 @@ final class AdministratorTest extends TestCase
         $user->requestPasswordReset($correctToken);
 
         // Second attempt is prohibited, so try a second time (with correct token)!
-        static::assertFalse($user->confirmPasswordReset($invalidToken, 'new-password'));
-        static::assertNull($user->getPasswordResetToken());
+        self::assertFalse($user->confirmPasswordReset($invalidToken, 'new-password'));
+        self::assertNull($user->getPasswordResetToken());
 
-        static::assertFalse($user->confirmPasswordReset($correctToken, 'new-password'));
+        self::assertFalse($user->confirmPasswordReset($correctToken, 'new-password'));
     }
 
     /**
@@ -234,7 +234,7 @@ final class AdministratorTest extends TestCase
     {
         $user = $this->registerAdministrator('pass-my-word');
 
-        static::assertFalse($user->confirmPasswordReset($this->splitTokenFactory->generate(), 'new-password'));
+        self::assertFalse($user->confirmPasswordReset($this->splitTokenFactory->generate(), 'new-password'));
     }
 
     /** @test */
@@ -244,8 +244,8 @@ final class AdministratorTest extends TestCase
         $user = $this->registerAdministrator('pass-my-word');
         $user->requestPasswordReset($token);
 
-        static::assertFalse($user->confirmPasswordReset($token, 'new-password'));
-        static::assertNull($user->getPasswordResetToken());
+        self::assertFalse($user->confirmPasswordReset($token, 'new-password'));
+        self::assertNull($user->getPasswordResetToken());
     }
 
     private function registerAdministrator(?string $password = null): Administrator

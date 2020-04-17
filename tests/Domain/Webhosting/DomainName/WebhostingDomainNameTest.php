@@ -36,13 +36,13 @@ final class WebhostingDomainNameTest extends TestCase
         $webhostingDomainName = WebhostingDomainName::registerPrimary($space, $domainName);
         $webhostingDomainName2 = WebhostingDomainName::registerPrimary($space2, $domainName2);
 
-        static::assertNotEquals($webhostingDomainName, $webhostingDomainName2);
-        static::assertEquals($domainName, $webhostingDomainName->getDomainName());
-        static::assertEquals($domainName2, $webhostingDomainName2->getDomainName());
-        static::assertEquals($space, $webhostingDomainName->getSpace());
-        static::assertEquals($space2, $webhostingDomainName->getSpace());
-        static::assertTrue($webhostingDomainName->isPrimary());
-        static::assertTrue($webhostingDomainName2->isPrimary());
+        self::assertNotEquals($webhostingDomainName, $webhostingDomainName2);
+        self::assertEquals($domainName, $webhostingDomainName->getDomainName());
+        self::assertEquals($domainName2, $webhostingDomainName2->getDomainName());
+        self::assertEquals($space, $webhostingDomainName->getSpace());
+        self::assertEquals($space2, $webhostingDomainName->getSpace());
+        self::assertTrue($webhostingDomainName->isPrimary());
+        self::assertTrue($webhostingDomainName2->isPrimary());
     }
 
     /** @test */
@@ -53,9 +53,9 @@ final class WebhostingDomainNameTest extends TestCase
 
         $webhostingDomainName = WebhostingDomainName::registerSecondary($space, $domainName2);
 
-        static::assertEquals($domainName2, $webhostingDomainName->getDomainName());
-        static::assertEquals($space, $webhostingDomainName->getSpace());
-        static::assertFalse($webhostingDomainName->isPrimary());
+        self::assertEquals($domainName2, $webhostingDomainName->getDomainName());
+        self::assertEquals($space, $webhostingDomainName->getSpace());
+        self::assertFalse($webhostingDomainName->isPrimary());
     }
 
     /** @test */
@@ -67,8 +67,8 @@ final class WebhostingDomainNameTest extends TestCase
         $webhostingDomainName = WebhostingDomainName::registerSecondary($space, $domainName);
         $webhostingDomainName->markPrimary();
 
-        static::assertEquals($domainName, $webhostingDomainName->getDomainName());
-        static::assertTrue($webhostingDomainName->isPrimary());
+        self::assertEquals($domainName, $webhostingDomainName->getDomainName());
+        self::assertTrue($webhostingDomainName->isPrimary());
     }
 
     /** @test */
@@ -81,7 +81,7 @@ final class WebhostingDomainNameTest extends TestCase
 
         $webhostingDomainName->changeName($name = new DomainName('example', 'com'));
 
-        static::assertEquals($name, $webhostingDomainName->getDomainName());
+        self::assertEquals($name, $webhostingDomainName->getDomainName());
     }
 
     /** @test */
@@ -95,7 +95,7 @@ final class WebhostingDomainNameTest extends TestCase
 
         $webhostingDomainName->transferToSpace($space2);
 
-        static::assertEquals($space2, $webhostingDomainName->getSpace());
+        self::assertEquals($space2, $webhostingDomainName->getSpace());
     }
 
     /** @test */
@@ -117,7 +117,7 @@ final class WebhostingDomainNameTest extends TestCase
     {
         $space = $this->createMock(Space::class);
         $space
-            ->expects(static::any())
+            ->expects(self::any())
             ->method('getId')
             ->willReturn(WebhostingSpaceId::fromString($id));
 

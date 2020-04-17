@@ -43,10 +43,10 @@ final class SpaceTest extends TestCase
 
         $space = Space::register($id, $owner, $constraintSet);
 
-        static::assertEquals($id, $space->getId());
-        static::assertEquals($owner, $space->getOwner());
-        static::assertSame($constraintSet, $space->getAssignedConstraintSet());
-        static::assertSame($constraints, $space->getConstraints());
+        self::assertEquals($id, $space->getId());
+        self::assertEquals($owner, $space->getOwner());
+        self::assertSame($constraintSet, $space->getAssignedConstraintSet());
+        self::assertSame($constraints, $space->getConstraints());
     }
 
     /** @test */
@@ -58,10 +58,10 @@ final class SpaceTest extends TestCase
 
         $space = Space::registerWithCustomConstraints($id, $owner, $constraints);
 
-        static::assertEquals($id, $space->getId());
-        static::assertEquals($owner, $space->getOwner());
-        static::assertSame($constraints, $space->getConstraints());
-        static::assertNull($space->getAssignedConstraintSet());
+        self::assertEquals($id, $space->getId());
+        self::assertEquals($owner, $space->getOwner());
+        self::assertSame($constraints, $space->getConstraints());
+        self::assertNull($space->getAssignedConstraintSet());
     }
 
     /** @test */
@@ -78,11 +78,11 @@ final class SpaceTest extends TestCase
         $space1->assignConstraintSet($constraintSet1);
         $space2->assignConstraintSet($constraintSet2);
 
-        static::assertSame($constraintSet1, $space1->getAssignedConstraintSet(), 'ConstraintSet should not change');
-        static::assertSame($constraintSet1->getConstraints(), $space1->getConstraints(), 'Constraints should not change');
+        self::assertSame($constraintSet1, $space1->getAssignedConstraintSet(), 'ConstraintSet should not change');
+        self::assertSame($constraintSet1->getConstraints(), $space1->getConstraints(), 'Constraints should not change');
 
-        static::assertSame($constraintSet2, $space2->getAssignedConstraintSet());
-        static::assertSame($constraintSet1->getConstraints(), $space2->getConstraints());
+        self::assertSame($constraintSet2, $space2->getAssignedConstraintSet());
+        self::assertSame($constraintSet1->getConstraints(), $space2->getConstraints());
     }
 
     /** @test */
@@ -99,15 +99,15 @@ final class SpaceTest extends TestCase
         $space1->assignSetWithConstraints($constraintSet1);
         $space2->assignSetWithConstraints($constraintSet2);
 
-        static::assertSame($constraintSet1, $space1->getAssignedConstraintSet(), 'ConstraintSet should not change');
-        static::assertSame($constraintSet1->getConstraints(), $space1->getConstraints(), 'Constraints should not change');
+        self::assertSame($constraintSet1, $space1->getAssignedConstraintSet(), 'ConstraintSet should not change');
+        self::assertSame($constraintSet1->getConstraints(), $space1->getConstraints(), 'Constraints should not change');
 
-        static::assertSame($constraintSet2, $space2->getAssignedConstraintSet());
-        static::assertSame($constraintSet2->getConstraints(), $space2->getConstraints());
+        self::assertSame($constraintSet2, $space2->getAssignedConstraintSet());
+        self::assertSame($constraintSet2->getConstraints(), $space2->getConstraints());
     }
 
     /** @test */
-    public function it_updates_space_when_assigning_constraint_set_Constraints_are_different(): void
+    public function it_updates_space_when_assigning_constraint_set_constraints_are_different(): void
     {
         $constraintSet = $this->createSharedConstraintSet(new Constraints());
         $space = Space::register(
@@ -119,8 +119,8 @@ final class SpaceTest extends TestCase
         $constraintSet->changeConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
         $space->assignSetWithConstraints($constraintSet);
 
-        static::assertSame($constraintSet, $space->getAssignedConstraintSet());
-        static::assertSame($constraintSet->getConstraints(), $space->getConstraints());
+        self::assertSame($constraintSet, $space->getAssignedConstraintSet());
+        self::assertSame($constraintSet->getConstraints(), $space->getConstraints());
     }
 
     /** @test */
@@ -135,8 +135,8 @@ final class SpaceTest extends TestCase
 
         $space->assignCustomConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
 
-        static::assertNull($space->getAssignedConstraintSet());
-        static::assertSame($newConstraints, $space->getConstraints());
+        self::assertNull($space->getAssignedConstraintSet());
+        self::assertSame($newConstraints, $space->getConstraints());
     }
 
     /** @test */
@@ -150,12 +150,12 @@ final class SpaceTest extends TestCase
 
         $space->assignCustomConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
 
-        static::assertNull($space->getAssignedConstraintSet());
-        static::assertSame($newConstraints, $space->getConstraints());
+        self::assertNull($space->getAssignedConstraintSet());
+        self::assertSame($newConstraints, $space->getConstraints());
     }
 
     /** @test */
-    public function it_does_not_update_space_Constraints_when_assigning_Constraints_are_same(): void
+    public function it_does_not_update_space_constraints_when_assigning_constraints_are_same(): void
     {
         $constraints = new Constraints();
         $space = Space::registerWithCustomConstraints(
@@ -166,8 +166,8 @@ final class SpaceTest extends TestCase
 
         $space->assignCustomConstraints($constraints);
 
-        static::assertNull($space->getAssignedConstraintSet());
-        static::assertSame($constraints, $space->getConstraints());
+        self::assertNull($space->getAssignedConstraintSet());
+        self::assertSame($constraints, $space->getConstraints());
     }
 
     /** @test */
@@ -189,8 +189,8 @@ final class SpaceTest extends TestCase
         $space1->switchOwner($owner1);
         $space2->switchOwner($owner2);
 
-        static::assertEquals($owner1, $space1->getOwner());
-        static::assertEquals($owner2, $space2->getOwner());
+        self::assertEquals($owner1, $space1->getOwner());
+        self::assertEquals($owner2, $space2->getOwner());
     }
 
     /** @test */
@@ -211,8 +211,8 @@ final class SpaceTest extends TestCase
         $space2->markForRemoval();
         $space2->markForRemoval();
 
-        static::assertFalse($space1->isMarkedForRemoval());
-        static::assertTrue($space2->isMarkedForRemoval());
+        self::assertFalse($space1->isMarkedForRemoval());
+        self::assertTrue($space2->isMarkedForRemoval());
     }
 
     /** @test */
@@ -232,19 +232,19 @@ final class SpaceTest extends TestCase
 
         $space2->setExpirationDate($date = new DateTimeImmutable('now +6 days'));
 
-        static::assertFalse($space1->isExpired());
-        static::assertFalse($space1->isExpired($date->modify('+2 days')));
+        self::assertFalse($space1->isExpired());
+        self::assertFalse($space1->isExpired($date->modify('+2 days')));
 
-        static::assertFalse($space2->isExpired($date->modify('-10 days')));
-        static::assertTrue($space2->isExpired($date));
-        static::assertTrue($space2->isExpired($date->modify('+2 days')));
+        self::assertFalse($space2->isExpired($date->modify('-10 days')));
+        self::assertTrue($space2->isExpired($date));
+        self::assertTrue($space2->isExpired($date->modify('+2 days')));
 
         $space1->removeExpirationDate();
         $space2->removeExpirationDate();
 
-        static::assertFalse($space1->isExpired());
-        static::assertFalse($space2->isExpired($date));
-        static::assertFalse($space2->isExpired($date->modify('+2 days')));
+        self::assertFalse($space1->isExpired());
+        self::assertFalse($space2->isExpired($date));
+        self::assertFalse($space2->isExpired($date->modify('+2 days')));
     }
 
     private function createSharedConstraintSet(Constraints $constraints, string $id = self::SET_ID_1): SharedConstraintSet

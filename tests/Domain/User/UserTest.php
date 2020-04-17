@@ -45,8 +45,8 @@ final class UserTest extends TestCase
             'Jane Doe'
         );
 
-        static::assertEquals($id, $user->getId());
-        static::assertEquals($email, $user->getEmail());
+        self::assertEquals($id, $user->getId());
+        self::assertEquals($email, $user->getEmail());
     }
 
     /** @test */
@@ -55,7 +55,7 @@ final class UserTest extends TestCase
         $user = $this->registerUser();
         $user->changeEmail($email = new EmailAddress('Doh@example.com'));
 
-        static::assertEquals($email, $user->getEmail());
+        self::assertEquals($email, $user->getEmail());
     }
 
     private function registerUser(?string $password = null): User
@@ -72,7 +72,7 @@ final class UserTest extends TestCase
         $user = $this->registerUser();
         $user->changeName('Jenny');
 
-        static::assertEquals('Jenny', $user->getDisplayName());
+        self::assertEquals('Jenny', $user->getDisplayName());
     }
 
     /** @test */
@@ -81,7 +81,7 @@ final class UserTest extends TestCase
         $user = $this->registerUser();
         $user->disable();
 
-        static::assertFalse($user->isEnabled());
+        self::assertFalse($user->isEnabled());
     }
 
     /** @test */
@@ -91,7 +91,7 @@ final class UserTest extends TestCase
         $user->disable();
         $user->enable();
 
-        static::assertTrue($user->isEnabled());
+        self::assertTrue($user->isEnabled());
     }
 
     /** @test */
@@ -101,7 +101,7 @@ final class UserTest extends TestCase
 
         $user->changePassword('security-is-null');
 
-        static::assertEquals('security-is-null', $user->getPassword());
+        self::assertEquals('security-is-null', $user->getPassword());
     }
 
     /** @test */
@@ -121,8 +121,8 @@ final class UserTest extends TestCase
         $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
         $user = $this->registerUser();
 
-        static::assertTrue($user->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token));
-        static::assertEquals(new EmailAddress('john@example.com'), $user->getEmail());
+        self::assertTrue($user->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token));
+        self::assertEquals(new EmailAddress('john@example.com'), $user->getEmail());
     }
 
     private function createTimeLimitedSplitToken(DateTimeImmutable $expiresAt): SplitToken
@@ -136,8 +136,8 @@ final class UserTest extends TestCase
         $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
         $user = $this->registerUser();
 
-        static::assertTrue($user->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token));
-        static::assertFalse($user->requestEmailChange($email, $token));
+        self::assertTrue($user->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token));
+        self::assertFalse($user->requestEmailChange($email, $token));
     }
 
     /** @test */
@@ -152,7 +152,7 @@ final class UserTest extends TestCase
         // Second usage is prohibited, so try a second time.
         $this->assertEmailChangeThrowsRejected($user, $token);
 
-        static::assertEquals($email, $user->getEmail());
+        self::assertEquals($email, $user->getEmail());
     }
 
     private function assertEmailChangeThrowsRejected(User $user, SplitToken $token): void
@@ -160,7 +160,7 @@ final class UserTest extends TestCase
         try {
             $user->confirmEmailChange($token);
 
-            static::fail('EmailChangeConfirmationRejected was expected');
+            self::fail('EmailChangeConfirmationRejected was expected');
         } catch (EmailChangeConfirmationRejected $e) {
             $this->addToAssertionCount(1);
         }
@@ -185,7 +185,7 @@ final class UserTest extends TestCase
         // Second attempt is prohibited, so try a second time (with correct token)!
         $this->assertEmailChangeThrowsRejected($user, $correctToken);
 
-        static::assertEquals(new EmailAddress('john@example.com'), $user->getEmail());
+        self::assertEquals(new EmailAddress('john@example.com'), $user->getEmail());
     }
 
     private function generateSecondToken(): SplitToken
@@ -200,7 +200,7 @@ final class UserTest extends TestCase
         $user = $this->registerUser();
 
         $this->assertEmailChangeThrowsRejected($user, $token);
-        static::assertEquals(new EmailAddress('john@example.com'), $user->getEmail());
+        self::assertEquals(new EmailAddress('john@example.com'), $user->getEmail());
     }
 
     /** @test */
@@ -209,7 +209,7 @@ final class UserTest extends TestCase
         $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
         $user = $this->registerUser('pass-my-word');
 
-        static::assertTrue($user->requestPasswordReset($token));
+        self::assertTrue($user->requestPasswordReset($token));
     }
 
     /** @test */
@@ -218,8 +218,8 @@ final class UserTest extends TestCase
         $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
         $user = $this->registerUser('pass-my-word');
 
-        static::assertTrue($user->requestPasswordReset($token));
-        static::assertFalse($user->requestPasswordReset($token));
+        self::assertTrue($user->requestPasswordReset($token));
+        self::assertFalse($user->requestPasswordReset($token));
     }
 
     /** @test */
@@ -231,8 +231,8 @@ final class UserTest extends TestCase
 
         $user->confirmPasswordReset($token2 = $this->getTokenString($token), 'new-password');
 
-        static::assertEquals('new-password', $user->getPassword());
-        static::assertNull($user->getPasswordResetToken());
+        self::assertEquals('new-password', $user->getPassword());
+        self::assertNull($user->getPasswordResetToken());
     }
 
     /** @test */
@@ -255,7 +255,7 @@ final class UserTest extends TestCase
         try {
             $user->confirmPasswordReset($token, 'new-password');
 
-            static::fail('PasswordResetConfirmationRejected was expected');
+            self::fail('PasswordResetConfirmationRejected was expected');
         } catch (PasswordResetTokenNotAccepted $e) {
             $this->addToAssertionCount(1);
         }
@@ -278,7 +278,7 @@ final class UserTest extends TestCase
 
         $this->assertPasswordResetThrowsRejected($user, $token);
 
-        static::assertEquals('pass-my-word', $user->getPassword());
-        static::assertNull($user->getPasswordResetToken());
+        self::assertEquals('pass-my-word', $user->getPassword());
+        self::assertNull($user->getPasswordResetToken());
     }
 }

@@ -34,7 +34,7 @@ final class TwigResponseListenerTest extends TestCase
         $event = $this->createEvent($response = new Response());
         $listener->onKernelResponse($event);
 
-        static::assertSame($response, $event->getResponse());
+        self::assertSame($response, $event->getResponse());
     }
 
     /** @test */
@@ -46,7 +46,7 @@ final class TwigResponseListenerTest extends TestCase
         $event = $this->createEvent(new TwigResponse('Nope', [], 204));
         $listener->onKernelResponse($event);
 
-        static::assertSame('', $event->getResponse()->getContent());
+        self::assertSame('', $event->getResponse()->getContent());
     }
 
     /** @test */
@@ -58,7 +58,7 @@ final class TwigResponseListenerTest extends TestCase
         $event = $this->createEvent((new TwigResponse('Nope'))->setContent('Something'));
         $listener->onKernelResponse($event);
 
-        static::assertSame('Something', $event->getResponse()->getContent());
+        self::assertSame('Something', $event->getResponse()->getContent());
     }
 
     /** @test */
@@ -70,7 +70,7 @@ final class TwigResponseListenerTest extends TestCase
         $event = $this->createEvent(new TwigResponse('client/show_user.html.twig', ['He' => 'you']));
         $listener->onKernelResponse($event);
 
-        static::assertSame('It was like this when I got here.', $event->getResponse()->getContent());
+        self::assertSame('It was like this when I got here.', $event->getResponse()->getContent());
     }
 
     private function createUnusedContainer(): ContainerInterface

@@ -74,7 +74,7 @@ final class AuthenticationTokenTokenPasswordChangedListenerTest extends TestCase
     }
 
     /** @test */
-    public function it_ignores_when_user_is_not_a_Security_user(): void
+    public function it_ignores_when_user_is_not_a_security_user(): void
     {
         $userProvider = $this->createUserProvider();
         $tokenStorage = $this->createProvidingOnlyTokenStorage(new PostAuthenticationGuardToken($this->createMock(UserInterface::class), 'main', ['ROLE_USER']));
@@ -128,8 +128,8 @@ final class AuthenticationTokenTokenPasswordChangedListenerTest extends TestCase
         $listener = new AuthenticationTokenTokenPasswordChangedListener($userProvider, $tokenStorage);
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
 
-        static::assertTrue($token->isAuthenticated());
-        static::assertSame($newUser, $token->getUser());
+        self::assertTrue($token->isAuthenticated());
+        self::assertSame($newUser, $token->getUser());
     }
 
     private function createGetAndStoreTokenStorage($token): TokenStorageInterface

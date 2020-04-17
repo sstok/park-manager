@@ -62,8 +62,8 @@ final class MockRepositoryTest extends TestCase
         $repository->assertNoEntitiesWereRemoved();
         $repository->assertHasEntity($entity1->id(), static function (): void { });
         $repository->assertHasEntity($entity2->id(), static function (): void { });
-        static::assertSame($entity1, $repository->get($entity1->id()));
-        static::assertSame($entity2, $repository->get($entity2->id()));
+        self::assertSame($entity1, $repository->get($entity1->id()));
+        self::assertSame($entity2, $repository->get($entity2->id()));
     }
 
     /** @test */
@@ -91,8 +91,8 @@ final class MockRepositoryTest extends TestCase
             }
         };
 
-        static::assertSame($entity1, $repository->getByLastName('John'));
-        static::assertSame($entity2, $repository->getByLastName('Jane'));
+        self::assertSame($entity1, $repository->getByLastName('John'));
+        self::assertSame($entity2, $repository->getByLastName('Jane'));
     }
 
     /** @test */
@@ -123,8 +123,8 @@ final class MockRepositoryTest extends TestCase
             }
         };
 
-        static::assertSame($entity1, $repository->getByName('John'));
-        static::assertSame($entity2, $repository->getByName('Jane'));
+        self::assertSame($entity1, $repository->getByName('John'));
+        self::assertSame($entity2, $repository->getByName('Jane'));
     }
 
     /** @test */
@@ -152,8 +152,8 @@ final class MockRepositoryTest extends TestCase
             }
         };
 
-        static::assertSame($entity1, $repository->getByLastName('john'));
-        static::assertSame($entity2, $repository->getByLastName('jane'));
+        self::assertSame($entity1, $repository->getByLastName('john'));
+        self::assertSame($entity2, $repository->getByLastName('jane'));
     }
 
     /** @test */
@@ -195,8 +195,8 @@ final class MockRepositoryTest extends TestCase
 
         $repository->assertEntitiesWereSaved();
         $repository->assertNoEntitiesWereRemoved();
-        static::assertSame($entity1, $repository->getByName('Jones'));
-        static::assertSame($entity2, $repository->getByName('Jane'));
+        self::assertSame($entity1, $repository->getByName('Jones'));
+        self::assertSame($entity2, $repository->getByName('Jane'));
     }
 
     /** @test */
@@ -229,7 +229,7 @@ final class MockRepositoryTest extends TestCase
 
         $repository->assertEntitiesWereRemoved([$entity1]);
         $repository->assertHasEntity($entity2->id(), static function (): void { });
-        static::assertSame($entity2, $repository->get($entity2->id()));
+        self::assertSame($entity2, $repository->get($entity2->id()));
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('No, I has not have that key: ' . $entity1->id());

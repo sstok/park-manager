@@ -58,7 +58,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         ]);
 
         $domainNameRepository->assertEntitiesCountWasSaved(1);
-        $domainNameRepository->assertHasEntityThat(function (WebhostingDomainName $storedDomainName) use ($domainName) {
+        $domainNameRepository->assertHasEntityThat(static function (WebhostingDomainName $storedDomainName) use ($domainName) {
             if ($domainName->toString() !== $storedDomainName->getDomainName()->toString()) {
                 return false;
             }
@@ -94,7 +94,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         ]);
 
         $domainNameRepository->assertEntitiesCountWasSaved(1);
-        $domainNameRepository->assertHasEntityThat(function (WebhostingDomainName $storedDomainName) use ($domainName) {
+        $domainNameRepository->assertHasEntityThat(static function (WebhostingDomainName $storedDomainName) use ($domainName) {
             if ($domainName->toString() !== $storedDomainName->getDomainName()->toString()) {
                 return false;
             }
@@ -123,9 +123,9 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         try {
             $handler(RegisterWebhostingSpace::withConstraintSet(self::SPACE_ID1, $domainName, UserRepositoryMock::USER_ID1, self::SET_ID1));
 
-            static::fail('Exception to be thrown.');
+            self::fail('Exception to be thrown.');
         } catch (DomainNameAlreadyInUse $e) {
-            static::assertEquals(DomainNameAlreadyInUse::bySpaceId($domainName, $spaceId2), $e);
+            self::assertEquals(DomainNameAlreadyInUse::bySpaceId($domainName, $spaceId2), $e);
         }
 
         $spaceRepository->assertNoEntitiesWereSaved();

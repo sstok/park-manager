@@ -59,10 +59,10 @@ final class UserProviderTest extends TestCase
     {
         $provider = new UserProvider($this->createUserRepositoryStub(), $this->createAdminRepositoryStub());
 
-        static::assertEquals(new SecurityUser(self::USER_ID1, 'maybe', true, ['ROLE_USER']), $provider->loadUserByUsername("user\0foobar@example.com"));
-        static::assertEquals(new SecurityUser(self::USER_ID2, 'maybe', true, ['ROLE_USER']), $provider->loadUserByUsername("user\0bar@example.com"));
-        static::assertEquals(new SecurityUser(self::ADMIN_ID1, 'maybe', true, ['ROLE_USER', 'ROLE_ADMIN']), $provider->loadUserByUsername("admin\0foobar@example.com"));
-        static::assertEquals(new SecurityUser(self::ADMIN_ID2, 'nope3', true, ['ROLE_USER', 'ROLE_ADMIN']), $provider->loadUserByUsername("admin\0moo@example.com"));
+        self::assertEquals(new SecurityUser(self::USER_ID1, 'maybe', true, ['ROLE_USER']), $provider->loadUserByUsername("user\0foobar@example.com"));
+        self::assertEquals(new SecurityUser(self::USER_ID2, 'maybe', true, ['ROLE_USER']), $provider->loadUserByUsername("user\0bar@example.com"));
+        self::assertEquals(new SecurityUser(self::ADMIN_ID1, 'maybe', true, ['ROLE_USER', 'ROLE_ADMIN']), $provider->loadUserByUsername("admin\0foobar@example.com"));
+        self::assertEquals(new SecurityUser(self::ADMIN_ID2, 'nope3', true, ['ROLE_USER', 'ROLE_ADMIN']), $provider->loadUserByUsername("admin\0moo@example.com"));
     }
 
     private function createUserRepositoryStub(): UserRepositoryMock
@@ -92,13 +92,13 @@ final class UserProviderTest extends TestCase
         $user->changePassword('new-password-is-here');
         $userRepo->save($user);
 
-        static::assertEquals(new SecurityUser(self::USER_ID1, 'new-password-is-here', true, ['ROLE_USER']), $provider->refreshUser($securityUser));
+        self::assertEquals(new SecurityUser(self::USER_ID1, 'new-password-is-here', true, ['ROLE_USER']), $provider->refreshUser($securityUser));
 
         $securityUser = $provider->loadUserByUsername("admin\0moo@example.com");
         $admin = $adminRepo->get(AdministratorId::fromString(self::ADMIN_ID2));
         $admin->disableLogin();
         $adminRepo->save($admin);
 
-        static::assertEquals(new SecurityUser(self::ADMIN_ID2, 'nope3', false, ['ROLE_USER', 'ROLE_ADMIN']), $provider->refreshUser($securityUser));
+        self::assertEquals(new SecurityUser(self::ADMIN_ID2, 'nope3', false, ['ROLE_USER', 'ROLE_ADMIN']), $provider->refreshUser($securityUser));
     }
 }
