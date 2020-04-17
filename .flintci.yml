@@ -1,6 +1,0 @@
-services:
-    eslint: true
-
-    shellcheck:
-        version:     latest
-        path:        .

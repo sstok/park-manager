@@ -3,20 +3,17 @@
         {% for flash in app.session.flashbag.get(type) %}
             {% if 'error' == type %}
                 {% set color = 'red' %}
-                {% set icon = 'warning' %}
             {% endif %}
             {% if 'warning' == type %}
                 {% set color = 'orange' %}
-                {% set icon = 'warning' %}
             {% endif %}
             {% if 'info' == type %}
                 {% set color = 'blue' %}
-                {% set icon = 'info' %}
             {% endif %}
 
             {% set color = color|default('green') %}
             <div class="bg-gray-100 border-l-4 border-{{ color }}-500 text-{{ color }}-700 p-4 mb-4" role="alert">
-                <p class="font-bold">{{ ('ui.'~type)|trans }}</p>
+                <p class="font-bold">{{ ('ui.' ~ type)|trans }}</p>
                 <p>{% apply spaceless %}
                     {% if flash is iterable %}
                         {{ flash.message|trans(flash.parameters, 'messages')|raw }}

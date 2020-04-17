@@ -5,4 +5,8 @@ COPY qa/tools.json $TOOLBOX_TARGET_DIR/extra-tools.json
 RUN php $TOOLBOX_TARGET_DIR/toolbox install --tools $TOOLBOX_TARGET_DIR/extra-tools.json \
   && rm -rf ~/.composer/cache
 
+RUN wget -O composer-normalize https://github.com/ergebnis/composer-normalize/releases/download/2.3.2/composer-normalize.phar \
+   && chmod +x composer-normalize \
+   && mv composer-normalize $TOOLBOX_TARGET_DIR/.composer/vendor/bin
+
 ENV TOOLBOX_JSON="phar://$TOOLBOX_TARGET_DIR/toolbox/resources/pre-installation.json,phar://$TOOLBOX_TARGET_DIR/toolbox/resources/tools.json,$TOOLBOX_TARGET_DIR/extra-tools.json"

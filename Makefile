@@ -13,7 +13,10 @@ clean:
 composer-validate: ensure
 	@echo "Validating local composer files"
 	@sh -c "${QA_DOCKER_COMMAND} composer validate"
-	@sh -c "${QA_DOCKER_COMMAND} composer normalize"
+	@sh -c "${QA_DOCKER_COMMAND} composer-normalize --dry-run"
+
+encore:
+	docker-compose run --rm encore make in-docker-encore
 
 lint-xml:
 	@echo "Validating XML files"
@@ -36,7 +39,7 @@ lint-yaml:
 lint-twig:
 	@echo "Validating Twig files"
 	docker-compose run --rm php php bin/console lint:twig -vv templates/
-	sh -c "${QA_DOCKER_COMMAND} twigcs templates/"
+	sh -c "${QA_DOCKER_COMMAND} twigcs --severity=error templates/"
 
 composer-install: clean
 	docker-compose run --rm php composer install
@@ -55,7 +58,7 @@ phpstan: ensure
 psalm: ensure
 	sh -c "${QA_DOCKER_COMMAND} vendor/bin/psalm --show-info=false"
 
-phpunit:
+phpunit: encore
 	docker-compose run --rm php make in-docker-phpunit
 
 infection: clean
@@ -74,14 +77,18 @@ db-fixtures:
 
 in-docker-phpunit:
 	bin/console cache:clear --env=test
-	make db-fixtures
-	vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --exclude-group ""
+	APP_ENV=test make db-fixtures
+	APP_ENV=test vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --exclude-group ""
 
 in-docker-infection:
 	bin/console cache:clear --env=test
-	make db-fixtures
+	APP_ENV=test make db-fixtures
 	phpdbg -qrr vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --exclude-group "" --coverage-text --log-junit=var/junit.xml --coverage-xml var/coverage-xml/
 	phpdbg -qrr /usr/local/bin/infection run --verbose --show-mutations --no-interaction --only-covered --coverage var/ --min-msi=84 --min-covered-msi=84
+
+in-docker-encore:
+	yarn install
+	yarn encore dev
 
 fetch:
 	docker pull "${QA_DOCKER_IMAGE}"

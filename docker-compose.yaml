@@ -5,19 +5,27 @@ services:
         image: parkmanager/ci-dev:latest
         depends_on:
             - db
+            - encore
         environment:
-            DATABASE_URL: 'pgsql://root@db:5432/park_manager?charset=utf8&serverVersion=9.6'
+            DATABASE_URL: 'pgsql://root:postgres@db:5432/park_manager?charset=utf8&serverVersion=12.2'
 
         volumes:
             - .:/srv/www:delegated
             - /srv/www/var/logs/
             - /srv/www/var/sessions/
 
+    encore:
+        image: node:13.13
+        working_dir: /usr/src/app
+        volumes:
+            - .:/usr/src/app:delegated
+
     db:
-        image: postgres:9.6-alpine
+        image: postgres:12.2-alpine
         environment:
             - POSTGRES_DB=park_manager
             - POSTGRES_USER=root
+            - POSTGRES_PASSWORD=postgres
         volumes:
             # Use virtual volume as this is only for testing
             - db-data:/var/lib/postgresql/data

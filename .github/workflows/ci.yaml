@@ -1,0 +1,46 @@
+name: Full CI process
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+        branches:
+            - master
+jobs:
+    test-php:
+        name: PHP Tests
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+
+        steps:
+            -
+                name: Checkout
+                uses: actions/checkout@v2
+
+            -
+                name: Install Composer dependencies
+                run: make install
+
+            -
+                name: Run Tests
+                run: make test
+
+    lint-php:
+        name: PHP Checks
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+
+        steps:
+            -
+                name: Checkout
+                uses: actions/checkout@v2
+
+            -
+                name: Install Composer dependencies
+                run: make install
+
+            -
+                name: Run checks
+                run: make check
