@@ -684,7 +684,7 @@ To prevent this from happening the following requirements must be followed:
 * Block access when to many attempts are made within a period
   (say 5 attempts from the same IP every 10 minutes).
 * Ask some information only the user knows (either a security question, see notes below).
-* Require to solve a (re)CATCHA after 3 failed attempts.
+* Require to solve a (re)CAPTCHA after 3 failed attempts.
 
 Once the identity of the user is verified continue with the next step.
 

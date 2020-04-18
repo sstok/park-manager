@@ -29,7 +29,7 @@ final class IsFormErrorsEqual extends Constraint
         $this->value = $this->ensureArray($expected);
     }
 
-    public function evaluate($other, string $description = '', bool $returnResult = false)
+    public function evaluate($other, string $description = '', bool $returnResult = false): bool
     {
         $other = $this->ensureArray($other);
 

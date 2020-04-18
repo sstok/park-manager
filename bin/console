@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+declare(strict_types=1);
+
 /*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -12,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\ErrorHandler\Debug;
 
-if (false === in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
+if (in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true) === false) {
     echo 'Warning: The console should be invoked via the CLI version of PHP, not the '.\PHP_SAPI.' SAPI'.\PHP_EOL;
 }
 
@@ -25,7 +27,9 @@ if (!class_exists(Application::class)) {
 }
 
 $input = new ArgvInput();
-if (null !== $env = $input->getParameterOption(['--env', '-e'], null, true)) {
+$env = $input->getParameterOption(['--env', '-e'], null, true);
+
+if ($env !== null) {
     putenv('APP_ENV='.$_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = $env);
 }
 

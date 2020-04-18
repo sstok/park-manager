@@ -42,10 +42,6 @@ final class ConfirmationHandler extends BaseConfirmationHandler
     {
         $this->guardNeedsRequest();
 
-        if (! $this->request->isMethod('POST') || ! $this->checkToken()) {
-            return false;
-        }
-
-        return true;
+        return $this->request->isMethod('POST') && $this->checkToken();
     }
 }

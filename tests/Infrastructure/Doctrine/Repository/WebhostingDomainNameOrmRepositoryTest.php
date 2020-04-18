@@ -42,9 +42,6 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     /** @var WebhostingDomainNameOrmRepository */
     private $repository;
 
-    /** @var User */
-    private $user1;
-
     /** @var Space */
     private $space1;
 
@@ -64,23 +61,23 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     {
         parent::setUp();
 
-        $this->user1 = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John');
+        $user1 = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John');
 
         $this->space1 = Space::registerWithCustomConstraints(
             WebhostingSpaceId::fromString(self::SPACE_ID1),
-            $this->user1,
+            $user1,
             new Constraints()
         );
 
         $this->space2 = Space::registerWithCustomConstraints(
             WebhostingSpaceId::fromString(self::SPACE_ID2),
-            $this->user1,
+            $user1,
             new Constraints()
         );
 
         $em = $this->getEntityManager();
-        $em->transactional(function (EntityManagerInterface $em): void {
-            $em->persist($this->user1);
+        $em->transactional(function (EntityManagerInterface $em) use ($user1): void {
+            $em->persist($user1);
             $em->persist($this->space1);
             $em->persist($this->space2);
         });

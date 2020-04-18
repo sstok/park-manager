@@ -40,7 +40,7 @@ abstract class DomainIdType extends GuidType
     final public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
-            return $value;
+            return null;
         }
 
         $class = static::OBJECT_CLASS;

@@ -90,7 +90,7 @@ trait MockRepository
      * Returns a list fields (#property, method-name or Closure for extracting)
      * to use for mapping the entity in storage.
      *
-     * @return array<string,\Closure|string> [mapping-name] => '#property or method'
+     * @return array<string,Closure|string> [mapping-name] => '#property or method'
      */
     protected function getFieldsIndexMapping(): array
     {

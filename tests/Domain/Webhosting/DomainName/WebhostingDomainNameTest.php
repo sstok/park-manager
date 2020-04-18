@@ -117,7 +117,6 @@ final class WebhostingDomainNameTest extends TestCase
     {
         $space = $this->createMock(Space::class);
         $space
-            ->expects(self::any())
             ->method('getId')
             ->willReturn(WebhostingSpaceId::fromString($id));
 

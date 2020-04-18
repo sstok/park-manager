@@ -51,7 +51,7 @@ final class RegisterAdministratorCommand extends Command
         );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -70,7 +70,7 @@ final class RegisterAdministratorCommand extends Command
             ->encodePassword($io->askHidden('Password'), '');
 
         $this->commandBus->dispatch(
-            new RegisterAdministrator(AdministratorId::create()->toString(), $email, $displayName, $password)
+            new RegisterAdministrator(AdministratorId::create(), $email, $displayName, $password)
         );
 
         $io->success('Administrator was registered.');

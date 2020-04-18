@@ -29,11 +29,17 @@ trait UuidTrait
         $this->stringValue = $value->toString();
     }
 
+    /**
+     * @return static
+     */
     public static function create()
     {
         return new static(Uuid::uuid4());
     }
 
+    /**
+     * @return static
+     */
     public static function fromString(string $value)
     {
         return new static(Uuid::fromString($value));

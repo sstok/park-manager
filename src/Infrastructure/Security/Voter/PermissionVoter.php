@@ -25,7 +25,7 @@ final class PermissionVoter implements VoterInterface
         $this->permissionAccessManager = $permissionAccessManager;
     }
 
-    public function vote(TokenInterface $token, $subject, array $attributes)
+    public function vote(TokenInterface $token, $subject, array $attributes): int
     {
         foreach ($attributes as $attribute) {
             if (! $attribute instanceof Permission) {

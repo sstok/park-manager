@@ -27,18 +27,6 @@ final class RequestEmailAddressChangeTest extends TestCase
 {
     private const USER_ID = '01dd5964-5426-11e7-be03-acbc32b58315';
 
-    /** @var SplitToken */
-    private $fullToken;
-
-    /** @var SplitToken */
-    private $token;
-
-    protected function setUp(): void
-    {
-        $this->fullToken = FakeSplitTokenFactory::instance()->generate();
-        $this->token = FakeSplitTokenFactory::instance()->fromString($this->fullToken->token()->getString());
-    }
-
     /** @test */
     public function it_handles_email_address_change_request(): void
     {

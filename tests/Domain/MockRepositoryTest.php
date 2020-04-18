@@ -266,7 +266,7 @@ final class MockEntity
         return $this->id;
     }
 
-    public function lastName()
+    public function lastName(): string
     {
         return $this->lastName;
     }

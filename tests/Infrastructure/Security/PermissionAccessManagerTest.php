@@ -129,8 +129,8 @@ final class PermissionAccessManagerTest extends TestCase
         });
         $manager = new PermissionAccessManager($tokenStorage, $deciders, []);
 
-        self::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new MockAliasedPerission(PermissionDecider::DECIDE_ALLOW), null));
-        self::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide(new MockAliasedPerission(PermissionDecider::DECIDE_DENY), null));
+        self::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new MockAliasedPermission(PermissionDecider::DECIDE_ALLOW), null));
+        self::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide(new MockAliasedPermission(PermissionDecider::DECIDE_DENY), null));
     }
 
     /** @test */
@@ -147,7 +147,7 @@ final class PermissionAccessManagerTest extends TestCase
                 return $permission->permission;
             }
         });
-        $manager = new PermissionAccessManager($tokenStorage, $deciders, ['is_owner' => MockAliasedPerission::class]);
+        $manager = new PermissionAccessManager($tokenStorage, $deciders, ['is_owner' => MockAliasedPermission::class]);
 
         self::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new PermissionExpression('is_owner', PermissionDecider::DECIDE_ALLOW), null));
         self::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new PermissionExpression(MockPermission::class, PermissionDecider::DECIDE_ALLOW), null));
@@ -157,7 +157,7 @@ final class PermissionAccessManagerTest extends TestCase
     public function it_gives_suggestions_for_unresolvable_short_alias(): void
     {
         $tokenStorage = $this->createTokenStorage($this->createToken(true, new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER'])));
-        $manager = new PermissionAccessManager($tokenStorage, new Container(), ['is_owner' => MockAliasedPerission::class, 'is_space_owner' => MockAliasedPerission::class]);
+        $manager = new PermissionAccessManager($tokenStorage, new Container(), ['is_owner' => MockAliasedPermission::class, 'is_space_owner' => MockAliasedPermission::class]);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("No Permission can be found for short-name \"is_owmer\".\nDid you e.g. mean \"is_owner\"");
@@ -169,7 +169,7 @@ final class PermissionAccessManagerTest extends TestCase
     public function it_gives_provides_names_for_unresolvable_short_alias_with_no_match(): void
     {
         $tokenStorage = $this->createTokenStorage($this->createToken(true, new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER'])));
-        $manager = new PermissionAccessManager($tokenStorage, new Container(), ['is_owner' => MockAliasedPerission::class, 'is_space_owner' => MockAliasedPerission::class]);
+        $manager = new PermissionAccessManager($tokenStorage, new Container(), ['is_owner' => MockAliasedPermission::class, 'is_space_owner' => MockAliasedPermission::class]);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("No Permission can be found for short-name \"is_homer\".\nSupported \"is_owner\", \"is_space_owner\"");
@@ -203,7 +203,7 @@ class MockSelfPermission implements SelfDecidingPermission
     }
 }
 
-class MockAliasedPerission extends MockPermission implements AliasedPermission
+class MockAliasedPermission extends MockPermission implements AliasedPermission
 {
     public $permission;
 

@@ -31,7 +31,7 @@ abstract class BaseConfirmationHandler
     /** @var string */
     protected $tokenId = '';
 
-    /** @var Request */
+    /** @var Request|null */
     protected $request;
 
     public function __construct(Environment $twig, CsrfTokenManagerInterface $tokenManager)
@@ -106,7 +106,7 @@ abstract class BaseConfirmationHandler
         return $this->twig->render($template, \array_merge($extraVariables, $this->templateContext));
     }
 
-    protected function checkToken()
+    protected function checkToken(): bool
     {
         $token = $this->request->request->get('_token');
 

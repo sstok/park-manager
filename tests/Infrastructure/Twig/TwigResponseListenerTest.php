@@ -29,7 +29,7 @@ final class TwigResponseListenerTest extends TestCase
     public function it_ignores_other_responses(): void
     {
         $container = $this->createUnusedContainer();
-        $listener = new \ParkManager\Infrastructure\Twig\TwigResponseListener($container);
+        $listener = new TwigResponseListener($container);
 
         $event = $this->createEvent($response = new Response());
         $listener->onKernelResponse($event);
@@ -41,7 +41,7 @@ final class TwigResponseListenerTest extends TestCase
     public function it_ignores_empty_response(): void
     {
         $container = $this->createUnusedContainer();
-        $listener = new \ParkManager\Infrastructure\Twig\TwigResponseListener($container);
+        $listener = new TwigResponseListener($container);
 
         $event = $this->createEvent(new TwigResponse('Nope', [], 204));
         $listener->onKernelResponse($event);
@@ -65,7 +65,7 @@ final class TwigResponseListenerTest extends TestCase
     public function it_renders_twig_template(): void
     {
         $container = $this->createUsedContainer('client/show_user.html.twig', ['He' => 'you']);
-        $listener = new \ParkManager\Infrastructure\Twig\TwigResponseListener($container);
+        $listener = new TwigResponseListener($container);
 
         $event = $this->createEvent(new TwigResponse('client/show_user.html.twig', ['He' => 'you']));
         $listener->onKernelResponse($event);

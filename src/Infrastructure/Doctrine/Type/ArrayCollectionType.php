@@ -26,7 +26,7 @@ final class ArrayCollectionType extends JsonType
             return null;
         }
 
-        return \json_encode($value->toArray());
+        return \json_encode($value->toArray(), JSON_THROW_ON_ERROR, 512);
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ArrayCollection
@@ -37,7 +37,7 @@ final class ArrayCollectionType extends JsonType
 
         $value = \is_resource($value) ? \stream_get_contents($value) : $value;
 
-        return new ArrayCollection(\json_decode($value, true));
+        return new ArrayCollection(\json_decode($value, true, 512, JSON_THROW_ON_ERROR));
     }
 
     public function getName(): string

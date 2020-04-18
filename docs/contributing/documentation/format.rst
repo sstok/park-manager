@@ -158,5 +158,5 @@ At the bottom of the document in which you are using your link add a reference:
 .. _`documents`:               https://github.com/park-manager/park-manager/tree/master/docs
 .. _`reStructuredText Primer`: http://www.sphinx-doc.org/en/stable/rest.html
 .. _`markup`:                  http://www.sphinx-doc.org/en/stable/markup/
-.. _`Pygments website`:                  http://pygments.org/languages/
+.. _`Pygments website`:        http://pygments.org/languages/
 .. _`Github`:                  http://www.github.com
