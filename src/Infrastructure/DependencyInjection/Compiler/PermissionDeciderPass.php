@@ -14,6 +14,7 @@ use ParkManager\Infrastructure\Security\PermissionAccessManager;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class PermissionDeciderPass implements CompilerPassInterface
@@ -24,8 +25,13 @@ final class PermissionDeciderPass implements CompilerPassInterface
         $collected = [];
 
         foreach ($container->findTaggedServiceIds('park_manager.security.permission_decider') as $serviceId => $tags) {
-            $className = \mb_substr($container->getDefinition($serviceId)->getClass(), 0, -7);
+            $class = $container->getDefinition($serviceId)->getClass();
 
+            if ($class === null) {
+                throw new InvalidArgumentException(\sprintf('Service "%s" is expected to have a class set.', $serviceId));
+            }
+
+            $className = \mb_substr($class, 0, -7);
             $collected[$className] = new Reference($serviceId);
         }
 

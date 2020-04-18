@@ -45,6 +45,7 @@ final class RegisterWebhostingSpaceHandler
             throw DomainNameAlreadyInUse::bySpaceId($command->domainName, $currentRegistration->getSpace()->getId());
         }
 
+        /** @psalm-suppress PossiblyNullOperand */
         if ($command->constraintSetId !== null) {
             $space = Space::register(
                 $command->id,

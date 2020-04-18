@@ -21,6 +21,9 @@
             <errorLevel type="suppress">
                 <!-- Required as transformers are able to enforce stronger types -->
                 <directory name="src/UI/Web/Form/DataTransformer"/>
+
+                <!-- Required as types are able to enforce stronger types -->
+                <directory name="src/Infrastructure/Doctrine/Type"/>
             </errorLevel>
         </MoreSpecificImplementedParamType>
 

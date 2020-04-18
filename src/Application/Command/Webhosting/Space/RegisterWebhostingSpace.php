@@ -58,7 +58,10 @@ final class RegisterWebhostingSpace
         $this->id = WebhostingSpaceId::fromString($id);
         $this->domainName = $domainName;
         $this->customConstraints = $constraints;
-        $this->owner = UserId::fromString($owner);
+
+        if ($owner !== null) {
+            $this->owner = UserId::fromString($owner);
+        }
 
         if ($setId !== null) {
             $this->constraintSetId = ConstraintSetId::fromString($setId);

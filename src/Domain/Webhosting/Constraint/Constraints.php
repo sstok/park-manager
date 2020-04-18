@@ -90,6 +90,12 @@ final class Constraints implements IteratorAggregate
     {
         $class = \get_class($constraint);
 
-        return \mb_substr($class, \mb_strrpos($class, '\\') + 1);
+        $pos = \mb_strrpos($class, '\\');
+
+        if ($pos === false) {
+            return $class;
+        }
+
+        return \mb_substr($class, $pos + 1);
     }
 }

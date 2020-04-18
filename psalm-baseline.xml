@@ -1,49 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="dev-master@4a4c0f1362b217ff511a03985ca35343bf04be79">
-  <file src="src/Application/Command/Webhosting/Account/RegisterWebhostingAccountHandler.php">
+<files psalm-version="dev-master@5ef82b53f6732beb66a94482e1fbea48d10b50e7">
+  <file src="src/Application/Command/Webhosting/Space/RegisterWebhostingSpaceHandler.php">
     <PossiblyNullArgument occurrences="1">
       <code>$command-&gt;customConstraints</code>
     </PossiblyNullArgument>
-  </file>
-  <file src="src/DataFixtures/ORM/ClientFixtures.php">
-    <MethodSignatureMismatch occurrences="1">
-      <code>$manager</code>
-    </MethodSignatureMismatch>
-  </file>
-  <file src="src/Domain/Webhosting/Plan/Constraints.php">
-    <PossiblyFalseOperand occurrences="1">
-      <code>\mb_strrpos($class, '\\')</code>
-    </PossiblyFalseOperand>
   </file>
   <file src="src/Infrastructure/Doctrine/Repository/EntityRepository.php">
     <PropertyTypeCoercion occurrences="1">
       <code>$entityManager-&gt;getMetadataFactory()-&gt;getMetadataFor($className)</code>
     </PropertyTypeCoercion>
   </file>
-  <file src="src/Infrastructure/Doctrine/Type/ArrayCollectionType.php">
-    <MoreSpecificImplementedParamType occurrences="1">
-      <code>$value</code>
-    </MoreSpecificImplementedParamType>
-  </file>
-  <file src="src/Infrastructure/Doctrine/Type/WebhostingPlanConstraintsType.php">
-    <MoreSpecificImplementedParamType occurrences="1">
-      <code>$value</code>
-    </MoreSpecificImplementedParamType>
-  </file>
   <file src="src/Infrastructure/Security/Guard/BrowserKitAuthenticator.php">
-    <MoreSpecificImplementedParamType occurrences="2">
+    <MoreSpecificImplementedParamType occurrences="4">
       <code>$credentials</code>
+      <code>$userProvider</code>
       <code>$credentials</code>
+      <code>$user</code>
     </MoreSpecificImplementedParamType>
   </file>
   <file src="src/Infrastructure/Security/Guard/FormAuthenticator.php">
-    <MoreSpecificImplementedParamType occurrences="2">
+    <MoreSpecificImplementedParamType occurrences="3">
       <code>$credentials</code>
+      <code>$userProvider</code>
       <code>$credentials</code>
     </MoreSpecificImplementedParamType>
     <UndefinedInterfaceMethod occurrences="1">
       <code>isEnabled</code>
     </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Infrastructure/Security/PermissionAccessManager.php">
+    <InvalidArgument occurrences="1">
+      <code>$token-&gt;getUser()</code>
+    </InvalidArgument>
+    <InvalidFunctionCall occurrences="1">
+      <code>$permission($token, $token-&gt;getUser(), $this)</code>
+    </InvalidFunctionCall>
+    <LessSpecificReturnStatement occurrences="2">
+      <code>new $permission-&gt;name(...$permission-&gt;arguments)</code>
+      <code>new $this-&gt;permissionsShortNames[$permission-&gt;name](...$permission-&gt;arguments)</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>Permission</code>
+    </MoreSpecificReturnType>
   </file>
   <file src="src/Infrastructure/Security/SecurityUser.php">
     <MoreSpecificImplementedParamType occurrences="1">
@@ -60,30 +58,29 @@
       <code>protected function configureContainer(ContainerConfigurator $container, LoaderInterface $loader): void</code>
     </MethodSignatureMismatch>
   </file>
-  <file src="src/UI/Web/Form/Type/DefaultMessageBusExtension.php">
-    <InvalidReturnType occurrences="1">
-      <code>iterable</code>
-    </InvalidReturnType>
+  <file src="src/UI/Web/ArgumentResolver/ModelResolver.php">
+    <PossiblyNullArgument occurrences="2">
+      <code>$type</code>
+      <code>$type</code>
+    </PossiblyNullArgument>
+    <PossiblyNullOperand occurrences="1">
+      <code>$type</code>
+    </PossiblyNullOperand>
+    <UndefinedClass occurrences="1">
+      <code>$type::{$this-&gt;valueObjects[$type]}($value)</code>
+    </UndefinedClass>
   </file>
-  <file src="src/UI/Web/Form/Type/Security/ChangePasswordDataMapper.php">
-    <InvalidArgument occurrences="2">
-      <code>$forms</code>
-      <code>$forms</code>
-    </InvalidArgument>
-  </file>
-  <file src="src/UI/Web/Form/Type/Security/ConfirmPasswordResetDataMapper.php">
-    <InvalidArgument occurrences="1">
-      <code>$forms</code>
-    </InvalidArgument>
+  <file src="src/UI/Web/EventListener/NotFoundExceptionListener.php">
+    <InvalidArrayAccess occurrences="1">
+      <code>$key[0]</code>
+    </InvalidArrayAccess>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$exception-&gt;getCode()</code>
+    </PossiblyInvalidArgument>
   </file>
   <file src="src/UI/Web/Form/Type/Security/ConfirmPasswordResetType.php">
     <PossiblyNullReference occurrences="1">
       <code>getName</code>
     </PossiblyNullReference>
-  </file>
-  <file src="src/UI/Web/Form/Type/Security/RequestPasswordResetDataMapper.php">
-    <InvalidArgument occurrences="1">
-      <code>$forms</code>
-    </InvalidArgument>
   </file>
 </files>
