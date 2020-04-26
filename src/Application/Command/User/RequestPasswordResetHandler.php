@@ -60,7 +60,7 @@ final class RequestPasswordResetHandler
         if ($user->requestPasswordReset($splitToken)) {
             $this->repository->save($user);
 
-            $this->mailer->send($user->getEmail(), $splitToken);
+            $this->mailer->send($user->email, $splitToken);
         }
     }
 }

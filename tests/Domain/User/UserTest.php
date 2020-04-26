@@ -45,8 +45,8 @@ final class UserTest extends TestCase
             'Jane Doe'
         );
 
-        self::assertEquals($id, $user->getId());
-        self::assertEquals($email, $user->getEmail());
+        self::assertEquals($id, $user->id);
+        self::assertEquals($email, $user->email);
     }
 
     /** @test */
@@ -55,7 +55,7 @@ final class UserTest extends TestCase
         $user = $this->registerUser();
         $user->changeEmail($email = new EmailAddress('Doh@example.com'));
 
-        self::assertEquals($email, $user->getEmail());
+        self::assertEquals($email, $user->email);
     }
 
     private function registerUser(?string $password = null): User
@@ -72,7 +72,7 @@ final class UserTest extends TestCase
         $user = $this->registerUser();
         $user->changeName('Jenny');
 
-        self::assertEquals('Jenny', $user->getDisplayName());
+        self::assertEquals('Jenny', $user->displayName);
     }
 
     /** @test */
@@ -81,7 +81,7 @@ final class UserTest extends TestCase
         $user = $this->registerUser();
         $user->disable();
 
-        self::assertFalse($user->isEnabled());
+        self::assertFalse($user->loginEnabled);
     }
 
     /** @test */
@@ -91,7 +91,7 @@ final class UserTest extends TestCase
         $user->disable();
         $user->enable();
 
-        self::assertTrue($user->isEnabled());
+        self::assertTrue($user->loginEnabled);
     }
 
     /** @test */
@@ -101,7 +101,7 @@ final class UserTest extends TestCase
 
         $user->changePassword('security-is-null');
 
-        self::assertEquals('security-is-null', $user->getPassword());
+        self::assertEquals('security-is-null', $user->password);
     }
 
     /** @test */
@@ -122,7 +122,7 @@ final class UserTest extends TestCase
         $user = $this->registerUser();
 
         self::assertTrue($user->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token));
-        self::assertEquals(new EmailAddress('john@example.com'), $user->getEmail());
+        self::assertEquals(new EmailAddress('john@example.com'), $user->email);
     }
 
     private function createTimeLimitedSplitToken(DateTimeImmutable $expiresAt): SplitToken
@@ -152,7 +152,7 @@ final class UserTest extends TestCase
         // Second usage is prohibited, so try a second time.
         $this->assertEmailChangeThrowsRejected($user, $token);
 
-        self::assertEquals($email, $user->getEmail());
+        self::assertEquals($email, $user->email);
     }
 
     private function assertEmailChangeThrowsRejected(User $user, SplitToken $token): void
@@ -185,7 +185,7 @@ final class UserTest extends TestCase
         // Second attempt is prohibited, so try a second time (with correct token)!
         $this->assertEmailChangeThrowsRejected($user, $correctToken);
 
-        self::assertEquals(new EmailAddress('john@example.com'), $user->getEmail());
+        self::assertEquals(new EmailAddress('john@example.com'), $user->email);
     }
 
     private function generateSecondToken(): SplitToken
@@ -200,7 +200,7 @@ final class UserTest extends TestCase
         $user = $this->registerUser();
 
         $this->assertEmailChangeThrowsRejected($user, $token);
-        self::assertEquals(new EmailAddress('john@example.com'), $user->getEmail());
+        self::assertEquals(new EmailAddress('john@example.com'), $user->email);
     }
 
     /** @test */
@@ -231,8 +231,8 @@ final class UserTest extends TestCase
 
         $user->confirmPasswordReset($token2 = $this->getTokenString($token), 'new-password');
 
-        self::assertEquals('new-password', $user->getPassword());
-        self::assertNull($user->getPasswordResetToken());
+        self::assertEquals('new-password', $user->password);
+        self::assertNull($user->passwordResetToken);
     }
 
     /** @test */
@@ -278,7 +278,7 @@ final class UserTest extends TestCase
 
         $this->assertPasswordResetThrowsRejected($user, $token);
 
-        self::assertEquals('pass-my-word', $user->getPassword());
-        self::assertNull($user->getPasswordResetToken());
+        self::assertEquals('pass-my-word', $user->password);
+        self::assertNull($user->passwordResetToken);
     }
 }

@@ -81,7 +81,7 @@ final class IsSpaceOwnerTest extends TestCase
     private function getUser(): User
     {
         $user = $this->prophesize(User::class);
-        $user->getId()->willReturn(UserId::fromString(self::USER_ID));
+        $user->id = UserId::fromString(self::USER_ID);
 
         return $user->reveal();
     }

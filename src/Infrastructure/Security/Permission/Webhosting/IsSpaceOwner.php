@@ -43,6 +43,6 @@ final class IsSpaceOwner implements SelfDecidingPermission
 
         // If the current user is not the owner abstain access in-case another permission
         // can be more explicit. If all abstain access is denied anyway.
-        return $owner->getId()->toString() === $user->getId() ? PermissionDecider::DECIDE_ALLOW : PermissionDecider::DECIDE_ABSTAIN;
+        return $owner->id->toString() === $user->getId() ? PermissionDecider::DECIDE_ALLOW : PermissionDecider::DECIDE_ABSTAIN;
     }
 }

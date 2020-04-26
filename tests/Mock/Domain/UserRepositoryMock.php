@@ -29,15 +29,15 @@ final class UserRepositoryMock implements UserRepository
     {
         return [
             'email' => static function (User $user) {
-                return $user->getEmail()->canonical;
+                return $user->email->canonical;
             },
             'passwordResetToken' => static function (User $user) {
-                $token = $user->getPasswordResetToken();
+                $token = $user->passwordResetToken;
 
                 return $token !== null ? $token->selector() : null;
             },
             'emailChangeToken' => static function (User $user) {
-                $token = $user->getEmailAddressChangeToken();
+                $token = $user->emailAddressChangeToken;
 
                 return $token !== null ? $token->selector() : null;
             },

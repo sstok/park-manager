@@ -42,11 +42,10 @@ final class RequestPasswordResetHandlerTest extends TestCase
         $handler(new RequestPasswordReset('Jane@example.com'));
 
         $repository->assertHasEntity(
-            $user->getId(),
+            $user->id,
             static function (User $entity): void {
-                $valueHolder = $entity->getPasswordResetToken();
-                self::assertFalse($valueHolder->isExpired(new DateTimeImmutable('+ 120 seconds')));
-                self::assertTrue($valueHolder->isExpired(new DateTimeImmutable('+ 125 seconds')));
+                self::assertFalse($entity->passwordResetToken->isExpired(new DateTimeImmutable('+ 120 seconds')));
+                self::assertTrue($entity->passwordResetToken->isExpired(new DateTimeImmutable('+ 125 seconds')));
             }
         );
     }
@@ -54,7 +53,7 @@ final class RequestPasswordResetHandlerTest extends TestCase
     private function expectMailIsSend(User $user): PasswordResetMailer
     {
         $mailerProphecy = $this->prophesize(PasswordResetMailer::class);
-        $mailerProphecy->send($user->getEmail(), Argument::any())->shouldBeCalled();
+        $mailerProphecy->send($user->email, Argument::any())->shouldBeCalled();
 
         return $mailerProphecy->reveal();
     }

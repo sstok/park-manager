@@ -83,7 +83,19 @@ trait MockRepository
             return $object->{\mb_substr($getter, 1)};
         }
 
-        return $object->{(\method_exists($object, $getter) ? $getter : 'get' . \ucfirst($getter))}();
+        switch (true) {
+            case \method_exists($object, $getter):
+                return $object->{$getter}();
+
+            case \method_exists($object, 'get' . \ucfirst($getter)):
+                return $object->{'get' . \ucfirst($getter)}();
+
+            case \property_exists($object, $getter):
+                return $object->{$getter};
+
+            default:
+                throw new \InvalidArgumentException(\sprintf('Unable to get field value for "%s" with getter "%s", neither "%2$s()", "get%3$s()" or property "%2$s" exists.', \get_class($object), $getter, \ucfirst($getter)));
+        }
     }
 
     /**

@@ -39,68 +39,50 @@ class User
      * @ORM\Id
      * @ORM\Column(type="park_manager_user_id")
      * @ORM\GeneratedValue(strategy="NONE")
-     *
-     * @var UserId
      */
-    protected $id;
+    public UserId $id;
 
     /**
      * @ORM\Embedded(class=EmailAddress::class, columnPrefix="email_")
-     *
-     * @var EmailAddress
      */
-    protected $email;
+    public EmailAddress $email;
 
     /**
      * @ORM\Column(name="display_name", type="string")
-     *
-     * @var string
      */
-    protected $displayName;
+    public string $displayName;
 
     /**
      * @ORM\Column(name="login_enabled", type="boolean")
-     *
-     * @var bool
      */
-    protected $loginEnabled = true;
+    public bool $loginEnabled = true;
 
     /**
      * @ORM\Column(type="array_collection")
-     *
-     * @var Collection
      */
-    protected $roles;
+    public Collection $roles;
 
     /**
-     * @ORM\Embedded(class="Rollerworks\Component\SplitToken\SplitTokenValueHolder", columnPrefix="email_change_")
-     *
-     * @var SplitTokenValueHolder|null
+     * @ORM\Embedded(class=SplitTokenValueHolder::class, columnPrefix="email_change_")
      */
-    protected $emailAddressChangeToken;
+    public ?SplitTokenValueHolder $emailAddressChangeToken = null;
 
     /**
      * @ORM\Column(name="auth_password", type="text", nullable=true)
-     *
-     * @var string|null
      */
-    protected $password;
+    public ?string $password = null;
 
     /**
      * @ORM\Column(name="password_reset_enabled", type="boolean")
-     *
-     * @var bool
      */
-    protected $passwordResetEnabled = true;
+    public bool $passwordResetEnabled = true;
 
     /**
-     * @ORM\Embedded(class="Rollerworks\Component\SplitToken\SplitTokenValueHolder", columnPrefix="password_reset_")
-     *
-     * @var SplitTokenValueHolder|null
+     * @ORM\Embedded(class=SplitTokenValueHolder::class, columnPrefix="password_reset_")
      */
-    protected $passwordResetToken;
+    public ?SplitTokenValueHolder $passwordResetToken = null;
 
-    protected function __construct(UserId $id, EmailAddress $email, string $displayName)
+    private function __construct(UserId $id, EmailAddress $email, string $displayName)
     {
         $this->id = $id;
         $this->email = $email;
@@ -116,29 +98,9 @@ class User
         return $user;
     }
 
-    public function getId(): UserId
-    {
-        return $this->id;
-    }
-
-    public function getDisplayName(): string
-    {
-        return $this->displayName;
-    }
-
-    public function getEmail(): EmailAddress
-    {
-        return $this->email;
-    }
-
     public function changeEmail(EmailAddress $email): void
     {
         $this->email = $email;
-    }
-
-    public function isEnabled(): bool
-    {
-        return $this->loginEnabled;
     }
 
     public function disable(): void
@@ -246,32 +208,12 @@ class User
         $this->passwordResetEnabled = true;
     }
 
-    public function getPasswordResetToken(): ?SplitTokenValueHolder
-    {
-        return $this->passwordResetToken;
-    }
-
     public function toSecurityUser(): SecurityUser
     {
         return new SecurityUser($this->id->toString(), $this->password ?? '', $this->loginEnabled, $this->roles->toArray());
     }
 
-    public function getEmailAddressChangeToken(): ?SplitTokenValueHolder
-    {
-        return $this->emailAddressChangeToken;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
     public function __toString(): string
-    {
-        return $this->id->toString();
-    }
-
-    public function toString(): string
     {
         return $this->id->toString();
     }

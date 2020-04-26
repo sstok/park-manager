@@ -47,9 +47,9 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
         $handler(new ConfirmPasswordReset($this->token, 'new-password'));
 
         $repository->assertEntitiesWereSaved();
-        $repository->assertHasEntity($user->getId()->toString(), static function (User $user): void {
-            self::assertEquals('new-password', $user->getPassword());
-            self::assertNull($user->getPasswordResetToken());
+        $repository->assertHasEntity($user->id->toString(), static function (User $user): void {
+            self::assertEquals('new-password', $user->password);
+            self::assertNull($user->passwordResetToken);
         });
     }
 
@@ -66,8 +66,8 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
             $invalidToken = FakeSplitTokenFactory::instance()->fromString(FakeSplitTokenFactory::SELECTOR . \str_rot13(FakeSplitTokenFactory::VERIFIER));
             $handler(new ConfirmPasswordReset($invalidToken, 'my-password'));
         } catch (PasswordResetTokenNotAccepted $e) {
-            $repository->assertHasEntity($user->getId()->toString(), static function (User $user): void {
-                self::assertNull($user->getPasswordResetToken());
+            $repository->assertHasEntity($user->id->toString(), static function (User $user): void {
+                self::assertNull($user->passwordResetToken);
             });
         }
     }

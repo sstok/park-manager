@@ -39,7 +39,7 @@ final class RequestEmailAddressChangeTest extends TestCase
         $handler(new RequestEmailAddressChange(UserRepositoryMock::USER_ID1, 'John2@example.com'));
 
         $repository->assertEntitiesWereSaved();
-        $token = $user->getEmailAddressChangeToken();
+        $token = $user->emailAddressChangeToken;
         self::assertEquals(['email' => 'John2@example.com'], $token->metadata());
         self::assertFalse($token->isExpired(new DateTimeImmutable('+ 5 seconds')));
         self::assertTrue($token->isExpired(new DateTimeImmutable('+ 3700 seconds')));

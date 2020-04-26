@@ -29,12 +29,12 @@ final class ChangePasswordHandlerTest extends TestCase
         $repository = new UserRepositoryMock([$user]);
 
         $handler = new ChangePasswordHandler($repository, $this->createMock(EventDispatcherInterface::class));
-        $handler(new ChangeUserPassword($id = $user->getId()->toString(), 'new-password'));
+        $handler(new ChangeUserPassword($id = $user->id->toString(), 'new-password'));
 
         $repository->assertEntitiesWereSaved();
 
         $repository->assertHasEntity($id, static function (User $user): void {
-            self::assertEquals('new-password', $user->getPassword());
+            self::assertEquals('new-password', $user->password);
         });
     }
 }
