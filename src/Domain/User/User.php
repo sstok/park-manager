@@ -16,6 +16,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Domain\User\Exception\CannotDisableSuperAdministrator;
+use ParkManager\Domain\User\Exception\CannotMakeUserSuperAdmin;
 use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Rollerworks\Component\SplitToken\SplitToken;
@@ -59,6 +61,8 @@ class User
 
     /**
      * @ORM\Column(type="array_collection")
+     *
+     * @var Collection<int,string>
      */
     public Collection $roles;
 
@@ -98,19 +102,67 @@ class User
         return $user;
     }
 
+    public static function registerAdmin(UserId $id, EmailAddress $email, string $displayName, ?string $password = null): self
+    {
+        $user = new self($id, $email, $displayName);
+        $user->changePassword($password);
+        $user->addRole('ROLE_ADMIN');
+
+        return $user;
+    }
+
     public function changeEmail(EmailAddress $email): void
     {
         $this->email = $email;
     }
 
-    public function disable(): void
+    public function disableLogin(): void
     {
+        if ($this->hasRole('ROLE_SUPER_ADMIN')) {
+            throw new CannotDisableSuperAdministrator($this->id);
+        }
+
         $this->loginEnabled = false;
     }
 
-    public function enable(): void
+    public function enableLogin(): void
     {
         $this->loginEnabled = true;
+    }
+
+    /**
+     * @return array<int,string>
+     */
+    public function getRoles(): array
+    {
+        return $this->roles->getValues();
+    }
+
+    public function addRole(string $role): void
+    {
+        if (! $this->roles->contains($role)) {
+            if ($role === 'ROLE_SUPER_ADMIN' && ! $this->hasRole('ROLE_ADMIN')) {
+                throw new CannotMakeUserSuperAdmin();
+            }
+
+            $this->roles->add($role);
+        }
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return $this->roles->contains($role);
+    }
+
+    public function removeRole(string $role): void
+    {
+        Assertion::notInArray($role, self::DEFAULT_ROLES, 'Cannot remove default role "' . $role . '".');
+
+        if ($role === 'ROLE_ADMIN' && $this->hasRole('ROLE_SUPER_ADMIN')) {
+            throw new CannotDisableSuperAdministrator($this->id);
+        }
+
+        $this->roles->removeElement($role);
     }
 
     public function requestEmailChange(EmailAddress $email, SplitToken $token): bool
@@ -210,7 +262,7 @@ class User
 
     public function toSecurityUser(): SecurityUser
     {
-        return new SecurityUser($this->id->toString(), $this->password ?? '', $this->loginEnabled, $this->roles->toArray());
+        return new SecurityUser($this->id->toString(), $this->password ?? '', $this->loginEnabled, $this->getRoles());
     }
 
     public function __toString(): string

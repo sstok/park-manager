@@ -67,7 +67,6 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
         return [
             'email' => $email,
             'password' => $request->request->get('_password'),
-            'type' => $request->request->getBoolean('_admin', false) ? 'admin' : 'user',
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
     }
@@ -88,7 +87,7 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        return $userProvider->loadUserByUsername($credentials['type'] . "\0" . $email);
+        return $userProvider->loadUserByUsername($email);
     }
 
     /**
@@ -124,10 +123,6 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
 
     private function getDefaultSuccess(Request $request): string
     {
-        if (\strncmp($request->getPathInfo(), '/admin', 6) === 0) {
-            return $this->urlGenerator->generate('park_manager.admin.home');
-        }
-
         return $this->urlGenerator->generate('park_manager.user.home');
     }
 
@@ -142,10 +137,6 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
 
     private function getLoginUrl(Request $request): string
     {
-        if (\strncmp($request->getPathInfo(), '/admin', 6) === 0) {
-            return $this->urlGenerator->generate('park_manager.admin.security_login');
-        }
-
         return $this->urlGenerator->generate('park_manager.user.security_login');
     }
 

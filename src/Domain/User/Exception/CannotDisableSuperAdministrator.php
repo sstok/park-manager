@@ -8,22 +8,22 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Domain\Administrator\Exception;
+namespace ParkManager\Domain\User\Exception;
 
 use InvalidArgumentException;
-use ParkManager\Domain\Administrator\AdministratorId;
+use ParkManager\Domain\User\UserId;
 
 final class CannotDisableSuperAdministrator extends InvalidArgumentException
 {
-    /** @var AdministratorId */
+    /** @var UserId */
     private $id;
 
-    public function __construct(AdministratorId $id)
+    public function __construct(UserId $id)
     {
         $this->id = $id;
     }
 
-    public function getId(): AdministratorId
+    public function getId(): UserId
     {
         return $this->id;
     }

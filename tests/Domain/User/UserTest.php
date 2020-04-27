@@ -14,6 +14,7 @@ use Assert\AssertionFailedException;
 use DateTimeImmutable;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Domain\User\Exception\CannotDisableSuperAdministrator;
 use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
@@ -79,7 +80,7 @@ final class UserTest extends TestCase
     public function disable_access(): void
     {
         $user = $this->registerUser();
-        $user->disable();
+        $user->disableLogin();
 
         self::assertFalse($user->loginEnabled);
     }
@@ -88,8 +89,8 @@ final class UserTest extends TestCase
     public function enable_access_after_disabled(): void
     {
         $user = $this->registerUser();
-        $user->disable();
-        $user->enable();
+        $user->disableLogin();
+        $user->enableLogin();
 
         self::assertTrue($user->loginEnabled);
     }
@@ -201,6 +202,57 @@ final class UserTest extends TestCase
 
         $this->assertEmailChangeThrowsRejected($user, $token);
         self::assertEquals(new EmailAddress('john@example.com'), $user->email);
+    }
+
+    /** @test */
+    public function add_roles(): void
+    {
+        $user = $this->registerUser();
+        $user->addRole('ROLE_ADMIN');
+
+        $user->addRole('ROLE_SUPER_ADMIN');
+        $user->addRole('ROLE_SUPER_ADMIN'); // Ensure there're no duplicates
+
+        self::assertEquals(['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'], $user->getRoles());
+        self::assertTrue($user->hasRole('ROLE_ADMIN'));
+        self::assertTrue($user->hasRole('ROLE_SUPER_ADMIN'));
+    }
+
+    /** @test */
+    public function remove_role(): void
+    {
+        $user = $this->registerUser();
+        $user->addRole('ROLE_ADMIN');
+        $user->addRole('ROLE_SUPER_ADMIN');
+
+        $user->removeRole('ROLE_SUPER_ADMIN');
+
+        self::assertEquals(['ROLE_USER', 'ROLE_ADMIN'], $user->getRoles());
+        self::assertTrue($user->hasRole('ROLE_ADMIN'));
+        self::assertFalse($user->hasRole('ROLE_SUPER_ADMIN'));
+    }
+
+    /** @test */
+    public function cannot_remove_default_role(): void
+    {
+        $user = $this->registerUser();
+
+        $this->expectException(AssertionFailedException::class);
+        $this->expectExceptionMessage('Cannot remove default role "ROLE_USER".');
+
+        $user->removeRole('ROLE_USER');
+    }
+
+    /** @test */
+    public function cannot_remove_admin_if_super_admin(): void
+    {
+        $user = $this->registerUser();
+        $user->addRole('ROLE_ADMIN');
+        $user->addRole('ROLE_SUPER_ADMIN');
+
+        $this->expectException(CannotDisableSuperAdministrator::class);
+
+        $user->removeRole('ROLE_ADMIN');
     }
 
     /** @test */

@@ -10,16 +10,16 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Administrator;
 
-use ParkManager\Domain\Administrator\Administrator;
-use ParkManager\Domain\Administrator\AdministratorRepository;
-use ParkManager\Domain\Administrator\Exception\AdministratorEmailAddressAlreadyInUse;
-use ParkManager\Domain\Administrator\Exception\AdministratorNotFound;
+use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
+use ParkManager\Domain\User\Exception\UserNotFound;
+use ParkManager\Domain\User\User;
+use ParkManager\Domain\User\UserRepository;
 
 final class RegisterAdministratorHandler
 {
     private $repository;
 
-    public function __construct(AdministratorRepository $repository)
+    public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -27,15 +27,15 @@ final class RegisterAdministratorHandler
     public function __invoke(RegisterAdministrator $command): void
     {
         try {
-            $administrator = $this->repository->getByEmail($command->email);
+            $user = $this->repository->getByEmail($command->email);
 
-            throw new AdministratorEmailAddressAlreadyInUse($administrator->getId());
-        } catch (AdministratorNotFound $e) {
+            throw new EmailAddressAlreadyInUse($user->id);
+        } catch (UserNotFound $e) {
             // No-op
         }
 
         $this->repository->save(
-            Administrator::register(
+            User::registerAdmin(
                 $command->id,
                 $command->email,
                 $command->displayName,

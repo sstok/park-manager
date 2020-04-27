@@ -10,9 +10,6 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use ParkManager\Domain\Administrator\Administrator;
-use ParkManager\Domain\Administrator\AdministratorId;
-use ParkManager\Domain\Administrator\AdministratorRepository;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
@@ -75,13 +72,11 @@ return static function (ContainerConfigurator $c): void {
         ->autoconfigure(false)
         ->args([
             service_locator([
-                Administrator::class => ref(AdministratorRepository::class),
                 User::class => ref(UserRepository::class),
                 Space::class => ref(WebhostingSpaceRepository::class),
                 WebhostingDomainNameId::class => ref(WebhostingDomainNameRepository::class),
             ]),
             [
-                AdministratorId::class => 'fromString',
                 UserId::class => 'fromString',
                 WebhostingDomainNameId::class => 'fromString',
             ],

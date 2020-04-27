@@ -14,8 +14,8 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use ParkManager\Application\Command\Administrator\RegisterAdministrator;
 use ParkManager\Application\Command\BatchCommand;
-use ParkManager\Domain\Administrator\AdministratorId;
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -39,8 +39,8 @@ final class AdminFixtures extends Fixture
         $this->commandBus->dispatch(
             new BatchCommand(
                 new RegisterAdministrator(
-                    AdministratorId::create(),
-                    new EmailAddress('jane@example.com'),
+                    UserId::create(),
+                    new EmailAddress('janet@example.com'),
                     'Janet, Doe',
                     $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword('&ltr@Sec3re!+', null)
                 )

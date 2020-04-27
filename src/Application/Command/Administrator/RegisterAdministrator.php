@@ -10,15 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Administrator;
 
-use ParkManager\Domain\Administrator\AdministratorId;
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\User\UserId;
 
 final class RegisterAdministrator
 {
     /**
      * READ-ONLY.
      *
-     * @var AdministratorId
+     * @var UserId
      */
     public $id;
 
@@ -46,7 +46,7 @@ final class RegisterAdministrator
     /**
      * @param string|null $password Null (no password) or an encoded password string (not plain)
      */
-    public function __construct(AdministratorId $id, EmailAddress $email, string $displayName, ?string $password = null)
+    public function __construct(UserId $id, EmailAddress $email, string $displayName, ?string $password = null)
     {
         $this->id = $id;
         $this->email = $email;
@@ -59,6 +59,6 @@ final class RegisterAdministrator
      */
     public static function with(string $id, string $email, string $displayName, ?string $password = null): self
     {
-        return new self(AdministratorId::fromString($id), new EmailAddress($email), $displayName, $password);
+        return new self(UserId::fromString($id), new EmailAddress($email), $displayName, $password);
     }
 }

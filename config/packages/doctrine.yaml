@@ -9,7 +9,6 @@ doctrine:
 
         types:
             array_collection: 'ParkManager\Infrastructure\Doctrine\Type\ArrayCollectionType'
-            park_manager_administrator_id: 'ParkManager\Infrastructure\Doctrine\Type\AdministratorIdType'
             park_manager_user_id: 'ParkManager\Infrastructure\Doctrine\Type\UserIdType'
             #park_manager_domain_id: 'ParkManager\Infrastructure\Doctrine\Type\DomainIdType' # Don't initiate this
 

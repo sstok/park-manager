@@ -10,8 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Security;
 
-use ParkManager\Domain\Administrator\AdministratorId;
-use ParkManager\Domain\Administrator\AdministratorRepository;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\NotFoundException;
 use ParkManager\Domain\User\UserId;
@@ -24,30 +22,20 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 final class UserProvider implements UserProviderInterface
 {
     /** @var UserRepository */
-    private $userRepository;
+    private $repository;
 
-    /** @var AdministratorRepository */
-    private $administratorRepository;
-
-    public function __construct(UserRepository $userRepository, AdministratorRepository $administratorRepository)
+    public function __construct(UserRepository $userRepository)
     {
-        $this->userRepository = $userRepository;
-        $this->administratorRepository = $administratorRepository;
+        $this->repository = $userRepository;
     }
 
     public function loadUserByUsername(string $username): SecurityUser
     {
-        [$type, $email] = \explode("\0", $username, 2);
-
         try {
-            if ($type === 'admin') {
-                $user = $this->administratorRepository->getByEmail(new EmailAddress($email));
-            } else {
-                $user = $this->userRepository->getByEmail(new EmailAddress($email));
-            }
+            $user = $this->repository->getByEmail(new EmailAddress($username));
         } catch (NotFoundException $e) {
             $e = new UsernameNotFoundException('', 0, $e);
-            $e->setUsername($email);
+            $e->setUsername($username);
 
             throw $e;
         }
@@ -65,11 +53,7 @@ final class UserProvider implements UserProviderInterface
         }
 
         try {
-            if ($user->isAdmin()) {
-                $storedUser = $this->administratorRepository->get(AdministratorId::fromString($user->getUsername()));
-            } else {
-                $storedUser = $this->userRepository->get(UserId::fromString($user->getUsername()));
-            }
+            $storedUser = $this->repository->get(UserId::fromString($user->getUsername()));
         } catch (NotFoundException $e) {
             $e = new UsernameNotFoundException('', 0, $e);
             $e->setUsername($user->getUsername());

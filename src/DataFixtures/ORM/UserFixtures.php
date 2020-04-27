@@ -41,7 +41,7 @@ final class UserFixtures extends Fixture
                 new RegisterUser(
                     UserId::create(),
                     new EmailAddress('jane@example.com'),
-                    'Janet, Doe',
+                    'Jane, Doe',
                     $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword('&ltr@Sec3re!+', null)
                 )
             )

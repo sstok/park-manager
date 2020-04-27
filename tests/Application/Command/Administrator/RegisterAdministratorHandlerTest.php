@@ -12,11 +12,11 @@ namespace ParkManager\Tests\Application\Command\Administrator;
 
 use ParkManager\Application\Command\Administrator\RegisterAdministrator;
 use ParkManager\Application\Command\Administrator\RegisterAdministratorHandler;
-use ParkManager\Domain\Administrator\Administrator;
-use ParkManager\Domain\Administrator\AdministratorId;
-use ParkManager\Domain\Administrator\Exception\AdministratorEmailAddressAlreadyInUse;
 use ParkManager\Domain\EmailAddress;
-use ParkManager\Tests\Mock\Domain\AdministratorRepositoryMock;
+use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
+use ParkManager\Domain\User\User;
+use ParkManager\Domain\User\UserId;
+use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -30,27 +30,27 @@ final class RegisterAdministratorHandlerTest extends TestCase
     /** @test */
     public function handle_registration_of_new_administrator(): void
     {
-        $repo = new AdministratorRepositoryMock();
+        $repo = new UserRepositoryMock();
         $handler = new RegisterAdministratorHandler($repo);
 
         $command = RegisterAdministrator::with(self::ID_NEW, 'John@example.com', 'My name', 'my-password');
         $handler($command);
 
-        $repo->assertHasEntity(self::ID_NEW, static function (Administrator $administrator): void {
-            self::assertEquals(AdministratorId::fromString(self::ID_NEW), $administrator->getId());
-            self::assertEquals(new EmailAddress('John@example.com'), $administrator->getEmailAddress());
-            self::assertEquals('My name', $administrator->getDisplayName());
-            self::assertEquals('my-password', $administrator->getPassword());
+        $repo->assertHasEntity(self::ID_NEW, static function (User $user): void {
+            self::assertEquals(UserId::fromString(self::ID_NEW), $user->id);
+            self::assertEquals(new EmailAddress('John@example.com'), $user->email);
+            self::assertEquals('My name', $user->displayName);
+            self::assertEquals('my-password', $user->password);
         });
     }
 
     /** @test */
     public function handle_registration_of_new_user_with_already_existing_email(): void
     {
-        $repo = new AdministratorRepositoryMock(
+        $repo = new UserRepositoryMock(
             [
-                Administrator::register(
-                    AdministratorId::fromString(self::ID_EXISTING),
+                User::registerAdmin(
+                    UserId::fromString(self::ID_EXISTING),
                     new EmailAddress('John@example.com'),
                     'Jane'
                 ),
@@ -58,7 +58,7 @@ final class RegisterAdministratorHandlerTest extends TestCase
         );
         $handler = new RegisterAdministratorHandler($repo);
 
-        $this->expectException(AdministratorEmailAddressAlreadyInUse::class);
+        $this->expectException(EmailAddressAlreadyInUse::class);
 
         $handler(RegisterAdministrator::with(self::ID_NEW, 'John@example.com', 'My', null));
     }
