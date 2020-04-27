@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  * Updates the current AuthenticationToken when the *current* user changes
  * their login password.
  */
-final class AuthenticationTokenTokenPasswordChangedListener
+final class AuthenticationTokenPasswordChangedListener
 {
     private $userProvider;
     private $tokenStorage;

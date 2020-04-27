@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Security\EventListener;
 
 use ParkManager\Application\Event\UserPasswordWasChanged;
-use ParkManager\Infrastructure\Security\EventListener\AuthenticationTokenTokenPasswordChangedListener;
+use ParkManager\Infrastructure\Security\EventListener\AuthenticationTokenPasswordChangedListener;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -23,7 +23,7 @@ use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 /**
  * @internal
  */
-final class AuthenticationTokenTokenPasswordChangedListenerTest extends TestCase
+final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
 {
     private const ID1 = '930c3fd0-3bd1-11e7-bb9b-acdc32b58315';
     private const ID2 = '930c3fd0-3bd1-11e7-bb9b-acdc32b58318';
@@ -34,7 +34,7 @@ final class AuthenticationTokenTokenPasswordChangedListenerTest extends TestCase
         $userProvider = $this->createUserProvider();
         $tokenStorage = $this->createProvidingOnlyTokenStorage(null);
 
-        $listener = new AuthenticationTokenTokenPasswordChangedListener($userProvider, $tokenStorage);
+        $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
     }
 
@@ -64,7 +64,7 @@ final class AuthenticationTokenTokenPasswordChangedListenerTest extends TestCase
 
         $tokenStorage = $this->createProvidingOnlyTokenStorage($token);
 
-        $listener = new AuthenticationTokenTokenPasswordChangedListener($userProvider, $tokenStorage);
+        $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
     }
 
@@ -79,7 +79,7 @@ final class AuthenticationTokenTokenPasswordChangedListenerTest extends TestCase
         $userProvider = $this->createUserProvider();
         $tokenStorage = $this->createProvidingOnlyTokenStorage(new PostAuthenticationGuardToken($this->createMock(UserInterface::class), 'main', ['ROLE_USER']));
 
-        $listener = new AuthenticationTokenTokenPasswordChangedListener($userProvider, $tokenStorage);
+        $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
     }
 
@@ -90,7 +90,7 @@ final class AuthenticationTokenTokenPasswordChangedListenerTest extends TestCase
         $userProvider = $this->createUserProviderExpectsCurrentUser($currentUser, $this->createUser1Disabled());
         $tokenStorage = $this->createProvidingOnlyTokenStorage(new PostAuthenticationGuardToken($currentUser, 'main', ['ROLE_USER']));
 
-        $listener = new AuthenticationTokenTokenPasswordChangedListener($userProvider, $tokenStorage);
+        $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
     }
 
@@ -114,7 +114,7 @@ final class AuthenticationTokenTokenPasswordChangedListenerTest extends TestCase
         $currentUser = new SecurityUser(self::ID2, 'pass-north', true, ['ROLE_USER']);
         $tokenStorage = $this->createProvidingOnlyTokenStorage(new PostAuthenticationGuardToken($currentUser, 'main', ['ROLE_USER']));
 
-        $listener = new AuthenticationTokenTokenPasswordChangedListener($userProvider, $tokenStorage);
+        $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
     }
 
@@ -125,7 +125,7 @@ final class AuthenticationTokenTokenPasswordChangedListenerTest extends TestCase
         $userProvider = $this->createUserProviderExpectsCurrentUser($currentUser, $newUser = $this->createUser1());
         $tokenStorage = $this->createGetAndStoreTokenStorage($token);
 
-        $listener = new AuthenticationTokenTokenPasswordChangedListener($userProvider, $tokenStorage);
+        $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
 
         self::assertTrue($token->isAuthenticated());
