@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Webhosting\Constraint;
 
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 use Psr\Container\ContainerInterface;
 
@@ -31,7 +31,7 @@ final class ConstraintChecker
     /**
      * @throws ConstraintExceeded
      */
-    public function validate(WebhostingSpaceId $spaceId, string $constraintName, array $context = []): void
+    public function validate(SpaceId $spaceId, string $constraintName, array $context = []): void
     {
         $constraints = $this->spaceRepository->get($spaceId)->getConstraints();
 

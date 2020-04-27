@@ -17,7 +17,7 @@ use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameRepository;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Mock\Domain\MockRepository;
 
 final class WebhostingDomainNameRepositoryMock implements WebhostingDomainNameRepository
@@ -48,7 +48,7 @@ final class WebhostingDomainNameRepositoryMock implements WebhostingDomainNameRe
         return $this->mockDoGetById($id);
     }
 
-    public function getPrimaryOf(WebhostingSpaceId $id): WebhostingDomainName
+    public function getPrimaryOf(SpaceId $id): WebhostingDomainName
     {
         if (! $this->mockDoHasByField('space_primary_id', $id->toString())) {
             throw WebhostingSpaceNotFound::withId($id);

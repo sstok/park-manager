@@ -20,7 +20,7 @@ use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Infrastructure\Doctrine\Repository\WebhostingSpaceOrmRepository;
 use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
 use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
@@ -73,8 +73,8 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         $this->setUpSpace1($repository);
         $this->setUpSpace2($repository);
 
-        $id = WebhostingSpaceId::fromString(self::SPACE_ID1);
-        $id2 = WebhostingSpaceId::fromString(self::SPACE_ID2);
+        $id = SpaceId::fromString(self::SPACE_ID1);
+        $id2 = SpaceId::fromString(self::SPACE_ID2);
         $space = $repository->get($id);
         $space2 = $repository->get($id2);
 
@@ -96,7 +96,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         $this->setUpSpace1($repository);
         $this->setUpSpace2($repository);
 
-        $id = WebhostingSpaceId::fromString(self::SPACE_ID1);
+        $id = SpaceId::fromString(self::SPACE_ID1);
         $space = $repository->get($id);
 
         // Mark for removal, then store this status.
@@ -118,7 +118,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         $repository = new WebhostingSpaceOrmRepository($this->getEntityManager());
         $this->setUpSpace1($repository);
 
-        $id = WebhostingSpaceId::fromString(self::SPACE_ID1);
+        $id = SpaceId::fromString(self::SPACE_ID1);
         $space = $repository->get($id);
 
         $this->expectException(CannotRemoveActiveWebhostingSpace::class);
@@ -131,7 +131,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     {
         $repository->save(
             Space::registerWithCustomConstraints(
-                WebhostingSpaceId::fromString(self::SPACE_ID1),
+                SpaceId::fromString(self::SPACE_ID1),
                 $this->user1,
                 new Constraints()
             )
@@ -142,7 +142,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     {
         $repository->save(
             Space::register(
-                WebhostingSpaceId::fromString(self::SPACE_ID2),
+                SpaceId::fromString(self::SPACE_ID2),
                 $this->user1,
                 $this->constraintSet
             )

@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine\Type;
 
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class WebhostingSpaceIdType extends DomainIdType
 {
     public const NAME = 'park_manager_webhosting_space_id';
-    public const OBJECT_CLASS = WebhostingSpaceId::class;
+    public const OBJECT_CLASS = SpaceId::class;
 }

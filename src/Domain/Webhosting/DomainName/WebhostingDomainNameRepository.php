@@ -13,7 +13,7 @@ namespace ParkManager\Domain\Webhosting\DomainName;
 use ParkManager\Domain\Webhosting\DomainName;
 use ParkManager\Domain\Webhosting\DomainName\Exception\WebhostingDomainNameNotFound;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 interface WebhostingDomainNameRepository
 {
@@ -25,7 +25,7 @@ interface WebhostingDomainNameRepository
     /**
      * @throws WebhostingSpaceNotFound When no space was found with the id
      */
-    public function getPrimaryOf(WebhostingSpaceId $id): WebhostingDomainName;
+    public function getPrimaryOf(SpaceId $id): WebhostingDomainName;
 
     public function findByFullName(DomainName $name): ?WebhostingDomainName;
 

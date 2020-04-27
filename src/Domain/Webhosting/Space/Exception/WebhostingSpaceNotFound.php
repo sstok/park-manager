@@ -11,11 +11,11 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\Space\Exception;
 
 use ParkManager\Domain\Exception\NotFoundException;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class WebhostingSpaceNotFound extends NotFoundException
 {
-    public static function withId(WebhostingSpaceId $id): self
+    public static function withId(SpaceId $id): self
     {
         return new self(\sprintf('Webhosting Space with id "%s" does not exist.', $id->toString()));
     }

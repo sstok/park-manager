@@ -12,11 +12,11 @@ namespace ParkManager\Domain\Webhosting\DomainName\Exception;
 
 use InvalidArgumentException;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class CannotTransferPrimaryDomainName extends InvalidArgumentException
 {
-    public static function of(WebhostingDomainNameId $domainName, WebhostingSpaceId $current, WebhostingSpaceId $new): self
+    public static function of(WebhostingDomainNameId $domainName, SpaceId $current, SpaceId $new): self
     {
         return new self(
             \sprintf(

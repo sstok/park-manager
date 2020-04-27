@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Webhosting\Constraint;
 
 use ParkManager\Domain\Webhosting\Constraint\Constraint;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 /**
  * A ConstraintValidator validates the operation doesn't violate
@@ -34,5 +34,5 @@ interface ConstraintValidator
      *
      * @throws ConstraintExceeded (instance) when a constraint is violated
      */
-    public function validate(WebhostingSpaceId $spaceId, Constraint $constraint, array $context = []): void;
+    public function validate(SpaceId $spaceId, Constraint $constraint, array $context = []): void;
 }

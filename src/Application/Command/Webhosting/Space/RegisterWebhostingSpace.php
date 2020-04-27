@@ -14,14 +14,14 @@ use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 use ParkManager\Domain\Webhosting\DomainName;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class RegisterWebhostingSpace
 {
     /**
      * READ-ONLY.
      *
-     * @var WebhostingSpaceId
+     * @var SpaceId
      */
     public $id;
 
@@ -55,7 +55,7 @@ final class RegisterWebhostingSpace
 
     private function __construct(string $id, ?string $owner, DomainName $domainName, ?string $setId, ?Constraints $constraints)
     {
-        $this->id = WebhostingSpaceId::fromString($id);
+        $this->id = SpaceId::fromString($id);
         $this->domainName = $domainName;
         $this->customConstraints = $constraints;
 

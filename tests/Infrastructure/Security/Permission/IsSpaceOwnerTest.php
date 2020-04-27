@@ -14,7 +14,7 @@ use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Infrastructure\Security\Permission\Webhosting\IsSpaceOwner;
 use ParkManager\Infrastructure\Security\PermissionAccessManager;
 use ParkManager\Infrastructure\Security\PermissionDecider;
@@ -36,7 +36,7 @@ final class IsSpaceOwnerTest extends TestCase
         $securityUser = new SecurityUser(self::USER_ID, 'Nope', true, ['ROLE_USER']);
         $token = $this->createAuthenticationToken($securityUser);
 
-        $permission = new IsSpaceOwner(Space::registerWithCustomConstraints(WebhostingSpaceId::create(), null, new Constraints()));
+        $permission = new IsSpaceOwner(Space::registerWithCustomConstraints(SpaceId::create(), null, new Constraints()));
         self::assertEquals(PermissionDecider::DECIDE_DENY, $permission($token, $securityUser, $this->createMock(PermissionAccessManager::class)));
     }
 
@@ -54,7 +54,7 @@ final class IsSpaceOwnerTest extends TestCase
         $securityUser = new SecurityUser(self::USER_ID, 'Nope', true, ['ROLE_USER', 'ROLE_ADMIN']);
         $token = $this->createAuthenticationToken($securityUser);
 
-        $permission = new IsSpaceOwner(Space::registerWithCustomConstraints(WebhostingSpaceId::create(), null, new Constraints()));
+        $permission = new IsSpaceOwner(Space::registerWithCustomConstraints(SpaceId::create(), null, new Constraints()));
         self::assertEquals(PermissionDecider::DECIDE_ALLOW, $permission($token, $securityUser, $this->createMock(PermissionAccessManager::class)));
     }
 
@@ -64,7 +64,7 @@ final class IsSpaceOwnerTest extends TestCase
         $securityUser = new SecurityUser(self::USER_ID, 'Nope', true, ['ROLE_USER']);
         $token = $this->createAuthenticationToken($securityUser);
 
-        $permission = new IsSpaceOwner(Space::registerWithCustomConstraints(WebhostingSpaceId::create(), $this->getUser(), new Constraints()));
+        $permission = new IsSpaceOwner(Space::registerWithCustomConstraints(SpaceId::create(), $this->getUser(), new Constraints()));
         self::assertEquals(PermissionDecider::DECIDE_ALLOW, $permission($token, $securityUser, $this->createMock(PermissionAccessManager::class)));
     }
 
@@ -74,7 +74,7 @@ final class IsSpaceOwnerTest extends TestCase
         $securityUser = new SecurityUser(self::USER_ID2, 'Nope', true, ['ROLE_USER']);
         $token = $this->createAuthenticationToken($securityUser);
 
-        $permission = new IsSpaceOwner(Space::registerWithCustomConstraints(WebhostingSpaceId::create(), $this->getUser(), new Constraints()));
+        $permission = new IsSpaceOwner(Space::registerWithCustomConstraints(SpaceId::create(), $this->getUser(), new Constraints()));
         self::assertEquals(PermissionDecider::DECIDE_ABSTAIN, $permission($token, $securityUser, $this->createMock(PermissionAccessManager::class)));
     }
 

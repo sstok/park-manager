@@ -18,7 +18,7 @@ interface WebhostingSpaceRepository
     /**
      * @throws WebhostingSpaceNotFound
      */
-    public function get(WebhostingSpaceId $id): Space;
+    public function get(SpaceId $id): Space;
 
     public function save(Space $space): void;
 

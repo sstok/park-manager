@@ -15,7 +15,7 @@ use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 use ParkManager\Domain\Webhosting\DomainName;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 use PHPUnit\Framework\TestCase;
 
@@ -38,7 +38,7 @@ final class RegisterWebhostingSpaceTest extends TestCase
             self::SET_ID
         );
 
-        self::assertEquals(WebhostingSpaceId::fromString(self::SPACE_ID), $command->id);
+        self::assertEquals(SpaceId::fromString(self::SPACE_ID), $command->id);
         self::assertEquals(UserId::fromString(self::USER_ID), $command->owner);
         self::assertEquals(ConstraintSetId::fromString(self::SET_ID), $command->constraintSetId);
         self::assertEquals($domainName, $command->domainName);
@@ -55,7 +55,7 @@ final class RegisterWebhostingSpaceTest extends TestCase
             $constraints = new Constraints(new MonthlyTrafficQuota(50))
         );
 
-        self::assertEquals(WebhostingSpaceId::fromString(self::SPACE_ID), $command->id);
+        self::assertEquals(SpaceId::fromString(self::SPACE_ID), $command->id);
         self::assertEquals(UserId::fromString(self::USER_ID), $command->owner);
         self::assertEquals($constraints, $command->customConstraints);
         self::assertEquals($domainName, $command->domainName);

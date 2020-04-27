@@ -12,11 +12,11 @@ namespace ParkManager\Domain\Webhosting\DomainName\Exception;
 
 use InvalidArgumentException;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class CannotRemovePrimaryDomainName extends InvalidArgumentException
 {
-    public static function of(WebhostingDomainNameId $domainName, WebhostingSpaceId $spaceId): self
+    public static function of(WebhostingDomainNameId $domainName, SpaceId $spaceId): self
     {
         return new self(
             \sprintf(

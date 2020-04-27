@@ -13,7 +13,7 @@ namespace ParkManager\Tests\Mock\Domain\Webhosting;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 use ParkManager\Tests\Mock\Domain\MockRepository;
 
@@ -22,7 +22,9 @@ final class SpaceRepositoryMock implements WebhostingSpaceRepository
 {
     use MockRepository;
 
-    public function get(WebhostingSpaceId $id): Space
+    public const ID1 = 'a52f33ab-a419-4b62-8ec5-5dad33e8af69';
+
+    public function get(SpaceId $id): Space
     {
         return $this->mockDoGetById($id);
     }

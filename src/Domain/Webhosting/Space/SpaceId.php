@@ -15,7 +15,7 @@ use ParkManager\Domain\UuidTrait;
 /**
  * @codeCoverageIgnore
  */
-final class WebhostingSpaceId
+final class SpaceId
 {
     use UuidTrait;
 }

@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 /**
@@ -27,7 +27,7 @@ class WebhostingSpaceOrmRepository extends EntityRepository implements Webhostin
         parent::__construct($entityManager, $className);
     }
 
-    public function get(WebhostingSpaceId $id): Space
+    public function get(SpaceId $id): Space
     {
         $space = $this->find($id->toString());
 

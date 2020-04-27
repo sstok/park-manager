@@ -12,11 +12,11 @@ namespace ParkManager\Domain\Webhosting\DomainName\Exception;
 
 use InvalidArgumentException;
 use ParkManager\Domain\Webhosting\DomainName;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class DomainNameAlreadyInUse extends InvalidArgumentException
 {
-    public static function bySpaceId(DomainName $domainName, WebhostingSpaceId $spaceId): self
+    public static function bySpaceId(DomainName $domainName, SpaceId $spaceId): self
     {
         return new self(
             \sprintf(

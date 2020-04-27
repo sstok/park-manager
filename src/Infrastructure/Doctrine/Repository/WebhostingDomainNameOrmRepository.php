@@ -18,7 +18,7 @@ use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameRepository;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 /**
  * @method WebhostingDomainName|null find($id, $lockMode = null, $lockVersion = null)
@@ -85,7 +85,7 @@ class WebhostingDomainNameOrmRepository extends EntityRepository implements Webh
         $this->_em->remove($domainName);
     }
 
-    public function getPrimaryOf(WebhostingSpaceId $id): WebhostingDomainName
+    public function getPrimaryOf(SpaceId $id): WebhostingDomainName
     {
         try {
             return $this->createQueryBuilder('d')

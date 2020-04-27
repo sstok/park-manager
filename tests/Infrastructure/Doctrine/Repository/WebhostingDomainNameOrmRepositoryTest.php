@@ -22,7 +22,7 @@ use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Infrastructure\Doctrine\Repository\WebhostingDomainNameOrmRepository;
 use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
 
@@ -64,13 +64,13 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
         $user1 = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John');
 
         $this->space1 = Space::registerWithCustomConstraints(
-            WebhostingSpaceId::fromString(self::SPACE_ID1),
+            SpaceId::fromString(self::SPACE_ID1),
             $user1,
             new Constraints()
         );
 
         $this->space2 = Space::registerWithCustomConstraints(
-            WebhostingSpaceId::fromString(self::SPACE_ID2),
+            SpaceId::fromString(self::SPACE_ID2),
             $user1,
             new Constraints()
         );
@@ -133,7 +133,7 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
 
         $this->expectException(WebhostingSpaceNotFound::class);
         $this->expectExceptionMessage(
-            WebhostingSpaceNotFound::withId($id = WebhostingSpaceId::fromString(self::SPACE_NOOP))->getMessage()
+            WebhostingSpaceNotFound::withId($id = SpaceId::fromString(self::SPACE_NOOP))->getMessage()
         );
 
         $this->repository->getPrimaryOf($id);

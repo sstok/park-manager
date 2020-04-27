@@ -14,7 +14,7 @@ use ParkManager\Domain\Webhosting\DomainName;
 use ParkManager\Domain\Webhosting\DomainName\Exception\CannotTransferPrimaryDomainName;
 use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -118,7 +118,7 @@ final class WebhostingDomainNameTest extends TestCase
         $space = $this->createMock(Space::class);
         $space
             ->method('getId')
-            ->willReturn(WebhostingSpaceId::fromString($id));
+            ->willReturn(SpaceId::fromString($id));
 
         return $space;
     }

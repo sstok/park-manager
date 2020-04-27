@@ -27,7 +27,7 @@ class Space
      * @ORM\Column(type="park_manager_webhosting_space_id")
      * @ORM\GeneratedValue(strategy="NONE")
      *
-     * @var WebhostingSpaceId
+     * @var SpaceId
      */
     protected $id;
 
@@ -68,13 +68,13 @@ class Space
      */
     private $markedForRemoval = false;
 
-    protected function __construct(WebhostingSpaceId $id, ?User $owner)
+    protected function __construct(SpaceId $id, ?User $owner)
     {
         $this->id = $id;
         $this->owner = $owner;
     }
 
-    public static function register(WebhostingSpaceId $id, ?User $owner, SharedConstraintSet $constraintSet): self
+    public static function register(SpaceId $id, ?User $owner, SharedConstraintSet $constraintSet): self
     {
         $space = new self($id, $owner);
         // Store the constraints as part of the webhosting space
@@ -85,7 +85,7 @@ class Space
         return $space;
     }
 
-    public static function registerWithCustomConstraints(WebhostingSpaceId $id, ?User $owner, Constraints $constraints): self
+    public static function registerWithCustomConstraints(SpaceId $id, ?User $owner, Constraints $constraints): self
     {
         $space = new self($id, $owner);
         $space->constraints = $constraints;
@@ -93,7 +93,7 @@ class Space
         return $space;
     }
 
-    public function getId(): WebhostingSpaceId
+    public function getId(): SpaceId
     {
         return $this->id;
     }
