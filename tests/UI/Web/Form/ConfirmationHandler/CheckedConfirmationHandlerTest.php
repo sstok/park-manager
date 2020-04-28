@@ -125,14 +125,12 @@ final class CheckedConfirmationHandlerTest extends TestCase
 
     public function provideInvalidValues(): iterable
     {
+        // Note: non-scalar values are filtered by Symfony itself
         return [
             ['Nope'],
             ['7464435244'],
             [35244],
             [''],
-            [null],
-            [false],
-            [[]],
         ];
     }
 

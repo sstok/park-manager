@@ -116,15 +116,6 @@
     "doctrine/reflection": {
         "version": "1.0.x-dev"
     },
-    "easycorp/easy-log-handler": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "70062abc2cd58794d2a90274502f81b55cd9951b"
-        }
-    },
     "egulias/email-validator": {
         "version": "2.1.x-dev"
     },
@@ -271,9 +262,6 @@
     },
     "psr/log": {
         "version": "1.1.x-dev"
-    },
-    "psr/simple-cache": {
-        "version": "1.0.1"
     },
     "ramsey/collection": {
         "version": "1.0.1"

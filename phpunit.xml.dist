@@ -4,7 +4,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          colors="true" verbose="true"
-         bootstrap="config/bootstrap.php"
+         bootstrap="tests/bootstrap.php"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
 
@@ -50,8 +50,9 @@
     </filter>
 
     <listeners>
-        <listener class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener" />
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-        <!--<listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />-->
     </listeners>
+    <extensions>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
+    </extensions>
 </phpunit>
