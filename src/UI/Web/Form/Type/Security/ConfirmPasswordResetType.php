@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Security;
 
+use ParkManager\Application\Command\User\ConfirmPasswordReset;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
@@ -39,7 +40,7 @@ final class ConfirmPasswordResetType extends AbstractType
             ->add('reset_token', SplitTokenType::class, [
                 'invalid_message' => 'password_reset.invalid_token',
                 'invalid_message_parameters' => [
-                    '{reset_url}' => ($routeName = $options['request_route']) ? $this->urlGenerator->generate($routeName) : '',
+                    '{reset_url}' => $this->urlGenerator->generate('park_manager.security_request_password_reset'),
                 ],
             ])
             ->add('password', SecurityUserHashedPasswordType::class, [
@@ -67,12 +68,14 @@ final class ConfirmPasswordResetType extends AbstractType
     {
         $resolver
             ->setDefault('password_constraints', [])
-            ->setDefault('request_route', null)
             ->setDefault('disable_entity_mapping', true)
+            ->setDefault('command_factory', static function (array $data) {
+                return new ConfirmPasswordReset($data['reset_token'], $data['password']);
+            })
             ->setDefault('exception_mapping', [
                 PasswordResetTokenNotAccepted::class => function (PasswordResetTokenNotAccepted $e, $translator, FormInterface $form) {
                     $arguments = [
-                        '{reset_url}' => ($routeName = $form->getConfig()->getOption('request_route')) ? $this->urlGenerator->generate($routeName) : '',
+                        '{reset_url}' => $this->urlGenerator->generate('park_manager.security_request_password_reset'),
                     ];
 
                     if ($e->storedToken() === null) {
@@ -85,8 +88,7 @@ final class ConfirmPasswordResetType extends AbstractType
                     return new FormError('password_reset.access_disabled', null, [], null, $e);
                 },
             ])
-            ->setAllowedTypes('password_constraints', ['array', Constraint::class])
-            ->setAllowedTypes('request_route', ['string', 'null']);
+            ->setAllowedTypes('password_constraints', ['array', Constraint::class]);
     }
 
     public function getBlockPrefix(): string

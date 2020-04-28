@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Security;
 
-use ParkManager\Application\Command\User\RequestPasswordReset;
 use ParkManager\UI\Web\Form\Type\Security\RequestPasswordResetType;
 use ParkManager\UI\Web\Response\TwigResponse;
 use Rollerworks\Bundle\RouteAutofillBundle\Response\RouteRedirectResponse;
@@ -31,11 +30,7 @@ final class RequestPasswordResetAction
      */
     public function __invoke(Request $request, FormFactoryInterface $formFactory): object
     {
-        $form = $formFactory->create(RequestPasswordResetType::class, null, [
-            'command_factory' => static function (array $data) {
-                return new RequestPasswordReset($data['email']);
-            },
-        ]);
+        $form = $formFactory->create(RequestPasswordResetType::class, null);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

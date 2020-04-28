@@ -55,7 +55,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         $this->encoderFactory = new FakePasswordHashFactory();
 
         $urlGeneratorProphecy = $this->prophesize(UrlGeneratorInterface::class);
-        $urlGeneratorProphecy->generate('request_password_reset')->willReturn('/password-reset/request');
+        $urlGeneratorProphecy->generate('park_manager.security_request_password_reset')->willReturn('/password-reset/request');
         $this->urlGenerator = $urlGeneratorProphecy->reveal();
 
         parent::setUp();
@@ -84,7 +84,6 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         $token = $this->splitTokenFactory->fromString(FakeSplitTokenFactory::FULL_TOKEN);
         $form = $this->factory->create(ConfirmPasswordResetType::class, ['reset_token' => $token], [
             'command_factory' => $this->getCommandBuilder(),
-            'request_route' => 'request_password_reset',
         ]);
         $form->submit([
             'password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there']],
@@ -115,7 +114,6 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     {
         $form = $this->factory->create(ConfirmPasswordResetType::class, ['reset_token' => 'NopeNopeNopeNopeNope'], [
             'command_factory' => $this->getCommandBuilder(),
-            'request_route' => 'request_password_reset',
         ]);
         $form->submit([
             'password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there']],
@@ -146,7 +144,6 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         $token = $this->splitTokenFactory->fromString(FakeSplitTokenFactory::FULL_TOKEN);
         $form = $this->factory->create(ConfirmPasswordResetType::class, ['reset_token' => $token], [
             'command_factory' => $this->getCommandBuilder(),
-            'request_route' => 'request_password_reset',
         ]);
         $form->submit([
             'password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there']],

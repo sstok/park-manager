@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Security;
 
+use ParkManager\Application\Command\User\RequestPasswordReset;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -37,6 +38,9 @@ class RequestPasswordResetType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('disable_entity_mapping', true);
+        $resolver->setDefault('command_factory', static function (array $data) {
+            return new RequestPasswordReset($data['email']);
+        });
     }
 
     public function getParent(): ?string
