@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\UI\Web\Action\User;
+namespace ParkManager\UI\Web\Action\Security;
 
 use ParkManager\UI\Web\Response\TwigResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +21,7 @@ final class SecurityLoginAction extends AbstractController
     /**
      * @Route(
      *     path="/login",
-     *     name="park_manager.user.security_login",
+     *     name="park_manager.security_login",
      *     methods={"GET", "POST"}
      * )
      */
@@ -29,8 +29,8 @@ final class SecurityLoginAction extends AbstractController
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 
-        return new TwigResponse('user/security/login.html.twig', [
-            'route' => 'park_manager.user.security_login',
+        return new TwigResponse('security/login.html.twig', [
+            'route' => 'park_manager.security_login',
             'last_username' => $authenticationUtils->getLastUsername(),
             'error' => $authenticationUtils->getLastAuthenticationError(),
         ]);

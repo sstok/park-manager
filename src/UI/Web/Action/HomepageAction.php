@@ -11,9 +11,17 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action;
 
 use ParkManager\UI\Web\Response\TwigResponse;
+use Symfony\Component\Routing\Annotation\Route;
 
 final class HomepageAction
 {
+    /**
+     * @Route(
+     *     path="/",
+     *     name="park_manager.user.home",
+     *     methods={"GET"}
+     * )
+     */
     public function __invoke(): TwigResponse
     {
         return new TwigResponse('index.html.twig');

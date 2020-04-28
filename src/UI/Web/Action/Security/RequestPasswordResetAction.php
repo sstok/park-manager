@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\UI\Web\Action\User;
+namespace ParkManager\UI\Web\Action\Security;
 
 use ParkManager\Application\Command\User\RequestPasswordReset;
 use ParkManager\UI\Web\Form\Type\Security\RequestPasswordResetType;
@@ -23,7 +23,7 @@ final class RequestPasswordResetAction
     /**
      * @Route(
      *     path="/password-reset",
-     *     name="park_manager.user.security_request_password_reset",
+     *     name="park_manager.security_request_password_reset",
      *     methods={"GET", "POST"}
      * )
      *
@@ -39,11 +39,11 @@ final class RequestPasswordResetAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.user.security_login')
+            return RouteRedirectResponse::toRoute('park_manager.security_login')
                 ->withFlash('success', 'flash.password_reset_send');
         }
 
-        $response = new TwigResponse('user/security/password_reset.html.twig', $form);
+        $response = new TwigResponse('security/password_reset.html.twig', $form);
         $response->setPrivate();
         $response->setMaxAge(1);
 

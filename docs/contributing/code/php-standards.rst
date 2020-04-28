@@ -151,8 +151,8 @@ Routing Naming Conventions
 
 **Examples:**
 
-* ``park_manager.admin.security_login``
-* ``park_manager.admin.security_confirm_password_reset``
+* ``park_manager.security_login``
+* ``park_manager.security_confirm_password_reset``
 * ``park_manager.webhosting.client.account_list``
 * ``park_manager.webhosting.client.ftp_user_list``
 

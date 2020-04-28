@@ -38,7 +38,7 @@ final class PasswordResetMailerImpl implements PasswordResetMailer
             ->textTemplate('emails/user/security/password_reset.twig')
             ->context([
                 'url' => $this->urlGenerator->generate(
-                    'park_manager.user.security_confirm_password_reset',
+                    'park_manager.security_confirm_password_reset',
                     ['token' => $splitToken->token()->getString()],
                     UrlGenerator::ABSOLUTE_URL
                 ),

@@ -137,7 +137,7 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
 
     private function getLoginUrl(Request $request): string
     {
-        return $this->urlGenerator->generate('park_manager.user.security_login');
+        return $this->urlGenerator->generate('park_manager.security_login');
     }
 
     public function supports(Request $request): bool

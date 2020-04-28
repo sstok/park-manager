@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Tests\UI\Web\Action\User;
+namespace ParkManager\Tests\UI\Web\Action\Security;
 
 use ParkManager\Tests\WebTranslatedAssertionTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -42,7 +42,7 @@ final class RequestPasswordResetActionTest extends WebTestCase
         $client->followRedirect();
 
         self::assertResponseIsSuccessful();
-        self::assertRouteSame('park_manager.user.security_login');
+        self::assertRouteSame('park_manager.security_login');
         self::assertSelectorTranslatedTextContains('body div', 'flash.password_reset_send');
     }
 
@@ -60,7 +60,7 @@ final class RequestPasswordResetActionTest extends WebTestCase
         $client->followRedirect();
 
         self::assertResponseIsSuccessful();
-        self::assertRouteSame('park_manager.user.security_login');
+        self::assertRouteSame('park_manager.security_login');
         self::assertSelectorTranslatedTextContains('body div', 'flash.password_reset_send');
     }
 }
