@@ -64,6 +64,9 @@ return PhpCsFixer\Config::create()
         'concat_space' => [
             'spacing' => 'one'
         ],
+        'comment_to_phpdoc' => [
+            'ignored_tags' => ['codeCoverageIgnoreStart', 'codeCoverageIgnoreEnd']
+        ],
         'final_static_access' => true,
         'general_phpdoc_annotation_remove' => [
             'author',
