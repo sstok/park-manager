@@ -10,6 +10,12 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use ParkManager\Application\Service\TLS\CertificateFactoryImpl;
+
 return static function (ContainerConfigurator $c): void {
     $c->import('services_dev.php');
+
+    $di = $c->services();
+    $di->get(CertificateFactoryImpl::class)
+        ->public();
 };

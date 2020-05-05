@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Doctrine\Persistence\ObjectManager;
+use ParkManager\Application\Service\TLS\CertificateFactoryImpl;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
@@ -34,7 +36,8 @@ return static function (ContainerConfigurator $c): void {
         ->autoconfigure()
         ->autowire()
         ->private()
-        ->bind('$commandBus', ref('park_manager.command_bus'));
+        ->bind('$commandBus', ref('park_manager.command_bus'))
+        ->bind(ObjectManager::class, ref('doctrine.orm.default_entity_manager'));
 
     // Note: Repositories are loaded separate as autowiring the entire Domain is not
     // possible. Entities and other models must not be registered as services.
@@ -53,12 +56,16 @@ return static function (ContainerConfigurator $c): void {
             __DIR__ . '/../src/**/*Event.php',
             __DIR__ . '/../src/{Domain,DataFixtures}',
             __DIR__ . '/../src/Application/{Command,Event}',
+            __DIR__ . '/../src/Application/Service/TLS/Violation',
             __DIR__ . '/../src/Infrastructure/Doctrine',
             __DIR__ . '/../src/Infrastructure/Security/*User.php',
             __DIR__ . '/../src/Infrastructure/Security/Permission',
             __DIR__ . '/../src/UI/Web/Form/{ConfirmationHandler,DataTransformer,DataMapper}',
             __DIR__ . '/../src/UI/Web/Response',
         ]);
+
+    $di->get(CertificateFactoryImpl::class)
+        ->args(['%env(base64:TLS_STORAGE_PUBKEY)%']);
 
     $di->load('ParkManager\\Infrastructure\\Security\\Permission\\', __DIR__ . '/../src/Infrastructure/Security/Permission/**/*Decider.php')
         ->tag('park_manager.security.permission_decider');

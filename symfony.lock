@@ -161,6 +161,9 @@
     "myclabs/deep-copy": {
         "version": "1.x-dev"
     },
+    "nesbot/carbon": {
+        "version": "2.x-dev"
+    },
     "netresearch/jsonmapper": {
         "version": "v1.6.0"
     },

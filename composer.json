@@ -31,6 +31,7 @@
         "doctrine/orm": "^2.7",
         "egulias/email-validator": "^2.1",
         "knplabs/knp-menu-bundle": "^3.0.0",
+        "nesbot/carbon": "^2.32",
         "paragonie/constant_time_encoding": "^2.0",
         "paragonie/halite": "^4.4.2",
         "ramsey/uuid": "^4.0",
