@@ -28,8 +28,11 @@ use ParkManager\Infrastructure\Security\UserProvider;
 use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintsFactory;
 use ParkManager\UI\Web\ArgumentResolver\ModelResolver;
 use ParkManager\UI\Web\ArgumentResolver\SplitTokenResolver;
+use Pdp\CurlHttpClient as PdpCurlHttpClient;
+use Pdp\Manager as PdpManager;
 use Rollerworks\Component\SplitToken\Argon2SplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
+use Symfony\Component\Cache\Psr16Cache;
 
 return static function (ContainerConfigurator $c): void {
     $di = $c->services()->defaults()
@@ -38,6 +41,11 @@ return static function (ContainerConfigurator $c): void {
         ->private()
         ->bind('$commandBus', ref('park_manager.command_bus'))
         ->bind(ObjectManager::class, ref('doctrine.orm.default_entity_manager'));
+
+    $di->set(PdpManager::class)->args([
+        service(Psr16Cache::class)->arg(0, ref('cache.public_prefix_db')),
+        service(PdpCurlHttpClient::class)
+    ]);
 
     // Note: Repositories are loaded separate as autowiring the entire Domain is not
     // possible. Entities and other models must not be registered as services.

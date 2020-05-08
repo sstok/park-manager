@@ -54,6 +54,7 @@ trait x509Data
     private array $rawFields = [];
 
     private ?string $publicKeyString;
+    private ?string $contentsString;
 
     private function __construct(string $contents, array $rawFields, ?CA $ca = null)
     {
@@ -62,6 +63,7 @@ trait x509Data
         Assertion::keyExists($rawFields, 'issuer');
 
         $this->contents = $contents;
+        $this->contentsString = $contents;
         $this->publicKey = $rawFields['pubKey'];
         $this->publicKeyString = $rawFields['pubKey'];
 
@@ -85,6 +87,15 @@ trait x509Data
         }
 
         return $this->publicKeyString;
+    }
+
+    public function getContents(): string
+    {
+        if (! isset($this->contentsString)) {
+            $this->contentsString = \stream_get_contents($this->contents);
+        }
+
+        return $this->contentsString;
     }
 
     public function getSignatureAlgorithm(): string
