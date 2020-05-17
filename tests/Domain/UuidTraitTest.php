@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Domain;
 
 use JsonSerializable;
+use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\UuidTrait;
 use PHPUnit\Framework\TestCase;
 use Serializable;
@@ -43,6 +44,23 @@ final class UuidTraitTest extends TestCase
         self::assertTrue($id->equals($id));
         self::assertFalse($id->equals($id2));
         self::assertFalse($id->equals(false));
+    }
+
+    /** @test */
+    public function it_allows_static_comparing(): void
+    {
+        $id = MockUuidIdentity::create();
+        $id2 = MockUuidIdentity::create();
+
+        self::assertTrue(MockUuidIdentity::equalsValue($id, $id));
+        self::assertTrue(MockUuidIdentity::equalsValue(null, null));
+        self::assertTrue(MockUuidIdentity::equalsValue($id, MockUuidIdentity::fromString($id->toString())));
+        self::assertTrue(MockUuidIdentity::equalsValue(MockUuidIdentity::fromString($id->toString()), $id));
+        self::assertFalse(MockUuidIdentity::equalsValue($id, $id2));
+        self::assertFalse(MockUuidIdentity::equalsValue($id, null));
+        self::assertFalse(MockUuidIdentity::equalsValue(null, $id));
+        self::assertFalse(MockUuidIdentity::equalsValue($id, UserId::fromString($id->toString())));
+        self::assertFalse(MockUuidIdentity::equalsValue(UserId::fromString($id->toString()), $id));
     }
 
     /** @test */

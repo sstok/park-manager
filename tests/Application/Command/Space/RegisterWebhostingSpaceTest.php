@@ -14,7 +14,7 @@ use ParkManager\Application\Command\Webhosting\Space\RegisterWebhostingSpace;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
-use ParkManager\Domain\Webhosting\DomainName;
+use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 use PHPUnit\Framework\TestCase;
@@ -33,7 +33,7 @@ final class RegisterWebhostingSpaceTest extends TestCase
     {
         $command = RegisterWebhostingSpace::withConstraintSet(
             self::SPACE_ID,
-            $domainName = new DomainName('example', 'com'),
+            $domainName = new DomainNamePair('example', 'com'),
             self::USER_ID,
             self::SET_ID
         );
@@ -50,7 +50,7 @@ final class RegisterWebhostingSpaceTest extends TestCase
     {
         $command = RegisterWebhostingSpace::withCustomConstraints(
             self::SPACE_ID,
-            $domainName = new DomainName('example', 'com'),
+            $domainName = new DomainNamePair('example', 'com'),
             self::USER_ID,
             $constraints = new Constraints(new MonthlyTrafficQuota(50))
         );

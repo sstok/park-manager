@@ -10,11 +10,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
+use ParkManager\Domain\User\User;
+use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 use ParkManager\Tests\Mock\Domain\MockRepository;
 
 /** @internal */
@@ -41,6 +44,11 @@ final class SpaceRepositoryMock implements WebhostingSpaceRepository
         }
 
         $this->mockDoRemove($space);
+    }
+
+    public static function createSpace(string $id = self::ID1, ?User $owner = null): Space
+    {
+        return Space::registerWithCustomConstraints(SpaceId::fromString($id), $owner, new Constraints(new MonthlyTrafficQuota(50)));
     }
 
     protected function throwOnNotFound($key): void

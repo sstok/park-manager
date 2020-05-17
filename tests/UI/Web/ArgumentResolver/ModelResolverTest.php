@@ -14,7 +14,7 @@ use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
-use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
+use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
@@ -59,7 +59,7 @@ final class ModelResolverTest extends TestCase
         self::assertTrue($this->resolver->supports($request, $this->createArgumentMetadata(EmailAddress::class)));
 
         // Unsupported
-        self::assertFalse($this->resolver->supports($request, $this->createArgumentMetadata(WebhostingDomainName::class)));
+        self::assertFalse($this->resolver->supports($request, $this->createArgumentMetadata(DomainName::class)));
         self::assertFalse($this->resolver->supports($request, $this->createArgumentMetadata(Request::class)));
         self::assertFalse($this->resolver->supports($request, $this->createArgumentMetadata(EmailAddress::class, true)));
     }

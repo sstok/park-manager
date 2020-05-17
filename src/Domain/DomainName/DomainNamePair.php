@@ -8,14 +8,14 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Domain\Webhosting;
+namespace ParkManager\Domain\DomainName;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Embeddable
  */
-final class DomainName
+final class DomainNamePair
 {
     /**
      * READ-ONLY.
@@ -44,5 +44,10 @@ final class DomainName
     public function toString(): string
     {
         return $this->name . '.' . $this->tld;
+    }
+
+    public function equals(self $other): bool
+    {
+        return $this->name === $other->name && $this->tld === $other->tld;
     }
 }

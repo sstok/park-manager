@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Mock\Domain;
 
 use Closure;
+use Generator;
 use PHPUnit\Framework\Assert;
 use Throwable;
 
@@ -45,7 +46,10 @@ trait MockRepository
     protected $mockWasRemoved = 0;
 
     /** @var array<string,string<object>> [mapping-name][index-key] => {entity} */
-    protected $storedByField = [];
+    protected array $storedByField = [];
+
+    /** @var array<string,string<object>> [mapping-name][index-key] => {entity} */
+    protected array $storedMultiByField = [];
 
     /**
      * @psalm-param array<mixed,T> $initialEntities Array of initial entities (these are not counted as saved)
@@ -64,9 +68,20 @@ trait MockRepository
     {
         $this->storedById[$this->getValueWithGetter($entity, 'id')->toString()] = $entity;
 
-        foreach ($this->getFieldsIndexMapping() as $mapping => $getter) {
+        $indexMapping = $this->getFieldsIndexMapping();
+
+        foreach ($indexMapping as $mapping => $getter) {
             $withGetter = $this->getValueWithGetter($entity, $getter);
             $this->storedByField[$mapping][$withGetter] = $entity;
+        }
+
+        foreach ($this->getFieldsIndexMultiMapping() as $mapping => $getter) {
+            if (isset($indexMapping[$mapping])) {
+                throw new \RuntimeException(sprintf('Multi-mapping name "%s" already exists in single mapping.', $mapping));
+            }
+
+            $withGetter = $this->getValueWithGetter($entity, $getter);
+            $this->storedMultiByField[$mapping][$withGetter][] = $entity;
         }
     }
 
@@ -105,6 +120,17 @@ trait MockRepository
      * @return array<string,Closure|string> [mapping-name] => '#property or method'
      */
     protected function getFieldsIndexMapping(): array
+    {
+        return [];
+    }
+
+    /**
+     * Returns a list fields (#property, method-name or Closure for extracting)
+     * to use for mapping the entity in storage.
+     *
+     * @return array<string,Closure|string> [mapping-name] => '#property or method'
+     */
+    protected function getFieldsIndexMultiMapping(): array
     {
         return [];
     }
@@ -164,6 +190,28 @@ trait MockRepository
     }
 
     /**
+     * @psalm-return Generator<T>
+     *
+     * @param float|int|string|null $value
+     */
+    protected function mockDoGetMultiByField(string $key, $value): Generator
+    {
+        if (! isset($this->storedMultiByField[$key][$value])) {
+            $this->throwOnNotFound($value);
+        }
+
+        foreach ($this->storedMultiByField[$key][$value] as $entity) {
+            $id = $this->getValueWithGetter($entity, 'id');
+
+            if (isset($this->removedById[$id->toString()])) {
+                continue;
+            }
+
+            yield $entity;
+        }
+    }
+
+    /**
      * @param float|int|string|null $value
      */
     protected function mockDoHasByField(string $key, $value): bool
@@ -187,6 +235,12 @@ trait MockRepository
     public function assertNoEntitiesWereSaved(): void
     {
         Assert::assertEquals(0, $this->mockWasSaved, 'No entities were expected to be stored');
+    }
+
+    public function resetRecordingState(): void
+    {
+        $this->mockWasSaved = 0;
+        $this->mockWasRemoved = 0;
     }
 
     /**

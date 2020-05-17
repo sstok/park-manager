@@ -15,15 +15,15 @@ use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
-use ParkManager\Domain\Webhosting\DomainName;
-use ParkManager\Domain\Webhosting\DomainName\Exception\CannotRemovePrimaryDomainName;
-use ParkManager\Domain\Webhosting\DomainName\Exception\WebhostingDomainNameNotFound;
-use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainName;
-use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
+use ParkManager\Domain\DomainName\DomainNamePair;
+use ParkManager\Domain\DomainName\Exception\CannotRemovePrimaryDomainName;
+use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
+use ParkManager\Domain\DomainName\DomainName;
+use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Infrastructure\Doctrine\Repository\WebhostingDomainNameOrmRepository;
+use ParkManager\Infrastructure\Doctrine\Repository\DomainNameOrmRepository;
 use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
 
 /**
@@ -31,7 +31,7 @@ use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
  *
  * @group functional
  */
-final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCase
+final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
 {
     private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
 
@@ -39,7 +39,7 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     private const SPACE_ID2 = '47f6db14-a69c-11e7-be13-acbc32b58316';
     private const SPACE_NOOP = '30b26ae0-a6b5-11e7-b978-acbc32b58315';
 
-    /** @var WebhostingDomainNameOrmRepository */
+    /** @var DomainNameOrmRepository */
     private $repository;
 
     /** @var Space */
@@ -48,13 +48,13 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     /** @var Space */
     private $space2;
 
-    /** @var WebhostingDomainNameId */
+    /** @var DomainNameId */
     private $id1;
 
-    /** @var WebhostingDomainNameId */
+    /** @var DomainNameId */
     private $id2;
 
-    /** @var WebhostingDomainNameId */
+    /** @var DomainNameId */
     private $id3;
 
     protected function setUp(): void
@@ -82,16 +82,16 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
             $em->persist($this->space2);
         });
 
-        $webhostingDomainName1 = WebhostingDomainName::registerPrimary($this->space1, new DomainName('example', 'com'));
+        $webhostingDomainName1 = DomainName::registerForSpace(DomainNameId::create(), $this->space1, new DomainNamePair('example', 'com'));
         $this->id1 = $webhostingDomainName1->getId();
 
-        $webhostingDomainName2 = WebhostingDomainName::registerPrimary($this->space2, new DomainName('example', 'net'));
+        $webhostingDomainName2 = DomainName::registerForSpace(DomainNameId::create(), $this->space2, new DomainNamePair('example', 'net'));
         $this->id2 = $webhostingDomainName2->getId();
 
-        $webhostingDomainName3 = WebhostingDomainName::registerSecondary($this->space2, new DomainName('example', 'co.uk'));
+        $webhostingDomainName3 = DomainName::registerSecondaryForSpace(DomainNameId::create(), $this->space2, new DomainNamePair('example', 'co.uk'));
         $this->id3 = $webhostingDomainName3->getId();
 
-        $this->repository = new WebhostingDomainNameOrmRepository($em);
+        $this->repository = new DomainNameOrmRepository($em);
         $this->repository->save($webhostingDomainName1);
         $this->repository->save($webhostingDomainName2);
         $this->repository->save($webhostingDomainName3);
@@ -107,21 +107,21 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
 
         self::assertTrue($webhostingDomainName->getId()->equals($this->id1), 'ID should equal');
         self::assertEquals($this->space1, $webhostingDomainName->getSpace());
-        self::assertEquals(new DomainName('example', 'com'), $webhostingDomainName->getDomainName());
+        self::assertEquals(new DomainNamePair('example', 'com'), $webhostingDomainName->getNamePair());
         self::assertTrue($webhostingDomainName->isPrimary());
 
         $webhostingDomainName = $this->repository->get($this->id2);
 
         self::assertTrue($webhostingDomainName->getId()->equals($this->id2), 'ID should equal');
         self::assertEquals($this->space2, $webhostingDomainName->getSpace());
-        self::assertEquals(new DomainName('example', 'net'), $webhostingDomainName->getDomainName());
+        self::assertEquals(new DomainNamePair('example', 'net'), $webhostingDomainName->getNamePair());
         self::assertTrue($webhostingDomainName->isPrimary());
 
         $webhostingDomainName = $this->repository->get($this->id3);
 
         self::assertTrue($webhostingDomainName->getId()->equals($this->id3), 'ID should equal');
         self::assertEquals($this->space2, $webhostingDomainName->getSpace());
-        self::assertEquals(new DomainName('example', 'co.uk'), $webhostingDomainName->getDomainName());
+        self::assertEquals(new DomainNamePair('example', 'co.uk'), $webhostingDomainName->getNamePair());
         self::assertFalse($webhostingDomainName->isPrimary());
     }
 
@@ -142,18 +142,20 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
     /** @test */
     public function it_gets_by_name(): void
     {
-        $domainName1 = $this->repository->findByFullName(new DomainName('example', 'com'));
-        $domainName2 = $this->repository->findByFullName(new DomainName('example', 'net'));
-        $domainName3 = $this->repository->findByFullName(new DomainName('example', 'co.uk'));
-        $domainName4 = $this->repository->findByFullName(new DomainName('example', 'noop'));
+        $domainName1 = $this->repository->getByName(new DomainNamePair('example', 'com'));
+        $domainName2 = $this->repository->getByName(new DomainNamePair('example', 'net'));
+        $domainName3 = $this->repository->getByName(new DomainNamePair('example', 'co.uk'));
 
         self::assertNotNull($domainName1);
         self::assertNotNull($domainName2);
-        self::assertNull($domainName4);
 
         self::assertTrue($domainName1->getId()->equals($this->id1), 'ID should equal');
         self::assertTrue($domainName2->getId()->equals($this->id2), 'ID should equal');
         self::assertTrue($domainName3->getId()->equals($this->id3), 'ID should equal');
+
+        $this->expectExceptionObject(DomainNameNotFound::withName($name = new DomainNamePair('example', 'noop')));
+
+        $this->repository->getByName($name);
     }
 
     /** @test */
@@ -164,8 +166,8 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
         $this->repository->remove($webhostingDomainName);
         $this->getEntityManager()->flush();
 
-        $this->expectException(WebhostingDomainNameNotFound::class);
-        $this->expectExceptionMessage(WebhostingDomainNameNotFound::withId($this->id3)->getMessage());
+        $this->expectException(DomainNameNotFound::class);
+        $this->expectExceptionMessage(DomainNameNotFound::withId($this->id3)->getMessage());
 
         $this->repository->get($this->id3);
     }
@@ -177,7 +179,7 @@ final class WebhostingDomainNameOrmRepositoryTest extends EntityRepositoryTestCa
 
         $this->expectException(CannotRemovePrimaryDomainName::class);
         $this->expectExceptionMessage(
-            CannotRemovePrimaryDomainName::of($this->id1, $webhostingDomainName->getSpace()->getId())->getMessage()
+            (new CannotRemovePrimaryDomainName($this->id1, $webhostingDomainName->getSpace()->getId()))->getMessage()
         );
 
         $this->repository->remove($webhostingDomainName);

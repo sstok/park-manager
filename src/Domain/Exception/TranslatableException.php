@@ -30,6 +30,8 @@ interface TranslatableException extends Throwable
      * The values of arguments can be translated separately
      * (passing the value of an argument to translator) by
      * prefixing their key with `@`, like `@status`.
+     *
+     * @return array<string, string|int|float|\DateTimeInterface>
      */
     public function getTranslationArgs(): array;
 }

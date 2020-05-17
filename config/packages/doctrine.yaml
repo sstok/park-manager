@@ -15,7 +15,6 @@ doctrine:
             # Webhosting
             webhosting_constraints: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingConstraintsType'
             park_manager_webhosting_space_id: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingSpaceIdType'
-            park_manager_webhosting_domain_name_id: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingDomainNameIdType'
             park_manager_webhosting_constraints_set_id: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingConstraintSetIdType'
             park_manager_domain_name_id: 'ParkManager\Infrastructure\Doctrine\Type\DomainNameIdType'
             park_manager_sub_domain_id: 'ParkManager\Infrastructure\Doctrine\Type\SubDomainNameIdType'

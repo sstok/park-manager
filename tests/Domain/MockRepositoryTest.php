@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain;
 
+use Generator;
 use InvalidArgumentException;
 use JsonSerializable;
 use ParkManager\Domain\UuidTrait;
@@ -64,6 +65,55 @@ final class MockRepositoryTest extends TestCase
         $repository->assertHasEntity($entity2->id(), static function (): void { });
         self::assertSame($entity1, $repository->get($entity1->id()));
         self::assertSame($entity2, $repository->get($entity2->id()));
+    }
+
+    /** @test */
+    public function it_gets_multiple_entities(): void
+    {
+        $entity1 = new MockEntity('fc86687e-0875-11e9-9701-acbc32b58315', 'bla', 'example.com');
+        $entity2 = new MockEntity('fc86687e-0875-11e9-9701-acbc32b58315', 'bla', 'example.com');
+        $entity3 = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315', 'barfoo', 'example2.com');
+        $entity4 = new MockEntity('566eb8e3-d9ba-4d6d-8d3c-c4a744df85ae', 'foobar', 'example2.com');
+        $entity5 = new MockEntity('f1acc3fb-de6a-4fc4-af6e-dde2327b4425', 'foobar', 'example2.com');
+
+        $repository = new class([$entity1, $entity2, $entity3, $entity4, $entity5]) {
+            use MockRepository;
+
+            protected function throwOnNotFound($key): void
+            {
+                throw new InvalidArgumentException('No, I has not have that key: ' . $key);
+            }
+
+            public function get(MockIdentity $id): MockEntity
+            {
+                return $this->mockDoGetById($id);
+            }
+
+            public function all(string $key): Generator
+            {
+                return $this->mockDoGetMultiByField('domain', $key);
+            }
+
+            public function remove(MockEntity $entity): void
+            {
+                $this->mockDoRemove($entity);
+            }
+
+            protected function getFieldsIndexMultiMapping(): array
+            {
+                return [
+                    'domain' => 'getDomain'
+                ];
+            }
+        };
+
+        $repository->remove($entity5);
+
+        $repository->assertHasEntity($entity1->id(), static function (): void { });
+        $repository->assertHasEntity($entity3->id(), static function (): void { });
+
+        self::assertEquals([$entity1, $entity2], iterator_to_array($repository->all('example.com')));
+        self::assertEquals([$entity3, $entity4], iterator_to_array($repository->all('example2.com')));
     }
 
     /** @test */
@@ -255,10 +305,13 @@ final class MockEntity
 
     private $lastName;
 
-    public function __construct(string $id = 'fc86687e-0875-11e9-9701-acbc32b58315', string $name = 'Foobar')
+    private ?string $domain;
+
+    public function __construct(string $id = 'fc86687e-0875-11e9-9701-acbc32b58315', string $name = 'Foobar', string $domain = null)
     {
         $this->id = MockIdentity::fromString($id);
         $this->lastName = $name;
+        $this->domain = $domain;
     }
 
     public function id(): MockIdentity
@@ -269,5 +322,10 @@ final class MockEntity
     public function lastName(): string
     {
         return $this->lastName;
+    }
+
+    public function getDomain(): ?string
+    {
+        return $this->domain;
     }
 }

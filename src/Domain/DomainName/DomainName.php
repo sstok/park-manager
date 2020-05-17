@@ -11,16 +11,16 @@ declare(strict_types=1);
 namespace ParkManager\Domain\DomainName;
 
 use Doctrine\ORM\Mapping as ORM;
+use ParkManager\Domain\DomainName\Exception\CannotAssignDomainNameWithDifferentOwner;
+use ParkManager\Domain\DomainName\Exception\CannotTransferPrimaryDomainName;
 use ParkManager\Domain\User\User;
+use ParkManager\Domain\Webhosting\Space\Space;
 
 /**
  * @ORM\Entity
- * @ORM\Table(
- *     name="domain_name",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="domain_name_uniq", columns={"name_part", "tld"}),
- *     }
- * )
+ * @ORM\Table(name="domain_name", schema="webhosting", indexes={
+ *     @ORM\Index(name="domain_name_primary_marking_idx", columns={"space", "is_primary"}),
+ * })
  */
 class DomainName
 {
@@ -38,25 +38,112 @@ class DomainName
     public ?User $owner = null;
 
     /**
-     * @ORM\Column(type="text", name="name_part")
+     * @ORM\ManyToOne(targetEntity=Space::class)
+     * @ORM\JoinColumn(onDelete="CASCADE", name="space", referencedColumnName="id")
      */
-    public string $name;
+    public ?Space $space = null;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Embedded(class=DomainNamePair::class, columnPrefix="domain_")
      */
-    public string $tld;
+    public DomainNamePair $namePair;
 
-    public function __construct(DomainNameId $id, ?User $owner, string $name, string $tld)
+    /**
+     * @ORM\Column(name="is_primary", type="boolean")
+     */
+    protected bool $primary = false;
+
+    public function __construct(DomainNameId $id, DomainNamePair $domainName)
     {
+        $this->namePair = $domainName;
         $this->id = $id;
-        $this->owner = $owner;
-        $this->name = $name;
-        $this->tld = $tld;
     }
 
-    public function changeOwner(?User $owner): void
+    public static function register(DomainNameId $id, DomainNamePair $domainName, ?User $owner): self
     {
-        $this->owner = $owner;
+        $instance = new self($id, $domainName);
+        $instance->owner = $owner;
+
+        return $instance;
+    }
+
+    public static function registerForSpace(DomainNameId $id, Space $space, DomainNamePair $domainName): self
+    {
+        $instance = new self($id, $domainName);
+        $instance->space = $space;
+        $instance->primary = true;
+
+        return $instance;
+    }
+
+    public static function registerSecondaryForSpace(DomainNameId $id, Space $space, DomainNamePair $domainName): self
+    {
+        $instance = new self($id, $domainName);
+        $instance->space = $space;
+
+        return $instance;
+    }
+
+    public function getId(): DomainNameId
+    {
+        return $this->id;
+    }
+
+    public function getNamePair(): DomainNamePair
+    {
+        return $this->namePair;
+    }
+
+    public function getSpace(): Space
+    {
+        return $this->space;
+    }
+
+    public function markPrimary(): void
+    {
+        $this->primary = true;
+    }
+
+    public function isPrimary(): bool
+    {
+        return $this->primary;
+    }
+
+    public function transferToSpace(Space $space, bool $primary = false): void
+    {
+        // It's still possible the primary marking was given directly before
+        // issuing the transfer, meaning the primary marking was not persisted
+        // yet for the old owner. But checking this further is not worth it.
+        if ($this->space !== null && $this->isPrimary()) {
+            throw new CannotTransferPrimaryDomainName($this->namePair, $this->space->getId(), $space->getId());
+        }
+
+        if ($this->space !== null) {
+            if ($this->space->owner !== $space->getOwner()) {
+                throw new CannotAssignDomainNameWithDifferentOwner($this->namePair, $this->space ? $this->space->getId() : null, $space->getId());
+            }
+        } elseif ($this->owner !== $space->getOwner()) {
+            throw new CannotAssignDomainNameWithDifferentOwner($this->namePair, null, $space->getId());
+        }
+
+        $this->space = $space;
+        $this->primary = $primary;
+
+        // Remove the ownership relation to reduce the need for synchronizing.
+        $this->owner = null;
+    }
+
+    /**
+     * Transfers the DomainName ownership to a User and removes the Space assignment.
+     */
+    public function transferToOwner(?User $newOwner): void
+    {
+        if ($this->space !== null && $this->isPrimary()) {
+            throw new CannotTransferPrimaryDomainName($this->namePair, $this->space->getId(), null);
+        }
+
+        $this->space = null;
+        $this->primary = true;
+        $this->owner = $newOwner;
     }
 }

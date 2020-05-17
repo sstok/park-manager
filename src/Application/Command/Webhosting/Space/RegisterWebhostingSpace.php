@@ -13,7 +13,7 @@ namespace ParkManager\Application\Command\Webhosting\Space;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
-use ParkManager\Domain\Webhosting\DomainName;
+use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class RegisterWebhostingSpace
@@ -28,7 +28,7 @@ final class RegisterWebhostingSpace
     /**
      * READ-ONLY.
      *
-     * @var DomainName
+     * @var \ParkManager\Domain\DomainName\DomainNamePair
      */
     public $domainName;
 
@@ -53,7 +53,7 @@ final class RegisterWebhostingSpace
      */
     public $customConstraints;
 
-    private function __construct(string $id, ?string $owner, DomainName $domainName, ?string $setId, ?Constraints $constraints)
+    private function __construct(string $id, ?string $owner, DomainNamePair $domainName, ?string $setId, ?Constraints $constraints)
     {
         $this->id = SpaceId::fromString($id);
         $this->domainName = $domainName;
@@ -68,12 +68,12 @@ final class RegisterWebhostingSpace
         }
     }
 
-    public static function withConstraintSet(string $id, DomainName $domainName, ?string $owner, string $setId): self
+    public static function withConstraintSet(string $id, DomainNamePair $domainName, ?string $owner, string $setId): self
     {
         return new self($id, $owner, $domainName, $setId, null);
     }
 
-    public static function withCustomConstraints(string $id, DomainName $domainName, ?string $owner, Constraints $constraints): self
+    public static function withCustomConstraints(string $id, DomainNamePair $domainName, ?string $owner, Constraints $constraints): self
     {
         return new self($id, $owner, $domainName, null, $constraints);
     }

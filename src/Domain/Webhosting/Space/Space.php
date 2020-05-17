@@ -52,7 +52,7 @@ class Space
      *
      * @var User|null
      */
-    protected $owner;
+    public $owner;
 
     /**
      * @ORM\Column(name="expires_on", type="datetime_immutable", nullable=true)

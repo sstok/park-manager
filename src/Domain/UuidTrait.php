@@ -64,6 +64,29 @@ trait UuidTrait
         return $this->value->equals($identity->value);
     }
 
+    /**
+     * Allows to easily compare the equality of an identity.
+     *
+     * @param string|null $property Given $identity1 is an Entity class this will use
+     *                              the property of the entity to get the identity VO
+     */
+    public static function equalsValue($identity1, $identity2, ?string $property = null): bool
+    {
+        if ($identity1 === null && $identity2 === null) {
+            return true;
+        }
+
+        if ($identity1 !== null && $property !== null) {
+            $identity1 = $identity1->{$property};
+        }
+
+        if (! $identity1 instanceof static || ! $identity2 instanceof static) {
+            return false;
+        }
+
+        return $identity1->equals($identity2);
+    }
+
     public function serialize(): string
     {
         return $this->stringValue;

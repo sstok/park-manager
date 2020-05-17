@@ -12,11 +12,11 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\Persistence\ObjectManager;
 use ParkManager\Application\Service\TLS\CertificateFactoryImpl;
+use ParkManager\Domain\DomainName\DomainNameId;
+use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
-use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameId;
-use ParkManager\Domain\Webhosting\DomainName\WebhostingDomainNameRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 use ParkManager\Infrastructure\Doctrine\ConstraintsTypeConfigurator;
@@ -40,11 +40,11 @@ return static function (ContainerConfigurator $c): void {
         ->autowire()
         ->private()
         ->bind('$commandBus', ref('park_manager.command_bus'))
-        ->bind(ObjectManager::class, ref('doctrine.orm.default_entity_manager'));
+        ->bind(ObjectManager::class, service('doctrine.orm.default_entity_manager'));
 
     $di->set(PdpManager::class)->args([
-        service(Psr16Cache::class)->arg(0, ref('cache.public_prefix_db')),
-        service(PdpCurlHttpClient::class)
+        inline_service(Psr16Cache::class)->arg(0, service('cache.public_prefix_db')),
+        inline_service(PdpCurlHttpClient::class)
     ]);
 
     // Note: Repositories are loaded separate as autowiring the entire Domain is not
@@ -89,11 +89,11 @@ return static function (ContainerConfigurator $c): void {
             service_locator([
                 User::class => ref(UserRepository::class),
                 Space::class => ref(WebhostingSpaceRepository::class),
-                WebhostingDomainNameId::class => ref(WebhostingDomainNameRepository::class),
+                DomainNameId::class => service(DomainNameRepository::class),
             ]),
             [
                 UserId::class => 'fromString',
-                WebhostingDomainNameId::class => 'fromString',
+                DomainNameId::class => 'fromString',
             ],
         ]);
 
