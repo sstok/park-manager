@@ -20,6 +20,7 @@ use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
+use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 /**
@@ -81,6 +82,24 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
 
         return $this->createQueryBuilder('d')
             ->where('d.owner = :owner')
+            ->getQuery()
+            ->setParameter('owner', $userId->toString())
+            ->getResult();
+    }
+
+    public function allAccessibleBy(?UserId $userId): iterable
+    {
+        if ($userId === null) {
+            return $this->createQueryBuilder('d')
+                ->leftJoin('d.space', 's')
+                ->where('(d.space IS NULL AND d.owner IS NULL) OR (d.space IS NOT NULL AND s.owner IS NULL)')
+                ->getQuery()
+                ->getResult();
+        }
+
+        return $this->createQueryBuilder('d')
+            ->leftJoin('d.space', 's')
+            ->where('d.owner = :owner OR s.owner = :owner')
             ->getQuery()
             ->setParameter('owner', $userId->toString())
             ->getResult();

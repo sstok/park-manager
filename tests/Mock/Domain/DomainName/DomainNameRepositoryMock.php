@@ -88,6 +88,22 @@ final class DomainNameRepositoryMock implements DomainNameRepository
         return $this->mockDoGetMultiByField('owner', (string) $userId);
     }
 
+    public function allAccessibleBy(?UserId $userId): iterable
+    {
+        $found = [];
+
+        /** @var DomainName $entity */
+        foreach ($this->storedById as $id => $entity) {
+            if (UserId::equalsValue($entity->owner, $userId, 'id')) {
+                $found[$id] = $entity;
+            } elseif ($entity->space !== null && UserId::equalsValue($entity->space->owner, $userId, 'id')) {
+                $found[$id] = $entity;
+            }
+        }
+
+        return $found;
+    }
+
     public function allFromSpace(SpaceId $id): iterable
     {
         return $this->mockDoGetMultiByField('space', (string) $id);

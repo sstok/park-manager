@@ -34,34 +34,31 @@ use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
 final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
 {
     private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
+    private const OWNER_ID2 = 'bf31144d-dc3b-40be-93e1-1128684f6ee1';
 
     private const SPACE_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
     private const SPACE_ID2 = '47f6db14-a69c-11e7-be13-acbc32b58316';
     private const SPACE_NOOP = '30b26ae0-a6b5-11e7-b978-acbc32b58315';
 
-    /** @var DomainNameOrmRepository */
-    private $repository;
+    private DomainNameOrmRepository $repository;
 
-    /** @var Space */
-    private $space1;
+    private Space $space1;
+    private Space $space2;
+    private Space $space3;
 
-    /** @var Space */
-    private $space2;
-
-    /** @var DomainNameId */
-    private $id1;
-
-    /** @var DomainNameId */
-    private $id2;
-
-    /** @var DomainNameId */
-    private $id3;
+    private DomainNameId $id1;
+    private DomainNameId $id2;
+    private DomainNameId $id3;
+    private DomainNameId $id4;
+    private DomainNameId $id5;
+    private DomainNameId $id6;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $user1 = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John');
+        $user2 = User::register(UserId::fromString(self::OWNER_ID2), new EmailAddress('Jane@mustash.com'), 'Jane');
 
         $this->space1 = Space::registerWithCustomConstraints(
             SpaceId::fromString(self::SPACE_ID1),
@@ -71,15 +68,23 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
 
         $this->space2 = Space::registerWithCustomConstraints(
             SpaceId::fromString(self::SPACE_ID2),
-            $user1,
+            $user2,
+            new Constraints()
+        );
+
+        $this->space3 = Space::registerWithCustomConstraints(
+            SpaceId::create(),
+            null,
             new Constraints()
         );
 
         $em = $this->getEntityManager();
-        $em->transactional(function (EntityManagerInterface $em) use ($user1): void {
+        $em->transactional(function (EntityManagerInterface $em) use ($user1, $user2): void {
             $em->persist($user1);
+            $em->persist($user2);
             $em->persist($this->space1);
             $em->persist($this->space2);
+            $em->persist($this->space3);
         });
 
         $webhostingDomainName1 = DomainName::registerForSpace(DomainNameId::create(), $this->space1, new DomainNamePair('example', 'com'));
@@ -91,10 +96,22 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
         $webhostingDomainName3 = DomainName::registerSecondaryForSpace(DomainNameId::create(), $this->space2, new DomainNamePair('example', 'co.uk'));
         $this->id3 = $webhostingDomainName3->getId();
 
+        $webhostingDomainName4 = DomainName::register(DomainNameId::create(), new DomainNamePair('example', 'nl'), null);
+        $this->id4 = $webhostingDomainName4->getId();
+
+        $webhostingDomainName5 = DomainName::register(DomainNameId::create(), new DomainNamePair('example', 'nu'), $user1);
+        $this->id5 = $webhostingDomainName5->getId();
+
+        $webhostingDomainName6 = DomainName::registerForSpace(DomainNameId::create(), $this->space3, new DomainNamePair('example', 'nu'));
+        $this->id6 = $webhostingDomainName6->getId();
+
         $this->repository = new DomainNameOrmRepository($em);
         $this->repository->save($webhostingDomainName1);
         $this->repository->save($webhostingDomainName2);
         $this->repository->save($webhostingDomainName3);
+        $this->repository->save($webhostingDomainName4);
+        $this->repository->save($webhostingDomainName5);
+        $this->repository->save($webhostingDomainName6);
 
         // Must be done explicit, normally handled by a transaction script.
         $em->flush();
@@ -156,6 +173,37 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
         $this->expectExceptionObject(DomainNameNotFound::withName($name = new DomainNamePair('example', 'noop')));
 
         $this->repository->getByName($name);
+    }
+
+    /** @test */
+    public function it_gets_all_accessible(): void
+    {
+        $this->assertEntitiesEquals([], $this->repository->allAccessibleBy(UserId::fromString(self::SPACE_NOOP)));
+        $this->assertEntitiesEquals([$this->id1, $this->id5], $this->repository->allAccessibleBy(UserId::fromString(self::OWNER_ID1)));
+        $this->assertEntitiesEquals([$this->id2, $this->id3], $this->repository->allAccessibleBy(UserId::fromString(self::OWNER_ID2)));
+        $this->assertEntitiesEquals([$this->id4, $this->id6], $this->repository->allAccessibleBy(null));
+    }
+
+    /**
+     * @param array<int,object> $expectedIds
+     */
+    private function assertEntitiesEquals(array $expectedIds, iterable $result): void
+    {
+        $found = [];
+        $expected = [];
+
+        foreach ($result as $entity) {
+            $found[$entity->id->toString()] = $entity;
+        }
+
+        foreach ($expectedIds as $id) {
+            $expected[$id->toString()] = $this->repository->get($id);
+        }
+
+        ksort($expected, SORT_STRING);
+        ksort($found, SORT_STRING);
+
+        self::assertEquals($expected, $found);
     }
 
     /** @test */

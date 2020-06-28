@@ -41,6 +41,11 @@ interface DomainNameRepository
     /**
      * @return iterable<DomainName>
      */
+    public function allAccessibleBy(?UserId $userId): iterable;
+
+    /**
+     * @return iterable<DomainName>
+     */
     public function allFromSpace(SpaceId $id): iterable;
 
     public function save(DomainName $domainName): void;
