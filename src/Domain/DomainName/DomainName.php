@@ -18,7 +18,7 @@ use ParkManager\Domain\Webhosting\Space\Space;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="domain_name", schema="webhosting", indexes={
+ * @ORM\Table(name="domain_name", indexes={
  *     @ORM\Index(name="domain_name_primary_marking_idx", columns={"space", "is_primary"}),
  * })
  */

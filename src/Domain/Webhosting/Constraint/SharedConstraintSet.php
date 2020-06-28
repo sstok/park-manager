@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="constraints_set", schema="webhosting")
+ * @ORM\Table(name="constraints_set")
  */
 class SharedConstraintSet
 {

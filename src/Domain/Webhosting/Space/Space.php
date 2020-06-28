@@ -18,7 +18,7 @@ use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="space", schema="webhosting")
+ * @ORM\Table(name="space")
  */
 class Space
 {
