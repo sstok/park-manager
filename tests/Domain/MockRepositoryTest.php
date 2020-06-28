@@ -102,7 +102,7 @@ final class MockRepositoryTest extends TestCase
             protected function getFieldsIndexMultiMapping(): array
             {
                 return [
-                    'domain' => 'getDomain'
+                    'domain' => 'getDomain',
                 ];
             }
         };
@@ -112,8 +112,8 @@ final class MockRepositoryTest extends TestCase
         $repository->assertHasEntity($entity1->id(), static function (): void { });
         $repository->assertHasEntity($entity3->id(), static function (): void { });
 
-        self::assertEquals([$entity1, $entity2], iterator_to_array($repository->all('example.com')));
-        self::assertEquals([$entity3, $entity4], iterator_to_array($repository->all('example2.com')));
+        self::assertEquals([$entity1, $entity2], \iterator_to_array($repository->all('example.com')));
+        self::assertEquals([$entity3, $entity4], \iterator_to_array($repository->all('example2.com')));
     }
 
     /** @test */

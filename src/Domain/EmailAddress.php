@@ -98,7 +98,7 @@ final class EmailAddress
         $local = $this->extractLabel($local, $label);
 
         $domain = \mb_substr($address, $atPos + 1);
-        $domain = \idn_to_utf8($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, $idnaInfo);
+        $domain = idn_to_utf8($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, $idnaInfo);
 
         if ($idnaInfo['errors'] !== 0) {
             throw new MalformedEmailAddress(\sprintf('Malformed e-mail address "%s" (IDN Error reported %s)', $address, $idnaInfo['errors']));

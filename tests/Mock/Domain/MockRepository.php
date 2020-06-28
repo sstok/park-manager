@@ -77,7 +77,7 @@ trait MockRepository
 
         foreach ($this->getFieldsIndexMultiMapping() as $mapping => $getter) {
             if (isset($indexMapping[$mapping])) {
-                throw new \RuntimeException(sprintf('Multi-mapping name "%s" already exists in single mapping.', $mapping));
+                throw new \RuntimeException(\sprintf('Multi-mapping name "%s" already exists in single mapping.', $mapping));
             }
 
             $withGetter = $this->getValueWithGetter($entity, $getter);

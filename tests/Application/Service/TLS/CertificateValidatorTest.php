@@ -94,33 +94,33 @@ final class CertificateValidatorTest extends TestCase
             CERT;
 
         $ca = <<<'CA'
------BEGIN CERTIFICATE-----
-MIIDezCCAmOgAwIBAgIJAJn2g4MHmUlvMA0GCSqGSIb3DQEBBQUAMFQxGjAYBgNV
-BAMMEVJvbGxlcnNjYXBlcyBDQXYzMRUwEwYDVQQKDAxSb2xsZXJzY2FwZXMxEjAQ
-BgNVBAcMCVJvdHRlcmRhbTELMAkGA1UEBhMCTkwwHhcNMTQwMzMwMTQzNjM5WhcN
-MTgwMzI5MTQzNjM5WjBUMRowGAYDVQQDDBFSb2xsZXJzY2FwZXMgQ0F2MzEVMBMG
-A1UECgwMUm9sbGVyc2NhcGVzMRIwEAYDVQQHDAlSb3R0ZXJkYW0xCzAJBgNVBAYT
-Ak5MMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9G4MAqOU6tgIw2gJ
-tZVul3Ef6W37fK2p8MooXJmFRNs6QGloy8bkbAG6rLrmPlOpG4LT6jDpiUOgk4IL
-v0HZr8tSaJCEUaYWYQkc58HqZK0FfVrrzAQC8lVcO2Xl0HehEoPAtVrX+1h2F6/E
-38xzmlbUo2Ileiy6ur0KjCo+p22fd+NIEwvtbd1uySA5GsyzIq0vqpRHJzihgXXU
-TIjxdxZqqHjGslT9Ei97XEYErjFrxlwk8lNFUvxE3u2Xhfhy6qNT1CpcPg8pRVHw
-IdYqn0ApJPxLchfGjuVmcgmnDeTmBtbNGBPw1dsmswm/nvZC8CiDuqgn6PVIhpio
-Eru22wIDAQABo1AwTjAdBgNVHQ4EFgQUAe/6RHDxw475z5c8niR0o4ZiYn0wHwYD
-VR0jBBgwFoAUAe/6RHDxw475z5c8niR0o4ZiYn0wDAYDVR0TBAUwAwEB/zANBgkq
-hkiG9w0BAQUFAAOCAQEA4VMyvK2I2naw+0rm4wu9rRWOoCYuRRchkE+CvFoUDnQq
-CvWKaQApPA2qud4gA+S743GduzSf4jfAe8yGY3oA+bUAnqupF+8l19b6GcMfEop7
-LRkeiSxAVrK2hHxGYMdLXBFqBMS5PaG2LT/m1zjk+j5CJVKAtWHlO8sERSyCqa04
-2wvjlA/ArnZkt8A56kOFeIK2UBOzTozYmW+D5ZkB41JtzquO7Rty/YhVpuOfCoLX
-HuwXgPLW3fDUFmEFnIMqDCxZA5NEc+1QapjBkC8cU4xPKjIE3Ljm4Nhq0I67ipC1
-Jzgsmb7yKoigkH/BZ5sm/spdlz3/eXuEtcC6gLfsPA==
------END CERTIFICATE-----
-CA;
+            -----BEGIN CERTIFICATE-----
+            MIIDezCCAmOgAwIBAgIJAJn2g4MHmUlvMA0GCSqGSIb3DQEBBQUAMFQxGjAYBgNV
+            BAMMEVJvbGxlcnNjYXBlcyBDQXYzMRUwEwYDVQQKDAxSb2xsZXJzY2FwZXMxEjAQ
+            BgNVBAcMCVJvdHRlcmRhbTELMAkGA1UEBhMCTkwwHhcNMTQwMzMwMTQzNjM5WhcN
+            MTgwMzI5MTQzNjM5WjBUMRowGAYDVQQDDBFSb2xsZXJzY2FwZXMgQ0F2MzEVMBMG
+            A1UECgwMUm9sbGVyc2NhcGVzMRIwEAYDVQQHDAlSb3R0ZXJkYW0xCzAJBgNVBAYT
+            Ak5MMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9G4MAqOU6tgIw2gJ
+            tZVul3Ef6W37fK2p8MooXJmFRNs6QGloy8bkbAG6rLrmPlOpG4LT6jDpiUOgk4IL
+            v0HZr8tSaJCEUaYWYQkc58HqZK0FfVrrzAQC8lVcO2Xl0HehEoPAtVrX+1h2F6/E
+            38xzmlbUo2Ileiy6ur0KjCo+p22fd+NIEwvtbd1uySA5GsyzIq0vqpRHJzihgXXU
+            TIjxdxZqqHjGslT9Ei97XEYErjFrxlwk8lNFUvxE3u2Xhfhy6qNT1CpcPg8pRVHw
+            IdYqn0ApJPxLchfGjuVmcgmnDeTmBtbNGBPw1dsmswm/nvZC8CiDuqgn6PVIhpio
+            Eru22wIDAQABo1AwTjAdBgNVHQ4EFgQUAe/6RHDxw475z5c8niR0o4ZiYn0wHwYD
+            VR0jBBgwFoAUAe/6RHDxw475z5c8niR0o4ZiYn0wDAYDVR0TBAUwAwEB/zANBgkq
+            hkiG9w0BAQUFAAOCAQEA4VMyvK2I2naw+0rm4wu9rRWOoCYuRRchkE+CvFoUDnQq
+            CvWKaQApPA2qud4gA+S743GduzSf4jfAe8yGY3oA+bUAnqupF+8l19b6GcMfEop7
+            LRkeiSxAVrK2hHxGYMdLXBFqBMS5PaG2LT/m1zjk+j5CJVKAtWHlO8sERSyCqa04
+            2wvjlA/ArnZkt8A56kOFeIK2UBOzTozYmW+D5ZkB41JtzquO7Rty/YhVpuOfCoLX
+            HuwXgPLW3fDUFmEFnIMqDCxZA5NEc+1QapjBkC8cU4xPKjIE3Ljm4Nhq0I67ipC1
+            Jzgsmb7yKoigkH/BZ5sm/spdlz3/eXuEtcC6gLfsPA==
+            -----END CERTIFICATE-----
+            CA;
 
         try {
             $this->certificateValidator->validateCertificate($certContents, ['root' => $ca]);
 
-            $this->fail('Exception was expected.');
+            self::fail('Exception was expected.');
         } catch (CertificateIsExpired $e) {
             self::assertEquals(['expired_on' => Carbon::rawParse('2018-07-26T13:02:33.000000+0000')], $e->getTranslationArgs());
         }
@@ -154,7 +154,7 @@ CA;
         try {
             $this->certificateValidator->validateCertificate('I am not a CERT', []);
 
-            $this->fail('Exception was expected.');
+            self::fail('Exception was expected.');
         } catch (GlobalWildcard $e) {
             self::assertEquals([
                 'provided' => $provided,
@@ -166,9 +166,13 @@ CA;
     public function provideGlobalWildcard(): iterable
     {
         yield [['example.com', '*'], '*', '*'];
+
         yield [['*.doodoodoodoodoodoo.com', '*.com'], '*.com', 'com'];
+
         yield [['*.doodoodoodoodoodoo.com', '*.com'], '*.com', 'com'];
+
         yield [['*.org.ae'], '*.org.ae', 'org.ae'];
+
         yield [['*.qld.edu.au'], '*.qld.edu.au', 'qld.edu.au'];
     }
 
@@ -200,35 +204,35 @@ CA;
             CERT;
 
         $ca = <<<'CA'
------BEGIN CERTIFICATE-----
-MIIDezCCAmOgAwIBAgIJAJn2g4MHmUlvMA0GCSqGSIb3DQEBBQUAMFQxGjAYBgNV
-BAMMEVJvbGxlcnNjYXBlcyBDQXYzMRUwEwYDVQQKDAxSb2xsZXJzY2FwZXMxEjAQ
-BgNVBAcMCVJvdHRlcmRhbTELMAkGA1UEBhMCTkwwHhcNMTQwMzMwMTQzNjM5WhcN
-MTgwMzI5MTQzNjM5WjBUMRowGAYDVQQDDBFSb2xsZXJzY2FwZXMgQ0F2MzEVMBMG
-A1UECgwMUm9sbGVyc2NhcGVzMRIwEAYDVQQHDAlSb3R0ZXJkYW0xCzAJBgNVBAYT
-Ak5MMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9G4MAqOU6tgIw2gJ
-tZVul3Ef6W37fK2p8MooXJmFRNs6QGloy8bkbAG6rLrmPlOpG4LT6jDpiUOgk4IL
-v0HZr8tSaJCEUaYWYQkc58HqZK0FfVrrzAQC8lVcO2Xl0HehEoPAtVrX+1h2F6/E
-38xzmlbUo2Ileiy6ur0KjCo+p22fd+NIEwvtbd1uySA5GsyzIq0vqpRHJzihgXXU
-TIjxdxZqqHjGslT9Ei97XEYErjFrxlwk8lNFUvxE3u2Xhfhy6qNT1CpcPg8pRVHw
-IdYqn0ApJPxLchfGjuVmcgmnDeTmBtbNGBPw1dsmswm/nvZC8CiDuqgn6PVIhpio
-Eru22wIDAQABo1AwTjAdBgNVHQ4EFgQUAe/6RHDxw475z5c8niR0o4ZiYn0wHwYD
-VR0jBBgwFoAUAe/6RHDxw475z5c8niR0o4ZiYn0wDAYDVR0TBAUwAwEB/zANBgkq
-hkiG9w0BAQUFAAOCAQEA4VMyvK2I2naw+0rm4wu9rRWOoCYuRRchkE+CvFoUDnQq
-CvWKaQApPA2qud4gA+S743GduzSf4jfAe8yGY3oA+bUAnqupF+8l19b6GcMfEop7
-LRkeiSxAVrK2hHxGYMdLXBFqBMS5PaG2LT/m1zjk+j5CJVKAtWHlO8sERSyCqa04
-2wvjlA/ArnZkt8A56kOFeIK2UBOzTozYmW+D5ZkB41JtzquO7Rty/YhVpuOfCoLX
-HuwXgPLW3fDUFmEFnIMqDCxZA5NEc+1QapjBkC8cU4xPKjIE3Ljm4Nhq0I67ipC1
-Jzgsmb7yKoigkH/BZ5sm/spdlz3/eXuEtcC6gLfsPA==
------END CERTIFICATE-----
-CA;
+            -----BEGIN CERTIFICATE-----
+            MIIDezCCAmOgAwIBAgIJAJn2g4MHmUlvMA0GCSqGSIb3DQEBBQUAMFQxGjAYBgNV
+            BAMMEVJvbGxlcnNjYXBlcyBDQXYzMRUwEwYDVQQKDAxSb2xsZXJzY2FwZXMxEjAQ
+            BgNVBAcMCVJvdHRlcmRhbTELMAkGA1UEBhMCTkwwHhcNMTQwMzMwMTQzNjM5WhcN
+            MTgwMzI5MTQzNjM5WjBUMRowGAYDVQQDDBFSb2xsZXJzY2FwZXMgQ0F2MzEVMBMG
+            A1UECgwMUm9sbGVyc2NhcGVzMRIwEAYDVQQHDAlSb3R0ZXJkYW0xCzAJBgNVBAYT
+            Ak5MMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9G4MAqOU6tgIw2gJ
+            tZVul3Ef6W37fK2p8MooXJmFRNs6QGloy8bkbAG6rLrmPlOpG4LT6jDpiUOgk4IL
+            v0HZr8tSaJCEUaYWYQkc58HqZK0FfVrrzAQC8lVcO2Xl0HehEoPAtVrX+1h2F6/E
+            38xzmlbUo2Ileiy6ur0KjCo+p22fd+NIEwvtbd1uySA5GsyzIq0vqpRHJzihgXXU
+            TIjxdxZqqHjGslT9Ei97XEYErjFrxlwk8lNFUvxE3u2Xhfhy6qNT1CpcPg8pRVHw
+            IdYqn0ApJPxLchfGjuVmcgmnDeTmBtbNGBPw1dsmswm/nvZC8CiDuqgn6PVIhpio
+            Eru22wIDAQABo1AwTjAdBgNVHQ4EFgQUAe/6RHDxw475z5c8niR0o4ZiYn0wHwYD
+            VR0jBBgwFoAUAe/6RHDxw475z5c8niR0o4ZiYn0wDAYDVR0TBAUwAwEB/zANBgkq
+            hkiG9w0BAQUFAAOCAQEA4VMyvK2I2naw+0rm4wu9rRWOoCYuRRchkE+CvFoUDnQq
+            CvWKaQApPA2qud4gA+S743GduzSf4jfAe8yGY3oA+bUAnqupF+8l19b6GcMfEop7
+            LRkeiSxAVrK2hHxGYMdLXBFqBMS5PaG2LT/m1zjk+j5CJVKAtWHlO8sERSyCqa04
+            2wvjlA/ArnZkt8A56kOFeIK2UBOzTozYmW+D5ZkB41JtzquO7Rty/YhVpuOfCoLX
+            HuwXgPLW3fDUFmEFnIMqDCxZA5NEc+1QapjBkC8cU4xPKjIE3Ljm4Nhq0I67ipC1
+            Jzgsmb7yKoigkH/BZ5sm/spdlz3/eXuEtcC6gLfsPA==
+            -----END CERTIFICATE-----
+            CA;
 
         Carbon::setTestNow('2013-05-29T14:12:14.000000+0000');
 
         try {
             $this->certificateValidator->validateCertificate($certContents, ['root' => $ca]);
 
-            $this->fail('Exception was expected.');
+            self::fail('Exception was expected.');
         } catch (WeakSignatureAlgorithm $e) {
             self::assertEquals([
                 'expected' => 'SHA256',
@@ -347,7 +351,7 @@ CA;
         $objectManagerProphecy->persist(Argument::type(CA::class))->willReturn(null);
         $objectManager = $objectManagerProphecy->reveal();
 
-        $responseFactory = function ($method, $url, $options) {
+        $responseFactory = static function ($method, $url, $options) {
             self::assertEquals('http://ocsp.digicert.com/', $url);
 
             return new MockResponse($options['body'], ['response_headers' => ['content-type' => Ocsp::OCSP_RESPONSE_MEDIATYPE]]);
@@ -379,7 +383,7 @@ CA;
                 'DigiCert SHA2 Secure Server CA' => $ca1,
             ]);
 
-            $this->fail('Exception was expected.');
+            self::fail('Exception was expected.');
         } catch (CertificateIsRevoked $e) {
             self::assertEquals([
                 'revoked_on' => $revokedOn,
@@ -440,7 +444,7 @@ CA;
         try {
             $this->certificateValidator->validateCertificatePurpose($certContents, CertificateValidator::PURPOSE_SMIME);
 
-            $this->fail('Exception was expected.');
+            self::fail('Exception was expected.');
         } catch (UnsupportedPurpose $e) {
             self::assertEquals(['@required_purpose' => 'S/MIME signing'], $e->getTranslationArgs());
         }
@@ -486,7 +490,7 @@ CA;
         try {
             $this->certificateValidator->validateCertificateHost($cert, $hostPattern);
 
-            $this->fail('Exception was expected.');
+            self::fail('Exception was expected.');
         } catch (UnsupportedDomain $e) {
             self::assertEquals(['required_pattern' => $hostPattern, 'supported' => $supported], $e->getTranslationArgs());
         }
@@ -560,10 +564,13 @@ CA;
             CERT;
 
         yield [$cert1, 'example.com', 'slack.com, *.slack.com'];
+
         yield [$cert1, '*.t.slack.com', 'slack.com, *.slack.com'];
 
         yield [$cert2, 'example.com', 'bop.dev.rollerscapes.net'];
+
         yield [$cert2, 'bob.rollerscapes.com', 'bop.dev.rollerscapes.net'];
+
         yield [$cert2, '*.rollerscapes.com', 'bop.dev.rollerscapes.net'];
     }
 
@@ -648,7 +655,7 @@ CA;
             -----END CERTIFICATE-----
             CERT;
 
-        $callback = function (array $fields, string $certContents, CertificateValidator $validator) use ($cert) {
+        $callback = static function (array $fields, string $certContents, CertificateValidator $validator) use ($cert): void {
             self::assertEquals($cert, $certContents);
 
             self::assertArrayHasKey('subject', $fields);
@@ -662,11 +669,11 @@ CA;
 /**
  * @internal
  */
-class FakedCertificateValidator extends CertificateValidator
+final class FakedCertificateValidator extends CertificateValidator
 {
     private array $fields;
 
-    public function setFields(array $fields)
+    public function setFields(array $fields): void
     {
         $this->fields = $fields;
     }

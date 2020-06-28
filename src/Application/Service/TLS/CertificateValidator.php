@@ -227,7 +227,7 @@ class CertificateValidator
 
     public function validateCertificatePurpose(string $certificate, string ...$requiredPurpose): void
     {
-        $requiredPurpose = array_fill_keys($requiredPurpose, true);
+        $requiredPurpose = \array_fill_keys($requiredPurpose, true);
 
         if (isset($requiredPurpose[self::PURPOSE_SMIME])) {
             unset($requiredPurpose[self::PURPOSE_SMIME]);

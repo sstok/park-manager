@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\ArgumentResolver;
 
+use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
-use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;

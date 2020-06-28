@@ -29,13 +29,13 @@ final class DomainNameRepositoryMock implements DomainNameRepository
     protected function getFieldsIndexMapping(): array
     {
         return [
-            'full_name' => function (DomainName $domainName) {
+            'full_name' => static function (DomainName $domainName) {
                 return $domainName->namePair->toString();
             },
-            'name' => function (DomainName $domainName) {
+            'name' => static function (DomainName $domainName) {
                 return $domainName->namePair->name;
             },
-            'tld' => function (DomainName $domainName) {
+            'tld' => static function (DomainName $domainName) {
                 return $domainName->namePair->tld;
             },
             'space_primary_id' => static function (DomainName $model) {
@@ -51,10 +51,10 @@ final class DomainNameRepositoryMock implements DomainNameRepository
     protected function getFieldsIndexMultiMapping(): array
     {
         return [
-            'owner' => function (DomainName $domainName) {
+            'owner' => static function (DomainName $domainName) {
                 return $domainName->owner === null ? null : (string) $domainName->owner->id;
             },
-            'space' => function (DomainName $domainName) {
+            'space' => static function (DomainName $domainName) {
                 return $domainName->space === null ? null : (string) $domainName->space->getId();
             },
         ];
@@ -147,8 +147,8 @@ final class DomainNameRepositoryMock implements DomainNameRepository
 
     protected function throwOnNotFound($key): void
     {
-        if (mb_strpos($key, '.') !== false) {
-            throw DomainNameNotFound::withName(new DomainNamePair(...explode('.', $key, 2)));
+        if (\mb_strpos($key, '.') !== false) {
+            throw DomainNameNotFound::withName(new DomainNamePair(...\explode('.', $key, 2)));
         }
 
         throw DomainNameNotFound::withId(DomainNameId::fromString($key));

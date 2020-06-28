@@ -12,21 +12,21 @@ namespace ParkManager\Tests\Application\Command\Space;
 
 use ParkManager\Application\Command\Webhosting\Space\RegisterWebhostingSpace;
 use ParkManager\Application\Command\Webhosting\Space\RegisterWebhostingSpaceHandler;
+use ParkManager\Domain\DomainName\DomainName;
+use ParkManager\Domain\DomainName\DomainNameId;
+use ParkManager\Domain\DomainName\DomainNamePair;
+use ParkManager\Domain\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
-use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\DomainName\Exception\DomainNameAlreadyInUse;
-use ParkManager\Domain\DomainName\DomainName;
-use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
+use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SharedConstraintSetRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
-use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
 /**

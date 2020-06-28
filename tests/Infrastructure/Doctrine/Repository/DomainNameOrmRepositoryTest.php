@@ -11,15 +11,15 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use ParkManager\Domain\DomainName\DomainName;
+use ParkManager\Domain\DomainName\DomainNameId;
+use ParkManager\Domain\DomainName\DomainNamePair;
+use ParkManager\Domain\DomainName\Exception\CannotRemovePrimaryDomainName;
+use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
-use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\DomainName\Exception\CannotRemovePrimaryDomainName;
-use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
-use ParkManager\Domain\DomainName\DomainName;
-use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
@@ -200,8 +200,8 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
             $expected[$id->toString()] = $this->repository->get($id);
         }
 
-        ksort($expected, SORT_STRING);
-        ksort($found, SORT_STRING);
+        \ksort($expected, SORT_STRING);
+        \ksort($found, SORT_STRING);
 
         self::assertEquals($expected, $found);
     }

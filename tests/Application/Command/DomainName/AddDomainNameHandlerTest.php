@@ -50,7 +50,7 @@ final class AddDomainNameHandlerTest extends TestCase
         ($this->handler)(AddDomainName::with('e7621ab3-d543-4405-848b-eaf5b85a7f88', UserRepositoryMock::USER_ID1, 'park-manager', 'com'));
 
         $this->repository->assertEntitiesCountWasSaved(1);
-        $this->repository->assertHasEntityThat(function (DomainName $domainName) {
+        $this->repository->assertHasEntityThat(static function (DomainName $domainName) {
             if (! $domainName->id->equals(DomainNameId::fromString('e7621ab3-d543-4405-848b-eaf5b85a7f88'))) {
                 return false;
             }
@@ -73,7 +73,7 @@ final class AddDomainNameHandlerTest extends TestCase
         ($this->handler)(AddDomainName::with('e7621ab3-d543-4405-848b-eaf5b85a7f88', null, 'park-manager', 'com'));
 
         $this->repository->assertEntitiesCountWasSaved(1);
-        $this->repository->assertHasEntityThat(function (DomainName $domainName) {
+        $this->repository->assertHasEntityThat(static function (DomainName $domainName) {
             if (! $domainName->id->equals(DomainNameId::fromString('e7621ab3-d543-4405-848b-eaf5b85a7f88'))) {
                 return false;
             }

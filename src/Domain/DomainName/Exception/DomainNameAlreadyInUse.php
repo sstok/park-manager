@@ -21,9 +21,9 @@ final class DomainNameAlreadyInUse extends \DomainException implements Translata
     public function __construct(DomainNamePair $domainName, bool $sameOwner = false)
     {
         if ($sameOwner) {
-            parent::__construct(sprintf('DomainName "%s.%s" is already in use (by same space owner).', $domainName->name, $domainName->tld));
+            parent::__construct(\sprintf('DomainName "%s.%s" is already in use (by same space owner).', $domainName->name, $domainName->tld));
         } else {
-            parent::__construct(sprintf('DomainName "%s.%s" is already in use.', $domainName->name, $domainName->tld));
+            parent::__construct(\sprintf('DomainName "%s.%s" is already in use.', $domainName->name, $domainName->tld));
         }
 
         $this->sameOwner = $sameOwner;

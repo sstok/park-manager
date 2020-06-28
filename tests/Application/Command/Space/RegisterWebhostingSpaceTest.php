@@ -11,10 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Application\Command\Space;
 
 use ParkManager\Application\Command\Webhosting\Space\RegisterWebhostingSpace;
+use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 use PHPUnit\Framework\TestCase;
