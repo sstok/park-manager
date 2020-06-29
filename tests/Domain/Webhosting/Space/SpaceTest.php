@@ -16,7 +16,6 @@ use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
@@ -69,7 +68,7 @@ final class SpaceTest extends TestCase
     {
         $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
         $constraints1 = new Constraints();
-        $constraints2 = new Constraints(new MonthlyTrafficQuota(50));
+        $constraints2 = (new Constraints())->setMonthlyTraffic(50);
         $constraintSet1 = $this->createSharedConstraintSet($constraints1);
         $constraintSet2 = $this->createSharedConstraintSet($constraints2, self::SET_ID_2);
         $space1 = Space::register(SpaceId::create(), $owner, $constraintSet1);
@@ -90,7 +89,7 @@ final class SpaceTest extends TestCase
     {
         $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
         $constraints1 = new Constraints();
-        $constraints2 = new Constraints(new MonthlyTrafficQuota(50));
+        $constraints2 = (new Constraints())->setMonthlyTraffic(50);
         $constraintSet1 = $this->createSharedConstraintSet($constraints1);
         $constraintSet2 = $this->createSharedConstraintSet($constraints2, self::SET_ID_2);
         $space1 = Space::register(SpaceId::create(), $owner, $constraintSet1);
@@ -116,7 +115,7 @@ final class SpaceTest extends TestCase
             $constraintSet
         );
 
-        $constraintSet->changeConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
+        $constraintSet->changeConstraints($newConstraints = (new Constraints())->setMonthlyTraffic(50));
         $space->assignSetWithConstraints($constraintSet);
 
         self::assertSame($constraintSet, $space->getAssignedConstraintSet());
@@ -133,7 +132,7 @@ final class SpaceTest extends TestCase
             $constraintSet
         );
 
-        $space->assignCustomConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
+        $space->assignCustomConstraints($newConstraints = (new Constraints())->setMonthlyTraffic(50));
 
         self::assertNull($space->getAssignedConstraintSet());
         self::assertSame($newConstraints, $space->getConstraints());
@@ -148,7 +147,7 @@ final class SpaceTest extends TestCase
             new Constraints()
         );
 
-        $space->assignCustomConstraints($newConstraints = new Constraints(new MonthlyTrafficQuota(50)));
+        $space->assignCustomConstraints($newConstraints = (new Constraints())->setMonthlyTraffic(50));
 
         self::assertNull($space->getAssignedConstraintSet());
         self::assertSame($newConstraints, $space->getConstraints());

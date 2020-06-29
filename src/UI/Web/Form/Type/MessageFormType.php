@@ -10,10 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type;
 
+use ParkManager\Domain\Exception\TranslatableException;
 use ParkManager\UI\Web\Form\DataMapper\CommandDataMapper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
@@ -115,6 +117,14 @@ final class MessageFormType extends AbstractType
                 $errors = $exceptionMapping[$exceptionName]($e, $this->translator, $form);
             } elseif ($exceptionFallback !== null) {
                 $errors = $exceptionFallback($e, $this->translator, $form);
+            } elseif ($e instanceof TranslatableException) {
+                $errors = new FormError(
+                    $this->translator->trans($e->getTranslatorId(), $e->getTranslationArgs(), 'messages'),
+                    $e->getTranslatorId(),
+                    $e->getTranslationArgs(),
+                    null,
+                    $e
+                );
             } else {
                 throw $e;
             }

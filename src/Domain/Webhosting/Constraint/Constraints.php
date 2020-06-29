@@ -10,92 +10,112 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Constraint;
 
-use ArrayIterator;
-use IteratorAggregate;
-use ParkManager\Domain\Webhosting\Constraint\Exception\ConstraintNotInSet;
-use Traversable;
+use Doctrine\ORM\Mapping as ORM;
+use ParkManager\Domain\ByteSize;
 
-final class Constraints implements IteratorAggregate
+/**
+ * @ORM\Embeddable
+ */
+class Constraints
 {
-    /** @var Constraint[] */
-    private $constraints = [];
+    /**
+     * READ-ONLY: Traffic in GB.
+     *
+     * @ORM\Column(type="integer")
+     */
+    public int $monthlyTraffic = -1;
 
-    /** @var array[] */
-    private $constraintsIndexed = [];
+    /**
+     * READ-ONLY: Total Storage size to allow allocating.
+     *
+     * Note: This effects all storage related constraints, if `mailboxStorageSize`
+     * is set to 'Inf' the actual limit is *this* value.
+     *
+     * @ORM\Column(type="byte_size")
+     */
+    public ByteSize $storageSize;
 
-    public function __construct(Constraint ...$constraints)
+    /**
+     * READ-ONLY: Email constraints.
+     *
+     * @ORM\Embedded(class=EmailConstraints::class, columnPrefix="email_")
+     */
+    public EmailConstraints $email;
+
+    /**
+     * READ-ONLY: Change Tracking.
+     *
+     * [name] => old-value
+     *
+     * @var array<string,mixed>
+     */
+    public array $changes = [];
+
+    public function __construct(array $fields = [])
     {
-        foreach ($constraints as $constraint) {
-            $constraintName = self::getConstraintName($constraint);
+        $this->storageSize = ByteSize::inf();
+        $this->email = new EmailConstraints();
 
-            $this->constraints[$constraintName] = $constraint;
-            $this->constraintsIndexed[$constraintName] = $constraint->configuration();
+        foreach ($fields as $name => $value) {
+            if (property_exists($this, $name)) {
+                $this->{$name} = $value;
+            }
         }
-
-        \ksort($this->constraintsIndexed);
-    }
-
-    public function add(Constraint ...$constraints): self
-    {
-        // Cannot unpack array with string keys (class uniqueness is guarded by the constructor)
-        return new self(...\array_merge(\array_values($this->constraints), $constraints));
-    }
-
-    public function remove(Constraint ...$constraints): self
-    {
-        $constraintsList = $this->constraints;
-
-        foreach ($constraints as $constraint) {
-            unset($constraintsList[self::getConstraintName($constraint)]);
-        }
-
-        return new self(...\array_values($constraintsList));
-    }
-
-    public function getIterator(): Traversable
-    {
-        return new ArrayIterator($this->constraints);
-    }
-
-    public function has(string $constraint): bool
-    {
-        return isset($this->constraints[$constraint]);
-    }
-
-    public function get(string $constraint): Constraint
-    {
-        if (! isset($this->constraints[$constraint])) {
-            throw ConstraintNotInSet::withName($constraint);
-        }
-
-        return $this->constraints[$constraint];
-    }
-
-    public function toIndexedArray(): array
-    {
-        return $this->constraintsIndexed;
     }
 
     public function equals(self $other): bool
     {
-        if ($this === $other) {
-            return true;
+        if (! $this->email->equals($other->email)) {
+            return false;
         }
 
-        // Leave values of the array are expected to be scalar. So strict comparison is possible.
-        return $this->constraintsIndexed === $other->constraintsIndexed;
+        if (! $this->storageSize->equals($other->storageSize)) {
+            return false;
+        }
+
+        if ($this->monthlyTraffic !== $other->monthlyTraffic) {
+            return false;
+        }
+
+        return true;
     }
 
-    public static function getConstraintName(Constraint $constraint): string
+    public function setEmail(EmailConstraints $email): self
     {
-        $class = \get_class($constraint);
-
-        $pos = \mb_strrpos($class, '\\');
-
-        if ($pos === false) {
-            return $class;
+        if ($this->email->equals($email)) {
+            return $this;
         }
 
-        return \mb_substr($class, $pos + 1);
+        $self = clone $this;
+        $self->email = $email;
+        $self->changes['email'] = $this->email;
+
+        return $self;
+    }
+
+    public function setStorageSize(ByteSize $value): self
+    {
+        if ($this->storageSize->equals($value)) {
+            return $this;
+        }
+
+        $self = clone $this;
+        $self->storageSize = $value;
+        $self->changes['storageSize'] = $this->storageSize;
+
+        return $self;
+    }
+
+    public function setMonthlyTraffic(int $value): self
+    {
+        if ($this->monthlyTraffic === $value) {
+            return $this;
+        }
+
+        $self = clone $this;
+        $self->monthlyTraffic = $value;
+        $self->changes['monthlyTraffic'] = $this->monthlyTraffic;
+
+        return $self;
     }
 }

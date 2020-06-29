@@ -13,7 +13,7 @@ doctrine:
             #park_manager_domain_id: 'ParkManager\Infrastructure\Doctrine\Type\DomainIdType' # Don't initiate this
 
             # Webhosting
-            webhosting_constraints: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingConstraintsType'
+            byte_size: 'ParkManager\Infrastructure\Doctrine\Type\ByteSizeType'
             park_manager_webhosting_space_id: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingSpaceIdType'
             park_manager_webhosting_constraints_set_id: 'ParkManager\Infrastructure\Doctrine\Type\WebhostingConstraintSetIdType'
             park_manager_domain_name_id: 'ParkManager\Infrastructure\Doctrine\Type\DomainNameIdType'

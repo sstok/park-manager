@@ -19,13 +19,9 @@ use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
-use ParkManager\Infrastructure\Doctrine\ConstraintsTypeConfigurator;
-use ParkManager\Infrastructure\Doctrine\Repository\WebhostingSpaceOrmRepository;
-use ParkManager\Infrastructure\Doctrine\Repository\SharedConstraintSetOrmRepository;
 use ParkManager\Infrastructure\Security\Guard\FormAuthenticator;
 use ParkManager\Infrastructure\Security\PermissionExpressionProvider;
 use ParkManager\Infrastructure\Security\UserProvider;
-use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintsFactory;
 use ParkManager\UI\Web\ArgumentResolver\ModelResolver;
 use ParkManager\UI\Web\ArgumentResolver\SplitTokenResolver;
 use Pdp\CurlHttpClient as PdpCurlHttpClient;
@@ -102,12 +98,6 @@ return static function (ContainerConfigurator $c): void {
 
     $di->load('ParkManager\\UI\\Console\\', __DIR__ . '/../src/UI/Console/**/*Command.php')
         ->tag('console.command');
-
-    // -- Webhosting
-    $di->set(ConstraintsFactory::class)->arg(0, []);
-    $di->set(ConstraintsTypeConfigurator::class);
-    $di->get(SharedConstraintSetOrmRepository::class)->configurator(ref(ConstraintsTypeConfigurator::class));
-    $di->get(WebhostingSpaceOrmRepository::class)->configurator(ref(ConstraintsTypeConfigurator::class));
 
     // -- Security
     $di->set('park_manager.security.user_provider', UserProvider::class);

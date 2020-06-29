@@ -28,7 +28,7 @@ class SharedConstraintSet
     public $id;
 
     /**
-     * @ORM\Column(name="constraints", type="webhosting_constraints", nullable=true)
+     * @ORM\Embedded(class=Constraints::class, columnPrefix="constraint_")
      *
      * @var Constraints
      */
@@ -59,6 +59,10 @@ class SharedConstraintSet
 
     public function changeConstraints(Constraints $constraints): void
     {
+        if ($this->constraints->equals($constraints)) {
+            return;
+        }
+
         $this->constraints = $constraints;
     }
 

@@ -23,7 +23,6 @@ use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Infrastructure\Doctrine\Repository\WebhostingSpaceOrmRepository;
 use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 
 /**
  * @internal
@@ -50,7 +49,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
 
         $this->user1 = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John');
 
-        $this->constraintSetConstraints = new Constraints(new MonthlyTrafficQuota(50));
+        $this->constraintSetConstraints = (new Constraints())->setMonthlyTraffic(50);
         $this->constraintSet = new SharedConstraintSet(
             ConstraintSetId::fromString(self::SET_ID1),
             $this->constraintSetConstraints

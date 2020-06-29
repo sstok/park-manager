@@ -13,8 +13,6 @@ namespace ParkManager\Tests\Domain\Webhosting\Constraint;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\StorageSpaceQuota;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -41,7 +39,7 @@ final class SharedConstraintSetTest extends TestCase
     {
         $constraintSet = $this->createConstraintSet();
         $constraintSet->changeConstraints(
-            $constraints = new Constraints(new StorageSpaceQuota('5G'), new MonthlyTrafficQuota(50))
+            $constraints = (new Constraints())->setMonthlyTraffic(50)
         );
 
         self::assertEquals($constraints, $constraintSet->getConstraints());

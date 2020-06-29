@@ -10,10 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\Webhosting\Constraint;
 
+use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
-use ParkManager\Domain\Webhosting\Constraint\Exception\ConstraintNotInSet;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\StorageSpaceQuota;
+use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,65 +21,74 @@ use PHPUnit\Framework\TestCase;
 final class ConstraintsTest extends TestCase
 {
     /** @test */
-    public function its_constructable(): void
+    public function it_constructable(): void
     {
-        $constraint = new StorageSpaceQuota('9B');
-        $constraints = new Constraints($constraint, $constraint);
+        $constraints = new Constraints([
+            'monthlyTraffic' => 50,
+            'storageSize' => new ByteSize(22, 'GB'),
+            'email' => new EmailConstraints(['maximumAddressCount' => 50 ]),
+        ]);
 
-        self::assertConstraintsEquals([$constraint], $constraints);
-        self::assertTrue($constraints->has('StorageSpaceQuota'));
-        self::assertFalse($constraints->has('MonthlyTrafficQuota'));
-        self::assertEquals($constraint, $constraints->get('StorageSpaceQuota'));
+        self::assertEquals([], $constraints->changes);
+        self::assertEquals(50, $constraints->monthlyTraffic);
+        self::assertEquals(new ByteSize(22, 'GB'), $constraints->storageSize);
+        self::assertEquals(new EmailConstraints(['maximumAddressCount' => 50 ]), $constraints->email);
     }
 
     /** @test */
-    public function it_throws_when_getting_unset_constraint(): void
+    public function its_equatable(): void
     {
-        $constraint = new StorageSpaceQuota('9B');
-        $constraints = new Constraints($constraint);
+        $constraints = (new Constraints())
+            ->setStorageSize(new ByteSize(12, 'GB'))
+            ->setMonthlyTraffic(10);
 
-        $this->expectException(ConstraintNotInSet::class);
-        $this->expectExceptionMessage(ConstraintNotInSet::withName(MonthlyTrafficQuota::class)->getMessage());
+        $constraints2 = new Constraints([
+            'storageSize' => new ByteSize(12, 'GB'),
+            'monthlyTraffic' => 10,
+        ]);
 
-        $constraints->get(MonthlyTrafficQuota::class);
+        self::assertTrue($constraints->equals($constraints));
+        self::assertTrue($constraints->equals($constraints2));
+        self::assertTrue($constraints->equals(clone $constraints));
+
+        self::assertFalse($constraints->equals($constraints->setStorageSize(new ByteSize(22, 'GB'))));
+        self::assertFalse($constraints->equals($constraints->setMonthlyTraffic(60)));
+        self::assertFalse($constraints->equals($constraints->setEmail((new EmailConstraints())->setMailListCount(10))));
     }
 
-    /** @test */
-    public function it_allows_adding_and_returns_new_set(): void
+    /**
+     * @test
+     * @dataProvider provideFields
+     */
+    public function its_changeable(string $field, $value): void
     {
-        $constraint = new StorageSpaceQuota('9B');
-        $constraint2 = new MonthlyTrafficQuota(50);
+        $constraints = new Constraints();
 
-        $constraints = new Constraints($constraint);
-        $constraintsNew = $constraints->add($constraint2);
+        /** @var Constraints $new */
+        $new = $constraints->{'set' . ucfirst($field)}($constraints->{$field});
 
-        self::assertNotSame($constraints, $constraintsNew);
-        self::assertConstraintsEquals([$constraint], $constraints);
-        self::assertConstraintsEquals([$constraint, $constraint2], $constraintsNew);
-    }
+        self::assertSame($constraints, $new);
+        self::assertEquals([], $new->changes);
+        self::assertEquals($constraints->{$field}, $new->{$field});
 
-    /** @test */
-    public function it_allows_removing_and_returns_new_set(): void
-    {
-        $constraint = new StorageSpaceQuota('9B');
-        $constraint2 = new MonthlyTrafficQuota(50);
-
-        $constraints = new Constraints($constraint, $constraint2);
-        $constraintsNew = $constraints->remove($constraint);
-
-        self::assertNotSame($constraints, $constraintsNew);
-        self::assertConstraintsEquals([$constraint, $constraint2], $constraints);
-        self::assertConstraintsEquals([$constraint2], $constraintsNew);
-    }
-
-    private static function assertConstraintsEquals(array $constraints, Constraints $constraintsSet): void
-    {
-        $processedConstraints = [];
-
-        foreach ($constraints as $constraint) {
-            $processedConstraints[Constraints::getConstraintName($constraint)] = $constraint;
+        if (is_object($value)) {
+            self::assertSame($constraints, $new);
         }
 
-        self::assertEquals($processedConstraints, \iterator_to_array($constraintsSet));
+        /** @var Constraints $new */
+        $new = $constraints->{'set'.ucfirst($field)}($value);
+
+        self::assertNotSame($constraints, $new);
+        self::assertEquals([$field => $constraints->{$field}], $new->changes);
+        self::assertEquals($value, $new->{$field});
+    }
+
+    public function provideFields(): iterable
+    {
+        yield ['monthlyTraffic', 50];
+
+        yield ['storageSize', new ByteSize(22, 'GB')];
+
+        yield ['email', (new EmailConstraints())->setMaximumAddressCount(50)];
     }
 }

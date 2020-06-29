@@ -10,8 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Webhosting\Constraint;
 
-use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintChecker;
-use ParkManager\Infrastructure\Webhosting\Constraint\ConstraintExceeded;
+use ParkManager\Domain\Webhosting\Constraint\Exception\ConstraintExceeded;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,25 +24,22 @@ final class ConstrainedFormType extends AbstractType
 {
     private TranslatorInterface $translator;
 
-    private ConstraintChecker $constraintChecker;
-
-    public function __construct(TranslatorInterface $translator, ConstraintChecker $constraintChecker)
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
-        $this->constraintChecker = $constraintChecker;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options): void {
             try {
-                $options['constraints_validator']($this->constraintChecker, $event->getData());
+                $options['constraints_validator']($event->getData());
             } catch (ConstraintExceeded $e) {
                 $event->getForm()->addError(
                     new FormError(
-                        $this->translator->trans($e->getTranslatorId(), $e->getTranslationParams(), 'messages'),
+                        $this->translator->trans($e->getTranslatorId(), $e->getTranslationArgs(), 'messages'),
                         $e->getTranslatorId(),
-                        $e->getTranslationParams(),
+                        $e->getTranslationArgs(),
                         null,
                         $e
                     )

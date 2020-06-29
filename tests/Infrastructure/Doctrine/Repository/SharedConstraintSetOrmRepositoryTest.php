@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Tests\Infrastructure\Doctrine\Type;
+namespace ParkManager\Tests\Infrastructure\Doctrine\Repository;
 
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
@@ -16,7 +16,6 @@ use ParkManager\Domain\Webhosting\Constraint\Exception\ConstraintSetNotFound;
 use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
 use ParkManager\Infrastructure\Doctrine\Repository\SharedConstraintSetOrmRepository;
 use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 
 /**
  * @internal
@@ -43,11 +42,11 @@ final class SharedConstraintSetOrmRepositoryTest extends EntityRepositoryTestCas
 
         self::assertEquals($id, $constraintSet->getId());
         self::assertEquals(['title' => 'Supper Gold XL'], $constraintSet->getMetadata());
-        self::assertEquals(new Constraints(new MonthlyTrafficQuota(5)), $constraintSet->getConstraints());
+        self::assertTrue($constraintSet->getConstraints()->equals((new Constraints())->setMonthlyTraffic(5)));
 
         self::assertEquals($id2, $constraintSet2->getId());
         self::assertEquals([], $constraintSet2->getMetadata());
-        self::assertEquals(new Constraints(new MonthlyTrafficQuota(50)), $constraintSet2->getConstraints());
+        self::assertTrue($constraintSet2->getConstraints()->equals((new Constraints())->setMonthlyTraffic(5)));
     }
 
     /** @test */
@@ -80,7 +79,7 @@ final class SharedConstraintSetOrmRepositoryTest extends EntityRepositoryTestCas
     {
         $constraintSet = new SharedConstraintSet(
             ConstraintSetId::fromString(self::SET_ID1),
-            new Constraints(new MonthlyTrafficQuota(5))
+            (new Constraints())->setMonthlyTraffic(5)
         );
         $constraintSet->withMetadata(['title' => 'Supper Gold XL']);
 
@@ -92,7 +91,7 @@ final class SharedConstraintSetOrmRepositoryTest extends EntityRepositoryTestCas
         $repository->save(
             new SharedConstraintSet(
                 ConstraintSetId::fromString(self::SET_ID2),
-                new Constraints(new MonthlyTrafficQuota(50))
+                (new Constraints())->setMonthlyTraffic(5)
             )
         );
     }

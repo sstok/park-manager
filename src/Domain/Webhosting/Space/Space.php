@@ -38,9 +38,11 @@ class Space
     public $constraintSet;
 
     /**
-     * @ORM\Column(name="assigned_constraints_ref", type="webhosting_constraints")
+     * READ-ONLY.
+     *
+     * @ORM\Embedded(class=Constraints::class, columnPrefix="constraint_")
      */
-    protected Constraints $constraints;
+    public Constraints $constraints;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
@@ -119,7 +121,10 @@ class Space
     public function assignSetWithConstraints(SharedConstraintSet $constraintSet): void
     {
         $this->constraintSet = $constraintSet;
-        $this->constraints = $constraintSet->getConstraints();
+
+        if (! $this->constraints->equals($constraintSet->getConstraints())) {
+            $this->constraints = $constraintSet->getConstraints();
+        }
     }
 
     /**
@@ -131,7 +136,10 @@ class Space
     public function assignCustomConstraints(Constraints $constraints): void
     {
         $this->constraintSet = null;
-        $this->constraints = $constraints;
+
+        if (! $this->constraints->equals($constraints)) {
+            $this->constraints = $constraints;
+        }
     }
 
     public function switchOwner(?User $owner): void

@@ -22,7 +22,6 @@ use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
 use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Tests\Infrastructure\Webhosting\Fixtures\MonthlyTrafficQuota;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SharedConstraintSetRepositoryMock;
@@ -44,7 +43,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
     public function it_handles_registration_of_space_with_shared_constraints(): void
     {
         $domainName = new DomainNamePair('example', '.com');
-        $constraintSet = new SharedConstraintSet(ConstraintSetId::fromString(self::SET_ID1), new Constraints(new MonthlyTrafficQuota(50)));
+        $constraintSet = new SharedConstraintSet(ConstraintSetId::fromString(self::SET_ID1), new Constraints());
 
         $spaceRepository = new SpaceRepositoryMock();
         $constraintSetRepository = new SharedConstraintSetRepositoryMock([$constraintSet]);
@@ -80,7 +79,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
     public function it_handles_registration_of_space_with_custom_constraints(): void
     {
         $domainName = new DomainNamePair('example', '.com');
-        $constraints = new Constraints(new MonthlyTrafficQuota(50));
+        $constraints = new Constraints();
 
         $spaceRepository = new SpaceRepositoryMock();
         $constraintSetRepository = new SharedConstraintSetRepositoryMock();
@@ -115,7 +114,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
     /** @test */
     public function it_checks_domain_is_not_already_registered(): void
     {
-        $constraintSet = new SharedConstraintSet(ConstraintSetId::fromString(self::SET_ID1), new Constraints(new MonthlyTrafficQuota(50)));
+        $constraintSet = new SharedConstraintSet(ConstraintSetId::fromString(self::SET_ID1), new Constraints());
         $constraintSetRepository = new SharedConstraintSetRepositoryMock([$constraintSet]);
         $spaceRepository = new SpaceRepositoryMock();
         $domainNameRepository = new DomainNameRepositoryMock([$this->createExistingDomain($domainName = new DomainNamePair('example', '.com'), $spaceId2 = SpaceId::fromString(self::SPACE_ID2))]);
@@ -135,7 +134,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
 
     private function createExistingDomain(DomainNamePair $domainName, SpaceId $existingSpaceId): DomainName
     {
-        $space = Space::registerWithCustomConstraints($existingSpaceId, UserRepositoryMock::createUser(), new Constraints(new MonthlyTrafficQuota(50)));
+        $space = Space::registerWithCustomConstraints($existingSpaceId, UserRepositoryMock::createUser(), new Constraints());
 
         return DomainName::registerSecondaryForSpace(DomainNameId::fromString('10abb1db-6e93-4dfc-9ba1-cdd46a225657'), $space, $domainName);
     }
@@ -144,7 +143,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
     public function it_assigns_existing_single_domain_name_with_same_owner(): void
     {
         $domainName = new DomainNamePair('example', '.com');
-        $constraints = new Constraints(new MonthlyTrafficQuota(50));
+        $constraints = new Constraints();
 
         $spaceRepository = new SpaceRepositoryMock();
         $constraintSetRepository = new SharedConstraintSetRepositoryMock();
