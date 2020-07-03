@@ -27,7 +27,7 @@ final class EmailAddress
      *
      * Length by official standard.
      *
-     * @ORM\Column(type="string", type="string", length=254, nullable=false)
+     * @ORM\Column(type="string", length=254, nullable=false)
      *
      * @var string
      */
@@ -36,7 +36,7 @@ final class EmailAddress
     /**
      * READ-ONLY.
      *
-     * @ORM\Column(type="string", type="string", length=254, nullable=false)
+     * @ORM\Column(type="string", length=254, nullable=false)
      *
      * @var string
      */
@@ -45,7 +45,7 @@ final class EmailAddress
     /**
      * READ-ONLY.
      *
-     * @ORM\Column(type="string", type="string", length=254, nullable=true)
+     * @ORM\Column(type="string", length=254, nullable=true)
      *
      * @var string|null
      */
