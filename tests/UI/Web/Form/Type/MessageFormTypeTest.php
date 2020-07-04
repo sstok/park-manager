@@ -33,7 +33,7 @@ use Throwable;
  */
 final class MessageFormTypeTest extends TypeTestCase
 {
-    private $dispatchedCommand;
+    private ?StubCommand$dispatchedCommand = null;
 
     protected function getTypes(): array
     {
@@ -91,28 +91,18 @@ final class MessageFormTypeTest extends TypeTestCase
             ->add($profileContactFormType);
 
         return $this->factory->createNamedBuilder('register_user', MessageFormType::class, null, [
-            'command_factory' => static function (array $data): StubCommand {
-                return new StubCommand($data['id'], $data['username'], $data['profile'] ?? null);
-            },
+            'command_factory' => static fn (array $data): StubCommand => new StubCommand($data['id'], $data['username'], $data['profile'] ?? null),
             'exception_mapping' => [
-                FormRuntimeException::class => static function (Throwable $e) {
-                    return new FormError('Root problem is here', null, [], null, $e);
-                },
-                InvalidArgumentException::class => static function (Throwable $e, TranslatorInterface $translator) {
-                    return ['id' => new FormError($translator->trans($e->getMessage()), null, [], null, $e)];
-                },
-                RuntimeException::class => static function (Throwable $e) {
-                    return [
-                        null => [new FormError('Root problem is here2', null, [], null, $e)],
-                        'username' => [new FormError('Username problem is here', null, [], null, $e)],
-                    ];
-                },
+                FormRuntimeException::class => static fn (Throwable $e) => new FormError('Root problem is here', null, [], null, $e),
+                InvalidArgumentException::class => static fn (Throwable $e, TranslatorInterface $translator) => ['id' => new FormError($translator->trans($e->getMessage()), null, [], null, $e)],
+                RuntimeException::class => static fn (Throwable $e) => [
+                    null => [new FormError('Root problem is here2', null, [], null, $e)],
+                    'username' => [new FormError('Username problem is here', null, [], null, $e)],
+                ],
             ],
-            'exception_fallback' => static function (Throwable $e, TranslatorInterface $translator) {
-                return [
-                    'profile.contact.email' => new FormError($translator->trans('Contact Email problem is here'), null, [], null, $e),
-                ];
-            },
+            'exception_fallback' => static fn (Throwable $e, TranslatorInterface $translator) => [
+                'profile.contact.email' => new FormError($translator->trans('Contact Email problem is here'), null, [], null, $e),
+            ],
         ])
             ->add('id', IntegerType::class, ['required' => false])
             ->add('username', TextType::class, ['required' => false])
@@ -150,7 +140,7 @@ final class MessageFormTypeTest extends TypeTestCase
                 $error->setOrigin($currentForm);
             }
 
-            self::assertEquals($formErrors, \iterator_to_array($currentForm->getErrors()));
+            self::assertEquals($formErrors, [...$currentForm->getErrors()]);
         }
     }
 
@@ -192,13 +182,9 @@ final class MessageFormTypeTest extends TypeTestCase
     public function it_ignores_unmapped_exceptions_thrown_during_dispatching(): void
     {
         $form = $this->factory->createNamedBuilder('register_user', MessageFormType::class, null, [
-            'command_factory' => static function (array $data): StubCommand {
-                return new StubCommand($data['id'], $data['username'], $data['profile'] ?? null);
-            },
+            'command_factory' => static fn (array $data): StubCommand => new StubCommand($data['id'], $data['username'], $data['profile'] ?? null),
             'exception_mapping' => [
-                FormRuntimeException::class => static function (Throwable $e) {
-                    return new FormError('Root problem is here', null, [], null, $e);
-                },
+                FormRuntimeException::class => static fn (Throwable $e) => new FormError('Root problem is here', null, [], null, $e),
             ],
         ])
             ->add('id', IntegerType::class, ['required' => false])

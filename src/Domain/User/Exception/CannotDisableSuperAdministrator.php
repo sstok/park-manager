@@ -15,8 +15,7 @@ use ParkManager\Domain\User\UserId;
 
 final class CannotDisableSuperAdministrator extends InvalidArgumentException
 {
-    /** @var UserId */
-    private $id;
+    private UserId $id;
 
     public function __construct(UserId $id)
     {

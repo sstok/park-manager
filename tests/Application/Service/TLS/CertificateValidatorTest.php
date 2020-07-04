@@ -41,7 +41,7 @@ use Symfony\Component\HttpClient\Response\MockResponse;
  */
 final class CertificateValidatorTest extends TestCase
 {
-    private ?CertificateValidator $certificateValidator;
+    private ?CertificateValidator $certificateValidator = null;
 
     /** @after */
     public function unFreezeTime(): void

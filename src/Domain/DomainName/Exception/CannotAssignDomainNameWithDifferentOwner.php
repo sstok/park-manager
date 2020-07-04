@@ -18,7 +18,7 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 final class CannotAssignDomainNameWithDifferentOwner extends DomainException implements TranslatableException
 {
     private DomainNamePair $domainName;
-    private ?SpaceId $current;
+    private ?SpaceId $current = null;
     private SpaceId $new;
 
     public function __construct(DomainNamePair $domainName, ?SpaceId $current, SpaceId $new)

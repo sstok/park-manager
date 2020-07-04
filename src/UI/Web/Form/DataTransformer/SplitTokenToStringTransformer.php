@@ -17,8 +17,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 final class SplitTokenToStringTransformer implements DataTransformerInterface
 {
-    /** @var SplitTokenFactory */
-    private $splitTokenFactory;
+    private SplitTokenFactory $splitTokenFactory;
 
     public function __construct(SplitTokenFactory $splitTokenFactory)
     {

@@ -19,8 +19,7 @@ use function Sodium\memzero;
 
 final class SecurityUserHashedPasswordType extends AbstractType
 {
-    /** @var EncoderFactory */
-    private $encoderFactory;
+    private EncoderFactory $encoderFactory;
 
     public function __construct(EncoderFactory $encoderFactory)
     {

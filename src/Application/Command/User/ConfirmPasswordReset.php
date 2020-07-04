@@ -14,11 +14,9 @@ use Rollerworks\Component\SplitToken\SplitToken;
 
 final class ConfirmPasswordReset
 {
-    /** @var SplitToken */
-    private $token;
+    private SplitToken $token;
 
-    /** @var string */
-    private $password;
+    private string $password;
 
     /**
      * @param string $password The password provided in hash-encoded format

@@ -21,18 +21,16 @@ use Twig\Environment;
  */
 abstract class BaseConfirmationHandler
 {
-    protected $twig;
-    protected $tokenManager;
+    protected Environment $twig;
+    protected CsrfTokenManagerInterface $tokenManager;
     protected $templateContext = [
         'cancel_url' => null,
         'error' => null,
     ];
 
-    /** @var string */
-    protected $tokenId = '';
+    protected string $tokenId = '';
 
-    /** @var Request|null */
-    protected $request;
+    protected ?Request $request = null;
 
     public function __construct(Environment $twig, CsrfTokenManagerInterface $tokenManager)
     {

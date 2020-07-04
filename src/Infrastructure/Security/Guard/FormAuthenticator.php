@@ -34,14 +34,11 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
 {
     use TargetPathTrait;
 
-    /** @var CsrfTokenManager */
-    private $csrfTokenManager;
+    private CsrfTokenManager $csrfTokenManager;
 
-    /** @var UserPasswordEncoder */
-    private $passwordEncoder;
+    private UserPasswordEncoder $passwordEncoder;
 
-    /** @var UrlGenerator */
-    private $urlGenerator;
+    private UrlGenerator $urlGenerator;
 
     public function __construct(CsrfTokenManager $csrfTokenManager, UserPasswordEncoder $passwordEncoder, UrlGenerator $urlGenerator)
     {

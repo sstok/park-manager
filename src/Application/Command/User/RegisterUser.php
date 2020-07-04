@@ -17,33 +17,25 @@ final class RegisterUser
 {
     /**
      * READ-ONLY.
-     *
-     * @var UserId
      */
-    public $id;
+    public UserId $id;
 
     /**
      * READ-ONLY.
-     *
-     * @var EmailAddress
      */
-    public $primaryEmail;
+    public EmailAddress $primaryEmail;
 
     /**
      * READ-ONLY.
-     *
-     * @var string
      */
-    public $displayName;
+    public string $displayName;
 
     /**
      * The authentication password-hash.
      *
      * READ-ONLY.
-     *
-     * @var string|null
      */
-    public $password;
+    public ?string $password = null;
 
     public function __construct(UserId $id, EmailAddress $primaryEmail, string $displayName, ?string $password = null)
     {

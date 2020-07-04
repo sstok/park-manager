@@ -38,14 +38,11 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     private const SPACE_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
     private const SPACE_ID2 = '47f6db14-a69c-11e7-be13-acbc32b58315';
 
-    /** @var Constraints */
-    private $constraintSetConstraints;
+    private Constraints $constraintSetConstraints;
 
-    /** @var SharedConstraintSet */
-    private $constraintSet;
+    private SharedConstraintSet $constraintSet;
 
-    /** @var User */
-    private $user1;
+    private User $user1;
 
     protected function setUp(): void
     {

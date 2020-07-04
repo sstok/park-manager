@@ -125,14 +125,10 @@ class CertificateValidator
         }
 
         return \array_map(
-            static function ($item) {
-                return \explode(':', \trim($item), 2)[1];
-            },
+            static fn ($item) => \explode(':', \trim($item), 2)[1],
             \array_filter(
                 \explode(',', $rawData['extensions']['subjectAltName']),
-                static function ($item) {
-                    return \mb_strpos($item, ':') !== false;
-                }
+                static fn ($item) => \mb_strpos($item, ':') !== false
             )
         );
     }

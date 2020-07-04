@@ -20,11 +20,9 @@ use Twig\Environment as TwigEnvironment;
 
 final class NotFoundExceptionListener implements EventSubscriberInterface
 {
-    /** @var TranslatorInterface */
-    private $translator;
+    private TranslatorInterface $translator;
 
-    /** @var TwigEnvironment */
-    private $twig;
+    private TwigEnvironment $twig;
 
     public function __construct(TranslatorInterface $translator, TwigEnvironment $twig)
     {

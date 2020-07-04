@@ -17,7 +17,7 @@ use ParkManager\Domain\User\UserRepository;
 
 final class RegisterAdministratorHandler
 {
-    private $repository;
+    private UserRepository $repository;
 
     public function __construct(UserRepository $repository)
     {

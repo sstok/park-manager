@@ -68,9 +68,7 @@ final class RequestEmailAddressChangeTest extends TestCase
         $confirmationMailerProphecy->send(
             $email,
             Argument::that(
-                static function (SplitToken $splitToken) {
-                    return $splitToken->token()->getString() !== '';
-                }
+                static fn (SplitToken $splitToken) => $splitToken->token()->getString() !== ''
             )
         )->shouldBeCalledTimes(1);
 

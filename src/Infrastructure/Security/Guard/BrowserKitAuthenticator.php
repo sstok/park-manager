@@ -28,7 +28,7 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
  */
 final class BrowserKitAuthenticator extends AbstractGuardAuthenticator
 {
-    private $passwordEncoder;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {

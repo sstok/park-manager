@@ -21,19 +21,15 @@ final class DomainNamePair
      * READ-ONLY.
      *
      * @ORM\Column(type="string")
-     *
-     * @var string
      */
-    public $name;
+    public string $name;
 
     /**
      * READ-ONLY.
      *
      * @ORM\Column(type="string")
-     *
-     * @var string
      */
-    public $tld;
+    public string $tld;
 
     public function __construct(string $name, string $tld)
     {

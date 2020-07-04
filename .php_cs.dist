@@ -56,21 +56,24 @@ return PhpCsFixer\Config::create()
                 'try',
                 'while',
                 'yield',
-            ]
+            ],
         ],
         'braces' => [
             'allow_single_line_closure' => true,
         ],
         'concat_space' => [
-            'spacing' => 'one'
+            'spacing' => 'one',
         ],
         'comment_to_phpdoc' => [
-            'ignored_tags' => ['codeCoverageIgnoreStart', 'codeCoverageIgnoreEnd']
+            'ignored_tags' => ['codeCoverageIgnoreStart', 'codeCoverageIgnoreEnd'],
+        ],
+        'doctrine_annotation_array_assignment' => [
+            'operator' => '=',
         ],
         'final_static_access' => true,
         'general_phpdoc_annotation_remove' => [
             'author',
-            'since'
+            'since',
         ],
         'header_comment' => ['header' => $header],
         'list_syntax' => [
@@ -88,12 +91,12 @@ return PhpCsFixer\Config::create()
         'not_operator_with_successor_space' => true,
         'ordered_class_elements' => false, // Use the step-down structure approach
         'ordered_imports' => [
-            'imports_order' => ['class', 'const', 'function']
+            'imports_order' => ['class', 'const', 'function'],
         ],
         'php_unit_method_casing' => ['case' => 'snake_case'],
         'php_unit_strict' => false,
         'php_unit_test_annotation' => [
-            'style' => 'annotation'
+            'style' => 'annotation',
         ],
         'php_unit_test_class_requires_covers' => false,
         'phpdoc_to_comment' => false, // This breaks for variable @var blocks

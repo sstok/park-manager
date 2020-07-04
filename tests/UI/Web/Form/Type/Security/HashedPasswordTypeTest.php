@@ -26,9 +26,7 @@ final class HashedPasswordTypeTest extends TypeTestCase
     {
         $form = $this->factory->createBuilder()
             ->add('password', HashedPasswordType::class, [
-                'algorithm' => static function (string $raw) {
-                    return 'encoded(' . $raw . ')';
-                },
+                'algorithm' => static fn (string $raw) => 'encoded(' . $raw . ')',
             ])
             ->getForm();
 
@@ -45,9 +43,7 @@ final class HashedPasswordTypeTest extends TypeTestCase
     {
         $form = $this->factory->createBuilder()
             ->add('password', HashedPasswordType::class, [
-                'algorithm' => static function (string $raw) {
-                    return 'encoded(' . $raw . ')';
-                },
+                'algorithm' => static fn (string $raw) => 'encoded(' . $raw . ')',
                 'password_confirm' => true,
             ])
             ->getForm();

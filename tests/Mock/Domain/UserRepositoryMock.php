@@ -28,9 +28,7 @@ final class UserRepositoryMock implements UserRepository
     protected function getFieldsIndexMapping(): array
     {
         return [
-            'email' => static function (User $user) {
-                return $user->email->canonical;
-            },
+            'email' => static fn (User $user) => $user->email->canonical,
             'passwordResetToken' => static function (User $user) {
                 $token = $user->passwordResetToken;
 

@@ -29,15 +29,9 @@ final class DomainNameRepositoryMock implements DomainNameRepository
     protected function getFieldsIndexMapping(): array
     {
         return [
-            'full_name' => static function (DomainName $domainName) {
-                return $domainName->namePair->toString();
-            },
-            'name' => static function (DomainName $domainName) {
-                return $domainName->namePair->name;
-            },
-            'tld' => static function (DomainName $domainName) {
-                return $domainName->namePair->tld;
-            },
+            'full_name' => static fn (DomainName $domainName) => $domainName->namePair->toString(),
+            'name' => static fn (DomainName $domainName) => $domainName->namePair->name,
+            'tld' => static fn (DomainName $domainName) => $domainName->namePair->tld,
             'space_primary_id' => static function (DomainName $model) {
                 if ($model->isPrimary()) {
                     return (string) $model->getSpace()->getId();
@@ -51,12 +45,8 @@ final class DomainNameRepositoryMock implements DomainNameRepository
     protected function getFieldsIndexMultiMapping(): array
     {
         return [
-            'owner' => static function (DomainName $domainName) {
-                return $domainName->owner === null ? null : (string) $domainName->owner->id;
-            },
-            'space' => static function (DomainName $domainName) {
-                return $domainName->space === null ? null : (string) $domainName->space->getId();
-            },
+            'owner' => static fn (DomainName $domainName) => $domainName->owner === null ? null : (string) $domainName->owner->id,
+            'space' => static fn (DomainName $domainName) => $domainName->space === null ? null : (string) $domainName->space->getId(),
         ];
     }
 

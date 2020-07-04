@@ -29,8 +29,7 @@ final class UserTest extends TestCase
 {
     private const ID1 = '930c3fd0-3bd1-11e7-bb9b-acdc32b58315';
 
-    /** @var FakeSplitTokenFactory */
-    private $splitTokenFactory;
+    private FakeSplitTokenFactory $splitTokenFactory;
 
     protected function setUp(): void
     {

@@ -22,11 +22,9 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 final class AdminFixtures extends Fixture
 {
-    /** @var MessageBusInterface */
-    private $commandBus;
+    private MessageBusInterface $commandBus;
 
-    /** @var EncoderFactoryInterface */
-    private $encoderFactory;
+    private EncoderFactoryInterface $encoderFactory;
 
     public function __construct(MessageBusInterface $commandBus, EncoderFactoryInterface $encoderFactory)
     {

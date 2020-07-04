@@ -23,27 +23,23 @@ use Throwable;
 trait MockRepository
 {
     /** @var array<string,T> */
-    protected $storedById = [];
+    protected array $storedById = [];
 
     /** @var array<string,T> */
-    protected $savedById = [];
+    protected array $savedById = [];
 
     /** @var array<string,T> */
-    protected $removedById = [];
+    protected array $removedById = [];
 
     /**
      * Counter of saved entities (in total).
-     *
-     * @var int
      */
-    protected $mockWasSaved = 0;
+    protected int $mockWasSaved = 0;
 
     /**
      * Count of removed entities (in total).
-     *
-     * @var int
      */
-    protected $mockWasRemoved = 0;
+    protected int $mockWasRemoved = 0;
 
     /** @var array<string,string<object>> [mapping-name][index-key] => {entity} */
     protected array $storedByField = [];

@@ -53,9 +53,7 @@ final class HashedPasswordType extends AbstractType
         $builder->get('password')->addModelTransformer(
             new CallbackTransformer(
                 // Password is always null (as by convention)
-                static function () {
-                    return null;
-                },
+                static fn () => null,
                 static function ($value) use ($encoder): ?string {
                     if ($value === null) {
                         return null;

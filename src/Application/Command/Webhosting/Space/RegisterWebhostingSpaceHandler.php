@@ -22,12 +22,10 @@ use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class RegisterWebhostingSpaceHandler
 {
-    private $spaceRepository;
-    private $constraintSetRepository;
-    private $domainNameRepository;
-
-    /** @var UserRepository */
-    private $userRepository;
+    private WebhostingSpaceRepository $spaceRepository;
+    private SharedConstraintSetRepository $constraintSetRepository;
+    private DomainNameRepository $domainNameRepository;
+    private UserRepository $userRepository;
 
     public function __construct(WebhostingSpaceRepository $spaceRepository, SharedConstraintSetRepository $constraintSetRepository, DomainNameRepository $domainNameRepository, UserRepository $userRepository)
     {

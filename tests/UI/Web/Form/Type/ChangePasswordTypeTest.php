@@ -24,8 +24,7 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
 {
     use ValidatorExtensionTrait;
 
-    /** @var FakePasswordHashFactory */
-    private $encoderFactory;
+    private FakePasswordHashFactory $encoderFactory;
 
     protected function getExtensions(): array
     {
@@ -115,19 +114,15 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
 
     private function getCommandBuilder(): Closure
     {
-        return static function (array $fields, array $model) {
-            return new ChangeUserPassword($model['id'], $fields['password']);
-        };
+        return static fn (array $fields, array $model) => new ChangeUserPassword($model['id'], $fields['password']);
     }
 }
 
 class ChangeUserPassword
 {
-    /** @var string */
-    public $id;
+    public string $id;
 
-    /** @var string */
-    public $password;
+    public string $password;
 
     public function __construct(string $id, string $password)
     {

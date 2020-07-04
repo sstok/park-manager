@@ -20,7 +20,7 @@ final class BatchCommand
      *
      * @var object[]
      */
-    public $commands;
+    public array $commands;
 
     public function __construct(object ...$commands)
     {

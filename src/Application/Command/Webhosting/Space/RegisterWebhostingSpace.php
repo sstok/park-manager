@@ -20,38 +20,28 @@ final class RegisterWebhostingSpace
 {
     /**
      * READ-ONLY.
-     *
-     * @var SpaceId
      */
-    public $id;
+    public SpaceId $id;
 
     /**
      * READ-ONLY.
-     *
-     * @var \ParkManager\Domain\DomainName\DomainNamePair
      */
-    public $domainName;
+    public DomainNamePair $domainName;
 
     /**
      * READ-ONLY.
-     *
-     * @var UserId|null
      */
-    public $owner;
+    public ?UserId$owner = null;
 
     /**
      * READ-ONLY.
-     *
-     * @var ConstraintSetId|null
      */
-    public $constraintSetId;
+    public ?ConstraintSetId$constraintSetId = null;
 
     /**
      * READ-ONLY.
-     *
-     * @var Constraints|null
      */
-    public $customConstraints;
+    public ?Constraints$customConstraints = null;
 
     private function __construct(string $id, ?string $owner, DomainNamePair $domainName, ?string $setId, ?Constraints $constraints)
     {

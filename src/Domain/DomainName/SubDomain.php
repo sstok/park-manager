@@ -67,7 +67,7 @@ class SubDomain
      * @ORM\ManyToOne(targetEntity=Certificate::class)
      * @ORM\JoinColumn(name="tls_cert", referencedColumnName="hash", nullable=true)
      */
-    public ?Certificate $tlsCert;
+    public ?Certificate $tlsCert = null;
 
     public function __construct(SubDomainNameId $id, DomainName $host, string $name, string $homeDir, array $config)
     {

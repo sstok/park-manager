@@ -25,11 +25,8 @@ use Rollerworks\Component\SplitToken\SplitToken;
  */
 final class ConfirmEmailAddressChangeHandlerTest extends TestCase
 {
-    /** @var SplitToken */
-    private $fullToken;
-
-    /** @var SplitToken */
-    private $token;
+    private SplitToken $fullToken;
+    private SplitToken $token;
 
     protected function setUp(): void
     {

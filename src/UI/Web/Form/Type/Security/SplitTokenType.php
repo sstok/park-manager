@@ -19,20 +19,14 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class SplitTokenType extends AbstractType
 {
-    /** @var SplitTokenFactory */
-    private $splitTokenFactory;
+    private SplitTokenFactory $splitTokenFactory;
 
-    /** @var TranslatorInterface */
-    private $translator;
-
-    public function __construct(SplitTokenFactory $splitTokenFactory, TranslatorInterface $translator)
+    public function __construct(SplitTokenFactory $splitTokenFactory)
     {
         $this->splitTokenFactory = $splitTokenFactory;
-        $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

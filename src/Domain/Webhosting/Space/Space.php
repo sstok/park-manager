@@ -26,10 +26,8 @@ class Space
      * @ORM\Id
      * @ORM\Column(type="park_manager_webhosting_space_id")
      * @ORM\GeneratedValue(strategy="NONE")
-     *
-     * @var SpaceId
      */
-    protected $id;
+    protected SpaceId $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=SharedConstraintSet::class)
@@ -41,32 +39,24 @@ class Space
 
     /**
      * @ORM\Column(name="assigned_constraints_ref", type="webhosting_constraints")
-     *
-     * @var Constraints
      */
-    protected $constraints;
+    protected Constraints $constraints;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=true, name="owner", referencedColumnName="id", onDelete="RESTRICT")
-     *
-     * @var User|null
      */
-    public $owner;
+    public ?User $owner = null;
 
     /**
      * @ORM\Column(name="expires_on", type="datetime_immutable", nullable=true)
-     *
-     * @var DateTimeImmutable|null
      */
-    protected $expirationDate;
+    protected ?\DateTimeImmutable $expirationDate = null;
 
     /**
      * @ORM\Column(name="marked_for_removal", type="boolean", nullable=true)
-     *
-     * @var bool
      */
-    private $markedForRemoval = false;
+    private bool $markedForRemoval = false;
 
     protected function __construct(SpaceId $id, ?User $owner)
     {

@@ -18,8 +18,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 final class SplitTokenResolver implements ArgumentValueResolverInterface
 {
-    /** @var SplitTokenFactory */
-    private $splitTokenFactory;
+    private SplitTokenFactory $splitTokenFactory;
 
     public function __construct(SplitTokenFactory $splitTokenFactory)
     {

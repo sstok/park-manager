@@ -23,7 +23,7 @@ final class ConfirmPasswordResetAction
      * @Route(
      *     path="/password-reset/confirm/{token}",
      *     name="park_manager.security_confirm_password_reset",
-     *     requirements={"token": ".+"},
+     *     requirements={"token" = ".+"},
      *     methods={"GET", "POST"}
      * )
      *

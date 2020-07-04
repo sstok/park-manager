@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 final class TwigResponseListener implements EventSubscriberInterface
 {
-    private $container;
+    private Container $container;
 
     /**
      * @param Container $container Service container for loading *only* the Twig service (lazy)

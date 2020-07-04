@@ -24,7 +24,6 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\DisabledException;
-use Symfony\Component\Translation\IdentityTranslator;
 use Throwable;
 
 /**
@@ -34,14 +33,11 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
 {
     use ValidatorExtensionTrait;
 
-    /** @var FakeSplitTokenFactory */
-    private $splitTokenFactory;
+    private FakeSplitTokenFactory $splitTokenFactory;
 
-    /** @var FakePasswordHashFactory */
-    private $encoderFactory;
+    private FakePasswordHashFactory $encoderFactory;
 
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
+    private object $urlGenerator;
 
     protected static function getCommandName(): string
     {
@@ -65,7 +61,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     {
         return [
             $this->getMessageType(),
-            new SplitTokenType($this->splitTokenFactory, new IdentityTranslator()),
+            new SplitTokenType($this->splitTokenFactory),
             new SecurityUserHashedPasswordType($this->encoderFactory),
             new ConfirmPasswordResetType($this->urlGenerator),
         ];
@@ -179,19 +175,15 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
 
     private function getCommandBuilder(): Closure
     {
-        return static function (array $data) {
-            return new ConfirmUserPasswordReset($data['reset_token'], $data['password']);
-        };
+        return static fn (array $data) => new ConfirmUserPasswordReset($data['reset_token'], $data['password']);
     }
 }
 
 class ConfirmUserPasswordReset
 {
-    /** @var SplitToken */
-    private $token;
+    private SplitToken $token;
 
-    /** @var string */
-    private $password;
+    private string $password;
 
     public function __construct(SplitToken $token, string $password)
     {

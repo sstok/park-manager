@@ -190,7 +190,7 @@ class MockPermission implements Permission
 
 class MockSelfPermission implements SelfDecidingPermission
 {
-    public $permission;
+    public int $permission;
 
     public function __construct(int $permission)
     {

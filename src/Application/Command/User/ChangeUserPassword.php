@@ -14,11 +14,9 @@ use ParkManager\Domain\User\UserId;
 
 final class ChangeUserPassword
 {
-    /** @var UserId */
-    private $id;
+    private UserId $id;
 
-    /** @var string|null */
-    private $password;
+    private ?string $password = null;
 
     /**
      * @param string|null $password The password in hash-encoded format or null

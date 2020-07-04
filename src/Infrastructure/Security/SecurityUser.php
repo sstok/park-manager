@@ -20,10 +20,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 final class SecurityUser implements UserInterface, EquatableInterface, Serializable
 {
-    private $username;
-    private $password;
-    private $roles;
-    private $enabled;
+    private string $username;
+    private string $password;
+    private array $roles;
+    private bool $enabled;
 
     /**
      * @param string[] $roles

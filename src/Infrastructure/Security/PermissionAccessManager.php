@@ -20,14 +20,12 @@ use Symfony\Component\Security\Core\Exception\RuntimeException;
  */
 class PermissionAccessManager
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /** @var ContainerInterface */
-    private $deciders;
+    private ContainerInterface $deciders;
 
     /** @var array<string,string> */
-    private $permissionsShortNames;
+    private array $permissionsShortNames;
 
     public function __construct(TokenStorageInterface $tokenStorage, ContainerInterface $deciders, array $permissionsShortNames)
     {

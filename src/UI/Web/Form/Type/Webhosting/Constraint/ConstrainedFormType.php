@@ -23,11 +23,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ConstrainedFormType extends AbstractType
 {
-    /** @var TranslatorInterface */
-    private $translator;
+    private TranslatorInterface $translator;
 
-    /** @var ConstraintChecker */
-    private $constraintChecker;
+    private ConstraintChecker $constraintChecker;
 
     public function __construct(TranslatorInterface $translator, ConstraintChecker $constraintChecker)
     {

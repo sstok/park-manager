@@ -16,12 +16,9 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 
 final class ChangePasswordHandler
 {
-    private $repository;
+    private UserRepository $repository;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(UserRepository $repository, EventDispatcherInterface $eventDispatcher)
     {

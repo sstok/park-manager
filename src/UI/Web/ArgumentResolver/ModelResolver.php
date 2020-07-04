@@ -19,11 +19,10 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 final class ModelResolver implements ArgumentValueResolverInterface
 {
-    /** @var ContainerInterface */
-    private $entitiesRepositories;
+    private ContainerInterface $entitiesRepositories;
 
     /** @var array<string,string> */
-    private $valueObjects;
+    private array $valueObjects;
 
     /**
      * @param ContainerInterface   $entitiesRepositories [entity-name] => IdClassName

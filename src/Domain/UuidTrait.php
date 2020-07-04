@@ -20,8 +20,8 @@ use Ramsey\Uuid\UuidInterface;
  */
 trait UuidTrait
 {
-    private $value;
-    private $stringValue;
+    private UuidInterface $value;
+    private string $stringValue;
 
     protected function __construct(UuidInterface $value)
     {

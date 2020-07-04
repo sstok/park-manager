@@ -14,7 +14,7 @@ use ParkManager\Domain\User\UserRepository;
 
 final class DeleteRegistrationHandler
 {
-    private $repository;
+    private UserRepository $repository;
 
     public function __construct(UserRepository $repository)
     {

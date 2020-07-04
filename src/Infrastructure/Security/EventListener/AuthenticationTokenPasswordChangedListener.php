@@ -21,8 +21,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 final class AuthenticationTokenPasswordChangedListener
 {
-    private $userProvider;
-    private $tokenStorage;
+    private UserProviderInterface $userProvider;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(UserProviderInterface $userProvider, TokenStorageInterface $tokenStorage)
     {

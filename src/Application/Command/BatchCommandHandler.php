@@ -14,8 +14,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class BatchCommandHandler
 {
-    /** @var MessageBusInterface */
-    private $commandBus;
+    private MessageBusInterface $commandBus;
 
     public function __construct(MessageBusInterface $commandBus)
     {

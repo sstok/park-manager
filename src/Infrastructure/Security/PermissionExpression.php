@@ -17,11 +17,10 @@ namespace ParkManager\Infrastructure\Security;
  */
 final class PermissionExpression implements Permission
 {
-    /** @var string */
-    public $name;
+    public string $name;
 
     /** @var array<int,mixed> */
-    public $arguments;
+    public array $arguments;
 
     public function __construct(string $name, ...$arguments)
     {

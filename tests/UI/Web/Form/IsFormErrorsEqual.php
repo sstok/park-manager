@@ -18,8 +18,7 @@ use Symfony\Component\Form\FormError;
 
 final class IsFormErrorsEqual extends Constraint
 {
-    /** @var mixed */
-    private $value;
+    private array $value;
 
     /**
      * @param FormError|FormError[] $expected
@@ -27,6 +26,17 @@ final class IsFormErrorsEqual extends Constraint
     public function __construct($expected)
     {
         $this->value = $this->ensureArray($expected);
+    }
+
+    private function ensureArray($other): array
+    {
+        if (\is_object($other) && $other instanceof FormError) {
+            $other = [$other];
+        } elseif (! \is_array($other)) {
+            $other = [...$other];
+        }
+
+        return $other;
     }
 
     public function evaluate($other, string $description = '', bool $returnResult = false): bool
@@ -53,16 +63,5 @@ final class IsFormErrorsEqual extends Constraint
     public function toString(): string
     {
         return \sprintf('is equal to %s', $this->exporter()->export($this->value));
-    }
-
-    private function ensureArray($other): array
-    {
-        if (\is_object($other) && $other instanceof FormError) {
-            $other = [$other];
-        } elseif (! \is_array($other)) {
-            $other = \iterator_to_array($other);
-        }
-
-        return $other;
     }
 }

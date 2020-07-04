@@ -19,11 +19,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface as UrlGenerator;
 
 final class PasswordResetMailerImpl implements PasswordResetMailer
 {
-    /** @var MailerInterface */
-    private $mailer;
+    private MailerInterface $mailer;
 
-    /** @var UrlGenerator */
-    private $urlGenerator;
+    private UrlGenerator $urlGenerator;
 
     public function __construct(MailerInterface $mailer, UrlGenerator $urlGenerator)
     {

@@ -22,8 +22,8 @@ use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
  */
 final class PasswordResetTokenNotAccepted extends DomainException
 {
-    private $storedToken;
-    private $providedToken;
+    private ?SplitTokenValueHolder$storedToken = null;
+    private ?SplitToken$providedToken = null;
 
     public function __construct(?SplitTokenValueHolder $storedToken = null, ?SplitToken $providedToken = null)
     {

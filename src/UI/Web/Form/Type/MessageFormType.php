@@ -26,14 +26,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class MessageFormType extends AbstractType
 {
-    /** @var MessageBusInterface */
-    private $messageBus;
+    private MessageBusInterface $messageBus;
 
-    /** @var TranslatorInterface */
-    private $translator;
+    private TranslatorInterface $translator;
 
-    /** @var PropertyAccessorInterface */
-    private $propertyAccessor;
+    private PropertyAccessorInterface $propertyAccessor;
 
     public function __construct(MessageBusInterface $messageBus, TranslatorInterface $translator, PropertyAccessorInterface $propertyAccessor = null)
     {

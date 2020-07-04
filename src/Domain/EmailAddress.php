@@ -28,38 +28,30 @@ final class EmailAddress
      * Length by official standard.
      *
      * @ORM\Column(type="string", length=254, nullable=false)
-     *
-     * @var string
      */
-    public $address;
+    public string $address;
 
     /**
      * READ-ONLY.
      *
      * @ORM\Column(type="string", length=254, nullable=false)
-     *
-     * @var string
      */
-    public $canonical;
+    public string $canonical;
 
     /**
      * READ-ONLY.
      *
      * @ORM\Column(type="string", length=254, nullable=true)
-     *
-     * @var string|null
      */
-    public $name;
+    public ?string $name = null;
 
     /**
      * READ-ONLY.
      *
      * Unmapped.
      * Label is already part of the original value and unimportant.
-     *
-     * @var string
      */
-    public $label = '';
+    public string $label = '';
 
     public function __construct(string $address, ?string $name = null)
     {

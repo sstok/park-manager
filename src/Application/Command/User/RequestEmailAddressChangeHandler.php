@@ -18,10 +18,10 @@ use Rollerworks\Component\SplitToken\SplitTokenFactory;
 
 final class RequestEmailAddressChangeHandler
 {
-    private $repository;
-    private $confirmationMailer;
-    private $splitTokenFactory;
-    private $tokenTTL;
+    private UserRepository $repository;
+    private ConfirmationMailer $confirmationMailer;
+    private SplitTokenFactory $splitTokenFactory;
+    private int $tokenTTL;
 
     /**
      * @param int $tokenTTL Maximum life-time in seconds (default is 'one hour')

@@ -73,7 +73,7 @@
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^6.0",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "doctrine/doctrine-fixtures-bundle": "^3.2",
         "matthiasnoback/symfony-dependency-injection-test": "^4.0.0",
         "phpunit/phpunit": "^8.2.3",

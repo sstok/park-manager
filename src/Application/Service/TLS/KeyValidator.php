@@ -84,6 +84,10 @@ class KeyValidator
             if ($details === false) {
                 throw new UnprocessableKey('Unable to read private key-data.');
             }
+
+            if ($details['bits'] < self::MINIMUM_BIT_COUNT) {
+                throw new KeyBitsToLow(self::MINIMUM_BIT_COUNT, $details['bits']);
+            }
         } finally {
             if (\is_resource($privateR)) {
                 @\openssl_pkey_free($privateR);
@@ -93,10 +97,6 @@ class KeyValidator
 
             \sodium_memzero($key);
             unset($key);
-        }
-
-        if ($details['bits'] < self::MINIMUM_BIT_COUNT) {
-            throw new KeyBitsToLow(self::MINIMUM_BIT_COUNT, $details['bits']);
         }
     }
 }

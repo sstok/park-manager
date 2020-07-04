@@ -26,8 +26,7 @@ use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
 final class ConfirmPasswordResetType extends AbstractType
 {
-    /** @var UrlGeneratorInterface */
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(UrlGeneratorInterface $urlGenerator)
     {
@@ -69,9 +68,7 @@ final class ConfirmPasswordResetType extends AbstractType
         $resolver
             ->setDefault('password_constraints', [])
             ->setDefault('disable_entity_mapping', true)
-            ->setDefault('command_factory', static function (array $data) {
-                return new ConfirmPasswordReset($data['reset_token'], $data['password']);
-            })
+            ->setDefault('command_factory', static fn (array $data) => new ConfirmPasswordReset($data['reset_token'], $data['password']))
             ->setDefault('exception_mapping', [
                 PasswordResetTokenNotAccepted::class => function (PasswordResetTokenNotAccepted $e, $translator, FormInterface $form) {
                     $arguments = [
@@ -84,9 +81,7 @@ final class ConfirmPasswordResetType extends AbstractType
 
                     return new FormError('password_reset.invalid_token', null, $arguments, null, $e);
                 },
-                DisabledException::class => static function (DisabledException $e, Translator $translator) {
-                    return new FormError('password_reset.access_disabled', null, [], null, $e);
-                },
+                DisabledException::class => static fn (DisabledException $e, Translator $translator) => new FormError('password_reset.access_disabled', null, [], null, $e),
             ])
             ->setAllowedTypes('password_constraints', ['array', Constraint::class]);
     }

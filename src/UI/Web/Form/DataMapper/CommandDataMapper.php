@@ -23,8 +23,7 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  */
 final class CommandDataMapper implements DataMapperInterface
 {
-    /** @var DataMapperInterface */
-    private $wrappedDataMapper;
+    private DataMapperInterface $wrappedDataMapper;
 
     public function __construct(DataMapperInterface $wrappedDataMapper)
     {

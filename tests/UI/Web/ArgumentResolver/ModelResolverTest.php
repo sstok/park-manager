@@ -30,8 +30,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  */
 final class ModelResolverTest extends TestCase
 {
-    /** @var ModelResolver */
-    private $resolver;
+    private ModelResolver $resolver;
 
     protected function setUp(): void
     {

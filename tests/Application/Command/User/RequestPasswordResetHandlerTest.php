@@ -25,8 +25,7 @@ use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
  */
 final class RequestPasswordResetHandlerTest extends TestCase
 {
-    /** @var FakeSplitTokenFactory */
-    private $tokenFactory;
+    private FakeSplitTokenFactory $tokenFactory;
 
     protected function setUp(): void
     {

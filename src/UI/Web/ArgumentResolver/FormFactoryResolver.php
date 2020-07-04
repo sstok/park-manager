@@ -18,8 +18,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 final class FormFactoryResolver implements ArgumentValueResolverInterface
 {
-    /** @var FormFactoryInterface */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
     public function __construct(FormFactoryInterface $formFactory)
     {

@@ -17,31 +17,23 @@ final class RegisterAdministrator
 {
     /**
      * READ-ONLY.
-     *
-     * @var UserId
      */
-    public $id;
+    public UserId $id;
 
     /**
      * READ-ONLY.
-     *
-     * @var EmailAddress
      */
-    public $email;
+    public EmailAddress $email;
 
     /**
      * READ-ONLY.
-     *
-     * @var string
      */
-    public $displayName;
+    public string $displayName;
 
     /**
      * READ-ONLY.
-     *
-     * @var string|null
      */
-    public $password;
+    public ?string $password = null;
 
     /**
      * @param string|null $password Null (no password) or an encoded password string (not plain)

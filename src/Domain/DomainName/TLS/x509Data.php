@@ -21,7 +21,7 @@ trait x509Data
      * @ORM\ManyToOne(targetEntity=CA::class)
      * @ORM\JoinColumn(name="ca", nullable=true, referencedColumnName="hash", onDelete="RESTRICT")
      */
-    public ?CA $ca;
+    public ?CA $ca = null;
 
     /**
      * SHA-256 locator id.
@@ -37,7 +37,7 @@ trait x509Data
      *
      * @var resource|string
      */
-    private $contents;
+    private string $contents;
 
     /**
      * @ORM\Column(type="binary")
@@ -53,8 +53,8 @@ trait x509Data
      */
     private array $rawFields = [];
 
-    private ?string $publicKeyString;
-    private ?string $contentsString;
+    private ?string $publicKeyString = null;
+    private ?string $contentsString = null;
 
     private function __construct(string $contents, array $rawFields, ?CA $ca = null)
     {

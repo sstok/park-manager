@@ -25,8 +25,7 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
 {
     use ValidatorExtensionTrait;
 
-    /** @var EncoderFactoryInterface */
-    private $encoderFactory;
+    private object $encoderFactory;
 
     protected function setUp(): void
     {

@@ -21,8 +21,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 final class UserProvider implements UserProviderInterface
 {
-    /** @var UserRepository */
-    private $repository;
+    private UserRepository $repository;
 
     public function __construct(UserRepository $userRepository)
     {

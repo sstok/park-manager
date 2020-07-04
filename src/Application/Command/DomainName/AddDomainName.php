@@ -17,7 +17,7 @@ use ParkManager\Domain\User\UserId;
 final class AddDomainName
 {
     public DomainNameId $id;
-    public ?UserId $user;
+    public ?UserId $user = null;
     public DomainNamePair $name;
 
     public function __construct(DomainNameId $id, ?UserId $user, DomainNamePair $name)

@@ -19,8 +19,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 final class IsSpaceOwner implements SelfDecidingPermission
 {
-    /** @var Space */
-    private $space;
+    private Space $space;
 
     public function __construct(Space $space)
     {

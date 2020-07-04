@@ -18,8 +18,7 @@ use Twig\TwigFilter;
 
 final class ParkManagerExtension extends AbstractExtension
 {
-    /** @var TranslatorInterface */
-    private $translator;
+    private TranslatorInterface $translator;
 
     public function __construct(TranslatorInterface $translator)
     {

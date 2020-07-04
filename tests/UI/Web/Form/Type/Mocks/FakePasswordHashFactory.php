@@ -18,11 +18,9 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 /** @internal */
 final class FakePasswordHashFactory implements EncoderFactoryInterface
 {
-    /** @var PasswordEncoderInterface */
-    private $encoder;
+    private object $encoder;
 
-    /** @var string */
-    private $userClass;
+    private string $userClass;
 
     public function __construct()
     {

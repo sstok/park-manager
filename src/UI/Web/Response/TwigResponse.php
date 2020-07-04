@@ -16,8 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TwigResponse extends Response
 {
-    private $template;
-    private $variables;
+    private string $template;
+    private array $variables;
 
     /**
      * @param array|Form $variables A Form object is passed as [form => createView()]

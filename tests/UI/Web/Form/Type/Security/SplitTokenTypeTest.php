@@ -16,7 +16,6 @@ use Symfony\Component\Form\Extension\Core\Type\TransformationFailureExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 use Symfony\Component\Form\Test\TypeTestCase;
-use Symfony\Component\Translation\IdentityTranslator;
 
 /**
  * @internal
@@ -25,8 +24,7 @@ final class SplitTokenTypeTest extends TypeTestCase
 {
     use ValidatorExtensionTrait;
 
-    /** @var FakeSplitTokenFactory */
-    private $splitTokenFactory;
+    private FakeSplitTokenFactory $splitTokenFactory;
 
     protected function setUp(): void
     {
@@ -38,7 +36,7 @@ final class SplitTokenTypeTest extends TypeTestCase
     protected function getTypes(): array
     {
         return [
-            new SplitTokenType($this->splitTokenFactory, new IdentityTranslator()),
+            new SplitTokenType($this->splitTokenFactory),
         ];
     }
 

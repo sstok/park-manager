@@ -21,7 +21,7 @@ use Symfony\Component\Translation\IdentityTranslator;
 
 abstract class MessageFormTestCase extends TypeTestCase
 {
-    protected $dispatchedCommand;
+    protected ?object $dispatchedCommand = null;
 
     /** @var callable|null */
     protected $commandHandler;

@@ -40,7 +40,7 @@ final class CertificateIsRevoked extends Violation
     ];
 
     private \DateTimeInterface $revokedOn;
-    private ?int $reason;
+    private ?int $reason = null;
     private string $serial;
 
     public function __construct(\DateTimeInterface $revokedOn, ?int $reason, string $serialNumber)

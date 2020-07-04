@@ -37,8 +37,7 @@ class Certificate
      */
     private $privateKey;
 
-    /** @var string|null */
-    private $privateKeyString;
+    private ?string $privateKeyString;
 
     /**
      * @param array<string, string> $rawFields

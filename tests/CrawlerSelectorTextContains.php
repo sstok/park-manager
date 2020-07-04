@@ -15,8 +15,8 @@ use Symfony\Component\DomCrawler\Crawler;
 
 final class CrawlerSelectorTextContains extends Constraint
 {
-    private $selector;
-    private $expectedText;
+    private string $selector;
+    private string $expectedText;
 
     public function __construct(string $selector, string $expectedText)
     {
@@ -36,9 +36,7 @@ final class CrawlerSelectorTextContains extends Constraint
     {
         $crawler = $crawler
             ->filter($this->selector)
-            ->reduce(function (Crawler $node, int $i) {
-                return \mb_strpos($node->text(null, false), $this->expectedText) === false;
-            });
+            ->reduce(fn (Crawler $node, int $i) => \mb_strpos($node->text(null, false), $this->expectedText) === false);
 
         return \count($crawler) > 0;
     }

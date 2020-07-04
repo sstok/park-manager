@@ -38,9 +38,7 @@ class RequestPasswordResetType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('disable_entity_mapping', true);
-        $resolver->setDefault('command_factory', static function (array $data) {
-            return new RequestPasswordReset($data['email']);
-        });
+        $resolver->setDefault('command_factory', static fn (array $data) => new RequestPasswordReset($data['email']));
     }
 
     public function getParent(): ?string

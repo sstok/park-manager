@@ -112,8 +112,8 @@ final class MockRepositoryTest extends TestCase
         $repository->assertHasEntity($entity1->id(), static function (): void { });
         $repository->assertHasEntity($entity3->id(), static function (): void { });
 
-        self::assertEquals([$entity1, $entity2], \iterator_to_array($repository->all('example.com')));
-        self::assertEquals([$entity3, $entity4], \iterator_to_array($repository->all('example2.com')));
+        self::assertEquals([$entity1, $entity2], [...$repository->all('example.com')]);
+        self::assertEquals([$entity3, $entity4], [...$repository->all('example2.com')]);
     }
 
     /** @test */
@@ -193,7 +193,7 @@ final class MockRepositoryTest extends TestCase
 
             protected function getFieldsIndexMapping(): array
             {
-                return ['last_name' => static function (MockEntity $entity) { return \mb_strtolower($entity->lastName()); }];
+                return ['last_name' => static fn (MockEntity $entity) => \mb_strtolower($entity->lastName())];
             }
 
             public function getByLastName(string $name): MockEntity
@@ -297,15 +297,13 @@ final class MockIdentity implements Serializable, JsonSerializable
 /** @internal */
 final class MockEntity
 {
-    /** @var MockIdentity */
-    private $id;
+    private MockIdentity $id;
 
-    /** @var string|null */
-    public $name;
+    public ?string $name = null;
 
-    private $lastName;
+    private string $lastName;
 
-    private ?string $domain;
+    private ?string $domain = null;
 
     public function __construct(string $id = 'fc86687e-0875-11e9-9701-acbc32b58315', string $name = 'Foobar', string $domain = null)
     {

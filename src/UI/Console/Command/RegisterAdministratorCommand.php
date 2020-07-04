@@ -28,9 +28,9 @@ final class RegisterAdministratorCommand extends Command
 {
     protected static $defaultName = 'park-manager:administrator:register';
 
-    private $validator;
-    private $passwordEncoder;
-    private $commandBus;
+    private ValidatorInterface $validator;
+    private EncoderFactoryInterface $passwordEncoder;
+    private MessageBus $commandBus;
 
     public function __construct(ValidatorInterface $validator, EncoderFactoryInterface $passwordEncoder, MessageBus $commandBus)
     {

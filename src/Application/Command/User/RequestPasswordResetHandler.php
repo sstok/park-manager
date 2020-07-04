@@ -18,17 +18,13 @@ use Rollerworks\Component\SplitToken\SplitTokenFactory;
 
 final class RequestPasswordResetHandler
 {
-    /** @var UserRepository */
-    private $repository;
+    private UserRepository $repository;
 
-    /** @var SplitTokenFactory */
-    private $tokenFactory;
+    private SplitTokenFactory $tokenFactory;
 
-    /** @var PasswordResetMailer */
-    private $mailer;
+    private PasswordResetMailer $mailer;
 
-    /** @var int */
-    private $tokenTTL;
+    private int $tokenTTL;
 
     public function __construct(UserRepository $repository, SplitTokenFactory $tokenFactory, PasswordResetMailer $mailer, int $tokenTTL = 3600)
     {
