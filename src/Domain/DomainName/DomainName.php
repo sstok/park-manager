@@ -51,7 +51,7 @@ class DomainName
     /**
      * @ORM\Column(name="is_primary", type="boolean")
      */
-    protected bool $primary = false;
+    public bool $primary = false;
 
     public function __construct(DomainNameId $id, DomainNamePair $domainName)
     {

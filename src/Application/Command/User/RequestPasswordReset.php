@@ -14,7 +14,7 @@ use ParkManager\Domain\EmailAddress;
 
 final class RequestPasswordReset
 {
-    private EmailAddress $email;
+    public EmailAddress $email;
 
     public function __construct(string $email)
     {

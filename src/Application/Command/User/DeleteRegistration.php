@@ -14,7 +14,7 @@ use ParkManager\Domain\User\UserId;
 
 final class DeleteRegistration
 {
-    private UserId $id;
+    public UserId $id;
 
     public function __construct(string $id)
     {

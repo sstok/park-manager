@@ -15,7 +15,7 @@ use ParkManager\Domain\User\UserId;
 
 final class EmailAddressAlreadyInUse extends InvalidArgumentException
 {
-    private UserId $id;
+    public UserId $id;
 
     public function __construct(UserId $id)
     {

@@ -25,7 +25,7 @@ class SharedConstraintSet
      *
      * @var ConstraintSetId
      */
-    protected $id;
+    public $id;
 
     /**
      * @ORM\Column(name="constraints", type="webhosting_constraints", nullable=true)

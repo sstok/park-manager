@@ -14,7 +14,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class UserPasswordWasChanged extends Event
 {
-    private string $id;
+    public string $id;
 
     private ?string $password = null;
 
