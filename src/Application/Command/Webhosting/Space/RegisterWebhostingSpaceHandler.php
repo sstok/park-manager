@@ -16,21 +16,21 @@ use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
 use ParkManager\Domain\User\UserRepository;
-use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSetRepository;
+use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class RegisterWebhostingSpaceHandler
 {
     private WebhostingSpaceRepository $spaceRepository;
-    private SharedConstraintSetRepository $constraintSetRepository;
+    private PlanRepository $planRepository;
     private DomainNameRepository $domainNameRepository;
     private UserRepository $userRepository;
 
-    public function __construct(WebhostingSpaceRepository $spaceRepository, SharedConstraintSetRepository $constraintSetRepository, DomainNameRepository $domainNameRepository, UserRepository $userRepository)
+    public function __construct(WebhostingSpaceRepository $spaceRepository, PlanRepository $planRepository, DomainNameRepository $domainNameRepository, UserRepository $userRepository)
     {
         $this->spaceRepository = $spaceRepository;
-        $this->constraintSetRepository = $constraintSetRepository;
+        $this->planRepository = $planRepository;
         $this->domainNameRepository = $domainNameRepository;
         $this->userRepository = $userRepository;
     }
@@ -40,11 +40,11 @@ final class RegisterWebhostingSpaceHandler
         $owner = $command->owner === null ? null : $this->userRepository->get($command->owner);
 
         /** @psalm-suppress PossiblyNullOperand */
-        if ($command->constraintSetId !== null) {
+        if ($command->planId !== null) {
             $space = Space::register(
                 $command->id,
                 $owner,
-                $this->constraintSetRepository->get($command->constraintSetId)
+                $this->planRepository->get($command->planId)
             );
         } else {
             $space = Space::registerWithCustomConstraints(

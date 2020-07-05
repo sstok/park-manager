@@ -10,9 +10,16 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Constraint;
 
-use ParkManager\Domain\UuidTrait;
+use ParkManager\Domain\Webhosting\Constraint\Exception\PlanNotFound;
 
-final class ConstraintSetId
+interface PlanRepository
 {
-    use UuidTrait;
+    /**
+     * @throws PlanNotFound
+     */
+    public function get(PlanId $id): Plan;
+
+    public function save(Plan $plan): void;
+
+    public function remove(Plan $plan): void;
 }

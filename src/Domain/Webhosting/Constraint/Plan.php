@@ -14,16 +14,16 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="constraints_set")
+ * @ORM\Table(name="plan")
  */
-class SharedConstraintSet
+class Plan
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="park_manager_webhosting_constraints_set_id")
+     * @ORM\Column(type="park_manager_webhosting_plan_id")
      * @ORM\GeneratedValue(strategy="NONE")
      *
-     * @var ConstraintSetId
+     * @var PlanId
      */
     public $id;
 
@@ -41,13 +41,13 @@ class SharedConstraintSet
      */
     private $metadata = [];
 
-    public function __construct(ConstraintSetId $id, Constraints $constraints)
+    public function __construct(PlanId $id, Constraints $constraints)
     {
         $this->id = $id;
         $this->constraints = $constraints;
     }
 
-    public function getId(): ConstraintSetId
+    public function getId(): PlanId
     {
         return $this->id;
     }

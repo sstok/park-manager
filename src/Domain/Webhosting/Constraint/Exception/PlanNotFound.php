@@ -11,12 +11,12 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\Constraint\Exception;
 
 use ParkManager\Domain\Exception\NotFoundException;
-use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
+use ParkManager\Domain\Webhosting\Constraint\PlanId;
 
-final class ConstraintSetNotFound extends NotFoundException
+final class PlanNotFound extends NotFoundException
 {
-    public static function withId(ConstraintSetId $id): self
+    public static function withId(PlanId $id): self
     {
-        return new self(\sprintf('Shared ConstraintSet with id "%s" does not exist.', $id->toString()));
+        return new self(\sprintf('Plan with id "%s" does not exist.', $id->toString()));
     }
 }

@@ -12,8 +12,8 @@ namespace ParkManager\Tests\Domain\Webhosting\Space;
 
 use DateTimeImmutable;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
-use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
-use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
+use ParkManager\Domain\Webhosting\Constraint\Plan;
+use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
@@ -37,14 +37,14 @@ final class SpaceTest extends TestCase
     {
         $id = SpaceId::create();
         $constraints = new Constraints();
-        $constraintSet = $this->createSharedConstraintSet($constraints);
+        $plan = $this->createPlan($constraints);
         $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
 
-        $space = Space::register($id, $owner, $constraintSet);
+        $space = Space::register($id, $owner, $plan);
 
         self::assertEquals($id, $space->getId());
         self::assertEquals($owner, $space->getOwner());
-        self::assertSame($constraintSet, $space->getAssignedConstraintSet());
+        self::assertSame($plan, $space->getAssignedPlan());
         self::assertSame($constraints, $space->getConstraints());
     }
 
@@ -60,7 +60,7 @@ final class SpaceTest extends TestCase
         self::assertEquals($id, $space->getId());
         self::assertEquals($owner, $space->getOwner());
         self::assertSame($constraints, $space->getConstraints());
-        self::assertNull($space->getAssignedConstraintSet());
+        self::assertNull($space->getAssignedPlan());
     }
 
     /** @test */
@@ -69,19 +69,19 @@ final class SpaceTest extends TestCase
         $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
         $constraints1 = new Constraints();
         $constraints2 = (new Constraints())->setMonthlyTraffic(50);
-        $constraintSet1 = $this->createSharedConstraintSet($constraints1);
-        $constraintSet2 = $this->createSharedConstraintSet($constraints2, self::SET_ID_2);
-        $space1 = Space::register(SpaceId::create(), $owner, $constraintSet1);
-        $space2 = Space::register(SpaceId::create(), $owner, $constraintSet1);
+        $plan1 = $this->createPlan($constraints1);
+        $plan2 = $this->createPlan($constraints2, self::SET_ID_2);
+        $space1 = Space::register(SpaceId::create(), $owner, $plan1);
+        $space2 = Space::register(SpaceId::create(), $owner, $plan1);
 
-        $space1->assignConstraintSet($constraintSet1);
-        $space2->assignConstraintSet($constraintSet2);
+        $space1->assignPlan($plan1);
+        $space2->assignPlan($plan2);
 
-        self::assertSame($constraintSet1, $space1->getAssignedConstraintSet(), 'ConstraintSet should not change');
-        self::assertSame($constraintSet1->getConstraints(), $space1->getConstraints(), 'Constraints should not change');
+        self::assertSame($plan1, $space1->getAssignedPlan(), 'Plan should not change');
+        self::assertSame($plan1->getConstraints(), $space1->getConstraints(), 'Constraints should not change');
 
-        self::assertSame($constraintSet2, $space2->getAssignedConstraintSet());
-        self::assertSame($constraintSet1->getConstraints(), $space2->getConstraints());
+        self::assertSame($plan2, $space2->getAssignedPlan());
+        self::assertSame($plan1->getConstraints(), $space2->getConstraints());
     }
 
     /** @test */
@@ -90,51 +90,51 @@ final class SpaceTest extends TestCase
         $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
         $constraints1 = new Constraints();
         $constraints2 = (new Constraints())->setMonthlyTraffic(50);
-        $constraintSet1 = $this->createSharedConstraintSet($constraints1);
-        $constraintSet2 = $this->createSharedConstraintSet($constraints2, self::SET_ID_2);
-        $space1 = Space::register(SpaceId::create(), $owner, $constraintSet1);
-        $space2 = Space::register(SpaceId::create(), $owner, $constraintSet1);
+        $plan1 = $this->createPlan($constraints1);
+        $plan2 = $this->createPlan($constraints2, self::SET_ID_2);
+        $space1 = Space::register(SpaceId::create(), $owner, $plan1);
+        $space2 = Space::register(SpaceId::create(), $owner, $plan1);
 
-        $space1->assignSetWithConstraints($constraintSet1);
-        $space2->assignSetWithConstraints($constraintSet2);
+        $space1->assignPlanWithConstraints($plan1);
+        $space2->assignPlanWithConstraints($plan2);
 
-        self::assertSame($constraintSet1, $space1->getAssignedConstraintSet(), 'ConstraintSet should not change');
-        self::assertSame($constraintSet1->getConstraints(), $space1->getConstraints(), 'Constraints should not change');
+        self::assertSame($plan1, $space1->getAssignedPlan(), 'Plan should not change');
+        self::assertSame($plan1->getConstraints(), $space1->getConstraints(), 'Constraints should not change');
 
-        self::assertSame($constraintSet2, $space2->getAssignedConstraintSet());
-        self::assertSame($constraintSet2->getConstraints(), $space2->getConstraints());
+        self::assertSame($plan2, $space2->getAssignedPlan());
+        self::assertSame($plan2->getConstraints(), $space2->getConstraints());
     }
 
     /** @test */
     public function it_updates_space_when_assigning_constraint_set_constraints_are_different(): void
     {
-        $constraintSet = $this->createSharedConstraintSet(new Constraints());
+        $plan = $this->createPlan(new Constraints());
         $space = Space::register(
             SpaceId::create(),
             UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
-            $constraintSet
+            $plan
         );
 
-        $constraintSet->changeConstraints($newConstraints = (new Constraints())->setMonthlyTraffic(50));
-        $space->assignSetWithConstraints($constraintSet);
+        $plan->changeConstraints($newConstraints = (new Constraints())->setMonthlyTraffic(50));
+        $space->assignPlanWithConstraints($plan);
 
-        self::assertSame($constraintSet, $space->getAssignedConstraintSet());
-        self::assertSame($constraintSet->getConstraints(), $space->getConstraints());
+        self::assertSame($plan, $space->getAssignedPlan());
+        self::assertSame($plan->getConstraints(), $space->getConstraints());
     }
 
     /** @test */
     public function it_allows_assigning_custom_specification(): void
     {
-        $constraintSet = $this->createSharedConstraintSet(new Constraints());
+        $plan = $this->createPlan(new Constraints());
         $space = Space::register(
             SpaceId::create(),
             UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
-            $constraintSet
+            $plan
         );
 
         $space->assignCustomConstraints($newConstraints = (new Constraints())->setMonthlyTraffic(50));
 
-        self::assertNull($space->getAssignedConstraintSet());
+        self::assertNull($space->getAssignedPlan());
         self::assertSame($newConstraints, $space->getConstraints());
     }
 
@@ -149,7 +149,7 @@ final class SpaceTest extends TestCase
 
         $space->assignCustomConstraints($newConstraints = (new Constraints())->setMonthlyTraffic(50));
 
-        self::assertNull($space->getAssignedConstraintSet());
+        self::assertNull($space->getAssignedPlan());
         self::assertSame($newConstraints, $space->getConstraints());
     }
 
@@ -165,7 +165,7 @@ final class SpaceTest extends TestCase
 
         $space->assignCustomConstraints($constraints);
 
-        self::assertNull($space->getAssignedConstraintSet());
+        self::assertNull($space->getAssignedPlan());
         self::assertSame($constraints, $space->getConstraints());
     }
 
@@ -177,12 +177,12 @@ final class SpaceTest extends TestCase
         $space1 = Space::register(
             SpaceId::fromString(self::SPACE_ID),
             $owner1,
-            $this->createSharedConstraintSet(new Constraints())
+            $this->createPlan(new Constraints())
         );
         $space2 = Space::register(
             $id2 = SpaceId::fromString(self::SPACE_ID),
             $owner1,
-            $this->createSharedConstraintSet(new Constraints())
+            $this->createPlan(new Constraints())
         );
 
         $space1->switchOwner($owner1);
@@ -199,12 +199,12 @@ final class SpaceTest extends TestCase
         $space1 = Space::register(
             SpaceId::fromString(self::SPACE_ID),
             $owner,
-            $this->createSharedConstraintSet(new Constraints())
+            $this->createPlan(new Constraints())
         );
         $space2 = Space::register(
             $id2 = SpaceId::fromString(self::SPACE_ID),
             $owner,
-            $this->createSharedConstraintSet(new Constraints())
+            $this->createPlan(new Constraints())
         );
 
         $space2->markForRemoval();
@@ -221,12 +221,12 @@ final class SpaceTest extends TestCase
         $space1 = Space::register(
             SpaceId::fromString(self::SPACE_ID),
             $owner,
-            $this->createSharedConstraintSet(new Constraints())
+            $this->createPlan(new Constraints())
         );
         $space2 = Space::register(
             $id2 = SpaceId::fromString(self::SPACE_ID),
             $owner,
-            $this->createSharedConstraintSet(new Constraints())
+            $this->createPlan(new Constraints())
         );
 
         $space2->setExpirationDate($date = new DateTimeImmutable('now +6 days'));
@@ -246,8 +246,8 @@ final class SpaceTest extends TestCase
         self::assertFalse($space2->isExpired($date->modify('+2 days')));
     }
 
-    private function createSharedConstraintSet(Constraints $constraints, string $id = self::SET_ID_1): SharedConstraintSet
+    private function createPlan(Constraints $constraints, string $id = self::SET_ID_1): Plan
     {
-        return new SharedConstraintSet(ConstraintSetId::fromString($id), $constraints);
+        return new Plan(PlanId::fromString($id), $constraints);
     }
 }

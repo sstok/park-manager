@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine\Type;
 
-use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
+use ParkManager\Domain\Webhosting\Constraint\PlanId;
 
-final class WebhostingConstraintSetIdType extends DomainIdType
+final class WebhostingPlanIdType extends DomainIdType
 {
-    public const NAME = 'park_manager_webhosting_constraints_set_id';
-    public const OBJECT_CLASS = ConstraintSetId::class;
+    public const NAME = 'park_manager_webhosting_plan_id';
+    public const OBJECT_CLASS = PlanId::class;
 }

@@ -18,13 +18,13 @@ use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
-use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
-use ParkManager\Domain\Webhosting\Constraint\SharedConstraintSet;
+use ParkManager\Domain\Webhosting\Constraint\Plan;
+use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
-use ParkManager\Tests\Mock\Domain\Webhosting\SharedConstraintSetRepositoryMock;
+use ParkManager\Tests\Mock\Domain\Webhosting\PlanRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
@@ -43,18 +43,18 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
     public function it_handles_registration_of_space_with_shared_constraints(): void
     {
         $domainName = new DomainNamePair('example', '.com');
-        $constraintSet = new SharedConstraintSet(ConstraintSetId::fromString(self::SET_ID1), new Constraints());
+        $plan = new Plan(PlanId::fromString(self::SET_ID1), new Constraints());
 
         $spaceRepository = new SpaceRepositoryMock();
-        $constraintSetRepository = new SharedConstraintSetRepositoryMock([$constraintSet]);
+        $planRepository = new PlanRepositoryMock([$plan]);
         $domainNameRepository = new DomainNameRepositoryMock();
         $userRepository = new UserRepositoryMock([$user = UserRepositoryMock::createUser()]);
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $constraintSetRepository, $domainNameRepository, $userRepository);
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $userRepository);
 
-        $handler(RegisterWebhostingSpace::withConstraintSet(self::SPACE_ID1, $domainName, self::USER_ID1, self::SET_ID1));
+        $handler(RegisterWebhostingSpace::withPlan(self::SPACE_ID1, $domainName, self::USER_ID1, self::SET_ID1));
 
         $spaceRepository->assertEntitiesWereSaved([
-            Space::register(SpaceId::fromString(self::SPACE_ID1), $user, $constraintSet),
+            Space::register(SpaceId::fromString(self::SPACE_ID1), $user, $plan),
         ]);
 
         $domainNameRepository->assertEntitiesCountWasSaved(1);
@@ -82,10 +82,10 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         $constraints = new Constraints();
 
         $spaceRepository = new SpaceRepositoryMock();
-        $constraintSetRepository = new SharedConstraintSetRepositoryMock();
+        $planRepository = new PlanRepositoryMock();
         $domainNameRepository = new DomainNameRepositoryMock();
         $userRepository = new UserRepositoryMock([$user = UserRepositoryMock::createUser()]);
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $constraintSetRepository, $domainNameRepository, $userRepository);
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $userRepository);
 
         $handler(RegisterWebhostingSpace::withCustomConstraints(self::SPACE_ID1, $domainName, self::USER_ID1, $constraints));
 
@@ -114,14 +114,14 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
     /** @test */
     public function it_checks_domain_is_not_already_registered(): void
     {
-        $constraintSet = new SharedConstraintSet(ConstraintSetId::fromString(self::SET_ID1), new Constraints());
-        $constraintSetRepository = new SharedConstraintSetRepositoryMock([$constraintSet]);
+        $plan = new Plan(PlanId::fromString(self::SET_ID1), new Constraints());
+        $planRepository = new PlanRepositoryMock([$plan]);
         $spaceRepository = new SpaceRepositoryMock();
         $domainNameRepository = new DomainNameRepositoryMock([$this->createExistingDomain($domainName = new DomainNamePair('example', '.com'), $spaceId2 = SpaceId::fromString(self::SPACE_ID2))]);
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $constraintSetRepository, $domainNameRepository, new UserRepositoryMock([UserRepositoryMock::createUser()]));
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, new UserRepositoryMock([UserRepositoryMock::createUser()]));
 
         try {
-            $handler(RegisterWebhostingSpace::withConstraintSet(self::SPACE_ID1, $domainName, UserRepositoryMock::USER_ID1, self::SET_ID1));
+            $handler(RegisterWebhostingSpace::withPlan(self::SPACE_ID1, $domainName, UserRepositoryMock::USER_ID1, self::SET_ID1));
 
             self::fail('Exception should be thrown.');
         } catch (DomainNameAlreadyInUse $e) {
@@ -146,10 +146,10 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         $constraints = new Constraints();
 
         $spaceRepository = new SpaceRepositoryMock();
-        $constraintSetRepository = new SharedConstraintSetRepositoryMock();
+        $planRepository = new PlanRepositoryMock();
         $userRepository = new UserRepositoryMock([$user = UserRepositoryMock::createUser()]);
         $domainNameRepository = new DomainNameRepositoryMock([$this->createExistingDomainWithOwner($domainName, $user)]);
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $constraintSetRepository, $domainNameRepository, $userRepository);
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $userRepository);
 
         $handler(RegisterWebhostingSpace::withCustomConstraints(self::SPACE_ID1, $domainName, self::USER_ID1, $constraints));
 

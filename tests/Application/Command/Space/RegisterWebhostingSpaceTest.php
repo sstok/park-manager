@@ -14,7 +14,7 @@ use ParkManager\Application\Command\Webhosting\Space\RegisterWebhostingSpace;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
-use ParkManager\Domain\Webhosting\Constraint\ConstraintSetId;
+use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +30,7 @@ final class RegisterWebhostingSpaceTest extends TestCase
     /** @test */
     public function its_constructable_with_constraint_set(): void
     {
-        $command = RegisterWebhostingSpace::withConstraintSet(
+        $command = RegisterWebhostingSpace::withPlan(
             self::SPACE_ID,
             $domainName = new DomainNamePair('example', 'com'),
             self::USER_ID,
@@ -39,7 +39,7 @@ final class RegisterWebhostingSpaceTest extends TestCase
 
         self::assertEquals(SpaceId::fromString(self::SPACE_ID), $command->id);
         self::assertEquals(UserId::fromString(self::USER_ID), $command->owner);
-        self::assertEquals(ConstraintSetId::fromString(self::SET_ID), $command->constraintSetId);
+        self::assertEquals(PlanId::fromString(self::SET_ID), $command->planId);
         self::assertEquals($domainName, $command->domainName);
         self::assertNull($command->customConstraints);
     }
@@ -58,6 +58,6 @@ final class RegisterWebhostingSpaceTest extends TestCase
         self::assertEquals(UserId::fromString(self::USER_ID), $command->owner);
         self::assertEquals($constraints, $command->customConstraints);
         self::assertEquals($domainName, $command->domainName);
-        self::assertNull($command->constraintSetId);
+        self::assertNull($command->planId);
     }
 }
