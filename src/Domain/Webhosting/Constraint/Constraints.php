@@ -57,7 +57,7 @@ class Constraints
         $this->email = new EmailConstraints();
 
         foreach ($fields as $name => $value) {
-            if (property_exists($this, $name)) {
+            if (\property_exists($this, $name)) {
                 $this->{$name} = $value;
             }
         }

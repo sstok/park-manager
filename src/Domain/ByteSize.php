@@ -18,7 +18,6 @@ final class ByteSize
     {
         $target = $size;
 
-
         switch (\mb_strtolower($unit)) {
             case 'b':
             case 'byte':

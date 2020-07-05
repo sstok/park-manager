@@ -72,18 +72,18 @@ final class EmailConstraintsTest extends TestCase
         $constraints = new EmailConstraints();
 
         /** @var Constraints $new */
-        $new = $constraints->{'set' . ucfirst($field)}($constraints->{$field});
+        $new = $constraints->{'set' . \ucfirst($field)}($constraints->{$field});
 
         self::assertSame($constraints, $new);
         self::assertEquals([], $new->changes);
         self::assertEquals($constraints->{$field}, $new->{$field});
 
-        if (is_object($value)) {
+        if (\is_object($value)) {
             self::assertSame($constraints, $new);
         }
 
         /** @var Constraints $new */
-        $new = $constraints->{'set'.ucfirst($field)}($value);
+        $new = $constraints->{'set' . \ucfirst($field)}($value);
 
         self::assertNotSame($constraints, $new);
         self::assertEquals([$field => $constraints->{$field}], $new->changes);

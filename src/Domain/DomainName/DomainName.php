@@ -94,7 +94,7 @@ class DomainName
         return $this->namePair;
     }
 
-    public function getSpace(): Space
+    public function getSpace(): ?Space
     {
         return $this->space;
     }

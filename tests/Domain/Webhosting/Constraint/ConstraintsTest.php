@@ -26,13 +26,13 @@ final class ConstraintsTest extends TestCase
         $constraints = new Constraints([
             'monthlyTraffic' => 50,
             'storageSize' => new ByteSize(22, 'GB'),
-            'email' => new EmailConstraints(['maximumAddressCount' => 50 ]),
+            'email' => new EmailConstraints(['maximumAddressCount' => 50]),
         ]);
 
         self::assertEquals([], $constraints->changes);
         self::assertEquals(50, $constraints->monthlyTraffic);
         self::assertEquals(new ByteSize(22, 'GB'), $constraints->storageSize);
-        self::assertEquals(new EmailConstraints(['maximumAddressCount' => 50 ]), $constraints->email);
+        self::assertEquals(new EmailConstraints(['maximumAddressCount' => 50]), $constraints->email);
     }
 
     /** @test */
@@ -65,18 +65,18 @@ final class ConstraintsTest extends TestCase
         $constraints = new Constraints();
 
         /** @var Constraints $new */
-        $new = $constraints->{'set' . ucfirst($field)}($constraints->{$field});
+        $new = $constraints->{'set' . \ucfirst($field)}($constraints->{$field});
 
         self::assertSame($constraints, $new);
         self::assertEquals([], $new->changes);
         self::assertEquals($constraints->{$field}, $new->{$field});
 
-        if (is_object($value)) {
+        if (\is_object($value)) {
             self::assertSame($constraints, $new);
         }
 
         /** @var Constraints $new */
-        $new = $constraints->{'set'.ucfirst($field)}($value);
+        $new = $constraints->{'set' . \ucfirst($field)}($value);
 
         self::assertNotSame($constraints, $new);
         self::assertEquals([$field => $constraints->{$field}], $new->changes);

@@ -20,7 +20,6 @@ use ParkManager\Domain\DomainName\Exception\CannotRemovePrimaryDomainName;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
-use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 /**
