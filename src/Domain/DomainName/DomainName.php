@@ -120,7 +120,7 @@ class DomainName
 
         if ($this->space !== null) {
             if ($this->space->owner !== $space->getOwner()) {
-                throw new CannotAssignDomainNameWithDifferentOwner($this->namePair, $this->space ? $this->space->getId() : null, $space->getId());
+                throw new CannotAssignDomainNameWithDifferentOwner($this->namePair, $this->space->getId(), $space->getId());
             }
         } elseif ($this->owner !== $space->getOwner()) {
             throw new CannotAssignDomainNameWithDifferentOwner($this->namePair, null, $space->getId());

@@ -19,9 +19,9 @@ final class CannotTransferPrimaryDomainName extends DomainException implements T
 {
     private DomainNamePair $domainName;
     private SpaceId $current;
-    private SpaceId $new;
+    private ?SpaceId $new;
 
-    public function __construct(DomainNamePair $domainName, SpaceId $current, SpaceId $new)
+    public function __construct(DomainNamePair $domainName, SpaceId $current, ?SpaceId $new)
     {
         parent::__construct(
             \sprintf(

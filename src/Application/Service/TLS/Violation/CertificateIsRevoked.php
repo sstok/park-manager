@@ -39,11 +39,11 @@ final class CertificateIsRevoked extends Violation
         Response::REVOCATIONREASON_AACOMPROMISE => 'AA compromise',
     ];
 
-    private \DateTimeInterface $revokedOn;
-    private ?int $reason = null;
+    private ?\DateTimeInterface $revokedOn;
+    private ?int $reason;
     private string $serial;
 
-    public function __construct(\DateTimeInterface $revokedOn, ?int $reason, string $serialNumber)
+    public function __construct(?\DateTimeInterface $revokedOn, ?int $reason, string $serialNumber)
     {
         $this->revokedOn = $revokedOn;
         $this->reason = $reason;
@@ -59,7 +59,7 @@ final class CertificateIsRevoked extends Violation
     {
         return [
             'revoked_on' => $this->revokedOn,
-            '@reason' => 'tls.revocation_reason.' . self::REVOCATION_REASON[$this->reason] ?? 'unspecified',
+            '@reason' => 'tls.revocation_reason.' . (self::REVOCATION_REASON[$this->reason] ?? 'unspecified'),
             'serial' => $this->serial,
         ];
     }

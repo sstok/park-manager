@@ -53,7 +53,7 @@ final class CertificateFactoryImpl implements CertificateFactory
     }
 
     /**
-     * @param array<int, string> $caList
+     * @param array<string, string> $caList
      */
     private function newCertificate(string $contents, HiddenString $privateKey, array $caList = []): Certificate
     {

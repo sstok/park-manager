@@ -83,7 +83,7 @@ class CertificateValidator
 
         // The same cert information is likely to be validated multiple times
         // So keep a local cache to speed-up the parsing process a little.
-        if ($hash === $this->hash) {
+        if ($hash === $this->hash && $this->fields !== null) {
             return $this->fields;
         }
 
@@ -102,8 +102,8 @@ class CertificateValidator
         $fields += [
             '_commonName' => \trim($fields['subject']['commonName']),
             '_altNames' => $this->getAltNames($fields),
-            '_validTo' => Carbon::rawParse((int) $fields['validTo_time_t']),
-            '_validFrom' => Carbon::rawParse((int) $fields['validFrom_time_t']),
+            '_validTo' => Carbon::rawParse($fields['validTo_time_t']),
+            '_validFrom' => Carbon::rawParse($fields['validFrom_time_t']),
         ];
         $fields['_domains'] = $fields['_altNames'] + [$fields['_commonName']];
 
@@ -165,10 +165,14 @@ class CertificateValidator
 
             $domainInfo = $rules->resolve($domain);
 
-            if ($domainInfo->isKnown()) {
-                if (\rtrim(\mb_substr($domainInfo->getContent(), 0, -\mb_strlen($domainInfo->getPublicSuffix())), '.') === '*') {
-                    throw new GlobalWildcard($domain, $domainInfo->getPublicSuffix());
-                }
+            if (! $domainInfo->isKnown()) {
+                return;
+            }
+
+            $publicSuffix = $domainInfo->getPublicSuffix() ?? '';
+
+            if (\rtrim(\mb_substr($domainInfo->getContent() ?? '', 0, -\mb_strlen($publicSuffix)), '.') === '*') {
+                throw new GlobalWildcard($domain, $publicSuffix);
             }
         }
     }

@@ -31,7 +31,7 @@ interface TranslatableException extends Throwable
      * (passing the value of an argument to translator) by
      * prefixing their key with `@`, like `@status`.
      *
-     * @return array<string, \DateTimeInterface|float|int|string>
+     * @return array<string, \DateTimeInterface|float|int|string|null>
      */
     public function getTranslationArgs(): array;
 }

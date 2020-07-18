@@ -30,8 +30,10 @@ final class CachedDomainsListWarmer implements CacheWarmerInterface
         return true;
     }
 
-    public function warmUp(string $cacheDir): void
+    public function warmUp(string $cacheDir): array
     {
         $this->manager->refreshRules();
+
+        return [Manager::class];
     }
 }

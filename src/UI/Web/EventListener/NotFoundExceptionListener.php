@@ -45,7 +45,7 @@ final class NotFoundExceptionListener implements EventSubscriberInterface
         $arguments = $exception->getTranslationArgs();
 
         foreach ($arguments as $key => $value) {
-            if (\strncmp($key, '@', 1) === 0) {
+            if (is_string($value) && \strncmp($key, '@', 1) === 0) {
                 unset($arguments[$key]);
                 $arguments[\mb_substr($key, 1)] = $this->translator->trans($value);
             }
