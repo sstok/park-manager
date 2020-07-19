@@ -19,6 +19,7 @@ doctrine:
             park_manager_domain_name_id: 'ParkManager\Infrastructure\Doctrine\Type\DomainNameIdType'
             park_manager_sub_domain_id: 'ParkManager\Infrastructure\Doctrine\Type\SubDomainNameIdType'
             park_manager_webhosting_mailbox_id: 'ParkManager\Infrastructure\Doctrine\Type\MailboxIdType'
+            park_manager_webhosting_mail_forward_id: 'ParkManager\Infrastructure\Doctrine\Type\MailForwardIdType'
 
     orm:
         auto_generate_proxy_classes: true
