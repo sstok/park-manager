@@ -13,6 +13,7 @@ namespace ParkManager\Tests\Domain;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\MalformedEmailAddress;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Mime\Exception\RfcComplianceException;
 
 /**
  * @internal
@@ -27,8 +28,44 @@ final class EmailAddressTest extends TestCase
         self::assertEquals('info@example.com', $value->address);
         self::assertEquals('info@example.com', $value->toString());
         self::assertEquals('info@example.com', $value->canonical);
+        self::assertEquals('info', $value->local);
+        self::assertEquals('example.com', $value->domain);
         self::assertEquals('', $value->name);
         self::assertEquals('', $value->label);
+
+        $value->validate();
+    }
+
+    /** @test */
+    public function its_constructable_with_double_at_sign(): void
+    {
+        $value = new EmailAddress('"info@hello"@example.com');
+
+        self::assertEquals('"info@hello"@example.com', $value->address);
+        self::assertEquals('"info@hello"@example.com', $value->toString());
+        self::assertEquals('"info@hello"@example.com', $value->canonical);
+        self::assertEquals('"info@hello"', $value->local);
+        self::assertEquals('example.com', $value->domain);
+        self::assertEquals('', $value->name);
+        self::assertEquals('', $value->label);
+
+        $value->validate();
+    }
+
+    /** @test */
+    public function its_constructable_as_pattern(): void
+    {
+        $value = new EmailAddress('*@example.com');
+
+        self::assertEquals('*@example.com', $value->address);
+        self::assertEquals('*@example.com', $value->toString());
+        self::assertEquals('*@example.com', $value->canonical);
+        self::assertEquals('*', $value->local);
+        self::assertEquals('example.com', $value->domain);
+        self::assertEquals('', $value->name);
+        self::assertEquals('', $value->label);
+
+        $value->validate();
     }
 
     /** @test */
@@ -45,10 +82,12 @@ final class EmailAddressTest extends TestCase
     /** @test */
     public function it_canonicalizes_the_address(): void
     {
-        $value = new EmailAddress('info@EXAMPLE.com');
+        $value = new EmailAddress('infO@EXAMPLE.com');
 
-        self::assertEquals('info@EXAMPLE.com', $value->address);
+        self::assertEquals('infO@EXAMPLE.com', $value->address);
         self::assertEquals('info@example.com', $value->canonical);
+        self::assertEquals('info', $value->local);
+        self::assertEquals('example.com', $value->domain);
         self::assertEquals('', $value->name);
         self::assertEquals('', $value->label);
     }
@@ -62,6 +101,8 @@ final class EmailAddressTest extends TestCase
         // are not supported natively (Emoji for example).
         self::assertEquals('info@xn--tst-qla.de', $value->address);
         self::assertEquals('info@täst.de', $value->canonical);
+        self::assertEquals('info', $value->local);
+        self::assertEquals('täst.de', $value->domain);
         self::assertEquals('', $value->name);
         self::assertEquals('', $value->label);
     }
@@ -73,6 +114,8 @@ final class EmailAddressTest extends TestCase
 
         self::assertEquals('info+hello@example.com', $value->address);
         self::assertEquals('info@example.com', $value->canonical);
+        self::assertEquals('info', $value->local);
+        self::assertEquals('example.com', $value->domain);
         self::assertEquals('', $value->name);
         self::assertEquals('hello', $value->label);
     }
@@ -80,18 +123,41 @@ final class EmailAddressTest extends TestCase
     /** @test */
     public function it_validates_basic_formatting(): void
     {
-        $this->expectException(MalformedEmailAddress::class);
-        $this->expectExceptionMessage('Malformed e-mail address "info?example.com" (missing @)');
+        $this->expectExceptionObject(MalformedEmailAddress::missingAtSign('info?example.com'));
 
         new EmailAddress('info?example.com');
     }
 
     /** @test */
+    public function it_validates_advanced_formatting(): void
+    {
+        $this->expectException(RfcComplianceException::class);
+
+        $address = new EmailAddress('"=--WAT--@"=@example.com');
+        $address->validate();
+    }
+
+    /** @test */
     public function it_validates_idn_format(): void
     {
-        $this->expectException(MalformedEmailAddress::class);
-        $this->expectExceptionMessageMatches('/Malformed e-mail address "ok@xn--wat\.de" \(IDN Error reported \d+\)/');
+        $this->expectExceptionObject(MalformedEmailAddress::idnError('ok@xn--wat.de', IDNA_ERROR_INVALID_ACE_LABEL));
 
         new EmailAddress('ok@xn--wat.de');
+    }
+
+    /** @test */
+    public function it_validates_pattern_multi_wildcard(): void
+    {
+        $this->expectExceptionObject(MalformedEmailAddress::patternMultipleWildcards('*info*@example.com'));
+
+        new EmailAddress('*info*@example.com');
+    }
+
+    /** @test */
+    public function it_validates_pattern_in_label(): void
+    {
+        $this->expectExceptionObject(MalformedEmailAddress::patternWildcardInLabel('info+labeled*@example.com'));
+
+        new EmailAddress('info+labeled*@example.com');
     }
 }

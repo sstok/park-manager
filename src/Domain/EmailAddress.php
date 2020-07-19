@@ -48,16 +48,51 @@ final class EmailAddress
     /**
      * READ-ONLY.
      *
-     * Unmapped.
-     * Label is already part of the original value and unimportant.
+     * Unmapped. Label is already part of the original value and unimportant.
      */
     public string $label = '';
+
+    /**
+     * READ-ONLY.
+     */
+    public bool $isPattern = false;
+
+    /**
+     * READ-ONLY.
+     *
+     * Unmapped. Already part of the original value.
+     */
+    public string $local = '';
+
+    /**
+     * READ-ONLY.
+     *
+     * Unmapped. Already part of the original value.
+     */
+    public string $domain = '';
 
     public function __construct(string $address, ?string $name = null)
     {
         $this->address = $address;
-        $this->canonical = $this->canonicalize($address, $this->label);
+        $this->canonical = $this->canonicalize($address, $this->local, $this->domain, $this->label);
         $this->name = $name;
+
+        if (\mb_strpos($address, '*') !== false) {
+            $this->validatePattern();
+
+            $this->isPattern = true;
+        }
+    }
+
+    public function validatePattern(): void
+    {
+        if (\mb_substr_count($this->address, '*') > 1) {
+            throw MalformedEmailAddress::patternMultipleWildcards($this->address);
+        }
+
+        if (\mb_strrpos($this->label, '*') !== false) {
+            throw MalformedEmailAddress::patternWildcardInLabel($this->address);
+        }
     }
 
     public function toString(): string
@@ -70,17 +105,22 @@ final class EmailAddress
         return $this->address;
     }
 
+    public function validate(): void
+    {
+        new Address(\str_replace('*', 't', $this->address), '');
+    }
+
     public function toMimeAddress(): Address
     {
         return new Address($this->address, $this->name ?? '');
     }
 
-    private function canonicalize(string $address, string &$label): string
+    private function canonicalize(string $address, string &$local, string &$domain, string &$label): string
     {
         $atPos = \mb_strrpos($address, '@', 0, 'UTF-8');
 
         if ($atPos === false) {
-            throw new MalformedEmailAddress(\sprintf('Malformed e-mail address "%s" (missing @)', $address));
+            throw MalformedEmailAddress::missingAtSign($address);
         }
 
         // The label is only used for information, but still points to the same
@@ -90,17 +130,20 @@ final class EmailAddress
         $local = $this->extractLabel($local, $label);
 
         $domain = \mb_substr($address, $atPos + 1);
-        $domain = idn_to_utf8($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, $idnaInfo);
+        $domain = (string) idn_to_utf8($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, $idnaInfo);
 
         if ($idnaInfo['errors'] !== 0) {
-            throw new MalformedEmailAddress(\sprintf('Malformed e-mail address "%s" (IDN Error reported %s)', $address, $idnaInfo['errors']));
+            throw MalformedEmailAddress::idnError($address, $idnaInfo['errors']);
         }
 
         // While not officially required (as the local part is case-sensitive) it's generally
         // better to lowercase the local part also to prevent spoofing and typo's
         // (and nobody uses case-sensitive addresses ¯\_(ツ)_/¯ )
 
-        return \mb_convert_case($local . '@' . $domain, MB_CASE_LOWER, 'UTF-8');
+        $local = \mb_convert_case($local, MB_CASE_LOWER, 'UTF-8');
+        $domain = \mb_convert_case($domain, MB_CASE_LOWER, 'UTF-8');
+
+        return $local . '@' . $domain;
     }
 
     private function extractLabel(string $local, string &$label): string
