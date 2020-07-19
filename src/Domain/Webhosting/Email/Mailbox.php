@@ -112,4 +112,9 @@ class Mailbox
     {
         $this->active = false;
     }
+
+    public function toString(): string
+    {
+        return $this->address . '@' . $this->domainName->toString();
+    }
 }

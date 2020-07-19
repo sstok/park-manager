@@ -94,6 +94,11 @@ class DomainName
         return $this->namePair;
     }
 
+    public function toString(): string
+    {
+        return $this->namePair->toString();
+    }
+
     public function getSpace(): ?Space
     {
         return $this->space;
