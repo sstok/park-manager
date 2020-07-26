@@ -19,6 +19,8 @@ use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator;
+use ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
 use ParkManager\Infrastructure\Security\Guard\FormAuthenticator;
 use ParkManager\Infrastructure\Security\PermissionExpressionProvider;
 use ParkManager\Infrastructure\Security\UserProvider;
@@ -37,6 +39,9 @@ return static function (ContainerConfigurator $c): void {
         ->private()
         ->bind('$commandBus', ref('park_manager.command_bus'))
         ->bind(ObjectManager::class, service('doctrine.orm.default_entity_manager'));
+
+    $di->instanceof(DomainNameSpaceUsageValidator::class)
+        ->tag('park_manager.command_bus.domain_name_space_usage_validator');
 
     $di->set(PdpManager::class)->args([
         inline_service(Psr16Cache::class)->arg(0, service('cache.public_prefix_db')),
@@ -92,6 +97,9 @@ return static function (ContainerConfigurator $c): void {
                 DomainNameId::class => 'fromString',
             ],
         ]);
+
+    $di->get(DomainNameSpaceAssignmentValidator::class)
+        ->arg(1, tagged_iterator('park_manager.command_bus.domain_name_space_usage_validator'));
 
     $di->set(Argon2SplitTokenFactory::class);
     $di->alias(SplitTokenFactory::class, Argon2SplitTokenFactory::class);
