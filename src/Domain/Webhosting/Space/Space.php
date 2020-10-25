@@ -159,8 +159,6 @@ class Space
     /**
      * Resetting to NULL is not possible, use {ByteSize::Inf()} instead.
      *
-     * @param ByteSize $size
-     *
      * @throws AssertionInvalidArgumentException
      */
     public function setWebQuota(ByteSize $size): void

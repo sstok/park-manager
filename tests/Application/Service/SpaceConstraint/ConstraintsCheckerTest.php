@@ -188,7 +188,7 @@ final class ConstraintsCheckerTest extends TestCase
         $space->assignCustomConstraints($space->constraints->setEmail(new EmailConstraints([
             'maximumMailboxCount' => 5,
             'maximumForwardCount' => 5,
-            'maximumAddressCount' => -1
+            'maximumAddressCount' => -1,
         ])));
         $this->spaceRepository->save($space);
 

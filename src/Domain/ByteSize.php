@@ -98,7 +98,7 @@ final class ByteSize
     {
         return [
             'value' => $this->value,
-            '_formatted' => $this->format()
+            '_formatted' => $this->format(),
         ];
     }
 
