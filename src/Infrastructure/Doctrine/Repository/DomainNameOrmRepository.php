@@ -115,9 +115,9 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
 
     public function save(DomainName $domainName): void
     {
-        if ($domainName->isPrimary() && $domainName->getSpace() !== null) {
+        if ($domainName->primary && $domainName->space !== null) {
             try {
-                $primaryDomainName = $this->getPrimaryOf($domainName->getSpace()->getId());
+                $primaryDomainName = $this->getPrimaryOf($domainName->space->id);
             } catch (WebhostingSpaceNotFound $e) {
                 $primaryDomainName = $domainName;
             }
@@ -147,10 +147,10 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
 
     public function remove(DomainName $domainName): void
     {
-        if ($domainName->isPrimary() && $domainName->getSpace() !== null) {
+        if ($domainName->primary && $domainName->space!== null) {
             throw new CannotRemovePrimaryDomainName(
-                $domainName->getId(),
-                $domainName->getSpace()->getId()
+                $domainName->id,
+                $domainName->space->id
             );
         }
 

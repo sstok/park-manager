@@ -60,6 +60,7 @@ final class RegisterAdministratorCommand extends Command
             $violationList = $this->validator->validate($value, [new NotBlank(), new Email()]);
 
             if ($violationList->count() > 0) {
+                /** @psalm-suppress InvalidCast */
                 throw new InvalidArgumentException((string) $violationList);
             }
 

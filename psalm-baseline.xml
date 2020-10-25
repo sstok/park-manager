@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="dev-master@5ef82b53f6732beb66a94482e1fbea48d10b50e7">
+<files psalm-version="3.18.2@19aa905f7c3c7350569999a93c40ae91ae4e1626">
   <file src="src/Application/Command/Webhosting/Space/RegisterWebhostingSpaceHandler.php">
     <PossiblyNullArgument occurrences="1">
       <code>$command-&gt;customConstraints</code>
     </PossiblyNullArgument>
   </file>
-  <file src="src/Infrastructure/Doctrine/Repository/EntityRepository.php">
-    <PropertyTypeCoercion occurrences="1">
-      <code>$entityManager-&gt;getMetadataFactory()-&gt;getMetadataFor($className)</code>
-    </PropertyTypeCoercion>
+  <file src="src/Domain/UuidTrait.php">
+    <MoreSpecificReturnType occurrences="2">
+      <code>static</code>
+      <code>static</code>
+    </MoreSpecificReturnType>
   </file>
   <file src="src/Infrastructure/Security/Guard/BrowserKitAuthenticator.php">
     <MoreSpecificImplementedParamType occurrences="4">
       <code>$credentials</code>
-      <code>$userProvider</code>
       <code>$credentials</code>
       <code>$user</code>
+      <code>$userProvider</code>
     </MoreSpecificImplementedParamType>
   </file>
   <file src="src/Infrastructure/Security/Guard/FormAuthenticator.php">
-    <MoreSpecificImplementedParamType occurrences="3">
+    <MoreSpecificImplementedParamType occurrences="4">
       <code>$credentials</code>
+      <code>$credentials</code>
+      <code>$user</code>
       <code>$userProvider</code>
-      <code>$credentials</code>
     </MoreSpecificImplementedParamType>
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>isEnabled</code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Infrastructure/Security/PermissionAccessManager.php">
     <InvalidArgument occurrences="1">
@@ -53,34 +52,9 @@
       <code>$user</code>
     </MoreSpecificImplementedParamType>
   </file>
-  <file src="src/Kernel.php">
-    <MethodSignatureMismatch occurrences="1">
-      <code>protected function configureContainer(ContainerConfigurator $container, LoaderInterface $loader): void</code>
-    </MethodSignatureMismatch>
-  </file>
-  <file src="src/UI/Web/ArgumentResolver/ModelResolver.php">
-    <PossiblyNullArgument occurrences="2">
-      <code>$type</code>
-      <code>$type</code>
-    </PossiblyNullArgument>
-    <PossiblyNullOperand occurrences="1">
-      <code>$type</code>
-    </PossiblyNullOperand>
-    <UndefinedClass occurrences="1">
-      <code>$type::{$this-&gt;valueObjects[$type]}($value)</code>
-    </UndefinedClass>
-  </file>
   <file src="src/UI/Web/EventListener/NotFoundExceptionListener.php">
-    <InvalidArrayAccess occurrences="1">
-      <code>$key[0]</code>
-    </InvalidArrayAccess>
     <PossiblyInvalidArgument occurrences="1">
       <code>$exception-&gt;getCode()</code>
     </PossiblyInvalidArgument>
-  </file>
-  <file src="src/UI/Web/Form/Type/Security/ConfirmPasswordResetType.php">
-    <PossiblyNullReference occurrences="1">
-      <code>getName</code>
-    </PossiblyNullReference>
   </file>
 </files>

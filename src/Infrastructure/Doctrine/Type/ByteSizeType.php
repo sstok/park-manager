@@ -22,9 +22,9 @@ final class ByteSizeType extends IntegerType
         return 'byte_size';
     }
 
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
     {
-        return $platform->getBigIntTypeDeclarationSQL($fieldDeclaration);
+        return $platform->getBigIntTypeDeclarationSQL($column);
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ?ByteSize
@@ -39,10 +39,6 @@ final class ByteSizeType extends IntegerType
     {
         if ($value === null) {
             return null;
-        }
-
-        if (! $value instanceof ByteSize) {
-            throw new InvalidArgumentException('Expected ByteSize instance.');
         }
 
         return parent::convertToDatabaseValue($value->value, $platform);

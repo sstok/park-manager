@@ -20,7 +20,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface as UrlGenerator;
 final class PasswordResetMailerImpl implements PasswordResetMailer
 {
     private MailerInterface $mailer;
-
     private UrlGenerator $urlGenerator;
 
     public function __construct(MailerInterface $mailer, UrlGenerator $urlGenerator)

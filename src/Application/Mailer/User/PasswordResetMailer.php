@@ -15,5 +15,5 @@ use Rollerworks\Component\SplitToken\SplitToken;
 
 interface PasswordResetMailer
 {
-    public function send(EmailAddress $email, SplitToken $splitToken): void;
+    public function send(EmailAddress $emailAddress, SplitToken $splitToken): void;
 }

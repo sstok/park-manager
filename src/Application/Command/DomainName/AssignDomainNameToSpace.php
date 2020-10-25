@@ -16,7 +16,7 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 final class AssignDomainNameToSpace
 {
     public DomainNameId $id;
-    private SpaceId $space;
+    public SpaceId $space;
 
     public function __construct(DomainNameId $id, SpaceId $space)
     {
@@ -24,7 +24,7 @@ final class AssignDomainNameToSpace
         $this->space = $space;
     }
 
-    public static function with(string $id, ?string $spaceId): self
+    public static function with(string $id, string $spaceId): self
     {
         return new self(DomainNameId::fromString($id), SpaceId::fromString($spaceId));
     }

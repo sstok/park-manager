@@ -30,21 +30,21 @@ final class CommandDataMapper implements DataMapperInterface
         $this->wrappedDataMapper = $wrappedDataMapper;
     }
 
-    public function mapDataToForms($data, iterable $forms): void
+    public function mapDataToForms($viewData, iterable $forms): void
     {
-        if (! \is_array($data) || ! \array_key_exists('model', $data) || ! \array_key_exists('fields', $data)) {
-            throw new UnexpectedTypeException($data, 'array with keys "model" and "fields"');
+        if (! \is_array($viewData) || ! \array_key_exists('model', $viewData) || ! \array_key_exists('fields', $viewData)) {
+            throw new UnexpectedTypeException($viewData, 'array with keys "model" and "fields"');
         }
 
-        $this->wrappedDataMapper->mapDataToForms($data['model'], $forms);
+        $this->wrappedDataMapper->mapDataToForms($viewData['model'], $forms);
     }
 
-    public function mapFormsToData(iterable $forms, &$data): void
+    public function mapFormsToData(iterable $forms, &$viewData): void
     {
-        if (! \is_array($data) || ! \array_key_exists('model', $data) || ! \array_key_exists('fields', $data)) {
-            throw new UnexpectedTypeException($data, 'array with keys "model" and "fields"');
+        if (! \is_array($viewData) || ! \array_key_exists('model', $viewData) || ! \array_key_exists('fields', $viewData)) {
+            throw new UnexpectedTypeException($viewData, 'array with keys "model" and "fields"');
         }
 
-        $this->wrappedDataMapper->mapFormsToData($forms, $data['fields']);
+        $this->wrappedDataMapper->mapFormsToData($forms, $viewData['fields']);
     }
 }

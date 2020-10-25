@@ -88,7 +88,8 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * @param array $credentials
+     * @param array        $credentials
+     * @param SecurityUser $user
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {

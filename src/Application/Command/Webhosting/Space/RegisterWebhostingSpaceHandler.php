@@ -37,9 +37,12 @@ final class RegisterWebhostingSpaceHandler
 
     public function __invoke(RegisterWebhostingSpace $command): void
     {
-        $owner = $command->owner === null ? null : $this->userRepository->get($command->owner);
+        if ($command->owner !== null) {
+            $owner = $this->userRepository->get($command->owner);
+        } else {
+            $owner = null;
+        }
 
-        /** @psalm-suppress PossiblyNullOperand */
         if ($command->planId !== null) {
             $space = Space::register(
                 $command->id,
@@ -47,6 +50,7 @@ final class RegisterWebhostingSpaceHandler
                 $this->planRepository->get($command->planId)
             );
         } else {
+            /** @psalm-suppress PossiblyNullOperand */
             $space = Space::registerWithCustomConstraints(
                 $command->id,
                 $owner,
@@ -58,7 +62,7 @@ final class RegisterWebhostingSpaceHandler
             $currentRegistration = $this->domainNameRepository->getByName($command->domainName);
 
             if ($currentRegistration->space !== null) {
-                throw new DomainNameAlreadyInUse($command->domainName, $currentRegistration->getSpace()->getOwner() === $owner);
+                throw new DomainNameAlreadyInUse($command->domainName, $currentRegistration->space->owner === $owner);
             }
 
             $currentRegistration->transferToSpace($space, true);

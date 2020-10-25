@@ -52,8 +52,8 @@ cs-check: ensure
 	sh -c "docker-compose run --rm php vendor/bin/phpcs"
 
 phpstan: ensure
-	docker-compose run --user "$(shell id -u):$(shell id -g)" --rm php bin/console cache:clear --env=dev
-	sh -c "${QA_DOCKER_COMMAND} phpstan analyse"
+	docker-compose run --user "$(shell id -u):$(shell id -g)" php bin/console cache:clear --env=dev
+	docker-compose run --user "$(shell id -u):$(shell id -g)" --rm php vendor/bin/phpstan analyse
 
 rector: ensure
 	sh -c "${QA_DOCKER_COMMAND} rector process /project --config /project/rector.yaml --dry-run"

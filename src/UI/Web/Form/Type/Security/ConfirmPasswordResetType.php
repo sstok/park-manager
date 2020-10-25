@@ -55,7 +55,13 @@ final class ConfirmPasswordResetType extends AbstractType
         $view->vars['token_invalid'] = false;
 
         foreach ($form->getErrors() as $error) {
-            if ($error instanceof FormError && $error->getOrigin()->getName() === 'reset_token') {
+            if (! $error instanceof FormError) {
+                continue;
+            }
+
+            $origin = $error->getOrigin();
+
+            if ($origin instanceof FormInterface && $origin->getName() === 'reset_token') {
                 $view->vars['token_invalid'] = true;
 
                 break;

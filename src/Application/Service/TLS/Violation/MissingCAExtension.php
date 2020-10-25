@@ -14,9 +14,13 @@ use ParkManager\Application\Service\TLS\Violation;
 
 final class MissingCAExtension extends Violation
 {
-    public function __construct(string $name)
+    private string $name;
+
+    public function __construct(string $commonName)
     {
         parent::__construct();
+
+        $this->name = $commonName;
     }
 
     public function getTranslatorId(): string
@@ -26,6 +30,6 @@ final class MissingCAExtension extends Violation
 
     public function getTranslationArgs(): array
     {
-        return [];
+        return ['common_name' => $this->name];
     }
 }

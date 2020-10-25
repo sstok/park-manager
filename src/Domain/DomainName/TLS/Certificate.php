@@ -37,6 +37,9 @@ class Certificate
      */
     private $privateKey;
 
+    /**
+     * Memory cached string-version of the private-key.
+     */
     private ?string $privateKeyString;
 
     /**
@@ -97,6 +100,10 @@ class Certificate
     public function getPrivateKey(): string
     {
         if (! isset($this->privateKeyString)) {
+            if (!is_resource($this->privateKey)) {
+                throw new \InvalidArgumentException('PrivateKey resource was not initialized.');
+            }
+
             $this->privateKeyString = \stream_get_contents($this->privateKey);
         }
 

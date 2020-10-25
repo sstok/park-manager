@@ -1,8 +1,8 @@
 includes:
-	- /tools/.composer/vendor-bin/phpstan/vendor/phpstan/phpstan-symfony/extension.neon
-	- /tools/.composer/vendor-bin/phpstan/vendor/phpstan/phpstan-doctrine/extension.neon
-	- /tools/.composer/vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
-	- /tools/.composer/vendor-bin/phpstan/vendor/jangregor/phpstan-prophecy/src/extension.neon
+	- vendor/phpstan/phpstan-symfony/extension.neon
+	- vendor/phpstan/phpstan-doctrine/extension.neon
+	- vendor/phpstan/phpstan-phpunit/extension.neon
+	- vendor/jangregor/phpstan-prophecy/extension.neon
 
 parameters:
     #reportUnmatchedIgnoredErrors: false
@@ -26,7 +26,7 @@ parameters:
         constant_hassers: false
 
     ignoreErrors:
-        - '#Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:isEnabled\(\)#'
+        - '#Cannot cast Symfony\\Component\\Validator\\ConstraintViolationListInterface to string#'
 
         ## False positive
         - '#Property Doctrine\\ORM\\EntityRepository<mixed>\:\:\$_em \(Doctrine\\ORM\\EntityManager\) does not accept Doctrine\\ORM\\EntityManagerInterface#' # Doctrine PHPDoc bug

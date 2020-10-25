@@ -40,6 +40,7 @@ class KeyValidator
     public function validate(HiddenString $privateKey, string $certificate): void
     {
         $certR = @\openssl_x509_read($certificate);
+        $privateR = null;
 
         if ($certR === false) {
             throw new UnprocessablePEM('');
@@ -67,7 +68,6 @@ class KeyValidator
 
             $original = "I just wanna tell you how I'm feeling\nGotta make you understand";
             $encrypted = '';
-            $decrypted = '';
 
             if (! @\openssl_public_encrypt($original, $encrypted, $pupKey, OPENSSL_PKCS1_OAEP_PADDING)) {
                 throw new UnprocessableKey('Unable to encrypt data, invalid key provided?');

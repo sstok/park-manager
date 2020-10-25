@@ -55,6 +55,9 @@ trait UuidTrait
         return $this->stringValue;
     }
 
+    /**
+     * @param static|mixed $identity
+     */
     public function equals($identity): bool
     {
         if (! $identity instanceof self) {
@@ -67,8 +70,10 @@ trait UuidTrait
     /**
      * Allows to easily compare the equality of an identity.
      *
-     * @param string|null $property Given $identity1 is an Entity class this will use
-     *                              the property of the entity to get the identity VO
+     * @param static|object|null $identity1
+     * @param static|object|null $identity2
+     * @param string|null        $property  Given $identity1 is an Entity class this will use
+     *                                      the property of the entity to get the identity VO
      */
     public static function equalsValue($identity1, $identity2, ?string $property = null): bool
     {

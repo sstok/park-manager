@@ -11,6 +11,7 @@
         <directory name="src"/>
         <ignoreFiles>
             <directory name="vendor"/>
+            <file name="src/.preload.php"/>
         </ignoreFiles>
     </projectFiles>
 
@@ -44,9 +45,13 @@
         <MissingReturnType errorLevel="info"/>
         <MissingPropertyType errorLevel="info"/>
         <InvalidDocblock errorLevel="info"/>
-        <MisplacedRequiredParam errorLevel="info"/>
 
         <PropertyNotSetInConstructor errorLevel="info"/>
+        <PropertyTypeCoercion>
+            <errorLevel type="suppress">
+                <file name="src/Infrastructure/Doctrine/Repository/EntityRepository.php"/>
+            </errorLevel>
+        </PropertyTypeCoercion>
 
         <PossiblyUndefinedMethod>
             <errorLevel type="suppress">

@@ -37,7 +37,7 @@ trait x509Data
      *
      * @var resource|string
      */
-    private string $contents;
+    private $contents;
 
     /**
      * @ORM\Column(type="binary")
@@ -75,7 +75,7 @@ trait x509Data
         $this->ca = $ca;
     }
 
-    public static function getHash(string $contents)
+    public static function getHash(string $contents): string
     {
         return \hash('sha256', $contents);
     }
@@ -83,6 +83,10 @@ trait x509Data
     public function getPublicKey(): string
     {
         if (! isset($this->publicKeyString)) {
+            if (! is_resource($this->publicKey)) {
+                throw new \InvalidArgumentException('PublicKey resource was not initialized.');
+            }
+
             $this->publicKeyString = \stream_get_contents($this->publicKey);
         }
 
@@ -92,6 +96,10 @@ trait x509Data
     public function getContents(): string
     {
         if (! isset($this->contentsString)) {
+            if (! is_resource($this->contents)) {
+                throw new \InvalidArgumentException('Contents resource was not initialized.');
+            }
+
             $this->contentsString = \stream_get_contents($this->contents);
         }
 

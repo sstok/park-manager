@@ -16,9 +16,9 @@ use ParkManager\Domain\User\UserId;
 final class AssignDomainNameToUser
 {
     public DomainNameId $id;
-    private UserId $user;
+    public ?UserId $user;
 
-    public function __construct(DomainNameId $id, UserId $user)
+    public function __construct(DomainNameId $id, ?UserId $user)
     {
         $this->id = $id;
         $this->user = $user;
@@ -26,6 +26,6 @@ final class AssignDomainNameToUser
 
     public static function with(string $id, ?string $userId): self
     {
-        return new self(DomainNameId::fromString($id), UserId::fromString($userId));
+        return new self(DomainNameId::fromString($id), $userId ? UserId::fromString($userId) : null);
     }
 }

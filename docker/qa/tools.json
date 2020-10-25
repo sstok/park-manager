@@ -1,18 +1,6 @@
 {
     "tools": [
         {
-            "name": "phpstan-prophecy",
-            "summary": "PHPStan plug-in for prophecy",
-            "website": "https://github.com/jangregor/phpstan-prophecy",
-            "command": {
-                "composer-bin-plugin": {
-                    "package": "jangregor/phpstan-prophecy",
-                    "namespace": "phpstan"
-                }
-            },
-            "test": "true"
-        },
-        {
             "name": "twigcs",
             "summary": "The missing checkstyle for twig!",
             "website": "https://github.com/friendsoftwig/twigcs",

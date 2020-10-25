@@ -129,6 +129,7 @@ final class CertificateFactoryImpl implements CertificateFactory
     private function getPrivateKeyDetails(HiddenString $privateKey): array
     {
         $key = $privateKey->getString();
+        $r = null;
 
         try {
             $r = \openssl_pkey_get_private($key);

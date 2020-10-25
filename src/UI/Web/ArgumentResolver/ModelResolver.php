@@ -40,7 +40,7 @@ final class ModelResolver implements ArgumentValueResolverInterface
             return false;
         }
 
-        $type = $argument->getType();
+        $type = $argument->getType() ?? '[Null]';
 
         if ($type === EmailAddress::class) {
             return true;
@@ -63,8 +63,8 @@ final class ModelResolver implements ArgumentValueResolverInterface
         $default = $argument->hasDefaultValue() ? $argument->getDefaultValue() : null;
         $value = $request->attributes->get($argument->getName(), $default);
 
-        if ($value === null) {
-            throw new RuntimeException(\sprintf('Value for argument "%s" cannot be null.', $argument->getName()));
+        if ($value === null || $type === null) {
+            throw new RuntimeException(\sprintf('Value/type for argument "%s" cannot be null.', $argument->getName()));
         }
 
         if ($type === EmailAddress::class) {

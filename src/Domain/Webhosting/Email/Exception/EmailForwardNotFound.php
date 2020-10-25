@@ -20,7 +20,7 @@ final class EmailForwardNotFound extends NotFoundException
         return new self(\sprintf('Webhosting Forward with id "%s" does not exist.', $id->toString()));
     }
 
-    public static function withName(string $name)
+    public static function withName(string $name): self
     {
         return new self(\sprintf('Webhosting Forward with address "%s" does not exist.', $name));
     }

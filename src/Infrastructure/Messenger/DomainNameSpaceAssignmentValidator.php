@@ -52,7 +52,7 @@ final class DomainNameSpaceAssignmentValidator implements MiddlewareInterface
         $domainName = $this->domainNameRepository->get($message->id);
         $space = $domainName->space;
 
-        if ($domainName->space === null) {
+        if ($space === null) {
             return;
         }
 
