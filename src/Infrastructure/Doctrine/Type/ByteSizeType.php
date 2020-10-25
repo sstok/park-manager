@@ -12,7 +12,6 @@ namespace ParkManager\Infrastructure\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\IntegerType;
-use InvalidArgumentException;
 use ParkManager\Domain\ByteSize;
 
 final class ByteSizeType extends IntegerType

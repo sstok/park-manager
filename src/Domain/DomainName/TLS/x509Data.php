@@ -83,7 +83,7 @@ trait x509Data
     public function getPublicKey(): string
     {
         if (! isset($this->publicKeyString)) {
-            if (! is_resource($this->publicKey)) {
+            if (! \is_resource($this->publicKey)) {
                 throw new \InvalidArgumentException('PublicKey resource was not initialized.');
             }
 
@@ -96,7 +96,7 @@ trait x509Data
     public function getContents(): string
     {
         if (! isset($this->contentsString)) {
-            if (! is_resource($this->contents)) {
+            if (! \is_resource($this->contents)) {
                 throw new \InvalidArgumentException('Contents resource was not initialized.');
             }
 

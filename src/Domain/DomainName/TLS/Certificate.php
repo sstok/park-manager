@@ -100,7 +100,7 @@ class Certificate
     public function getPrivateKey(): string
     {
         if (! isset($this->privateKeyString)) {
-            if (!is_resource($this->privateKey)) {
+            if (! \is_resource($this->privateKey)) {
                 throw new \InvalidArgumentException('PrivateKey resource was not initialized.');
             }
 

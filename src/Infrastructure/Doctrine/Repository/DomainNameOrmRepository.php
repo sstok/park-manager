@@ -147,7 +147,7 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
 
     public function remove(DomainName $domainName): void
     {
-        if ($domainName->primary && $domainName->space!== null) {
+        if ($domainName->primary && $domainName->space !== null) {
             throw new CannotRemovePrimaryDomainName(
                 $domainName->id,
                 $domainName->space->id
