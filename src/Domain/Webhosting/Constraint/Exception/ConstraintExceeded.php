@@ -14,6 +14,7 @@ use Exception;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class ConstraintExceeded extends Exception implements TranslatableException
 {
@@ -42,8 +43,42 @@ final class ConstraintExceeded extends Exception implements TranslatableExceptio
 
     public static function mailboxStorageSizeRange(EmailAddress $address, ByteSize $requested, ByteSize $minimum, ByteSize $maximum): self
     {
+        if ($maximum->value === 0) {
+            return new self('mailbox_storage_no_space_left', [
+                'address' => $address->toString(),
+                'requested' => $requested->format(),
+            ]);
+        }
+
         return new self('mailbox_storage_size_range', [
             'address' => $address->toString(),
+            'requested' => $requested->format(),
+            'minimum' => $minimum->format(),
+            'maximum' => $maximum->format(),
+        ]);
+    }
+
+    public static function mailboxStorageResizeRange(EmailAddress $address, ByteSize $requested, ByteSize $minimum, ByteSize $maximum): self
+    {
+        if ($maximum->value === 0) {
+            return new self('mailbox_storage_resize_no_space_left', [
+                'address' => $address->toString(),
+                'requested' => $requested->format(),
+            ]);
+        }
+
+        return new self('mailbox_storage_resize_range', [
+            'address' => $address->toString(),
+            'requested' => $requested->format(),
+            'minimum' => $minimum->format(),
+            'maximum' => $maximum->format(),
+        ]);
+    }
+
+    public static function diskStorageSizeRange(SpaceId $id, ByteSize $requested, ByteSize $minimum, ByteSize $maximum): self
+    {
+        return new self('disk_storage_size_range', [
+            'id' => $id->toString(),
             'requested' => $requested->format(),
             'minimum' => $minimum->format(),
             'maximum' => $maximum->format(),

@@ -10,10 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Service\SpaceConstraint;
 
+use ParkManager\Application\Service\CurrentStorageUsageRetriever;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
 use ParkManager\Domain\Webhosting\Constraint\Exception\ConstraintExceeded;
-use ParkManager\Domain\Webhosting\Email\ForwardRepository;
+use ParkManager\Domain\Webhosting\Email\ForwardRepository as EmailForwardRepository;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 use ParkManager\Domain\Webhosting\Email\MailboxRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
@@ -24,133 +26,200 @@ class ConstraintsChecker
 {
     private WebhostingSpaceRepository $spaceRepository;
     private MailboxRepository $mailboxRepository;
-    private ForwardRepository $emailForwardRepository;
+    private EmailForwardRepository $emailForwardRepository;
+    private CurrentStorageUsageRetriever $storageUsageRetriever;
 
-    public function __construct(WebhostingSpaceRepository $spaceRepository, MailboxRepository $mailboxRepository, ForwardRepository $emailForwardRepository)
+    public function __construct(WebhostingSpaceRepository $spaceRepository, MailboxRepository $mailboxRepository, EmailForwardRepository $emailForwardRepository, CurrentStorageUsageRetriever $storageUsageRetriever)
     {
         $this->spaceRepository = $spaceRepository;
         $this->mailboxRepository = $mailboxRepository;
         $this->emailForwardRepository = $emailForwardRepository;
+        $this->storageUsageRetriever = $storageUsageRetriever;
     }
 
-    public function isStorageSizeExceeded(SpaceId $id): bool
+    public function isStorageSizeReached(SpaceId $id): bool
     {
-        return false; // XXX Needs storage-space provider
-    }
+        $constraints = $this->spaceRepository->get($id)->constraints;
+        $totalSpaceUsage = $this->storageUsageRetriever->getDiskUsageOf($id);
 
-    public function isTrafficQuotaExceeded(SpaceId $id): bool
-    {
-        return false; // XXX Needs traffic-usage provider
+        return $totalSpaceUsage->greaterThanOrEqualTo($constraints->storageSize);
     }
 
     /**
-     * @param array<string, ByteSize> $mailboxes
+     * @param array<string, ByteSize> $mailboxes ['address' => {ByteSize}]
+     *
+     * @throws ConstraintExceeded
      */
-    public function allowNewMailbox(SpaceId $id, array $mailboxes): void
+    public function allowNewMailboxes(SpaceId $id, array $mailboxes): void
     {
         $space = $this->spaceRepository->get($id);
         $emailConstraints = $space->constraints->email;
 
+        // Must be checked first as the maximum address-count prevails when set.
         if ($emailConstraints->maximumAddressCount > 0) {
-            $totalCount = $this->mailboxRepository->countBySpace($id) +
-                          $this->emailForwardRepository->countBySpace($id) +
-                          \count($mailboxes);
+            $this->checkNewAddressCountTotal($id, \count($mailboxes), $emailConstraints);
+        } elseif ($emailConstraints->maximumAddressCount !== -1 && $emailConstraints->maximumMailboxCount !== -1) {
+            // Note that `maximumAddressCount = -1` will fail the condition. And therefore is required.
+            $totalCount = $this->mailboxRepository->countBySpace($id) + \count($mailboxes);
 
-            if ($totalCount > $emailConstraints->maximumAddressCount) {
-                throw ConstraintExceeded::emailAddressesCount($emailConstraints->maximumAddressCount, $totalCount);
+            if ($totalCount > $emailConstraints->maximumMailboxCount) {
+                throw ConstraintExceeded::mailboxCount($emailConstraints->maximumMailboxCount, $totalCount);
             }
-        }
-
-        if ($emailConstraints->maximumAddressCount === -1 || $emailConstraints->maximumMailboxCount === -1) {
-            return;
-        }
-
-        $totalCount = $this->mailboxRepository->countBySpace($id) + \count($mailboxes);
-
-        if ($totalCount > $emailConstraints->maximumMailboxCount) {
-            throw ConstraintExceeded::mailboxCount($emailConstraints->maximumMailboxCount, $totalCount);
         }
 
         $this->checkNewMailboxSize($space, $mailboxes);
     }
 
     /**
+     * @throws ConstraintExceeded
+     */
+    private function checkNewAddressCountTotal(SpaceId $id, int $amount, EmailConstraints $emailConstraints): void
+    {
+        $totalCount = $this->mailboxRepository->countBySpace($id) +
+                      $this->emailForwardRepository->countBySpace($id) +
+                      $amount;
+
+        if ($totalCount > $emailConstraints->maximumAddressCount) {
+            throw ConstraintExceeded::emailAddressesCount($emailConstraints->maximumAddressCount, $totalCount);
+        }
+    }
+
+    /**
      * @param array<string, ByteSize> $mailboxes
+     *
+     * @throws ConstraintExceeded
      */
     private function checkNewMailboxSize(Space $space, array $mailboxes): void
     {
+        $minSize = new ByteSize(1, 'Mib');
         $maximumSize = $this->getMaximumMailboxSize($space);
 
         foreach ($mailboxes as $address => $size) {
-            if ($size->value > $maximumSize) {
-                throw ConstraintExceeded::mailboxStorageSizeRange(new EmailAddress($address), $size, new ByteSize(1, 'Mib'), $maximumSize);
+            // Precedence is important here. The size must not be less then min, if max is inf the greater size is ignored.
+            if ($size->lessThan($minSize) || (! $maximumSize->isInf() && $size->greaterThan($maximumSize))) {
+                throw ConstraintExceeded::mailboxStorageSizeRange(new EmailAddress($address), $size, $minSize, $maximumSize);
             }
 
-            $maximumSize = new ByteSize($maximumSize->value - $size->value, 'b');
+            if (! $maximumSize->isInf()) {
+                $maximumSize = $maximumSize->decrease($size);
+            }
         }
     }
 
     private function getMaximumMailboxSize(Space $space): ByteSize
     {
-        // XXX Needs storage-space provider
-        $storageSize = new ByteSize(100, 'Gib');
+        $maximumSize = $space->constraints->email->maxStorageSize;
 
-        $emailConstraints = $space->constraints->email;
-        $maximumSize = $emailConstraints->maxStorageSize;
-
-        if ($maximumSize->value > $storageSize->value || $maximumSize->value === ByteSize::inf()) {
-            $maximumSize = $storageSize;
+        if ($maximumSize->isInf()) {
+            $maximumSize = $space->constraints->storageSize;
         }
 
-        return $maximumSize;
+        if ($maximumSize->isInf()) {
+            return $maximumSize;
+        }
+
+        $webStorageAllocation = $space->webQuota ?? $this->storageUsageRetriever->getDiskUsageOf($space->id);
+        $mailboxAllocation = $this->getTotalMailboxAllocation($space->id);
+
+        // First calculate how much of the total storage-size is allocated to web-storage.
+        // What remains is usable for mailboxes.
+        $totalFreeSpace = $space->constraints->storageSize->decrease($webStorageAllocation);
+
+        // Now decrease with the current mailbox usage.
+        $totalFreeSpace = $totalFreeSpace->decrease($mailboxAllocation);
+
+        // Returns the lowest constrained possible value.
+        //
+        // If the total amount of free-space is less then the maximum, use that.
+        // Otherwise we use the maximum-size, which is always less than what's free.
+        return $totalFreeSpace->lessThan($maximumSize) ? $totalFreeSpace : $maximumSize;
     }
 
+    private function getTotalMailboxAllocation(SpaceId $spaceId): ByteSize
+    {
+        $storageSize = new ByteSize(0, 'b');
+
+        foreach ($this->mailboxRepository->allBySpace($spaceId) as $mailbox) {
+            $storageSize = $storageSize->increase($mailbox->size);
+        }
+
+        return $storageSize;
+    }
+
+    /**
+     * @param array<int|string, string> $forwards
+     *
+     * @throws ConstraintExceeded
+     */
     public function allowNewEmailForward(SpaceId $id, array $forwards): void
     {
         $emailConstraints = $this->spaceRepository->get($id)->constraints->email;
 
+        // Must be checked first as the maximum address-count prevails when set.
         if ($emailConstraints->maximumAddressCount > 0) {
-            $totalCount = $this->mailboxRepository->countBySpace($id) +
-                          $this->emailForwardRepository->countBySpace($id) +
-                          \count($forwards);
-
-            if ($totalCount > $emailConstraints->maximumAddressCount) {
-                throw ConstraintExceeded::emailAddressesCount($emailConstraints->maximumAddressCount, $totalCount);
-            }
+            $this->checkNewAddressCountTotal($id, \count($forwards), $emailConstraints);
         }
 
         if ($emailConstraints->maximumAddressCount === -1 || $emailConstraints->maximumForwardCount === -1) {
             return;
         }
 
-        $totalCount = $this->emailForwardRepository->countBySpace($id) + \count($forwards);
+        $countBySpace = $this->emailForwardRepository->countBySpace($id);
+        $totalCount = $countBySpace + \count($forwards);
 
         if ($totalCount > $emailConstraints->maximumForwardCount) {
-            throw ConstraintExceeded::emailForwardCount($emailConstraints->maximumMailboxCount, $totalCount);
+            throw ConstraintExceeded::emailForwardCount($emailConstraints->maximumForwardCount, $totalCount);
         }
     }
 
-    public function allowMailboxSize(MailboxId $id, ByteSize $size): void
+    /**
+     * @throws ConstraintExceeded
+     */
+    public function allowMailboxSize(MailboxId $id, ByteSize $requestedSize): void
     {
         $mailbox = $this->mailboxRepository->get($id);
-        $emailConstraints = $mailbox->space->constraints->email;
 
-        if ($mailbox->size->equals($size)) {
+        if ($mailbox->size->equals($requestedSize)) {
             return;
         }
 
-        // XXX Needs storage-space provider
-        $storageSize = new ByteSize(100, 'Gib');
-        $maximumSize = $emailConstraints->maxStorageSize;
+        $currentSize = $this->storageUsageRetriever->getMailboxUsage($id);
+        $maximumSize = $this->getMaximumMailboxSize($mailbox->space);
 
-        if ($maximumSize->value > $storageSize->value || $maximumSize->value === ByteSize::inf()) {
-            $maximumSize = $storageSize;
+        if ($requestedSize->greaterThan($maximumSize) || $requestedSize->lessThan($currentSize)) {
+            throw ConstraintExceeded::mailboxStorageResizeRange(
+                new EmailAddress($mailbox->toString()),
+                $requestedSize,
+                $currentSize,
+                $maximumSize
+            );
+        }
+    }
+
+    /**
+     * @throws ConstraintExceeded
+     */
+    public function allowHostingSize(SpaceId $id, ByteSize $requestedSize): void
+    {
+        $space = $this->spaceRepository->get($id);
+        $maximumSize = $space->constraints->storageSize;
+
+        if ($maximumSize->isInf()) {
+            return;
         }
 
-        $currentSize = new ByteSize(10, 'GiB'); // XXX Needs Mailbox storage-size provider service
+        $currentSize = $this->storageUsageRetriever->getDiskUsageOf($space->id);
 
-        if ($size->value > $emailConstraints->maxStorageSize || $size->value < $currentSize) {
-            throw ConstraintExceeded::mailboxStorageSizeRange(new EmailAddress($mailbox->toString()), $size, $currentSize, $maximumSize);
+        $totalAllocation = $currentSize->increase($this->getTotalMailboxAllocation($space->id));
+        $totalFreeSpace = $maximumSize->decrease($totalAllocation);
+
+        if ($requestedSize->greaterThan($totalFreeSpace) || $requestedSize->lessThan($currentSize)) {
+            throw ConstraintExceeded::diskStorageSizeRange(
+                $id,
+                $requestedSize,
+                $currentSize,
+                $totalFreeSpace
+            );
         }
     }
 }

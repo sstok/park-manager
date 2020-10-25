@@ -10,7 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\Webhosting\Space;
 
+use Assert\Assertion;
+use Assert\InvalidArgumentException;
 use DateTimeImmutable;
+use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
@@ -167,6 +170,42 @@ final class SpaceTest extends TestCase
 
         self::assertNull($space->getAssignedPlan());
         self::assertSame($constraints, $space->getConstraints());
+    }
+
+    /** @test */
+    public function it_allows_setting_web_storage_quota(): void
+    {
+        $constraints = new Constraints();
+        $space = Space::registerWithCustomConstraints(
+            SpaceId::create(),
+            UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
+            $constraints
+        );
+
+        self::assertNull($space->webQuota);
+
+        $space->setWebQuota($size = new ByteSize(12, 'GB'));
+        self::assertEquals($size, $space->webQuota);
+
+        // Not changed.
+        $space->setWebQuota($size2 = new ByteSize(12, 'GB'));
+        self::assertNotSame($size2, $space->webQuota);
+        self::assertSame($size, $space->webQuota);
+    }
+
+    /** @test */
+    public function it_requires_web_quota_does_not_exceed_storage_size(): void
+    {
+        $constraints = new Constraints(['storageSize' => $size = new ByteSize(12, 'GB')]);
+        $space = Space::registerWithCustomConstraints(
+            SpaceId::create(),
+            UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
+            $constraints
+        );
+
+        $this->expectExceptionObject(new InvalidArgumentException('WebSpace quota cannot be greater than the total storage size.', Assertion::INVALID_FALSE));
+
+        $space->setWebQuota($size = new ByteSize(13, 'GB'));
     }
 
     /** @test */

@@ -10,8 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Space;
 
+use Assert\Assertion;
+use Assert\InvalidArgumentException as AssertionInvalidArgumentException;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
@@ -57,6 +60,19 @@ class Space
      * @ORM\Column(name="marked_for_removal", type="boolean", nullable=true)
      */
     public bool $markedForRemoval = false;
+
+    /**
+     * READ-ONLY: The allocated size for web storage.
+     *
+     * This value must not exceed the Constraints.$storageSize value,
+     * and must not be more than the total size allocated to mail storage.
+     *
+     * If this value is NULL the size is not allocated yet, and must be ignored
+     * for any calculations.
+     *
+     * @ORM\Column(type="byte_size", nullable=true)
+     */
+    public ?ByteSize $webQuota = null;
 
     protected function __construct(SpaceId $id, ?User $owner)
     {
@@ -128,7 +144,7 @@ class Space
     /**
      * Change the webhosting space Constraints.
      *
-     * This removes the plans's assignment and makes the space's
+     * This removes the plan's assignment and makes the space's
      * Constraints exclusive.
      */
     public function assignCustomConstraints(Constraints $constraints): void
@@ -138,6 +154,24 @@ class Space
         if (! $this->constraints->equals($constraints)) {
             $this->constraints = $constraints;
         }
+    }
+
+    /**
+     * Resetting to NULL is not possible, use {ByteSize::Inf()} instead.
+     *
+     * @param ByteSize $size
+     *
+     * @throws AssertionInvalidArgumentException
+     */
+    public function setWebQuota(ByteSize $size): void
+    {
+        Assertion::false($size->greaterThan($this->constraints->storageSize), 'WebSpace quota cannot be greater than the total storage size.', 'webQuota');
+
+        if ($size->equals($this->webQuota)) {
+            return;
+        }
+
+        $this->webQuota = $size;
     }
 
     public function switchOwner(?User $owner): void
