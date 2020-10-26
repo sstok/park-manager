@@ -187,30 +187,4 @@ final class EmailConstraints
 
         return true;
     }
-
-    public function allowsNewMailbox(int $currentMailboxes, int $currentForwards, int $count = 1): bool
-    {
-        if ($this->maximumAddressCount > 0) {
-            return $currentMailboxes + $currentForwards + $count <= $this->maximumAddressCount;
-        }
-
-        if ($this->maximumAddressCount === -1 || $this->maximumMailboxCount === -1) {
-            return true;
-        }
-
-        return $currentMailboxes + $count <= $this->maximumMailboxCount;
-    }
-
-    public function allowsNewForward(int $currentForwards, int $currentMailboxes, int $count = 1): bool
-    {
-        if ($this->maximumAddressCount > 0) {
-            return $currentForwards + $currentMailboxes + $count <= $this->maximumAddressCount;
-        }
-
-        if ($this->maximumAddressCount === -1 || $this->maximumForwardCount === -1) {
-            return true;
-        }
-
-        return $currentForwards + $count <= $this->maximumForwardCount;
-    }
 }
