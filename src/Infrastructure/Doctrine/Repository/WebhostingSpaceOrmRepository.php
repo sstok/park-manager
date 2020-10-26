@@ -46,7 +46,7 @@ class WebhostingSpaceOrmRepository extends EntityRepository implements Webhostin
     public function remove(Space $space): void
     {
         if (! $space->isMarkedForRemoval()) {
-            throw CannotRemoveActiveWebhostingSpace::withId($space->getId());
+            throw CannotRemoveActiveWebhostingSpace::withId($space->id);
         }
 
         $this->_em->remove($space);

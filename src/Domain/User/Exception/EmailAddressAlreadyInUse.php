@@ -21,9 +21,4 @@ final class EmailAddressAlreadyInUse extends InvalidArgumentException
     {
         $this->id = $id;
     }
-
-    public function getId(): UserId
-    {
-        return $this->id;
-    }
 }

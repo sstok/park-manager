@@ -28,7 +28,7 @@ final class ForwardRepositoryMock implements ForwardRepository
     protected function getFieldsIndexMapping(): array
     {
         return [
-            'full_address' => static fn (Forward $forward): string => \sprintf('%s@%s', $forward->address, $forward->domainName->getNamePair()->toString()),
+            'full_address' => static fn (Forward $forward): string => \sprintf('%s@%s', $forward->address, $forward->domainName->namePair->toString()),
         ];
     }
 

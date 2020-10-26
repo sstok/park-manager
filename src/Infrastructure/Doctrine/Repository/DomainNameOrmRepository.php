@@ -132,7 +132,7 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
                         ->set('d.primary', 'false')
                         ->where('d.id = :id')
                         ->getQuery()
-                        ->execute(['id' => $primaryDomainName->getId()]);
+                        ->execute(['id' => $primaryDomainName->id]);
 
                     $this->_em->refresh($primaryDomainName);
                     $this->_em->persist($domainName);

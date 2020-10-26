@@ -44,7 +44,7 @@ final class AuthenticationTokenPasswordChangedListener
             return;
         }
 
-        if ($event->getId() !== $token->getUsername()) {
+        if ($event->id !== $token->getUsername()) {
             return;
         }
 

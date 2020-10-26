@@ -34,10 +34,10 @@ final class DomainNameRepositoryMock implements DomainNameRepository
             'tld' => static fn (DomainName $domainName) => $domainName->namePair->tld,
             'space_primary_id' => static function (DomainName $model) {
                 if ($model->isPrimary()) {
-                    return (string) $model->getSpace()->getId();
+                    return (string) $model->space->id;
                 }
 
-                return $model->getNamePair()->toString();
+                return $model->namePair->toString();
             },
         ];
     }
@@ -46,7 +46,7 @@ final class DomainNameRepositoryMock implements DomainNameRepository
     {
         return [
             'owner' => static fn (DomainName $domainName) => $domainName->owner === null ? null : (string) $domainName->owner->id,
-            'space' => static fn (DomainName $domainName) => $domainName->space === null ? null : (string) $domainName->space->getId(),
+            'space' => static fn (DomainName $domainName) => $domainName->space === null ? null : (string) $domainName->space->id,
         ];
     }
 
@@ -101,9 +101,9 @@ final class DomainNameRepositoryMock implements DomainNameRepository
 
     public function save(DomainName $domainName): void
     {
-        if ($domainName->isPrimary() && $domainName->getSpace() !== null) {
+        if ($domainName->isPrimary() && $domainName->space !== null) {
             try {
-                $primaryDomainName = $this->getPrimaryOf($domainName->getSpace()->getId());
+                $primaryDomainName = $this->getPrimaryOf($domainName->space->id);
             } catch (WebhostingSpaceNotFound $e) {
                 $primaryDomainName = $domainName;
             }
@@ -125,10 +125,10 @@ final class DomainNameRepositoryMock implements DomainNameRepository
 
     public function remove(DomainName $domainName): void
     {
-        if ($domainName->isPrimary() && $domainName->getSpace() !== null) {
+        if ($domainName->isPrimary() && $domainName->space !== null) {
             throw new CannotRemovePrimaryDomainName(
-                $domainName->getId(),
-                $domainName->getSpace()->getId()
+                $domainName->id,
+                $domainName->space->id
             );
         }
 

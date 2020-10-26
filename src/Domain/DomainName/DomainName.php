@@ -25,6 +25,8 @@ use ParkManager\Domain\Webhosting\Space\Space;
 class DomainName
 {
     /**
+     * READ-ONLY.
+     *
      * @ORM\Id
      * @ORM\Column(type="park_manager_domain_name_id")
      * @ORM\GeneratedValue(strategy="NONE")
@@ -32,23 +34,31 @@ class DomainName
     public DomainNameId $id;
 
     /**
+     * READ-ONLY.
+     *
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(name="owner", nullable=true, fieldName="id")
      */
     public ?User $owner = null;
 
     /**
+     * READ-ONLY.
+     *
      * @ORM\ManyToOne(targetEntity=Space::class)
      * @ORM\JoinColumn(onDelete="CASCADE", name="space", referencedColumnName="id")
      */
     public ?Space $space = null;
 
     /**
+     * READ-ONLY.
+     *
      * @ORM\Embedded(class=DomainNamePair::class, columnPrefix="domain_")
      */
     public DomainNamePair $namePair;
 
     /**
+     * READ-ONLY.
+     *
      * @ORM\Column(name="is_primary", type="boolean")
      */
     public bool $primary = false;
@@ -84,24 +94,9 @@ class DomainName
         return $instance;
     }
 
-    public function getId(): DomainNameId
-    {
-        return $this->id;
-    }
-
-    public function getNamePair(): DomainNamePair
-    {
-        return $this->namePair;
-    }
-
     public function toString(): string
     {
         return $this->namePair->toString();
-    }
-
-    public function getSpace(): ?Space
-    {
-        return $this->space;
     }
 
     public function markPrimary(): void
@@ -120,15 +115,15 @@ class DomainName
         // issuing the transfer, meaning the primary marking was not persisted
         // yet for the old owner. But checking this further is not worth it.
         if ($this->space !== null && $this->isPrimary()) {
-            throw new CannotTransferPrimaryDomainName($this->namePair, $this->space->getId(), $space->getId());
+            throw new CannotTransferPrimaryDomainName($this->namePair, $this->space->id, $space->id);
         }
 
         if ($this->space !== null) {
-            if ($this->space->owner !== $space->getOwner()) {
-                throw new CannotAssignDomainNameWithDifferentOwner($this->namePair, $this->space->getId(), $space->getId());
+            if ($this->space->owner !== $space->owner) {
+                throw new CannotAssignDomainNameWithDifferentOwner($this->namePair, $this->space->id, $space->id);
             }
-        } elseif ($this->owner !== $space->getOwner()) {
-            throw new CannotAssignDomainNameWithDifferentOwner($this->namePair, null, $space->getId());
+        } elseif ($this->owner !== $space->owner) {
+            throw new CannotAssignDomainNameWithDifferentOwner($this->namePair, null, $space->id);
         }
 
         $this->space = $space;
@@ -144,7 +139,7 @@ class DomainName
     public function transferToOwner(?User $newOwner): void
     {
         if ($this->space !== null && $this->isPrimary()) {
-            throw new CannotTransferPrimaryDomainName($this->namePair, $this->space->getId(), null);
+            throw new CannotTransferPrimaryDomainName($this->namePair, $this->space->id, null);
         }
 
         $this->space = null;

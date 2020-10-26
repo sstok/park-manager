@@ -72,6 +72,7 @@ final class ModelResolver implements ArgumentValueResolverInterface
         } elseif (isset($this->valueObjects[$type])) {
             yield $type::{$this->valueObjects[$type]}($value);
         } else {
+            // EntityName + Id = {Space}Id
             yield $this->entitiesRepositories->get($type)->get(($type . 'Id')::fromString($value));
         }
     }

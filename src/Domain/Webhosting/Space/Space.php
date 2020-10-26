@@ -74,18 +74,19 @@ class Space
      */
     public ?ByteSize $webQuota = null;
 
-    protected function __construct(SpaceId $id, ?User $owner)
+    private function __construct(SpaceId $id, ?User $owner, Constraints $constraints)
     {
         $this->id = $id;
         $this->owner = $owner;
+
+        // Store the constraints as part of the webhosting Space
+        // the assigned constraints are immutable.
+        $this->constraints = $constraints;
     }
 
     public static function register(SpaceId $id, ?User $owner, Plan $plan): self
     {
-        $space = new self($id, $owner);
-        // Store the constraints as part of the webhosting space
-        // the assigned constraints are immutable.
-        $space->constraints = $plan->getConstraints();
+        $space = new self($id, $owner, $plan->constraints);
         $space->plan = $plan;
 
         return $space;
@@ -93,30 +94,12 @@ class Space
 
     public static function registerWithCustomConstraints(SpaceId $id, ?User $owner, Constraints $constraints): self
     {
-        $space = new self($id, $owner);
-        $space->constraints = $constraints;
-
-        return $space;
-    }
-
-    public function getId(): SpaceId
-    {
-        return $this->id;
-    }
-
-    public function getOwner(): ?User
-    {
-        return $this->owner;
+        return new self($id, $owner, $constraints);
     }
 
     public function getAssignedPlan(): ?Plan
     {
         return $this->plan;
-    }
-
-    public function getConstraints(): Constraints
-    {
-        return $this->constraints;
     }
 
     /**
@@ -136,8 +119,8 @@ class Space
     {
         $this->plan = $plan;
 
-        if (! $this->constraints->equals($plan->getConstraints())) {
-            $this->constraints = $plan->getConstraints();
+        if (! $this->constraints->equals($plan->constraints)) {
+            $this->constraints = $plan->constraints;
         }
     }
 

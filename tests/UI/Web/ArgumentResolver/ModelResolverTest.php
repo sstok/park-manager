@@ -90,7 +90,7 @@ final class ModelResolverTest extends TestCase
 
         // XXX Temporary solution till all models are converted to typed properties
         if (\method_exists($resolved[0], 'getId')) {
-            self::assertEquals($id, $resolved[0]->getId()->toString());
+            self::assertEquals($id, $resolved[0]->id->toString());
         } else {
             self::assertEquals($id, $resolved[0]->id->toString());
         }

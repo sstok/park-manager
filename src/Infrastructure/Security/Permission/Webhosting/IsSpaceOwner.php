@@ -28,7 +28,7 @@ final class IsSpaceOwner implements SelfDecidingPermission
 
     public function __invoke(TokenInterface $token, SecurityUser $user, PermissionAccessManager $permissionAccess): int
     {
-        $owner = $this->space->getOwner();
+        $owner = $this->space->owner;
 
         if ($user->isAdmin()) {
             return PermissionDecider::DECIDE_ALLOW;

@@ -72,14 +72,14 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         $space = $repository->get($id);
         $space2 = $repository->get($id2);
 
-        self::assertEquals($id, $space->getId());
-        self::assertEquals($this->user1, $space->getOwner());
-        self::assertEquals(new Constraints(), $space->getConstraints());
+        self::assertEquals($id, $space->id);
+        self::assertEquals($this->user1, $space->owner);
+        self::assertEquals(new Constraints(), $space->constraints);
         self::assertNull($space->getAssignedPlan());
 
-        self::assertEquals($id2, $space2->getId());
-        self::assertEquals($this->user1, $space2->getOwner());
-        self::assertEquals($this->constraints, $space2->getConstraints());
+        self::assertEquals($id2, $space2->id);
+        self::assertEquals($this->user1, $space2->owner);
+        self::assertEquals($this->constraints, $space2->constraints);
         self::assertEquals($this->plan, $space2->getAssignedPlan());
     }
 

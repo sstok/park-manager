@@ -19,42 +19,32 @@ use Doctrine\ORM\Mapping as ORM;
 class Plan
 {
     /**
+     * READ-ONLY.
+     *
      * @ORM\Id
      * @ORM\Column(type="park_manager_webhosting_plan_id")
      * @ORM\GeneratedValue(strategy="NONE")
-     *
-     * @var PlanId
      */
-    public $id;
+    public PlanId $id;
 
     /**
+     * READ-ONLY.
+     *
      * @ORM\Embedded(class=Constraints::class, columnPrefix="constraint_")
-     *
-     * @var Constraints
      */
-    protected $constraints;
+    public Constraints $constraints;
 
     /**
-     * @ORM\Column(name="metadata", type="json")
+     * READ-ONLY.
      *
-     * @var array
+     * @ORM\Column(name="metadata", type="json")
      */
-    private $metadata = [];
+    public array $metadata = [];
 
     public function __construct(PlanId $id, Constraints $constraints)
     {
         $this->id = $id;
         $this->constraints = $constraints;
-    }
-
-    public function getId(): PlanId
-    {
-        return $this->id;
-    }
-
-    public function getConstraints(): Constraints
-    {
-        return $this->constraints;
     }
 
     public function changeConstraints(Constraints $constraints): void
@@ -78,10 +68,5 @@ class Plan
     public function withMetadata(array $metadata): void
     {
         $this->metadata = $metadata;
-    }
-
-    public function getMetadata(): array
-    {
-        return $this->metadata;
     }
 }

@@ -45,10 +45,10 @@ final class SpaceTest extends TestCase
 
         $space = Space::register($id, $owner, $plan);
 
-        self::assertEquals($id, $space->getId());
-        self::assertEquals($owner, $space->getOwner());
+        self::assertEquals($id, $space->id);
+        self::assertEquals($owner, $space->owner);
         self::assertSame($plan, $space->getAssignedPlan());
-        self::assertSame($constraints, $space->getConstraints());
+        self::assertSame($constraints, $space->constraints);
     }
 
     /** @test */
@@ -60,9 +60,9 @@ final class SpaceTest extends TestCase
 
         $space = Space::registerWithCustomConstraints($id, $owner, $constraints);
 
-        self::assertEquals($id, $space->getId());
-        self::assertEquals($owner, $space->getOwner());
-        self::assertSame($constraints, $space->getConstraints());
+        self::assertEquals($id, $space->id);
+        self::assertEquals($owner, $space->owner);
+        self::assertSame($constraints, $space->constraints);
         self::assertNull($space->getAssignedPlan());
     }
 
@@ -81,10 +81,10 @@ final class SpaceTest extends TestCase
         $space2->assignPlan($plan2);
 
         self::assertSame($plan1, $space1->getAssignedPlan(), 'Plan should not change');
-        self::assertSame($plan1->getConstraints(), $space1->getConstraints(), 'Constraints should not change');
+        self::assertSame($plan1->constraints, $space1->constraints, 'Constraints should not change');
 
         self::assertSame($plan2, $space2->getAssignedPlan());
-        self::assertSame($plan1->getConstraints(), $space2->getConstraints());
+        self::assertSame($plan1->constraints, $space2->constraints);
     }
 
     /** @test */
@@ -102,10 +102,10 @@ final class SpaceTest extends TestCase
         $space2->assignPlanWithConstraints($plan2);
 
         self::assertSame($plan1, $space1->getAssignedPlan(), 'Plan should not change');
-        self::assertSame($plan1->getConstraints(), $space1->getConstraints(), 'Constraints should not change');
+        self::assertSame($plan1->constraints, $space1->constraints, 'Constraints should not change');
 
         self::assertSame($plan2, $space2->getAssignedPlan());
-        self::assertSame($plan2->getConstraints(), $space2->getConstraints());
+        self::assertSame($plan2->constraints, $space2->constraints);
     }
 
     /** @test */
@@ -122,7 +122,7 @@ final class SpaceTest extends TestCase
         $space->assignPlanWithConstraints($plan);
 
         self::assertSame($plan, $space->getAssignedPlan());
-        self::assertSame($plan->getConstraints(), $space->getConstraints());
+        self::assertSame($plan->constraints, $space->constraints);
     }
 
     /** @test */
@@ -138,7 +138,7 @@ final class SpaceTest extends TestCase
         $space->assignCustomConstraints($newConstraints = (new Constraints())->setMonthlyTraffic(50));
 
         self::assertNull($space->getAssignedPlan());
-        self::assertSame($newConstraints, $space->getConstraints());
+        self::assertSame($newConstraints, $space->constraints);
     }
 
     /** @test */
@@ -153,7 +153,7 @@ final class SpaceTest extends TestCase
         $space->assignCustomConstraints($newConstraints = (new Constraints())->setMonthlyTraffic(50));
 
         self::assertNull($space->getAssignedPlan());
-        self::assertSame($newConstraints, $space->getConstraints());
+        self::assertSame($newConstraints, $space->constraints);
     }
 
     /** @test */
@@ -169,7 +169,7 @@ final class SpaceTest extends TestCase
         $space->assignCustomConstraints($constraints);
 
         self::assertNull($space->getAssignedPlan());
-        self::assertSame($constraints, $space->getConstraints());
+        self::assertSame($constraints, $space->constraints);
     }
 
     /** @test */
@@ -227,8 +227,8 @@ final class SpaceTest extends TestCase
         $space1->switchOwner($owner1);
         $space2->switchOwner($owner2);
 
-        self::assertEquals($owner1, $space1->getOwner());
-        self::assertEquals($owner2, $space2->getOwner());
+        self::assertEquals($owner1, $space1->owner);
+        self::assertEquals($owner2, $space2->owner);
     }
 
     /** @test */

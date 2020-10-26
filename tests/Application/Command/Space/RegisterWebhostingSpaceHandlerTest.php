@@ -59,7 +59,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
 
         $domainNameRepository->assertEntitiesCountWasSaved(1);
         $domainNameRepository->assertHasEntityThat(static function (DomainName $storedDomainName) use ($domainName) {
-            if ($domainName->toString() !== $storedDomainName->getNamePair()->toString()) {
+            if ($domainName->toString() !== $storedDomainName->namePair->toString()) {
                 return false;
             }
 
@@ -67,7 +67,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
                 return false;
             }
 
-            if (! $storedDomainName->getSpace()->getId()->equals(SpaceId::fromString(self::SPACE_ID1))) {
+            if (! $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1))) {
                 return false;
             }
 
@@ -95,7 +95,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
 
         $domainNameRepository->assertEntitiesCountWasSaved(1);
         $domainNameRepository->assertHasEntityThat(static function (DomainName $storedDomainName) use ($domainName) {
-            if ($domainName->toString() !== $storedDomainName->getNamePair()->toString()) {
+            if ($domainName->toString() !== $storedDomainName->namePair->toString()) {
                 return false;
             }
 
@@ -103,7 +103,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
                 return false;
             }
 
-            if (! $storedDomainName->getSpace()->getId()->equals(SpaceId::fromString(self::SPACE_ID1))) {
+            if (! $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1))) {
                 return false;
             }
 
@@ -159,7 +159,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
 
         $domainNameRepository->assertEntitiesCountWasSaved(1);
         $domainNameRepository->assertHasEntityThat(static function (DomainName $storedDomainName) use ($domainName) {
-            if ($domainName->toString() !== $storedDomainName->getNamePair()->toString()) {
+            if ($domainName->toString() !== $storedDomainName->namePair->toString()) {
                 return false;
             }
 
@@ -167,7 +167,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
                 return false;
             }
 
-            if (! $storedDomainName->getSpace()->getId()->equals(SpaceId::fromString(self::SPACE_ID1))) {
+            if (! $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1))) {
                 return false;
             }
 

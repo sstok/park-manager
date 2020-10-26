@@ -88,22 +88,22 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
         });
 
         $webhostingDomainName1 = DomainName::registerForSpace(DomainNameId::create(), $this->space1, new DomainNamePair('example', 'com'));
-        $this->id1 = $webhostingDomainName1->getId();
+        $this->id1 = $webhostingDomainName1->id;
 
         $webhostingDomainName2 = DomainName::registerForSpace(DomainNameId::create(), $this->space2, new DomainNamePair('example', 'net'));
-        $this->id2 = $webhostingDomainName2->getId();
+        $this->id2 = $webhostingDomainName2->id;
 
         $webhostingDomainName3 = DomainName::registerSecondaryForSpace(DomainNameId::create(), $this->space2, new DomainNamePair('example', 'co.uk'));
-        $this->id3 = $webhostingDomainName3->getId();
+        $this->id3 = $webhostingDomainName3->id;
 
         $webhostingDomainName4 = DomainName::register(DomainNameId::create(), new DomainNamePair('example', 'nl'), null);
-        $this->id4 = $webhostingDomainName4->getId();
+        $this->id4 = $webhostingDomainName4->id;
 
         $webhostingDomainName5 = DomainName::register(DomainNameId::create(), new DomainNamePair('example', 'nu'), $user1);
-        $this->id5 = $webhostingDomainName5->getId();
+        $this->id5 = $webhostingDomainName5->id;
 
         $webhostingDomainName6 = DomainName::registerForSpace(DomainNameId::create(), $this->space3, new DomainNamePair('example', 'nu'));
-        $this->id6 = $webhostingDomainName6->getId();
+        $this->id6 = $webhostingDomainName6->id;
 
         $this->repository = new DomainNameOrmRepository($em);
         $this->repository->save($webhostingDomainName1);
@@ -122,31 +122,31 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
     {
         $webhostingDomainName = $this->repository->get($this->id1);
 
-        self::assertTrue($webhostingDomainName->getId()->equals($this->id1), 'ID should equal');
-        self::assertEquals($this->space1, $webhostingDomainName->getSpace());
-        self::assertEquals(new DomainNamePair('example', 'com'), $webhostingDomainName->getNamePair());
+        self::assertTrue($webhostingDomainName->id->equals($this->id1), 'ID should equal');
+        self::assertEquals($this->space1, $webhostingDomainName->space);
+        self::assertEquals(new DomainNamePair('example', 'com'), $webhostingDomainName->namePair);
         self::assertTrue($webhostingDomainName->isPrimary());
 
         $webhostingDomainName = $this->repository->get($this->id2);
 
-        self::assertTrue($webhostingDomainName->getId()->equals($this->id2), 'ID should equal');
-        self::assertEquals($this->space2, $webhostingDomainName->getSpace());
-        self::assertEquals(new DomainNamePair('example', 'net'), $webhostingDomainName->getNamePair());
+        self::assertTrue($webhostingDomainName->id->equals($this->id2), 'ID should equal');
+        self::assertEquals($this->space2, $webhostingDomainName->space);
+        self::assertEquals(new DomainNamePair('example', 'net'), $webhostingDomainName->namePair);
         self::assertTrue($webhostingDomainName->isPrimary());
 
         $webhostingDomainName = $this->repository->get($this->id3);
 
-        self::assertTrue($webhostingDomainName->getId()->equals($this->id3), 'ID should equal');
-        self::assertEquals($this->space2, $webhostingDomainName->getSpace());
-        self::assertEquals(new DomainNamePair('example', 'co.uk'), $webhostingDomainName->getNamePair());
+        self::assertTrue($webhostingDomainName->id->equals($this->id3), 'ID should equal');
+        self::assertEquals($this->space2, $webhostingDomainName->space);
+        self::assertEquals(new DomainNamePair('example', 'co.uk'), $webhostingDomainName->namePair);
         self::assertFalse($webhostingDomainName->isPrimary());
     }
 
     /** @test */
     public function it_gets_primary_of_space(): void
     {
-        self::assertTrue($this->repository->getPrimaryOf($this->space1->getId())->getId()->equals($this->id1), 'ID should equal');
-        self::assertTrue($this->repository->getPrimaryOf($this->space2->getId())->getId()->equals($this->id2), 'ID should equal');
+        self::assertTrue($this->repository->getPrimaryOf($this->space1->id)->id->equals($this->id1), 'ID should equal');
+        self::assertTrue($this->repository->getPrimaryOf($this->space2->id)->id->equals($this->id2), 'ID should equal');
 
         $this->expectException(WebhostingSpaceNotFound::class);
         $this->expectExceptionMessage(
@@ -166,9 +166,9 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
         self::assertNotNull($domainName1);
         self::assertNotNull($domainName2);
 
-        self::assertTrue($domainName1->getId()->equals($this->id1), 'ID should equal');
-        self::assertTrue($domainName2->getId()->equals($this->id2), 'ID should equal');
-        self::assertTrue($domainName3->getId()->equals($this->id3), 'ID should equal');
+        self::assertTrue($domainName1->id->equals($this->id1), 'ID should equal');
+        self::assertTrue($domainName2->id->equals($this->id2), 'ID should equal');
+        self::assertTrue($domainName3->id->equals($this->id3), 'ID should equal');
 
         $this->expectExceptionObject(DomainNameNotFound::withName($name = new DomainNamePair('example', 'noop')));
 
@@ -227,7 +227,7 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
 
         $this->expectException(CannotRemovePrimaryDomainName::class);
         $this->expectExceptionMessage(
-            (new CannotRemovePrimaryDomainName($this->id1, $webhostingDomainName->getSpace()->getId()))->getMessage()
+            (new CannotRemovePrimaryDomainName($this->id1, $webhostingDomainName->space->id))->getMessage()
         );
 
         $this->repository->remove($webhostingDomainName);

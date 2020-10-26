@@ -39,7 +39,7 @@ final class SpaceRepositoryMock implements WebhostingSpaceRepository
     public function remove(Space $space): void
     {
         if (! $space->isMarkedForRemoval()) {
-            throw new CannotRemoveActiveWebhostingSpace($space->getId());
+            throw new CannotRemoveActiveWebhostingSpace($space->id);
         }
 
         $this->mockDoRemove($space);
