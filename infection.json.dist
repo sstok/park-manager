@@ -1,11 +1,13 @@
 {
-    "timeout": 2,
+    "timeout": 4,
     "source": {
         "directories": [
             "src"
         ],
         "excludes": [
-            "src\/UI\/Web\/Action"
+            "src\/UI\/Web\/Action",
+            "src\/DataFixtures",
+            "src\/Migrations"
         ]
     },
     "logs": {
@@ -15,7 +17,63 @@
         "@default": true,
         "IdenticalEqual": false,
         "NotIdenticalNotEqual": false,
-        "This": false
+        "CastInt": false,
+        "CastString": false,
+        "Coalesce": false,
+        "FlipCoalesce": false,
+        "global-ignoreSourceCodeByRegex": [
+            "parent\\:\\:__construct\\(\\$message, 0, new Error\\(\\\\openssl_error_string\\(\\), \\d+\\)\\);(?# Exception message)",
+            "parent\\:\\:__construct\\('', 0, new Error\\(\\\\openssl_error_string\\(\\), \\d+\\, \\$previous\\)\\);(?# Exception message)",
+            "if \\(\\$this->value >= 1024(?: \\* 1024){0,2}\\) \\{(?# Impossible to test)",
+            "return \\\\sprintf\\('%\\.2f KiB', \\$this->value / 1024\\);",
+            "\\$\\w+ = new ByteSize\\(0, 'b'\\);"
+        ],
+        "DecrementInteger": {
+            "ignoreSourceCodeByRegex": [
+                "(.+)\\$tokenTTL(.+)(?# Just a default value)"
+            ]
+        },
+        "IncrementInteger": {
+            "ignoreSourceCodeByRegex": [
+                "(.+)\\$tokenTTL(.+)(?# Just a default value)"
+            ]
+        },
+        "This": false,
+        "MBString": false,
+        "FunctionCallRemoval": {
+            "ignoreSourceCodeByRegex": [
+                "memzero\\(\\$[\\w\\d]+\\);",
+                "\\\\sodium_memzero\\(\\$[\\w\\d]+\\);",
+                "\\\\openssl_\\w+_free\\(\\$[\\w\\d]+\\);",
+                "\\\\sort\\(\\$candidates\\);"
+            ]
+        },
+        "ArrayItemRemoval": {
+            "ignoreSourceCodeByRegex": [
+                "\\$resolver->setAllowedTypes\\('\\w+', (.+?)\\);",
+                "\\$resolver->setDefault\\('\\w+', (.+?)\\);",
+                "static \\$idnErrors = .+(?# Any missing entry will fail eventually, testing this all is not worth it)"
+            ]
+        },
+        "MethodCallRemoval": {
+            "ignoreSourceCodeByRegex": [
+                "\\$resolver->setAllowedTypes\\('\\w+', (.+?)\\);",
+                "\\$e->setUsername\\('\\w+', \\(\\$[\\w\\d]+\\);",
+                "\\$e->setUsername\\(\\$user->getUsername\\(\\)\\);",
+                "\\$resolver->setDefault\\('error_bubbling', true\\);",
+                "parent::__construct\\(\\(string\\) \\\\openssl_error_string\\(\\), \\$code\\);"
+            ]
+        },
+        "OneZeroInteger": {
+            "ignoreSourceCodeByRegex": [
+                "public function __construct\\(string \\$name, int \\$code = \\d+\\)"
+            ]
+        },
+        "FalseValue": {
+            "ignoreSourceCodeByRegex": [
+                "\\$data = \\$this->getX509Data\\(\\$certificate, '', false\\);"
+            ]
+        }
     },
     "testFrameworkOptions": "--exclude-group functional"
 }

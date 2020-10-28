@@ -40,6 +40,7 @@ final class RequestPasswordResetHandlerTest extends TestCase
         $handler = new RequestPasswordResetHandler($repository, $this->tokenFactory, $this->expectMailIsSend($user), 120);
         $handler(new RequestPasswordReset('Jane@example.com'));
 
+        $repository->assertEntitiesCountWasSaved(1);
         $repository->assertHasEntity(
             $user->id,
             static function (User $entity): void {

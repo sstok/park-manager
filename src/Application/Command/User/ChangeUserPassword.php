@@ -14,7 +14,15 @@ use ParkManager\Domain\User\UserId;
 
 final class ChangeUserPassword
 {
+    /**
+     * READ-ONLY.
+     */
     public UserId $id;
+
+    /**
+     * READ-ONLY: The password in hash-encoded format or null
+     * to disable password based authentication.
+     */
     public ?string $password;
 
     /**
@@ -25,19 +33,5 @@ final class ChangeUserPassword
     {
         $this->id = UserId::fromString($id);
         $this->password = $password;
-    }
-
-    public function id(): UserId
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string|null The password in hash-encoded format or null
-     *                     to disable password based authentication
-     */
-    public function password(): ?string
-    {
-        return $this->password;
     }
 }

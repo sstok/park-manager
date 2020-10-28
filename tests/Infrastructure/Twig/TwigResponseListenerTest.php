@@ -73,6 +73,21 @@ final class TwigResponseListenerTest extends TestCase
         self::assertSame('It was like this when I got here.', $event->getResponse()->getContent());
     }
 
+    /** @test */
+    public function it_renders_twig_template_with_variables_set_later(): void
+    {
+        $container = $this->createUsedContainer('client/show_user.html.twig', ['He' => 'you']);
+        $listener = new TwigResponseListener($container);
+
+        $twigResponse = new TwigResponse('client/show_user.html.twig');
+        $twigResponse->setTemplateVariables(['He' => 'you']);
+
+        $event = $this->createEvent($twigResponse);
+        $listener->onKernelResponse($event);
+
+        self::assertSame('It was like this when I got here.', $event->getResponse()->getContent());
+    }
+
     private function createUnusedContainer(): ContainerInterface
     {
         $containerProphecy = $this->prophesize(ContainerInterface::class);

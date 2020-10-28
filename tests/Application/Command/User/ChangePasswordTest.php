@@ -26,8 +26,8 @@ final class ChangePasswordTest extends TestCase
     {
         $command = new ChangeUserPassword($id = self::USER_ID, 'empty');
 
-        self::assertEquals(UserId::fromString(self::USER_ID), $command->id());
-        self::assertEquals('empty', $command->password());
+        self::assertEquals(UserId::fromString(self::USER_ID), $command->id);
+        self::assertEquals('empty', $command->password);
     }
 
     /** @test */
@@ -35,7 +35,7 @@ final class ChangePasswordTest extends TestCase
     {
         $command = new ChangeUserPassword($id = self::USER_ID, null);
 
-        self::assertEquals(UserId::fromString(self::USER_ID), $command->id());
-        self::assertNull($command->password());
+        self::assertEquals(UserId::fromString(self::USER_ID), $command->id);
+        self::assertNull($command->password);
     }
 }

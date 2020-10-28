@@ -64,7 +64,7 @@ RUN set -eux; \
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
 RUN set -eux; \
-    wget https://github.com/infection/infection/releases/download/0.16.0/infection.phar; \
+    wget https://github.com/infection/infection/releases/download/0.19.2/infection.phar; \
 	chmod +x infection.phar; \
 	mv infection.phar /usr/local/bin/infection
 

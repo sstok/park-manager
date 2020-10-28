@@ -56,6 +56,7 @@ class CAResolver
     {
         $x509Read = @\openssl_x509_read($contents);
 
+        // @codeCoverageIgnoreStart
         if ($x509Read === false) {
             throw new UnprocessablePEM($name, $contents);
         }
@@ -77,6 +78,7 @@ class CAResolver
             $rawData['_pubKey'] = $pubKey['key'];
             \openssl_pkey_free($pubKeyRead);
         }
+        // @codeCoverageIgnoreEnd
 
         @\openssl_x509_free($x509Read);
 

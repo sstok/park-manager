@@ -121,10 +121,7 @@ final class DomainNameTest extends TestCase
         $space1 = $this->createSpace(self::SPACE_ID1);
         $webhostingDomainName = DomainName::registerForSpace(DomainNameId::create(), $space1, new DomainNamePair('example', 'com'));
 
-        $this->expectException(CannotTransferPrimaryDomainName::class);
-        $this->expectExceptionMessage(
-            (new CannotTransferPrimaryDomainName($webhostingDomainName->namePair, $space1->id, $space2->id))->getMessage()
-        );
+        $this->expectExceptionObject(new CannotTransferPrimaryDomainName($webhostingDomainName->namePair, $space1->id, $space2->id));
 
         $webhostingDomainName->transferToSpace($space2);
     }
@@ -138,6 +135,7 @@ final class DomainNameTest extends TestCase
         $webhostingDomainName = DomainName::registerSecondaryForSpace(DomainNameId::create(), $space1, new DomainNamePair('example', 'com'));
 
         $this->expectExceptionObject(new CannotAssignDomainNameWithDifferentOwner($webhostingDomainName->namePair, $space1->id, $space2->id));
+        $this->expectExceptionMessage('Domain name "example.com" of space 374dd50e-9b9f-11e7-9730-acbc32b58315 does not have the same owner as space cfa42746-a6ac-11e7-bff0-acbc32b58315.');
 
         $webhostingDomainName->transferToSpace($space2);
     }
@@ -160,6 +158,7 @@ final class DomainNameTest extends TestCase
         );
 
         $this->expectExceptionObject(new CannotAssignDomainNameWithDifferentOwner($webhostingDomainName->namePair, null, $space->id));
+        $this->expectExceptionMessage('Domain name "example.com" of space [none] does not have the same owner as space cfa42746-a6ac-11e7-bff0-acbc32b58315.');
 
         $webhostingDomainName->transferToSpace($space);
     }

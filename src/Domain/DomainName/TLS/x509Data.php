@@ -75,6 +75,11 @@ trait x509Data
         $this->ca = $ca;
     }
 
+    public function getId(): string
+    {
+        return $this->hash;
+    }
+
     public static function getHash(string $contents): string
     {
         return \hash('sha256', $contents);

@@ -80,15 +80,15 @@ final class ByteSize
     public function format(): string
     {
         if ($this->value >= 1024 * 1024 * 1024) {
-            return \sprintf('%.1f GiB', $this->value / 1024 / 1024 / 1024);
+            return \sprintf('%.2f GiB', $this->value / 1024 / 1024 / 1024);
         }
 
         if ($this->value >= 1024 * 1024) {
-            return \sprintf('%.1f MiB', $this->value / 1024 / 1024);
+            return \sprintf('%.2f MiB', $this->value / 1024 / 1024);
         }
 
         if ($this->value >= 1024) {
-            return \sprintf('%d KiB', $this->value / 1024);
+            return \sprintf('%.2f KiB', $this->value / 1024);
         }
 
         return \sprintf('%d B', $this->value);

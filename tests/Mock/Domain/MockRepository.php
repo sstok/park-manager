@@ -62,7 +62,7 @@ trait MockRepository
      */
     private function setInMockedStorage(object $entity): void
     {
-        $this->storedById[$this->getValueWithGetter($entity, 'id')->toString()] = $entity;
+        $this->storedById[$this->getIdValue($entity)] = $entity;
 
         $indexMapping = $this->getFieldsIndexMapping();
 
@@ -79,6 +79,17 @@ trait MockRepository
             $withGetter = $this->getValueWithGetter($entity, $getter);
             $this->storedMultiByField[$mapping][$withGetter][] = $entity;
         }
+    }
+
+    private function getIdValue(object $entity): string
+    {
+        $id = $this->getValueWithGetter($entity, 'id');
+
+        if (\is_object($id)) {
+            $id = $id->toString();
+        }
+
+        return (string) $id;
     }
 
     /**
@@ -137,7 +148,7 @@ trait MockRepository
     protected function mockDoSave(object $entity): void
     {
         $this->setInMockedStorage($entity);
-        $this->savedById[$this->getValueWithGetter($entity, 'id')->toString()] = $entity;
+        $this->savedById[$this->getIdValue($entity)] = $entity;
         ++$this->mockWasSaved;
     }
 
@@ -146,24 +157,28 @@ trait MockRepository
      */
     protected function mockDoRemove(object $entity): void
     {
-        $this->removedById[$this->getValueWithGetter($entity, 'id')->toString()] = $entity;
+        $this->removedById[$this->getIdValue($entity)] = $entity;
         ++$this->mockWasRemoved;
     }
 
-    protected function mockDoGetById(object $id)
+    protected function mockDoGetById($id)
     {
-        if (! isset($this->storedById[$id->toString()])) {
+        $idStr = \is_object($id) ? $id->toString() : (string) $id;
+
+        if (! isset($this->storedById[$idStr])) {
             $this->throwOnNotFound($id);
         }
 
         $this->guardNotRemoved($id);
 
-        return $this->storedById[$id->toString()];
+        return $this->storedById[$idStr];
     }
 
-    protected function guardNotRemoved(object $id): void
+    protected function guardNotRemoved($id): void
     {
-        if (isset($this->removedById[$id->toString()])) {
+        $idStr = \is_object($id) ? $id->toString() : (string) $id;
+
+        if (isset($this->removedById[$idStr])) {
             $this->throwOnNotFound($id);
         }
     }
@@ -249,6 +264,21 @@ trait MockRepository
         if ($entities) {
             Assert::assertEquals($entities, \array_values($this->savedById));
         }
+    }
+
+    public function assertEntitiesWereSavedThat(Closure $excepted): void
+    {
+        Assert::assertGreaterThan(0, $this->mockWasSaved, 'Entities were expected to be stored');
+
+        foreach ($this->savedById as $entity) {
+            if ($excepted($entity)) {
+                $this->guardNotRemoved($this->getValueWithGetter($entity, 'id'));
+
+                return;
+            }
+        }
+
+        Assert::fail('No entity was found (by saving) that gave a Closure condition.');
     }
 
     public function assertEntitiesCountWasSaved(int $count): void

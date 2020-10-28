@@ -84,7 +84,7 @@ final class EmailAddress
         }
     }
 
-    public function validatePattern(): void
+    private function validatePattern(): void
     {
         if (\mb_substr_count($this->address, '*') > 1) {
             throw MalformedEmailAddress::patternMultipleWildcards($this->address);
@@ -107,7 +107,7 @@ final class EmailAddress
 
     public function validate(): void
     {
-        new Address(\str_replace('*', 't', $this->address), '');
+        new Address($this->address, '');
     }
 
     public function toMimeAddress(): Address

@@ -77,13 +77,12 @@ class KeyValidator
                 throw new CertificateMismatch();
             }
 
-            // @codeCoverageIgnoreEnd
-
             $details = @\openssl_pkey_get_details($privateR);
 
             if ($details === false) {
                 throw new UnprocessableKey('Unable to read private key-data.');
             }
+            // @codeCoverageIgnoreEnd
 
             if ($details['bits'] < self::MINIMUM_BIT_COUNT) {
                 throw new KeyBitsToLow(self::MINIMUM_BIT_COUNT, $details['bits']);

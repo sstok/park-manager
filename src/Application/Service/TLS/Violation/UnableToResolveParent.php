@@ -24,7 +24,7 @@ final class UnableToResolveParent extends Violation
 
     public function getTranslatorId(): string
     {
-        return 'tls.violation.duplicate_ca_names';
+        return 'tls.violation.unable_to_resolve_parent';
     }
 
     public function getTranslationArgs(): array

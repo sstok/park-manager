@@ -12,4 +12,6 @@ use Symfony\Component\Dotenv\Dotenv;
 
 require \dirname(__DIR__) . '/vendor/autoload.php';
 
+\ini_set('memory_limit', '-1');
+
 (new Dotenv())->bootEnv(\dirname(__DIR__) . '/.env');

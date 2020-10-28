@@ -149,68 +149,141 @@ final class ConstraintsCheckerTest extends TestCase
         $space->setWebQuota(new ByteSize(1000, 'GB')); // As there is no total limit this value has no effect.
         $this->spaceRepository->save($space);
 
-        $this->constraintChecker->allowNewMailboxes(SpaceId::fromString(self::SPACE_ID1), [
-            'l1@example.com' => ByteSize::inf(),
-            'l2@example.com' => ByteSize::inf(),
-            'l3@example.com' => new ByteSize(10, 'GiB'),
-            'l4@example.com' => ByteSize::inf(),
-            'l5@example.com' => ByteSize::inf(),
-        ]);
+        $this->constraintChecker->allowNewMailboxes(
+            SpaceId::fromString(self::SPACE_ID1),
+            [
+                'l1@example.com' => ByteSize::inf(),
+                'l2@example.com' => ByteSize::inf(),
+                'l3@example.com' => new ByteSize(10, 'GiB'),
+                'l4@example.com' => ByteSize::inf(),
+                'l5@example.com' => ByteSize::inf(),
+            ]
+        );
 
-        $this->constraintChecker->allowNewEmailForward(SpaceId::fromString(self::SPACE_ID1), [
-            'l1@example.com',
-            'l2@example.com',
-            'l3@example.com',
-            'l4@example.com',
-            'l5@example.com',
-        ]);
+        $this->constraintChecker->allowNewEmailForward(
+            SpaceId::fromString(self::SPACE_ID1),
+            [
+                'l1@example.com',
+                'l2@example.com',
+                'l3@example.com',
+                'l4@example.com',
+                'l5@example.com',
+            ]
+        );
 
-        $this->constraintChecker->allowNewMailboxes(SpaceId::fromString(self::SPACE_ID2), [
-            'l1@example.com' => new ByteSize(10, 'MiB'),
-            'l2@example.com' => new ByteSize(10, 'MiB'),
-            'l3@example.com' => new ByteSize(10, 'MiB'),
-        ]);
+        $this->constraintChecker->allowNewMailboxes(
+            SpaceId::fromString(self::SPACE_ID2),
+            [
+                'l1@example.com' => new ByteSize(10, 'MiB'),
+                'l2@example.com' => new ByteSize(10, 'MiB'),
+                'l3@example.com' => new ByteSize(10, 'MiB'),
+            ]
+        );
 
-        $this->constraintChecker->allowNewEmailForward(SpaceId::fromString(self::SPACE_ID2), [
-            'l1@example.com',
-            'l2@example.com',
-            'l3@example.com',
-            'l4@example.com',
-            'l5@example.com',
-        ]);
+        $this->constraintChecker->allowNewEmailForward(
+            SpaceId::fromString(self::SPACE_ID2),
+            [
+                'l1@example.com',
+                'l2@example.com',
+                'l3@example.com',
+                'l4@example.com',
+                'l5@example.com',
+            ]
+        );
 
-        $this->constraintChecker->allowNewMailboxes(SpaceId::fromString(self::SPACE_ID2), [
-            'l1@example.com' => new ByteSize(10000, 'GiB'),
-        ]);
+        $this->constraintChecker->allowNewMailboxes(
+            SpaceId::fromString(self::SPACE_ID2),
+            [
+                'l1@example.com' => new ByteSize(10000, 'GiB'),
+            ]
+        );
 
-        $space = $this->spaceRepository->get(SpaceId::fromString(self::SPACE_ID2));
-        $space->assignCustomConstraints($space->constraints->setStorageSize(ByteSize::inf()));
-        $space->assignCustomConstraints($space->constraints->setEmail(new EmailConstraints([
+        $this->setEmailConstraintsForSpace2([
             'maximumMailboxCount' => 5,
             'maximumForwardCount' => 5,
             'maximumAddressCount' => -1,
-        ])));
-        $this->spaceRepository->save($space);
-
-        // maximumMailboxCount is 5, but maximumAddressCount is unlimited
-        $this->constraintChecker->allowNewMailboxes(SpaceId::fromString(self::SPACE_ID2), [
-            'l1@example.com' => new ByteSize(100, 'GiB'),
-            'l2@example.com' => new ByteSize(100, 'GiB'),
-            'l3@example.com' => new ByteSize(100, 'GiB'),
-            'l4@example.com' => new ByteSize(100, 'GiB'),
-            'l5@example.com' => new ByteSize(100, 'GiB'),
-            'l6@example.com' => new ByteSize(100, 'GiB'),
         ]);
 
+        // maximumMailboxCount is 5, but maximumAddressCount is unlimited
+        $this->constraintChecker->allowNewMailboxes(
+            SpaceId::fromString(self::SPACE_ID2),
+            [
+                'l1@example.com' => new ByteSize(100, 'GiB'),
+                'l2@example.com' => new ByteSize(100, 'GiB'),
+                'l3@example.com' => new ByteSize(100, 'GiB'),
+                'l4@example.com' => new ByteSize(100, 'GiB'),
+                'l5@example.com' => new ByteSize(100, 'GiB'),
+                'l6@example.com' => new ByteSize(100, 'GiB'),
+            ]
+        );
+
         // maximumForwardCount is 5, but maximumAddressCount is unlimited
+        $this->constraintChecker->allowNewEmailForward(
+            SpaceId::fromString(self::SPACE_ID2),
+            [
+                'l1@example.com',
+                'l2@example.com',
+                'l3@example.com',
+                'l4@example.com',
+                'l5@example.com',
+                'l6@example.com',
+            ]
+        );
+    }
+
+    private function setEmailConstraintsForSpace2(array $emailConstraints): void
+    {
+        $space = $this->spaceRepository->get(SpaceId::fromString(self::SPACE_ID2));
+        $space->assignCustomConstraints($space->constraints->setStorageSize(ByteSize::inf()));
+        $space->assignCustomConstraints($space->constraints->setEmail(new EmailConstraints($emailConstraints)));
+        $this->spaceRepository->save($space);
+    }
+
+    /**
+     * @test
+     * @doesNotPerformAssertions
+     */
+    public function allows_new_addresses_when_amount_is_not_reached_yet(): void
+    {
+        $this->setEmailConstraintsForSpace2([
+            'maximumAddressCount' => 8,
+            'maximumMailboxCount' => 5, // ignored
+            'maximumForwardCount' => 4, // ignored
+        ]);
+
+        $this->constraintChecker->allowNewEmailForward(SpaceId::fromString(self::SPACE_ID2), [
+            'l5@example.com',
+            'l6@example.com',
+            'l7@example.com',
+        ]);
+
+        $this->constraintChecker->allowNewMailboxes(
+            SpaceId::fromString(self::SPACE_ID2),
+            [
+                'l1@example.com' => new ByteSize(100, 'GiB'),
+                'l2@example.com' => new ByteSize(100, 'GiB'),
+            ]
+        );
+
+        $this->setEmailConstraintsForSpace2([
+            'maximumMailboxCount' => 6,
+            'maximumForwardCount' => 5,
+        ]);
+
         $this->constraintChecker->allowNewEmailForward(SpaceId::fromString(self::SPACE_ID2), [
             'l1@example.com',
             'l2@example.com',
-            'l3@example.com',
-            'l4@example.com',
-            'l5@example.com',
-            'l6@example.com',
         ]);
+
+        $this->constraintChecker->allowNewMailboxes(
+            SpaceId::fromString(self::SPACE_ID2),
+            [
+                'l1@example.com' => new ByteSize(100, 'GiB'),
+                'l2@example.com' => new ByteSize(100, 'GiB'),
+                'l3@example.com' => new ByteSize(100, 'GiB'),
+                'l4@example.com' => new ByteSize(100, 'GiB'),
+            ]
+        );
     }
 
     /**

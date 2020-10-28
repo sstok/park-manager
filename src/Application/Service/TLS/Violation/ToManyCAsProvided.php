@@ -16,7 +16,7 @@ final class ToManyCAsProvided extends Violation
 {
     public function getTranslatorId(): string
     {
-        return 'tls.violation.duplicate_ca_names';
+        return 'tls.violation.to_many_ca_provided';
     }
 
     public function getTranslationArgs(): array

@@ -158,6 +158,8 @@ class ConstraintsChecker
         // Must be checked first as the maximum address-count prevails when set.
         if ($emailConstraints->maximumAddressCount > 0) {
             $this->checkNewAddressCountTotal($id, \count($forwards), $emailConstraints);
+
+            return;
         }
 
         if ($emailConstraints->maximumAddressCount === -1 || $emailConstraints->maximumForwardCount === -1) {

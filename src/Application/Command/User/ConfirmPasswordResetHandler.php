@@ -26,7 +26,6 @@ final class ConfirmPasswordResetHandler
     {
         $token = $command->token();
         $user = $this->repository->getByPasswordResetToken($token->selector());
-        $exception = null;
 
         // Cannot use finally here as the exception triggers the global exception handler
         // making the overall process unpredictable.

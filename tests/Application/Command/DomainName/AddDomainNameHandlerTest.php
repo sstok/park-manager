@@ -90,6 +90,7 @@ final class AddDomainNameHandlerTest extends TestCase
     public function handles_domain_registration_already_existing(): void
     {
         $this->expectExceptionObject(new DomainNameAlreadyInUse(new DomainNamePair('example', 'com'), false));
+        $this->expectExceptionMessageMatches('/is already in use\.$/');
 
         ($this->handler)(AddDomainName::with('e7621ab3-d543-4405-848b-eaf5b85a7f88', UserRepositoryMock::USER_ID1, 'example', 'com'));
     }
@@ -98,6 +99,7 @@ final class AddDomainNameHandlerTest extends TestCase
     public function handles_domain_registration_already_existing_same_owner(): void
     {
         $this->expectExceptionObject(new DomainNameAlreadyInUse(new DomainNamePair('example', 'com'), true));
+        $this->expectExceptionMessageMatches('/is already in use \(by same space owner\).$/');
 
         ($this->handler)(AddDomainName::with('e7621ab3-d543-4405-848b-eaf5b85a7f88', null, 'example', 'com'));
     }

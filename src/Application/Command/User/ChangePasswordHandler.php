@@ -28,10 +28,10 @@ final class ChangePasswordHandler
 
     public function __invoke(ChangeUserPassword $command): void
     {
-        $user = $this->repository->get($command->id());
-        $user->changePassword($command->password());
+        $user = $this->repository->get($command->id);
+        $user->changePassword($command->password);
 
-        $this->eventDispatcher->dispatch(new UserPasswordWasChanged($command->id()->toString(), $command->password()));
+        $this->eventDispatcher->dispatch(new UserPasswordWasChanged($command->id->toString(), $command->password));
 
         $this->repository->save($user);
     }

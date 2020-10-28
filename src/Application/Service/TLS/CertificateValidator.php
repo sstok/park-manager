@@ -56,7 +56,7 @@ class CertificateValidator
         $this->ocsp = $ocsp ?? new Ocsp();
     }
 
-    public function validateCertificate(string $certificate, array $caList): void
+    public function validateCertificate(string $certificate, array $caList = []): void
     {
         $data = $this->extractRawData($certificate);
 
@@ -93,11 +93,13 @@ class CertificateValidator
             throw new UnprocessablePEM('', $contents);
         }
 
+        // @codeCoverageIgnoreStart
         $fields = @\openssl_x509_parse($x509Read, false);
 
         if ($fields === false) {
             throw new UnprocessablePEM('', $contents);
         }
+        // @codeCoverageIgnoreEnd
 
         $fields += [
             '_commonName' => \trim($fields['subject']['commonName']),
