@@ -18,6 +18,7 @@ use ParkManager\Domain\User\User;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 
 /**
@@ -25,6 +26,8 @@ use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
  */
 final class RequestPasswordResetHandlerTest extends TestCase
 {
+    use ProphecyTrait;
+
     private FakeSplitTokenFactory $tokenFactory;
 
     protected function setUp(): void

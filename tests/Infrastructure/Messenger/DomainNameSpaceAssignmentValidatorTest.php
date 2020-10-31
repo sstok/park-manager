@@ -21,6 +21,7 @@ use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\StackMiddleware;
 
@@ -29,6 +30,8 @@ use Symfony\Component\Messenger\Middleware\StackMiddleware;
  */
 final class DomainNameSpaceAssignmentValidatorTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @test */
     public function it_ignores_other_unsupported_messages(): void
     {

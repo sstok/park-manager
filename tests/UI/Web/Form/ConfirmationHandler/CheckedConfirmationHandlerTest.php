@@ -14,6 +14,7 @@ use BadMethodCallException;
 use ParkManager\UI\Web\Form\ConfirmationHandler\CheckedConfirmationHandler;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -25,6 +26,8 @@ use Twig\Loader\FilesystemLoader;
  */
 final class CheckedConfirmationHandlerTest extends TestCase
 {
+    use ProphecyTrait;
+
     private const ID1 = '2108adf4-78e6-11e7-b6b3-acbc32b58315';
 
     /**

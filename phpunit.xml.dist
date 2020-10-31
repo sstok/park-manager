@@ -34,22 +34,22 @@
         <server name="SHELL_VERBOSITY" value="-1" />
     </php>
 
-    <filter>
-        <whitelist>
+    <coverage>
+        <include>
             <directory>src/</directory>
-            <exclude>
-                <file>src/Kernel.php</file>
-                <file>src/.preload.php</file>
-                <directory>vendor/</directory>
-                <directory>tests/</directory>
-                <directory>templates/</directory>
-                <directory>translations/</directory>
-                <directory>public/</directory>
-                <directory>var/</directory>
-                <directory>config/</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+        </include>
+        <exclude>
+            <file>src/Kernel.php</file>
+            <file>src/.preload.php</file>
+            <directory>vendor/</directory>
+            <directory>tests/</directory>
+            <directory>templates/</directory>
+            <directory>translations/</directory>
+            <directory>public/</directory>
+            <directory>var/</directory>
+            <directory>config/</directory>
+        </exclude>
+    </coverage>
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />

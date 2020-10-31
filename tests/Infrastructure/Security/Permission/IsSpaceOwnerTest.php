@@ -20,6 +20,7 @@ use ParkManager\Infrastructure\Security\PermissionAccessManager;
 use ParkManager\Infrastructure\Security\PermissionDecider;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 
 /**
@@ -27,6 +28,8 @@ use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
  */
 final class IsSpaceOwnerTest extends TestCase
 {
+    use ProphecyTrait;
+
     public const USER_ID = 'e29e2caf-5fc8-4314-9ecd-fd29708b412b';
     public const USER_ID2 = '8e37a3b4-c61e-42c2-a184-c3696b1e21fa';
 

@@ -18,6 +18,7 @@ use ParkManager\Infrastructure\Security\PermissionExpression;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\Infrastructure\Security\SelfDecidingPermission;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -29,6 +30,8 @@ use const false;
  */
 final class PermissionAccessManagerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @test */
     public function it_decides_deny_if_no_token_is_set(): void
     {

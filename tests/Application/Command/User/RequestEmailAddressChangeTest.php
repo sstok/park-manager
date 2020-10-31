@@ -17,6 +17,7 @@ use ParkManager\Application\Mailer\User\EmailAddressChangeRequestMailer;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;
 
@@ -25,6 +26,8 @@ use Rollerworks\Component\SplitToken\SplitToken;
  */
 final class RequestEmailAddressChangeTest extends TestCase
 {
+    use ProphecyTrait;
+
     private const USER_ID = '01dd5964-5426-11e7-be03-acbc32b58315';
 
     /** @test */

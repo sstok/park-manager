@@ -37,7 +37,7 @@ return static function (ContainerConfigurator $c): void {
         ->autoconfigure()
         ->autowire()
         ->private()
-        ->bind('$commandBus', ref('park_manager.command_bus'))
+        ->bind('$commandBus', service('park_manager.command_bus'))
         ->bind(ObjectManager::class, service('doctrine.orm.default_entity_manager'));
 
     $di->instanceof(DomainNameSpaceUsageValidator::class)
@@ -88,8 +88,8 @@ return static function (ContainerConfigurator $c): void {
         ->autoconfigure(false)
         ->args([
             service_locator([
-                User::class => ref(UserRepository::class),
-                Space::class => ref(WebhostingSpaceRepository::class),
+                User::class => service(UserRepository::class),
+                Space::class => service(WebhostingSpaceRepository::class),
                 DomainNameId::class => service(DomainNameRepository::class),
             ]),
             [

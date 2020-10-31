@@ -15,6 +15,7 @@ use ParkManager\Infrastructure\Security\EventListener\AuthenticationTokenPasswor
 use ParkManager\Infrastructure\Security\SecurityUser;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -25,6 +26,8 @@ use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
  */
 final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
 {
+    use ProphecyTrait;
+
     private const ID1 = '930c3fd0-3bd1-11e7-bb9b-acdc32b58315';
     private const ID2 = '930c3fd0-3bd1-11e7-bb9b-acdc32b58318';
 

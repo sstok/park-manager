@@ -28,6 +28,7 @@ use Pdp\Logger;
 use Pdp\Manager as PublicSuffixManager;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Psr\Log\Test\TestLogger;
@@ -42,6 +43,8 @@ use Symfony\Component\HttpClient\Response\MockResponse;
  */
 final class CertificateValidatorTest extends TestCase
 {
+    use ProphecyTrait;
+
     private ?CertificateValidator $certificateValidator = null;
 
     /** @after */

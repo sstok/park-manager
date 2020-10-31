@@ -243,6 +243,9 @@
     "phpspec/prophecy": {
         "version": "1.9.0"
     },
+    "phpspec/prophecy-phpunit": {
+        "version": "v2.0.1"
+    },
     "phpstan/phpdoc-parser": {
         "version": "0.4.0"
     },
@@ -264,14 +267,14 @@
     "phpunit/php-file-iterator": {
         "version": "2.0.x-dev"
     },
+    "phpunit/php-invoker": {
+        "version": "3.1.1"
+    },
     "phpunit/php-text-template": {
         "version": "1.2.1"
     },
     "phpunit/php-timer": {
         "version": "2.1.x-dev"
-    },
-    "phpunit/php-token-stream": {
-        "version": "3.1.x-dev"
     },
     "phpunit/phpunit": {
         "version": "4.7",
@@ -317,11 +320,20 @@
     "rollerworks/split-token": {
         "version": "0.1.x-dev"
     },
+    "sebastian/cli-parser": {
+        "version": "1.0.1"
+    },
+    "sebastian/code-unit": {
+        "version": "1.0.8"
+    },
     "sebastian/code-unit-reverse-lookup": {
         "version": "1.0.x-dev"
     },
     "sebastian/comparator": {
         "version": "3.0.x-dev"
+    },
+    "sebastian/complexity": {
+        "version": "2.0.2"
     },
     "sebastian/diff": {
         "version": "3.0.x-dev"
@@ -334,6 +346,9 @@
     },
     "sebastian/global-state": {
         "version": "3.0.x-dev"
+    },
+    "sebastian/lines-of-code": {
+        "version": "1.0.2"
     },
     "sebastian/object-enumerator": {
         "version": "3.0.x-dev"

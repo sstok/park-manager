@@ -18,6 +18,7 @@ use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHashFactory;
 use ParkManager\UI\Web\Form\Type\Security\ConfirmPasswordResetType;
 use ParkManager\UI\Web\Form\Type\Security\SecurityUserHashedPasswordType;
 use ParkManager\UI\Web\Form\Type\Security\SplitTokenType;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Symfony\Component\Form\FormError;
@@ -31,6 +32,7 @@ use Throwable;
  */
 final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
 {
+    use ProphecyTrait;
     use ValidatorExtensionTrait;
 
     private FakeSplitTokenFactory $splitTokenFactory;

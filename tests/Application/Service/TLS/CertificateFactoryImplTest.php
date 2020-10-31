@@ -23,12 +23,15 @@ use ParkManager\Domain\DomainName\TLS\CA;
 use ParkManager\Domain\DomainName\TLS\Certificate;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @internal
  */
 final class CertificateFactoryImplTest extends TestCase
 {
+    use ProphecyTrait;
+
     private const PUB_KEY = 'Duh1XpZWgTTkSOaw/cZHlRIVicTM85cQznhRPTju6BM=';
     private const PRIVATE_KEY = 'T+Jk39QnDS7vet7xiiW8dURSyTwakUI6XBQwJV5XJkA=';
 

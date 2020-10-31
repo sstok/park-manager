@@ -15,7 +15,7 @@ return static function (ContainerConfigurator $c): void {
         ->autowire()
         ->autoconfigure()
         ->private()
-        ->bind('$commandBus', ref('park_manager.command_bus'));
+        ->bind('$commandBus', service('park_manager.command_bus'));
 
     $di->load('ParkManager\\DataFixtures\\', __DIR__ . '/../src/DataFixtures');
 };

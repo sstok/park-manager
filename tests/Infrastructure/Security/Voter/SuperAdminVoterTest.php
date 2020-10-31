@@ -13,6 +13,7 @@ namespace ParkManager\Tests\Infrastructure\Security\Voter;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\Infrastructure\Security\Voter\SuperAdminVoter;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -23,6 +24,8 @@ use Symfony\Component\Security\Core\User\User;
  */
 final class SuperAdminVoterTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @test */
     public function it_grants_access_if_enabled_and_user_admin(): void
     {

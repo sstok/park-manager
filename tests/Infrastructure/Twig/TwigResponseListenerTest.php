@@ -13,6 +13,7 @@ namespace ParkManager\Tests\Infrastructure\Twig;
 use ParkManager\Infrastructure\Twig\TwigResponseListener;
 use ParkManager\UI\Web\Response\TwigResponse;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +26,8 @@ use Twig\Environment;
  */
 final class TwigResponseListenerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @test */
     public function it_ignores_other_responses(): void
     {

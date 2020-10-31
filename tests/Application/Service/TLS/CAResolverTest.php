@@ -19,12 +19,15 @@ use ParkManager\Application\Service\TLS\Violation\UnprocessablePEM;
 use ParkManager\Domain\DomainName\TLS\CA;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @internal
  */
 final class CAResolverTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @test */
     public function it_fails_with_incomplete_ca_list(): void
     {
