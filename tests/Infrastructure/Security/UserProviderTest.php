@@ -11,13 +11,16 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Security;
 
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\Exception\NotFoundException;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\Infrastructure\Security\UserProvider;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @internal
@@ -27,17 +30,32 @@ final class UserProviderTest extends TestCase
     private const USER_ID1 = '01dd5964-5426-11e7-be03-acbc32b58315';
     private const USER_ID2 = 'd398e0e4-b787-4647-b6ab-ab4bf2a2ed35';
     private const USER_ID3 = '6052d014-5ea4-40d7-8595-95356ff1c1ed';
-
     private const ADMIN_ID1 = 'a5b9cfec-e4a7-4c65-9fff-07752ec06b8e';
+
+    /** @test */
+    public function it_only_supports_security_user(): void
+    {
+        $provider = new UserProvider(new UserRepositoryMock());
+
+        self::assertTrue($provider->supportsClass(SecurityUser::class));
+        self::assertFalse($provider->supportsClass('SecurityUser'));
+        self::assertFalse($provider->supportsClass('stdClass'));
+    }
 
     /** @test */
     public function it_throws_fails_when_no_result_was_found(): void
     {
         $provider = new UserProvider(new UserRepositoryMock());
 
-        $this->expectException(UsernameNotFoundException::class);
+        try {
+            $provider->loadUserByUsername('foobar@example.com');
 
-        $provider->loadUserByUsername("admin\0foobar@example.com");
+            self::fail('Expected exception');
+        } catch (UsernameNotFoundException $e) {
+            self::assertEquals('foobar@example.com', $e->getUsername());
+            self::assertInstanceOf(NotFoundException::class, $e->getPrevious());
+            self::assertEquals(0, $e->getCode());
+        }
     }
 
     /** @test */
@@ -45,9 +63,26 @@ final class UserProviderTest extends TestCase
     {
         $provider = new UserProvider(new UserRepositoryMock());
 
-        $this->expectException(UsernameNotFoundException::class);
+        try {
+            $provider->refreshUser(new SecurityUser(self::USER_ID1, 'nope', true, ['ROLE_USER']));
 
-        $provider->refreshUser(new SecurityUser(self::USER_ID1, 'nope', true, ['ROLE_USER']));
+            self::fail('Expected exception');
+        } catch (UsernameNotFoundException $e) {
+            self::assertEquals(self::USER_ID1, $e->getUsername());
+            self::assertInstanceOf(NotFoundException::class, $e->getPrevious());
+            self::assertEquals(0, $e->getCode());
+        }
+    }
+
+    /** @test */
+    public function it_throws_fails_when_unsupported_user_was_provided_for_refreshing(): void
+    {
+        $provider = new UserProvider(new UserRepositoryMock());
+
+        $this->expectException(UnsupportedUserException::class);
+        $this->expectExceptionMessage(\sprintf('Expected an instance of %s, but got ', SecurityUser::class));
+
+        $provider->refreshUser($this->createMock(UserInterface::class));
     }
 
     /** @test */

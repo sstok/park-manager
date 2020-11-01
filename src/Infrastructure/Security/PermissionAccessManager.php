@@ -44,12 +44,15 @@ class PermissionAccessManager
             return PermissionDecider::DECIDE_DENY;
         }
 
+        /** @var SecurityUser $user */
+        $user = $token->getUser();
+
         if ($permission instanceof PermissionExpression) {
             $permission = $this->resolvePermissionExpression($permission);
         }
 
         if ($permission instanceof SelfDecidingPermission) {
-            return $permission($token, $token->getUser(), $this);
+            return $permission($token, $user, $this);
         }
 
         $class = $this->resolvePermissionName($permission);
@@ -61,7 +64,7 @@ class PermissionAccessManager
         /** @var PermissionDecider $decider */
         $decider = $this->deciders->get($class);
 
-        return $decider->decide($permission, $token, $token->getUser(), $this);
+        return $decider->decide($permission, $token, $user, $this);
     }
 
     private function resolvePermissionName(Permission $permission): string

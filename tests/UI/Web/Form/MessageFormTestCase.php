@@ -54,7 +54,7 @@ abstract class MessageFormTestCase extends TypeTestCase
      */
     protected function assertFormHasErrors(FormInterface $form, iterable $expectedErrors): void
     {
-        static::assertFalse($form->isValid());
+        static::assertGreaterThan(0, \count($form->getErrors(true)));
         static::assertNull($form->getTransformationFailure());
         static::assertNull($this->dispatchedCommand);
 

@@ -79,6 +79,7 @@
         "doctrine/doctrine-fixtures-bundle": "^3.2",
         "jangregor/phpstan-prophecy": "^0.8.1",
         "matthiasnoback/symfony-dependency-injection-test": "^4.0.0",
+        "php-cs-fixer/accessible-object": "^1.1",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/phpstan": "^0.12.52",
         "phpstan/phpstan-doctrine": "^0.12.22",

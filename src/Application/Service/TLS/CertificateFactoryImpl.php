@@ -21,11 +21,8 @@ use ParkManager\Domain\DomainName\TLS\Certificate;
 final class CertificateFactoryImpl implements CertificateFactory
 {
     private EncryptionPublicKey $encryptionKey;
-
     private ObjectManager $objectManager;
-
     private CAResolver $caResolver;
-
     private KeyValidator $keyValidator;
 
     public function __construct(string $encryptionKey, ObjectManager $objectManager, CAResolver $caResolver, KeyValidator $keyValidator = null)
@@ -96,9 +93,14 @@ final class CertificateFactoryImpl implements CertificateFactory
             'issuer' => $rawData['issuer'],
             'subject' => $rawData['subject'],
             'pubKey' => $pubKey['key'],
-            '_privateKey' => $this->getPrivateKeyDetails($privateKey),
+            '_privateKeyInfo' => $this->getPrivateKeyDetails($privateKey),
         ];
-        $fields['_domains'] = $fields['altNames'] + [$rawData['subject']['commonName']];
+
+        $fields['_domains'] = $fields['altNames'];
+        $fields['_domains'][] = $rawData['subject']['commonName'];
+
+        // Remove any duplicates and ensure the keys are incremental.
+        $fields['_domains'] = \array_unique($fields['_domains']);
 
         return $fields;
     }
@@ -134,10 +136,13 @@ final class CertificateFactoryImpl implements CertificateFactory
         try {
             $r = \openssl_pkey_get_private($key);
 
+            // Note that the KeyValidator will already check if the key is in-fact valid.
+            // This failure will only happen in exceptional situations.
             if ($r === false) {
                 throw new \RuntimeException('Unable to read private key-data, invalid key provided?');
             }
 
+            // @codeCoverageIgnoreStart
             $details = \openssl_pkey_get_details($r);
 
             if ($details === false) {
@@ -150,6 +155,7 @@ final class CertificateFactoryImpl implements CertificateFactory
 
             \sodium_memzero($key);
         }
+        // @codeCoverageIgnoreEnd
 
         return [
             'bits' => $details['bits'],

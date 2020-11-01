@@ -59,7 +59,7 @@ final class AddDomainNameHandlerTest extends TestCase
                 return false;
             }
 
-            if (! UserId::equalsValue($domainName->owner, UserId::fromString(UserRepositoryMock::USER_ID1), 'id')) {
+            if (! UserId::equalsValueOfEntity(UserId::fromString(UserRepositoryMock::USER_ID1), $domainName->owner, 'id')) {
                 return false;
             }
 

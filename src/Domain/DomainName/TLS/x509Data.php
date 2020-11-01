@@ -111,6 +111,11 @@ trait x509Data
         return $this->contentsString;
     }
 
+    public function getCommonName(): string
+    {
+        return $this->rawFields['commonName'];
+    }
+
     public function getSignatureAlgorithm(): string
     {
         return $this->rawFields['signatureAlgorithm'];
@@ -154,5 +159,13 @@ trait x509Data
     public function validFromDate(): Carbon
     {
         return Carbon::rawParse($this->rawFields['validFrom']);
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    public function getRawFields(): array
+    {
+        return $this->rawFields;
     }
 }

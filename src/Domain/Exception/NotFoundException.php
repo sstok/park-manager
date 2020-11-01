@@ -18,9 +18,12 @@ use InvalidArgumentException;
  */
 abstract class NotFoundException extends InvalidArgumentException implements TranslatableException
 {
-    public function __construct(string $message = 'Not found')
+    protected array $translationArgs = [];
+
+    public function __construct(string $message = 'Not found', array $translationArgs = [])
     {
         parent::__construct($message, 404);
+        $this->translationArgs = $translationArgs;
     }
 
     public function getTranslatorId(): string
@@ -30,6 +33,6 @@ abstract class NotFoundException extends InvalidArgumentException implements Tra
 
     public function getTranslationArgs(): array
     {
-        return [];
+        return $this->translationArgs;
     }
 }

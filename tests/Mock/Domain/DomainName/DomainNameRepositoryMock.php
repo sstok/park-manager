@@ -84,9 +84,9 @@ final class DomainNameRepositoryMock implements DomainNameRepository
 
         /** @var DomainName $entity */
         foreach ($this->storedById as $id => $entity) {
-            if (UserId::equalsValue($entity->owner, $userId, 'id')) {
+            if (UserId::equalsValueOfEntity($userId, $entity->owner, 'id')) {
                 $found[$id] = $entity;
-            } elseif ($entity->space !== null && UserId::equalsValue($entity->space->owner, $userId, 'id')) {
+            } elseif ($entity->space !== null && UserId::equalsValueOfEntity($userId, $entity->space->owner, 'id')) {
                 $found[$id] = $entity;
             }
         }

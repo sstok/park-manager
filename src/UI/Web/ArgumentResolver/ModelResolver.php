@@ -21,12 +21,12 @@ final class ModelResolver implements ArgumentValueResolverInterface
 {
     private ContainerInterface $entitiesRepositories;
 
-    /** @var array<string,string> */
+    /** @var array<class-string,string> */
     private array $valueObjects;
 
     /**
-     * @param ContainerInterface   $entitiesRepositories [entity-name] => IdClassName
-     * @param array<string,string> $valueObjectsMapping  [class-name] => factoryMethodName
+     * @param ContainerInterface         $entitiesRepositories [entity-name] => IdClassName
+     * @param array<class-string,string> $valueObjectsMapping  [class-name] => factoryMethodName
      */
     public function __construct(ContainerInterface $entitiesRepositories, array $valueObjectsMapping)
     {

@@ -12,6 +12,7 @@ namespace ParkManager\Tests\Infrastructure\Messenger;
 
 use ParkManager\Application\Command\DomainName\AddDomainName;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToSpace;
+use ParkManager\Application\Command\DomainName\AssignDomainNameToUser;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNamePair;
@@ -60,11 +61,14 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
         $validator->handle(Envelope::wrap(AssignDomainNameToSpace::with($id->toString(), '1438b200-242e-4688-917b-6fb8adf99947')), $stack);
     }
 
-    /** @test */
-    public function it_executes_validators(): void
+    /**
+     * @test
+     * @dataProvider provideSupportedClasses
+     */
+    public function it_executes_validators(object $messageObj): void
     {
         $space = SpaceRepositoryMock::createSpace();
-        $id = DomainNameId::fromString('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494');
+        $id = $messageObj->id;
 
         $usageValidatorProphecy = $this->prophesize(DomainNameSpaceUsageValidator::class);
         $usageValidatorProphecy->__invoke(Argument::which('id', $id), $space)->willThrow(new \InvalidArgumentException('I refuse to let this one go!'));
@@ -75,6 +79,15 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
 
         $this->expectExceptionObject(new \InvalidArgumentException('I refuse to let this one go!'));
 
-        $validator->handle(Envelope::wrap(AssignDomainNameToSpace::with($id->toString(), '1438b200-242e-4688-917b-6fb8adf99947')), $stack);
+        $validator->handle(Envelope::wrap($messageObj), $stack);
+    }
+
+    public function provideSupportedClasses(): iterable
+    {
+        yield 'AssignDomainNameToSpace' => [AssignDomainNameToSpace::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', '1438b200-242e-4688-917b-6fb8adf99947')];
+
+        yield 'AssignDomainNameToUser' => [AssignDomainNameToUser::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', '1d2f8114-4b82-4962-b564-ba14c752c434')];
+
+        yield 'AssignDomainNameToUser (admin)' => [AssignDomainNameToUser::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', null)];
     }
 }

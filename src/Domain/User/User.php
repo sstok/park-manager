@@ -140,13 +140,15 @@ class User
 
     public function addRole(string $role): void
     {
-        if (! $this->roles->contains($role)) {
-            if ($role === 'ROLE_SUPER_ADMIN' && ! $this->hasRole('ROLE_ADMIN')) {
-                throw new CannotMakeUserSuperAdmin();
-            }
-
-            $this->roles->add($role);
+        if ($this->roles->contains($role)) {
+            return;
         }
+
+        if ($role === 'ROLE_SUPER_ADMIN' && ! $this->hasRole('ROLE_ADMIN')) {
+            throw new CannotMakeUserSuperAdmin();
+        }
+
+        $this->roles->add($role);
     }
 
     public function hasRole(string $role): bool

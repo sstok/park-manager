@@ -71,6 +71,28 @@ final class CertificateValidatorTest extends TestCase
     /**
      * @test
      */
+    public function validate_certificate_is_actually_readable(): void
+    {
+        $certContents = <<<'CERT'
+            -----BEGIN CERTIFICATE-----
+            MIIDKzCCAhMCCQDZHE66hI+pmjANBgkqhkiG9w0BAQUFADBUMRowGAYDVQQDDBFS
+            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            -----END CERTIFICATE-----
+            CERT;
+
+        try {
+            $this->certificateValidator->validateCertificate($certContents);
+
+            self::fail('Exception was expected.');
+        } catch (UnprocessablePEM $e) {
+            self::assertEquals(['name' => ''], $e->getTranslationArgs());
+            self::assertEquals($certContents, $e->getPrevious()->getPrevious()->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     */
     public function validate_certificate_is_expired(): void
     {
         $certContents = <<<'CERT'
@@ -956,7 +978,11 @@ final class CertificateValidatorTest extends TestCase
 
             self::assertArrayHasKey('subject', $fields);
             self::assertArrayHasKey('_domains', $fields);
+
+            throw new \RuntimeException('No, this is not valid. Or is it?');
         };
+
+        $this->expectExceptionObject(new \RuntimeException('No, this is not valid. Or is it?'));
 
         $this->certificateValidator->validateCertificateSupport($cert, $callback);
     }

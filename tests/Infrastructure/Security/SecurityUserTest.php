@@ -74,7 +74,7 @@ final class SecurityUserTest extends TestCase
         $securityUser1 = $this->createSecurityUser();
         $securityUser2 = $this->createSecurityUser(self::ID2); // id
         $securityUser3 = $this->createSecurityUser(self::ID1, 'ding-ding'); // password
-        $securityUser4 = $this->createSecurityUserSecond(); // Different class
+        $securityUser4 = $this->createSecurityUserSecond(self::ID1); // Different class
         $securityUser5 = $this->createSecurityAdminUser();
         $securityUser6 = new SecurityUser(self::ID1, self::PASSWORD, false, ['ROLE_USER']); // Status
         $securityUser7 = $this->createSecurityAdminUser();
@@ -111,8 +111,13 @@ final class SecurityUserTest extends TestCase
         return new SecurityUser($id ?? self::ID1, $password, true, ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN']);
     }
 
-    private function createSecurityUserSecond(): UserInterface
+    private function createSecurityUserSecond(string $username): UserInterface
     {
-        return $this->createMock(UserInterface::class);
+        $user = $this->createMock(UserInterface::class);
+        $user->method('getUsername')->willReturn($username);
+        $user->method('getPassword')->willReturn(self::PASSWORD);
+        $user->method('getRoles')->willReturn(['ROLE_USER']);
+
+        return $user;
     }
 }

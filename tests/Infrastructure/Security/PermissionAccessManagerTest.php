@@ -71,7 +71,7 @@ final class PermissionAccessManagerTest extends TestCase
     /** @test */
     public function it_decides_deny_if_stored_token_is_not_authenticated(): void
     {
-        $tokenStorage = $this->createTokenStorage($this->createToken(false));
+        $tokenStorage = $this->createTokenStorage($this->createToken(false, $this->getSecurityUser()));
         $manager = new PermissionAccessManager($tokenStorage, new Container(), []);
 
         self::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide($this->createMock(Permission::class), null));
@@ -86,10 +86,15 @@ final class PermissionAccessManagerTest extends TestCase
         self::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide($this->createMock(Permission::class), null));
     }
 
+    private function getSecurityUser(): SecurityUser
+    {
+        return new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER']);
+    }
+
     /** @test */
     public function it_executes_decider(): void
     {
-        $tokenStorage = $this->createTokenStorage($this->createToken(true, new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER'])));
+        $tokenStorage = $this->createTokenStorage($this->createToken(true, $this->getSecurityUser()));
         $deciders = new Container();
         $deciders->set(MockPermission::class, new class() implements PermissionDecider {
             /**
@@ -104,12 +109,13 @@ final class PermissionAccessManagerTest extends TestCase
 
         self::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new MockPermission(PermissionDecider::DECIDE_ALLOW), null));
         self::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide(new MockPermission(PermissionDecider::DECIDE_DENY), null));
+        self::assertEquals(PermissionDecider::DECIDE_DENY, $manager->decide(new MockPermission(PermissionDecider::DECIDE_DENY), null));
     }
 
     /** @test */
     public function it_executes_self_deciding_permission(): void
     {
-        $tokenStorage = $this->createTokenStorage($this->createToken(true, new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER'])));
+        $tokenStorage = $this->createTokenStorage($this->createToken(true, $this->getSecurityUser()));
         $manager = new PermissionAccessManager($tokenStorage, new Container(), []);
 
         self::assertEquals(PermissionDecider::DECIDE_ALLOW, $manager->decide(new MockSelfPermission(PermissionDecider::DECIDE_ALLOW), null));
@@ -119,7 +125,7 @@ final class PermissionAccessManagerTest extends TestCase
     /** @test */
     public function it_resolves_aliased_permission(): void
     {
-        $tokenStorage = $this->createTokenStorage($this->createToken(true, new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER'])));
+        $tokenStorage = $this->createTokenStorage($this->createToken(true, $this->getSecurityUser()));
         $deciders = new Container();
         $deciders->set(MockPermission::class, new class() implements PermissionDecider {
             /**
@@ -139,7 +145,7 @@ final class PermissionAccessManagerTest extends TestCase
     /** @test */
     public function it_resolves_short_aliased_permission(): void
     {
-        $tokenStorage = $this->createTokenStorage($this->createToken(true, new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER'])));
+        $tokenStorage = $this->createTokenStorage($this->createToken(true, $this->getSecurityUser()));
         $deciders = new Container();
         $deciders->set(MockPermission::class, new class() implements PermissionDecider {
             /**
@@ -159,7 +165,7 @@ final class PermissionAccessManagerTest extends TestCase
     /** @test */
     public function it_gives_suggestions_for_unresolvable_short_alias(): void
     {
-        $tokenStorage = $this->createTokenStorage($this->createToken(true, new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER'])));
+        $tokenStorage = $this->createTokenStorage($this->createToken(true, $this->getSecurityUser()));
         $manager = new PermissionAccessManager($tokenStorage, new Container(), ['is_owner' => MockAliasedPermission::class, 'is_space_owner' => MockAliasedPermission::class]);
 
         $this->expectException(RuntimeException::class);
@@ -171,13 +177,25 @@ final class PermissionAccessManagerTest extends TestCase
     /** @test */
     public function it_gives_provides_names_for_unresolvable_short_alias_with_no_match(): void
     {
-        $tokenStorage = $this->createTokenStorage($this->createToken(true, new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER'])));
+        $tokenStorage = $this->createTokenStorage($this->createToken(true, $this->getSecurityUser()));
         $manager = new PermissionAccessManager($tokenStorage, new Container(), ['is_owner' => MockAliasedPermission::class, 'is_space_owner' => MockAliasedPermission::class]);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("No Permission can be found for short-name \"is_homer\".\nSupported \"is_owner\", \"is_space_owner\"");
 
         $manager->decide(new PermissionExpression('is_homer', PermissionDecider::DECIDE_DENY));
+    }
+
+    /** @test */
+    public function it_checks_a_decider_registered_for_permission(): void
+    {
+        $tokenStorage = $this->createTokenStorage($this->createToken(true, $this->getSecurityUser()));
+        $manager = new PermissionAccessManager($tokenStorage, new Container(), []);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(\sprintf('No Decider is registered for Permission "%s".', MockPermission::class));
+
+        $manager->decide(new PermissionExpression(MockPermission::class, PermissionDecider::DECIDE_ALLOW));
     }
 }
 
@@ -217,6 +235,6 @@ class MockAliasedPermission extends MockPermission implements AliasedPermission
 
     public function getAlias(): string
     {
-        return MockPermission::class;
+        return '\\' . MockPermission::class;
     }
 }

@@ -32,7 +32,7 @@ final class AddDomainNameHandler
     {
         try {
             $foundDomain = $this->repository->getByName($command->name);
-            $sameOwner = UserId::equalsValue($foundDomain->owner, $command->user, 'id');
+            $sameOwner = UserId::equalsValueOfEntity($command->user, $foundDomain->owner, 'id');
 
             throw new DomainNameAlreadyInUse($command->name, $sameOwner);
         } catch (DomainNameNotFound $e) {

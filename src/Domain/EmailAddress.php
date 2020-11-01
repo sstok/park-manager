@@ -151,8 +151,8 @@ final class EmailAddress
         $labelPos = \mb_strrpos($local, '+', 0, 'UTF-8');
 
         if ($labelPos !== false) {
-            $label = \mb_substr($local, ++$labelPos, $labelEnd = \mb_strlen($local, 'UTF-8') - $labelPos, 'UTF-8');
-            $local = \mb_substr($local, 0, $labelEnd - 1, 'UTF-8');
+            $label = \mb_substr($local, $labelPos + 1, \mb_strlen($local, 'UTF-8'), 'UTF-8');
+            $local = \mb_substr($local, 0, $labelPos, 'UTF-8');
         }
 
         return $local;

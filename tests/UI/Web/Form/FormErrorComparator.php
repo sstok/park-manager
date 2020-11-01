@@ -42,7 +42,7 @@ final class FormErrorComparator extends Comparator
 
         $expectedOrigin = $expected->getOrigin();
 
-        if ($expectedOrigin !== null && $expectedOrigin === $actual->getOrigin()) {
+        if ($expectedOrigin === null || $expectedOrigin === $actual->getOrigin()) {
             return;
         }
 

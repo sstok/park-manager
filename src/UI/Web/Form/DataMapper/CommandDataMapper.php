@@ -20,6 +20,12 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  * The main purpose of this mapper is to protect the entity from being
  * changed by the Form DataMapper. And tracking the actual changes for
  * the command-factory.
+ *
+ * In short: Child forms receive the "model", but when setting their data,
+ * this will be mapped to the "fields", which is then used to construct
+ * the Command message.
+ *
+ * @see \ParkManager\UI\Web\Form\Type\MessageFormType::buildForm
  */
 final class CommandDataMapper implements DataMapperInterface
 {

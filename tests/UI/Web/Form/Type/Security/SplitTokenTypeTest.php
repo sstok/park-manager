@@ -12,6 +12,7 @@ namespace ParkManager\Tests\UI\Web\Form\Type\Security;
 
 use ParkManager\UI\Web\Form\Type\Security\SplitTokenType;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\Type\TransformationFailureExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
@@ -84,7 +85,7 @@ final class SplitTokenTypeTest extends TypeTestCase
     }
 
     /** @test */
-    public function it_handles_an_invalid_token(): void
+    public function it_handles_an_invalid_token_submission(): void
     {
         $form = $this->factory->create(SplitTokenType::class, $token = $this->splitTokenFactory->generate());
 
@@ -137,5 +138,13 @@ final class SplitTokenTypeTest extends TypeTestCase
 
         self::assertCount(1, $errors);
         self::assertEquals('invalid_split_token', $errors->current()->getMessage());
+    }
+
+    /** @test */
+    public function it_handles_invalid_model_data_at_transformer(): void
+    {
+        $this->expectExceptionObject(new TransformationFailedException('Expected a SplitToken object.'));
+
+        $this->factory->create(SplitTokenType::class, 9349842);
     }
 }

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\DomainName\TLS;
 
+use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -52,9 +53,7 @@ class Certificate
         $this->privateKey = $privateKey;
         $this->privateKeyString = $privateKey;
 
-        if ($ca === null && ! $this->isSelfSigned()) {
-            throw new \InvalidArgumentException('A CA must be provided when the Certificate is not self-signed.');
-        }
+        Assertion::false($ca === null && ! $this->isSelfSigned(), 'A CA must be provided when the Certificate is not self-signed.', 'ca');
     }
 
     public function isSelfSigned(): bool

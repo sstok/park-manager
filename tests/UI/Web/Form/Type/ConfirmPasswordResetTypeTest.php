@@ -21,10 +21,11 @@ use ParkManager\UI\Web\Form\Type\Security\SplitTokenType;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;
+use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\DisabledException;
+use Symfony\Component\Validator\ValidatorBuilder;
 use Throwable;
 
 /**
@@ -33,13 +34,10 @@ use Throwable;
 final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
 {
     use ProphecyTrait;
-    use ValidatorExtensionTrait;
 
     private FakeSplitTokenFactory $splitTokenFactory;
-
     private FakePasswordHashFactory $encoderFactory;
-
-    private object $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
     protected static function getCommandName(): string
     {
@@ -69,10 +67,10 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         ];
     }
 
-    protected function getTypeExtensions(): array
+    protected function getExtensions(): array
     {
         return [
-            new TransformationFailureExtension(),
+            new ValidatorExtension((new ValidatorBuilder())->getValidator()),
         ];
     }
 
@@ -111,6 +109,25 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     public function it_sets_the_invalid_token_view_variable(): void
     {
         $form = $this->factory->create(ConfirmPasswordResetType::class, ['reset_token' => 'NopeNopeNopeNopeNope'], [
+            'command_factory' => $this->getCommandBuilder(),
+        ]);
+
+        $this->assertFormHasErrors($form, [
+            '' => [
+                new FormError('password_reset.invalid_token', 'password_reset.invalid_token', ['{{ value }}' => 'NopeNopeNopeNopeNope', '{reset_url}' => '/password-reset/request']),
+            ],
+        ]);
+
+        $formViewVars = $form->createView()->vars;
+        self::assertArrayHasKey('token_invalid', $formViewVars);
+        self::assertTrue($formViewVars['token_invalid']);
+    }
+
+    /** @test */
+    public function it_sets_the_invalid_token_view_variable_for_submission(): void
+    {
+        $token = $this->splitTokenFactory->fromString(FakeSplitTokenFactory::FULL_TOKEN);
+        $form = $this->factory->create(ConfirmPasswordResetType::class, ['reset_token' => $token], [
             'command_factory' => $this->getCommandBuilder(),
         ]);
         $form->submit([
@@ -184,7 +201,6 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
 class ConfirmUserPasswordReset
 {
     private SplitToken $token;
-
     private string $password;
 
     public function __construct(SplitToken $token, string $password)

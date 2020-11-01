@@ -37,6 +37,22 @@ final class EmailAddressTest extends TestCase
     }
 
     /** @test */
+    public function its_constructable_with_label(): void
+    {
+        $value = new EmailAddress('info+webmaster@example.com', 'Teacher');
+
+        self::assertEquals('info+webmaster@example.com', $value->address);
+        self::assertEquals('info+webmaster@example.com', $value->toString());
+        self::assertEquals('info@example.com', $value->canonical);
+        self::assertEquals('info', $value->local);
+        self::assertEquals('example.com', $value->domain);
+        self::assertEquals('Teacher', $value->name);
+        self::assertEquals('webmaster', $value->label);
+
+        $value->validate();
+    }
+
+    /** @test */
     public function its_constructable_with_double_at_sign(): void
     {
         $value = new EmailAddress('"info@hello"@example.com');
@@ -48,6 +64,7 @@ final class EmailAddressTest extends TestCase
         self::assertEquals('example.com', $value->domain);
         self::assertEquals('', $value->name);
         self::assertEquals('', $value->label);
+        self::assertFalse($value->isPattern);
 
         $value->validate();
     }
@@ -64,6 +81,7 @@ final class EmailAddressTest extends TestCase
         self::assertEquals('example.com', $value->domain);
         self::assertEquals('', $value->name);
         self::assertEquals('', $value->label);
+        self::assertTrue($value->isPattern);
 
         $value->validate();
     }
@@ -124,6 +142,7 @@ final class EmailAddressTest extends TestCase
     public function it_validates_basic_formatting(): void
     {
         $this->expectExceptionObject(MalformedEmailAddress::missingAtSign('info?example.com'));
+        $this->expectExceptionCode(1);
 
         new EmailAddress('info?example.com');
     }
@@ -141,14 +160,32 @@ final class EmailAddressTest extends TestCase
     public function it_validates_idn_format(): void
     {
         $this->expectExceptionObject(MalformedEmailAddress::idnError('ok@xn--wat.de', IDNA_ERROR_INVALID_ACE_LABEL));
+        $this->expectExceptionCode(2);
 
         new EmailAddress('ok@xn--wat.de');
+    }
+
+    /** @test */
+    public function idn_error_codes(): void
+    {
+        $message = MalformedEmailAddress::idnError('nope@example.com', IDNA_ERROR_EMPTY_LABEL | IDNA_ERROR_LABEL_TOO_LONG)
+            ->getMessage();
+
+        self::assertStringContainsString('a non-final domain name label (or the whole domain name) is empty', $message);
+        self::assertStringContainsString('a domain name label is longer than 63 bytes', $message);
+        self::assertStringNotContainsString('a label starts with a combining mark', $message);
+
+        self::assertEquals(
+            'Malformed email address "nope@example.com" (IDN Error reported Unknown IDNA conversion error.)',
+            MalformedEmailAddress::idnError('nope@example.com', 0)->getMessage()
+        );
     }
 
     /** @test */
     public function it_validates_pattern_multi_wildcard(): void
     {
         $this->expectExceptionObject(MalformedEmailAddress::patternMultipleWildcards('*info*@example.com'));
+        $this->expectExceptionCode(3);
 
         new EmailAddress('*info*@example.com');
     }
@@ -157,6 +194,7 @@ final class EmailAddressTest extends TestCase
     public function it_validates_pattern_in_label(): void
     {
         $this->expectExceptionObject(MalformedEmailAddress::patternWildcardInLabel('info+labeled*@example.com'));
+        $this->expectExceptionCode(4);
 
         new EmailAddress('info+labeled*@example.com');
     }

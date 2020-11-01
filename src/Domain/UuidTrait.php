@@ -23,7 +23,7 @@ trait UuidTrait
     private UuidInterface $value;
     private string $stringValue;
 
-    protected function __construct(UuidInterface $value)
+    private function __construct(UuidInterface $value)
     {
         $this->value = $value;
         $this->stringValue = $value->toString();
@@ -70,26 +70,49 @@ trait UuidTrait
     /**
      * Allows to easily compare the equality of an identity.
      *
+     * NOTE: This will only return true if both identities
+     * are of "this" instance type. Or both are null.
+     *
      * @param object|static|null $identity1
      * @param object|static|null $identity2
-     * @param string|null        $property  Given $identity1 is an Entity class this will use
-     *                                      the property of the entity to get the identity VO
      */
-    public static function equalsValue($identity1, $identity2, ?string $property = null): bool
+    public static function equalsValue($identity1, $identity2): bool
     {
         if ($identity1 === null && $identity2 === null) {
             return true;
         }
 
-        if ($identity1 !== null && $property !== null) {
-            $identity1 = $identity1->{$property};
-        }
-
-        if (! $identity1 instanceof static || ! $identity2 instanceof static) {
+        if (! $identity1 instanceof static) {
             return false;
         }
 
         return $identity1->equals($identity2);
+    }
+
+    /**
+     * Allows to compare the public property (holding the actual identity) of an entity
+     * against the given identity object.
+     *
+     * NOTE: This will only return true if both identities
+     * are of "this" instance type. Or both are null.
+     *
+     * @param object|static|null $identity Identity (of this instance) object or null
+     * @param object|null        $entity   Entity object to extract the property from or null
+     * @param string|null        $property The property-name of $entity to get the identity VO
+     */
+    public static function equalsValueOfEntity($identity, $entity, string $property): bool
+    {
+        if ($entity === null && $identity === null) {
+            return true;
+        }
+
+        if ($entity === null) {
+            return false;
+        }
+
+        $entityId = $entity->{$property};
+
+        return $entityId instanceof static && $entityId->equals($identity);
     }
 
     public function serialize(): string

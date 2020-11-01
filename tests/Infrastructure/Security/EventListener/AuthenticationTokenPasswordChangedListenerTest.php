@@ -34,14 +34,14 @@ final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
     /** @test */
     public function it_ignores_when_no_token_was_set(): void
     {
-        $userProvider = $this->createUserProvider();
+        $userProvider = $this->createUserProviderWithRefresh();
         $tokenStorage = $this->createProvidingOnlyTokenStorage(null);
 
         $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
     }
 
-    private function createUserProvider(): UserProviderInterface
+    private function createUserProviderWithRefresh(): UserProviderInterface
     {
         $userProviderProphecy = $this->prophesize(UserProviderInterface::class);
         $userProviderProphecy->refreshUser(Argument::any())->shouldNotBeCalled();
@@ -49,7 +49,7 @@ final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
         return $userProviderProphecy->reveal();
     }
 
-    private function createProvidingOnlyTokenStorage($token): TokenStorageInterface
+    private function createProvidingOnlyTokenStorage(?object $token): TokenStorageInterface
     {
         $tokenStorageProphecy = $this->prophesize(TokenStorageInterface::class);
         $tokenStorageProphecy->getToken()->willReturn($token);
@@ -61,43 +61,54 @@ final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
     /** @test */
     public function it_ignores_when_token_is_not_authenticated(): void
     {
-        $userProvider = $this->createUserProvider();
-        $token = new PostAuthenticationGuardToken($this->createUser1(), 'main', ['ROLE_USER']);
+        $userProvider = $this->createUserProviderWithRefresh();
+        $token = new PostAuthenticationGuardToken($user = $this->createUser1('pass-north'), 'main', ['ROLE_USER']);
         $token->setAuthenticated(false);
 
         $tokenStorage = $this->createProvidingOnlyTokenStorage($token);
 
         $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
+
+        self::assertSame($user, $token->getUser());
+        self::assertFalse($token->isAuthenticated());
     }
 
-    private function createUser1(): SecurityUser
+    private function createUser1(string $password = 'pass-north'): SecurityUser
     {
-        return new SecurityUser(self::ID1, 'pass-north', true, ['ROLE_USER']);
+        return new SecurityUser(self::ID1, $password, true, ['ROLE_USER']);
     }
 
     /** @test */
     public function it_ignores_when_user_is_not_a_security_user(): void
     {
-        $userProvider = $this->createUserProvider();
-        $tokenStorage = $this->createProvidingOnlyTokenStorage(new PostAuthenticationGuardToken($this->createMock(UserInterface::class), 'main', ['ROLE_USER']));
+        $user = $this->createMock(UserInterface::class);
+        $user->method('getUsername')->willReturn(self::ID1);
+        $userProvider = $this->createUserProviderWithRefresh();
+        $tokenStorage = $this->createProvidingOnlyTokenStorage($token = new PostAuthenticationGuardToken($user, 'main', ['ROLE_USER']));
 
         $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
+
+        self::assertSame($user, $token->getUser());
+        self::assertTrue($token->isAuthenticated());
     }
 
     /** @test */
     public function it_ignores_when_refreshed_user_is_not_enabled(): void
     {
-        $currentUser = $this->createUser1();
-        $userProvider = $this->createUserProviderExpectsCurrentUser($currentUser, $this->createUser1Disabled());
-        $tokenStorage = $this->createProvidingOnlyTokenStorage(new PostAuthenticationGuardToken($currentUser, 'main', ['ROLE_USER']));
+        $currentUser = $this->createUser1('pass-north');
+        $userProvider = $this->createUserProviderExpectsCurrentUser($currentUser, $this->createUser1NonActive());
+        $tokenStorage = $this->createProvidingOnlyTokenStorage($token = new PostAuthenticationGuardToken($currentUser, 'main', ['ROLE_USER']));
 
         $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
+
+        self::assertSame($currentUser, $token->getUser());
+        self::assertTrue($token->isAuthenticated());
     }
 
-    private function createUserProviderExpectsCurrentUser(SecurityUser $currentUser, SecurityUser $user): UserProviderInterface
+    private function createUserProviderExpectsCurrentUser(UserInterface $currentUser, UserInterface $user): UserProviderInterface
     {
         $userProviderProphecy = $this->prophesize(UserProviderInterface::class);
         $userProviderProphecy->refreshUser($currentUser)->willReturn($user)->shouldBeCalled();
@@ -105,7 +116,7 @@ final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
         return $userProviderProphecy->reveal();
     }
 
-    private function createUser1Disabled(): SecurityUser
+    private function createUser1NonActive(): SecurityUser
     {
         return new SecurityUser(self::ID1, 'pass-north', false, ['ROLE_USER']);
     }
@@ -113,11 +124,29 @@ final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
     /** @test */
     public function it_only_updates_token_when_current_user(): void
     {
-        $userProvider = $this->createUserProvider();
+        $userProvider = $this->createUserProviderWithRefresh();
         $currentUser = new SecurityUser(self::ID2, 'pass-north', true, ['ROLE_USER']);
-        $tokenStorage = $this->createProvidingOnlyTokenStorage(new PostAuthenticationGuardToken($currentUser, 'main', ['ROLE_USER']));
+        $tokenStorage = $this->createProvidingOnlyTokenStorage($token = new PostAuthenticationGuardToken($currentUser, 'main', ['ROLE_USER']));
 
         $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
+        $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
+
+        self::assertSame($currentUser, $token->getUser());
+        self::assertTrue($token->isAuthenticated());
+    }
+
+    /** @test */
+    public function it_checks_the_correct_user_provider_was_used(): void
+    {
+        $currentUser = $this->createUser1('pass-north');
+        $userProvider = $this->createUserProviderExpectsCurrentUser($currentUser, $this->createMock(UserInterface::class));
+        $tokenStorage = $this->createProvidingOnlyTokenStorage($token = new PostAuthenticationGuardToken($currentUser, 'main', ['ROLE_USER']));
+
+        $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
+
+        $this->expectWarning();
+        $this->expectWarningMessage('assert($user instanceof SecurityUser) failed');
+
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1));
     }
 
@@ -125,7 +154,7 @@ final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
     public function it_marks_token_as_authenticated_and_sets_on_storage(): void
     {
         $token = new PostAuthenticationGuardToken($currentUser = $this->createUser1(), 'main', ['ROLE_USER']);
-        $userProvider = $this->createUserProviderExpectsCurrentUser($currentUser, $newUser = $this->createUser1());
+        $userProvider = $this->createUserProviderExpectsCurrentUser($currentUser, $newUser = $this->createUser1('pass-north2'));
         $tokenStorage = $this->createGetAndStoreTokenStorage($token);
 
         $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);

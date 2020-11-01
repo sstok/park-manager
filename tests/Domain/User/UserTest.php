@@ -15,6 +15,7 @@ use DateTimeImmutable;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Domain\User\Exception\CannotDisableSuperAdministrator;
+use ParkManager\Domain\User\Exception\CannotMakeUserSuperAdmin;
 use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
@@ -115,6 +116,10 @@ final class UserTest extends TestCase
         $user->changePassword('');
     }
 
+    ///
+    /// Email change handling
+    ///
+
     /** @test */
     public function request_email_change(): void
     {
@@ -203,6 +208,10 @@ final class UserTest extends TestCase
         self::assertEquals(new EmailAddress('john@example.com'), $user->email);
     }
 
+    ///
+    /// Roles
+    ///
+
     /** @test */
     public function add_roles(): void
     {
@@ -253,6 +262,20 @@ final class UserTest extends TestCase
 
         $user->removeRole('ROLE_ADMIN');
     }
+
+    /** @test */
+    public function cannot_make_normal_user_super_admin(): void
+    {
+        $user = $this->registerUser();
+
+        $this->expectException(CannotMakeUserSuperAdmin::class);
+
+        $user->addRole('ROLE_SUPER_ADMIN');
+    }
+
+    ///
+    /// Password Reset logic
+    ///
 
     /** @test */
     public function request_password_reset_confirmation_token(): void
@@ -313,6 +336,17 @@ final class UserTest extends TestCase
     }
 
     /** @test */
+    public function password_reset_is_rejected_when_password_reset_is_disabled(): void
+    {
+        $correctToken = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+
+        $user = $this->registerUser('pass-my-word');
+        $user->disablePasswordReset();
+
+        self::assertFalse($user->requestPasswordReset($correctToken));
+    }
+
+    /** @test */
     public function password_reset_is_rejected_when_no_token_was_set(): void
     {
         $user = $this->registerUser('pass-my-word');
@@ -330,6 +364,20 @@ final class UserTest extends TestCase
         $this->assertPasswordResetThrowsRejected($user, $token);
 
         self::assertEquals('pass-my-word', $user->password);
+        self::assertNull($user->passwordResetToken);
+    }
+
+    /** @test */
+    public function password_reset_can_be_cleared(): void
+    {
+        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('- 5 minutes UTC'));
+        $user = $this->registerUser('pass-my-word');
+        $user->requestPasswordReset($token);
+
+        self::assertNotNull($user->passwordResetToken);
+
+        $user->clearPasswordReset();
+
         self::assertNull($user->passwordResetToken);
     }
 }

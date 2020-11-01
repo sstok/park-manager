@@ -222,6 +222,9 @@
     "php": {
         "version": "7.4"
     },
+    "php-cs-fixer/accessible-object": {
+        "version": "v1.1.0"
+    },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
     },

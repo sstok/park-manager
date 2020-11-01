@@ -11,9 +11,9 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Form\Type;
 
 use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectMapper;
 use ParkManager\UI\Web\Form\DataMapper\CommandDataMapper;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -29,9 +29,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class MessageFormType extends AbstractType
 {
     private MessageBusInterface $messageBus;
-
     private TranslatorInterface $translator;
-
     private PropertyAccessorInterface $propertyAccessor;
 
     public function __construct(MessageBusInterface $messageBus, TranslatorInterface $translator, PropertyAccessorInterface $propertyAccessor = null)
@@ -67,14 +65,14 @@ final class MessageFormType extends AbstractType
             }, -1024);
 
             // Set a DataMapper to read from the 'model' key and write to the 'fields' key.
-            // The DataMapper always updates on the modeData, meaning we can call getData()
+            // The DataMapper always updates on the form modelData, meaning we can call getData()
             // and get the actual model and fields.
             //
             // Note that only changed values are actually set in the 'fields' array, which makes it
             // possible to handle very special cases. Including not dispatching a Command et-all.
             //
             // For very custom forms set a custom DataMapper (wrapped by the `CommandDataMapper`).
-            $builder->setDataMapper(new CommandDataMapper(new PropertyPathMapper($this->propertyAccessor)));
+            $builder->setDataMapper(new CommandDataMapper(new PropertyPathObjectMapper($this->propertyAccessor)));
         }
 
         // After all operations, including validation.
@@ -118,13 +116,13 @@ final class MessageFormType extends AbstractType
             } elseif ($exceptionFallback !== null) {
                 $errors = $exceptionFallback($e, $this->translator, $form);
             } elseif ($e instanceof TranslatableException) {
-                $errors = new FormError(
+                $errors = [null => new FormError(
                     $this->translator->trans($e->getTranslatorId(), $e->getTranslationArgs(), 'messages'),
                     $e->getTranslatorId(),
                     $e->getTranslationArgs(),
                     null,
                     $e
-                );
+                )];
             } else {
                 throw $e;
             }

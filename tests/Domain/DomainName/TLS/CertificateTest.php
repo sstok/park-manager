@@ -10,10 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\DomainName\TLS;
 
+use Assert\AssertionFailedException;
 use Carbon\Carbon;
 use DateTime;
 use ParkManager\Domain\DomainName\TLS\CA;
 use ParkManager\Domain\DomainName\TLS\Certificate;
+use ParkManager\Tests\Domain\EntityHydrator;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -48,6 +50,8 @@ final class CertificateTest extends TestCase
         ]);
 
         self::assertEquals('Here\'s the key Robby!', $cert->getPublicKey());
+        self::assertEquals('private-keep-of-the-7-keys', $cert->getPrivateKey());
+        self::assertEquals('x509-information', $cert->getContents());
         self::assertEquals('sha1WithRSAEncryption', $cert->getSignatureAlgorithm());
         self::assertEquals('a52f33ab5dad33e8af695dad33e8af695dad33e8af69', $cert->getFingerprint());
         self::assertEquals(31, $cert->daysUntilExpirationDate());
@@ -65,26 +69,39 @@ final class CertificateTest extends TestCase
     }
 
     /** @test */
-    public function it_provides_public_key_when_provided_as_stream(): void
+    public function it_requires_a_ca_unless_self_signed(): void
     {
-        $cert = new Certificate('x509-information', 'private-keep-of-the-7-keys', [
+        $this->expectException(AssertionFailedException::class);
+        $this->expectExceptionMessage('A CA must be provided when the Certificate is not self-signed');
+
+        new Certificate('x509-information', 'private-keep-of-the-7-keys', [
             'subject' => ['commonName' => 'example.com'],
             'pubKey' => 'Here\'s the key Robby!',
-            '_domains' => ['example.com'],
-            'issuer' => ['commonName' => 'example.com'],
+            '_domains' => ['example.com', 'example.net', '*.example.net'],
+            'issuer' => ['commonName' => 'Leroy Jenkins Inc. CA'],
         ]);
+    }
 
-        (function (): void {
+    /** @test */
+    public function it_properly_handles_streamed_content_holders(): void
+    {
+        $resourceFactory = static function (string $str) {
             $fp = \fopen('php://temp', 'rb+');
             \assert(\is_resource($fp));
-            \fwrite($fp, 'x509-information2');
+            \fwrite($fp, $str);
             \fseek($fp, 0);
 
-            $this->publicKey = $fp;
-            $this->publicKeyString = null;
-        })->call($cert);
+            return $fp;
+        };
 
-        self::assertEquals('x509-information2', $cert->getPublicKey());
+        $object = EntityHydrator::hydrateEntity(Certificate::class)
+            ->set('contents', $resourceFactory('x509-information'))
+            ->set('publicKey', $resourceFactory('Here\'s the key Robby!'))
+            ->set('privateKey', $resourceFactory('private-keep-of-the-7-keys'));
+
+        self::assertEquals('x509-information', $object->getEntity()->getContents());
+        self::assertEquals('Here\'s the key Robby!', $object->getEntity()->getPublicKey());
+        self::assertEquals('private-keep-of-the-7-keys', $object->getEntity()->getPrivateKey());
     }
 
     /** @test */
@@ -153,5 +170,34 @@ final class CertificateTest extends TestCase
         self::assertFalse($cert->supportsDomain('*.example.com'));
         self::assertFalse($cert->supportsDomain('*.he.example.net'));
         self::assertFalse($cert->supportsDomain('*'));
+    }
+
+    /**
+     * @test
+     * @dataProvider provideRequiredFields
+     */
+    public function it_ensures_all_data_is_provided(string $removeKey): void
+    {
+        $data = [
+            'subject' => ['commonName' => 'example.com'],
+            'pubKey' => 'Here\'s the key Robby!',
+            '_domains' => ['example.com', 'example.net', '*.example.net'],
+            'issuer' => ['commonName' => 'example.com'],
+        ];
+        unset($data[$removeKey]);
+
+        $this->expectException(AssertionFailedException::class);
+        $this->expectExceptionMessage(\sprintf('Array does not contain an element with key "%s"', $removeKey));
+
+        new Certificate('x509-information', 'private-keep-of-the-7-keys', $data);
+    }
+
+    public function provideRequiredFields(): iterable
+    {
+        yield ['subject'];
+
+        yield ['pubKey'];
+
+        yield ['issuer'];
     }
 }

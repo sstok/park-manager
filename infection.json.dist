@@ -1,5 +1,5 @@
 {
-    "timeout": 4,
+    "timeout": 3,
     "source": {
         "directories": [
             "src"
@@ -7,7 +7,9 @@
         "excludes": [
             "src\/UI\/Web\/Action",
             "src\/DataFixtures",
-            "src\/Migrations"
+            "src\/Migrations",
+            "{src/Domain/(\\w+/)*Exception/}",
+            "src\/Application\/Service\/TLS\/Violation"
         ]
     },
     "logs": {
@@ -17,29 +19,40 @@
         "@default": true,
         "IdenticalEqual": false,
         "NotIdenticalNotEqual": false,
+        "OneZeroInteger": false,
         "CastInt": false,
         "CastString": false,
         "Coalesce": false,
-        "FlipCoalesce": false,
+        "This": false,
+        "MBString": false,
         "global-ignoreSourceCodeByRegex": [
-            "parent\\:\\:__construct\\(\\$message, 0, new Error\\(\\\\openssl_error_string\\(\\), \\d+\\)\\);(?# Exception message)",
-            "parent\\:\\:__construct\\('', 0, new Error\\(\\\\openssl_error_string\\(\\), \\d+\\, \\$previous\\)\\);(?# Exception message)",
             "if \\(\\$this->value >= 1024(?: \\* 1024){0,2}\\) \\{(?# Impossible to test)",
-            "return \\\\sprintf\\('%\\.2f KiB', \\$this->value / 1024\\);",
-            "\\$\\w+ = new ByteSize\\(0, 'b'\\);"
+            "return \\\\sprintf\\('%\\.2f KiB', \\$this->value \\x{2f} 1024\\);(?# x{2f} slash)",
+            "\\$\\w+ = new ByteSize\\(0, 'b'\\);",
+            "if \\(\\$maximum->value === 0\\) \\{(?# DecrementInteger, OneZeroInteger and Identical)",
+            "\\$atPos = \\\\mb_strrpos\\(\\$address, '@', 0, 'UTF-8'\\);",
+            "\\$passwordOptions\\['attr'\\](.+)"
         ],
         "DecrementInteger": {
             "ignoreSourceCodeByRegex": [
-                "(.+)\\$tokenTTL(.+)(?# Just a default value)"
+                "(.+)\\$tokenTTL(.+)(?# Just a default value)",
+                "return new self\\(-1, 'inf'\\);",
+                "\\}, (-(1024|1050|100)|99|100)\\);(?# EventSubscribers)"
             ]
         },
         "IncrementInteger": {
             "ignoreSourceCodeByRegex": [
-                "(.+)\\$tokenTTL(.+)(?# Just a default value)"
+                "(.+)\\$tokenTTL(.+)(?# Just a default value)",
+                "return new self\\(-1, 'inf'\\);",
+                "(.+)\\levenshtein(.+)",
+                "\\}, (-(1024|1050|100)|99|100)\\);(?# EventSubscribers)"
             ]
         },
-        "This": false,
-        "MBString": false,
+        "LessThanOrEqualTo": {
+            "ignoreSourceCodeByRegex": [
+                "(.+)\\levenshtein(.+)"
+            ]
+        },
         "FunctionCallRemoval": {
             "ignoreSourceCodeByRegex": [
                 "memzero\\(\\$[\\w\\d]+\\);",
@@ -52,7 +65,8 @@
             "ignoreSourceCodeByRegex": [
                 "\\$resolver->setAllowedTypes\\('\\w+', (.+?)\\);",
                 "\\$resolver->setDefault\\('\\w+', (.+?)\\);",
-                "static \\$idnErrors = .+(?# Any missing entry will fail eventually, testing this all is not worth it)"
+                "if \\(\\\\in_array\\(\\$normSignatureType, \\['none', 'md2', 'md5', 'sha1', 'sha224'\\], true\\)\\) \\{(?# Impossible to test all these signature-types)",
+                "\\$data = \\\\unserialize\\(\\$serialized, \\['allowed_classes' => false\\]\\);"
             ]
         },
         "MethodCallRemoval": {
@@ -60,18 +74,30 @@
                 "\\$resolver->setAllowedTypes\\('\\w+', (.+?)\\);",
                 "\\$e->setUsername\\('\\w+', \\(\\$[\\w\\d]+\\);",
                 "\\$e->setUsername\\(\\$user->getUsername\\(\\)\\);",
-                "\\$resolver->setDefault\\('error_bubbling', true\\);",
-                "parent::__construct\\(\\(string\\) \\\\openssl_error_string\\(\\), \\$code\\);"
-            ]
-        },
-        "OneZeroInteger": {
-            "ignoreSourceCodeByRegex": [
-                "public function __construct\\(string \\$name, int \\$code = \\d+\\)"
+                "\\$resolver->setDefault\\('error_bubbling', true\\);"
             ]
         },
         "FalseValue": {
             "ignoreSourceCodeByRegex": [
-                "\\$data = \\$this->getX509Data\\(\\$certificate, '', false\\);"
+                "\\$data = \\$this->getX509Data\\(\\$certificate, '', false\\);",
+                "if \\(\\$x509Read === false\\) \\{(?# This will NEVER return true, bless you openssl false on err)",
+                "(?:.+?)\\\\mb_stri?pos\\(\\$[\\w\\d\\[\\]']+, '[^')]+'\\) [!=]== false(?:.+)",
+                "\\$data = \\\\unserialize\\(\\$serialized, \\['allowed_classes' => false\\]\\);"
+            ]
+        },
+        "TrueValue": {
+            "ignoreSourceCodeByRegex": [
+                "\\$requiredPurpose\\['S\\x{2f}MIME (signing|encryption)'\\] = true;(?# Value is ignored)"
+            ]
+        },
+        "UnwrapArrayFilter": {
+            "ignoreSourceCodeByRegex": [
+                "return \\\\array_map\\(static fn\\(\\$item\\) \\=\\> \\\\explode\\('\\:', \\\\trim\\(\\$item\\), 2\\)\\[1\\], \\\\array_filter\\(\\\\explode\\(',', \\$rawData\\['extensions'\\]\\['subjectAltName'\\]\\), static fn\\(\\$item\\) \\=\\> \\\\mb_strpos\\(\\$item, '\\:'\\) \\!\\=\\= false\\)\\);"
+            ]
+        },
+        "LessThan": {
+            "ignoreSourceCodeByRegex": [
+                "if \\(\\$size < 0 && \\$roundToZero\\) {"
             ]
         }
     },

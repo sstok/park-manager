@@ -38,6 +38,7 @@ final class ForwardTest extends TestCase
         self::assertSame($domainName, $forward->domainName);
         self::assertSame('address:BoyThatEscalatedBigLy@example.com', $forward->destination);
         self::assertSame($space, $forward->space);
+        self::assertTrue($forward->active);
     }
 
     /** @test */
@@ -68,6 +69,22 @@ final class ForwardTest extends TestCase
     }
 
     /** @test */
+    public function can_be_deactivated(): void
+    {
+        $space = SpaceRepositoryMock::createSpace();
+        $domainName = DomainName::registerForSpace(DomainNameId::create(), $space, new DomainNamePair('park-manager', 'com'));
+
+        $forward = Forward::toScript(ForwardId::create(), $space, 's.stok', $domainName, '/my-site/scripts/stop-spamming-me.php');
+        $forward->deActivate();
+
+        self::assertFalse($forward->active);
+
+        $forward->activate();
+
+        self::assertTrue($forward->active);
+    }
+
+    /** @test */
     public function it_allows_changing_address_without_a_domain_name_provided(): void
     {
         $space = SpaceRepositoryMock::createSpace();
@@ -94,6 +111,35 @@ final class ForwardTest extends TestCase
         self::assertSame('info', $forward->address);
         self::assertSame($domainName2, $forward->domainName);
         self::assertSame($space, $forward->space);
+        self::assertSame('address:info@example.com', $forward->destination);
+    }
+
+    /** @test */
+    public function it_allows_changing_destination_to_a_script(): void
+    {
+        $space = SpaceRepositoryMock::createSpace();
+        $domainName = DomainName::registerForSpace(DomainNameId::create(), $space, new DomainNamePair('park-manager', 'com'));
+
+        $forward = Forward::toAddress(ForwardId::create(), $space, 's.stok', $domainName, new EmailAddress('info@example.com'));
+        $forward->setDestinationToScript('/dev/null');
+
+        self::assertSame('s.stok', $forward->address);
+        self::assertSame($space, $forward->space);
+        self::assertSame('script:/dev/null', $forward->destination);
+    }
+
+    /** @test */
+    public function it_allows_changing_destination_to_address(): void
+    {
+        $space = SpaceRepositoryMock::createSpace();
+        $domainName = DomainName::registerForSpace(DomainNameId::create(), $space, new DomainNamePair('park-manager', 'com'));
+
+        $forward = Forward::toAddress(ForwardId::create(), $space, 's.stok', $domainName, new EmailAddress('info@example.com'));
+        $forward->setDestinationToAddress(new EmailAddress('noreply@example.com'));
+
+        self::assertSame('s.stok', $forward->address);
+        self::assertSame($space, $forward->space);
+        self::assertSame('address:noreply@example.com', $forward->destination);
     }
 
     /** @test */
@@ -105,6 +151,17 @@ final class ForwardTest extends TestCase
         $this->expectException(RfcComplianceException::class);
 
         Forward::toAddress(ForwardId::create(), $space, 's@', $domainName, new EmailAddress('info@example.com'));
+    }
+
+    /** @test */
+    public function it_validates_destination_address(): void
+    {
+        $space = SpaceRepositoryMock::createSpace();
+        $domainName = DomainName::registerForSpace(DomainNameId::create(), $space, new DomainNamePair('park-manager', 'com'));
+
+        $this->expectException(RfcComplianceException::class);
+
+        Forward::toAddress(ForwardId::create(), $space, 's', $domainName, new EmailAddress('"=--WAT--@"=@example.com'));
     }
 
     /** @test */

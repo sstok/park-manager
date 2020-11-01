@@ -47,8 +47,8 @@ final class DomainNameTest extends TestCase
         self::assertEquals($domainName2, $webhostingDomainName2->namePair);
         self::assertEquals($space, $webhostingDomainName->space);
         self::assertEquals($space2, $webhostingDomainName2->space);
-        self::assertTrue($webhostingDomainName->isPrimary());
-        self::assertTrue($webhostingDomainName2->isPrimary());
+        self::assertTrue($webhostingDomainName->primary);
+        self::assertTrue($webhostingDomainName2->primary);
     }
 
     private function createSpace(string $id, ?User $owner = null): Space
@@ -66,7 +66,7 @@ final class DomainNameTest extends TestCase
 
         self::assertEquals($domainName2, $webhostingDomainName->namePair);
         self::assertEquals($space, $webhostingDomainName->space);
-        self::assertFalse($webhostingDomainName->isPrimary());
+        self::assertFalse($webhostingDomainName->primary);
     }
 
     /** @test */
@@ -79,7 +79,7 @@ final class DomainNameTest extends TestCase
         $webhostingDomainName->markPrimary();
 
         self::assertEquals($domainName, $webhostingDomainName->namePair);
-        self::assertTrue($webhostingDomainName->isPrimary());
+        self::assertTrue($webhostingDomainName->primary);
     }
 
     /** @test */
@@ -95,6 +95,7 @@ final class DomainNameTest extends TestCase
         $webhostingDomainName->transferToSpace($space2);
 
         self::assertEquals($space2, $webhostingDomainName->space);
+        self::assertFalse($webhostingDomainName->primary);
     }
 
     /** @test */
@@ -109,9 +110,10 @@ final class DomainNameTest extends TestCase
             $user
         );
 
-        $webhostingDomainName->transferToSpace($space2);
+        $webhostingDomainName->transferToSpace($space2, true);
 
         self::assertEquals($space2, $webhostingDomainName->space);
+        self::assertTrue($webhostingDomainName->primary);
     }
 
     /** @test */

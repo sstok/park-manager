@@ -12,6 +12,8 @@ namespace ParkManager\Tests\UI\Web\Form\Type;
 
 use Exception;
 use InvalidArgumentException;
+use ParkManager\Domain\User\Exception\UserNotFound;
+use ParkManager\Domain\User\UserId;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\StubCommand;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use RuntimeException;
@@ -56,6 +58,10 @@ final class MessageFormTypeTest extends TypeTestCase
                         throw new Exception('You know nothing');
                     }
 
+                    if ($command->id === 77) {
+                        throw UserNotFound::withId(UserId::fromString('f2df40e4-2f27-47e8-b03f-27d1456eed7a'));
+                    }
+
                     $this->dispatchedCommand = $command;
                 },
             ],
@@ -80,7 +86,7 @@ final class MessageFormTypeTest extends TypeTestCase
         self::assertNull($this->dispatchedCommand);
     }
 
-    private function createFormForCommand(): FormInterface
+    private function createFormForCommand($data = null, bool $withFallback = true): FormInterface
     {
         $profileContactFormType = $this->factory->createNamedBuilder('contact')
             ->add('email', TextType::class, ['required' => false])
@@ -90,7 +96,7 @@ final class MessageFormTypeTest extends TypeTestCase
             ->add('name', TextType::class, ['required' => false])
             ->add($profileContactFormType);
 
-        return $this->factory->createNamedBuilder('register_user', MessageFormType::class, null, [
+        $options = [
             'command_factory' => static fn (array $data): StubCommand => new StubCommand($data['id'], $data['username'], $data['profile'] ?? null),
             'exception_mapping' => [
                 FormRuntimeException::class => static fn (Throwable $e) => new FormError('Root problem is here', null, [], null, $e),
@@ -103,7 +109,13 @@ final class MessageFormTypeTest extends TypeTestCase
             'exception_fallback' => static fn (Throwable $e, TranslatorInterface $translator) => [
                 'profile.contact.email' => new FormError($translator->trans('Contact Email problem is here'), null, [], null, $e),
             ],
-        ])
+        ];
+
+        if (! $withFallback) {
+            unset($options['exception_fallback']);
+        }
+
+        return $this->factory->createNamedBuilder('register_user', MessageFormType::class, $data, $options)
             ->add('id', IntegerType::class, ['required' => false])
             ->add('username', TextType::class, ['required' => false])
             ->add($profileFormType)
@@ -118,7 +130,7 @@ final class MessageFormTypeTest extends TypeTestCase
      */
     public function it_handles_errors_thrown_during_dispatching($id, array $expectedErrors): void
     {
-        $form = $this->createFormForCommand();
+        $form = $this->createFormForCommand(null, $id !== 77);
         $form->submit(['id' => $id, 'username' => 'Nero']);
 
         self::assertFalse($form->isValid());
@@ -174,6 +186,13 @@ final class MessageFormTypeTest extends TypeTestCase
                 'profile.contact.email' => [new FormError('Contact Email problem is here', null, [], null, new Exception('You know nothing'))],
             ],
         ];
+
+        yield 'TranslatableException' => [
+            77,
+            [
+                '' => [new FormError('User with id "f2df40e4-2f27-47e8-b03f-27d1456eed7a" does not exist.', 'User with id "{id}" does not exist.', ['{id}' => 'f2df40e4-2f27-47e8-b03f-27d1456eed7a'], null, UserNotFound::withId(UserId::fromString('f2df40e4-2f27-47e8-b03f-27d1456eed7a')))],
+            ],
+        ];
     }
 
     /**
@@ -198,9 +217,54 @@ final class MessageFormTypeTest extends TypeTestCase
     }
 
     /** @test */
+    public function it_handles_an_entity_as_init_data(): void
+    {
+        $form = $this->createFormForCommand(new MessageFormTypeEntity());
+
+        self::assertEquals(50, $form->get('id')->getData());
+        self::assertEquals('Bernard', $form->get('username')->getData());
+        self::assertEquals(null, $form->get('profile')->getData());
+    }
+
+    /** @test */
+    public function it_dispatches_a_command_with_an_array_init_data(): void
+    {
+        $form = $this->createFormForCommand(['id' => '9', 'username' => 'Dio']);
+
+        self::assertEquals(9, $form->get('id')->getData());
+        self::assertEquals('Dio', $form->get('username')->getData());
+        self::assertEquals(null, $form->get('profile')->getData());
+
+        $form->submit(['id' => '8', 'username' => 'Nero']);
+
+        self::assertTrue($form->isValid());
+        self::assertNull($form->getTransformationFailure());
+        self::assertEquals(new StubCommand(8, 'Nero', [
+            'name' => null,
+            'contact' => [
+                'email' => null,
+                'address' => null,
+            ],
+        ]), $this->dispatchedCommand);
+
+        self::assertEquals(8, $form->get('id')->getData());
+        self::assertEquals('Nero', $form->get('username')->getData());
+        self::assertEquals(
+            [
+                'name' => null,
+                'contact' => [
+                    'email' => null,
+                    'address' => null,
+                ],
+            ],
+            $form->get('profile')->getData()
+        );
+    }
+
+    /** @test */
     public function it_dispatches_a_command(): void
     {
-        $form = $this->createFormForCommand();
+        $form = $this->createFormForCommand(new MessageFormTypeEntity());
         $form->submit(['id' => '8', 'username' => 'Nero']);
 
         self::assertTrue($form->isValid());
@@ -213,4 +277,10 @@ final class MessageFormTypeTest extends TypeTestCase
             ],
         ]), $this->dispatchedCommand);
     }
+}
+
+class MessageFormTypeEntity
+{
+    public $id = 50;
+    public $username = 'Bernard';
 }
