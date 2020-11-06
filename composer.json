@@ -9,6 +9,7 @@
         "hosting"
     ],
     "homepage": "http://www.park-manager.com/",
+    "version": "0.3-dev",
     "license": "MPL-2.0",
     "authors": [
         {
@@ -113,7 +114,6 @@
             "allow-contrib": true
         }
     },
-    "version": "0.3-dev",
     "autoload": {
         "psr-4": {
             "ParkManager\\": "src/"
