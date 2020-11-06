@@ -133,7 +133,7 @@ final class CertificateFactoryImplTest extends TestCase
         self::assertEquals('bop.dev.rollerscapes.net', $certificate->getCommonName());
         self::assertEquals([], $certificate->getAdditionalDomains());
         self::assertEquals('RSA-SHA1', $certificate->getSignatureAlgorithm());
-        self::assertEquals('', $certificate->getFingerprint());
+        self::assertEquals('5990c7371c6e72708f0df1444c057a14c193131d', $certificate->getFingerprint());
         self::assertEquals('2014-07-27 13:02:33', $certificate->validFromDate()->toDateTimeString());
         self::assertEquals('2018-07-26 13:02:33', $certificate->expirationDate()->toDateTimeString());
         self::assertEquals(<<<'PUBKEY'
@@ -155,7 +155,7 @@ final class CertificateFactoryImplTest extends TestCase
                 'commonName' => 'bop.dev.rollerscapes.net',
                 'altNames' => [],
                 'signatureAlgorithm' => 'RSA-SHA1',
-                'fingerprint' => '',
+                'fingerprint' => '5990c7371c6e72708f0df1444c057a14c193131d',
                 'validTo' => 1532610153,
                 'validFrom' => 1406466153,
                 'issuer' => [
@@ -307,7 +307,7 @@ final class CertificateFactoryImplTest extends TestCase
         self::assertEquals(['slack.com', '*.slack.com'], $certificate->getDomains());
         self::assertEquals(['slack.com', '*.slack.com'], $certificate->getAdditionalDomains());
         self::assertEquals('RSA-SHA256', $certificate->getSignatureAlgorithm());
-        self::assertEquals('', $certificate->getFingerprint());
+        self::assertEquals('5f187452a024f2af605e8c01f2a5e22a7a530870a36ba459ca8b56048a454187', $certificate->getFingerprint());
         self::assertEquals('2018-02-08 00:00:00', $certificate->validFromDate()->toDateTimeString());
         self::assertEquals('2021-02-12 12:00:00', $certificate->expirationDate()->toDateTimeString());
         self::assertEquals(<<<'PUBKEY'

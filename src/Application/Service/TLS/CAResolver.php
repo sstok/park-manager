@@ -67,6 +67,12 @@ class CAResolver
             throw new UnprocessablePEM($name, $contents);
         }
 
+        try {
+            $rawData['fingerprint'] = \openssl_x509_fingerprint($x509Read, $rawData['signatureTypeSN']) ?: '';
+        } catch (\Throwable $e) {
+            $rawData['fingerprint'] = '';
+        }
+
         if ($withKey) {
             $pubKeyRead = @\openssl_pkey_get_public($x509Read);
 

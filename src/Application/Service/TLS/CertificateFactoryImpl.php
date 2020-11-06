@@ -73,6 +73,12 @@ final class CertificateFactoryImpl implements CertificateFactory
         $x509Read = \openssl_x509_read($contents);
         $rawData = \openssl_x509_parse($x509Read, false);
 
+        try {
+            $fingerprint = \openssl_x509_fingerprint($x509Read, $rawData['signatureTypeSN']) ?: '';
+        } catch (\Throwable $e) {
+            $fingerprint = '';
+        }
+
         $pubKeyRead = \openssl_pkey_get_public($x509Read);
         $pubKey = \openssl_pkey_get_details($pubKeyRead);
 
@@ -87,7 +93,7 @@ final class CertificateFactoryImpl implements CertificateFactory
             'commonName' => $rawData['subject']['commonName'],
             'altNames' => $this->getAltNames($rawData),
             'signatureAlgorithm' => $rawData['signatureTypeSN'],
-            'fingerprint' => '',
+            'fingerprint' => $fingerprint,
             'validTo' => (int) $rawData['validTo_time_t'],
             'validFrom' => (int) $rawData['validFrom_time_t'],
             'issuer' => $rawData['issuer'],
