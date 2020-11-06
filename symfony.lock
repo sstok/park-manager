@@ -127,9 +127,6 @@
         "version": "1.2.x-dev"
     },
     "doctrine/sql-formatter": {
-        "version": "1.1.1"
-    },
-    "doctrine/sql-formatter": {
         "version": "1.1.0"
     },
     "egulias/email-validator": {
@@ -298,6 +295,9 @@
     },
     "psalm/plugin-phpunit": {
         "version": "0.7"
+    },
+    "psalm/plugin-symfony": {
+        "version": "v2.0.0"
     },
     "psr/cache": {
         "version": "1.0.x-dev"

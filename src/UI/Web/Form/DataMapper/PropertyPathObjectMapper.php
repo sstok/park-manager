@@ -39,32 +39,31 @@ final class PropertyPathObjectMapper extends PropertyPathMapper
         parent::__construct($this->propertyAccessor);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mapDataToForms($data, iterable $forms): void
     {
-        $empty = $data === null || $data === [];
-
-        if (! $empty && ! \is_array($data) && ! \is_object($data)) {
+        if ($data !== null && ! \is_array($data) && ! \is_object($data)) {
             throw new UnexpectedTypeException($data, 'object, array or empty');
         }
 
+        $empty = $data === null || $data === [];
         $forceOjbAccess = \is_object($data);
 
         foreach ($forms as $form) {
             $propertyPath = $form->getPropertyPath();
             $config = $form->getConfig();
 
-            if (! $empty && $propertyPath !== null && $config->getMapped()) {
-                $form->setData($this->getPropertyValue($data, $propertyPath, $forceOjbAccess));
-            } else {
+            if ($empty || $propertyPath === null || ! $config->getMapped()) {
                 $form->setData($config->getData());
+            } else {
+                $form->setData($this->getPropertyValue($data, $propertyPath, $forceOjbAccess));
             }
         }
     }
 
-    private function getPropertyValue($data, ?PropertyPathInterface $propertyPath, bool $forceOjbAccess)
+    /**
+     * @param array|mixed|object $data
+     */
+    private function getPropertyValue($data, PropertyPathInterface $propertyPath, bool $forceOjbAccess)
     {
         if ($forceOjbAccess && $propertyPath->isIndex(0)) {
             $propertyPath = new PropertyPath($propertyPath->getElement(0));

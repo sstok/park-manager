@@ -54,13 +54,16 @@ final class HashedPasswordType extends AbstractType
             new CallbackTransformer(
                 // Password is always null (as by convention)
                 static fn () => null,
+                /**
+                 * @param string|null $value
+                 */
                 static function ($value) use ($encoder): ?string {
                     if ($value === null) {
                         return null;
                     }
 
                     if (! \is_string($value)) {
-                        throw new TransformationFailedException('Expected string got "' . \gettype($value) . '"');
+                        throw new TransformationFailedException('Expected string or null got "' . get_debug_type($value) . '"');
                     }
 
                     $encodePassword = $encoder($value);

@@ -21,7 +21,6 @@ use Symfony\Component\Security\Core\Exception\RuntimeException;
 class PermissionAccessManager
 {
     private TokenStorageInterface $tokenStorage;
-
     private ContainerInterface $deciders;
 
     /** @var array<string,string> */
@@ -52,7 +51,7 @@ class PermissionAccessManager
         }
 
         if ($permission instanceof SelfDecidingPermission) {
-            return $permission($token, $user, $this);
+            return $permission->__invoke($token, $user, $this);
         }
 
         $class = $this->resolvePermissionName($permission);

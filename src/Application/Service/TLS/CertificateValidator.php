@@ -83,7 +83,7 @@ class CertificateValidator
 
         // The same cert information is likely to be validated multiple times
         // So keep a local cache to speed-up the parsing process a little.
-        if ($hash === $this->hash) {
+        if ($hash === $this->hash && isset($this->fields)) {
             return $this->fields;
         }
 

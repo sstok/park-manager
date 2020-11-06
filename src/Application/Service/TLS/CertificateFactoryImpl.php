@@ -16,6 +16,7 @@ use ParagonIE\Halite\Asymmetric\EncryptionPublicKey;
 use ParagonIE\Halite\Halite;
 use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Application\Service\TLS\Violation\ExpectedLeafCertificate;
+use ParkManager\Application\Service\TLS\Violation\UnprocessablePEM;
 use ParkManager\Domain\DomainName\TLS\Certificate;
 
 final class CertificateFactoryImpl implements CertificateFactory
@@ -70,8 +71,19 @@ final class CertificateFactoryImpl implements CertificateFactory
      */
     private function extractRawData(string $contents, HiddenString $privateKey): array
     {
-        $x509Read = \openssl_x509_read($contents);
-        $rawData = \openssl_x509_parse($x509Read, false);
+        $x509Read = @\openssl_x509_read($contents);
+
+        if ($x509Read === false) {
+            throw new UnprocessablePEM('', $contents);
+        }
+
+        // @codeCoverageIgnoreStart
+        $rawData = @\openssl_x509_parse($x509Read, false);
+
+        if ($rawData === false) {
+            throw new UnprocessablePEM('', $contents);
+        }
+        // @codeCoverageIgnoreEnd
 
         try {
             $fingerprint = \openssl_x509_fingerprint($x509Read, $rawData['signatureTypeSN']) ?: '';
@@ -80,6 +92,11 @@ final class CertificateFactoryImpl implements CertificateFactory
         }
 
         $pubKeyRead = \openssl_pkey_get_public($x509Read);
+
+        if ($pubKeyRead === false) {
+            throw new UnprocessablePEM('', $contents);
+        }
+
         $pubKey = \openssl_pkey_get_details($pubKeyRead);
 
         \openssl_pkey_free($pubKeyRead);
@@ -89,7 +106,7 @@ final class CertificateFactoryImpl implements CertificateFactory
             throw new ExpectedLeafCertificate();
         }
 
-        $fields = [
+        $rawData = [
             'commonName' => $rawData['subject']['commonName'],
             'altNames' => $this->getAltNames($rawData),
             'signatureAlgorithm' => $rawData['signatureTypeSN'],
@@ -102,13 +119,13 @@ final class CertificateFactoryImpl implements CertificateFactory
             '_privateKeyInfo' => $this->getPrivateKeyDetails($privateKey),
         ];
 
-        $fields['_domains'] = $fields['altNames'];
-        $fields['_domains'][] = $rawData['subject']['commonName'];
+        $rawData['_domains'] = $rawData['altNames'];
+        $rawData['_domains'][] = $rawData['subject']['commonName'];
 
         // Remove any duplicates and ensure the keys are incremental.
-        $fields['_domains'] = \array_unique($fields['_domains']);
+        $rawData['_domains'] = \array_unique($rawData['_domains']);
 
-        return $fields;
+        return $rawData;
     }
 
     /**

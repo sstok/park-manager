@@ -117,7 +117,7 @@ final class ModelResolverTest extends TestCase
         }
 
         $resolved = [];
-        $argumentMetadata = $argumentMetadata = new ArgumentMetadata('id', $class, false, $default !== null, $default);
+        $argumentMetadata = new ArgumentMetadata('id', $class, false, $default !== null, $default);
 
         foreach ($this->resolver->resolve($request, $argumentMetadata) as $value) {
             $resolved[] = $value;

@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Form\Type;
 
 use ParkManager\Domain\Exception\TranslatableException;
-use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectMapper;
 use ParkManager\UI\Web\Form\DataMapper\CommandDataMapper;
+use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectMapper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -131,6 +131,9 @@ final class MessageFormType extends AbstractType
         }
     }
 
+    /**
+     * @param array<string|null, FormError>|FormError $errors
+     */
     private function mapErrors($errors, FormInterface $form): void
     {
         if (! \is_array($errors)) {

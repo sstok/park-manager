@@ -33,7 +33,7 @@ interface ForwardRepository
 
     public function countBySpace(SpaceId $space): int;
 
-    public function save(Forward $forward);
+    public function save(Forward $forward): void;
 
-    public function remove(Forward $forward);
+    public function remove(Forward $forward): void;
 }

@@ -6,6 +6,7 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 
     errorBaseline="psalm-baseline.xml"
+    allowStringToStandInForClass="true"
 >
     <projectFiles>
         <directory name="src"/>
@@ -46,7 +47,7 @@
         <MissingPropertyType errorLevel="info"/>
         <InvalidDocblock errorLevel="info"/>
 
-        <PropertyNotSetInConstructor errorLevel="info"/>
+        <PropertyNotSetInConstructor errorLevel="suppress"/>
         <PropertyTypeCoercion>
             <errorLevel type="suppress">
                 <file name="src/Infrastructure/Doctrine/Repository/EntityRepository.php"/>
@@ -71,6 +72,13 @@
             </errorLevel>
         </PossiblyNullPropertyFetch>
 
+        <PossiblyUndefinedArrayOffset>
+            <errorLevel type="suppress">
+                <!-- To many false positives. OpenSSL needs better stubs... -->
+                <file name="src/Application/Service/TLS/CertificateFactoryImpl.php"/>
+            </errorLevel>
+        </PossiblyUndefinedArrayOffset>
+
         <PossiblyNullReference>
             <errorLevel type="suppress">
                 <!-- Tests are always checked or at least will produce an error -->
@@ -80,6 +88,12 @@
                 <file name="src/UI/Web/Form/ConfirmationHandler/*.php"/>
             </errorLevel>
         </PossiblyNullReference>
+
+        <ParamNameMismatch errorLevel="info">
+            <errorLevel type="suppress">
+                <file name="src/UI/Web/Form/DataMapper/PropertyPathObjectMapper.php"/>
+            </errorLevel>
+        </ParamNameMismatch>
 
         <MissingConstructor errorLevel="info"/>
         <MissingClosureParamType errorLevel="info"/>
@@ -92,7 +106,7 @@
 
         <UnresolvableInclude errorLevel="info"/>
 
-        <RawObjectIteration errorLevel="info"/>
+        <RawObjectIteration errorLevel="error"/>
 
         <InvalidStringClass errorLevel="info"/>
     </issueHandlers>
@@ -102,6 +116,14 @@
 
     <plugins>
         <!--<pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>-->
-        <pluginClass class="Weirdan\DoctrinePsalmPlugin\Plugin"/>
+        <!--<pluginClass class="Weirdan\DoctrinePsalmPlugin\Plugin"/>-->
+        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin">
+            <containerXml>var/cache/dev/ParkManager_KernelDevDebugContainer.xml</containerXml>
+        </pluginClass>
     </plugins>
+
+    <fileExtensions>
+        <extension name=".php" />
+        <extension name=".twig" checker="./vendor/psalm/plugin-symfony/src/Twig/TemplateFileAnalyzer.php"/>
+    </fileExtensions>
 </psalm>

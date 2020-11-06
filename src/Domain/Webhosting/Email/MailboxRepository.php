@@ -33,7 +33,7 @@ interface MailboxRepository
 
     public function countBySpace(SpaceId $space): int;
 
-    public function save(Mailbox $mailbox);
+    public function save(Mailbox $mailbox): void;
 
-    public function remove(Mailbox $mailbox);
+    public function remove(Mailbox $mailbox): void;
 }

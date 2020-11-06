@@ -23,7 +23,6 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 final class AdminFixtures extends Fixture
 {
     private MessageBusInterface $commandBus;
-
     private EncoderFactoryInterface $encoderFactory;
 
     public function __construct(MessageBusInterface $commandBus, EncoderFactoryInterface $encoderFactory)

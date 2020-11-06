@@ -23,13 +23,11 @@ abstract class BaseConfirmationHandler
 {
     protected Environment $twig;
     protected CsrfTokenManagerInterface $tokenManager;
-    protected $templateContext = [
+    protected array $templateContext = [
         'cancel_url' => null,
         'error' => null,
     ];
-
     protected string $tokenId = '';
-
     protected ?Request $request = null;
 
     public function __construct(Environment $twig, CsrfTokenManagerInterface $tokenManager)
@@ -89,9 +87,9 @@ abstract class BaseConfirmationHandler
      * * yes_btn_label
      * * token (to be set as hidden-field value)
      *
-     * @param string $template       A Twig template to render
-     * @param array  $extraVariables An additional list of variables for the template
-     *                               (cannot overwrite existing configuration)
+     * @param string              $template       A Twig template to render
+     * @param array<string,mixed> $extraVariables An additional list of variables for the template
+     *                                            (cannot overwrite existing configuration)
      */
     public function render(string $template, array $extraVariables = []): string
     {

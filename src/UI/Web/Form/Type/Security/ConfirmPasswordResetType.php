@@ -22,6 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
 final class ConfirmPasswordResetType extends AbstractType
@@ -76,7 +77,7 @@ final class ConfirmPasswordResetType extends AbstractType
             ->setDefault('disable_entity_mapping', true)
             ->setDefault('command_factory', static fn (array $data) => new ConfirmPasswordReset($data['reset_token'], $data['password']))
             ->setDefault('exception_mapping', [
-                PasswordResetTokenNotAccepted::class => function (PasswordResetTokenNotAccepted $e, $translator, FormInterface $form) {
+                PasswordResetTokenNotAccepted::class => function (PasswordResetTokenNotAccepted $e, TranslatorInterface $translator, FormInterface $form) {
                     $arguments = [
                         '{reset_url}' => $this->urlGenerator->generate('park_manager.security_request_password_reset'),
                     ];

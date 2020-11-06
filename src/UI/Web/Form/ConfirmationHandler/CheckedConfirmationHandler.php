@@ -24,7 +24,7 @@ namespace ParkManager\UI\Web\Form\ConfirmationHandler;
  */
 final class CheckedConfirmationHandler extends BaseConfirmationHandler
 {
-    protected $templateContext = [
+    protected array $templateContext = [
         'cancel_url' => null,
         'required_value' => '',
         'provided_value' => '',

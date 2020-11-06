@@ -82,11 +82,7 @@ trait UuidTrait
             return true;
         }
 
-        if (! $identity1 instanceof static) {
-            return false;
-        }
-
-        return $identity1->equals($identity2);
+        return $identity1 instanceof static && $identity1->equals($identity2);
     }
 
     /**
@@ -98,7 +94,7 @@ trait UuidTrait
      *
      * @param object|static|null $identity Identity (of this instance) object or null
      * @param object|null        $entity   Entity object to extract the property from or null
-     * @param string|null        $property The property-name of $entity to get the identity VO
+     * @param string             $property The property-name of $entity to get the identity VO
      */
     public static function equalsValueOfEntity($identity, $entity, string $property): bool
     {

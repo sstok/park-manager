@@ -223,7 +223,7 @@ final class MessageFormTypeTest extends TypeTestCase
 
         self::assertEquals(50, $form->get('id')->getData());
         self::assertEquals('Bernard', $form->get('username')->getData());
-        self::assertEquals(null, $form->get('profile')->getData());
+        self::assertNull($form->get('profile')->getData());
     }
 
     /** @test */
@@ -233,7 +233,7 @@ final class MessageFormTypeTest extends TypeTestCase
 
         self::assertEquals(9, $form->get('id')->getData());
         self::assertEquals('Dio', $form->get('username')->getData());
-        self::assertEquals(null, $form->get('profile')->getData());
+        self::assertNull($form->get('profile')->getData());
 
         $form->submit(['id' => '8', 'username' => 'Nero']);
 
