@@ -12,6 +12,7 @@ namespace ParkManager\Tests\Domain\Webhosting\Constraint;
 
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\DBConstraints;
 use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
 use PHPUnit\Framework\TestCase;
 
@@ -27,12 +28,14 @@ final class ConstraintsTest extends TestCase
             'monthlyTraffic' => 50,
             'storageSize' => new ByteSize(22, 'GB'),
             'email' => new EmailConstraints(['maximumAddressCount' => 50]),
+            'database' => new DBConstraints(['maximumAmountPerType' => 5]),
         ]);
 
         self::assertEquals([], $constraints->changes);
         self::assertEquals(50, $constraints->monthlyTraffic);
         self::assertEquals(new ByteSize(22, 'GB'), $constraints->storageSize);
         self::assertEquals(new EmailConstraints(['maximumAddressCount' => 50]), $constraints->email);
+        self::assertEquals(new DBConstraints(['maximumAmountPerType' => 5]), $constraints->database);
     }
 
     /** @test */
@@ -90,5 +93,7 @@ final class ConstraintsTest extends TestCase
         yield ['storageSize', new ByteSize(22, 'GB')];
 
         yield ['email', (new EmailConstraints())->setMaximumAddressCount(50)];
+
+        yield ['database', (new DBConstraints())->setMaximumAmountPerType(50)];
     }
 }

@@ -43,6 +43,13 @@ class Constraints
     public EmailConstraints $email;
 
     /**
+     * READ-ONLY: Database constraints.
+     *
+     * @ORM\Embedded(class=DBConstraints::class, columnPrefix="database_")
+     */
+    public DBConstraints $database;
+
+    /**
      * READ-ONLY: Change Tracking.
      *
      * [name] => old-value
@@ -55,6 +62,7 @@ class Constraints
     {
         $this->storageSize = ByteSize::inf();
         $this->email = new EmailConstraints();
+        $this->database = new DBConstraints();
 
         foreach ($fields as $name => $value) {
             if (\property_exists($this, $name)) {
@@ -63,9 +71,19 @@ class Constraints
         }
     }
 
+    public function __clone()
+    {
+        $this->email = clone $this->email;
+        $this->database = clone $this->database;
+    }
+
     public function equals(self $other): bool
     {
         if (! $this->email->equals($other->email)) {
+            return false;
+        }
+
+        if (! $this->database->equals($other->database)) {
             return false;
         }
 
@@ -89,6 +107,19 @@ class Constraints
         $self = clone $this;
         $self->email = $email;
         $self->changes['email'] = $this->email;
+
+        return $self;
+    }
+
+    public function setDatabase(DBConstraints $db): self
+    {
+        if ($this->database->equals($db)) {
+            return $this;
+        }
+
+        $self = clone $this;
+        $self->database = $db;
+        $self->changes['database'] = $this->database;
 
         return $self;
     }
