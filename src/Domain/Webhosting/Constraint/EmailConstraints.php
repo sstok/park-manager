@@ -91,6 +91,16 @@ final class EmailConstraints
         }
     }
 
+    public function mergeFrom(self $other): self
+    {
+        return $this->setMaxStorageSize($other->maxStorageSize)
+            ->setMaximumMailboxCount($other->maximumMailboxCount)
+            ->setMaximumForwardCount($other->maximumForwardCount)
+            ->setMaximumAddressCount($other->maximumAddressCount)
+            ->setSpamFilterCount($other->spamFilterCount)
+            ->setMailListCount($other->mailListCount);
+    }
+
     public function setMaxStorageSize(ByteSize $value): self
     {
         if ($this->maxStorageSize->equals($value)) {
