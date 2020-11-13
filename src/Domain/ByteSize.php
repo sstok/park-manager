@@ -10,18 +10,27 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain;
 
+use ParkManager\Domain\Exception\InvalidArgumentException;
+
 final class ByteSize
 {
     public int $value;
 
-    public function __construct(int $size, string $unit)
+    public function __construct($size, string $unit)
     {
+        if (! \is_int($size) && ! \is_float($size)) {
+            throw new InvalidArgumentException('Expected the size to be an integer or float.');
+        }
+
         $target = $size;
 
         switch (\mb_strtolower($unit)) {
             case 'b':
             case 'byte':
-                // no-op
+                if (! \ctype_digit(\ltrim((string) $size, '-'))) {
+                    throw new InvalidArgumentException('The unit "byte" must be a whole number without a fraction.');
+                }
+
                 break;
 
             case 'inf':
@@ -66,10 +75,23 @@ final class ByteSize
                 break;
 
             default:
-                throw new \InvalidArgumentException(\sprintf('Unknown or unsupported unit "%s".', $unit));
+                throw new InvalidArgumentException(\sprintf('Unknown or unsupported unit "%s".', $unit));
         }
 
-        $this->value = $target;
+        $this->value = (int) $target;
+    }
+
+    public static function fromString(string $input): self
+    {
+        if ($input === '-1' || \mb_strtolower($input) === 'inf') {
+            return self::inf();
+        }
+
+        if (! \preg_match('{^(?P<size>\d+(?:\.\d{0,2})?)\h*(?P<unit>[a-z]{1,3})$}i', $input, $matches)) {
+            throw new InvalidArgumentException(\sprintf('Invalid ByteSize format provided "%s". Expected value and unit as either "12 Mib" or "12 MB". Or "inf" otherwise.', $input));
+        }
+
+        return new self((float) $matches['size'], $matches['unit']);
     }
 
     public static function inf(): self
@@ -79,6 +101,10 @@ final class ByteSize
 
     public function format(): string
     {
+        if ($this->isInf()) {
+            return 'inf';
+        }
+
         if ($this->value >= 1024 * 1024 * 1024) {
             return \sprintf('%.2f GiB', $this->value / 1024 / 1024 / 1024);
         }
