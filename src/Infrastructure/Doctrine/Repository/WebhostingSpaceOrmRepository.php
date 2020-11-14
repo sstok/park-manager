@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
@@ -36,6 +37,11 @@ class WebhostingSpaceOrmRepository extends EntityRepository implements Webhostin
         }
 
         return $space;
+    }
+
+    public function allWithAssignedPlan(PlanId $id): iterable
+    {
+        return [];
     }
 
     public function save(Space $space): void

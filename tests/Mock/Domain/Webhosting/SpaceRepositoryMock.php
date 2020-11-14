@@ -12,6 +12,7 @@ namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
+use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
@@ -29,6 +30,11 @@ final class SpaceRepositoryMock implements WebhostingSpaceRepository
     public function get(SpaceId $id): Space
     {
         return $this->mockDoGetById($id);
+    }
+
+    public function allWithAssignedPlan(PlanId $id): iterable
+    {
+        return $this->mockDoGetMultiByField('plan', $id->toString());
     }
 
     public function save(Space $space): void
@@ -53,5 +59,13 @@ final class SpaceRepositoryMock implements WebhostingSpaceRepository
     protected function throwOnNotFound($key): void
     {
         throw new WebhostingSpaceNotFound($key);
+    }
+
+    protected function getFieldsIndexMultiMapping(): array
+    {
+        return [
+            'plan' => static fn (Space $space): ?string => $space->plan !== null ? $space->plan->id->toString() : null,
+            'owner' => static fn (Space $space): ?string => $space->owner !== null ? $space->owner->id->toString() : null,
+        ];
     }
 }

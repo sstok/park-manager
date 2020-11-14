@@ -27,8 +27,10 @@ use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
  * All other constraints are set as-is. If current usage is higher than the new value,
  * the current items are preserved. Effectively meaning that when they are removed
  * the constraints restrict creation of new items.
+ *
+ * @final
  */
-final class ApplicabilityChecker
+class ApplicabilityChecker
 {
     private WebhostingSpaceRepository $spaceRepository;
     private MailboxRepository $mailboxRepository;

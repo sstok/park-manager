@@ -113,14 +113,14 @@ class Space
 
     /**
      * Change the webhosting Plan assignment,
-     * and use the Constraints of the assigned set.
+     * and use the Constraints of the assigned plan.
      */
-    public function assignPlanWithConstraints(Plan $plan): void
+    public function assignPlanWithConstraints(Plan $plan, Constraints $constraints): void
     {
         $this->plan = $plan;
 
-        if (! $this->constraints->equals($plan->constraints)) {
-            $this->constraints = $plan->constraints;
+        if (! $this->constraints->equals($constraints)) {
+            $this->constraints = $constraints;
         }
     }
 

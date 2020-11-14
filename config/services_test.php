@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use ParkManager\Application\Service\CurrentStorageUsageRetriever;
 use ParkManager\Application\Service\TLS\CertificateFactoryImpl;
+use ParkManager\Tests\Mock\Application\Service\CurrentStorageUsageRetrieverMock;
 
 return static function (ContainerConfigurator $c): void {
     $c->import('services_dev.php');
@@ -18,4 +20,7 @@ return static function (ContainerConfigurator $c): void {
     $di = $c->services();
     $di->get(CertificateFactoryImpl::class)
         ->public();
+
+    $di->set(CurrentStorageUsageRetrieverMock::class);
+    $di->alias(CurrentStorageUsageRetriever::class, CurrentStorageUsageRetrieverMock::class);
 };

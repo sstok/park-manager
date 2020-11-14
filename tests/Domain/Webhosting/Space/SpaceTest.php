@@ -98,8 +98,8 @@ final class SpaceTest extends TestCase
         $space1 = Space::register(SpaceId::create(), $owner, $plan1);
         $space2 = Space::register(SpaceId::create(), $owner, $plan1);
 
-        $space1->assignPlanWithConstraints($plan1);
-        $space2->assignPlanWithConstraints($plan2);
+        $space1->assignPlanWithConstraints($plan1, $plan1->constraints);
+        $space2->assignPlanWithConstraints($plan2, $plan2->constraints);
 
         self::assertSame($plan1, $space1->getAssignedPlan(), 'Plan should not change');
         self::assertSame($plan1->constraints, $space1->constraints, 'Constraints should not change');
@@ -119,7 +119,7 @@ final class SpaceTest extends TestCase
         );
 
         $plan->changeConstraints($newConstraints = (new Constraints())->setMonthlyTraffic(50));
-        $space->assignPlanWithConstraints($plan);
+        $space->assignPlanWithConstraints($plan, $plan->constraints);
 
         self::assertSame($plan, $space->getAssignedPlan());
         self::assertSame($plan->constraints, $space->constraints);

@@ -208,7 +208,7 @@ trait MockRepository
     protected function mockDoGetMultiByField(string $key, $value): Generator
     {
         if (! isset($this->storedMultiByField[$key][$value])) {
-            $this->throwOnNotFound($value);
+            return;
         }
 
         foreach ($this->storedMultiByField[$key][$value] as $entity) {
@@ -294,12 +294,17 @@ trait MockRepository
     }
 
     /**
-     * @param-param array<int,T> $entities
+     * @param-param array<int,(T|string)> $entities
      */
     public function assertEntitiesWereRemoved(array $entities): void
     {
         Assert::assertGreaterThan(0, $this->mockWasRemoved, 'No entities were removed');
-        Assert::assertEquals($entities, \array_values($this->removedById));
+
+        if (\is_string(\reset($entities))) {
+            Assert::assertEquals($entities, \array_keys($this->removedById));
+        } else {
+            Assert::assertEquals($entities, \array_values($this->removedById));
+        }
     }
 
     public function assertHasEntity($id, Closure $excepted): void
