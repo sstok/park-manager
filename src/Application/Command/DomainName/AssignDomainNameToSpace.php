@@ -17,15 +17,17 @@ final class AssignDomainNameToSpace
 {
     public DomainNameId $id;
     public SpaceId $space;
+    public bool $primary;
 
-    public function __construct(DomainNameId $id, SpaceId $space)
+    public function __construct(DomainNameId $id, SpaceId $space, bool $primary = false)
     {
         $this->id = $id;
         $this->space = $space;
+        $this->primary = $primary;
     }
 
-    public static function with(string $id, string $spaceId): self
+    public static function with(string $id, string $spaceId, bool $primary = false): self
     {
-        return new self(DomainNameId::fromString($id), SpaceId::fromString($spaceId));
+        return new self(DomainNameId::fromString($id), SpaceId::fromString($spaceId), $primary);
     }
 }

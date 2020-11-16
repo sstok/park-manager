@@ -33,11 +33,11 @@ final class DomainNameRepositoryMock implements DomainNameRepository
             'name' => static fn (DomainName $domainName) => $domainName->namePair->name,
             'tld' => static fn (DomainName $domainName) => $domainName->namePair->tld,
             'space_primary_id' => static function (DomainName $model) {
-                if ($model->isPrimary()) {
+                if ($model->space !== null && $model->isPrimary()) {
                     return (string) $model->space->id;
                 }
 
-                return $model->namePair->toString();
+                return 'null';
             },
         ];
     }

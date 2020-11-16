@@ -111,14 +111,24 @@ class DomainName
 
     public function transferToSpace(Space $space, bool $primary = false): void
     {
+        // This path is not the correct way, but because no constraints are
+        // breached it should not result in an exception.
+        if ($this->space === $space) {
+            if ($primary) {
+                $this->markPrimary();
+            }
+
+            return;
+        }
+
         // It's still possible the primary marking was given directly before
         // issuing the transfer, meaning the primary marking was not persisted
         // yet for the old owner. But checking this further is not worth it.
-        if ($this->space !== null && $this->isPrimary()) {
-            throw new CannotTransferPrimaryDomainName($this->namePair, $this->space->id, $space->id);
-        }
-
         if ($this->space !== null) {
+            if ($this->isPrimary()) {
+                throw new CannotTransferPrimaryDomainName($this->namePair, $this->space->id, $space->id);
+            }
+
             if ($this->space->owner !== $space->owner) {
                 throw new CannotAssignDomainNameWithDifferentOwner($this->namePair, $this->space->id, $space->id);
             }

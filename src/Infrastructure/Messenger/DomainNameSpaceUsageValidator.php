@@ -16,8 +16,8 @@ use ParkManager\Domain\Webhosting\Space\Space;
 interface DomainNameSpaceUsageValidator
 {
     /**
-     * @throws \Exception when the DomainName is still used somewhere within the Space;
-     *                    either Mailbox, EmailForward, Mail filter, FTPUser, SubDomains
+     * @throws CannotTransferInUseDomainName when the DomainName is still used somewhere within the Space;
+     *                                       either Mailbox, EmailForward, Mail filter, FTPUser, SubDomains
      */
     public function __invoke(DomainName $domainName, Space $space): void;
 }
