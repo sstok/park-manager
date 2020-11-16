@@ -12,13 +12,13 @@ namespace ParkManager\Tests\Application\Command\Webhosting\Constraint;
 
 use ParkManager\Application\Command\Webhosting\Constraint\AssignPlanToSpace;
 use ParkManager\Application\Command\Webhosting\Constraint\AssignPlanToSpaceHandler;
-use ParkManager\Application\Service\SpaceConstraint\ApplicabilityChecker;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
+use ParkManager\Tests\Mock\Application\Service\ApplicabilityCheckerMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\PlanRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +38,7 @@ final class AssignPlanToSpaceHandlerTest extends TestCase
     private PlanRepositoryMock $planRepository;
     private SpaceRepositoryMock $spaceRepository;
     private AssignPlanToSpaceHandler $handler;
-    private ApplicabilityChecker $applicabilityChecker;
+    private ApplicabilityCheckerMock $applicabilityChecker;
 
     protected function setUp(): void
     {
@@ -53,24 +53,7 @@ final class AssignPlanToSpaceHandlerTest extends TestCase
 
         $space3 = SpaceRepositoryMock::createSpace(self::SPACE_ID_3);
 
-        $this->applicabilityChecker = new class() extends ApplicabilityChecker {
-            public ?SpaceId $mockForId = null;
-            public Constraints $mockConstraints;
-
-            public function __construct()
-            {
-                // no-op
-            }
-
-            public function getApplicable(SpaceId $id, Constraints $constraints): Constraints
-            {
-                if ($this->mockForId !== null && $id->equals($this->mockForId)) {
-                    return $this->mockConstraints;
-                }
-
-                return $constraints;
-            }
-        };
+        $this->applicabilityChecker = new ApplicabilityCheckerMock();
 
         $this->planRepository = new PlanRepositoryMock([$plan1, $plan2]);
         $this->spaceRepository = new SpaceRepositoryMock([$space1, $space2, $space3]);
