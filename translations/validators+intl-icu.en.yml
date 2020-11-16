@@ -6,3 +6,5 @@ password_reset:
     access_disabled: Cannot reset password because access is disabled for this account.
 
 invalid_split_token: The verification token is invalid or expired. <a href="{reset_url}">Please request a new one</a>.
+
+expiration_date_not_in_past: Expiration date cannot be in the past.

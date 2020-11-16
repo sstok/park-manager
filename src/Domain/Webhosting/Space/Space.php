@@ -12,6 +12,7 @@ namespace ParkManager\Domain\Webhosting\Space;
 
 use Assert\Assertion;
 use Assert\InvalidArgumentException as AssertionInvalidArgumentException;
+use Carbon\Carbon;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\ByteSize;
@@ -167,8 +168,10 @@ class Space
      * Note: There is no promise the webhosting space will in fact
      * be removed on the specified date. This depends on other subsystems.
      */
-    public function setExpirationDate(DateTimeImmutable $data): void
+    public function markExpirationDate(DateTimeImmutable $data): void
     {
+        Assertion::false(Carbon::instance($data)->isPast(), 'Expiration date cannot be in the past.', 'expirationDate');
+
         $this->expirationDate = $data;
     }
 
@@ -186,7 +189,7 @@ class Space
             return false;
         }
 
-        return $this->expirationDate->getTimestamp() <= ($current ?? new DateTimeImmutable())->getTimestamp();
+        return $this->expirationDate->getTimestamp() <= ($current ?? new Carbon())->getTimestamp();
     }
 
     /**

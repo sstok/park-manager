@@ -268,7 +268,7 @@ final class SpaceTest extends TestCase
             $this->createPlan(new Constraints())
         );
 
-        $space2->setExpirationDate($date = new DateTimeImmutable('now +6 days'));
+        $space2->markExpirationDate($date = new DateTimeImmutable('now +6 days'));
 
         self::assertFalse($space1->isExpired());
         self::assertFalse($space1->isExpired($date->modify('+2 days')));
