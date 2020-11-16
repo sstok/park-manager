@@ -266,6 +266,22 @@ trait MockRepository
         }
     }
 
+    public function assertEntityWasSavedThat($id, Closure $excepted): void
+    {
+        Assert::assertGreaterThan(0, $this->mockWasSaved, 'Entities were expected to be stored');
+
+        $key = (string) $id;
+        Assert::assertArrayHasKey($key, $this->savedById);
+
+        if ($excepted($this->savedById[$key])) {
+            $this->guardNotRemoved($this->getValueWithGetter($this->savedById[$key], 'id'));
+
+            return;
+        }
+
+        Assert::fail('No entity was found (by saving) that gave a Closure condition.');
+    }
+
     public function assertEntitiesWereSavedThat(Closure $excepted): void
     {
         Assert::assertGreaterThan(0, $this->mockWasSaved, 'Entities were expected to be stored');
@@ -312,12 +328,16 @@ trait MockRepository
         $key = (string) $id;
         Assert::assertArrayHasKey($key, $this->storedById);
         $excepted($this->storedById[$key]);
+
+        $this->guardNotRemoved($this->getValueWithGetter($this->storedById[$key], 'id'));
     }
 
     public function assertHasEntityThat(Closure $excepted): void
     {
         foreach ($this->storedById as $entity) {
             if ($excepted($entity)) {
+                $this->guardNotRemoved($this->getValueWithGetter($entity, 'id'));
+
                 return;
             }
         }

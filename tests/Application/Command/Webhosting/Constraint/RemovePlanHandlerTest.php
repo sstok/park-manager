@@ -70,7 +70,7 @@ final class RemovePlanHandlerTest extends TestCase
         $this->handler->__invoke(RemovePlan::with(self::PLAN_ID2));
 
         $this->planRepository->assertEntitiesWereRemoved([self::PLAN_ID2]);
-        $this->spaceRepository->assertEntitiesWereSavedThat(static fn (Space $space) => $space->plan === null && $space->id->toString() === self::SPACE_ID_2 && $space->constraints->equals(new Constraints(['monthlyTraffic' => 50])));
-        $this->spaceRepository->assertEntitiesWereSavedThat(static fn (Space $space) => $space->plan === null && $space->id->toString() === self::SPACE_ID_3 && $space->constraints->equals(new Constraints(['monthlyTraffic' => 100])));
+        $this->spaceRepository->assertEntityWasSavedThat(self::SPACE_ID_2, static fn (Space $space) => $space->plan === null && $space->constraints->equals(new Constraints(['monthlyTraffic' => 50])));
+        $this->spaceRepository->assertEntityWasSavedThat(self::SPACE_ID_3, static fn (Space $space) => $space->plan === null && $space->constraints->equals(new Constraints(['monthlyTraffic' => 100])));
     }
 }

@@ -245,6 +245,9 @@ final class MockRepositoryTest extends TestCase
 
         $repository->assertEntitiesWereSaved();
         $repository->assertNoEntitiesWereRemoved();
+        $repository->assertEntitiesWereSavedThat(static fn (MockEntity $savedEntity) => $savedEntity->name === 'Jones' || $savedEntity->name === 'Jane');
+        $repository->assertEntityWasSavedThat($entity1->id, static fn (MockEntity $savedEntity) => $savedEntity->name === 'Jones');
+
         self::assertSame($entity1, $repository->getByName('Jones'));
         self::assertSame($entity2, $repository->getByName('Jane'));
     }
@@ -297,12 +300,9 @@ final class MockIdentity implements Serializable, JsonSerializable
 /** @internal */
 final class MockEntity
 {
-    private MockIdentity $id;
-
+    public MockIdentity $id;
     public ?string $name = null;
-
     private string $lastName;
-
     private ?string $domain = null;
 
     public function __construct(string $id = 'fc86687e-0875-11e9-9701-acbc32b58315', string $name = 'Foobar', string $domain = null)
