@@ -87,7 +87,7 @@ in-docker-infection:
 	bin/console cache:clear --env=test
 	APP_ENV=test make db-fixtures
 	phpdbg -qrr vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --exclude-group "" --coverage-text --log-junit=var/junit.xml --coverage-xml var/coverage-xml/
-	SYMFONY_DEPRECATIONS_HELPER="disabled=1" phpdbg -qrr /usr/local/bin/infection run --verbose --show-mutations --no-interaction --only-covered --coverage var/ --min-msi=90 --min-covered-msi=90
+	phpdbg -qrr /usr/local/bin/infection run --verbose --show-mutations --no-interaction --only-covered --coverage var/ --min-msi=90 --min-covered-msi=90
 
 in-docker-encore:
 	yarn install

@@ -28,6 +28,7 @@ use ParkManager\UI\Web\ArgumentResolver\ModelResolver;
 use ParkManager\UI\Web\ArgumentResolver\SplitTokenResolver;
 use Pdp\CurlHttpClient as PdpCurlHttpClient;
 use Pdp\Manager as PdpManager;
+use Psr\Container\ContainerInterface;
 use Rollerworks\Component\SplitToken\Argon2SplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
 use Symfony\Component\Cache\Psr16Cache;
@@ -38,7 +39,8 @@ return static function (ContainerConfigurator $c): void {
         ->autowire()
         ->private()
         ->bind('$commandBus', service('park_manager.command_bus'))
-        ->bind(ObjectManager::class, service('doctrine.orm.default_entity_manager'));
+        ->bind(ObjectManager::class, service('doctrine.orm.default_entity_manager'))
+        ->bind(ContainerInterface::class, service('service_container'));
 
     $di->instanceof(DomainNameSpaceUsageValidator::class)
         ->tag('park_manager.command_bus.domain_name_space_usage_validator');
