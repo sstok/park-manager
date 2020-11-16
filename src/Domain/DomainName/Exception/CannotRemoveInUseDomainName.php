@@ -15,18 +15,18 @@ use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Exception\TranslatableException;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
-final class CannotTransferInUseDomainName extends DomainException implements TranslatableException
+final class CannotRemoveInUseDomainName extends DomainException implements TranslatableException
 {
-    public DomainNamePair $domainName;
-    public SpaceId $current;
-    public string $type;
-    public string $id;
+    private DomainNamePair $domainName;
+    private SpaceId $current;
+    private string $type;
+    private string $id;
 
     public function __construct(DomainNamePair $domainName, SpaceId $current, string $type, string $id)
     {
         parent::__construct(
             \sprintf(
-                'Domain name "%s" of space %s is still in use by "%s: %s" and cannot be transferred.',
+                'Domain name "%s" of space %s is still in use by "%s: %s" and cannot be removed.',
                 $domainName->toString(),
                 $current->toString(),
                 $type,
@@ -42,7 +42,7 @@ final class CannotTransferInUseDomainName extends DomainException implements Tra
 
     public function getTranslatorId(): string
     {
-        return 'cannot_transfer_space_domain_name.used_by_' . $this->type;
+        return 'cannot_remove_space_domain_name.used_by_' . $this->type;
     }
 
     public function getTranslationArgs(): array

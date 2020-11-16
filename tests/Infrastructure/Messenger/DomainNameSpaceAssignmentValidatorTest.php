@@ -13,9 +13,12 @@ namespace ParkManager\Tests\Infrastructure\Messenger;
 use ParkManager\Application\Command\DomainName\AddDomainName;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToSpace;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToUser;
+use ParkManager\Application\Command\DomainName\RemoveDomainName;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNamePair;
+use ParkManager\Domain\DomainName\Exception\CannotRemoveInUseDomainName;
+use ParkManager\Domain\DomainName\Exception\CannotTransferInUseDomainName;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
@@ -68,16 +71,18 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
     public function it_executes_validators(object $messageObj): void
     {
         $space = SpaceRepositoryMock::createSpace();
+        $domainNamePair = new DomainNamePair('example', 'com');
+
         $id = $messageObj->id;
 
         $usageValidatorProphecy = $this->prophesize(DomainNameSpaceUsageValidator::class);
-        $usageValidatorProphecy->__invoke(Argument::which('id', $id), $space)->willThrow(new \InvalidArgumentException('I refuse to let this one go!'));
+        $usageValidatorProphecy->__invoke(Argument::which('id', $id), $space)->willThrow(new CannotTransferInUseDomainName($domainNamePair, $space->id, 'email', '133984892'));
         $usageValidator = $usageValidatorProphecy->reveal();
 
-        $validator = new DomainNameSpaceAssignmentValidator(new DomainNameRepositoryMock([DomainName::registerForSpace($id, $space, new DomainNamePair('example', 'com'))]), [$usageValidator]);
+        $validator = new DomainNameSpaceAssignmentValidator(new DomainNameRepositoryMock([DomainName::registerForSpace($id, $space, $domainNamePair)]), [$usageValidator]);
         $stack = new StackMiddleware();
 
-        $this->expectExceptionObject(new \InvalidArgumentException('I refuse to let this one go!'));
+        $this->expectExceptionObject(new CannotTransferInUseDomainName($domainNamePair, $space->id, 'email', '133984892'));
 
         $validator->handle(Envelope::wrap($messageObj), $stack);
     }
@@ -89,5 +94,28 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
         yield 'AssignDomainNameToUser' => [AssignDomainNameToUser::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', '1d2f8114-4b82-4962-b564-ba14c752c434')];
 
         yield 'AssignDomainNameToUser (admin)' => [AssignDomainNameToUser::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', null)];
+    }
+
+    /**
+     * @test
+     */
+    public function it_executes_validators_for_remove_domain_name(): void
+    {
+        $messageObj = RemoveDomainName::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494');
+        $id = $messageObj->id;
+
+        $space = SpaceRepositoryMock::createSpace();
+        $domainNamePair = new DomainNamePair('example', 'com');
+
+        $usageValidatorProphecy = $this->prophesize(DomainNameSpaceUsageValidator::class);
+        $usageValidatorProphecy->__invoke(Argument::which('id', $id), $space)->willThrow(new CannotTransferInUseDomainName($domainNamePair, $space->id, 'email', '133984892'));
+        $usageValidator = $usageValidatorProphecy->reveal();
+
+        $validator = new DomainNameSpaceAssignmentValidator(new DomainNameRepositoryMock([DomainName::registerForSpace($id, $space, $domainNamePair)]), [$usageValidator]);
+        $stack = new StackMiddleware();
+
+        $this->expectExceptionObject(new CannotRemoveInUseDomainName($domainNamePair, $space->id, 'email', '133984892'));
+
+        $validator->handle(Envelope::wrap($messageObj), $stack);
     }
 }

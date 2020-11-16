@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Messenger;
 
 use ParkManager\Domain\DomainName\DomainName;
+use ParkManager\Domain\DomainName\Exception\CannotTransferInUseDomainName;
 use ParkManager\Domain\Webhosting\Space\Space;
 
 interface DomainNameSpaceUsageValidator
