@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine\Type;
 
-use ParkManager\Domain\DomainName\SubDomainNameId;
+use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 
 final class SubDomainNameIdType extends DomainIdType
 {

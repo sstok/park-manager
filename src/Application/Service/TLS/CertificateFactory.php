@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Application\Service\TLS;
 
 use ParagonIE\HiddenString\HiddenString;
-use ParkManager\Domain\DomainName\TLS\Certificate;
+use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
 
 interface CertificateFactory
 {

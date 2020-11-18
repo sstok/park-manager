@@ -8,13 +8,13 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Tests\Domain\DomainName\TLS;
+namespace ParkManager\Tests\Domain\Webhosting\Subdomain\TLS;
 
 use Assert\AssertionFailedException;
 use Carbon\Carbon;
 use DateTime;
-use ParkManager\Domain\DomainName\TLS\CA;
-use ParkManager\Domain\DomainName\TLS\Certificate;
+use ParkManager\Domain\Webhosting\SubDomain\TLS\CA;
+use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
 use ParkManager\Tests\Domain\EntityHydrator;
 use PHPUnit\Framework\TestCase;
 

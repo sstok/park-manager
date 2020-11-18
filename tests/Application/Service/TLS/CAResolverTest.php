@@ -16,7 +16,7 @@ use ParkManager\Application\Service\TLS\Violation\MissingCAExtension;
 use ParkManager\Application\Service\TLS\Violation\ToManyCAsProvided;
 use ParkManager\Application\Service\TLS\Violation\UnableToResolveParent;
 use ParkManager\Application\Service\TLS\Violation\UnprocessablePEM;
-use ParkManager\Domain\DomainName\TLS\CA;
+use ParkManager\Domain\Webhosting\SubDomain\TLS\CA;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;

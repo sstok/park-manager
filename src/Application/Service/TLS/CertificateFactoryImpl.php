@@ -17,7 +17,7 @@ use ParagonIE\Halite\Halite;
 use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Application\Service\TLS\Violation\ExpectedLeafCertificate;
 use ParkManager\Application\Service\TLS\Violation\UnprocessablePEM;
-use ParkManager\Domain\DomainName\TLS\Certificate;
+use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
 
 final class CertificateFactoryImpl implements CertificateFactory
 {

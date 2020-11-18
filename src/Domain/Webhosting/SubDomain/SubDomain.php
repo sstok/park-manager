@@ -8,10 +8,14 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Domain\DomainName;
+namespace ParkManager\Domain\Webhosting\SubDomain;
 
+use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
-use ParkManager\Domain\DomainName\TLS\Certificate;
+use ParkManager\Domain\DomainName\DomainName;
+use ParkManager\Domain\Webhosting\Space\Space;
+use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
+use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
 
 /**
  * @ORM\Entity
@@ -38,6 +42,12 @@ class SubDomain
      * @ORM\JoinColumn(name="host", nullable=false)
      */
     public DomainName $host;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Space::class)
+     * @ORM\JoinColumn(onDelete="RESTRICT", name="space", referencedColumnName="id")
+     */
+    public Space $space;
 
     /**
      * @ORM\Column(type="text", name="name_part")
@@ -71,7 +81,10 @@ class SubDomain
 
     public function __construct(SubDomainNameId $id, DomainName $host, string $name, string $homeDir, array $config)
     {
+        Assertion::notNull($host->space, 'DomainName must be assigned to a Space for usage with a SubDomain.', 'host');
+
         $this->id = $id;
+        $this->space = $host->space;
         $this->host = $host;
         $this->name = $name;
         $this->homeDir = $homeDir;

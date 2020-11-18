@@ -23,7 +23,7 @@ use ParkManager\Application\Service\TLS\Violation\UnprocessablePEM;
 use ParkManager\Application\Service\TLS\Violation\UnsupportedDomain;
 use ParkManager\Application\Service\TLS\Violation\UnsupportedPurpose;
 use ParkManager\Application\Service\TLS\Violation\WeakSignatureAlgorithm;
-use ParkManager\Domain\DomainName\TLS\CA;
+use ParkManager\Domain\Webhosting\SubDomain\TLS\CA;
 use Pdp\Manager as PublicSuffixManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

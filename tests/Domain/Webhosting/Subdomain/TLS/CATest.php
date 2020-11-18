@@ -8,11 +8,11 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Tests\Domain\DomainName\TLS;
+namespace ParkManager\Tests\Domain\Webhosting\Subdomain\TLS;
 
 use Carbon\Carbon;
 use DateTime;
-use ParkManager\Domain\DomainName\TLS\CA;
+use ParkManager\Domain\Webhosting\SubDomain\TLS\CA;
 use PHPUnit\Framework\TestCase;
 
 /**
