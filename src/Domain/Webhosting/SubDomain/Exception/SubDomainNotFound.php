@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\SubDomain\Exception;
 
-use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 use ParkManager\Domain\Exception\NotFoundException;
+use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 
 final class SubDomainNotFound extends NotFoundException
 {

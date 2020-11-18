@@ -11,97 +11,32 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NoResultException;
-use ParkManager\Domain\DomainName\DomainName;
-use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\DomainName\DomainNameRepository;
-use ParkManager\Domain\DomainName\Exception\CannotRemovePrimaryDomainName;
-use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
-use ParkManager\Domain\User\UserId;
-use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
+use ParkManager\Domain\Webhosting\SubDomain\Exception\SubDomainAlreadyExists;
+use ParkManager\Domain\Webhosting\SubDomain\Exception\SubDomainNotFound;
+use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
+use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
+use ParkManager\Domain\Webhosting\SubDomain\SubDomainRepository;
 
 /**
- * @method DomainName|null find($id, $lockMode = null, $lockVersion = null)
+ * @method SubDomain|null find($id, $lockMode = null, $lockVersion = null)
  */
-final class DomainNameOrmRepository extends EntityRepository implements DomainNameRepository
+final class SubDomainOrmRepository extends EntityRepository implements SubDomainRepository
 {
-    public function __construct(EntityManagerInterface $entityManager, string $className = DomainName::class)
+    public function __construct(EntityManagerInterface $entityManager, string $className = SubDomain::class)
     {
         parent::__construct($entityManager, $className);
     }
 
-    public function get(DomainNameId $id): DomainName
+    public function get(SubDomainNameId $id): SubDomain
     {
         $domainName = $this->find($id->toString());
 
         if ($domainName === null) {
-            throw DomainNameNotFound::withId($id);
+            throw SubDomainNotFound::withId($id);
         }
 
         return $domainName;
-    }
-
-    public function getPrimaryOf(SpaceId $id): DomainName
-    {
-        try {
-            return $this->createQueryBuilder('d')
-                ->where('d.space = :id AND d.primary = true')
-                ->getQuery()
-                ->setParameter('id', $id->toString())
-                ->getSingleResult();
-        } catch (NoResultException $e) {
-            throw WebhostingSpaceNotFound::withId($id);
-        }
-    }
-
-    public function getByName(DomainNamePair $name): DomainName
-    {
-        try {
-            return $this->createQueryBuilder('d')
-                ->where('d.namePair.name = :name AND d.namePair.tld = :tld')
-                ->getQuery()
-                ->setParameter('name', $name->name)
-                ->setParameter('tld', $name->tld)
-                ->getSingleResult();
-        } catch (NoResultException $e) {
-            throw DomainNameNotFound::withName($name);
-        }
-    }
-
-    public function allFromOwner(?UserId $userId): iterable
-    {
-        if ($userId === null) {
-            return $this->createQueryBuilder('d')
-                ->where('d.owner IS NULL')
-                ->getQuery()
-                ->getResult();
-        }
-
-        return $this->createQueryBuilder('d')
-            ->where('d.owner = :owner')
-            ->getQuery()
-            ->setParameter('owner', $userId->toString())
-            ->getResult();
-    }
-
-    public function allAccessibleBy(?UserId $userId): iterable
-    {
-        if ($userId === null) {
-            return $this->createQueryBuilder('d')
-                ->leftJoin('d.space', 's')
-                ->where('(d.space IS NULL AND d.owner IS NULL) OR (d.space IS NOT NULL AND s.owner IS NULL)')
-                ->getQuery()
-                ->getResult();
-        }
-
-        return $this->createQueryBuilder('d')
-            ->leftJoin('d.space', 's')
-            ->where('d.owner = :owner OR s.owner = :owner')
-            ->getQuery()
-            ->setParameter('owner', $userId->toString())
-            ->getResult();
     }
 
     public function allFromSpace(SpaceId $id): iterable
@@ -113,47 +48,25 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
             ->getResult();
     }
 
-    public function save(DomainName $domainName): void
+    public function save(SubDomain $subDomain): void
     {
-        if ($domainName->primary && $domainName->space !== null) {
-            try {
-                $primaryDomainName = $this->getPrimaryOf($domainName->space->id);
-            } catch (WebhostingSpaceNotFound $e) {
-                $primaryDomainName = $domainName;
-            }
+        /** @var SubDomain|null $existing */
+        $existing = $this->createQueryBuilder('d')
+            ->where('d.host = :host_id AND d.name = :name')
+            ->getQuery()
+            ->setParameter('host_id', $subDomain->host->id->toString())
+            ->setParameter('name', $subDomain->name)
+            ->getOneOrNullResult();
 
-            // If there is a primary marking for another DomainName (within in this space)
-            // remove the primary marking for that DomainName.
-            if ($primaryDomainName !== $domainName) {
-                $this->_em->transactional(function () use ($domainName, $primaryDomainName): void {
-                    // There is no setter function for the Model as this is an implementation detail.
-                    $this->_em->createQueryBuilder()
-                        ->update($this->_entityName, 'd')
-                        ->set('d.primary', 'false')
-                        ->where('d.id = :id')
-                        ->getQuery()
-                        ->execute(['id' => $primaryDomainName->id]);
-
-                    $this->_em->refresh($primaryDomainName);
-                    $this->_em->persist($domainName);
-                });
-
-                return;
-            }
+        if ($existing !== null && ! $existing->id->equals($subDomain->id)) {
+            throw new SubDomainAlreadyExists($subDomain->host->namePair, $subDomain->name, $existing->id->toString());
         }
 
-        $this->_em->persist($domainName);
+        $this->_em->persist($subDomain);
     }
 
-    public function remove(DomainName $domainName): void
+    public function remove(SubDomain $subDomain): void
     {
-        if ($domainName->primary && $domainName->space !== null) {
-            throw new CannotRemovePrimaryDomainName(
-                $domainName->id,
-                $domainName->space->id
-            );
-        }
-
-        $this->_em->remove($domainName);
+        $this->_em->remove($subDomain);
     }
 }

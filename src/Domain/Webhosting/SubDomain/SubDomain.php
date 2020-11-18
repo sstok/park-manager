@@ -14,7 +14,6 @@ use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
 
 /**
