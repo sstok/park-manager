@@ -12,7 +12,7 @@ namespace ParkManager\Domain\Exception;
 
 use InvalidArgumentException as BaseInvalidArgumentException;
 
-final class InvalidArgumentException extends BaseInvalidArgumentException implements TranslatableException
+class InvalidArgumentException extends BaseInvalidArgumentException implements TranslatableException
 {
     public function getTranslatorId(): string
     {

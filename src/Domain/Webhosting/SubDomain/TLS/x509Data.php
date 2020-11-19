@@ -58,17 +58,17 @@ trait x509Data
 
     private function __construct(string $contents, array $rawFields, ?CA $ca = null)
     {
-        Assertion::keyExists($rawFields, 'pubKey');
+        Assertion::keyExists($rawFields, '_pubKey');
         Assertion::keyExists($rawFields, 'subject');
         Assertion::keyExists($rawFields, 'issuer');
 
         $this->contents = $contents;
         $this->contentsString = $contents;
-        $this->publicKey = $rawFields['pubKey'];
-        $this->publicKeyString = $rawFields['pubKey'];
+        $this->publicKey = $rawFields['_pubKey'];
+        $this->publicKeyString = $rawFields['_pubKey'];
 
         // Public key is stored as binary
-        unset($rawFields['pubKey']);
+        unset($rawFields['_pubKey']);
 
         $this->hash = self::getHash($contents);
         $this->rawFields = $rawFields;
@@ -113,17 +113,17 @@ trait x509Data
 
     public function getCommonName(): string
     {
-        return $this->rawFields['commonName'];
+        return $this->rawFields['_commonName'];
     }
 
     public function getSignatureAlgorithm(): string
     {
-        return $this->rawFields['signatureAlgorithm'];
+        return $this->rawFields['_signatureAlgorithm'];
     }
 
     public function getFingerprint(): string
     {
-        return $this->rawFields['fingerprint'];
+        return $this->rawFields['_fingerprint'];
     }
 
     public function isExpired(): bool
@@ -133,7 +133,7 @@ trait x509Data
 
     public function expirationDate(): Carbon
     {
-        return Carbon::rawParse($this->rawFields['validTo']);
+        return Carbon::rawParse($this->rawFields['_validTo']);
     }
 
     public function getIssuer(): array
@@ -158,7 +158,7 @@ trait x509Data
 
     public function validFromDate(): Carbon
     {
-        return Carbon::rawParse($this->rawFields['validFrom']);
+        return Carbon::rawParse($this->rawFields['_validFrom']);
     }
 
     /**

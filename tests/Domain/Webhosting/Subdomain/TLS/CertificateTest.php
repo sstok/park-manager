@@ -41,11 +41,11 @@ final class CertificateTest extends TestCase
         $cert = new Certificate('x509-information', 'private-keep-of-the-7-keys', [
             'subject' => ['commonName' => 'example.com'],
             '_domains' => ['example.com'],
-            'pubKey' => 'Here\'s the key Robby!',
-            'signatureAlgorithm' => 'sha1WithRSAEncryption',
-            'fingerprint' => 'a52f33ab5dad33e8af695dad33e8af695dad33e8af69',
-            'validFrom' => ($validFrom = Carbon::rawParse('2020-05-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
-            'validTo' => ($validTo = Carbon::rawParse('2020-06-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
+            '_pubKey' => 'Here\'s the key Robby!',
+            '_signatureAlgorithm' => 'sha1WithRSAEncryption',
+            '_fingerprint' => 'a52f33ab5dad33e8af695dad33e8af695dad33e8af69',
+            '_validFrom' => ($validFrom = Carbon::rawParse('2020-05-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
+            '_validTo' => ($validTo = Carbon::rawParse('2020-06-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
             'issuer' => ['commonName' => 'example.com'],
         ]);
 
@@ -76,7 +76,7 @@ final class CertificateTest extends TestCase
 
         new Certificate('x509-information', 'private-keep-of-the-7-keys', [
             'subject' => ['commonName' => 'example.com'],
-            'pubKey' => 'Here\'s the key Robby!',
+            '_pubKey' => 'Here\'s the key Robby!',
             '_domains' => ['example.com', 'example.net', '*.example.net'],
             'issuer' => ['commonName' => 'Leroy Jenkins Inc. CA'],
         ]);
@@ -109,13 +109,13 @@ final class CertificateTest extends TestCase
     {
         $cert = new Certificate('x509-information', 'private-keep-of-the-7-keys', [
             'subject' => ['commonName' => 'example.com'],
-            'pubKey' => 'Here\'s the key Robby!',
+            '_pubKey' => 'Here\'s the key Robby!',
             '_domains' => ['example.com', 'example.net'],
-            'altNames' => ['example.net'],
-            'signatureAlgorithm' => 'sha1WithRSAEncryption',
-            'fingerprint' => 'a52f33ab5dad33e8af695dad33e8af695dad33e8af69',
-            'validFrom' => Carbon::rawParse('2020-05-29T14:12:14.000000+0000')->format(DateTime::RFC2822),
-            'validTo' => Carbon::rawParse('2020-06-29T14:12:14.000000+0000')->format(DateTime::RFC2822),
+            '_alt_domains' => ['example.net'],
+            '_signatureAlgorithm' => 'sha1WithRSAEncryption',
+            '_fingerprint' => 'a52f33ab5dad33e8af695dad33e8af695dad33e8af69',
+            '_validFrom' => Carbon::rawParse('2020-05-29T14:12:14.000000+0000')->format(DateTime::RFC2822),
+            '_validTo' => Carbon::rawParse('2020-06-29T14:12:14.000000+0000')->format(DateTime::RFC2822),
             'issuer' => ['commonName' => 'example.com'],
         ]);
 
@@ -127,22 +127,22 @@ final class CertificateTest extends TestCase
     {
         $ca = new CA('CA-x509', [
             'subject' => ['commonName' => 'Example Corp CA'],
-            'pubKey' => 'Here\'s the key Robby!',
-            'signatureAlgorithm' => 'sha1WithRSAEncryption',
-            'fingerprint' => 'a52f33ab5dad33e8af695dad33e9af695dad33e8af69',
-            'validFrom' => ($validFrom = Carbon::rawParse('2020-01-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
-            'validTo' => ($validTo = Carbon::rawParse('2020-10-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
+            '_pubKey' => 'Here\'s the key Robby!',
+            '_signatureAlgorithm' => 'sha1WithRSAEncryption',
+            '_fingerprint' => 'a52f33ab5dad33e8af695dad33e9af695dad33e8af69',
+            '_validFrom' => ($validFrom = Carbon::rawParse('2020-01-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
+            '_validTo' => ($validTo = Carbon::rawParse('2020-10-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
             'issuer' => ['commonName' => 'Example Corp CA'],
         ], null);
 
         $cert = new Certificate('x509-information', 'private-keep-of-the-7-keys', [
             'subject' => ['commonName' => 'example.com'],
-            'pubKey' => 'Here\'s the key Robby Hood!',
+            '_pubKey' => 'Here\'s the key Robby Hood!',
             '_domains' => ['example.com'],
-            'signatureAlgorithm' => 'sha1WithRSAEncryption',
-            'fingerprint' => 'a52f33ab5dad33e8af695dad33e8af695dad33e8af69',
-            'validFrom' => ($validFrom = Carbon::rawParse('2020-05-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
-            'validTo' => ($validTo = Carbon::rawParse('2020-06-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
+            '_signatureAlgorithm' => 'sha1WithRSAEncryption',
+            '_fingerprint' => 'a52f33ab5dad33e8af695dad33e8af695dad33e8af69',
+            '_validFrom' => ($validFrom = Carbon::rawParse('2020-05-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
+            '_validTo' => ($validTo = Carbon::rawParse('2020-06-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
             'issuer' => ['commonName' => 'Example Corp CA'],
         ], $ca);
 
@@ -157,7 +157,7 @@ final class CertificateTest extends TestCase
     {
         $cert = new Certificate('x509-information', 'private-keep-of-the-7-keys', [
             'subject' => ['commonName' => 'example.com'],
-            'pubKey' => 'Here\'s the key Robby!',
+            '_pubKey' => 'Here\'s the key Robby!',
             '_domains' => ['example.com', 'example.net', '*.example.net'],
             'issuer' => ['commonName' => 'example.com'],
         ]);
@@ -180,7 +180,7 @@ final class CertificateTest extends TestCase
     {
         $data = [
             'subject' => ['commonName' => 'example.com'],
-            'pubKey' => 'Here\'s the key Robby!',
+            '_pubKey' => 'Here\'s the key Robby!',
             '_domains' => ['example.com', 'example.net', '*.example.net'],
             'issuer' => ['commonName' => 'example.com'],
         ];
@@ -196,7 +196,7 @@ final class CertificateTest extends TestCase
     {
         yield ['subject'];
 
-        yield ['pubKey'];
+        yield ['_pubKey'];
 
         yield ['issuer'];
     }

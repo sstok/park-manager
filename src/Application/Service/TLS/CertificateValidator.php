@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Service\TLS;
 
-use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Ocsp\CertificateInfo;
 use Ocsp\CertificateLoader;
@@ -19,7 +18,6 @@ use Ocsp\Ocsp;
 use ParkManager\Application\Service\TLS\Violation\CertificateIsExpired;
 use ParkManager\Application\Service\TLS\Violation\CertificateIsRevoked;
 use ParkManager\Application\Service\TLS\Violation\GlobalWildcard;
-use ParkManager\Application\Service\TLS\Violation\UnprocessablePEM;
 use ParkManager\Application\Service\TLS\Violation\UnsupportedDomain;
 use ParkManager\Application\Service\TLS\Violation\UnsupportedPurpose;
 use ParkManager\Application\Service\TLS\Violation\WeakSignatureAlgorithm;
@@ -34,6 +32,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class CertificateValidator
 {
     public const PURPOSE_SMIME = 'S/MIME';
+    public const PURPOSE_SMIME_SIGNING = 'S/MIME signing';
+    public const PURPOSE_SMIME_ENCRYPTION = 'S/MIME encryption';
+
     public const PURPOSE_SSL_CLIENT = 'SSL client';
     public const PURPOSE_SSL_SERVER = 'SSL server';
 
@@ -41,21 +42,23 @@ class CertificateValidator
     private PublicSuffixManager $suffixManager;
     private HttpClientInterface $httpClient;
     private LoggerInterface $logger;
-
-    private ?string $hash = null;
-    private ?array $fields = null;
-
     private Ocsp $ocsp;
+    private X509DataExtractor $extractor;
 
-    public function __construct(CAResolver $CAResolver, PublicSuffixManager $suffixManager, HttpClientInterface $httpClient, LoggerInterface $logger, ?Ocsp $ocsp = null)
+    public function __construct(CAResolver $CAResolver, PublicSuffixManager $suffixManager, HttpClientInterface $httpClient, LoggerInterface $logger, ?Ocsp $ocsp = null, ?X509DataExtractor $dataExtractor = null)
     {
         $this->caResolver = $CAResolver;
         $this->suffixManager = $suffixManager;
         $this->httpClient = $httpClient;
         $this->logger = $logger;
         $this->ocsp = $ocsp ?? new Ocsp();
+
+        $this->extractor = $dataExtractor ?? new X509DataExtractor();
     }
 
+    /**
+     * @throws Violation
+     */
     public function validateCertificate(string $certificate, array $caList = []): void
     {
         $data = $this->extractRawData($certificate);
@@ -79,60 +82,7 @@ class CertificateValidator
      */
     protected function extractRawData(string $contents): array
     {
-        $hash = \hash('sha256', $contents);
-
-        // The same cert information is likely to be validated multiple times
-        // So keep a local cache to speed-up the parsing process a little.
-        if ($hash === $this->hash && isset($this->fields)) {
-            return $this->fields;
-        }
-
-        $x509Read = @\openssl_x509_read($contents);
-
-        if ($x509Read === false) {
-            throw new UnprocessablePEM('', $contents);
-        }
-
-        // @codeCoverageIgnoreStart
-        $fields = @\openssl_x509_parse($x509Read, false);
-
-        if ($fields === false) {
-            throw new UnprocessablePEM('', $contents);
-        }
-        // @codeCoverageIgnoreEnd
-
-        $fields += [
-            '_commonName' => \trim($fields['subject']['commonName']),
-            '_altNames' => $this->getAltNames($fields),
-            '_validTo' => Carbon::rawParse($fields['validTo_time_t']),
-            '_validFrom' => Carbon::rawParse($fields['validFrom_time_t']),
-        ];
-        $fields['_domains'] = $fields['_altNames'] + [$fields['_commonName']];
-
-        $this->hash = $hash;
-        $this->fields = $fields;
-
-        return $fields;
-    }
-
-    /**
-     * @param array<string,mixed> $rawData
-     *
-     * @return array<int,string>
-     */
-    private function getAltNames(array $rawData): array
-    {
-        if (! isset($rawData['extensions']['subjectAltName'])) {
-            return [];
-        }
-
-        return \array_map(
-            static fn ($item) => \explode(':', \trim($item), 2)[1],
-            \array_filter(
-                \explode(',', $rawData['extensions']['subjectAltName']),
-                static fn ($item) => \mb_strpos($item, ':') !== false
-            )
-        );
+        return $this->extractor->extractRawData($contents);
     }
 
     private function validateNotExpired(CarbonInterface $validTo): void

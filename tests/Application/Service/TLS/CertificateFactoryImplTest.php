@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Service\TLS;
 
+use Carbon\Carbon;
 use ParagonIE\ConstantTime\Base64;
 use ParagonIE\Halite\Asymmetric\Crypto;
 use ParagonIE\Halite\Asymmetric\EncryptionSecretKey;
@@ -39,9 +40,9 @@ final class CertificateFactoryImplTest extends TestCase
     public function it_creates_cert_not_previously_stored(): void
     {
         $ca = new CA('MIIDezCCAmOgAwIBAgIJAJn2g4MHmUlvMA0GCSqGSIb3DQEBBQUAMFQxGjAYBgNV', [
-            'pubKey' => '-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9G4MAqOU6tgIw2gJtZVu-----END PUBLIC KEY-----',
-            'commonName' => 'Rollerscapes CAv3',
-            'signatureAlgorithm' => 'RSA-SHA1',
+            '_pubKey' => '-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9G4MAqOU6tgIw2gJtZVu-----END PUBLIC KEY-----',
+            '_commonName' => 'Rollerscapes CAv3',
+            '_signatureAlgorithm' => 'RSA-SHA1',
             'issuer' => [
                 'commonName' => 'Rollerscapes CAv3',
                 'organizationName' => 'Rollerscapes',
@@ -54,9 +55,9 @@ final class CertificateFactoryImplTest extends TestCase
                 'localityName' => 'Rotterdam',
                 'countryName' => 'NL',
             ],
-            'fingerprint' => '',
-            'validTo' => 1522334199,
-            'validFrom' => 1396190199,
+            '_fingerprint' => '',
+            '_validTo' => Carbon::createFromTimestamp('1522334199'),
+            '_validFrom' => Carbon::createFromTimestamp('1396190199'),
         ]);
 
         $certContents = <<<'CERT'
@@ -152,12 +153,12 @@ final class CertificateFactoryImplTest extends TestCase
         );
         self::assertEquals(
             [
-                'commonName' => 'bop.dev.rollerscapes.net',
-                'altNames' => [],
-                'signatureAlgorithm' => 'RSA-SHA1',
-                'fingerprint' => '5990c7371c6e72708f0df1444c057a14c193131d',
-                'validTo' => 1532610153,
-                'validFrom' => 1406466153,
+                '_commonName' => 'bop.dev.rollerscapes.net',
+                '_altNames' => [],
+                '_signatureAlgorithm' => 'RSA-SHA1',
+                '_fingerprint' => '5990c7371c6e72708f0df1444c057a14c193131d',
+                '_validTo' => Carbon::createFromTimestamp('1532610153'),
+                '_validFrom' => Carbon::createFromTimestamp('1406466153'),
                 'issuer' => [
                     'commonName' => 'Rollerscapes CAv3',
                     'organizationName' => 'Rollerscapes',
@@ -175,6 +176,14 @@ final class CertificateFactoryImplTest extends TestCase
                     'type' => 0,
                 ],
                 '_domains' => ['bop.dev.rollerscapes.net'],
+                '_alt_domains' => [],
+                '_emails' => [],
+                'hash' => '04d7f467',
+                'serialNumber' => '15644465768573151642',
+                'serialNumberHex' => 'D91C4EBA848FA99A',
+                'signatureTypeSN' => 'RSA-SHA1',
+                'signatureTypeLN' => 'sha1WithRSAEncryption',
+                'signatureTypeNID' => 65,
             ],
             $certificate->getRawFields()
         );
@@ -194,9 +203,9 @@ final class CertificateFactoryImplTest extends TestCase
     {
         // Note. Not the actual CA, but it's for example only.
         $ca = new CA('MIIDezCCAmOgAwIBAgIJAJn2g4MHmUlvMA0GCSqGSIb3DQEBBQUAMFQxGjAYBgNV', [
-            'pubKey' => '-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9G4MAqOU6tgIw2gJtZVu-----END PUBLIC KEY-----',
-            'commonName' => 'Rollerscapes CAv3',
-            'signatureAlgorithm' => 'RSA-SHA1',
+            '_pubKey' => '-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9G4MAqOU6tgIw2gJtZVu-----END PUBLIC KEY-----',
+            '_commonName' => 'Rollerscapes CAv3',
+            '_signatureAlgorithm' => 'RSA-SHA1',
             'issuer' => [
                 'commonName' => 'Rollerscapes CAv3',
                 'organizationName' => 'Rollerscapes',
@@ -209,9 +218,9 @@ final class CertificateFactoryImplTest extends TestCase
                 'localityName' => 'Rotterdam',
                 'countryName' => 'NL',
             ],
-            'fingerprint' => '',
-            'validTo' => 1522334199,
-            'validFrom' => 1396190199,
+            '_fingerprint' => '',
+            '_validTo' => Carbon::createFromTimestamp('1522334199'),
+            '_validFrom' => Carbon::createFromTimestamp('1396190199'),
         ]);
 
         $privateKey = new HiddenString(
@@ -419,9 +428,9 @@ final class CertificateFactoryImplTest extends TestCase
         $storedCertificate = new Certificate($certContents, $privateKey, [
             'commonName' => 'example.com',
             '_domains' => ['example.com'],
-            'pubKey' => 'Here\'s the key Robby!',
-            'signatureAlgorithm' => 'sha1WithRSAEncryption',
-            'fingerprint' => 'a52f33ab5dad33e8af695dad33e8af695dad33e8af69',
+            '_pubKey' => 'Here\'s the key Robby!',
+            '_signatureAlgorithm' => 'sha1WithRSAEncryption',
+            '_fingerprint' => 'a52f33ab5dad33e8af695dad33e8af695dad33e8af69',
             'issuer' => ['commonName' => 'example.com'],
             'subject' => ['commonName' => 'example.com'],
         ]);

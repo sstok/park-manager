@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Service\TLS;
 
+use Carbon\Carbon;
 use Doctrine\Persistence\ObjectManager;
 use ParkManager\Application\Service\TLS\CAResolver;
 use ParkManager\Application\Service\TLS\Violation\MissingCAExtension;
@@ -409,7 +410,7 @@ final class CAResolverTest extends TestCase
 
         $rootCA = new CA($ca2,
             [
-                'pubKey' => <<<'PUBKEY'
+                '_pubKey' => <<<'PUBKEY'
                     -----BEGIN PUBLIC KEY-----
                     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4jvhEXLeqKTTo1eqUKKP
                     C3eQyaKl7hLOllsBCSDMAZOnTjC3U/dDxGkAV53ijSLdhwZAAIEJzs4bg7/fzTtx
@@ -427,10 +428,10 @@ final class CAResolverTest extends TestCase
                     'organizationalUnitName' => 'www.digicert.com',
                     'commonName' => 'DigiCert Global Root CA',
                 ],
-                'signatureAlgorithm' => 'RSA-SHA1',
-                'fingerprint' => 'a8985d3a65e5e5c4b2d7d66d40c6dd2fb19c5436',
-                'validTo' => 1952035200,
-                'validFrom' => 1163116800,
+                '_signatureAlgorithm' => 'RSA-SHA1',
+                '_fingerprint' => 'a8985d3a65e5e5c4b2d7d66d40c6dd2fb19c5436',
+                '_validTo' => Carbon::createFromTimestamp('1952035200'),
+                '_validFrom' => Carbon::createFromTimestamp('1163116800'),
                 'issuer' => [
                     'countryName' => 'US',
                     'organizationName' => 'DigiCert Inc',
@@ -442,7 +443,7 @@ final class CAResolverTest extends TestCase
 
         $intermediateCA = new CA($ca1,
             [
-                'pubKey' => <<<'PUBKEY'
+                '_pubKey' => <<<'PUBKEY'
                     -----BEGIN PUBLIC KEY-----
                     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3K5YkE3BxDAVkDVbbjyC
                     FfUsXL3j2/9xQ/pkJYDU7hiiTfBm0ApzbhGYNhdkrzed/fpBhK/Hr4z+GnNNzzOX
@@ -459,16 +460,16 @@ final class CAResolverTest extends TestCase
                     'organizationName' => 'DigiCert Inc',
                     'commonName' => 'DigiCert SHA2 Secure Server CA',
                 ],
-                'signatureAlgorithm' => 'RSA-SHA256',
+                '_signatureAlgorithm' => 'RSA-SHA256',
                 'issuer' => [
                     'commonName' => 'DigiCert Global Root CA',
                     'organizationName' => 'DigiCert Inc',
                     'countryName' => 'US',
                     'organizationalUnitName' => 'www.digicert.com',
                 ],
-                'fingerprint' => '154c433c491929c5ef686e838e323664a00e6a0d822ccc958fb4dab03e49a08f',
-                'validTo' => 1678276800,
-                'validFrom' => 1362744000,
+                '_fingerprint' => '154c433c491929c5ef686e838e323664a00e6a0d822ccc958fb4dab03e49a08f',
+                '_validTo' => Carbon::createFromTimestamp('1678276800'),
+                '_validFrom' => Carbon::createFromTimestamp('1362744000'),
             ],
             $rootCA
         );
@@ -515,7 +516,7 @@ final class CAResolverTest extends TestCase
 
         $intermediateCA = new CA($ca1,
             [
-                'pubKey' => <<<'PUBKEY'
+                '_pubKey' => <<<'PUBKEY'
                     -----BEGIN PUBLIC KEY-----
                     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3K5YkE3BxDAVkDVbbjyC
                     FfUsXL3j2/9xQ/pkJYDU7hiiTfBm0ApzbhGYNhdkrzed/fpBhK/Hr4z+GnNNzzOX
@@ -532,16 +533,16 @@ final class CAResolverTest extends TestCase
                     'organizationName' => 'DigiCert Inc',
                     'commonName' => 'DigiCert SHA2 Secure Server CA',
                 ],
-                'signatureAlgorithm' => 'RSA-SHA256',
+                '_signatureAlgorithm' => 'RSA-SHA256',
                 'issuer' => [
                     'commonName' => 'DigiCert Global Root CA',
                     'organizationName' => 'DigiCert Inc',
                     'countryName' => 'US',
                     'organizationalUnitName' => 'www.digicert.com',
                 ],
-                'fingerprint' => '',
-                'validTo' => 1678276800,
-                'validFrom' => 1362744000,
+                '_fingerprint' => '',
+                '_validTo' => Carbon::createFromTimestamp('1678276800'),
+                '_validFrom' => Carbon::createFromTimestamp('1362744000'),
             ]
         );
 
@@ -661,7 +662,7 @@ final class CAResolverTest extends TestCase
 
         $rootCA = new CA($ca2,
             [
-                'pubKey' => <<<'PUBKEY'
+                '_pubKey' => <<<'PUBKEY'
                     -----BEGIN PUBLIC KEY-----
                     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4jvhEXLeqKTTo1eqUKKP
                     C3eQyaKl7hLOllsBCSDMAZOnTjC3U/dDxGkAV53ijSLdhwZAAIEJzs4bg7/fzTtx
@@ -679,10 +680,10 @@ final class CAResolverTest extends TestCase
                     'organizationalUnitName' => 'www.digicert.com',
                     'commonName' => 'DigiCert Global Root CA',
                 ],
-                'signatureAlgorithm' => 'RSA-SHA1',
-                'fingerprint' => '',
-                'validTo' => 1952035200,
-                'validFrom' => 1163116800,
+                '_signatureAlgorithm' => 'RSA-SHA1',
+                '_fingerprint' => '',
+                '_validTo' => Carbon::createFromTimestamp('1952035200'),
+                '_validFrom' => Carbon::createFromTimestamp('1163116800'),
                 'issuer' => [
                     'countryName' => 'US',
                     'organizationName' => 'DigiCert Inc',
@@ -694,7 +695,7 @@ final class CAResolverTest extends TestCase
 
         $intermediateCA = new CA($ca1,
             [
-                'pubKey' => <<<'PUBKEY'
+                '_pubKey' => <<<'PUBKEY'
                     -----BEGIN PUBLIC KEY-----
                     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3K5YkE3BxDAVkDVbbjyC
                     FfUsXL3j2/9xQ/pkJYDU7hiiTfBm0ApzbhGYNhdkrzed/fpBhK/Hr4z+GnNNzzOX
@@ -711,16 +712,16 @@ final class CAResolverTest extends TestCase
                     'organizationName' => 'DigiCert Inc',
                     'commonName' => 'DigiCert SHA2 Secure Server CA',
                 ],
-                'signatureAlgorithm' => 'RSA-SHA256',
+                '_signatureAlgorithm' => 'RSA-SHA256',
                 'issuer' => [
                     'commonName' => 'DigiCert Global Root CA',
                     'organizationName' => 'DigiCert Inc',
                     'countryName' => 'US',
                     'organizationalUnitName' => 'www.digicert.com',
                 ],
-                'fingerprint' => '154c433c491929c5ef686e838e323664a00e6a0d822ccc958fb4dab03e49a08f',
-                'validTo' => 1678276800,
-                'validFrom' => 1362744000,
+                '_fingerprint' => '154c433c491929c5ef686e838e323664a00e6a0d822ccc958fb4dab03e49a08f',
+                '_validTo' => Carbon::createFromTimestamp('1678276800'),
+                '_validFrom' => Carbon::createFromTimestamp('1362744000'),
             ],
             $rootCA
         );

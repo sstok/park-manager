@@ -14,7 +14,6 @@ use Doctrine\Persistence\ObjectManager;
 use ParkManager\Application\Service\TLS\Violation\MissingCAExtension;
 use ParkManager\Application\Service\TLS\Violation\ToManyCAsProvided;
 use ParkManager\Application\Service\TLS\Violation\UnableToResolveParent;
-use ParkManager\Application\Service\TLS\Violation\UnprocessablePEM;
 use ParkManager\Domain\Webhosting\SubDomain\TLS\CA;
 
 /**
@@ -23,10 +22,12 @@ use ParkManager\Domain\Webhosting\SubDomain\TLS\CA;
 class CAResolver
 {
     private ObjectManager $objectManager;
+    private X509DataExtractor $extractor;
 
     public function __construct(ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
+        $this->extractor = new X509DataExtractor();
     }
 
     /**
@@ -54,41 +55,7 @@ class CAResolver
      */
     private function getX509Data(string $contents, string $name, bool $withKey = true): array
     {
-        $x509Read = @\openssl_x509_read($contents);
-
-        // @codeCoverageIgnoreStart
-        if ($x509Read === false) {
-            throw new UnprocessablePEM($name, $contents);
-        }
-
-        $rawData = @\openssl_x509_parse($x509Read, false);
-
-        if ($rawData === false) {
-            throw new UnprocessablePEM($name, $contents);
-        }
-
-        try {
-            $rawData['fingerprint'] = \openssl_x509_fingerprint($x509Read, $rawData['signatureTypeSN']) ?: '';
-        } catch (\Throwable $e) {
-            $rawData['fingerprint'] = '';
-        }
-
-        if ($withKey) {
-            $pubKeyRead = @\openssl_pkey_get_public($x509Read);
-
-            if ($pubKeyRead === false) {
-                throw new UnprocessablePEM($name, 'pubKey-resource');
-            }
-
-            $pubKey = \openssl_pkey_get_details($pubKeyRead);
-            $rawData['_pubKey'] = $pubKey['key'];
-            \openssl_pkey_free($pubKeyRead);
-        }
-        // @codeCoverageIgnoreEnd
-
-        @\openssl_x509_free($x509Read);
-
-        return $rawData;
+        return $this->extractor->extractRawData($contents, $name, $withKey);
     }
 
     private function isSignatureValid(string $contents, string $pupKey): bool
@@ -134,12 +101,12 @@ class CAResolver
             $parent = null;
             $fields = [
                 'subject' => $data['subject'],
-                'signatureAlgorithm' => $data['signatureTypeSN'],
-                'fingerprint' => $data['fingerprint'] ?? '',
-                'validTo' => (int) $data['validTo_time_t'],
-                'validFrom' => (int) $data['validFrom_time_t'],
+                '_signatureAlgorithm' => $data['_signatureAlgorithm'],
+                '_fingerprint' => $data['_fingerprint'] ?? '',
+                '_validTo' => $data['_validTo'],
+                '_validFrom' => $data['_validFrom'],
                 'issuer' => $data['issuer'],
-                'pubKey' => $data['_pubKey'],
+                '_pubKey' => $data['_pubKey'],
             ];
 
             // Check if self signed, otherwise resolve it's parent
@@ -160,7 +127,7 @@ class CAResolver
         if ($ca === null) {
             $data = $this->getX509Data($certificate, '', false);
 
-            throw new UnableToResolveParent($data['subject']['commonName']);
+            throw new UnableToResolveParent($data['_commonName']);
         }
 
         return $ca;

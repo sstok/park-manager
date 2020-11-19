@@ -16,7 +16,7 @@ use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
 interface CertificateFactory
 {
     /**
-     * @param string               $contents The raw Certificate contents X509 encoded
+     * @param string               $contents The raw Certificate contents X.509 encoded
      * @param array<string,string> $caList   List of CA contents (with their name)
      */
     public function createCertificate(string $contents, HiddenString $privateKey, array $caList = []): Certificate;

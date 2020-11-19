@@ -24,7 +24,7 @@ final class UnprocessablePEM extends Violation
     public function __construct(string $certName, string $contents = '')
     {
         $previous = $contents !== '' ? new InvalidArgumentException($contents) : null;
-        parent::__construct('', 0, new Error(\openssl_error_string(), 1, $previous));
+        parent::__construct('', 0, new Error((string) \openssl_error_string(), 1, $previous));
 
         $this->certName = $certName;
     }

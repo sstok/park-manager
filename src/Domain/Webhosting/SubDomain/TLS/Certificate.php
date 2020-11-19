@@ -90,7 +90,7 @@ class Certificate
      */
     public function getAdditionalDomains(): array
     {
-        return $this->rawFields['altNames'] ?? [];
+        return $this->rawFields['_alt_domains'] ?? [];
     }
 
     /**

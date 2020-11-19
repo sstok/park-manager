@@ -37,11 +37,11 @@ final class CATest extends TestCase
     {
         $ca = new CA('x509-information', [
             'subject' => ['commonName' => 'Example Corp CA'],
-            'pubKey' => 'Here\'s the key Robby Hood!',
-            'signatureAlgorithm' => 'sha1WithRSAEncryption',
-            'fingerprint' => 'a52f33ab5dad33e8af695dad33e8af695dad33e8af69',
-            'validFrom' => ($validFrom = Carbon::rawParse('2020-05-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
-            'validTo' => ($validTo = Carbon::rawParse('2020-06-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
+            '_pubKey' => 'Here\'s the key Robby Hood!',
+            '_signatureAlgorithm' => 'sha1WithRSAEncryption',
+            '_fingerprint' => 'a52f33ab5dad33e8af695dad33e8af695dad33e8af69',
+            '_validFrom' => ($validFrom = Carbon::rawParse('2020-05-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
+            '_validTo' => ($validTo = Carbon::rawParse('2020-06-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
             'issuer' => ['commonName' => 'Example Corp CA'],
         ]);
 
@@ -66,21 +66,21 @@ final class CATest extends TestCase
     {
         $rootCA = new CA('CA-x509', [
             'subject' => ['commonName' => 'Example Corp CA'],
-            'pubKey' => 'Here\'s the key Robby Hood!',
-            'signatureAlgorithm' => 'sha1WithRSAEncryption',
-            'fingerprint' => 'a52f33ab5dad33e8af695dad33e9af695dad33e8af69',
-            'validFrom' => ($validFrom = Carbon::rawParse('2020-01-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
-            'validTo' => ($validTo = Carbon::rawParse('2020-10-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
+            '_pubKey' => 'Here\'s the key Robby Hood!',
+            '_signatureAlgorithm' => 'sha1WithRSAEncryption',
+            '_fingerprint' => 'a52f33ab5dad33e8af695dad33e9af695dad33e8af69',
+            '_validFrom' => ($validFrom = Carbon::rawParse('2020-01-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
+            '_validTo' => ($validTo = Carbon::rawParse('2020-10-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
             'issuer' => ['commonName' => 'Example Corp CA'],
         ], null);
 
         $ca = new CA('x509-information', [
             'subject' => ['commonName' => 'Example Corp EV CA'],
-            'pubKey' => 'Here\'s the key Robby!',
-            'signatureAlgorithm' => 'sha1WithRSAEncryption',
-            'fingerprint' => 'a52f33ab5dad33e8af695dad33e8af695dad33e8af79',
-            'validFrom' => ($validFrom = Carbon::rawParse('2020-05-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
-            'validTo' => ($validTo = Carbon::rawParse('2020-06-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
+            '_pubKey' => 'Here\'s the key Robby!',
+            '_signatureAlgorithm' => 'sha1WithRSAEncryption',
+            '_fingerprint' => 'a52f33ab5dad33e8af695dad33e8af695dad33e8af79',
+            '_validFrom' => ($validFrom = Carbon::rawParse('2020-05-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
+            '_validTo' => ($validTo = Carbon::rawParse('2020-06-29T14:12:14.000000+0000'))->format(DateTime::RFC2822),
             'issuer' => ['commonName' => 'Example Corp CA'],
         ], $rootCA);
 
@@ -105,8 +105,8 @@ final class CATest extends TestCase
     {
         return new CA('x509-information', [
             'subject' => ['commonName' => $name],
-            'pubKey' => 'Here\'s the key Robby!',
-            'signatureAlgorithm' => 'sha1WithRSAEncryption',
+            '_pubKey' => 'Here\'s the key Robby!',
+            '_signatureAlgorithm' => 'sha1WithRSAEncryption',
             'issuer' => ['commonName' => $issuer],
         ], $parent);
     }
