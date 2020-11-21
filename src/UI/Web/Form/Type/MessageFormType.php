@@ -117,7 +117,7 @@ final class MessageFormType extends AbstractType
                 $errors = $exceptionFallback($e, $this->translator, $form);
             } elseif ($e instanceof TranslatableException) {
                 $errors = [null => new FormError(
-                    $this->translator->trans($e->getTranslatorId(), $e->getTranslationArgs(), 'messages'),
+                    $this->translator->trans($e->getTranslatorId(), $e->getTranslationArgs(), 'validators'),
                     $e->getTranslatorId(),
                     $e->getTranslationArgs(),
                     null,
