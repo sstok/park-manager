@@ -31,18 +31,15 @@ final class FormErrorComparator extends Comparator
      */
     public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false): void
     {
+        $expectedOrigin = $expected->getOrigin();
+
         // Ignore the cause as this is to difficult to reproduce
-        if ($expected->getMessage() === $actual->getMessage() &&
+        if (($expectedOrigin === null || $expectedOrigin === $actual->getOrigin()) &&
+            $expected->getMessage() === $actual->getMessage() &&
             $expected->getMessageTemplate() === $actual->getMessageTemplate() &&
             $expected->getMessageParameters() === $actual->getMessageParameters() &&
             $expected->getMessagePluralization() === $actual->getMessagePluralization()
         ) {
-            return;
-        }
-
-        $expectedOrigin = $expected->getOrigin();
-
-        if ($expectedOrigin === null || $expectedOrigin === $actual->getOrigin()) {
             return;
         }
 

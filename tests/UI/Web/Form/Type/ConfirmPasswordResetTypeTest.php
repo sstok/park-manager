@@ -113,7 +113,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
 
         $this->assertFormHasErrors($form, [
             '' => [
-                new FormError('password_reset.invalid_token', 'password_reset.invalid_token', ['{{ value }}' => 'NopeNopeNopeNopeNope', '{reset_url}' => '/password-reset/request']),
+                new FormError('password_reset.invalid_token', 'password_reset.invalid_token', ['{reset_url}' => '/password-reset/request']),
             ],
         ]);
 
