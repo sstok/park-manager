@@ -59,6 +59,7 @@ final class CertificateIsRevoked extends Violation
     {
         return [
             'revoked_on' => $this->revokedOn,
+            'reason_code' => (self::REVOCATION_REASON[$this->reason] ?? 'unspecified'),
             '@reason' => 'tls.revocation_reason.' . (self::REVOCATION_REASON[$this->reason] ?? 'unspecified'),
             'serial' => $this->serial,
         ];

@@ -434,6 +434,7 @@ final class CertificateValidatorTest extends TestCase
             self::assertEquals([
                 'revoked_on' => $revokedOn,
                 '@reason' => 'tls.revocation_reason.privilege_withdrawn',
+                'reason_code' => 'privilege_withdrawn',
                 'serial' => '8130451905380357229031687250908825482',
             ], $e->getTranslationArgs());
         }
