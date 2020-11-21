@@ -10,6 +10,7 @@ invalid_split_token: The verification token is invalid or expired. <a href="{res
 expiration_date_not_in_past: Expiration date cannot be in the past.
 
 tls:
+    invalid_key_file: Invalid private-key file provided or missing passphrase.
     violation:
         unprocessable_pem: Unable to process PEM X.509 data of certificate "{name}". Only PEM encoded X.509 files are supported.
         unprocessable_key: Unable to process PEM X.509 data of private key "{name}". Only PEM encoded X.509 files are supported.
