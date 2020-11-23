@@ -17,6 +17,7 @@ use ParkManager\Domain\User\UserId;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\StubCommand;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use RuntimeException;
+use Symfony\Component\Form\Exception\InvalidArgumentException as FormInvalidArgumentException;
 use Symfony\Component\Form\Exception\RuntimeException as FormRuntimeException;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -224,6 +225,40 @@ final class MessageFormTypeTest extends TypeTestCase
         self::assertEquals(50, $form->get('id')->getData());
         self::assertEquals('Bernard', $form->get('username')->getData());
         self::assertNull($form->get('profile')->getData());
+    }
+
+    /** @test */
+    public function it_validates_model_type(): void
+    {
+        $options = [
+            'command_factory' => static fn (array $data): StubCommand => new StubCommand($data['id'], $data['username'], $data['profile'] ?? null),
+            'model_class' => \stdClass::class,
+        ];
+
+        $this->expectException(FormInvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected model class of type "stdClass". But "' . MessageFormTypeEntity::class . '" was given for "register_user".');
+
+        $this->factory->createNamedBuilder('register_user', MessageFormType::class, new MessageFormTypeEntity(), $options)
+            ->add('id', IntegerType::class, ['required' => false])
+            ->add('username', TextType::class, ['required' => false])
+            ->getForm();
+    }
+
+    /** @test */
+    public function it_validates_model_type_multiple(): void
+    {
+        $options = [
+            'command_factory' => static fn (array $data): StubCommand => new StubCommand($data['id'], $data['username'], $data['profile'] ?? null),
+            'model_class' => [\stdClass::class, StubCommand::class],
+        ];
+
+        $this->expectException(FormInvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected model class of type "stdClass", "' . StubCommand::class . '". But "' . MessageFormTypeEntity::class . '" was given for "register_user".');
+
+        $this->factory->createNamedBuilder('register_user', MessageFormType::class, new MessageFormTypeEntity(), $options)
+            ->add('id', IntegerType::class, ['required' => false])
+            ->add('username', TextType::class, ['required' => false])
+            ->getForm();
     }
 
     /** @test */

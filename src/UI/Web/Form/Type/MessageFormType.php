@@ -14,6 +14,7 @@ use ParkManager\Domain\Exception\TranslatableException;
 use ParkManager\UI\Web\Form\DataMapper\CommandDataMapper;
 use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectMapper;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -21,6 +22,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -44,6 +46,7 @@ final class MessageFormType extends AbstractType
         // Explicitly set this to null to prevent mismatching of the modelData.
         // The Forms receives an object, but the actual modelData is an array.
         $resolver->setDefault('data_class', null);
+        $resolver->setDefault('model_class', null);
 
         $resolver->setRequired(['command_factory']);
         $resolver->setDefault('disable_entity_mapping', false);
@@ -51,9 +54,11 @@ final class MessageFormType extends AbstractType
         $resolver->setDefault('exception_fallback', null);
 
         $resolver->setAllowedTypes('command_factory', ['callable']);
+        $resolver->setAllowedTypes('model_class', ['string', 'string[]', 'null']);
         $resolver->setAllowedTypes('disable_entity_mapping', ['bool']);
         $resolver->setAllowedTypes('exception_mapping', ['callable[]']);
         $resolver->setAllowedTypes('exception_fallback', ['callable', 'null']);
+        $resolver->setNormalizer('model_class', static fn (Options $options, $value): ?array => $value !== null ? (array) $value : null);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -61,6 +66,19 @@ final class MessageFormType extends AbstractType
         if (! $options['disable_entity_mapping']) {
             // Caution: This should be always executed as last!
             $builder->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event): void {
+                $acceptedModelClass = $event->getForm()->getConfig()->getOption('model_class');
+
+                if ($acceptedModelClass !== null && ! \in_array(\get_class($event->getData()), $acceptedModelClass, true)) {
+                    throw new InvalidArgumentException(
+                        \sprintf(
+                            'Expected model class of type "%s". But "%s" was given for "%s".',
+                            \implode('", "', $acceptedModelClass),
+                            get_debug_type($event->getData()),
+                            $event->getForm()->getName()
+                        )
+                    );
+                }
+
                 $event->setData(['model' => $event->getData(), 'fields' => []]);
             }, -1024);
 
