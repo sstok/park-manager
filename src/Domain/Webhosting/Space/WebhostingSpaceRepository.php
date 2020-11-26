@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Space;
 
+use ParkManager\Domain\ResultSet;
+use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
@@ -22,9 +24,14 @@ interface WebhostingSpaceRepository
     public function get(SpaceId $id): Space;
 
     /**
-     * @return iterable<Space>
+     * @return ResultSet<Space>
      */
-    public function allWithAssignedPlan(PlanId $id): iterable;
+    public function allWithAssignedPlan(PlanId $id): ResultSet;
+
+    /**
+     * @return ResultSet<Space>
+     */
+    public function allFromOwner(?UserId $id): ResultSet;
 
     public function save(Space $space): void;
 

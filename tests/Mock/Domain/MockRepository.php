@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Mock\Domain;
 
 use Closure;
-use Generator;
 use PHPUnit\Framework\Assert;
 use Throwable;
 
@@ -201,25 +200,31 @@ trait MockRepository
     }
 
     /**
-     * @psalm-return Generator<T>
-     *
      * @param float|int|string|null $value
      */
-    protected function mockDoGetMultiByField(string $key, $value): Generator
+    protected function mockDoGetMultiByField(string $key, $value): MockRepoResultSet
     {
         if (! isset($this->storedMultiByField[$key][$value])) {
-            return;
+            return new MockRepoResultSet([]);
         }
 
-        foreach ($this->storedMultiByField[$key][$value] as $entity) {
-            $id = $this->getValueWithGetter($entity, 'id');
+        if (\count($this->removedById) > 0) {
+            $entities = [];
 
-            if (isset($this->removedById[$id->toString()])) {
-                continue;
+            foreach ($this->storedMultiByField[$key][$value] as $entity) {
+                $id = $this->getValueWithGetter($entity, 'id');
+
+                if (isset($this->removedById[$id->toString()])) {
+                    continue;
+                }
+
+                $entities[] = $entity;
             }
 
-            yield $entity;
+            return new MockRepoResultSet($entities);
         }
+
+        return new MockRepoResultSet($this->storedMultiByField[$key][$value]);
     }
 
     /**

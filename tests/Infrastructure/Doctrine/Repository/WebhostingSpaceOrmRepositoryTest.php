@@ -32,7 +32,7 @@ use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
 final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
 {
     private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
-    private const SET_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
+    private const PLAN_ID1 = '2570c850-a5e0-11e7-868d-acbc32b58315';
 
     private const SPACE_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
     private const SPACE_ID2 = '47f6db14-a69c-11e7-be13-acbc32b58315';
@@ -49,7 +49,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
 
         $this->constraints = (new Constraints())->setMonthlyTraffic(50);
         $this->plan = new Plan(
-            PlanId::fromString(self::SET_ID1),
+            PlanId::fromString(self::PLAN_ID1),
             $this->constraints
         );
 
@@ -81,6 +81,20 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         self::assertEquals($this->user1, $space2->owner);
         self::assertEquals($this->constraints, $space2->constraints);
         self::assertEquals($this->plan, $space2->getAssignedPlan());
+    }
+
+    /** @test */
+    public function it_gets_all_with_assigned_plan(): void
+    {
+        $repository = new WebhostingSpaceOrmRepository($this->getEntityManager());
+        $this->setUpSpace1($repository);
+        $this->setUpSpace2($repository);
+
+        $em = $this->getEntityManager();
+        $em->flush();
+        $em->clear();
+
+        $this->assertIdsEquals([self::SPACE_ID2], $repository->allWithAssignedPlan(PlanId::fromString(self::PLAN_ID1)));
     }
 
     /** @test */

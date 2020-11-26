@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
+use ParkManager\Domain\ResultSet;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -33,5 +34,19 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
     protected function getDefaultManagerName(): string
     {
         return 'doctrine.orm.default_entity_manager';
+    }
+
+    /**
+     * @param array<int,string> $expected IDs provided as string-array
+     */
+    protected function assertIdsEquals(array $expected, ResultSet $resultSet): void
+    {
+        $resultIds = [];
+
+        foreach ($resultSet as $entity) {
+            $resultIds[$entity->id->toString()] = $entity;
+        }
+
+        static::assertEquals($expected, \array_keys($resultIds));
     }
 }

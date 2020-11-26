@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\User\User;
+use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
@@ -32,9 +34,14 @@ final class SpaceRepositoryMock implements WebhostingSpaceRepository
         return $this->mockDoGetById($id);
     }
 
-    public function allWithAssignedPlan(PlanId $id): iterable
+    public function allWithAssignedPlan(PlanId $id): ResultSet
     {
         return $this->mockDoGetMultiByField('plan', $id->toString());
+    }
+
+    public function allFromOwner(?UserId $id): ResultSet
+    {
+        return $this->mockDoGetMultiByField('owner', $id->toString());
     }
 
     public function save(Space $space): void

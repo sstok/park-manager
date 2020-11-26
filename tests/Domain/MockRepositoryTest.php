@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain;
 
-use Generator;
 use InvalidArgumentException;
 use JsonSerializable;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\UuidTrait;
 use ParkManager\Tests\Mock\Domain\MockRepository;
 use PHPUnit\Framework\TestCase;
@@ -89,7 +89,7 @@ final class MockRepositoryTest extends TestCase
                 return $this->mockDoGetById($id);
             }
 
-            public function all(string $key): Generator
+            public function all(string $key): ResultSet
             {
                 return $this->mockDoGetMultiByField('domain', $key);
             }
@@ -114,6 +114,8 @@ final class MockRepositoryTest extends TestCase
 
         self::assertEquals([$entity1, $entity2], [...$repository->all('example.com')]);
         self::assertEquals([$entity3, $entity4], [...$repository->all('example2.com')]);
+        self::assertEquals([$entity3], [...$repository->all('example2.com')->limitToIds(['9dab0b6a-0876-11e9-bfd1-acbc32b58315'])]);
+        self::assertEquals([], [...$repository->all('example2.com')->limitToIds(['f1acc3fb-de6a-4fc4-af6e-dde2327b4425'])]);
     }
 
     /** @test */

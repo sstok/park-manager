@@ -11,12 +11,15 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use ParkManager\Domain\ResultSet;
+use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @method Space|null find($id, $lockMode = null, $lockVersion = null)
@@ -39,9 +42,27 @@ class WebhostingSpaceOrmRepository extends EntityRepository implements Webhostin
         return $space;
     }
 
-    public function allWithAssignedPlan(PlanId $id): iterable
+    public function allWithAssignedPlan(PlanId $id): ResultSet
     {
-        return [];
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->andWhere('s.plan = :id')
+            ->setParameter('id', $id->toString());
+
+        return new OrmQueryBuilderResultSet($queryBuilder, 's');
+    }
+
+    public function allFromOwner(?UserId $id): ResultSet
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+
+        if ($id === null) {
+            $queryBuilder->andWhere('s.owner IS NULL');
+        } else {
+            $queryBuilder->andWhere('s.owner = :id')
+                ->setParameter('id', $id->toString());
+        }
+
+        return new OrmQueryBuilderResultSet($queryBuilder, 's');
     }
 
     public function save(Space $space): void
