@@ -42,7 +42,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
     /** @test */
     public function it_handles_registration_of_space_with_shared_constraints(): void
     {
-        $domainName = new DomainNamePair('example', '.com');
+        $domainName = new DomainNamePair('example', 'com');
         $plan = new Plan(PlanId::fromString(self::SET_ID1), new Constraints());
 
         $spaceRepository = new SpaceRepositoryMock();
@@ -78,7 +78,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
     /** @test */
     public function it_handles_registration_of_space_with_custom_constraints(): void
     {
-        $domainName = new DomainNamePair('example', '.com');
+        $domainName = new DomainNamePair('example', 'com');
         $constraints = new Constraints();
 
         $spaceRepository = new SpaceRepositoryMock();

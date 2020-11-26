@@ -31,6 +31,8 @@ final class DomainNamePair
      */
     public string $tld;
 
+    private string $idnValue;
+
     public function __construct(string $name, string $tld)
     {
         $this->name = $name;
@@ -39,7 +41,9 @@ final class DomainNamePair
 
     public function toString(): string
     {
-        return $this->name . '.' . $this->tld;
+        $this->idnValue ??= (string) \idn_to_utf8($this->name . '.' . $this->tld, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+
+        return $this->idnValue;
     }
 
     public function equals(self $other): bool
