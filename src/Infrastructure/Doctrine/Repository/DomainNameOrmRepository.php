@@ -20,6 +20,7 @@ use ParkManager\Domain\DomainName\Exception\CannotRemovePrimaryDomainName;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
+use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 /**
@@ -107,7 +108,8 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
     public function allFromSpace(SpaceId $id): iterable
     {
         return $this->createQueryBuilder('d')
-            ->where('d.space = :space')
+            ->join(Space::class, 's')
+            ->where('s.id = :space')
             ->getQuery()
             ->setParameter('space', $id->toString())
             ->getResult();
