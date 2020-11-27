@@ -16,10 +16,10 @@ use ParkManager\Domain\ResultSet;
 final class MockRepoResultSet implements ResultSet
 {
     private array $result;
-    private ?int $limit = null;
-    private ?int $offset = null;
-    private ?array $ordering = null;
-    private ?array $limitedToIds = null;
+    public ?int $limit = null;
+    public ?int $offset = null;
+    public ?array $ordering = null;
+    public ?array $limitedToIds = null;
 
     public function __construct(array $originalResult)
     {
