@@ -11,11 +11,15 @@ label:
     private_key: Private key
     private_key_file: Private key file
     private_key_passphrase: Private-key passprase
+    domain_name: Domainname
+    remove_tls: Remove TLS configuration
 
 help:
     private_key_passphrase: Required when the private key is encrypted.
     file_pem_encoded: Make sure the file is PEM encoded (not DER).
     ca_list: Provide the CA chain of the certificate. X.509 PEM encoded. Order is not important.
+    homedir: Either "blog/", "blog/2" or "site@1.0/public". Not "../blog", "blog/.2./", or "blog/@/". No special characters except "@" and "." (between letter and number characters).
+    remove_tls: Removes all the assigned TLS configuration. Not required when setting new information.
 
 button:
     login: Login

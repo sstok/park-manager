@@ -78,7 +78,7 @@ class SubDomain
      */
     public ?Certificate $tlsCert = null;
 
-    public function __construct(SubDomainNameId $id, DomainName $host, string $name, string $homeDir, array $config)
+    public function __construct(SubDomainNameId $id, DomainName $host, string $name, string $homeDir, array $config = [])
     {
         Assertion::notNull($host->space, 'DomainName must be assigned to a Space for usage with a SubDomain.', 'host');
 

@@ -18,6 +18,7 @@ use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Component\Translation\IdentityTranslator;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 
 abstract class MessageFormTestCase extends TypeTestCase
 {
@@ -70,5 +71,37 @@ abstract class MessageFormTestCase extends TypeTestCase
 
             static::assertThat($currentForm->getErrors(), new IsFormErrorsEqual($formErrors));
         }
+    }
+
+    protected static function assertFormIsValid(FormInterface $form): void
+    {
+        if (! $form->isValid()) {
+            $errors = '';
+
+            foreach ($form->getErrors(true) as $error) {
+                $cause = $error->getCause();
+                $causeStr = '';
+
+                if ($cause instanceof ConstraintViolationInterface) {
+                    $causeStr .= '(ConstraintViolation)' . $cause->getMessage();
+                    $cause = \method_exists($cause, 'getCause') ? $cause->getCause() : null;
+                }
+
+                if ($cause instanceof \Exception) {
+                    $causeStr .= $cause->getMessage() . "\n" . $cause->getTraceAsString();
+                }
+
+                $errors .= \sprintf(
+                    "Message: %s\nOrigin: %s\nCause: %s\n==========================================\n\n",
+                    $error->getMessage(),
+                    \is_object($error->getOrigin()) ? $error->getOrigin()->getName() : 'null',
+                    $causeStr
+                );
+            }
+
+            static::fail("Form contains unexpected errors: \n\n" . $errors);
+        }
+
+        static::assertTrue($form->isValid());
     }
 }

@@ -10,6 +10,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\SubDomain;
 
-final class AddSubDomain extends SubDomainCommand
+final class EditSubDomain extends SubDomainCommand
 {
+    public bool $removeTLS = false;
+
+    public function removeTLSInformation(): self
+    {
+        $this->removeTLS = true;
+
+        return $this;
+    }
 }

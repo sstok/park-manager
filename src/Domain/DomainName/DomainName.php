@@ -63,7 +63,7 @@ class DomainName
      */
     public bool $primary = false;
 
-    public function __construct(DomainNameId $id, DomainNamePair $domainName)
+    private function __construct(DomainNameId $id, DomainNamePair $domainName)
     {
         $this->namePair = $domainName;
         $this->id = $id;

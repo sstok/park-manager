@@ -10,31 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Validator\Constraints;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\Compound;
+use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
  */
-final class SubDomainTLS extends Compound
+final class SubDomainTLS extends Constraint
 {
-    public $hostPattern;
-
-    public function getRequiredOptions(): array
-    {
-        return ['hostPattern'];
-    }
-
-    protected function getConstraints(array $options): array
-    {
-        return [
-            new Assert\Sequentially([
-                new Assert\NotNull(),
-                new X509Certificate(),
-                new X509Purpose(X509Purpose::PURPOSE_SSL_SERVER),
-                new X509HostnamePattern($options['hostPattern']),
-                new X509KeyPair(),
-            ]),
-        ];
-    }
 }
