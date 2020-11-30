@@ -1,11 +1,11 @@
 password_not_the_same: Passwords are not the same
 
 password_reset:
-    no_token: No password reset token found. <a href="{reset_url}">Please request a new one</a>.
-    invalid_token: Invalid password reset token. <a href="{reset_url}">Please request a new one</a>.
+    no_token: Sorry but no results were found with this reset token.<br><a href="{ reset_url }">Please try again</a>..
+    invalid_token: Invalid password reset token, please copy the reset URL in the received email (in full) and try again. Or <a href="{reset_url}" class="underline">request a new one</a>.
     access_disabled: Cannot reset password because access is disabled for this account.
 
-invalid_split_token: The verification token is invalid or expired. <a href="{reset_url}">Please request a new one</a>.
+invalid_split_token: The verification token is invalid or expired.
 
 expiration_date_not_in_past: Expiration date cannot be in the past.
 

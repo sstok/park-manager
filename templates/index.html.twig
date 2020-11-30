@@ -1,94 +1,320 @@
-{% extends 'layout.html.twig' %}
+{% extends 'webhosting/layout.html.twig' %}
 
-{% block title %}It works!{% endblock %}
-
-{#{% block topbar %}
-    <a href="{{ logout_url('admin') }}" class="block mt-4 lg:inline-block lg:mt-0 text-gray-200 hover:text-white mr-4">Logout Admin</a>
-{% endblock topbar %}#}
+{% block title %}Dashboard | Rollerworks.net{% endblock %}
 
 {% block breadcrumbs %}
-    <svg class="w-4 h-4 mr-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M8 20H3V10H0L10 0l10 10h-3v10h-5v-6H8v6z"/></svg>
-    <span>Dashboard</span>
-    <span class="block self-center w-1 h-1 ml-2 mr-2 top-auto rounded-lg bg-gray-600"></span>
-    <span>Webhosting</span>
-    <span class="block self-center w-1 h-1 ml-2 mr-2 top-auto rounded-lg bg-gray-600"></span>
-    <span>Rollerworks.net</span>
+    {{ parent() }}
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="#" aria-current="page" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Rollerworks.net</a>
+        </div>
+    </li>
 {% endblock %}
 
 {% block content %}
-    <div class="md:w-10/12 flex flex-col pt-3 pb-2 mb-3">
+    <div class="mt-8">
+        <!-- STATS -->
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-lg leading-6 font-medium text-cool-gray-900">Overview</h2>
+            <!-- This example requires Tailwind CSS v2.0+ -->
+            <div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                    Last 30 days
+                </h3>
+                <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-cyan-600 rounded-md p-3">
+                                    <!-- Heroicon name: world -->
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dt class="text-sm font-medium text-gray-500 truncate">
+                                        Avg. Traffic Usage
+                                    </dt>
+                                    <dd class="flex items-baseline">
+                                        <div class="text-2xl font-semibold text-gray-900">
+                                            5 GB
+                                        </div>
 
-        <div class="bg-white p-8 rounded-sm shadow">
-            <h1 class="text-3xl text-gray-800 lg:mb-2">Webhosting</h1>
-            <div class="hidden lg:block mr-8 text-gray-700 font-light">
-                <p class="mb-4"> Windows 10 automatically downloads and installs updates to make sure your device is
-                    secure and up to date. This means you receive the latest fixes and security updates, helping your
-                    device run efficiently and stay protected. In most cases, restarting your device completes the
-                    update. Make sure your device is plugged in when you know updates will be installed. </p>
+                                        <div class="ml-2 flex items-baseline text-sm font-semibold text-red-600">
+                                            <svg class="self-center flex-shrink-0 h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="sr-only">Increased by </span> 5.4%
+                                            <!-- Heroicon name: exclamation -->
+                                            <svg class="self-center flex-shrink-0 h-5 w-5 text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </dd>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                            <div class="text-sm">
+                                <a href="#" class="font-medium text-light-blue-600 hover:text-light-blue-500"> View all<span class="sr-only"> Avg. Traffic Usage</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-cyan-600 rounded-md p-3">
+                                    <!-- Heroicon name: chart-pie -->
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dt class="text-sm font-medium text-gray-500 truncate">
+                                        Avg. Disk usage
+                                    </dt>
+                                    <dd class="flex items-baseline">
+                                        <div class="text-2xl font-semibold text-gray-900">
+                                            58.16%
+                                        </div>
+
+                                        <div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
+                                            <svg class="self-center flex-shrink-0 h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="sr-only">Increased by</span> 5.4%
+                                        </div>
+                                    </dd>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                            <div class="text-sm">
+                                <a href="#" class="font-medium text-light-blue-600 hover:text-light-blue-500"> View all<span class="sr-only"> Avg. Disk usage</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white overflow-hidden shadow rounded-lg">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-cyan-600 rounded-md p-3">
+                                    <!-- Heroicon name: chart-bar -->
+                                    <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dt class="text-sm font-medium text-gray-500 truncate">
+                                        Avg. System usage
+                                    </dt>
+                                    <dd class="flex items-baseline">
+                                        <div class="text-2xl font-semibold text-gray-900">
+                                            24.57%
+                                        </div>
+
+                                        <div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
+                                            <svg class="self-center flex-shrink-0 h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="sr-only">Decreased by</span> 3.2%
+                                        </div>
+                                    </dd>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                            <div class="text-sm">
+                                <a href="#" class="font-medium text-light-blue-600 hover:text-light-blue-500"> View all<span class="sr-only"> Avg. System usage</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </dl>
             </div>
         </div>
 
-{#        <div class="flex justify-between bg-white -mt-1 p-8 border-t border-gray-200 rounded-sm shadow">
-            <div class="flex">
-                <svg class="w-8 h-8 fill-current text-gray-300 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M1 10h3v10H1V10zM6 0h3v20H6V0zm5 8h3v12h-3V8zm5-4h3v16h-3V4z"/></svg>
-                <div>
-                    <span class="text-sm block">Traffic</span>
-                    <span class="text-sm">5 GB</span>
+        <nav class="max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 gap-2 md:grid-cols-6 bg-white p-8 border rounded-2xl shadow-sm">
+
+                <a href="#" class="col-span-1 flex flex-col text-center justify-center p-8 border rounded-lg text-gray-600 hover:border-blue-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-2 focus:ring-blue-400">
+                    <svg class="self-center flex-shrink-0 h-12 w-12 text-cyan-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span class="mt-2 text-xs font-medium">Settings</span>
+                </a>
+
+                <a href="#" class="col-span-1 flex flex-col text-center justify-center p-8 border rounded-lg text-gray-600 hover:border-blue-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-2 focus:ring-blue-400">
+                    <svg class="self-center flex-shrink-0 h-12 w-12 text-cyan-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="none" aria-hidden="true">
+                        <path fill="currentColor" d="M12 1A2.5 2.5 0 0 0 9.5 3.5A2.5 2.5 0 0 0 11 5.79V7H7A2 2 0 0 0 5 9V9.71A2.5 2.5 0 0 0 3.5 12A2.5 2.5 0 0 0 5 14.29V15H4A2 2 0 0 0 2 17V18.21A2.5 2.5 0 0 0 .5 20.5A2.5 2.5 0 0 0 3 23A2.5 2.5 0 0 0 5.5 20.5A2.5 2.5 0 0 0 4 18.21V17H8V18.21A2.5 2.5 0 0 0 6.5 20.5A2.5 2.5 0 0 0 9 23A2.5 2.5 0 0 0 11.5 20.5A2.5 2.5 0 0 0 10 18.21V17A2 2 0 0 0 8 15H7V14.29A2.5 2.5 0 0 0 8.5 12A2.5 2.5 0 0 0 7 9.71V9H17V9.71A2.5 2.5 0 0 0 15.5 12A2.5 2.5 0 0 0 17 14.29V15H16A2 2 0 0 0 14 17V18.21A2.5 2.5 0 0 0 12.5 20.5A2.5 2.5 0 0 0 15 23A2.5 2.5 0 0 0 17.5 20.5A2.5 2.5 0 0 0 16 18.21V17H20V18.21A2.5 2.5 0 0 0 18.5 20.5A2.5 2.5 0 0 0 21 23A2.5 2.5 0 0 0 23.5 20.5A2.5 2.5 0 0 0 22 18.21V17A2 2 0 0 0 20 15H19V14.29A2.5 2.5 0 0 0 20.5 12A2.5 2.5 0 0 0 19 9.71V9A2 2 0 0 0 17 7H13V5.79A2.5 2.5 0 0 0 14.5 3.5A2.5 2.5 0 0 0 12 1M12 2.5A1 1 0 0 1 13 3.5A1 1 0 0 1 12 4.5A1 1 0 0 1 11 3.5A1 1 0 0 1 12 2.5M6 11A1 1 0 0 1 7 12A1 1 0 0 1 6 13A1 1 0 0 1 5 12A1 1 0 0 1 6 11M18 11A1 1 0 0 1 19 12A1 1 0 0 1 18 13A1 1 0 0 1 17 12A1 1 0 0 1 18 11M3 19.5A1 1 0 0 1 4 20.5A1 1 0 0 1 3 21.5A1 1 0 0 1 2 20.5A1 1 0 0 1 3 19.5M9 19.5A1 1 0 0 1 10 20.5A1 1 0 0 1 9 21.5A1 1 0 0 1 8 20.5A1 1 0 0 1 9 19.5M15 19.5A1 1 0 0 1 16 20.5A1 1 0 0 1 15 21.5A1 1 0 0 1 14 20.5A1 1 0 0 1 15 19.5M21 19.5A1 1 0 0 1 22 20.5A1 1 0 0 1 21 21.5A1 1 0 0 1 20 20.5A1 1 0 0 1 21 19.5Z" />
+                    </svg>
+
+                    <span class="mt-2 text-xs font-medium">Subdomains</span>
+                </a>
+
+                <a href="#" class="col-span-1 flex flex-col text-center justify-center p-8 border rounded-lg text-gray-600 hover:border-blue-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-2 focus:ring-blue-400">
+                    <svg class="self-center flex-shrink-0 h-10 w-10 text-cyan-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="none" aria-hidden="true">
+                        <path fill="currentColor" d="M15 9H17V11H15V9M17 5H15V7H17V5M11 15H13V13H11V15M13 5H11V7H13V5M11 11H13V9H11V11M9 5H7V7H9V5M9 9H7V11H9V9M14.55 21H13V17.5H11V21H5V3H19V11.03C19.71 11.09 20.39 11.31 21 11.63V1H3V23H15.91C15.5 22.44 15 21.76 14.55 21M7 19H9V17H7V19M9 13H7V15H9V13M22 16.5C22 19.1 18.5 23 18.5 23S15 19.1 15 16.5C15 14.6 16.6 13 18.5 13S22 14.6 22 16.5M19.7 16.6C19.7 16 19.1 15.4 18.5 15.4S17.3 15.9 17.3 16.6C17.3 17.2 17.8 17.8 18.5 17.8S19.8 17.2 19.7 16.6Z" />
+                    </svg>
+                    <span class="mt-2 text-xs font-medium">Domain Names</span>
+                </a>
+
+                <a href="#" class="col-span-1 flex flex-col text-center justify-center p-8 border rounded-lg text-gray-600 hover:border-blue-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-2 focus:ring-blue-400">
+                    <svg class="self-center flex-shrink-0 h-10 w-10 text-yellow-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
+                    </svg>
+                    <span class="mt-2 text-xs font-medium">FTP Users</span>
+                </a>
+
+                <a href="#" class="col-span-1 flex flex-col text-center justify-center p-8 border rounded-lg text-gray-600 hover:border-blue-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-2 focus:ring-blue-400">
+                    <svg class="self-center flex-shrink-0 h-10 w-10 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="none" aria-hidden="true">
+                        <path fill="currentColor" d="M16,11.78L20.24,4.45L21.97,5.45L16.74,14.5L10.23,10.75L5.46,19H22V21H2V3H4V17.54L9.5,8L16,11.78Z" />
+                    </svg>
+                    <span class="mt-2 text-xs font-medium">Statistics</span>
+                </a>
+
+                <a href="#" class="col-span-1 flex flex-col text-center justify-center p-8 border rounded-lg text-gray-600 hover:border-blue-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-2 focus:ring-blue-400">
+                    <svg class="self-center flex-shrink-0 h-10 w-10 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="none" aria-hidden="true">
+                        <path fill="currentColor" d="M9.29,3.25L5.16,6.72L4,5.34L8.14,1.87L9.29,3.25M22,5.35L20.84,6.73L16.7,3.25L17.86,1.87L22,5.35M13,4A8,8 0 0,1 21,12A8,8 0 0,1 13,20A8,8 0 0,1 5,12A8,8 0 0,1 13,4M13,6A6,6 0 0,0 7,12A6,6 0 0,0 13,18A6,6 0 0,0 19,12A6,6 0 0,0 13,6M12,7.5H13.5V12.03L16.72,13.5L16.1,14.86L12,13V7.5M1,14C1,11.5 2.13,9.3 3.91,7.83C3.33,9.1 3,10.5 3,12L3.06,13.13L3,14C3,16.28 4.27,18.26 6.14,19.28C7.44,20.5 9.07,21.39 10.89,21.78C10.28,21.92 9.65,22 9,22A8,8 0 0,1 1,14Z" />
+                    </svg>
+                    <span class="mt-2 text-xs font-medium">Scheduled Tasks</span>
+                </a>
+
+                <a href="#" class="col-span-1 flex flex-col text-center justify-center p-8 border rounded-lg text-gray-600 hover:border-blue-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-2 focus:ring-blue-400">
+                    <svg class="self-center flex-shrink-0 h-10 w-10 text-cyan-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="none" aria-hidden="true">
+                        <path fill="currentColor" d="M5,3A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3H5M6.4,6.5H17.6C18.37,6.5 19,7.12 19,7.9V16.1A1.4,1.4 0 0,1 17.6,17.5H6.4C5.63,17.5 5,16.87 5,16.1V7.9C5,7.12 5.62,6.5 6.4,6.5M6,8V10L12,14L18,10V8L12,12L6,8Z" />
+                    </svg>
+                    <span class="mt-2 text-xs font-medium">Email Boxes</span>
+                </a>
+
+                <a href="#" class="col-span-1 flex flex-col text-center justify-center p-8 border rounded-lg text-gray-600 hover:border-blue-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-2 focus:ring-blue-400">
+                    <svg class="self-center flex-shrink-0 h-10 w-10 text-pink-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="none" aria-hidden="true">
+                        <path fill="currentColor" d="M13 17H17V14L22 18.5L17 23V20H13V17M20 4H4A2 2 0 0 0 2 6V18A2 2 0 0 0 4 20H11V18H4V8L12 13L20 8V14H22V6A2 2 0 0 0 20 4M12 11L4 6H20Z" />
+                    </svg>
+                    <span class="mt-2 text-xs font-medium">Email Forwards</span>
+                </a>
+
+                <a href="#" class="col-span-1 flex flex-col text-center justify-center p-8 border rounded-lg text-gray-600 hover:border-blue-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-2 focus:ring-blue-400">
+                    <svg class="self-center flex-shrink-0 h-10 w-10 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="none" aria-hidden="true">
+                        <path fill="currentColor" d="M23.5 17L18.5 22L15 18.5L16.5 17L18.5 19L22 15.5L23.5 17M13 18H3V8L11 13L19 8V13H21V6C21 4.9 20.1 4 19 4H3C1.9 4 1 4.9 1 6V18C1 19.1 1.9 20 3 20H13V18M19 6L11 11L3 6H19Z" />
+                    </svg>
+                    <span class="mt-2 text-xs font-medium">Email Filters</span>
+                </a>
+
+                <a href="#" class="col-span-1 flex flex-col text-center justify-center p-8 border rounded-lg text-gray-600 hover:border-blue-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-2 focus:ring-blue-400">
+                    <svg class="self-center flex-shrink-0 h-10 w-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 432.071 445.383" aria-hidden="true">
+                        <g stroke="#4169e1">
+                            <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="12.46510029" d="M402.395 271.23c-50.302 10.376-53.76-6.655-53.76-6.655 53.111-78.808 75.313-178.843 56.153-203.326-52.27-66.785-142.752-35.2-144.262-34.38l-.486.087c-9.938-2.063-21.06-3.292-33.56-3.496-22.761-.373-40.026 5.967-53.127 15.902 0 0-161.411-66.495-153.904 83.63 1.597 31.938 45.776 241.657 98.471 178.312 19.26-23.163 37.869-42.748 37.869-42.748 9.243 6.14 20.308 9.272 31.908 8.147l.901-.765c-.28 2.876-.152 5.689.361 9.019-13.575 15.167-9.586 17.83-36.723 23.416-27.459 5.659-11.328 15.734-.796 18.367 12.768 3.193 42.307 7.716 62.266-20.224l-.796 3.188c5.319 4.26 9.054 27.711 8.428 48.969-.626 21.259-1.044 35.854 3.147 47.254 4.191 11.4 8.368 37.05 44.042 29.406 29.809-6.388 45.256-22.942 47.405-50.555 1.525-19.631 4.976-16.729 5.194-34.28l2.768-8.309c3.192-26.611.507-35.196 18.872-31.203l4.463.392c13.517.615 31.208-2.174 41.591-7 22.358-10.376 35.618-27.7 13.573-23.148h.002z"/>
+                            <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="12.46510029" d="M215.866 286.484c-1.385 49.516.348 99.377 5.193 111.495 4.848 12.118 15.223 35.688 50.9 28.045 29.806-6.39 40.651-18.756 45.357-46.051 3.466-20.082 10.148-75.854 11.005-87.281M173.104 38.256S11.583-27.76 19.092 122.365c1.597 31.938 45.779 241.664 98.473 178.316 19.256-23.166 36.671-41.335 36.671-41.335M260.349 26.207c-5.591 1.753 89.848-34.889 144.087 34.417 19.159 24.484-3.043 124.519-56.153 203.329"/>
+                            <path fill="none" stroke-linecap="round" stroke-linejoin="bevel" stroke-width="12.46510029" d="M348.282 263.953s3.461 17.036 53.764 6.653c22.04-4.552 8.776 12.774-13.577 23.155-18.345 8.514-59.474 10.696-60.146-1.069-1.729-30.355 21.647-21.133 19.96-28.739-1.525-6.85-11.979-13.573-18.894-30.338-6.037-14.633-82.796-126.849 21.287-110.183 3.813-.789-27.146-99.002-124.553-100.599-97.385-1.597-94.19 119.762-94.19 119.762"/>
+                            <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="12.46510029" d="M188.604 274.334c-13.577 15.166-9.584 17.829-36.723 23.417-27.459 5.66-11.326 15.733-.797 18.365 12.768 3.195 42.307 7.718 62.266-20.229 6.078-8.509-.036-22.086-8.385-25.547-4.034-1.671-9.428-3.765-16.361 3.994h0z"/>
+                            <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="12.46510029" d="M187.715 274.069c-1.368-8.917 2.93-19.528 7.536-31.942 6.922-18.626 22.893-37.255 10.117-96.339-9.523-44.029-73.396-9.163-73.436-3.193-.039 5.968 2.889 30.26-1.067 58.548-5.162 36.913 23.488 68.132 56.479 64.938"/>
+                            <path fill="#4169e1" stroke-width="4.15500021" d="M172.517 141.7c-.288 2.039 3.733 7.48 8.976 8.207 5.234.73 9.714-3.522 9.998-5.559.284-2.039-3.732-4.285-8.977-5.015-5.237-.731-9.719.333-9.996 2.367h-.001z"/>
+                            <path fill="#4169e1" stroke-width="2.0775001" d="M331.941 137.543c.284 2.039-3.732 7.48-8.976 8.207-5.238.73-9.718-3.522-10.005-5.559-.277-2.039 3.74-4.285 8.979-5.015 5.239-.73 9.718.333 10.002 2.368v-.001z"/>
+                            <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="12.46510029" d="M350.676 123.432c.863 15.994-3.445 26.888-3.988 43.914-.804 24.748 11.799 53.074-7.191 81.435"/>
+                        </g>
+                    </svg>
+                    <span class="mt-2 text-xs font-medium">PostgreSQL Databases</span>
+                </a>
+
+                <a href="#" class="col-span-1 flex flex-col text-center justify-center p-8 border rounded-lg text-gray-600 hover:border-blue-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-2 focus:ring-blue-400">
+                    <svg class="self-center flex-shrink-0 h-10 w-10 border-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 252" aria-hidden="true">
+                        <path fill="#00546B" d="M235.648 194.212c-13.918-.347-24.705 1.045-33.752 4.872-2.61 1.043-6.786 1.044-7.134 4.35 1.392 1.392 1.566 3.654 2.784 5.567 2.09 3.479 5.741 8.177 9.047 10.614 3.653 2.783 7.308 5.566 11.134 8.002 6.786 4.176 14.442 6.611 21.053 10.787 3.829 2.434 7.654 5.568 11.482 8.177 1.914 1.39 3.131 3.654 5.568 4.523v-.521c-1.219-1.567-1.567-3.828-2.784-5.568-1.738-1.74-3.48-3.306-5.22-5.046-5.045-6.784-11.308-12.7-18.093-17.571-5.567-3.828-17.747-9.047-20.008-15.485 0 0-.175-.173-.348-.347 3.827-.348 8.35-1.74 12.005-2.784 5.915-1.567 11.308-1.218 17.398-2.784 2.783-.696 5.567-1.566 8.35-2.436v-1.565c-3.13-3.132-5.392-7.307-8.698-10.265-8.873-7.657-18.617-15.137-28.707-21.4-5.394-3.48-12.354-5.742-18.095-8.699-2.086-1.045-5.567-1.566-6.784-3.306-3.133-3.827-4.873-8.872-7.134-13.396-5.044-9.57-9.917-20.182-14.267-30.272-3.13-6.786-5.044-13.572-8.872-19.834-17.92-29.577-37.406-47.497-67.33-65.07-6.438-3.653-14.093-5.219-22.27-7.132-4.348-.175-8.699-.522-13.048-.697-2.784-1.218-5.568-4.523-8.004-6.089C34.006 4.573 8.429-8.996 1.122 8.924c-4.698 11.308 6.96 22.442 10.96 28.185 2.96 4.001 6.786 8.524 8.874 13.048 1.218 2.956 1.565 6.09 2.783 9.221 2.785 7.653 5.393 16.18 9.048 23.314 1.914 3.653 4.001 7.48 6.437 10.786 1.392 1.913 3.827 2.784 4.35 5.915-2.435 3.48-2.61 8.7-4.003 13.049-6.263 19.66-3.826 44.017 5.046 58.457 2.783 4.348 9.395 13.92 18.268 10.265 7.83-3.131 6.09-13.048 8.35-21.747.524-2.09.176-3.48 1.219-4.872v.349c2.436 4.87 4.871 9.569 7.133 14.44 5.394 8.524 14.788 17.398 22.617 23.314 4.177 3.13 7.482 8.524 12.702 10.438v-.523h-.349c-1.044-1.566-2.61-2.261-4.001-3.48-3.131-3.13-6.612-6.958-9.047-10.438-7.306-9.744-13.745-20.53-19.486-31.665-2.783-5.392-5.22-11.308-7.481-16.701-1.045-2.09-1.045-5.22-2.784-6.263-2.61 3.827-6.437 7.133-8.351 11.83-3.304 7.481-3.653 16.702-4.871 26.27-.696.176-.349 0-.697.35-5.566-1.394-7.48-7.134-9.569-12.006-5.22-12.352-6.09-32.186-1.565-46.452 1.218-3.654 6.438-15.136 4.35-18.616-1.044-3.306-4.525-5.22-6.438-7.829-2.261-3.306-4.698-7.48-6.263-11.135-4.176-9.743-6.264-20.53-10.787-30.273-2.088-4.524-5.74-9.22-8.699-13.396-3.305-4.697-6.959-8.004-9.569-13.571-.869-1.913-2.088-5.045-.696-7.133.348-1.392 1.043-1.913 2.436-2.261 2.262-1.915 8.7.521 10.96 1.565 6.438 2.608 11.831 5.046 17.225 8.699 2.435 1.74 5.045 5.046 8.176 5.916h3.654c5.568 1.217 11.83.348 17.05 1.913 9.222 2.957 17.572 7.307 25.054 12.005 22.792 14.44 41.58 34.97 54.282 59.501 2.088 4 2.957 7.656 4.871 11.83 3.655 8.526 8.178 17.225 11.83 25.576 3.654 8.176 7.133 16.528 12.353 23.314 2.61 3.652 13.048 5.567 17.746 7.481 3.48 1.565 8.874 2.958 12.005 4.871 5.915 3.652 11.83 7.83 17.398 11.83 2.784 2.088 11.482 6.438 12.005 9.917z"/>
+                        <path fill="#00546B" d="M58.186 43.022c-2.957 0-5.044.35-7.132.871v.348h.348c1.393 2.784 3.827 4.698 5.566 7.133 1.393 2.783 2.61 5.568 4.003 8.352.173-.175.347-.348.347-.348 2.437-1.741 3.654-4.524 3.654-8.7-1.044-1.217-1.218-2.435-2.088-3.653-1.043-1.741-3.306-2.61-4.698-4.003z"/>
+                    </svg>
+                    <span class="mt-2 text-xs font-medium">MySQL Databases</span>
+                </a>
+
+                <a href="#" class="col-span-1 flex flex-col text-center justify-center p-8 border rounded-lg text-gray-600 hover:border-blue-gray-300 hover:bg-gray-50 hover:text-blue-500 focus:ring-2 focus:ring-blue-400">
+                    <svg class="self-center flex-shrink-0 h-10 w-10 text-red-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="none" aria-hidden="true">
+                        <path fill="currentColor" d="M20 21H4V10H6V19H18V10H20V21M3 3H21V9H3V3M5 5V7H19V5M10.5 17V14H8L12 10L16 14H13.5V17" />
+                    </svg>
+                    <span class="mt-2 text-xs font-medium">Back-up Management</span>
+                </a>
+
+            </div>
+        </nav>
+
+        {#<h2 class="max-w-6xl mx-auto mt-8 mb-2 px-4 text-lg leading-6 font-medium text-cool-gray-900 sm:px-6 lg:px-8">
+            Recent Users
+        </h2>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Name
+                                </th>
+                                <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Title
+                                </th>
+                                <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status
+                                </th>
+                                <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Role
+                                </th>
+                                <th scope="col" class="px-6 py-3 bg-gray-50">
+                                    <span class="sr-only">Edit</span>
+                                </th>
+                                <th scope="col" class="px-6 py-3 bg-gray-50">
+                                    <span class="sr-only">Action</span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=4&amp;w=256&amp;h=256&amp;q=60" alt="">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                Jane Cooper
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                jane.cooper@example.com
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">Regional Paradigm Technician</div>
+                                    <div class="text-sm text-gray-500">Optimization</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-200 text-green-800">
+                                      Active
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    Admin
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="#" class="text-light-blue-600 hover:text-light-blue-900">Edit</a>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <input type="checkbox" class="focus:ring-light-blue-500 h-4 w-4 text-light-blue-600 border-gray-300 rounded">
+                                </td>
+                            </tr>
+
+                            <!-- More rows... -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div class="flex">
-                <svg class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M19.95 11A10 10 0 1 1 9 .05V11h10.95zm-.08-2.6H11.6V.13a10 10 0 0 1 8.27 8.27z"/></svg>
-                Disk usage
-            </div>
-            <div class="flex">
-                <svg class="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M19.95 11A10 10 0 1 1 9 .05V11h10.95zm-.08-2.6H11.6V.13a10 10 0 0 1 8.27 8.27z"/></svg>
-                Disk usage
             </div>
         </div>#}
 
-        <div class="bg-white mt-6 p-4 flex flex-wrap items-stretch justify-left rounded-sm shadow">
-            <h2 class="w-full text-xl text-gray-800 border-b pb-2">Main Operations</h2>
-
-            {% for label in ['Account', 'Email', 'FTP', 'Traffic Statistics', 'Subdomains', 'Planned Jobs', 'DNS'] %}
-                <a href="#" class="flex justify-start w-full md:w-3/6 text-gray-700 p-6 hover:text-blue-600 hover:border-blue-300">
-                    <div class="mt-2">
-                        <svg class="fill-current h-8 w-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M6.47 9.8A5 5 0 0 1 .2 3.22l3.95 3.95 2.82-2.83L3.03.41a5 5 0 0 1 6.4 6.68l10 10-2.83 2.83L6.47 9.8z"/>
-                        </svg>
-                    </div>
-                    <div class="ml-4 tracking-wide">
-                        <div class="text-lg font-medium">
-                            {{ label }}
-                        </div>
-                        <div class="text-sm break-words"> Windows 10 automatically downloads and installs updates to
-                            make sure your device is secure and up to date.
-                        </div>
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
-
-        <div class="bg-white mt-6 p-4 flex flex-wrap items-stretch justify-left rounded-sm shadow">
-            <h2 class="w-full text-xl text-gray-800 border-b pb-2">Databases</h2>
-
-            {% for label in ['PostgreSQL', 'MariaDB'] %}
-                <a href="#" class="flex justify-start w-full md:w-3/6 text-gray-700 p-6 hover:text-blue-600 hover:border-blue-300">
-                    <div class="mt-2">
-                        <svg class="fill-current h-8 w-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M6.47 9.8A5 5 0 0 1 .2 3.22l3.95 3.95 2.82-2.83L3.03.41a5 5 0 0 1 6.4 6.68l10 10-2.83 2.83L6.47 9.8z"/>
-                        </svg>
-                    </div>
-                    <div class="ml-4 tracking-wide">
-                        <div class="text-lg font-medium">
-                            {{ label }}
-                        </div>
-                        <div class="text-sm break-words"> Windows 10 automatically downloads and installs updates to
-                            make sure your device is secure and up to date.
-                        </div>
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
     </div>
 {% endblock content %}

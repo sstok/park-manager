@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Symfony\Component\Routing\Loader\Configurator;
 
 return static function (RoutingConfigurator $routes) {
+    $routes->import('../src/UI/Web/Action/', 'annotation');
     //$routes->import('../src/UI/Web/Action/Admin', 'annotation')->prefix('admin/');
     $routes->import('../src/UI/Web/Action/Security', 'annotation');
 };

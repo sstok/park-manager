@@ -21,7 +21,6 @@ use Twig\Environment as TwigEnvironment;
 final class NotFoundExceptionListener implements EventSubscriberInterface
 {
     private TranslatorInterface $translator;
-
     private TwigEnvironment $twig;
 
     public function __construct(TranslatorInterface $translator, TwigEnvironment $twig)
@@ -35,7 +34,7 @@ final class NotFoundExceptionListener implements EventSubscriberInterface
         $exception = $event->getThrowable();
 
         if ($exception instanceof TranslatableException) {
-            $event->setResponse(new Response($this->twig->render('error.html.twig', ['message' => $this->translateMessage($exception)]), $exception->getCode()));
+            $event->setResponse(new Response($this->twig->render('error.html.twig', ['message' => $this->translateMessage($exception)]), ((int) $exception->getCode()) ?: Response::HTTP_BAD_REQUEST));
             $event->allowCustomResponseCode();
         }
     }
@@ -51,7 +50,7 @@ final class NotFoundExceptionListener implements EventSubscriberInterface
             }
         }
 
-        return $this->translator->trans($exception->getTranslatorId(), $arguments);
+        return $this->translator->trans($exception->getTranslatorId(), $arguments, 'validators');
     }
 
     public static function getSubscribedEvents(): array

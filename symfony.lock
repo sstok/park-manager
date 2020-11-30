@@ -150,12 +150,6 @@
     "johnkary/phpunit-speedtrap": {
         "version": "v3.0.0"
     },
-    "knplabs/knp-menu": {
-        "version": "v2.x-dev"
-    },
-    "knplabs/knp-menu-bundle": {
-        "version": "2.2.x-dev"
-    },
     "laminas/laminas-code": {
         "version": "3.5.x-dev"
     },
@@ -751,10 +745,13 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "1.6",
-            "ref": "69e1d805ad95964088bd510c05995e87dc391564"
+            "ref": "f362ed8e8aa99a8cb216e6bdb2ac833dfb7643dd"
         },
         "files": [
             "assets/app.js",
+            "assets/bootstrap.js",
+            "assets/controllers.json",
+            "assets/controllers/hello_controller.js",
             "assets/styles/app.css",
             "config/packages/assets.yaml",
             "config/packages/prod/webpack_encore.yaml",

@@ -1,11 +1,19 @@
+const colors = require('tailwindcss/colors');
+
 module.exports = {
     theme: {
-        extend: {}
+        extend: {
+            colors: {
+                //gray: colors.blueGray
+                'blue-gray': colors.blueGray,
+                'light-blue': colors.lightBlue,
+                cyan: colors.cyan,
+            }
+        }
     },
     variants: {
         backgroundColor: ['hover', 'focus'],
         textColor: ['hover', 'focus'],
-        fontStyle: ['default'],
     },
     corePlugins: {
         backgroundAttachment: false,
@@ -15,5 +23,9 @@ module.exports = {
 
         placeholderColor: ['focus', 'hover', 'active'],
     },
-    plugins: []
+    plugins: [
+        require('@tailwindcss/forms'),
+        require('@tailwindcss/typography'),
+        require('@tailwindcss/aspect-ratio'),
+    ]
 };

@@ -1,0 +1,12 @@
+admin_dashboard: Administrator Dashboard
+dashboard: Dashboard
+webhosting: Webhosting
+domain_names: Domain Names
+your_profile: Your Profile
+settings: Settings
+logout: Logout
+
+breadcrumbs:
+    home: Home
+    dashboard: Dashboard
+    users: Users

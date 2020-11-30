@@ -1,0 +1,99 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Webhosting{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="#" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Webhosting</a>
+        </div>
+    </li>
+{% endblock %}
+
+{% block page_header %}
+<div class="bg-white shadow">
+    <div class="px-4 sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
+        <div class="py-6 grid grid-cols-12 gap-4 lg:border-gray-200">
+            <div class="col-span-7 flex-1 min-w-0">
+
+                <div class="flex items-center">
+                    <span class="hidden sm:inline-block h-14 w-14 rounded-full overflow-hidden bg-gray-100">
+                      <svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                      </svg>
+                    </span>
+                    <div>
+                        <div class="flex items-center">
+                            <h1 class="sm:ml-3 text-2xl font-bold leading-7 text-gray-900 sm:leading-9 sm:truncate">
+                                Dashboard
+                            </h1>
+                        </div>
+                        <dl class="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
+                            <dt class="sr-only">Company</dt>
+                            <dd class="flex items-center text-sm text-gray-500 font-medium capitalize sm:mr-6">
+                                <!-- Heroicon name: server -->
+                                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm14 1a1 1 0 11-2 0 1 1 0 012 0zM2 13a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2zm14 1a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd" />
+                                </svg>
+
+                                <span class="truncate">Rollerscapes.net</span>
+                            </dd>
+                            <dt class="sr-only">Account status</dt>
+                            <dd class="mt-3 flex items-center text-sm text-gray-500 font-medium sm:mr-6 sm:mt-0 capitalize">
+                                <!-- Heroicon name: check-circle -->
+                                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                Active
+                            </dd>
+                            <dt class="sr-only">Plan</dt>
+                            <dd class="mt-3 flex items-center text-sm text-gray-500 font-medium sm:mr-6 sm:mt-0 capitalize">
+                                <!-- Heroicon name: cube -->
+                                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-grey-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+                                </svg>
+                                <a href="#" class="text-blue-500 underline">Gold Plan</a>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+            </div>
+            <div class="mt-6 col-span-5 md:flex md:justify-end md:mt-0 md:mx-4">
+
+                <div class="md:mr-4 bg-gray-50 overflow-hidden shadow-sm rounded-lg border-2 rounded-md p-4 px-8">
+                    <dt class="text-sm font-medium text-gray-500 truncate">
+                        Traffic Usage
+                    </dt>
+                    <dd class="flex items-baseline">
+                        <div class="text-sm font-medium text-gray-900">
+                            5 GB of 60 GB
+                        </div>
+                    </dd>
+                </div>
+
+                <div class="bg-gray-50 overflow-hidden rounded-lg shadow-sm border-2 border-red-400 rounded-md p-4 px-8">
+                    <dt class="text-sm font-medium text-gray-500 truncate flex">
+                        <div>
+                            Disk Usage
+                        </div>
+                        <!-- Heroicon name: exclamation -->
+                        <svg class="ml-1 self-center flex-shrink-0 h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                    </dt>
+                    <dd class="flex items-baseline">
+                        <div class="text-sm font-medium text-gray-900">
+                            9 GB of 10 GB
+                        </div>
+                    </dd>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

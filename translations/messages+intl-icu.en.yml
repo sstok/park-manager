@@ -3,6 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 label:
+    search: Search
     email: Email address
     current_password: Current Password
     password: Password
@@ -10,9 +11,22 @@ label:
     login_remember_me: Remember me
     private_key: Private key
     private_key_file: Private key file
-    private_key_passphrase: Private-key passprase
-    domain_name: Domainname
+    private_key_passphrase: Private-key passphrase
+    domain_name: Domain name
     remove_tls: Remove TLS configuration
+
+    login: Login
+    change_password: Change password
+    open_main_menu: Open main menu
+    open_user_menu: Open user menu
+    view_notifications: View notifications
+
+    sent_reset: Send reset
+    confirm_reset: Confirm reset
+
+placeholder:
+    _email: name@example.com
+    password: 'S3c@re-432!'
 
 help:
     private_key_passphrase: Required when the private key is encrypted.
@@ -21,24 +35,22 @@ help:
     homedir: Either "blog/", "blog/2" or "site@1.0/public". Not "../blog", "blog/.2./", or "blog/@/". No special characters except "@" and "." (between letter and number characters).
     remove_tls: Removes all the assigned TLS configuration. Not required when setting new information.
 
-button:
-    login: Login
-    change_password: Change password
-ui:
-    success: Success
-    error: Error
-    info: Information
-    warning: Warnning
+success: Success
+error: Error
+info: Information
+warning: Warnning
+dashboard: Dashboard
 
 flash:
     password_reset_accepted: Password reset accepted. Please try to login with your new password.
     user_password_changed: Password changed.
     password_reset_send: |
-        If this email address is valid (opted into account recovery), and no reset was requested recently,
-        <em>then</em> you should receive an email. Otherwise check your spam-folder or try again.
+        If this email address is valid, (opted into account recovery), and no reset was requested recently,
+        <em>then</em> you should receive an email. Otherwise, check your spam-folder or try again.
+    user_registered: User Registered.
 
-login:
-    heading: Login
+user_login:
+    heading: Login in to your account
     forgot_password: Forgot your password?
     help.trouble.button: Trouble logging in?
     help.trouble.html: |
@@ -47,29 +59,24 @@ login:
             <li>Check your password - note that your password is case sensitive!</li>
             <li>Check your computer clock - and synchronize if possible.</li>
             <li>Make sure cookies are accepted (for this website).</li>
-            <li>Still can't login? Contact support for assistence.</li>
+            <li>Still can't sign in? Contact support for assistence.</li>
         <ul>
 
-password_reset:
-    heading: Password reset
-    client_heading: Password reset
+user_password_reset:
+    heading: Password Reset
     paragraph.html: |
         <p>To reset your password provide the (main) email address associated with your account.</p>
     request_limit_notice.html: |
-        Please note that <b>no more then one reset request is accepted</b> within a reasonable time,
+        Please note that <b>no more than one reset request is accepted</b> within a reasonable time,
         if you didn't receive an email <b>check your spam folder or try again later.</b>
-    confirm.html: |
-        <p>Provide your new password (twice to prevent typing errors).</p>
-        <p>You can safely remove the email message with the reset link as this link can only be used once.</p>
-    submit_button: Send reset
-    confirm_button: Confirm reset
-    error:
-        invalid_token: Invalid token provided, please copy the reset URL in the received email (in full) and try again.
-        no_token: |
-            Sorry but no results were found with this token.<br><a href="{ reset_url }">Please try again</a>
+
+user_password_reset_confirm:
+    heading: Password Reset
+    paragraph.html: |
+        <p>Provide your new password (twice to prevent typing errors). You can safely remove the email message with the reset link as this link can only be used once.</p>
 
 change_password:
     heading: Change your Password
     paragraph.html: |
-        <p>Please provide your current password for verification. Note that your new password needs to follow
-            some basic security rules.</p>
+        <p>Please provide your current password for verification.
+            Note that your new password needs to follow some basic security rules.</p>

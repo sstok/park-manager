@@ -10,25 +10,43 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Twig;
 
+use ParkManager\Domain\User\User;
+use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\User\UserRepository;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\EscaperExtension;
 use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 final class ParkManagerExtension extends AbstractExtension
 {
     private TranslatorInterface $translator;
+    private TokenStorageInterface $tokenStorage;
+    private UserRepository $userRepository;
 
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, TokenStorageInterface $tokenStorage, UserRepository $userRepository)
     {
         $this->translator = $translator;
+        $this->tokenStorage = $tokenStorage;
+        $this->userRepository = $userRepository;
     }
 
     public function getFilters(): array
     {
         return [
             new TwigFilter('trans_safe', [$this, 'trans'], ['needs_environment' => true, 'is_safe' => ['all']]),
+            new TwigFilter('merge_attr_class', [$this, 'mergeAttrClass']),
+        ];
+    }
+
+    public function getFunctions()
+    {
+        return [
+            new TwigFunction('get_current_user', [$this, 'getCurrentUser']),
         ];
     }
 
@@ -43,6 +61,41 @@ final class ParkManagerExtension extends AbstractExtension
         }
 
         return $this->translator->trans($message, $arguments, $domain, $locale);
+    }
+
+    public function mergeAttrClass(array $attributes, string $class, bool $append = false): array
+    {
+        if (! isset($attributes['class'])) {
+            $attributes['class'] = '';
+        }
+
+        if ($append) {
+            $attributes['class'] .= ' ' . $class;
+        } else {
+            $attributes['class'] = $class . ' ' . $attributes['class'];
+        }
+
+        $attributes['class'] = trim($attributes['class']);
+
+        return $attributes;
+    }
+
+    public function getCurrentUser(): User
+    {
+        static $currentToken, $currentUser;
+
+        $token = $this->tokenStorage->getToken();
+
+        if ($token === null) {
+            throw new AccessDeniedException();
+        }
+
+        if ($currentToken !== $token) {
+            $currentToken = $token;
+            $currentUser = $this->userRepository->get(UserId::fromString($token->getUsername()));
+        }
+
+        return $currentUser;
     }
 }
 

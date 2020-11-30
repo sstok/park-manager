@@ -1,0 +1,295 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{# Widgets #}
+
+{% block form_widget_simple %}
+    {% if errors|length > 0 %}
+        {%- set attr = attr|merge_attr_class('block border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md ' ~ (field_width|default('w-full')) ) -%}
+    {% else %}
+        {%- set attr = attr|merge_attr_class('block border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md ' ~ (field_width|default('w-full')) ) -%}
+    {% endif %}
+    {{- parent() -}}
+{% endblock form_widget_simple %}
+
+{% block textarea_widget -%}
+    {% if errors|length > 0 %}
+        {%- set attr = attr|merge_attr_class('block border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md ' ~ (field_width|default('w-full')) ) -%}
+    {% else %}
+        {%- set attr = attr|merge_attr_class('block border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md ' ~ (field_width|default('w-full')) ) -%}
+    {% endif %}
+    {{- parent() -}}
+{%- endblock textarea_widget %}
+
+{% block money_widget -%}
+    {% set prepend = not (money_pattern starts with '{{') %}
+    {% set append = not (money_pattern ends with '}}') %}
+    {% if prepend or append %}
+        <div class="max-w-lg flex rounded-md shadow-sm">
+            {% if prepend %}
+            <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
+                {{ money_pattern|form_encode_currency }}
+            </span>
+                {% with { attr: attr|merge_attr_class('rounded-l-none', true) } %}{{- block('form_widget_simple') -}}{% endwith %}
+            {% endif %}
+            {% if append %}
+                {{- block('form_widget_simple') -}}
+                <span class="inline-flex items-center px-3 rounded-l-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
+                    {{ money_pattern|form_encode_currency }}
+                </span>
+                {% with { attr: attr|merge_attr_class('rounded-l-none', true) } %}{{- block('form_widget_simple') -}}{% endwith %}
+            {% endif %}
+        </div>
+    {% else %}
+        {{- block('form_widget_simple') -}}
+    {% endif %}
+{%- endblock money_widget %}
+
+{% block percent_widget -%}
+    {%- if symbol -%}
+        <div class="max-w-lg flex rounded-md shadow-sm">
+            {% with { attr: attr|merge_attr_class('rounded-r-none', true) } %}{{- block('form_widget_simple') -}}{% endwith %}
+            <span class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
+                {{ symbol|default('%') }}
+            </span>
+        </div>
+    {%- else -%}
+        {{- block('form_widget_simple') -}}
+    {%- endif -%}
+{%- endblock percent_widget %}
+
+{%- block checkbox_widget -%}
+    {%- set attr = attr|merge_attr_class('block focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300') -%}
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{%- endblock checkbox_widget -%}
+
+{%- block radio_widget -%}
+    {%- set attr = attr|merge_attr_class('block focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300') -%}
+    <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{%- endblock radio_widget -%}
+
+{% block datetime_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {% set attr = attr|merge_attr_class('mt-6 flex') -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{- form_errors(form.date) -}}
+            {{- form_errors(form.time) -}}
+
+            <div class="sr-only">
+                {%- if form.date.year is defined %}{{ form_label(form.date.year) }}{% endif -%}
+                {%- if form.date.month is defined %}{{ form_label(form.date.month) }}{% endif -%}
+                {%- if form.date.day is defined %}{{ form_label(form.date.day) }}{% endif -%}
+                {%- if form.time.hour is defined %}{{ form_label(form.time.hour) }}{% endif -%}
+                {%- if form.time.minute is defined %}{{ form_label(form.time.minute) }}{% endif -%}
+                {%- if form.time.second is defined %}{{ form_label(form.time.second) }}{% endif -%}
+            </div>
+
+            {{- form_widget(form.date, { datetime: true } ) -}}
+            {{- form_widget(form.time, { datetime: true } ) -}}
+        </div>
+    {%- endif -%}
+{%- endblock datetime_widget %}
+
+{% block date_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {%- set attr = attr|merge_attr_class('') -%}
+        {%- if datetime is not defined or not datetime -%}
+            <div {{ block('widget_container_attributes') -}}>
+        {%- endif %}
+        {%- if label is not same as(false) -%}
+            <div class="sr-only">
+                {{ form_label(form.year) }}
+                {{ form_label(form.month) }}
+                {{ form_label(form.day) }}
+            </div>
+        {%- endif -%}
+
+        {{- date_pattern|replace({
+            '{{ year }}': form_widget(form.year, { 'attr': attr|merge_attr_class('mr-2'), 'field_width': 'w-auto' } ),
+            '{{ month }}': form_widget(form.month, { 'attr': attr|merge_attr_class('mr-2'), 'field_width': 'w-auto' } ),
+            '{{ day }}': form_widget(form.day, { 'attr': attr|merge_attr_class('mr-2'), 'field_width': 'w-auto' } ),
+        })|raw -}}
+        {%- if datetime is not defined or not datetime -%}
+            </div>
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock date_widget %}
+
+{% block time_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {%- if datetime is not defined or false == datetime -%}
+            <div {{ block('widget_container_attributes') -}}>
+        {%- endif -%}
+        {%- if label is not same as(false) -%}<div class="sr-only">{{ form_label(form.hour) }}</div>{%- endif -%}
+        {{- form_widget(form.hour, { 'field_width': 'w-auto' } ) -}}
+        {%- if with_minutes -%}<span class="p-1">:</span>{%- if label is not same as(false) -%}<div class="sr-only">{{ form_label(form.minute) }}</div>{%- endif -%}{{ form_widget(form.minute, { 'field_width': 'w-auto' } ) }}{%- endif -%}
+        {%- if with_seconds -%}<span class="p-1">:</span>{%- if label is not same as(false) -%}<div class="sr-only">{{ form_label(form.second) }}</div>{%- endif -%}{{ form_widget(form.second, { 'field_width': 'w-auto' } ) }}{%- endif -%}
+        {%- if datetime is not defined or false == datetime -%}
+            </div>
+        {%- endif -%}
+    {%- endif -%}
+{%- endblock time_widget %}
+
+{%- block dateinterval_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        {%- set attr = attr|merge_attr_class('') -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{- form_errors(form) -}}
+            <div>
+                <table class="{{ table_class|default('border-separate text-left') }}" role="presentation">
+                    <thead>
+                        <tr>
+                            {%- if with_years %}<th class="pr-6">{{ form_label(form.years) }}</th>{% endif -%}
+                            {%- if with_months %}<th class="pr-6">{{ form_label(form.months) }}</th>{% endif -%}
+                            {%- if with_weeks %}<th class="pr-6">{{ form_label(form.weeks) }}</th>{% endif -%}
+                            {%- if with_days %}<th class="pr-6">{{ form_label(form.days) }}</th>{% endif -%}
+                            {%- if with_hours %}<th class="pr-6">{{ form_label(form.hours) }}</th>{% endif -%}
+                            {%- if with_minutes %}<th class="pr-6">{{ form_label(form.minutes) }}</th>{% endif -%}
+                            {%- if with_seconds %}<th class="pr-6">{{ form_label(form.seconds) }}</th>{% endif -%}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {%- if with_years %}<td class="pr-6">{{ form_widget(form.years, { 'field_width': 'w-auto' }) }}</td>{% endif -%}
+                            {%- if with_months %}<td class="pr-6">{{ form_widget(form.months, { 'field_width': 'w-auto' }) }}</td>{% endif -%}
+                            {%- if with_weeks %}<td class="pr-6">{{ form_widget(form.weeks, { 'field_width': 'w-auto' }) }}</td>{% endif -%}
+                            {%- if with_days %}<td class="pr-6">{{ form_widget(form.days, { 'field_width': 'w-auto' }) }}</td>{% endif -%}
+                            {%- if with_hours %}<td class="pr-6">{{ form_widget(form.hours, { 'field_width': 'w-auto' }) }}</td>{% endif -%}
+                            {%- if with_minutes %}<td class="pr-6">{{ form_widget(form.minutes, { 'field_width': 'w-auto' }) }}</td>{% endif -%}
+                            {%- if with_seconds %}<td class="pr-6">{{ form_widget(form.seconds, { 'field_width': 'w-auto' }) }}</td>{% endif -%}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {%- if with_invert %}{{ form_widget(form.invert) }}{% endif -%}
+        </div>
+    {%- endif -%}
+{%- endblock dateinterval_widget -%}
+
+{% block choice_widget_collapsed -%}
+    {% if errors|length > 0 %}
+        {%- set attr = attr|merge_attr_class('border-red-300 focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md ' ~ (field_width|default('w-full sm:max-w-2')) ) -%}
+    {% else %}
+        {%- set attr = attr|merge_attr_class('border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md ' ~ (field_width|default('w-full sm:max-w-2')) ) -%}
+    {% endif %}
+    {{- parent() -}}
+{%- endblock choice_widget_collapsed %}
+
+{%- block button_widget -%}
+    {% set attr = attr|merge_attr_class('inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500') %}
+    {{ parent() }}
+{%- endblock button_widget -%}
+
+{# Labels #}
+
+{% block form_label -%}
+    {%- set label_attr = label_attr|merge_attr_class('block text-sm font-medium text-gray-700') -%}
+    {{- parent() -}}
+{% endblock form_label %}
+
+{% block form_help -%}
+    {%- if help is not empty -%}
+        {%- set help_attr = help_attr|merge_attr_class('text-sm text-gray-500') -%}
+        {{ parent() }}
+    {%- endif -%}
+{%- endblock form_help %}
+
+{# Rows #}
+
+{% block button_row -%}
+    <div class="pt-5">
+        <div{% with {attr: row_attr|merge_attr_class('flex justify-end')} %}{{ block('attributes') }}{% endwith %}>
+            {{- form_widget(form) -}}
+        </div>
+    </div>
+{%- endblock button_row %}
+
+{%- block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%- for child in form %}
+            <div class="flex items-center h-5">
+                {{- form_widget(child ) -}}
+                {{- form_label(child, null, {translation_domain: choice_translation_domain, label_attr: child.vars.label_attr|merge_attr_class('ml-2') }) -}}
+            </div>
+        {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded -%}
+
+{%- block checkbox_row -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        <div class="flex items-center h-5">
+            {{- form_widget(form, widget_attr) -}}
+            {{- form_label(form, null, { 'label_attr': label_attr|merge_attr_class('ml-2') }) -}}
+        </div>
+        {{- form_errors(form) -}}
+        {{- form_help(form) -}}
+    </div>
+{%- endblock checkbox_row -%}
+
+{% block form_errors -%}
+    {%- if errors|length > 0 -%}
+        {%- if form is rootform -%}
+            <div class="rounded-md bg-red-50 p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <!-- Heroicon name: x-circle -->
+                        <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <div class="text-sm text-red-700">
+                            <ul class="list-disc pl-5 space-y-1">
+                                {%- for error in errors -%}
+                                    {# The message equals the template, so it's untranslated #}
+                                    {% if error.message == error.messageTemplate %}
+                                        {% set error_message = error.messageTemplate|trans_safe(error.messageParameters, 'validators') %}
+                                    {% else %}
+                                        {% set error_message = error.message|escape %}
+                                    {% endif %}
+
+                                    <li class="">
+                                        <span class="sr-only">{{ 'Error'|trans({}, 'validators') }}</span>
+                                        <span class="text-red-500 text-xs mr-2 text-left flex-auto">{{ error_message|raw }}</span>
+                                    </li>
+                                {%- endfor -%}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <ul id="{{ id }}_errors" class="pt-1 pb-1" role="alert">
+                {%- for error in errors -%}
+
+                    {# The message equals the template, so it's untranslated #}
+                    {% if error.message == error.messageTemplate %}
+                        {% set error_message = error.messageTemplate|trans_safe(error.messageParameters, 'validators') %}
+                    {% else %}
+                        {% set error_message = error.message|escape %}
+                    {% endif %}
+
+                    <li class="flex lg:inline-flex">
+                        <!-- Heroicon name: exclamation-circle -->
+                        <svg class="h-5 w-5 text-red-500 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="sr-only">{{ 'Error'|trans({}, 'validators') }}</span>
+                        <span class="text-red-500 text-xs mr-2 text-left flex-auto">{{ error_message|raw }}</span>
+                    </li>
+                {%- endfor -%}
+            </ul>
+        {%- endif %}
+    {% endif %}
+{%- endblock form_errors %}
