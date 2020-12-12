@@ -11,11 +11,14 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Form\Type\Security;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Form\Exception\TransformationFailedException;
+use Symfony\Component\Form\Event\SubmitEvent;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraint;
 
@@ -23,6 +26,24 @@ final class HashedPasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $builder->addEventListener(FormEvents::SUBMIT, static function (SubmitEvent $event): void {
+            $encoder = $event->getForm()->getConfig()->getOption('algorithm');
+            $value = $event->getData()['password'];
+
+            if ($value === null) {
+                return;
+            }
+
+            if (! \is_string($value)) {
+                throw new UnexpectedTypeException($value, 'string');
+            }
+
+            $encodePassword = $encoder($value);
+            \sodium_memzero($value);
+
+            $event->setData($encodePassword);
+        });
+
         $passwordOptions = $options['password_options'] + ['required' => $options['required']];
         $passwordOptions['attr'] = \array_merge(
             $passwordOptions['attr'] ?? [],
@@ -35,54 +56,29 @@ final class HashedPasswordType extends AbstractType
         );
 
         if ($options['password_confirm']) {
-            $builder->add(
-                'password',
-                RepeatedType::class,
-                [
-                    'type' => PasswordType::class,
-                    'invalid_message' => 'password_not_the_same',
-                    'first_options' => ['label' => 'label.password', 'constraints' => $options['password_constraints']],
-                    'second_options' => ['label' => 'label.password2'],
-                ] + $passwordOptions
-            );
+            $builder->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'password_not_the_same',
+                'first_options' => ['label' => 'label.password', 'constraints' => $options['password_constraints']],
+                'second_options' => ['label' => 'label.password2'],
+            ] + $passwordOptions);
         } else {
             $builder->add('password', PasswordType::class, $passwordOptions + ['constraints' => $options['password_constraints']]);
         }
-
-        $encoder = $options['algorithm'];
-        $builder->get('password')->addModelTransformer(
-            new CallbackTransformer(
-                // Password is always null (as by convention)
-                static fn () => null,
-                /**
-                 * @param string|null $value
-                 */
-                static function ($value) use ($encoder): ?string {
-                    if ($value === null) {
-                        return null;
-                    }
-
-                    if (! \is_string($value)) {
-                        throw new TransformationFailedException('Expected string or null got "' . get_debug_type($value) . '"');
-                    }
-
-                    $encodePassword = $encoder($value);
-                    \sodium_memzero($value);
-
-                    return $encodePassword;
-                }
-            )
-        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['algorithm']);
         $resolver->setDefaults([
-            'inherit_data' => true,
             'password_options' => [],
             'password_confirm' => false,
             'password_constraints' => [],
+            'constraints' => static function (Options $options, $value): void {
+                if (! empty($value)) {
+                    throw new InvalidOptionsException('Setting the "constraints" option for "' . self::class . '" is not possible. Use the "password_constraints" option instead.');
+                }
+            },
         ]);
         $resolver->setAllowedTypes('algorithm', 'callable');
         $resolver->setAllowedTypes('password_options', ['array']);
