@@ -13,6 +13,7 @@ namespace ParkManager\UI\Web\Action\Security;
 use ParkManager\UI\Web\Form\Type\Security\ConfirmPasswordResetType;
 use ParkManager\UI\Web\Response\TwigResponse;
 use Rollerworks\Bundle\RouteAutofillBundle\Response\RouteRedirectResponse;
+use Rollerworks\Component\SplitToken\SplitToken;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,7 +30,7 @@ final class ConfirmPasswordResetAction
      *
      * @return RouteRedirectResponse|TwigResponse
      */
-    public function __invoke(Request $request, string $token, FormFactoryInterface $formFactory)
+    public function __invoke(Request $request, SplitToken $token, FormFactoryInterface $formFactory)
     {
         $form = $formFactory->create(ConfirmPasswordResetType::class, ['reset_token' => $token]);
         $form->handleRequest($request);

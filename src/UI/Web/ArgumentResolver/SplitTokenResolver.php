@@ -10,9 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\ArgumentResolver;
 
+use ParkManager\Domain\Exception\InvalidSplitTokenProvided;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
@@ -36,6 +38,18 @@ final class SplitTokenResolver implements ArgumentValueResolverInterface
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        yield $this->splitTokenFactory->fromString($request->attributes->get($argument->getName()));
+        yield $this->getFromString($request->attributes->get($argument->getName()));
+    }
+
+    /**
+     * @throws InvalidSplitTokenProvided
+     */
+    private function getFromString(string $value): SplitToken
+    {
+        try {
+            return $this->splitTokenFactory->fromString($value);
+        } catch (\Exception $e) {
+            throw new InvalidSplitTokenProvided('Invalid token', Response::HTTP_BAD_REQUEST, $e);
+        }
     }
 }

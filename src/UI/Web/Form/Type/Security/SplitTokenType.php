@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Form\Type\Security;
 
 use ParkManager\UI\Web\Form\DataTransformer\SplitTokenToStringTransformer;
+use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -37,8 +38,12 @@ final class SplitTokenType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $data = $event->getData();
 
-            if (! \is_string($data)) {
+            if ($data === null || $data instanceof SplitToken) {
                 return;
+            }
+
+            if (! is_string($data)) {
+                $data = '[invalid]';
             }
 
             try {
