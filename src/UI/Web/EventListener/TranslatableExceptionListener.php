@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
 
-final class NotFoundExceptionListener implements EventSubscriberInterface
+final class TranslatableExceptionListener implements EventSubscriberInterface
 {
     private TranslatorInterface $translator;
     private TwigEnvironment $twig;

@@ -104,13 +104,13 @@ final class EditSubDomainTypeTest extends MessageFormTestCase
         $request = Request::create('/', 'POST', ['edit_sub_domain' => [
             'root_domain' => self::DOMAIN_NAME_ID_1,
             'name' => 'news',
-            'homedir' => 'news/',
+            'homeDir' => 'news/',
         ]]);
 
         $form = $this->factory->create(EditSubDomainType::class, $model, ['space_id' => $model->space->id]);
         $form->handleRequest($request);
 
-        self::assertTrue($form->isValid());
+        self::assertFormIsValid($form);
         self::assertEquals(
             new EditSubDomain($id, DomainNameId::fromString(self::DOMAIN_NAME_ID_1), 'news', 'news/'),
             $this->dispatchedCommand
@@ -128,7 +128,7 @@ final class EditSubDomainTypeTest extends MessageFormTestCase
         $request = Request::create('/', 'POST', ['edit_sub_domain' => [
             'root_domain' => self::DOMAIN_NAME_ID_1,
             'name' => 'news',
-            'homedir' => 'news/',
+            'homeDir' => 'news/',
             'tlsInfo' => [
                 'certificate' => new UploadedFile(__DIR__ . '/../../Mocks/tls/bundled.pem', 'bundled.pem', null, null, true),
                 'privateKey' => [
@@ -256,14 +256,14 @@ final class EditSubDomainTypeTest extends MessageFormTestCase
         $request = Request::create('/', 'POST', ['edit_sub_domain' => [
             'root_domain' => self::DOMAIN_NAME_ID_1,
             'name' => 'news',
-            'homedir' => 'news/',
+            'homeDir' => 'news/',
             'removeTLS' => '1',
         ]]);
 
         $form = $this->factory->create(EditSubDomainType::class, $model, ['space_id' => $model->space->id]);
         $form->handleRequest($request);
 
-        self::assertTrue($form->isValid());
+        self::assertFormIsValid($form);
         self::assertEquals(
             (new EditSubDomain($id, DomainNameId::fromString(self::DOMAIN_NAME_ID_1), 'news', 'news/'))->removeTLSInformation(),
             $this->dispatchedCommand

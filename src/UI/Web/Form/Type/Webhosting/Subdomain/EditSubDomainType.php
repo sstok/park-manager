@@ -30,7 +30,7 @@ final class EditSubDomainType extends SubDomainType
             $model = $event->getData()['model'];
 
             if ($model->tlsCert) {
-                $event->getForm()->add('removeTLS', CheckboxType::class, ['data' => false, 'label' => 'label.remove_tls', 'help' => 'help.remove_tls']);
+                $event->getForm()->add('removeTLS', CheckboxType::class, ['data' => false, 'label' => 'label.remove_tls', 'help' => 'help.remove_tls', 'getter' => static fn () => false]);
             }
         });
     }
@@ -45,7 +45,7 @@ final class EditSubDomainType extends SubDomainType
                 $model->id,
                 $form['root_domain']->id,
                 $form['name'],
-                $form['homedir'],
+                $form['homeDir'],
                 $form['config'] ?? [] // To be done in the future
             );
 

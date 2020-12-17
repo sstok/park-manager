@@ -91,7 +91,7 @@
 
         <ParamNameMismatch errorLevel="info">
             <errorLevel type="suppress">
-                <file name="src/UI/Web/Form/DataMapper/PropertyPathObjectMapper.php"/>
+                <file name="src/UI/Web/Form/DataMapper/PropertyPathObjectAccessor.php"/>
             </errorLevel>
         </ParamNameMismatch>
 

@@ -42,7 +42,7 @@ final class SplitTokenType extends AbstractType
                 return;
             }
 
-            if (! is_string($data)) {
+            if (! \is_string($data)) {
                 $data = '[invalid]';
             }
 

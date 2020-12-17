@@ -52,9 +52,9 @@ final class FormExampleAction
             ->add('time', TimeType::class, ['with_seconds' => true, 'help' => 'Get notified when a candidate applies for a job.'])
             ->add('datetime', DateTimeType::class, ['help' => 'Get notified when a candidate applies for a job.'])
             ->add('dateinterval', DateIntervalType::class, ['with_hours' => true, 'with_minutes' => true, 'with_seconds' => true, 'help' => 'Get notified when a candidate applies for a job.'])
-            ->add('select', ChoiceType::class, ['choices' => array_flip(range('a', 'f')), 'expanded' => true, 'help' => 'Get notified when a candidate applies for a job.'])
-            ->add('select2', ChoiceType::class, ['choices' => array_flip(range('g', 'n')), 'expanded' => true, 'multiple' => true, 'help' => 'Get notified when a candidate applies for a job.'])
-            ->add('choice', ChoiceType::class, ['choices' => array_flip(range('g', 'n')), 'expanded' => false, 'multiple' => true, 'help' => 'Get notified when a candidate applies for a job.'])
+            ->add('select', ChoiceType::class, ['choices' => \array_flip(\range('a', 'f')), 'expanded' => true, 'help' => 'Get notified when a candidate applies for a job.'])
+            ->add('select2', ChoiceType::class, ['choices' => \array_flip(\range('g', 'n')), 'expanded' => true, 'multiple' => true, 'help' => 'Get notified when a candidate applies for a job.'])
+            ->add('choice', ChoiceType::class, ['choices' => \array_flip(\range('g', 'n')), 'expanded' => false, 'multiple' => true, 'help' => 'Get notified when a candidate applies for a job.'])
             ->add('yes-no', CheckboxType::class, ['help' => 'Get notified when a candidate applies for a job.'])
             ->add('submit', ButtonType::class)
             ->getForm();

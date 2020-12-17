@@ -75,7 +75,7 @@ final class ParkManagerExtension extends AbstractExtension
             $attributes['class'] = $class . ' ' . $attributes['class'];
         }
 
-        $attributes['class'] = trim($attributes['class']);
+        $attributes['class'] = \trim($attributes['class']);
 
         return $attributes;
     }

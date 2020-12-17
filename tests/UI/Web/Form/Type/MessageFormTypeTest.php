@@ -148,7 +148,6 @@ final class MessageFormTypeTest extends TypeTestCase
                 }
             }
 
-            /** @var FormError $error */
             foreach ($formErrors as $error) {
                 $error->setOrigin($currentForm);
             }
@@ -218,7 +217,7 @@ final class MessageFormTypeTest extends TypeTestCase
     }
 
     /** @test */
-    public function it_handles_an_entity_as_init_data(): void
+    public function it_handles_an_entity_as_data(): void
     {
         $form = $this->createFormForCommand(new MessageFormTypeEntity());
 
@@ -318,4 +317,5 @@ class MessageFormTypeEntity
 {
     public $id = 50;
     public $username = 'Bernard';
+    public $profile;
 }

@@ -12,9 +12,13 @@ namespace ParkManager\UI\Web\Form\Type;
 
 use ParkManager\Domain\Exception\TranslatableException;
 use ParkManager\UI\Web\Form\DataMapper\CommandDataMapper;
-use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectMapper;
+use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectAccessor;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\DataAccessorInterface;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
+use Symfony\Component\Form\Extension\Core\DataAccessor\CallbackAccessor;
+use Symfony\Component\Form\Extension\Core\DataAccessor\ChainAccessor;
+use Symfony\Component\Form\Extension\Core\DataMapper\DataMapper;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -32,13 +36,22 @@ final class MessageFormType extends AbstractType
 {
     private MessageBusInterface $messageBus;
     private TranslatorInterface $translator;
-    private PropertyAccessorInterface $propertyAccessor;
+    private DataAccessorInterface $dataAccessor;
+    private DataMapper $dataMapper;
 
     public function __construct(MessageBusInterface $messageBus, TranslatorInterface $translator, PropertyAccessorInterface $propertyAccessor = null)
     {
+        $propertyAccessor ??= PropertyAccess::createPropertyAccessor();
+
         $this->messageBus = $messageBus;
         $this->translator = $translator;
-        $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
+        $this->dataAccessor = new ChainAccessor(
+            [
+                new CallbackAccessor(),
+                new PropertyPathObjectAccessor($propertyAccessor),
+            ]
+        );
+        $this->dataMapper = new DataMapper($this->dataAccessor);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -79,18 +92,18 @@ final class MessageFormType extends AbstractType
                     );
                 }
 
-                $event->setData(['model' => $event->getData(), 'fields' => []]);
+                $event->setData(['model' => $event->getData() ?? [], 'fields' => [], 'changed' => []]);
             }, -1024);
 
             // Set a DataMapper to read from the 'model' key and write to the 'fields' key.
             // The DataMapper always updates on the form modelData, meaning we can call getData()
             // and get the actual model and fields.
             //
-            // Note that only changed values are actually set in the 'fields' array, which makes it
+            // Note that only changed values are set in the 'changed' array, which makes it
             // possible to handle very special cases. Including not dispatching a Command et-all.
             //
             // For very custom forms set a custom DataMapper (wrapped by the `CommandDataMapper`).
-            $builder->setDataMapper(new CommandDataMapper(new PropertyPathObjectMapper($this->propertyAccessor)));
+            $builder->setDataMapper(new CommandDataMapper($this->dataMapper, $this->dataAccessor));
         }
 
         // After all operations, including validation.
@@ -102,9 +115,9 @@ final class MessageFormType extends AbstractType
                 $data = $form->getData();
 
                 if ($options['disable_entity_mapping']) {
-                    $command = $options['command_factory']($data);
+                    $command = $options['command_factory']($data, $form);
                 } else {
-                    $command = $options['command_factory']($data['fields'], $data['model']);
+                    $command = $options['command_factory']($data['fields'], $data['model'], $form);
                 }
 
                 $this->dispatchCommand($command, $form, $options['exception_mapping'], $options['exception_fallback']);

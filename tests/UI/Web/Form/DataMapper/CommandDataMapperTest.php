@@ -11,15 +11,16 @@ declare(strict_types=1);
 namespace ParkManager\Tests\UI\Web\Form\DataMapper;
 
 use ParkManager\UI\Web\Form\DataMapper\CommandDataMapper;
-use PHPUnit\Framework\TestCase;
+use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectAccessor;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
 /**
  * @internal
  */
-final class CommandDataMapperTest extends TestCase
+final class CommandDataMapperTest extends FormIntegrationTestCase
 {
     use ProphecyTrait;
 
@@ -29,7 +30,7 @@ final class CommandDataMapperTest extends TestCase
      */
     public function it_only_accepts_array_as_data_to_form($input): void
     {
-        $dataMapper = new CommandDataMapper($this->createMock(DataMapperInterface::class));
+        $dataMapper = new CommandDataMapper($this->createMock(DataMapperInterface::class), new PropertyPathObjectAccessor());
 
         $this->expectExceptionObject(new UnexpectedTypeException($input, 'array with keys "model" and "fields"'));
 
@@ -53,7 +54,7 @@ final class CommandDataMapperTest extends TestCase
      */
     public function it_only_accepts_array_as_forms_to_data($input): void
     {
-        $dataMapper = new CommandDataMapper($this->createMock(DataMapperInterface::class));
+        $dataMapper = new CommandDataMapper($this->createMock(DataMapperInterface::class), new PropertyPathObjectAccessor());
 
         $this->expectExceptionObject(new UnexpectedTypeException($input, 'array with keys "model" and "fields"'));
 
@@ -70,13 +71,15 @@ final class CommandDataMapperTest extends TestCase
 
         $wrappedDataMapperProphecy = $this->prophesize(DataMapperInterface::class);
         $wrappedDataMapperProphecy->mapDataToForms($data, [null, 2])->shouldBeCalled();
-        $wrappedDataMapperProphecy->mapFormsToData([null], $fields)->shouldBeCalled();
+        $wrappedDataMapperProphecy->mapFormsToData([null], $fields)->shouldNotBeCalled();
 
-        $dataMapper = new CommandDataMapper($wrappedDataMapperProphecy->reveal());
+        $form = $this->factory->createBuilder()->getForm();
+
+        $dataMapper = new CommandDataMapper($wrappedDataMapperProphecy->reveal(), new PropertyPathObjectAccessor());
 
         $dataMapper->mapDataToForms(['model' => $data, 'fields' => $fields], [null, 2]);
 
         $viewData = ['model' => $data, 'fields' => $fields];
-        $dataMapper->mapFormsToData([null], $viewData);
+        $dataMapper->mapFormsToData([$form], $viewData);
     }
 }

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\DataMapper;
 
+use Symfony\Component\Form\DataAccessorInterface;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
@@ -30,10 +31,12 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 final class CommandDataMapper implements DataMapperInterface
 {
     private DataMapperInterface $wrappedDataMapper;
+    private DataAccessorInterface $dataAccessor;
 
-    public function __construct(DataMapperInterface $wrappedDataMapper)
+    public function __construct(DataMapperInterface $wrappedDataMapper, DataAccessorInterface $dataAccessor)
     {
         $this->wrappedDataMapper = $wrappedDataMapper;
+        $this->dataAccessor = $dataAccessor;
     }
 
     public function mapDataToForms($viewData, iterable $forms): void
@@ -51,6 +54,33 @@ final class CommandDataMapper implements DataMapperInterface
             throw new UnexpectedTypeException($viewData, 'array with keys "model" and "fields"');
         }
 
-        $this->wrappedDataMapper->mapFormsToData($forms, $viewData['fields']);
+        if ($viewData['model'] === null) {
+            return;
+        }
+
+        // Data from the forms is mapped directly as the form children names are expected (*NOT* the property-name).
+
+        foreach ($forms as $form) {
+            $config = $form->getConfig();
+
+            // Write-back is disabled if the form is not synchronized (transformation failed),
+            // if the form was not submitted and if the form is disabled (modification not allowed)
+            if ($config->getMapped() && $form->isSubmitted() && $form->isSynchronized() && ! $form->isDisabled()) {
+                $propertyValue = $form->getData();
+                $modelValue = $this->dataAccessor->getValue($viewData['model'], $form);
+
+                $viewData['fields'][$form->getName()] = $propertyValue;
+
+                // If the field is of type DateTimeInterface and the data is the same skip the update to
+                // keep the original object hash
+                if ($propertyValue instanceof \DateTimeInterface && $propertyValue == $modelValue) {
+                    continue;
+                }
+
+                if ($propertyValue !== $modelValue) {
+                    $viewData['changed'][$form->getName()] = $propertyValue;
+                }
+            }
+        }
     }
 }

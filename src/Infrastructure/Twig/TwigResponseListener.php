@@ -15,6 +15,8 @@ use Psr\Container\ContainerInterface as Container;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use Twig\Environment;
 
 /**
  * The TwigResponseListener handles a TwigResponse.
@@ -22,7 +24,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  * The Twig Engine is lazily loaded as not every request invokes
  * the Twig engine (webservice API for example).
  */
-final class TwigResponseListener implements EventSubscriberInterface
+final class TwigResponseListener implements EventSubscriberInterface, ServiceSubscriberInterface
 {
     private Container $container;
 
@@ -54,6 +56,13 @@ final class TwigResponseListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::RESPONSE => ['onKernelResponse', -90], // Before ProfilerListener
+        ];
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return [
+            'twig' => Environment::class,
         ];
     }
 }

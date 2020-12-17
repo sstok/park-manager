@@ -31,7 +31,7 @@ abstract class SubDomainType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('root_domain', WebhostingDomainNameSelector::class, ['space_id' => $options['space_id']])
+            ->add('root_domain', WebhostingDomainNameSelector::class, ['space_id' => $options['space_id'], 'property_path' => 'host'])
             ->add('name', TextType::class, [
                 'constraints' => [
                     new NotBlank(),
@@ -41,11 +41,11 @@ abstract class SubDomainType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('homedir', TextType::class, [
+            ->add('homeDir', TextType::class, [
                 'constraints' => [new DirectoryPath()],
                 'help' => 'help.homedir',
             ])
-            ->add('tlsInfo', PEMCertificateType::class, ['requires_private_key' => true]);
+            ->add('tlsInfo', PEMCertificateType::class, ['requires_private_key' => true, 'getter' => static fn () => null]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
