@@ -7,7 +7,7 @@ services:
 # See https://symfony.com/doc/current/cookbook/testing/http_authentication.html
 security:
     firewalls:
-        admin:
+        client:
             guard:
                 entry_point: 'ParkManager\Infrastructure\Security\Guard\BrowserKitAuthenticator'
                 authenticators:
