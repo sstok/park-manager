@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\Security;
 
 use ParkManager\UI\Web\Form\Type\Security\ConfirmPasswordResetType;
+use ParkManager\UI\Web\Response\RouteRedirectResponse;
 use ParkManager\UI\Web\Response\TwigResponse;
-use Rollerworks\Bundle\RouteAutofillBundle\Response\RouteRedirectResponse;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;

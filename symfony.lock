@@ -314,9 +314,6 @@
     "ramsey/uuid": {
         "version": "3.x-dev"
     },
-    "rollerworks/route-autofill-bundle": {
-        "version": "v0.1.2"
-    },
     "rollerworks/split-token": {
         "version": "0.1.x-dev"
     },

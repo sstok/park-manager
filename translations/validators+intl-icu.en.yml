@@ -1,4 +1,5 @@
 password_not_the_same: Passwords are not the same
+email_address_already_in_use: Email address already in use.
 
 password_reset:
     no_token: Sorry but no results were found with this reset token.<br><a href="{ reset_url }">Please try again</a>..

@@ -33,6 +33,7 @@ use Rollerworks\Component\SplitToken\Argon2SplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
 use Symfony\Component\Cache\Psr16Cache;
 use Symfony\Component\Form\FormRendererInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 return static function (ContainerConfigurator $c): void {
     $di = $c->services()->defaults()
@@ -40,6 +41,7 @@ return static function (ContainerConfigurator $c): void {
         ->autowire()
         ->private()
         ->bind('$commandBus', service('park_manager.command_bus'))
+        ->bind(Session::class, service('session'))
         ->bind(FormRendererInterface::class, service('twig.form.renderer'))
         ->bind(ObjectManager::class, service('doctrine.orm.default_entity_manager'))
         ->bind(ContainerInterface::class, service('service_container'));
