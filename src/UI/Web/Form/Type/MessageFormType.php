@@ -25,6 +25,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
+use Symfony\Component\Messenger\Exception\ValidationFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,8 +39,9 @@ final class MessageFormType extends AbstractType
     private TranslatorInterface $translator;
     private DataAccessorInterface $dataAccessor;
     private DataMapper $dataMapper;
+    private ViolationMapper $violationMapper;
 
-    public function __construct(MessageBusInterface $messageBus, TranslatorInterface $translator, PropertyAccessorInterface $propertyAccessor = null)
+    public function __construct(MessageBusInterface $messageBus, TranslatorInterface $translator, ViolationMapper $violationMapper, PropertyAccessorInterface $propertyAccessor = null)
     {
         $propertyAccessor ??= PropertyAccess::createPropertyAccessor();
 
@@ -52,6 +54,7 @@ final class MessageFormType extends AbstractType
             ]
         );
         $this->dataMapper = new DataMapper($this->dataAccessor);
+        $this->violationMapper = $violationMapper;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -65,12 +68,14 @@ final class MessageFormType extends AbstractType
         $resolver->setDefault('disable_entity_mapping', false);
         $resolver->setDefault('exception_mapping', []);
         $resolver->setDefault('exception_fallback', null);
+        $resolver->setDefault('violation_mapping', []);
 
         $resolver->setAllowedTypes('command_factory', ['callable']);
         $resolver->setAllowedTypes('model_class', ['string', 'string[]', 'null']);
         $resolver->setAllowedTypes('disable_entity_mapping', ['bool']);
         $resolver->setAllowedTypes('exception_mapping', ['callable[]']);
         $resolver->setAllowedTypes('exception_fallback', ['callable', 'null']);
+        $resolver->setAllowedTypes('violation_mapping', ['string[]']);
         $resolver->setNormalizer('model_class', static fn (Options $options, $value): ?array => $value !== null ? (array) $value : null);
     }
 
@@ -146,6 +151,13 @@ final class MessageFormType extends AbstractType
                 $errors = $exceptionMapping[$exceptionName]($e, $this->translator, $form);
             } elseif ($exceptionFallback !== null) {
                 $errors = $exceptionFallback($e, $this->translator, $form);
+            } elseif ($e instanceof ValidationFailedException) {
+                foreach ($e->getViolations() as $violation) {
+                    $this->violationMapper->mapViolation($violation, $form);
+                }
+
+                // Violations were already mapped.
+                $errors = [];
             } elseif ($e instanceof TranslatableException) {
                 $errors = [null => new FormError(
                     $this->translator->trans($e->getTranslatorId(), $e->getTranslationArgs(), 'validators'),

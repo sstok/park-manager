@@ -11,8 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\Tests\UI\Web\Form;
 
 use ParkManager\UI\Web\Form\Type\MessageFormType;
+use ParkManager\UI\Web\Form\Type\ViolationMapper;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormRendererInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
@@ -45,7 +47,17 @@ abstract class MessageFormTestCase extends TypeTestCase
         ];
         $messageBus = new MessageBus([new HandleMessageMiddleware(new HandlersLocator($handlers), false)]);
 
-        return new MessageFormType($messageBus, new IdentityTranslator());
+        $translator = new IdentityTranslator();
+        $formRenderer = $this->createMock(FormRendererInterface::class);
+        $formRenderer
+            ->method('humanize')
+            ->willReturnCallback(
+                static fn (string $text): string => \ucfirst(
+                    \mb_strtolower(\trim(\preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '], $text)))
+                )
+            );
+
+        return new MessageFormType($messageBus, $translator, new ViolationMapper($translator, $formRenderer));
     }
 
     abstract protected static function getCommandName(): string;

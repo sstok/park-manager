@@ -14,8 +14,10 @@ use Exception;
 use InvalidArgumentException;
 use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\UserId;
+use ParkManager\Tests\UI\Web\Form\IsFormErrorsEqual;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\StubCommand;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
+use ParkManager\UI\Web\Form\Type\ViolationMapper;
 use RuntimeException;
 use Symfony\Component\Form\Exception\InvalidArgumentException as FormInvalidArgumentException;
 use Symfony\Component\Form\Exception\RuntimeException as FormRuntimeException;
@@ -23,11 +25,15 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormRendererInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\Messenger\Exception\ValidationFailedException;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Component\Translation\IdentityTranslator;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
@@ -63,13 +69,35 @@ final class MessageFormTypeTest extends TypeTestCase
                         throw UserNotFound::withId(UserId::fromString('f2df40e4-2f27-47e8-b03f-27d1456eed7a'));
                     }
 
+                    if ($command->id === 534) {
+                        throw new ValidationFailedException(
+                            $command,
+                            new ConstraintViolationList([
+                                new ConstraintViolation('This value is not like the others.', 'This value is not like the others.', [], $command, '', 'Beer Me'),
+                                new ConstraintViolation('Well yes, but actually no.', 'Well yes, but actually no.', [], $command, 'profile.name', '9848829240'),
+                                new ConstraintViolation('Lavara Cadabra {{ label }}', 'Lavara {{ label }}', [], $command, 'is_admin', 'nope'),
+                                new ConstraintViolation('Locus phopocus {{ label }}', 'Locus phopocus {{ label }}', [], $command, 'sure_name', 'nope'),
+                            ])
+                        );
+                    }
+
                     $this->dispatchedCommand = $command;
                 },
             ],
         ]);
 
+        $translator = new IdentityTranslator();
+        $formRenderer = $this->createMock(FormRendererInterface::class);
+        $formRenderer
+            ->method('humanize')
+            ->willReturnCallback(
+                static fn (string $text): string => \ucfirst(
+                    \mb_strtolower(\trim(\preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '], $text)))
+                )
+            );
+
         return [
-            new MessageFormType($messageBus, new IdentityTranslator()),
+            new MessageFormType($messageBus, $translator, new ViolationMapper($translator, $formRenderer)),
         ];
     }
 
@@ -95,6 +123,7 @@ final class MessageFormTypeTest extends TypeTestCase
 
         $profileFormType = $this->factory->createNamedBuilder('profile')
             ->add('name', TextType::class, ['required' => false])
+            ->add('full_name', TextType::class, ['required' => false, 'label_format' => 'My "%id%" is name "%name%"'])
             ->add($profileContactFormType);
 
         $options = [
@@ -109,6 +138,10 @@ final class MessageFormTypeTest extends TypeTestCase
             ],
             'exception_fallback' => static fn (Throwable $e, TranslatorInterface $translator) => [
                 'profile.contact.email' => new FormError($translator->trans('Contact Email problem is here'), null, [], null, $e),
+            ],
+            'violation_mapping' => [
+                'is_admin' => 'profile.full_name',
+                'sure_name' => '',
             ],
         ];
 
@@ -131,7 +164,7 @@ final class MessageFormTypeTest extends TypeTestCase
      */
     public function it_handles_errors_thrown_during_dispatching($id, array $expectedErrors): void
     {
-        $form = $this->createFormForCommand(null, $id !== 77);
+        $form = $this->createFormForCommand(null, $id !== 77 && $id !== 534);
         $form->submit(['id' => $id, 'username' => 'Nero']);
 
         self::assertFalse($form->isValid());
@@ -152,7 +185,7 @@ final class MessageFormTypeTest extends TypeTestCase
                 $error->setOrigin($currentForm);
             }
 
-            self::assertEquals($formErrors, [...$currentForm->getErrors()]);
+            self::assertThat([...$currentForm->getErrors()], new IsFormErrorsEqual($formErrors));
         }
     }
 
@@ -191,6 +224,20 @@ final class MessageFormTypeTest extends TypeTestCase
             77,
             [
                 '' => [new FormError('User with id "f2df40e4-2f27-47e8-b03f-27d1456eed7a" does not exist.', 'User with id "{id}" does not exist.', ['{id}' => 'f2df40e4-2f27-47e8-b03f-27d1456eed7a'], null, UserNotFound::withId(UserId::fromString('f2df40e4-2f27-47e8-b03f-27d1456eed7a')))],
+            ],
+        ];
+
+        yield 'ValidationFailedException' => [
+            534,
+            [
+                '' => [
+                    new FormError('This value is not like the others.', null),
+                    new FormError('Locus phopocus Register user', null),
+                ],
+                'profile.full_name' => [
+                    new FormError('Lavara Cadabra My "[full_name]" is name "full_name"', 'Lavara My "[full_name]" is name "full_name"'),
+                ],
+                'profile.name' => [new FormError('Well yes, but actually no.')],
             ],
         ];
     }
@@ -275,6 +322,7 @@ final class MessageFormTypeTest extends TypeTestCase
         self::assertNull($form->getTransformationFailure());
         self::assertEquals(new StubCommand(8, 'Nero', [
             'name' => null,
+            'full_name' => null,
             'contact' => [
                 'email' => null,
                 'address' => null,
@@ -286,6 +334,7 @@ final class MessageFormTypeTest extends TypeTestCase
         self::assertEquals(
             [
                 'name' => null,
+                'full_name' => null,
                 'contact' => [
                     'email' => null,
                     'address' => null,
@@ -305,6 +354,7 @@ final class MessageFormTypeTest extends TypeTestCase
         self::assertNull($form->getTransformationFailure());
         self::assertEquals(new StubCommand(8, 'Nero', [
             'name' => null,
+            'full_name' => null,
             'contact' => [
                 'email' => null,
                 'address' => null,
