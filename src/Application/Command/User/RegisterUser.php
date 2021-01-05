@@ -35,9 +35,12 @@ final class RegisterUser
      *
      * READ-ONLY.
      */
-    public ?string $password = null;
+    public string $password;
 
-    public function __construct(UserId $id, EmailAddress $primaryEmail, string $displayName, ?string $password = null)
+    /**
+     * @param string $password An encoded password string (not plain)
+     */
+    public function __construct(UserId $id, EmailAddress $primaryEmail, string $displayName, string $password)
     {
         $this->id = $id;
         $this->primaryEmail = $primaryEmail;
@@ -45,7 +48,10 @@ final class RegisterUser
         $this->password = $password;
     }
 
-    public static function with(string $id, string $email, string $displayName, ?string $password = null): self
+    /**
+     * @param string $password An encoded password string (not plain)
+     */
+    public static function with(string $id, string $email, string $displayName, string $password): self
     {
         return new self(UserId::fromString($id), new EmailAddress($email), $displayName, $password);
     }

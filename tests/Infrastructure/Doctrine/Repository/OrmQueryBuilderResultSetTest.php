@@ -35,7 +35,7 @@ final class OrmQueryBuilderResultSetTest extends EntityRepositoryTestCase
     /** @test */
     public function it_limits_ids(): void
     {
-        $user = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John');
+        $user = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John', 'ashTong@8r949029');
 
         $em = $this->getEntityManager();
         $em->persist($user);

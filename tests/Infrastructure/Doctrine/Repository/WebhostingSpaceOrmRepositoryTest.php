@@ -45,7 +45,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     {
         parent::setUp();
 
-        $this->user1 = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John');
+        $this->user1 = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John', 'ashTong@8r949029');
 
         $this->constraints = (new Constraints())->setMonthlyTraffic(50);
         $this->plan = new Plan(

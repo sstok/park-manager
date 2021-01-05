@@ -57,8 +57,8 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
     {
         parent::setUp();
 
-        $user1 = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John');
-        $user2 = User::register(UserId::fromString(self::OWNER_ID2), new EmailAddress('Jane@mustash.com'), 'Jane');
+        $user1 = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John', 'ashTong@8r949029');
+        $user2 = User::register(UserId::fromString(self::OWNER_ID2), new EmailAddress('Jane@mustash.com'), 'Jane', 'Tucker@5423');
 
         $this->space1 = Space::registerWithCustomConstraints(
             SpaceId::fromString(self::SPACE_ID1),

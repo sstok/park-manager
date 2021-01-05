@@ -31,7 +31,7 @@ final class SecurityUserHashedPasswordType extends AbstractType
         $resolver
             ->setDefault('algorithm', function (Options $options) {
                 return function (string $value) {
-                    $encoded = $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword($value, '');
+                    $encoded = $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword($value, null);
 
                     memzero($value);
 

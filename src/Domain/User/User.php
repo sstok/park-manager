@@ -72,9 +72,9 @@ class User
     public ?SplitTokenValueHolder $emailAddressChangeToken = null;
 
     /**
-     * @ORM\Column(name="auth_password", type="text", nullable=true)
+     * @ORM\Column(name="auth_password", type="text")
      */
-    public ?string $password = null;
+    public string $password;
 
     /**
      * @ORM\Column(name="password_reset_enabled", type="boolean")
@@ -86,26 +86,23 @@ class User
      */
     public ?SplitTokenValueHolder $passwordResetToken = null;
 
-    private function __construct(UserId $id, EmailAddress $email, string $displayName)
+    private function __construct(UserId $id, EmailAddress $email, string $displayName, string $password)
     {
         $this->id = $id;
         $this->email = $email;
         $this->displayName = $displayName;
         $this->roles = new ArrayCollection(static::DEFAULT_ROLES);
+        $this->password = $password;
     }
 
-    public static function register(UserId $id, EmailAddress $email, string $displayName, ?string $password = null): self
+    public static function register(UserId $id, EmailAddress $email, string $displayName, string $password): self
     {
-        $user = new self($id, $email, $displayName);
-        $user->changePassword($password);
-
-        return $user;
+        return new self($id, $email, $displayName, $password);
     }
 
-    public static function registerAdmin(UserId $id, EmailAddress $email, string $displayName, ?string $password = null): self
+    public static function registerAdmin(UserId $id, EmailAddress $email, string $displayName, string $password): self
     {
-        $user = new self($id, $email, $displayName);
-        $user->changePassword($password);
+        $user = new self($id, $email, $displayName, $password);
         $user->addRole('ROLE_ADMIN');
 
         return $user;
@@ -197,14 +194,9 @@ class User
         $this->displayName = $displayName;
     }
 
-    /**
-     * Pass null When another authentication system is used.
-     */
-    public function changePassword(?string $password): void
+    public function changePassword(string $password): void
     {
-        if ($password !== null) {
-            Assertion::notEmpty($password, 'Password can only null or a non-empty string.');
-        }
+        Assertion::notEmpty($password, 'Password cannot be empty.', 'password');
 
         $this->password = $password;
     }
@@ -264,7 +256,7 @@ class User
 
     public function toSecurityUser(): SecurityUser
     {
-        return new SecurityUser($this->id->toString(), $this->password ?? '', $this->loginEnabled, $this->getRoles());
+        return new SecurityUser($this->id->toString(), $this->password, $this->loginEnabled, $this->getRoles());
     }
 
     public function __toString(): string

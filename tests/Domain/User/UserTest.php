@@ -43,7 +43,8 @@ final class UserTest extends TestCase
         $user = User::register(
             $id = UserId::fromString(self::ID1),
             $email = new EmailAddress('John@example.com'),
-            'Jane Doe'
+            'Jane Doe',
+            'Tucker@5423'
         );
 
         self::assertEquals($id, $user->id);
@@ -59,12 +60,9 @@ final class UserTest extends TestCase
         self::assertEquals($email, $user->email);
     }
 
-    private function registerUser(?string $password = null): User
+    private function registerUser(string $password = 'Tucker@5423'): User
     {
-        $user = User::register(UserId::fromString(self::ID1), new EmailAddress('john@example.com'), 'Laural Doe');
-        $user->changePassword($password);
-
-        return $user;
+        return User::register(UserId::fromString(self::ID1), new EmailAddress('john@example.com'), 'Laural Doe', $password);
     }
 
     /** @test */
@@ -106,12 +104,12 @@ final class UserTest extends TestCase
     }
 
     /** @test */
-    public function password_cannot_be_empty_when_string(): void
+    public function password_cannot_be_empty(): void
     {
         $user = $this->registerUser();
 
         $this->expectException(AssertionFailedException::class);
-        $this->expectExceptionMessage('Password can only null or a non-empty string.');
+        $this->expectExceptionMessage('Password cannot be empty.');
 
         $user->changePassword('');
     }

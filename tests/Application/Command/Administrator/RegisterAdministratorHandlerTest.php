@@ -52,7 +52,8 @@ final class RegisterAdministratorHandlerTest extends TestCase
                 User::registerAdmin(
                     UserId::fromString(self::ID_EXISTING),
                     new EmailAddress('John@example.com'),
-                    'Jane'
+                    'Jane',
+                    'Tucker@5423'
                 ),
             ]
         );
@@ -60,6 +61,6 @@ final class RegisterAdministratorHandlerTest extends TestCase
 
         $this->expectException(EmailAddressAlreadyInUse::class);
 
-        $handler(RegisterAdministrator::with(self::ID_NEW, 'John@example.com', 'My', null));
+        $handler(RegisterAdministrator::with(self::ID_NEW, 'John@example.com', 'My', 'null'));
     }
 }
