@@ -211,6 +211,10 @@
     </div>
 {%- endblock button_row %}
 
+{% block hashed_password_row %}
+    {{ form_row(form.password) }}
+{% endblock hashed_password_row %}
+
 {%- block choice_widget_expanded -%}
     <div {{ block('widget_container_attributes') }}>
         {%- for child in form %}

@@ -35,13 +35,18 @@ final class AdminFixtures extends Fixture
     {
         $this->commandBus->dispatch(
             new BatchCommand(
-                new RegisterAdministrator(
-                    UserId::create(),
+                (new RegisterAdministrator(
+                    $id = UserId::create(),
                     new EmailAddress('janet@example.com'),
                     'Janet, Doe',
-                    $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword('&ltr@Sec3re!+', null)
-                )
+                    $this->encodePassword('&ltr@Sec3re!+')
+                ))->asSuperAdmin()
             )
         );
+    }
+
+    private function encodePassword(string $password): string
+    {
+        return $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword($password, null);
     }
 }

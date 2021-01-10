@@ -113,7 +113,7 @@
                                 <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">{{ 'your_profile'|trans({}, 'navigation') }}</a>
                                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">{{ 'settings'|trans({}, 'navigation') }}</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">{{ 'logout'|trans({}, 'navigation') }}</a>
+                                    <a href="{{ logout_path() }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">{{ 'logout'|trans({}, 'navigation') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -193,6 +193,12 @@
     {% endif %}
 
         <main class="flex-1 relative pb-8 z-0 overflow-y-auto">
+            <div class="mt-8">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {% include '_flashes.html.twig' %}
+                </div>
+            </div>
+
             {% block page_header %}
             {% endblock %}
 

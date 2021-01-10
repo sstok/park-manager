@@ -23,7 +23,7 @@ final class RegisterUser
     /**
      * READ-ONLY.
      */
-    public EmailAddress $primaryEmail;
+    public EmailAddress $email;
 
     /**
      * READ-ONLY.
@@ -37,13 +37,15 @@ final class RegisterUser
      */
     public string $password;
 
+    public bool $requireNewPassword = false;
+
     /**
      * @param string $password An encoded password string (not plain)
      */
-    public function __construct(UserId $id, EmailAddress $primaryEmail, string $displayName, string $password)
+    public function __construct(UserId $id, EmailAddress $email, string $displayName, string $password)
     {
         $this->id = $id;
-        $this->primaryEmail = $primaryEmail;
+        $this->email = $email;
         $this->displayName = $displayName;
         $this->password = $password;
     }
@@ -54,5 +56,12 @@ final class RegisterUser
     public static function with(string $id, string $email, string $displayName, string $password): self
     {
         return new self(UserId::fromString($id), new EmailAddress($email), $displayName, $password);
+    }
+
+    public function requireNewPassword(): self
+    {
+        $this->requireNewPassword = true;
+
+        return $this;
     }
 }

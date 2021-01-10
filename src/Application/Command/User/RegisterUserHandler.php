@@ -10,6 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\User;
 
+use Carbon\CarbonImmutable;
+use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
+use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserRepository;
 
@@ -24,13 +27,25 @@ final class RegisterUserHandler
 
     public function __invoke(RegisterUser $command): void
     {
-        $this->repository->save(
-            User::register(
-                $command->id,
-                $command->primaryEmail,
-                $command->displayName,
-                $command->password
-            )
+        try {
+            $user = $this->repository->getByEmail($command->email);
+
+            throw new EmailAddressAlreadyInUse($user->id, $command->email);
+        } catch (UserNotFound $e) {
+            // No-op
+        }
+
+        $user = User::register(
+            $command->id,
+            $command->email,
+            $command->displayName,
+            $command->password
         );
+
+        if ($command->requireNewPassword) {
+            $user->expirePasswordOn(CarbonImmutable::rawParse('-1 year'));
+        }
+
+        $this->repository->save($user);
     }
 }

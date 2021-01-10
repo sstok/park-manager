@@ -2,9 +2,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+user_role:
+    super_admin: Super Administrator
+    admin: Administrator
+
 label:
     search: Search
     email: Email address
+    status: Status
     current_password: Current Password
     password: Password
     password2: Repeat Password
@@ -14,15 +19,26 @@ label:
     private_key_passphrase: Private-key passphrase
     domain_name: Domain name
     remove_tls: Remove TLS configuration
+    user: User
+    display_name: Display name
+    is_admin: Is Administrator
+    photo: Photo
+    notifications: Notifications
 
     login: Login
     change_password: Change password
     open_main_menu: Open main menu
     open_user_menu: Open user menu
     view_notifications: View notifications
+    profile_settings: 'Profile Settings'
+    security_settings: 'Security Settings'
 
     sent_reset: Send reset
     confirm_reset: Confirm reset
+    safe: Safe
+    remove: Remove
+    expire_password: Expire password
+    danger_zone: Danger Zone
 
 placeholder:
     _email: name@example.com
@@ -34,6 +50,9 @@ help:
     ca_list: Provide the CA chain of the certificate. X.509 PEM encoded. Order is not important.
     homedir: Either "blog/", "blog/2" or "site@1.0/public". Not "../blog", "blog/.2./", or "blog/@/". No special characters except "@" and "." (between letter and number characters).
     remove_tls: Removes all the assigned TLS configuration. Not required when setting new information.
+    is_admin: Assign the user as an administrator. You can grant additional privileges later on.
+    register_user:
+        email: A valid email address, must not be already used by another user.
 
 success: Success
 error: Error
@@ -61,6 +80,30 @@ user_login:
             <li>Make sure cookies are accepted (for this website).</li>
             <li>Still can't sign in? Contact support for assistence.</li>
         <ul>
+
+user_managent:
+    registeration:
+        heading: Register new User
+    show:
+        heading: User Profile of { display_name }
+        registered_on: 'registered on <time datetime="{ regDateIso }">{ regDate, date, long } at { regDate, time, short }</time>'
+        profile_information: Profile Information
+
+    remove:
+        first_warning: Once you delete a user registration, there is no going back. Please be certain.
+        confirm_warning: This process cannot be undone! All the user registration information is removed. Type display name of the user for confirmation.
+        cannot_remove_super_admin: Cannot remove Super Administrator account, <br><a href="{ url }" class="underline">revoke SuperAdmin privilege</a> first.
+
+    mark_password_expired:
+        description: Mark the password as expired, meaning a new password is required when signing-in.
+        already_expired: Password has already expired. Cannot change status.
+
+    account_status:
+        active: Active
+        disabled: Access disabled
+        password_expired: 'Password expired on { expiration_date, date, long } at { expiration_date, time, short }'
+        banned: Email address banned
+        new_email_pending_confirm: New email address pending confirmation.
 
 user_password_reset:
     heading: Password Reset

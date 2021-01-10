@@ -35,6 +35,9 @@ final class RegisterAdministrator
      */
     public string $password;
 
+    public bool $requireNewPassword = false;
+    public bool $superAdmin = false;
+
     /**
      * @param string $password An encoded password string (not plain)
      */
@@ -52,5 +55,19 @@ final class RegisterAdministrator
     public static function with(string $id, string $email, string $displayName, string $password): self
     {
         return new self(UserId::fromString($id), new EmailAddress($email), $displayName, $password);
+    }
+
+    public function requireNewPassword(): self
+    {
+        $this->requireNewPassword = true;
+
+        return $this;
+    }
+
+    public function asSuperAdmin(): self
+    {
+        $this->superAdmin = true;
+
+        return $this;
     }
 }

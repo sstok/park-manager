@@ -12,6 +12,7 @@ namespace ParkManager\Tests\UI\Web\Form;
 
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\ViolationMapper;
+use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRendererInterface;
@@ -21,6 +22,7 @@ use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ValidatorBuilder;
 
 abstract class MessageFormTestCase extends TypeTestCase
 {
@@ -28,6 +30,13 @@ abstract class MessageFormTestCase extends TypeTestCase
 
     /** @var callable|null */
     protected $commandHandler;
+
+    protected function getExtensions(): array
+    {
+        return [
+            new ValidatorExtension((new ValidatorBuilder())->getValidator()),
+        ];
+    }
 
     protected function getMessageType(): MessageFormType
     {

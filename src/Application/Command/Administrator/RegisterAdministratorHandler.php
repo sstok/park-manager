@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Administrator;
 
+use Carbon\CarbonImmutable;
 use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
 use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\User;
@@ -29,18 +30,26 @@ final class RegisterAdministratorHandler
         try {
             $user = $this->repository->getByEmail($command->email);
 
-            throw new EmailAddressAlreadyInUse($user->id);
+            throw new EmailAddressAlreadyInUse($user->id, $command->email);
         } catch (UserNotFound $e) {
             // No-op
         }
 
-        $this->repository->save(
-            User::registerAdmin(
-                $command->id,
-                $command->email,
-                $command->displayName,
-                $command->password
-            )
+        $admin = User::registerAdmin(
+            $command->id,
+            $command->email,
+            $command->displayName,
+            $command->password
         );
+
+        if ($command->superAdmin) {
+            $admin->addRole('ROLE_SUPER_ADMIN');
+        }
+
+        if ($command->requireNewPassword) {
+            $admin->expirePasswordOn(CarbonImmutable::rawParse('-1 year'));
+        }
+
+        $this->repository->save($admin);
     }
 }

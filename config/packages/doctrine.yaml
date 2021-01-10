@@ -11,6 +11,7 @@ doctrine:
             array_collection: 'ParkManager\Infrastructure\Doctrine\Type\ArrayCollectionType'
             park_manager_user_id: 'ParkManager\Infrastructure\Doctrine\Type\UserIdType'
             #park_manager_domain_id: 'ParkManager\Infrastructure\Doctrine\Type\DomainIdType' # Don't initiate this
+            carbon_immutable: 'Carbon\Doctrine\CarbonImmutableType'
 
             # Webhosting
             byte_size: 'ParkManager\Infrastructure\Doctrine\Type\ByteSizeType'

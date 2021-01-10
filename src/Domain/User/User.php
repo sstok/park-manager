@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Domain\User;
 
 use Assert\Assertion;
+use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -43,6 +45,11 @@ class User
      * @ORM\GeneratedValue(strategy="NONE")
      */
     public UserId $id;
+
+    /**
+     * @ORM\Column(name="registration_date", type="carbon_immutable")
+     */
+    public CarbonImmutable $regDate;
 
     /**
      * @ORM\Embedded(class=EmailAddress::class, columnPrefix="email_")
@@ -82,6 +89,11 @@ class User
     public bool $passwordResetEnabled = true;
 
     /**
+     * @ORM\Column(name="password_expiration", type="carbon_immutable", nullable=true)
+     */
+    public ?CarbonImmutable $passwordExpiresOn = null;
+
+    /**
      * @ORM\Embedded(class=SplitTokenValueHolder::class, columnPrefix="password_reset_")
      */
     public ?SplitTokenValueHolder $passwordResetToken = null;
@@ -93,6 +105,7 @@ class User
         $this->displayName = $displayName;
         $this->roles = new ArrayCollection(static::DEFAULT_ROLES);
         $this->password = $password;
+        $this->regDate = CarbonImmutable::now();
     }
 
     public static function register(UserId $id, EmailAddress $email, string $displayName, string $password): self
@@ -125,6 +138,11 @@ class User
     public function enableLogin(): void
     {
         $this->loginEnabled = true;
+    }
+
+    public function expirePasswordOn(?CarbonImmutable $dateTime): void
+    {
+        $this->passwordExpiresOn = $dateTime;
     }
 
     /**
@@ -199,6 +217,7 @@ class User
         Assertion::notEmpty($password, 'Password cannot be empty.', 'password');
 
         $this->password = $password;
+        $this->passwordExpiresOn = null;
     }
 
     /**
@@ -262,5 +281,14 @@ class User
     public function __toString(): string
     {
         return $this->id->toString();
+    }
+
+    public function isPasswordExpired(): bool
+    {
+        if ($this->passwordExpiresOn === null) {
+            return false;
+        }
+
+        return $this->passwordExpiresOn->isPast();
     }
 }

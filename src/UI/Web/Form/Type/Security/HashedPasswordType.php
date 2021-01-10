@@ -63,7 +63,7 @@ final class HashedPasswordType extends AbstractType
                 'second_options' => ['label' => 'label.password2'],
             ] + $passwordOptions);
         } else {
-            $builder->add('password', PasswordType::class, $passwordOptions + ['constraints' => $options['password_constraints']]);
+            $builder->add('password', PasswordType::class, $passwordOptions + ['label' => 'label.password', 'constraints' => $options['password_constraints']]);
         }
     }
 
