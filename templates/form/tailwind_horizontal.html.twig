@@ -2,12 +2,12 @@
 
 {%- block form_row -%}
     {% set row_attr = row_attr|merge_attr_class('sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5') %}
-    {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- set widget_attr = {attr: {'aria-describedby': id ~ "_help"}} -%}
     <div {% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
         {{- form_label(form) -}}
         <div class="mt-1 sm:mt-0 sm:col-span-2">
             {{- form_widget(form, widget_attr) -}}
-            <div id="{{ id ~"_help" }}">
+            <div id="{{ id ~ "_help" }}">
                 {{- form_help(form) -}}
                 {{- form_errors(form) -}}
             </div>

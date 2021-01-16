@@ -69,11 +69,11 @@ class KeyValidator
             $original = "I just wanna tell you how I'm feeling\nGotta make you understand";
             $encrypted = '';
 
-            if (! @\openssl_public_encrypt($original, $encrypted, $pupKey, OPENSSL_PKCS1_OAEP_PADDING)) {
+            if (! @\openssl_public_encrypt($original, $encrypted, $pupKey, \OPENSSL_PKCS1_OAEP_PADDING)) {
                 throw new UnprocessableKey('Unable to encrypt data, invalid key provided?');
             }
 
-            if (! @\openssl_private_decrypt($encrypted, $decrypted, $privateR, OPENSSL_PKCS1_OAEP_PADDING) || $decrypted !== $original) {
+            if (! @\openssl_private_decrypt($encrypted, $decrypted, $privateR, \OPENSSL_PKCS1_OAEP_PADDING) || $decrypted !== $original) {
                 throw new CertificateMismatch();
             }
 

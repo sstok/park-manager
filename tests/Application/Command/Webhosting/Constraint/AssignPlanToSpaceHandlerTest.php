@@ -78,8 +78,8 @@ final class AssignPlanToSpaceHandlerTest extends TestCase
         $this->handler->__invoke(AssignPlanToSpace::withConstraints($planId = PlanId::fromString(self::PLAN_ID2), $spaceId));
 
         $this->spaceRepository->assertEntityWasSavedThat($spaceId,
-            static fn (Space $space): bool => PlanId::equalsValueOfEntity($planId, $space->plan, 'id') &&
-                $space->constraints->equals($constraints)
+            static fn (Space $space): bool => PlanId::equalsValueOfEntity($planId, $space->plan, 'id')
+                && $space->constraints->equals($constraints)
         );
     }
 
@@ -95,8 +95,8 @@ final class AssignPlanToSpaceHandlerTest extends TestCase
         $this->handler->__invoke(AssignPlanToSpace::withConstraints($planId, $spaceId));
 
         $this->spaceRepository->assertEntityWasSavedThat($spaceId,
-            static fn (Space $space): bool => PlanId::equalsValueOfEntity($planId, $space->plan, 'id') &&
-                $space->constraints->equals($constraints)
+            static fn (Space $space): bool => PlanId::equalsValueOfEntity($planId, $space->plan, 'id')
+                && $space->constraints->equals($constraints)
         );
     }
 
@@ -109,8 +109,8 @@ final class AssignPlanToSpaceHandlerTest extends TestCase
         $this->handler->__invoke(AssignPlanToSpace::withoutConstraints($planId = PlanId::fromString(self::PLAN_ID2), $spaceId));
 
         $this->spaceRepository->assertEntityWasSavedThat($spaceId,
-            static fn (Space $space): bool => PlanId::equalsValueOfEntity($planId, $space->plan, 'id') &&
-                $space->constraints->equals(new Constraints(['monthlyTraffic' => 10]))
+            static fn (Space $space): bool => PlanId::equalsValueOfEntity($planId, $space->plan, 'id')
+                && $space->constraints->equals(new Constraints(['monthlyTraffic' => 10]))
         );
     }
 }

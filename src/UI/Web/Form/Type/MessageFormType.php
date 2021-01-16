@@ -91,7 +91,7 @@ final class MessageFormType extends AbstractType
                         \sprintf(
                             'Expected model class of type "%s". But "%s" was given for "%s".',
                             \implode('", "', $acceptedModelClass),
-                            get_debug_type($event->getData()),
+                            \get_debug_type($event->getData()),
                             $event->getForm()->getName()
                         )
                     );

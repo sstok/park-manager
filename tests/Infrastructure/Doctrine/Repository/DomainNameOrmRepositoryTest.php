@@ -200,8 +200,8 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
             $expected[$id->toString()] = $this->repository->get($id);
         }
 
-        \ksort($expected, SORT_STRING);
-        \ksort($found, SORT_STRING);
+        \ksort($expected, \SORT_STRING);
+        \ksort($found, \SORT_STRING);
 
         self::assertEquals($expected, $found);
     }

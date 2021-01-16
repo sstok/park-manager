@@ -159,7 +159,7 @@ final class EmailAddressTest extends TestCase
     /** @test */
     public function it_validates_idn_format(): void
     {
-        $this->expectExceptionObject(MalformedEmailAddress::idnError('ok@xn--wat.de', IDNA_ERROR_INVALID_ACE_LABEL));
+        $this->expectExceptionObject(MalformedEmailAddress::idnError('ok@xn--wat.de', \IDNA_ERROR_INVALID_ACE_LABEL));
         $this->expectExceptionCode(2);
 
         new EmailAddress('ok@xn--wat.de');
@@ -168,7 +168,7 @@ final class EmailAddressTest extends TestCase
     /** @test */
     public function idn_error_codes(): void
     {
-        $message = MalformedEmailAddress::idnError('nope@example.com', IDNA_ERROR_EMPTY_LABEL | IDNA_ERROR_LABEL_TOO_LONG)
+        $message = MalformedEmailAddress::idnError('nope@example.com', \IDNA_ERROR_EMPTY_LABEL | \IDNA_ERROR_LABEL_TOO_LONG)
             ->getMessage();
 
         self::assertStringContainsString('a non-final domain name label (or the whole domain name) is empty', $message);

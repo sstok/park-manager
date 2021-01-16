@@ -30,7 +30,7 @@ final class SecurityUser implements UserInterface, EquatableInterface, Serializa
      */
     public function __construct(string $id, string $password, bool $enabled, array $roles)
     {
-        \sort($roles, SORT_STRING);
+        \sort($roles, \SORT_STRING);
 
         $this->username = $id;
         $this->password = $password;

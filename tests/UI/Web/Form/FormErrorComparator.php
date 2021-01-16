@@ -34,11 +34,11 @@ final class FormErrorComparator extends Comparator
         $expectedOrigin = $expected->getOrigin();
 
         // Ignore the cause as this is to difficult to reproduce
-        if (($expectedOrigin === null || $expectedOrigin === $actual->getOrigin()) &&
-            $expected->getMessage() === $actual->getMessage() &&
-            $expected->getMessageTemplate() === $actual->getMessageTemplate() &&
-            $expected->getMessageParameters() === $actual->getMessageParameters() &&
-            $expected->getMessagePluralization() === $actual->getMessagePluralization()
+        if (($expectedOrigin === null || $expectedOrigin === $actual->getOrigin())
+            && $expected->getMessage() === $actual->getMessage()
+            && $expected->getMessageTemplate() === $actual->getMessageTemplate()
+            && $expected->getMessageParameters() === $actual->getMessageParameters()
+            && $expected->getMessagePluralization() === $actual->getMessagePluralization()
         ) {
             return;
         }

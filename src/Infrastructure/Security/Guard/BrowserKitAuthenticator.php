@@ -69,9 +69,9 @@ final class BrowserKitAuthenticator extends AbstractGuardAuthenticator
             throw new AuthenticationException();
         }
 
-        if (! $this->passwordEncoder->isPasswordValid($user, $credentials['password']) &&
-            ($credentials['password_new'] !== null &&
-             ! $this->passwordEncoder->isPasswordValid($user, $credentials['password_new']))
+        if (! $this->passwordEncoder->isPasswordValid($user, $credentials['password'])
+            && ($credentials['password_new'] !== null
+             && ! $this->passwordEncoder->isPasswordValid($user, $credentials['password_new']))
         ) {
             throw new BadCredentialsException();
         }

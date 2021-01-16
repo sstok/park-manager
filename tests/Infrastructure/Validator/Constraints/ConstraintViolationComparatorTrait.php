@@ -69,10 +69,10 @@ final class ConstraintViolationComparator extends Comparator
         }
 
         // Should we also check the Root??
-        if ($expected->getMessage() === $actual->getMessage() &&
-            $expected->getMessageTemplate() === $actual->getMessageTemplate() &&
-            $expected->getCode() === $actual->getCode() &&
-            $expected->getPropertyPath() === $actual->getPropertyPath()
+        if ($expected->getMessage() === $actual->getMessage()
+            && $expected->getMessageTemplate() === $actual->getMessageTemplate()
+            && $expected->getCode() === $actual->getCode()
+            && $expected->getPropertyPath() === $actual->getPropertyPath()
         ) {
             return;
         }
