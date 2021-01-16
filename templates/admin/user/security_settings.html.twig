@@ -1,0 +1,91 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% form_theme change_user_level_form _self %}
+
+{% block title %}{{ 'user_management.security.heading'|trans }}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="#" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ 'breadcrumbs.users'|trans({}, 'navigation') }}</a>
+        </div>
+    </li>
+{% endblock %}
+
+{%- block _user_security_level_level_widget -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%- for child in form %}
+            <div class="flex items-center h-5">
+                {{- form_widget(child) -}}
+                {% if child.vars.value == 'ROLE_SUPER_ADMIN' %}
+                    {{- form_label(child, null, {translation_domain: choice_translation_domain, label_attr: child.vars.label_attr|merge_attr_class('ml-2') }) -}}<svg class="ml-2 w-5 h-5 text-yellow-500" viewBox="0 0 24 24" fill="currentColor"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z" /></svg>
+                {% else %}
+                    {{- form_label(child, null, {translation_domain: choice_translation_domain, label_attr: child.vars.label_attr|merge_attr_class('ml-2') }) -}}
+                {% endif %}
+            </div>
+        {% endfor -%}
+    </div>
+{%- endblock _user_security_level_level_widget -%}
+
+{% block content %}
+    <div class="mt-8">
+        <div class="max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
+                {{ include('admin/user/_profile_header.html.twig') }}
+            </div>
+
+            <div class="mt-8 max-w-3xl mx-auto sm:px-6 lg:max-w-7xl">
+                <div class="space-y-6">
+                    <section aria-labelledby="applicant-information-title">
+                        <div class="bg-white shadow sm:rounded-lg">
+                            <div class="px-4 py-5 sm:px-6">
+                                <h2 id="applicant-information-title" class="text-lg leading-6 font-medium text-gray-900">
+                                    {{ 'user_management.security.change_user_level'|trans }}
+                                </h2>
+                            </div>
+                            <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                                {{ form_start(change_user_level_form, {'attr': {'class': 'mt-5 md:mt-0 md:col-span-2 space-y-6'}}) }}
+                                    <div class="grid grid-cols-3 gap-6">
+                                        <div class="col-span-3 sm:col-span-2">
+                                            <fieldset>
+                                                <legend class="text-base font-medium text-gray-900">{{ 'user_management.security.new_user_level'|trans }}</legend>
+                                                {{ form_errors(change_user_level_form.level) }}
+                                                {{ form_widget(change_user_level_form.level, {'attr': {'class': 'mt-4 space-y-4', 'label': false }}) }}
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">{{ 'label.change'|trans }}</button>
+                                    </div>
+                                {{ form_rest(change_user_level_form) }}
+                                {{ form_end(change_user_level_form) }}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section aria-labelledby="applicant-information-title">
+                        <div class="bg-white shadow sm:rounded-lg">
+                            <div class="px-4 py-5 sm:px-6">
+                                <h2 id="applicant-information-title" class="text-lg leading-6 font-medium text-gray-900">{{ 'user_management.security.change_password'|trans }}</h2>
+                            </div>
+                            <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                                {{ form_start(change_password_form, {'attr': {'class': 'mt-5 md:mt-0 md:col-span-2 space-y-6'}}) }}
+                                {{ form_rest(change_password_form) }}
+                                <div>
+                                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                        {{ 'label.update_password'|trans }}
+                                    </button>
+                                </div>
+                                {{ form_end(change_password_form) }}
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

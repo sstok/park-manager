@@ -12,7 +12,6 @@ namespace ParkManager\Domain\User;
 
 use Assert\Assertion;
 use Carbon\CarbonImmutable;
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -163,6 +162,7 @@ class User
             throw new CannotMakeUserSuperAdmin();
         }
 
+        $this->roles = clone $this->roles;
         $this->roles->add($role);
     }
 
@@ -179,6 +179,7 @@ class User
             throw new CannotDisableSuperAdministrator($this->id);
         }
 
+        $this->roles = clone $this->roles;
         $this->roles->removeElement($role);
     }
 

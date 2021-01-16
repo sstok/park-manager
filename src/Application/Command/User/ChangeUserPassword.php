@@ -25,13 +25,16 @@ final class ChangeUserPassword
      */
     public ?string $password;
 
+    public bool $temporary = false;
+
     /**
      * @param string|null $password The password in hash-encoded format or null
      *                              to disable password based authentication
      */
-    public function __construct(string $id, ?string $password)
+    public function __construct(string $id, ?string $password, bool $temporary = false)
     {
         $this->id = UserId::fromString($id);
         $this->password = $password;
+        $this->temporary = $temporary;
     }
 }

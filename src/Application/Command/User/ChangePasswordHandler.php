@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\User;
 
+use Carbon\CarbonImmutable;
 use ParkManager\Application\Event\UserPasswordWasChanged;
 use ParkManager\Domain\User\UserRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -30,6 +31,10 @@ final class ChangePasswordHandler
     {
         $user = $this->repository->get($command->id);
         $user->changePassword($command->password);
+
+        if ($command->temporary) {
+            $user->expirePasswordOn(CarbonImmutable::yesterday());
+        }
 
         $this->eventDispatcher->dispatch(new UserPasswordWasChanged($command->id->toString(), $command->password));
 

@@ -41,21 +41,21 @@ final class RegisterUserFormTest extends MessageFormTestCase
     protected function getTypeExtensions()
     {
         return [
-            new EmailTypeDomainValueExtension()
+            new EmailTypeDomainValueExtension(),
         ];
     }
 
     /** @test */
     public function register_user_with_valid_information(): void
     {
-        $this->commandHandler = fn () => null;
+        $this->commandHandler = static fn () => null;
 
         $form = $this->factory->create(RegisterUserForm::class, null, ['user_id' => $id = UserId::fromString('fb13df5a-9ce7-413c-99a1-ae5eb3d642bd')]);
         $form->submit([
             'display_name' => 'Terry Bell',
             'email' => 'terry.bell9@example.com',
             'password' => [
-                'password' => '3FNU@7Jg'
+                'password' => '3FNU@7Jg',
             ],
         ]);
 
@@ -74,14 +74,14 @@ final class RegisterUserFormTest extends MessageFormTestCase
     /** @test */
     public function register_administrator_with_valid_information(): void
     {
-        $this->commandHandler = fn () => null;
+        $this->commandHandler = static fn () => null;
 
         $form = $this->factory->create(RegisterUserForm::class, null, ['user_id' => $id = UserId::fromString('fb13df5a-9ce7-413c-99a1-ae5eb3d642bd')]);
         $form->submit([
             'display_name' => 'Terry Bell',
             'email' => 'terry.bell9@example.com',
             'password' => [
-                'password' => '3FNU@7Jg'
+                'password' => '3FNU@7Jg',
             ],
             'is_admin' => true,
         ]);

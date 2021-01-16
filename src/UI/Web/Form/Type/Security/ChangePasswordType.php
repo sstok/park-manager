@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Security;
 
+use ParkManager\Application\Command\User\ChangeUserPassword;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
@@ -62,6 +63,7 @@ final class ChangePasswordType extends AbstractType
         $resolver
             ->setDefault('password_constraints', [])
             ->setDefault('empty_data', null)
+            ->setDefault('command_factory', static fn (array $fields, array $model) => new ChangeUserPassword($model['id'], $fields['password']))
             ->setAllowedTypes('password_constraints', [Constraint::class . '[]', Constraint::class]);
     }
 

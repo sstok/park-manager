@@ -19,7 +19,11 @@
 
                 <p class="text-sm text-red-700">
                     {% apply spaceless %}
-                        {{ message }}
+                        {% if message_translate is defined %}
+                            {{ message_translate|trans }}
+                        {% else %}
+                            {{ message }}
+                        {% endif %}
                     {% endapply %}
                 </p>
             </div>
