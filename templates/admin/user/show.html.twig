@@ -115,7 +115,7 @@
                                         {%- if user.hasRole('ROLE_SUPER_ADMIN') -%}
                                             <span class="inline-flex justify-center px-4 py-2 border border-red-400 shadow-sm text-sm font-medium rounded-md text-gray-100 bg-red-400 cursor-not-allowed">{{ 'label.remove'|trans }}</span>
                                         {%- else -%}
-                                            <a href="#" class="inline-flex justify-center px-4 py-2 border border-red-400 shadow-sm text-sm font-medium rounded-md text-gray-100 bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">{{ 'label.remove'|trans }}</a>
+                                            <a href="{{ path('park_manager.admin.remove_user', {'id': user.id}) }}" class="inline-flex justify-center px-4 py-2 border border-red-400 shadow-sm text-sm font-medium rounded-md text-gray-100 bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">{{ 'label.remove'|trans }}</a>
                                         {%- endif -%}
                                     </div>
                                 </dl>

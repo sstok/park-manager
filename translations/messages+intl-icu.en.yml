@@ -30,6 +30,7 @@ label:
     login: Login
     change_password: Change password
     change: Change
+    value: Value
     update_password: Update password
     open_main_menu: Open main menu
     open_user_menu: Open user menu
@@ -40,6 +41,7 @@ label:
     sent_reset: Send reset
     confirm_reset: Confirm reset
     safe: Safe
+    cancel: Cancel
     remove: Remove
     expire_password: Expire password
     danger_zone: Danger Zone
@@ -72,6 +74,7 @@ flash:
         If this email address is valid, (opted into account recovery), and no reset was requested recently,
         <em>then</em> you should receive an email. Otherwise, check your spam-folder or try again.
     user_registered: User Registered.
+    user_removed: User was removed.
 
 user_login:
     heading: Login in to your account
@@ -91,6 +94,8 @@ user_management:
 
     registeration:
         heading: Register new User
+    list:
+        heading: User Management
     show:
         heading: User Profile of { display_name }
         registered_on: 'registered on <time datetime="{ regDateIso }">{ regDate, date, long } at { regDate, time, short }</time>'
@@ -98,7 +103,10 @@ user_management:
 
     remove:
         first_warning: Once you delete a user registration, there is no going back. Please be certain.
-        confirm_warning: This process cannot be undone! All the user registration information is removed. Type display name of the user for confirmation.
+        heading: Remove User Registration
+        confirm_warning: |
+            This process cannot be undone! All the user registration information is removed.
+            Type the display name <b>"{required_value}"</b> of the user for confirmation.
         cannot_remove_super_admin: Cannot remove Super Administrator account, <br><a href="{ url }" class="underline">revoke SuperAdmin privilege</a> first.
 
     mark_password_expired:

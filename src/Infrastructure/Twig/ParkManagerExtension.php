@@ -15,6 +15,7 @@ use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -25,6 +26,7 @@ use Twig\TwigFunction;
 final class ParkManagerExtension extends AbstractExtension
 {
     private TranslatorInterface $translator;
+    private TranslatorInterface $argumentsTranslator;
     private TokenStorageInterface $tokenStorage;
     private UserRepository $userRepository;
 
@@ -33,6 +35,30 @@ final class ParkManagerExtension extends AbstractExtension
         $this->translator = $translator;
         $this->tokenStorage = $tokenStorage;
         $this->userRepository = $userRepository;
+
+        $this->argumentsTranslator = new class($translator) implements TranslatorInterface {
+            private TranslatorInterface $wrappedTranslator;
+            private Environment $env;
+
+            public function __construct(TranslatorInterface $wrappedTranslator)
+            {
+                $this->wrappedTranslator = $wrappedTranslator;
+            }
+
+            public function setEnv(Environment $env): void
+            {
+                $this->env = $env;
+            }
+
+            public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
+            {
+                foreach ($parameters as $name => $value) {
+                    $parameters[$name] = twig_escape_filter($this->env, $value);
+                }
+
+                return $this->wrappedTranslator->trans($id, $parameters, $domain, $locale);
+            }
+        };
     }
 
     public function getFilters(): array
@@ -50,14 +76,38 @@ final class ParkManagerExtension extends AbstractExtension
         ];
     }
 
-    public function trans(Environment $env, string $message, array $arguments = [], ?string $domain = null, ?string $locale = null, ?int $count = null): string
+    /**
+     * @param string|\Stringable|TranslatableInterface|null $message
+     * @param array|string                                  $arguments Can be the locale as a string when $message is a TranslatableInterface
+     */
+    public function trans(Environment $env, $message, $arguments = [], string $domain = null, string $locale = null, int $count = null): string
     {
-        if ($count !== null) {
-            $arguments['%count%'] = $count;
+        if ($message instanceof TranslatableInterface) {
+            if ($arguments !== [] && ! \is_string($arguments)) {
+                throw new \TypeError(\sprintf('Argument 2 passed to "%s()" must be a locale passed as a string when the message is a "%s", "%s" given.', __METHOD__, TranslatableInterface::class, \get_debug_type($arguments)));
+            }
+
+            $this->argumentsTranslator->setEnv($env);
+
+            return $message->trans($this->argumentsTranslator, $locale ?? (\is_string($arguments) ? $arguments : null));
+        }
+
+        if (! \is_array($arguments)) {
+            throw new \TypeError(\sprintf('Unless the message is a "%s", argument 2 passed to "%s()" must be an array of parameters, "%s" given.', TranslatableInterface::class, __METHOD__, \get_debug_type($arguments)));
+        }
+
+        $message = (string) $message;
+
+        if ($message === '') {
+            return '';
         }
 
         foreach ($arguments as $name => $value) {
             $arguments[$name] = twig_escape_filter($env, $value);
+        }
+
+        if ($count !== null) {
+            $arguments['%count%'] = $count;
         }
 
         return $this->translator->trans($message, $arguments, $domain, $locale);

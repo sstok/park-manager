@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\User;
 
+use ParkManager\Domain\User\Exception\CannotRemoveSuperAdministrator;
 use ParkManager\Domain\User\UserRepository;
 
 final class DeleteRegistrationHandler
@@ -23,6 +24,12 @@ final class DeleteRegistrationHandler
 
     public function __invoke(DeleteRegistration $command): void
     {
-        $this->repository->remove($this->repository->get($command->id()));
+        $user = $this->repository->get($command->id());
+
+        if ($user->hasRole('ROLE_SUPER_ADMIN')) {
+            throw new CannotRemoveSuperAdministrator($user->id);
+        }
+
+        $this->repository->remove($user);
     }
 }

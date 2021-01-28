@@ -67,8 +67,6 @@
             <errorLevel type="suppress">
                 <!-- Tests are always checked or at least will produce an error -->
                 <directory name="tests"/>
-
-                <file name="src/UI/Web/Form/ConfirmationHandler/*.php"/>
             </errorLevel>
         </PossiblyNullPropertyFetch>
 
@@ -85,7 +83,6 @@
                 <directory name="tests"/>
 
                 <file name="src/Infrastructure/Security/Guard/FormAuthenticator.php"/>
-                <file name="src/UI/Web/Form/ConfirmationHandler/*.php"/>
             </errorLevel>
         </PossiblyNullReference>
 
