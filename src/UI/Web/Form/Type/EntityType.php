@@ -129,7 +129,7 @@ final class EntityType extends AbstractType
         }
 
         // ID's are UUID (hex) formatted, so we can't guarantee it doesn't start numeric
-        return 'choice_' . \str_replace('-', '_', $choice->id);
+        return 'choice_' . \str_replace('-', '_', (string) $choice->id);
     }
 
     /**

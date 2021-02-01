@@ -22,13 +22,13 @@
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": ">=7.4",
         "ext-mbstring": "*",
         "ext-sodium": "*",
         "beberlei/assert": "^3.0.0",
         "doctrine/dbal": "^2.10",
-        "doctrine/doctrine-bundle": "^2.0.2",
-        "doctrine/doctrine-migrations-bundle": "^2.0",
+        "doctrine/doctrine-bundle": "^2.2.3",
+        "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
         "egulias/email-validator": "^2.1",
         "jeremykendall/php-domain-parser": "^5.6",
@@ -94,13 +94,13 @@
         "symfony/browser-kit": "*",
         "symfony/css-selector": "*",
         "symfony/debug-bundle": "*",
-        "symfony/panther": "^0.7.1",
+        "symfony/panther": "^0.9.0",
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "*",
         "symfony/var-dumper": "*",
         "symfony/web-profiler-bundle": "*",
         "vimeo/psalm": "^4.1.1",
-        "weirdan/doctrine-psalm-plugin": "^0.11"
+        "weirdan/doctrine-psalm-plugin": "^1.0"
     },
     "config": {
         "preferred-install": {
@@ -139,7 +139,8 @@
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
     }
 }
