@@ -13,8 +13,10 @@ namespace ParkManager\Infrastructure\Twig;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
+use Stringable;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\String\UnicodeString;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -65,6 +67,7 @@ final class ParkManagerExtension extends AbstractExtension
     {
         return [
             new TwigFilter('trans_safe', [$this, 'trans'], ['needs_environment' => true, 'is_safe' => ['all']]),
+            new TwigFilter('wordwrap', [$this, 'wordwrap'], ['needs_environment' => true, 'is_safe' => ['all']]),
             new TwigFilter('merge_attr_class', [$this, 'mergeAttrClass']),
         ];
     }
@@ -77,8 +80,8 @@ final class ParkManagerExtension extends AbstractExtension
     }
 
     /**
-     * @param string|\Stringable|TranslatableInterface|null $message
-     * @param array|string                                  $arguments Can be the locale as a string when $message is a TranslatableInterface
+     * @param string|Stringable|TranslatableInterface|null $message
+     * @param array|string                                 $arguments Can be the locale as a string when $message is a TranslatableInterface
      */
     public function trans(Environment $env, $message, $arguments = [], string $domain = null, string $locale = null, int $count = null): string
     {
@@ -146,6 +149,22 @@ final class ParkManagerExtension extends AbstractExtension
         }
 
         return $currentUser;
+    }
+
+    /**
+     * @param string|Stringable|UnicodeString $text
+     */
+    public function wordwrap(Environment $env, $text, int $width = 75, string $break = "\n", bool $cut = false, bool $escape = true): string
+    {
+        if ($escape) {
+            $text = twig_escape_filter($env, (string) $text);
+        }
+
+        if (! $text instanceof UnicodeString) {
+            $text = new UnicodeString((string) $text);
+        }
+
+        return $text->wordwrap($width, $break, $cut)->toString();
     }
 }
 

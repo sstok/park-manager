@@ -13,11 +13,13 @@ namespace ParkManager\Infrastructure\Doctrine\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
+use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -64,6 +66,11 @@ class DoctrineOrmUserRepository extends EntityRepository implements UserReposito
         }
 
         return $user;
+    }
+
+    public function all(): ResultSet
+    {
+        return (new OrmQueryBuilderResultSet($this->createQueryBuilder('u'), 'u', false))->setOrdering('u.regDate', 'DESC');
     }
 
     public function getByEmailAddressChangeToken(string $selector): User

@@ -49,6 +49,13 @@ final class EmailAddressTest extends TestCase
         self::assertEquals('Teacher', $value->name);
         self::assertEquals('webmaster', $value->label);
 
+        self::assertEquals('info+webmaster@example.com', $value->truncate(29));
+        self::assertEquals('info+webmaster@example.com', $value->truncate(30));
+        self::assertEquals('info+w...@examp...', $value->truncate(10));
+        self::assertEquals('info+we...@exampl...', $value->truncate(11));
+        self::assertEquals('info+webm#@example.#', $value->truncate(10, '#'));
+        self::assertEquals('info+webm...@example.com', $value->truncate(13));
+
         $value->validate();
     }
 
@@ -66,6 +73,10 @@ final class EmailAddressTest extends TestCase
         self::assertEquals('', $value->label);
         self::assertFalse($value->isPattern);
 
+        self::assertEquals('"info@hello"@example.com', $value->truncate(29));
+        self::assertEquals('"info@hello"@example.com', $value->truncate(30));
+        self::assertEquals('"info@...@examp...', $value->truncate(10));
+
         $value->validate();
     }
 
@@ -82,6 +93,9 @@ final class EmailAddressTest extends TestCase
         self::assertEquals('', $value->name);
         self::assertEquals('', $value->label);
         self::assertTrue($value->isPattern);
+
+        self::assertEquals('*@example.com', $value->truncate(30));
+        self::assertEquals('*@exa#', $value->truncate(5, '#'));
 
         $value->validate();
     }

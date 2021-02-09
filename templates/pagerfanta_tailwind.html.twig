@@ -1,0 +1,99 @@
+{% extends '@Pagerfanta/tailwind.html.twig' %}
+
+{%- block pager_widget -%}
+<div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+    <div class="flex-1 flex justify-between sm:hidden">
+        {%- if pagerfanta.hasPreviousPage() -%}
+            {%- set path = route_generator.route(pagerfanta.getPreviousPage()) -%}
+            {{- block('previous_page_link') -}}
+        {%- else -%}
+            {{- block('previous_page_link_disabled') -}}
+        {%- endif -%}
+
+        {# Next Page Link #}
+        {%- if pagerfanta.hasNextPage() -%}
+            {%- set path = route_generator.route(pagerfanta.getNextPage()) -%}
+            {{- block('next_page_link') -}}
+        {%- else -%}
+            {{- block('next_page_link_disabled') -}}
+        {%- endif -%}
+    </div>
+
+    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+        <div>
+            <p class="text-sm text-gray-700">
+                {{ 'pagination_result_sumary'|trans({
+                    'offset_start': '<span class="font-medium">' ~ pagerfanta.getCurrentPageOffsetStart() ~ '</span>',
+                    'offset_end': '<span class="font-medium">' ~ pagerfanta.getCurrentPageOffsetEnd() ~ '</span>',
+                    'result_total': '<span class="font-medium">' ~ pagerfanta.getNbResults() ~ '</span>'
+                }, 'messages')|raw }}
+            </p>
+        </div>
+        <div>
+            <nav role="navigation" class="relative z-0 inline-flex shadow-sm -space-x-px">
+                <div class="flex-1 flex items-center justify-between">
+                    <div>
+                        <span class="relative z-0 inline-flex shadow-sm">{{- block('pager') -}}</span>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+{%- endblock pager_widget -%}
+
+{%- block previous_page_link -%}
+    <a href="{{- path -}}" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+        <span class="sm:sr-only">{{- block('previous_page_message') -}}</span>
+        <!-- Heroicon name: solid/chevron-left -->
+        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+    </a>
+{%- endblock previous_page_link -%}
+
+{%- block previous_page_link_disabled -%}
+    <span aria-disabled="true" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-300 hover:bg-gray-50 cursor-not-allowed">
+        <span class="sm:sr-only">{{- block('previous_page_message') -}}</span>
+        <!-- Heroicon name: solid/chevron-left -->
+        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+    </span>
+{%- endblock previous_page_link_disabled -%}
+
+{%- block next_page_link -%}
+    <a href="{{- path -}}" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+        <span class="sm:sr-only">{{- block('next_page_message') -}}</span>
+        <!-- Heroicon name: solid/chevron-right -->
+        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+        </svg>
+    </a>
+{%- endblock next_page_link -%}
+
+{%- block next_page_link_disabled -%}
+    <span aria-disabled="true" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-300 hover:bg-gray-50 cursor-not-allowed">
+        <span class="sm:sr-only">{{- block('next_page_message') -}}</span>
+        <!-- Heroicon name: solid/chevron-right -->
+        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+        </svg>
+    </span>
+{%- endblock next_page_link_disabled -%}
+
+{%- block previous_page_message -%}
+    {%- if options['prev_message'] is defined -%}
+        {{- options['prev_message'] -}}
+    {%- else -%}
+        {{ 'previous'|trans({}, 'navigation') }}
+    {%- endif -%}
+{%- endblock previous_page_message -%}
+
+{%- block next_page_message -%}
+    {%- if options['next_message'] is defined -%}
+        {{- options['next_message'] -}}
+    {%- else -%}
+        {{ 'next'|trans({}, 'navigation') }}
+    {%- endif -%}
+{%- endblock next_page_message -%}

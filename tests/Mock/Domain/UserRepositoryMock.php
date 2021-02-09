@@ -12,6 +12,7 @@ namespace ParkManager\Tests\Mock\Domain;
 
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\User;
@@ -55,6 +56,11 @@ final class UserRepositoryMock implements UserRepository
     public function getByEmail(EmailAddress $email): User
     {
         return $this->mockDoGetByField('email', $email->canonical);
+    }
+
+    public function all(): ResultSet
+    {
+        return $this->mockDoGetAll();
     }
 
     public function getByPasswordResetToken(string $selector): User

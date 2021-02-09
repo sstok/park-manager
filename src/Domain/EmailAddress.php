@@ -13,6 +13,7 @@ namespace ParkManager\Domain;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\Exception\MalformedEmailAddress;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\String\UnicodeString;
 use const IDNA_DEFAULT;
 use const INTL_IDNA_VARIANT_UTS46;
 use const MB_CASE_LOWER;
@@ -156,5 +157,19 @@ final class EmailAddress
         }
 
         return $local;
+    }
+
+    public function truncate(int $length = 27, string $ellipsis = '...'): string
+    {
+        if ($length >= \mb_strlen($this->address)) {
+            return $this->address;
+        }
+
+        $length -= (int) \floor((\mb_strlen($ellipsis)) / 2);
+
+        $text = new UnicodeString($this->address);
+        $atSign = $text->indexOfLast('@');
+
+        return $text->slice(0, $atSign)->truncate($length, $ellipsis) . $text->slice($atSign)->truncate($length, $ellipsis);
     }
 }

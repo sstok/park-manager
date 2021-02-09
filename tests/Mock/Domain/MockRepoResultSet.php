@@ -48,6 +48,21 @@ final class MockRepoResultSet implements ResultSet
         return $this;
     }
 
+    /**
+     * Returns the number of items in the set.
+     */
+    public function getNbResults(): int
+    {
+        \reset($this->result);
+        $result = $this->result;
+
+        if ($this->limitedToIds) {
+            $result = \array_filter($result, fn (object $v) => \in_array($v->id->toString(), $this->limitedToIds, true));
+        }
+
+        return \count($result);
+    }
+
     public function getIterator(): \Traversable
     {
         \reset($this->result);

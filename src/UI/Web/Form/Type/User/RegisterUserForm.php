@@ -37,7 +37,7 @@ final class RegisterUserForm extends AbstractType
                 'label' => 'label.display_name',
                 'constraints' => [
                     new NotBlank(),
-                    new Length(['min' => 2, 'max' => 30]),
+                    new Length(['min' => 2, 'max' => 60]),
                 ],
             ])
             ->add('email', EmailType::class, [
@@ -56,7 +56,7 @@ final class RegisterUserForm extends AbstractType
                     new Length(['min' => 6, 'max' => 20]), // this is a temporary password, but still should be relatively secure
                 ],
             ])
-            ->add('is_admin', CheckboxType::class, ['label' => 'label.is_admin', 'help' => 'help.is_admin']);
+            ->add('is_admin', CheckboxType::class, ['label' => 'label.is_admin', 'help' => 'help.is_admin', 'required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

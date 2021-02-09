@@ -10,13 +10,17 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\User;
 
+use Pagerfanta\Pagerfanta;
+use ParkManager\Domain\User\UserRepository;
+use ParkManager\Infrastructure\Pagerfanta\ResultSetAdapter;
 use ParkManager\UI\Web\Response\TwigResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class ListUsersAction
+final class ListUsersAction extends AbstractController
 {
     /**
      * @Security("is_granted('ROLE_SUPER_ADMIN')")
@@ -29,6 +33,17 @@ final class ListUsersAction
      */
     public function __invoke(Request $request): Response
     {
-        return new TwigResponse('admin/user/list.html.twig');
+        $pagerfanta = new Pagerfanta(new ResultSetAdapter($this->get(UserRepository::class)->all()));
+        $pagerfanta->setNormalizeOutOfRangePages(true);
+        $pagerfanta->setMaxPerPage(10);
+
+        $pagerfanta->setCurrentPage($request->query->getInt('page', 1));
+
+        return new TwigResponse('admin/user/list.html.twig', ['users' => $pagerfanta]);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [UserRepository::class];
     }
 }

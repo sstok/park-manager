@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+pagination_result_sumary: 'Showing {offset_start} to {offset_end} of {result_total} results'
+
 user_role:
     super_admin: Super Administrator
     admin: Administrator
@@ -22,6 +24,8 @@ label:
     remove_tls: Remove TLS configuration
     user: User
     display_name: Display name
+    registered_on: Registered On
+    role: Role
     is_admin: Is Administrator
     mark_temp_password: Mark as temporary password.
     photo: Photo
@@ -41,6 +45,9 @@ label:
     sent_reset: Send reset
     confirm_reset: Confirm reset
     safe: Safe
+    edit: Edit
+    show: Show
+    add: Add
     cancel: Cancel
     remove: Remove
     expire_password: Expire password
@@ -96,6 +103,7 @@ user_management:
         heading: Register new User
     list:
         heading: User Management
+        register: Register User
     show:
         heading: User Profile of { display_name }
         registered_on: 'registered on <time datetime="{ regDateIso }">{ regDate, date, long } at { regDate, time, short }</time>'
@@ -117,6 +125,7 @@ user_management:
         active: Active
         disabled: Access disabled
         password_expired: 'Password expired on { expiration_date, date, long } at { expiration_date, time, short }'
+        password_expired_short: 'Password expired'
         banned: Email address banned
         new_email_pending_confirm: New email address pending confirmation.
 

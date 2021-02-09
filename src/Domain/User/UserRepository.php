@@ -12,6 +12,7 @@ namespace ParkManager\Domain\User;
 
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Domain\User\Exception\UserNotFound;
 
@@ -26,6 +27,11 @@ interface UserRepository
      * @throws UserNotFound
      */
     public function getByEmail(EmailAddress $email): User;
+
+    /**
+     * @return ResultSet<User>
+     */
+    public function all(): ResultSet;
 
     /**
      * @throws PasswordResetTokenNotAccepted When no user was found with the token-selector

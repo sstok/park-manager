@@ -33,4 +33,9 @@ interface ResultSet extends \IteratorAggregate
      * @param array<int,string>|null $ids
      */
     public function limitToIds(?array $ids): self;
+
+    /**
+     * Returns the number of items in the set.
+     */
+    public function getNbResults(): int;
 }

@@ -10,3 +10,6 @@ breadcrumbs:
     home: Home
     dashboard: Dashboard
     users: Users
+
+previous: Previous
+next: Next

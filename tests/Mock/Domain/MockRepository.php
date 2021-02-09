@@ -227,6 +227,31 @@ trait MockRepository
         return new MockRepoResultSet($this->storedMultiByField[$key][$value]);
     }
 
+    protected function mockDoGetAll(): MockRepoResultSet
+    {
+        if (! \count($this->storedById)) {
+            return new MockRepoResultSet([]);
+        }
+
+        if (\count($this->removedById) > 0) {
+            $entities = [];
+
+            foreach ($this->storedById as $entity) {
+                $id = $this->getValueWithGetter($entity, 'id');
+
+                if (isset($this->removedById[$id->toString()])) {
+                    continue;
+                }
+
+                $entities[] = $entity;
+            }
+
+            return new MockRepoResultSet($entities);
+        }
+
+        return new MockRepoResultSet($this->storedById);
+    }
+
     /**
      * @param float|int|string|null $value
      */
