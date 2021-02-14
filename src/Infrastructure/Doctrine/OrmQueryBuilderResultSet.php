@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -28,8 +27,8 @@ final class OrmQueryBuilderResultSet implements ResultSet
     private ?Paginator $paginator = null;
 
     /**
-     * @param bool $fetchJoinCollection Whether the query joins a collection (true by default), set
-     *                                  to false when not used to speed-up pagination.
+     * @param bool $fetchJoinCollection whether the query joins a collection (true by default), set
+     *                                  to false when not used to speed-up pagination
      */
     public function __construct(QueryBuilder $queryBuilder, string $rootAlias, bool $fetchJoinCollection = true)
     {

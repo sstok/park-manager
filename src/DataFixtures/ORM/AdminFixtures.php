@@ -12,6 +12,7 @@ namespace ParkManager\DataFixtures\ORM;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Generator as FakerGenerator;
 use ParkManager\Application\Command\Administrator\RegisterAdministrator;
 use ParkManager\Application\Command\BatchCommand;
 use ParkManager\Domain\EmailAddress;
@@ -24,15 +25,36 @@ final class AdminFixtures extends Fixture
 {
     private MessageBusInterface $commandBus;
     private EncoderFactoryInterface $encoderFactory;
+    private FakerGenerator $faker;
 
-    public function __construct(MessageBusInterface $commandBus, EncoderFactoryInterface $encoderFactory)
+    public function __construct(MessageBusInterface $commandBus, EncoderFactoryInterface $encoderFactory, FakerGenerator $faker)
     {
         $this->commandBus = $commandBus;
         $this->encoderFactory = $encoderFactory;
+        $this->faker = $faker;
     }
 
     public function load(ObjectManager $manager): void
     {
+        $admins = [];
+
+        foreach (\range(1, 6) as $i) {
+            $admins[] = $admin = new RegisterAdministrator(
+                UserId::create(),
+                new EmailAddress($this->faker->unique()->email()),
+                $this->faker->unique()->name(),
+                $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword($this->faker->password(8), null)
+            );
+
+            if ($this->faker->randomDigit() % 2 === 0) {
+                $admin->asSuperAdmin();
+            }
+
+            if ($this->faker->randomDigit() % 2 === 0) {
+                $admin->requireNewPassword();
+            }
+        }
+
         $this->commandBus->dispatch(
             new BatchCommand(
                 (new RegisterAdministrator(
@@ -40,7 +62,8 @@ final class AdminFixtures extends Fixture
                     new EmailAddress('janet@example.com'),
                     'Janet, Doe',
                     $this->encodePassword('&ltr@Sec3re!+')
-                ))->asSuperAdmin()
+                ))->asSuperAdmin(),
+                ...$admins
             )
         );
     }
