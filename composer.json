@@ -22,7 +22,7 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "ext-mbstring": "*",
         "ext-sodium": "*",
         "babdev/pagerfanta-bundle": "^2.8",
@@ -39,7 +39,7 @@
         "paragonie/halite": "^4.4.2",
         "ramsey/uuid": "^4.0",
         "rollerworks/split-token": "^0.1.0",
-        "sensio/framework-extra-bundle": "^5.2",
+        "sensio/framework-extra-bundle": "^6.1",
         "symfony/asset": "*",
         "symfony/console": "*",
         "symfony/dotenv": "*",
@@ -71,7 +71,8 @@
         "symfony/polyfill-php71": "*",
         "symfony/polyfill-php72": "*",
         "symfony/polyfill-php73": "*",
-        "symfony/polyfill-php74": "*"
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php80": "*"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -97,7 +98,7 @@
         "symfony/browser-kit": "*",
         "symfony/css-selector": "*",
         "symfony/debug-bundle": "*",
-        "symfony/panther": "^0.9.0",
+        "symfony/panther": "^1.0",
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "*",
         "symfony/var-dumper": "*",

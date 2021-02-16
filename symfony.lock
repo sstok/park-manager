@@ -616,9 +616,6 @@
     "symfony/polyfill-php73": {
         "version": "1.13.x-dev"
     },
-    "symfony/polyfill-php80": {
-        "version": "1.15-dev"
-    },
     "symfony/process": {
         "version": "5.1.x-dev"
     },
