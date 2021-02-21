@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\Persistence\ObjectManager;
+use ParkManager\Application\Service\PdpManager;
 use ParkManager\Application\Service\TLS\CertificateFactoryImpl;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNameRepository;
@@ -21,13 +22,12 @@ use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
+use ParkManager\Infrastructure\Pdp\PsrStorageFactory;
 use ParkManager\Infrastructure\Security\Guard\FormAuthenticator;
 use ParkManager\Infrastructure\Security\PermissionExpressionProvider;
 use ParkManager\Infrastructure\Security\UserProvider;
 use ParkManager\UI\Web\ArgumentResolver\ModelResolver;
 use ParkManager\UI\Web\ArgumentResolver\SplitTokenResolver;
-use Pdp\CurlHttpClient as PdpCurlHttpClient;
-use Pdp\Manager as PdpManager;
 use Psr\Container\ContainerInterface;
 use Rollerworks\Component\SplitToken\Argon2SplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
@@ -49,9 +49,14 @@ return static function (ContainerConfigurator $c): void {
     $di->instanceof(DomainNameSpaceUsageValidator::class)
         ->tag('park_manager.command_bus.domain_name_space_usage_validator');
 
-    $di->set(PdpManager::class)->args([
+    $di->set(PsrStorageFactory::class)->args([
         inline_service(Psr16Cache::class)->arg(0, service('cache.public_prefix_db')),
-        inline_service(PdpCurlHttpClient::class)
+        service('http_client'),
+    ]);
+
+    $di->set(PdpManager::class)->args([
+        expr(sprintf("service('%s').createPublicSuffixListStorage()", addslashes(PsrStorageFactory::class))),
+        expr(sprintf("service('%s').createTopLevelDomainListStorage()", addslashes(PsrStorageFactory::class))),
     ]);
 
     // Note: Repositories are loaded separate as autowiring the entire Domain is not
@@ -72,7 +77,8 @@ return static function (ContainerConfigurator $c): void {
             __DIR__ . '/../src/{Domain,DataFixtures}',
             __DIR__ . '/../src/Application/{Command,Event}',
             __DIR__ . '/../src/Application/Service/TLS/Violation',
-            __DIR__ . '/../src/Infrastructure/Doctrine',
+            __DIR__ . '/../src/Application/Service/PdpManager.php',
+            __DIR__ . '/../src/Infrastructure/{Doctrine,Pdp}',
             __DIR__ . '/../src/Infrastructure/Security/*User.php',
             __DIR__ . '/../src/Infrastructure/Security/Permission',
             __DIR__ . '/../src/UI/Web/Form/{ConfirmationHandler,DataTransformer,DataMapper}',

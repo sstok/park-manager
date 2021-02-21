@@ -15,6 +15,7 @@ use Ocsp\CertificateInfo;
 use Ocsp\CertificateLoader;
 use Ocsp\Exception\Exception as OcspException;
 use Ocsp\Ocsp;
+use ParkManager\Application\Service\PdpManager as PublicSuffixManager;
 use ParkManager\Application\Service\TLS\Violation\CertificateIsExpired;
 use ParkManager\Application\Service\TLS\Violation\CertificateIsRevoked;
 use ParkManager\Application\Service\TLS\Violation\GlobalWildcard;
@@ -22,7 +23,6 @@ use ParkManager\Application\Service\TLS\Violation\UnsupportedDomain;
 use ParkManager\Application\Service\TLS\Violation\UnsupportedPurpose;
 use ParkManager\Application\Service\TLS\Violation\WeakSignatureAlgorithm;
 use ParkManager\Domain\Webhosting\SubDomain\TLS\CA;
-use Pdp\Manager as PublicSuffixManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -104,7 +104,7 @@ class CertificateValidator
 
     private function validateDomainsWildcard(array $domains): void
     {
-        $rules = $this->suffixManager->getRules();
+        $rules = $this->suffixManager->getPublicSuffixList();
 
         foreach ($domains as $domain) {
             if (\mb_strpos($domain, '*') === false) {
@@ -117,13 +117,13 @@ class CertificateValidator
 
             $domainInfo = $rules->resolve($domain);
 
-            if (! $domainInfo->isKnown()) {
+            if (! $domainInfo->suffix()->isKnown()) {
                 return;
             }
 
-            $publicSuffix = $domainInfo->getPublicSuffix() ?? '';
+            $publicSuffix = $domainInfo->suffix()->toString();
 
-            if (\rtrim(\mb_substr($domainInfo->getContent() ?? '', 0, -\mb_strlen($publicSuffix)), '.') === '*') {
+            if (\rtrim(\mb_substr($domainInfo->toString(), 0, -\mb_strlen($publicSuffix)), '.') === '*') {
                 throw new GlobalWildcard($domain, $publicSuffix);
             }
         }

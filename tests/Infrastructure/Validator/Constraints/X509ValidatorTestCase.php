@@ -10,15 +10,16 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Validator\Constraints;
 
+use ParkManager\Application\Service\PdpManager;
 use ParkManager\Application\Service\TLS\CAResolver;
 use ParkManager\Application\Service\TLS\CertificateValidator;
+use ParkManager\Infrastructure\Pdp\PsrStorageFactory;
 use ParkManager\Tests\Application\Service\TLS\TLSPersistenceRepositoryMock;
-use Pdp\CurlHttpClient as PdpHttpClient;
-use Pdp\Manager as PublicSuffixManager;
 use Psr\Log\NullLogger;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 use Symfony\Component\HttpClient\CurlHttpClient;
+use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**
@@ -30,9 +31,16 @@ abstract class X509ValidatorTestCase extends ConstraintValidatorTestCase
 
     protected function getCertificateValidator(): CertificateValidator
     {
+        $httpClient = new MockHttpClient();
+        $factory = new PsrStorageFactory(new Psr16Cache(new ArrayAdapter()), $httpClient);
+        $pdpManager = new PdpManager(
+            $factory->createPublicSuffixListStorage(),
+            $factory->createTopLevelDomainListStorage()
+        );
+
         return new CertificateValidator(
             new CAResolver(new TLSPersistenceRepositoryMock()),
-            new PublicSuffixManager(new Psr16Cache(new ArrayAdapter()), new PdpHttpClient()),
+            $pdpManager,
             new CurlHttpClient(),
             new NullLogger()
         );
