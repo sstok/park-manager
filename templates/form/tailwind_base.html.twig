@@ -215,6 +215,27 @@
     </div>
 {%- endblock confirmation_form_widget -%}
 
+{% block domain_name_pair_widget %}
+    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <div class="sm:col-span-3">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+            {{ form_help(form.name) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div class="sm:col-span-3">
+            {{ form_label(form.suffix) }}
+            <div class="flex rounded-md shadow-sm">
+                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">.</span>
+                {{ form_widget(form.suffix, { 'attr': { 'class': 'rounded-l-none'}, 'field_width': 'w-6/12'}) }}
+            </div>
+            {{ form_help(form.suffix, { 'help_attr': { 'class': 'text-xs' }}) }}
+            {{ form_errors(form.suffix) }}
+        </div>
+    </div>
+{% endblock domain_name_pair_widget %}
+
 {# Labels #}
 
 {% block form_label -%}

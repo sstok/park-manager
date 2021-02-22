@@ -39,7 +39,7 @@ final class CombinedResultSet implements ResultSet
 
     public function setOrdering(?string $field, ?string $order): self
     {
-        $this->ordering = [$field, $order];
+        $this->ordering = $field === null ? null : [$field, $order];
         $this->iterators = null;
 
         return $this;

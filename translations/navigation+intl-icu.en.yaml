@@ -10,6 +10,7 @@ breadcrumbs:
     home: Home
     dashboard: Dashboard
     users: Users
+    domain_names: Domain Names
 
 previous: Previous
 next: Next

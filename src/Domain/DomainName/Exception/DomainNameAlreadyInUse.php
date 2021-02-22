@@ -16,26 +16,16 @@ use ParkManager\Domain\Exception\TranslatableException;
 final class DomainNameAlreadyInUse extends \DomainException implements TranslatableException
 {
     private DomainNamePair $domainName;
-    private bool $sameOwner;
 
-    public function __construct(DomainNamePair $domainName, bool $sameOwner = false)
+    public function __construct(DomainNamePair $domainName)
     {
-        if ($sameOwner) {
-            parent::__construct(\sprintf('DomainName "%s.%s" is already in use (by same space owner).', $domainName->name, $domainName->tld));
-        } else {
-            parent::__construct(\sprintf('DomainName "%s.%s" is already in use.', $domainName->name, $domainName->tld));
-        }
+        parent::__construct(\sprintf('DomainName "%s.%s" is already in use.', $domainName->name, $domainName->tld));
 
-        $this->sameOwner = $sameOwner;
         $this->domainName = $domainName;
     }
 
     public function getTranslatorId(): string
     {
-        if ($this->sameOwner) {
-            return 'domain_name.already_in_use_by_space';
-        }
-
         return 'domain_name.already_in_use';
     }
 

@@ -91,4 +91,9 @@ class Owner implements \Stringable
     {
         return $this->id->toString();
     }
+
+    public function getLinkedEntity(): User | Organization
+    {
+        return $this->user ?? $this->organization;
+    }
 }

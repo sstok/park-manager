@@ -82,6 +82,11 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
             ->getResult();
     }
 
+    public function all(): ResultSet
+    {
+        return new OrmQueryBuilderResultSet($this->createQueryBuilder('d'), rootAlias: 'd', fetchJoinCollection: true);
+    }
+
     public function allAccessibleBy(OwnerId $ownerId): ResultSet
     {
         return new OrmQueryBuilderResultSet(

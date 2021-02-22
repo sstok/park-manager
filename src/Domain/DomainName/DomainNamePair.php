@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Embeddable
  */
-final class DomainNamePair
+final class DomainNamePair implements \Stringable
 {
     /**
      * READ-ONLY.
@@ -49,5 +49,10 @@ final class DomainNamePair
     public function equals(self $other): bool
     {
         return $this->name === $other->name && $this->tld === $other->tld;
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 }

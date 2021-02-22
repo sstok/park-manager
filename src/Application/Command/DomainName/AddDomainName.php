@@ -13,11 +13,14 @@ namespace ParkManager\Application\Command\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\OwnerId;
+use ParkManager\Infrastructure\Validator\Constraints\RegistrableDomainName;
 
 final class AddDomainName
 {
     public DomainNameId $id;
     public OwnerId $owner;
+
+    #[RegistrableDomainName]
     public DomainNamePair $name;
 
     public function __construct(DomainNameId $id, OwnerId $owner, DomainNamePair $name)

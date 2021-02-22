@@ -14,7 +14,6 @@ use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
-use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\OwnerRepository;
 
 final class AddDomainNameHandler
@@ -32,9 +31,8 @@ final class AddDomainNameHandler
     {
         try {
             $foundDomain = $this->repository->getByName($command->name);
-            $sameOwner = OwnerId::equalsValueOfEntity($command->owner, $foundDomain->owner, 'id');
 
-            throw new DomainNameAlreadyInUse($command->name, $sameOwner);
+            throw new DomainNameAlreadyInUse($foundDomain->namePair);
         } catch (DomainNameNotFound) {
             // OK
         }

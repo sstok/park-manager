@@ -21,12 +21,21 @@ label:
     private_key_file: Private key file
     private_key_passphrase: Private-key passphrase
     domain_name: Domain name
+    domain_suffix: Suffix/TLD
     remove_tls: Remove TLS configuration
     user: User
+    users: Users
+    user_organization: 'User Organization'
+    user_organizations: 'User Organizations'
+    internal_organization: 'Internal Organization'
+    internal_organizations: 'Internal Organizations'
+    owner: Owner
+    name: Name
     display_name: Display name
     registered_on: Registered On
     role: Role
     is_admin: Is Administrator
+    is_admin_owned: Is owned by administrators
     mark_temp_password: Mark as temporary password.
     photo: Photo
     notifications: Notifications
@@ -64,6 +73,8 @@ help:
     homedir: Either "blog/", "blog/2" or "site@1.0/public". Not "../blog", "blog/.2./", or "blog/@/". No special characters except "@" and "." (between letter and number characters).
     remove_tls: Removes all the assigned TLS configuration. Not required when setting new information.
     is_admin: Assign the user as an administrator. You can grant additional privileges later on.
+    domain_name_name: A valid domain-name, without the suffix or TLD.
+    domain_name_suffix: A valid domain-name suffix or ICANN supported TLD.
     register_user:
         email: A valid email address, must not be already used by another user.
 
@@ -82,6 +93,9 @@ flash:
         <em>then</em> you should receive an email. Otherwise, check your spam-folder or try again.
     user_registered: User Registered.
     user_removed: User was removed.
+
+    domain_name_added: Domain Name was added.
+    domain_name_changed: Domain Name was changed.
 
 user_login:
     heading: Login in to your account
@@ -153,3 +167,15 @@ change_password:
     paragraph.html: |
         <p>Please provide your current password for verification.
             Note that your new password needs to follow some basic security rules.</p>
+
+organization:
+    internal_names:
+        administrators: Administrators
+
+domain_name:
+    add:
+        heading: Domain Name system-registration
+    list:
+        heading: Domain Names
+    edit:
+        heading: Change Domain Name Owner

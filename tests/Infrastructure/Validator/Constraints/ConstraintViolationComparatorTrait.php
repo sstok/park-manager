@@ -57,19 +57,9 @@ final class ConstraintViolationComparator extends Comparator
      */
     public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false): void
     {
-        $this->factory->getComparatorFor($expected->getParameters(), $actual->getParameters())
-            ->assertEquals($expected->getParameters(), $actual->getParameters());
-
-        $this->factory->getComparatorFor($expected->getInvalidValue(), $actual->getInvalidValue())
-            ->assertEquals($expected->getInvalidValue(), $actual->getInvalidValue());
-
-        if ($expected->getCause() !== null) {
-            $this->factory->getComparatorFor($expected->getCause(), $actual->getCause())
-                ->assertEquals($expected->getCause(), $actual->getCause());
-        }
-
         // Should we also check the Root??
-        if ($expected->getMessage() === $actual->getMessage()
+        if ($this->equalsViolation($expected, $actual)
+            && $expected->getMessage() === $actual->getMessage()
             && $expected->getMessageTemplate() === $actual->getMessageTemplate()
             && $expected->getCode() === $actual->getCode()
             && $expected->getPropertyPath() === $actual->getPropertyPath()
@@ -89,5 +79,25 @@ final class ConstraintViolationComparator extends Comparator
                 $exportedExpected
             )
         );
+    }
+
+    private function equalsViolation(ConstraintViolation $expected, ConstraintViolation $actual): bool
+    {
+        try {
+            $this->factory->getComparatorFor($expected->getParameters(), $actual->getParameters())
+                ->assertEquals($expected->getParameters(), $actual->getParameters());
+
+            $this->factory->getComparatorFor($expected->getInvalidValue(), $actual->getInvalidValue())
+                ->assertEquals($expected->getInvalidValue(), $actual->getInvalidValue());
+
+            if ($expected->getCause() !== null) {
+                $this->factory->getComparatorFor($expected->getCause(), $actual->getCause())
+                    ->assertEquals($expected->getCause(), $actual->getCause());
+            }
+
+            return true;
+        } catch (ComparisonFailure) {
+            return false;
+        }
     }
 }
