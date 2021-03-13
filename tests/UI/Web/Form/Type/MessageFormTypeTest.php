@@ -27,10 +27,13 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRendererInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\ValidationFailedException;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
+use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
+use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -69,18 +72,6 @@ final class MessageFormTypeTest extends TypeTestCase
                         throw UserNotFound::withId(UserId::fromString('f2df40e4-2f27-47e8-b03f-27d1456eed7a'));
                     }
 
-                    if ($command->id === 534) {
-                        throw new ValidationFailedException(
-                            $command,
-                            new ConstraintViolationList([
-                                new ConstraintViolation('This value is not like the others.', 'This value is not like the others.', [], $command, '', 'Beer Me'),
-                                new ConstraintViolation('Well yes, but actually no.', 'Well yes, but actually no.', [], $command, 'profile.name', '9848829240'),
-                                new ConstraintViolation('Lavara Cadabra {{ label }}', 'Lavara {{ label }}', [], $command, 'is_admin', 'nope'),
-                                new ConstraintViolation('Locus phopocus {{ label }}', 'Locus phopocus {{ label }}', [], $command, 'sure_name', 'nope'),
-                            ])
-                        );
-                    }
-
                     $this->dispatchedCommand = $command;
                 },
             ],
@@ -103,7 +94,28 @@ final class MessageFormTypeTest extends TypeTestCase
 
     private function createMessageBus(array $handlers, bool $allowNoHandlers = false): MessageBus
     {
-        return new MessageBus([new HandleMessageMiddleware(new HandlersLocator($handlers), $allowNoHandlers)]);
+        $validationMiddleware = new class() implements MiddlewareInterface {
+            public function handle(Envelope $envelope, StackInterface $stack): Envelope
+            {
+                $message = $envelope->getMessage();
+
+                if ($message instanceof StubCommand && $message->id === 534) {
+                    throw new ValidationFailedException(
+                        $message,
+                        new ConstraintViolationList([
+                            new ConstraintViolation('This value is not like the others.', 'This value is not like the others.', [], $message, '', 'Beer Me'),
+                            new ConstraintViolation('Well yes, but actually no.', 'Well yes, but actually no.', [], $message, 'profile.name', '9848829240'),
+                            new ConstraintViolation('Lavara Cadabra {{ label }}', 'Lavara {{ label }}', [], $message, 'is_admin', 'nope'),
+                            new ConstraintViolation('Locus phopocus {{ label }}', 'Locus phopocus {{ label }}', [], $message, 'sure_name', 'nope'),
+                        ])
+                    );
+                }
+
+                return $stack->next()->handle($envelope, $stack);
+            }
+        };
+
+        return new MessageBus([$validationMiddleware, new HandleMessageMiddleware(new HandlersLocator($handlers), $allowNoHandlers)]);
     }
 
     /** @test */

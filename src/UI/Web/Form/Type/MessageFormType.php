@@ -138,6 +138,10 @@ final class MessageFormType extends AbstractType
 
         try {
             $this->messageBus->dispatch($command);
+        } catch (ValidationFailedException $e) {
+            foreach ($e->getViolations() as $violation) {
+                $this->violationMapper->mapViolation($violation, $form);
+            }
         } catch (HandlerFailedException $e) {
             $e = \current($e->getNestedExceptions());
 
@@ -151,13 +155,6 @@ final class MessageFormType extends AbstractType
                 $errors = $exceptionMapping[$exceptionName]($e, $this->translator, $form);
             } elseif ($exceptionFallback !== null) {
                 $errors = $exceptionFallback($e, $this->translator, $form);
-            } elseif ($e instanceof ValidationFailedException) {
-                foreach ($e->getViolations() as $violation) {
-                    $this->violationMapper->mapViolation($violation, $form);
-                }
-
-                // Violations were already mapped.
-                $errors = [];
             } elseif ($e instanceof TranslatableException) {
                 $errors = [null => new FormError(
                     $this->translator->trans($e->getTranslatorId(), $e->getTranslationArgs(), 'validators'),
