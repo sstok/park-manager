@@ -40,10 +40,10 @@ trait MockRepository
      */
     protected int $mockWasRemoved = 0;
 
-    /** @var array<string,string<object>> [mapping-name][index-key] => {entity} */
+    /** @var array<string, array<string, T>> [mapping-name][index-key] => {entity} */
     protected array $storedByField = [];
 
-    /** @var array<string,string<object>> [mapping-name][index-key] => {entity} */
+    /** @var array<string, array<string, array<int, T>>> [mapping-name][index-key] => {entity} */
     protected array $storedMultiByField = [];
 
     /**
@@ -250,6 +250,34 @@ trait MockRepository
         }
 
         return new MockRepoResultSet($this->storedById);
+    }
+
+    /**
+     * @param Closure(T): bool $condition
+     */
+    protected function mockDoGetMultiByCondition(Closure $condition): MockRepoResultSet
+    {
+        if (! \count($this->storedById)) {
+            return new MockRepoResultSet([]);
+        }
+
+        $entities = [];
+
+        foreach ($this->storedById as $entity) {
+            $id = $this->getValueWithGetter($entity, 'id');
+
+            if (isset($this->removedById[$id->toString()])) {
+                continue;
+            }
+
+            if (! $condition($entity)) {
+                continue;
+            }
+
+            $entities[] = $entity;
+        }
+
+        return new MockRepoResultSet($entities);
     }
 
     /**
