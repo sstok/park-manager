@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Application\Command\User;
 
 use Carbon\CarbonImmutable;
+use ParkManager\Domain\Owner;
+use ParkManager\Domain\OwnerRepository;
 use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
 use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\User;
@@ -19,10 +21,12 @@ use ParkManager\Domain\User\UserRepository;
 final class RegisterUserHandler
 {
     private UserRepository $repository;
+    private OwnerRepository $ownerRepository;
 
-    public function __construct(UserRepository $repository)
+    public function __construct(UserRepository $repository, OwnerRepository $ownerRepository)
     {
         $this->repository = $repository;
+        $this->ownerRepository = $ownerRepository;
     }
 
     public function __invoke(RegisterUser $command): void
@@ -47,5 +51,6 @@ final class RegisterUserHandler
         }
 
         $this->repository->save($user);
+        $this->ownerRepository->save(Owner::byUser($user));
     }
 }

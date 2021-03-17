@@ -29,6 +29,8 @@ final class OrganizationRepositoryMock implements OrganizationRepository
 
     public function __construct(UserRepository $userRepository, array $initialEntities = [])
     {
+        $initialEntities[] = new Organization(OrganizationId::fromString(OrganizationId::ADMIN_ORG), 'Administrators');
+
         $this->mockConstructor($initialEntities);
 
         $this->userRepository = $userRepository;

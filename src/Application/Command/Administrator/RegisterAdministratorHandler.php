@@ -11,6 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\Application\Command\Administrator;
 
 use Carbon\CarbonImmutable;
+use ParkManager\Domain\Organization\OrganizationId;
+use ParkManager\Domain\Organization\OrganizationRepository;
+use ParkManager\Domain\Owner;
+use ParkManager\Domain\OwnerRepository;
 use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
 use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\User;
@@ -19,10 +23,14 @@ use ParkManager\Domain\User\UserRepository;
 final class RegisterAdministratorHandler
 {
     private UserRepository $repository;
+    private OwnerRepository $ownerRepository;
+    private OrganizationRepository $organizationRepository;
 
-    public function __construct(UserRepository $repository)
+    public function __construct(UserRepository $repository, OwnerRepository $ownerRepository, OrganizationRepository $organizationRepository)
     {
         $this->repository = $repository;
+        $this->ownerRepository = $ownerRepository;
+        $this->organizationRepository = $organizationRepository;
     }
 
     public function __invoke(RegisterAdministrator $command): void
@@ -31,7 +39,7 @@ final class RegisterAdministratorHandler
             $user = $this->repository->getByEmail($command->email);
 
             throw new EmailAddressAlreadyInUse($user->id, $command->email);
-        } catch (UserNotFound $e) {
+        } catch (UserNotFound) {
             // No-op
         }
 
@@ -51,5 +59,11 @@ final class RegisterAdministratorHandler
         }
 
         $this->repository->save($admin);
+        $this->ownerRepository->save(Owner::byUser($admin));
+
+        $organization = $this->organizationRepository->get(OrganizationId::fromString(OrganizationId::ADMIN_ORG));
+        $organization->addMember($admin);
+
+        $this->organizationRepository->save($organization);
     }
 }

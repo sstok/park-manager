@@ -15,6 +15,12 @@ use ParkManager\Application\Service\PdpManager;
 use ParkManager\Application\Service\TLS\CertificateFactoryImpl;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNameRepository;
+use ParkManager\Domain\Organization\Organization;
+use ParkManager\Domain\Organization\OrganizationId;
+use ParkManager\Domain\Organization\OrganizationRepository;
+use ParkManager\Domain\Owner;
+use ParkManager\Domain\OwnerId;
+use ParkManager\Domain\OwnerRepository;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
@@ -101,11 +107,15 @@ return static function (ContainerConfigurator $c): void {
         ->args([
             service_locator([
                 User::class => service(UserRepository::class),
+                Owner::class => service(OwnerRepository::class),
+                Organization::class => service(OrganizationRepository::class),
                 Space::class => service(WebhostingSpaceRepository::class),
                 DomainNameId::class => service(DomainNameRepository::class),
             ]),
             [
                 UserId::class => 'fromString',
+                OwnerId::class => 'fromString',
+                OrganizationId::class => 'fromString',
                 DomainNameId::class => 'fromString',
             ],
         ]);

@@ -17,6 +17,8 @@ use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
+use ParkManager\Tests\Mock\Domain\Organization\OrganizationRepositoryMock;
+use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
@@ -38,7 +40,7 @@ final class RegisterAdministratorHandlerTest extends TestCase
     public function handle_registration_of_new_administrator(): void
     {
         $repo = new UserRepositoryMock();
-        $handler = new RegisterAdministratorHandler($repo);
+        $handler = new RegisterAdministratorHandler($repo, new OwnerRepositoryMock(), new OrganizationRepositoryMock($repo));
 
         $command = RegisterAdministrator::with(self::ID_NEW, 'John@example.com', 'My name', 'my-password');
         $handler($command);
@@ -57,7 +59,7 @@ final class RegisterAdministratorHandlerTest extends TestCase
     public function handle_registration_of_new_administrator_with_new_password_requirement(): void
     {
         $repo = new UserRepositoryMock();
-        $handler = new RegisterAdministratorHandler($repo);
+        $handler = new RegisterAdministratorHandler($repo, new OwnerRepositoryMock(), new OrganizationRepositoryMock($repo));
 
         $now = CarbonImmutable::parse('2021-01-04 15:06:00');
         CarbonImmutable::setTestNow($now);
@@ -81,7 +83,7 @@ final class RegisterAdministratorHandlerTest extends TestCase
     public function handle_registration_of_new_super_administrator(): void
     {
         $repo = new UserRepositoryMock();
-        $handler = new RegisterAdministratorHandler($repo);
+        $handler = new RegisterAdministratorHandler($repo, new OwnerRepositoryMock(), new OrganizationRepositoryMock($repo));
 
         $command = RegisterAdministrator::with(self::ID_NEW, 'John@example.com', 'My name', 'my-password')->asSuperAdmin();
         $handler($command);
@@ -108,7 +110,7 @@ final class RegisterAdministratorHandlerTest extends TestCase
                 ),
             ]
         );
-        $handler = new RegisterAdministratorHandler($repo);
+        $handler = new RegisterAdministratorHandler($repo, new OwnerRepositoryMock(), new OrganizationRepositoryMock($repo));
 
         $this->expectException(EmailAddressAlreadyInUse::class);
 
