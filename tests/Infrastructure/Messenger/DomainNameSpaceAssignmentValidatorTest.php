@@ -11,17 +11,19 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Messenger;
 
 use ParkManager\Application\Command\DomainName\AddDomainName;
+use ParkManager\Application\Command\DomainName\AssignDomainNameToOwner;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToSpace;
-use ParkManager\Application\Command\DomainName\AssignDomainNameToUser;
 use ParkManager\Application\Command\DomainName\RemoveDomainName;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\DomainName\Exception\CannotRemoveInUseDomainName;
 use ParkManager\Domain\DomainName\Exception\CannotTransferInUseDomainName;
+use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
+use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -46,7 +48,7 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
         $stack = new StackMiddleware();
         $validator = new DomainNameSpaceAssignmentValidator(new DomainNameRepositoryMock(), [$spyingUsageValidator]);
 
-        $validator->handle(Envelope::wrap(AddDomainName::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', null, 'example', 'com')), $stack);
+        $validator->handle(Envelope::wrap(AddDomainName::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', OrganizationId::ADMIN_ORG, 'example', 'com')), $stack);
     }
 
     /** @test */
@@ -54,11 +56,12 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
     {
         $id = DomainNameId::fromString('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494');
 
+        $ownerRepository = new OwnerRepositoryMock();
         $usageValidatorProphecy = $this->prophesize(DomainNameSpaceUsageValidator::class);
         $usageValidatorProphecy->__invoke(Argument::any(), Argument::any())->shouldNotBeCalled();
         $usageValidator = $usageValidatorProphecy->reveal();
 
-        $validator = new DomainNameSpaceAssignmentValidator(new DomainNameRepositoryMock([DomainName::register($id, new DomainNamePair('example', 'com'), null)]), [$usageValidator]);
+        $validator = new DomainNameSpaceAssignmentValidator(new DomainNameRepositoryMock([DomainName::register($id, new DomainNamePair('example', 'com'), $ownerRepository->getAdminOrganization())]), [$usageValidator]);
         $stack = new StackMiddleware();
 
         $validator->handle(Envelope::wrap(AssignDomainNameToSpace::with($id->toString(), '1438b200-242e-4688-917b-6fb8adf99947')), $stack);
@@ -91,9 +94,9 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
     {
         yield 'AssignDomainNameToSpace' => [AssignDomainNameToSpace::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', '1438b200-242e-4688-917b-6fb8adf99947')];
 
-        yield 'AssignDomainNameToUser' => [AssignDomainNameToUser::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', '1d2f8114-4b82-4962-b564-ba14c752c434')];
+        yield 'AssignDomainNameToUser' => [AssignDomainNameToOwner::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', '1d2f8114-4b82-4962-b564-ba14c752c434')];
 
-        yield 'AssignDomainNameToUser (admin)' => [AssignDomainNameToUser::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', null)];
+        yield 'AssignDomainNameToUser (admin)' => [AssignDomainNameToOwner::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', OrganizationId::ADMIN_ORG)];
     }
 
     /**

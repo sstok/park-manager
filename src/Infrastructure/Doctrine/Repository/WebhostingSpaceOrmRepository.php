@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\ResultSet;
-use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
@@ -51,16 +51,11 @@ class WebhostingSpaceOrmRepository extends EntityRepository implements Webhostin
         return new OrmQueryBuilderResultSet($queryBuilder, 's');
     }
 
-    public function allFromOwner(?UserId $id): ResultSet
+    public function allFromOwner(OwnerId $id): ResultSet
     {
         $queryBuilder = $this->createQueryBuilder('s');
-
-        if ($id === null) {
-            $queryBuilder->andWhere('s.owner IS NULL');
-        } else {
-            $queryBuilder->andWhere('s.owner = :id')
-                ->setParameter('id', $id->toString());
-        }
+        $queryBuilder->andWhere('s.owner = :id')
+            ->setParameter('id', $id->toString());
 
         return new OrmQueryBuilderResultSet($queryBuilder, 's');
     }

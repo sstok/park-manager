@@ -10,30 +10,30 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Space;
 
-use ParkManager\Domain\User\UserRepository;
+use ParkManager\Domain\OwnerRepository;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class SwitchSpaceOwnerHandler
 {
     private WebhostingSpaceRepository $spaceRepository;
-    private UserRepository $userRepository;
+    private OwnerRepository $ownerRepository;
 
-    public function __construct(WebhostingSpaceRepository $spaceRepository, UserRepository $userRepository)
+    public function __construct(WebhostingSpaceRepository $spaceRepository, OwnerRepository $ownerRepository)
     {
         $this->spaceRepository = $spaceRepository;
-        $this->userRepository = $userRepository;
+        $this->ownerRepository = $ownerRepository;
     }
 
     public function __invoke(SwitchSpaceOwner $command): void
     {
         $space = $this->spaceRepository->get($command->space);
-        $owner = $command->newOwner === null ? null : $this->userRepository->get($command->newOwner);
+        $owner = $this->ownerRepository->get($command->newOwner);
 
         if ($space->owner === $owner) {
             return;
         }
 
-        $space->switchOwner($owner);
+        $space->switchToOwner($owner);
         $this->spaceRepository->save($space);
     }
 }

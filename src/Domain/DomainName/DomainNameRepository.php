@@ -12,11 +12,16 @@ namespace ParkManager\Domain\DomainName;
 
 use ParkManager\Domain\DomainName\Exception\CannotRemovePrimaryDomainName;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
-use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\OwnerControlledRepository;
+use ParkManager\Domain\OwnerId;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
-interface DomainNameRepository
+/**
+ * @implements OwnerControlledRepository<DomainName>
+ */
+interface DomainNameRepository extends OwnerControlledRepository
 {
     /**
      * @throws DomainNameNotFound When no domain-name was found with the id
@@ -34,19 +39,14 @@ interface DomainNameRepository
     public function getByName(DomainNamePair $name): DomainName;
 
     /**
-     * @return iterable<DomainName>
+     * @return ResultSet<DomainName>
      */
-    public function allFromOwner(?UserId $userId): iterable;
+    public function allAccessibleBy(OwnerId $ownerId): ResultSet;
 
     /**
-     * @return iterable<DomainName>
+     * @return ResultSet<DomainName>
      */
-    public function allAccessibleBy(?UserId $userId): iterable;
-
-    /**
-     * @return iterable<DomainName>
-     */
-    public function allFromSpace(SpaceId $id): iterable;
+    public function allFromSpace(SpaceId $id): ResultSet;
 
     public function save(DomainName $domainName): void;
 

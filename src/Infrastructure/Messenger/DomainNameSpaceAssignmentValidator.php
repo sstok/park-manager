@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Messenger;
 
+use ParkManager\Application\Command\DomainName\AssignDomainNameToOwner;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToSpace;
-use ParkManager\Application\Command\DomainName\AssignDomainNameToUser;
 use ParkManager\Application\Command\DomainName\RemoveDomainName;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\DomainName\Exception\CannotRemoveInUseDomainName;
@@ -40,7 +40,7 @@ final class DomainNameSpaceAssignmentValidator implements MiddlewareInterface
     {
         $message = $envelope->getMessage();
 
-        if ($message instanceof AssignDomainNameToSpace || $message instanceof AssignDomainNameToUser || $message instanceof RemoveDomainName) {
+        if ($message instanceof AssignDomainNameToSpace || $message instanceof AssignDomainNameToOwner || $message instanceof RemoveDomainName) {
             $this->handleMessage($message);
         }
 
@@ -48,7 +48,7 @@ final class DomainNameSpaceAssignmentValidator implements MiddlewareInterface
     }
 
     /**
-     * @param AssignDomainNameToSpace|AssignDomainNameToUser|RemoveDomainName $message
+     * @param AssignDomainNameToOwner|AssignDomainNameToSpace|RemoveDomainName $message
      */
     private function handleMessage(object $message): void
     {

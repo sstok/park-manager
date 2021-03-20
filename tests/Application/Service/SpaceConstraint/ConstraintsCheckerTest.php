@@ -23,7 +23,6 @@ use ParkManager\Domain\Webhosting\Email\Forward;
 use ParkManager\Domain\Webhosting\Email\ForwardId;
 use ParkManager\Domain\Webhosting\Email\Mailbox;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
-use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Mock\Application\Service\CurrentStorageUsageRetrieverMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\ForwardRepositoryMock as EmailForwardRepositoryMock;
@@ -52,10 +51,9 @@ final class ConstraintsCheckerTest extends TestCase
     {
         $this->spaceRepository = new SpaceRepositoryMock([
             $space1 = SpaceRepositoryMock::createSpace(),
-            $space2 = Space::registerWithCustomConstraints(
-                SpaceId::fromString(self::SPACE_ID2),
-                null, // Owner
-                new Constraints(
+            $space2 = SpaceRepositoryMock::createSpace(
+                self::SPACE_ID2,
+                constraints: new Constraints(
                     [
                         'storageSize' => new ByteSize(100, 'GiB'),
                         'email' => new EmailConstraints([

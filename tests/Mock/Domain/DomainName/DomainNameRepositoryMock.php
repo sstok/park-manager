@@ -16,9 +16,11 @@ use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\DomainName\Exception\CannotRemovePrimaryDomainName;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
-use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\OwnerId;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
+use ParkManager\Tests\Mock\Domain\MockRepoResultSet;
 use ParkManager\Tests\Mock\Domain\MockRepository;
 
 final class DomainNameRepositoryMock implements DomainNameRepository
@@ -69,32 +71,28 @@ final class DomainNameRepositoryMock implements DomainNameRepository
         return $this->mockDoGetByField('full_name', $name->toString());
     }
 
-    public function allFromOwner(?UserId $userId): iterable
+    public function allFromOwner(OwnerId $id): ResultSet
     {
-        if ($userId === null) {
-            return $this->mockDoGetMultiByField('owner', null);
-        }
-
-        return $this->mockDoGetMultiByField('owner', (string) $userId);
+        return $this->mockDoGetMultiByField('owner', (string) $id);
     }
 
-    public function allAccessibleBy(?UserId $userId): iterable
+    public function allAccessibleBy(OwnerId $ownerId): ResultSet
     {
         $found = [];
 
         /** @var DomainName $entity */
         foreach ($this->storedById as $id => $entity) {
-            if (UserId::equalsValueOfEntity($userId, $entity->owner, 'id')) {
+            if (OwnerId::equalsValueOfEntity($ownerId, $entity->owner, 'id')) {
                 $found[$id] = $entity;
-            } elseif ($entity->space !== null && UserId::equalsValueOfEntity($userId, $entity->space->owner, 'id')) {
+            } elseif ($entity->space !== null && OwnerId::equalsValueOfEntity($ownerId, $entity->space->owner, 'id')) {
                 $found[$id] = $entity;
             }
         }
 
-        return $found;
+        return new MockRepoResultSet($found);
     }
 
-    public function allFromSpace(SpaceId $id): iterable
+    public function allFromSpace(SpaceId $id): ResultSet
     {
         return $this->mockDoGetMultiByField('space', (string) $id);
     }
@@ -104,7 +102,7 @@ final class DomainNameRepositoryMock implements DomainNameRepository
         if ($domainName->isPrimary() && $domainName->space !== null) {
             try {
                 $primaryDomainName = $this->getPrimaryOf($domainName->space->id);
-            } catch (WebhostingSpaceNotFound $e) {
+            } catch (WebhostingSpaceNotFound) {
                 $primaryDomainName = $domainName;
             }
 

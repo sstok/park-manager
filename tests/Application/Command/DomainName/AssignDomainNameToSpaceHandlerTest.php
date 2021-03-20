@@ -17,6 +17,7 @@ use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
+use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
@@ -30,6 +31,7 @@ final class AssignDomainNameToSpaceHandlerTest extends TestCase
     private const DOMAIN_ID_1 = 'ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494';
     private const DOMAIN_ID_2 = '4f459680-0673-4e5a-940c-fc0cd5bd052c';
 
+    private OwnerRepositoryMock $ownerRepository;
     private DomainNameRepositoryMock $domainNameRepository;
     private AssignDomainNameToSpaceHandler $handler;
 

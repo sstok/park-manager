@@ -13,7 +13,7 @@ namespace ParkManager\Domain\DomainName;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\DomainName\Exception\CannotAssignDomainNameWithDifferentOwner;
 use ParkManager\Domain\DomainName\Exception\CannotTransferPrimaryDomainName;
-use ParkManager\Domain\User\User;
+use ParkManager\Domain\Owner;
 use ParkManager\Domain\Webhosting\Space\Space;
 
 /**
@@ -36,10 +36,10 @@ class DomainName
     /**
      * READ-ONLY.
      *
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(name="owner", nullable=true, fieldName="id")
+     * @ORM\ManyToOne(targetEntity=Owner::class)
+     * @ORM\JoinColumn(name="owner", nullable=true, referencedColumnName="owner_id")
      */
-    public ?User $owner = null;
+    public Owner | null $owner = null;
 
     /**
      * READ-ONLY.
@@ -47,7 +47,7 @@ class DomainName
      * @ORM\ManyToOne(targetEntity=Space::class)
      * @ORM\JoinColumn(onDelete="CASCADE", name="space", referencedColumnName="id")
      */
-    public ?Space $space = null;
+    public Space | null $space = null;
 
     /**
      * READ-ONLY.
@@ -69,7 +69,7 @@ class DomainName
         $this->id = $id;
     }
 
-    public static function register(DomainNameId $id, DomainNamePair $domainName, ?User $owner): self
+    public static function register(DomainNameId $id, DomainNamePair $domainName, Owner $owner): self
     {
         $instance = new self($id, $domainName);
         $instance->owner = $owner;
@@ -144,9 +144,9 @@ class DomainName
     }
 
     /**
-     * Transfers the DomainName ownership to a User and removes the Space assignment.
+     * Transfers the DomainName ownership to Owner and removes the Space assignment.
      */
-    public function transferToOwner(?User $newOwner): void
+    public function transferToOwner(Owner $newOwner): void
     {
         if ($this->space !== null && $this->isPrimary()) {
             throw new CannotTransferPrimaryDomainName($this->namePair, $this->space->id, null);

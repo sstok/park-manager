@@ -12,6 +12,7 @@ namespace ParkManager\Tests\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\Owner;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
@@ -39,13 +40,19 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
 
     private Constraints $constraints;
     private Plan $plan;
-    private User $user1;
+    private Owner $owner1;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->user1 = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John', 'ashTong@8r949029');
+        $user = User::register(
+            UserId::fromString(self::OWNER_ID1),
+            new EmailAddress('John@mustash.com'),
+            'John',
+            'ashTong@8r949029'
+        );
+        $this->owner1 = Owner::byUser($user);
 
         $this->constraints = (new Constraints())->setMonthlyTraffic(50);
         $this->plan = new Plan(
@@ -54,8 +61,9 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         );
 
         $em = $this->getEntityManager();
-        $em->transactional(function (EntityManagerInterface $em): void {
-            $em->persist($this->user1);
+        $em->transactional(function (EntityManagerInterface $em) use ($user): void {
+            $em->persist($user);
+            $em->persist($this->owner1);
             $em->persist($this->plan);
         });
     }
@@ -73,12 +81,12 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         $space2 = $repository->get($id2);
 
         self::assertEquals($id, $space->id);
-        self::assertEquals($this->user1, $space->owner);
+        self::assertEquals($this->owner1, $space->owner);
         self::assertEquals(new Constraints(), $space->constraints);
         self::assertNull($space->getAssignedPlan());
 
         self::assertEquals($id2, $space2->id);
-        self::assertEquals($this->user1, $space2->owner);
+        self::assertEquals($this->owner1, $space2->owner);
         self::assertEquals($this->constraints, $space2->constraints);
         self::assertEquals($this->plan, $space2->getAssignedPlan());
     }
@@ -140,7 +148,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         $repository->save(
             Space::registerWithCustomConstraints(
                 SpaceId::fromString(self::SPACE_ID1),
-                $this->user1,
+                $this->owner1,
                 new Constraints()
             )
         );
@@ -151,7 +159,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         $repository->save(
             Space::register(
                 SpaceId::fromString(self::SPACE_ID2),
-                $this->user1,
+                $this->owner1,
                 $this->plan
             )
         );

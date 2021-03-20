@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Organization;
 
+use Assert\Assertion;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -121,11 +122,23 @@ class Organization
         return $member;
     }
 
-    public function hasMember(User $user): bool
+    public function hasMember(User $user, ?int $accessLevel = null): bool
     {
         [$member,] = $this->findMembership($user);
 
-        return $member !== null;
+        if ($member === null) {
+            return false;
+        }
+
+        if ($accessLevel !== null) {
+            Assertion::between($accessLevel, 1, 2, 'Access-level must be either LEVEL_MANAGER or LEVEL_COLLABORATOR', 'level');
+
+            if ($member->accessLevel !== $accessLevel) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

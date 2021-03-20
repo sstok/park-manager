@@ -10,22 +10,22 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Space;
 
-use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class SwitchSpaceOwner
 {
     public SpaceId $space;
-    public ?UserId $newOwner;
+    public OwnerId $newOwner;
 
-    public function __construct(SpaceId $space, ?UserId $newOwner)
+    public function __construct(SpaceId $space, OwnerId $newOwner)
     {
         $this->space = $space;
         $this->newOwner = $newOwner;
     }
 
-    public static function with(string $id, ?string $newOwner): self
+    public static function with(string $id, string $newOwner): self
     {
-        return new self(SpaceId::fromString($id), $newOwner === null ? null : UserId::fromString($newOwner));
+        return new self(SpaceId::fromString($id), OwnerId::fromString($newOwner));
     }
 }

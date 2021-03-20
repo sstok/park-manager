@@ -12,23 +12,23 @@ namespace ParkManager\Application\Command\DomainName;
 
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\OwnerId;
 
 final class AddDomainName
 {
     public DomainNameId $id;
-    public ?UserId $user = null;
+    public OwnerId $owner;
     public DomainNamePair $name;
 
-    public function __construct(DomainNameId $id, ?UserId $user, DomainNamePair $name)
+    public function __construct(DomainNameId $id, OwnerId $owner, DomainNamePair $name)
     {
         $this->id = $id;
-        $this->user = $user;
+        $this->owner = $owner;
         $this->name = $name;
     }
 
-    public static function with(string $id, ?string $userId, string $name, string $tld): self
+    public static function with(string $id, string $ownerId, string $name, string $tld): self
     {
-        return new self(DomainNameId::fromString($id), $userId ? UserId::fromString($userId) : null, new DomainNamePair($name, $tld));
+        return new self(DomainNameId::fromString($id), OwnerId::fromString($ownerId), new DomainNamePair($name, $tld));
     }
 }

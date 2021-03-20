@@ -14,7 +14,6 @@ use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
-use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
@@ -38,7 +37,7 @@ final class ModelResolverTest extends TestCase
     {
         $container = new Container();
         $container->set(Space::class, new SpaceRepositoryMock([
-            Space::registerWithCustomConstraints(SpaceId::fromString(SpaceRepositoryMock::ID1), null, new Constraints()),
+            SpaceRepositoryMock::createSpace(SpaceRepositoryMock::ID1),
         ]));
         $container->set(User::class, new UserRepositoryMock([
             User::register(UserId::fromString(UserRepositoryMock::USER_ID1), new EmailAddress('jane@example.com'), 'Jane', 'He'),

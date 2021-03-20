@@ -18,10 +18,12 @@ use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\DomainName\Exception\CannotRemovePrimaryDomainName;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
-use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\OwnerId;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
+use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @method DomainName|null find($id, $lockMode = null, $lockVersion = null)
@@ -52,7 +54,7 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
                 ->getQuery()
                 ->setParameter('id', $id->toString())
                 ->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             throw WebhostingSpaceNotFound::withId($id);
         }
     }
@@ -66,53 +68,42 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
                 ->setParameter('name', $name->name)
                 ->setParameter('tld', $name->tld)
                 ->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             throw DomainNameNotFound::withName($name);
         }
     }
 
-    public function allFromOwner(?UserId $userId): iterable
+    public function allFromOwner(OwnerId $id): ResultSet
     {
-        if ($userId === null) {
-            return $this->createQueryBuilder('d')
-                ->where('d.owner IS NULL')
-                ->getQuery()
-                ->getResult();
-        }
-
         return $this->createQueryBuilder('d')
             ->where('d.owner = :owner')
             ->getQuery()
-            ->setParameter('owner', $userId->toString())
+            ->setParameter('owner', $id->toString())
             ->getResult();
     }
 
-    public function allAccessibleBy(?UserId $userId): iterable
+    public function allAccessibleBy(OwnerId $ownerId): ResultSet
     {
-        if ($userId === null) {
-            return $this->createQueryBuilder('d')
+        return new OrmQueryBuilderResultSet(
+            $this->createQueryBuilder('d')
                 ->leftJoin('d.space', 's')
-                ->where('(d.space IS NULL AND d.owner IS NULL) OR (d.space IS NOT NULL AND s.owner IS NULL)')
-                ->getQuery()
-                ->getResult();
-        }
-
-        return $this->createQueryBuilder('d')
-            ->leftJoin('d.space', 's')
-            ->where('d.owner = :owner OR s.owner = :owner')
-            ->getQuery()
-            ->setParameter('owner', $userId->toString())
-            ->getResult();
+                ->where('d.owner = :owner OR s.owner = :owner')
+                ->setParameter('owner', $ownerId->toString()),
+            'd',
+            true
+        );
     }
 
-    public function allFromSpace(SpaceId $id): iterable
+    public function allFromSpace(SpaceId $id): ResultSet
     {
-        return $this->createQueryBuilder('d')
-            ->join(Space::class, 's')
-            ->where('s.id = :space')
-            ->getQuery()
-            ->setParameter('space', $id->toString())
-            ->getResult();
+        return new OrmQueryBuilderResultSet(
+            $this->createQueryBuilder('d')
+                ->join(Space::class, 's')
+                ->where('s.id = :space')
+                ->setParameter('space', $id->toString()),
+            'd',
+            true
+        );
     }
 
     public function save(DomainName $domainName): void
@@ -120,7 +111,7 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
         if ($domainName->primary && $domainName->space !== null) {
             try {
                 $primaryDomainName = $this->getPrimaryOf($domainName->space->id);
-            } catch (WebhostingSpaceNotFound $e) {
+            } catch (WebhostingSpaceNotFound) {
                 $primaryDomainName = $domainName;
             }
 

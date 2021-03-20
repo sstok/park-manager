@@ -16,13 +16,15 @@ use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\DomainName\Exception\DomainNameAlreadyInUse;
-use ParkManager\Domain\User\User;
+use ParkManager\Domain\Owner;
+use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
+use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\PlanRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
@@ -39,6 +41,15 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
     private const SPACE_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
     private const SPACE_ID2 = '696d345c-a5e1-11e7-9856-acbc32b58315';
 
+    private OwnerRepositoryMock $ownerRepository;
+
+    protected function setUp(): void
+    {
+        $this->ownerRepository = new OwnerRepositoryMock([
+            Owner::byUser(UserRepositoryMock::createUser(id: UserRepositoryMock::USER_ID1)),
+        ]);
+    }
+
     /** @test */
     public function it_handles_registration_of_space_with_shared_constraints(): void
     {
@@ -48,13 +59,13 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         $spaceRepository = new SpaceRepositoryMock();
         $planRepository = new PlanRepositoryMock([$plan]);
         $domainNameRepository = new DomainNameRepositoryMock();
-        $userRepository = new UserRepositoryMock([$user = UserRepositoryMock::createUser()]);
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $userRepository);
+
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $this->ownerRepository);
 
         $handler(RegisterWebhostingSpace::withPlan(self::SPACE_ID1, $domainName, self::USER_ID1, self::SET_ID1));
 
         $spaceRepository->assertEntitiesWereSaved([
-            Space::register(SpaceId::fromString(self::SPACE_ID1), $user, $plan),
+            Space::register(SpaceId::fromString(self::SPACE_ID1), $this->getUserOwner(), $plan),
         ]);
 
         $domainNameRepository->assertEntitiesCountWasSaved(1);
@@ -84,13 +95,13 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         $spaceRepository = new SpaceRepositoryMock();
         $planRepository = new PlanRepositoryMock();
         $domainNameRepository = new DomainNameRepositoryMock();
-        $userRepository = new UserRepositoryMock([$user = UserRepositoryMock::createUser()]);
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $userRepository);
 
-        $handler(RegisterWebhostingSpace::withCustomConstraints(self::SPACE_ID1, $domainName, self::USER_ID1, $constraints));
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $this->ownerRepository);
+
+        $handler(RegisterWebhostingSpace::withCustomConstraints(self::SPACE_ID1, $domainName, UserRepositoryMock::USER_ID1, $constraints));
 
         $spaceRepository->assertEntitiesWereSaved([
-            Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID1), $user, $constraints),
+            Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID1), $this->getUserOwner(), $constraints),
         ]);
 
         $domainNameRepository->assertEntitiesCountWasSaved(1);
@@ -118,7 +129,8 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         $planRepository = new PlanRepositoryMock([$plan]);
         $spaceRepository = new SpaceRepositoryMock();
         $domainNameRepository = new DomainNameRepositoryMock([$this->createExistingDomain($domainName = new DomainNamePair('example', '.com'), $spaceId2 = SpaceId::fromString(self::SPACE_ID2))]);
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, new UserRepositoryMock([UserRepositoryMock::createUser()]));
+
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $this->ownerRepository);
 
         try {
             $handler(RegisterWebhostingSpace::withPlan(self::SPACE_ID1, $domainName, UserRepositoryMock::USER_ID1, self::SET_ID1));
@@ -134,7 +146,11 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
 
     private function createExistingDomain(DomainNamePair $domainName, SpaceId $existingSpaceId): DomainName
     {
-        $space = Space::registerWithCustomConstraints($existingSpaceId, UserRepositoryMock::createUser(), new Constraints());
+        $space = Space::registerWithCustomConstraints(
+            id: $existingSpaceId,
+            owner: $this->ownerRepository->getAdminOrganization(),
+            constraints: new Constraints()
+        );
 
         return DomainName::registerSecondaryForSpace(DomainNameId::fromString('10abb1db-6e93-4dfc-9ba1-cdd46a225657'), $space, $domainName);
     }
@@ -147,14 +163,13 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
 
         $spaceRepository = new SpaceRepositoryMock();
         $planRepository = new PlanRepositoryMock();
-        $userRepository = new UserRepositoryMock([$user = UserRepositoryMock::createUser()]);
-        $domainNameRepository = new DomainNameRepositoryMock([$this->createExistingDomainWithOwner($domainName, $user)]);
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $userRepository);
+        $domainNameRepository = new DomainNameRepositoryMock([$this->createExistingDomainWithOwner($domainName, $this->getUserOwner())]);
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $this->ownerRepository);
 
         $handler(RegisterWebhostingSpace::withCustomConstraints(self::SPACE_ID1, $domainName, self::USER_ID1, $constraints));
 
         $spaceRepository->assertEntitiesWereSaved([
-            Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID1), $user, $constraints),
+            Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID1), $this->getUserOwner(), $constraints),
         ]);
 
         $domainNameRepository->assertEntitiesCountWasSaved(1);
@@ -175,8 +190,13 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         });
     }
 
-    private function createExistingDomainWithOwner(DomainNamePair $domainName, ?User $user): DomainName
+    private function createExistingDomainWithOwner(DomainNamePair $domainName, Owner $owner): DomainName
     {
-        return DomainName::register(DomainNameId::fromString('10abb1db-6e93-4dfc-9ba1-cdd46a225657'), $domainName, $user);
+        return DomainName::register(DomainNameId::fromString('10abb1db-6e93-4dfc-9ba1-cdd46a225657'), $domainName, $owner);
+    }
+
+    private function getUserOwner(): Owner
+    {
+        return $this->ownerRepository->get(OwnerId::fromString(UserRepositoryMock::USER_ID1));
     }
 }

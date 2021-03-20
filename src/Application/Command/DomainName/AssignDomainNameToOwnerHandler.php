@@ -11,25 +11,25 @@ declare(strict_types=1);
 namespace ParkManager\Application\Command\DomainName;
 
 use ParkManager\Domain\DomainName\DomainNameRepository;
-use ParkManager\Domain\User\UserRepository;
+use ParkManager\Domain\OwnerRepository;
 
-final class AssignDomainNameToUserHandler
+final class AssignDomainNameToOwnerHandler
 {
     private DomainNameRepository $domainNameRepository;
-    private UserRepository $userRepository;
+    private OwnerRepository $ownerRepository;
 
-    public function __construct(DomainNameRepository $domainNameRepository, UserRepository $userRepository)
+    public function __construct(DomainNameRepository $domainNameRepository, OwnerRepository $ownerRepository)
     {
         $this->domainNameRepository = $domainNameRepository;
-        $this->userRepository = $userRepository;
+        $this->ownerRepository = $ownerRepository;
     }
 
-    public function __invoke(AssignDomainNameToUser $command): void
+    public function __invoke(AssignDomainNameToOwner $command): void
     {
         $domainName = $this->domainNameRepository->get($command->id);
-        $user = $this->userRepository->get($command->user);
+        $owner = $this->ownerRepository->get($command->owner);
 
-        $domainName->transferToOwner($user);
+        $domainName->transferToOwner($owner);
 
         $this->domainNameRepository->save($domainName);
     }

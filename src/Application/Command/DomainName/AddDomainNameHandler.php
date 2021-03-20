@@ -14,35 +14,35 @@ use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
-use ParkManager\Domain\User\UserId;
-use ParkManager\Domain\User\UserRepository;
+use ParkManager\Domain\OwnerId;
+use ParkManager\Domain\OwnerRepository;
 
 final class AddDomainNameHandler
 {
     private DomainNameRepository $repository;
-    private UserRepository $userRepository;
+    private OwnerRepository $ownerRepository;
 
-    public function __construct(DomainNameRepository $repository, UserRepository $userRepository)
+    public function __construct(DomainNameRepository $repository, OwnerRepository $ownerRepository)
     {
         $this->repository = $repository;
-        $this->userRepository = $userRepository;
+        $this->ownerRepository = $ownerRepository;
     }
 
     public function __invoke(AddDomainName $command): void
     {
         try {
             $foundDomain = $this->repository->getByName($command->name);
-            $sameOwner = UserId::equalsValueOfEntity($command->user, $foundDomain->owner, 'id');
+            $sameOwner = OwnerId::equalsValueOfEntity($command->owner, $foundDomain->owner, 'id');
 
             throw new DomainNameAlreadyInUse($command->name, $sameOwner);
-        } catch (DomainNameNotFound $e) {
+        } catch (DomainNameNotFound) {
             // OK
         }
 
         $domainName = DomainName::register(
             $command->id,
             $command->name,
-            $command->user ? $this->userRepository->get($command->user) : null
+            $this->ownerRepository->get($command->owner)
         );
 
         $this->repository->save($domainName);

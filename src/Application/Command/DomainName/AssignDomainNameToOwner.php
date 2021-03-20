@@ -11,21 +11,21 @@ declare(strict_types=1);
 namespace ParkManager\Application\Command\DomainName;
 
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\OwnerId;
 
-final class AssignDomainNameToUser
+final class AssignDomainNameToOwner
 {
     public DomainNameId $id;
-    public ?UserId $user;
+    public OwnerId $owner;
 
-    public function __construct(DomainNameId $id, ?UserId $user)
+    public function __construct(DomainNameId $id, OwnerId $owner)
     {
         $this->id = $id;
-        $this->user = $user;
+        $this->owner = $owner;
     }
 
-    public static function with(string $id, ?string $userId): self
+    public static function with(string $id, string $ownerId): self
     {
-        return new self(DomainNameId::fromString($id), $userId ? UserId::fromString($userId) : null);
+        return new self(DomainNameId::fromString($id), OwnerId::fromString($ownerId));
     }
 }

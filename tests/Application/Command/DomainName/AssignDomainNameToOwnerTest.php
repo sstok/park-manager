@@ -10,20 +10,22 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\DomainName;
 
-use ParkManager\Application\Command\DomainName\AssignDomainNameToUser;
-use ParkManager\Application\Command\DomainName\AssignDomainNameToUserHandler;
+use ParkManager\Application\Command\DomainName\AssignDomainNameToOwner;
+use ParkManager\Application\Command\DomainName\AssignDomainNameToOwnerHandler;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\Owner;
+use ParkManager\Domain\OwnerId;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
+use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-final class AssignDomainNameToUserHandlerTest extends TestCase
+final class AssignDomainNameToOwnerTest extends TestCase
 {
     private const USER_ID_1 = 'b2d70be9-31ff-4ceb-8305-e157acdca94f';
     private const USER_ID_2 = '2350ef87-877e-46c8-9c10-d199a9b16980';
@@ -32,13 +34,13 @@ final class AssignDomainNameToUserHandlerTest extends TestCase
     private const DOMAIN_ID_2 = '4f459680-0673-4e5a-940c-fc0cd5bd052c';
 
     private DomainNameRepositoryMock $domainNameRepository;
-    private AssignDomainNameToUserHandler $handler;
+    private AssignDomainNameToOwnerHandler $handler;
 
     protected function setUp(): void
     {
-        $userRepository = new UserRepositoryMock([
-            $user1 = UserRepositoryMock::createUser('bella.richards@example.com', self::USER_ID_1),
-            $user2 = UserRepositoryMock::createUser('johnni.dunn@example.net', self::USER_ID_2),
+        $userRepository = new OwnerRepositoryMock([
+            $user1 = Owner::byUser(UserRepositoryMock::createUser('bella.richards@example.com', self::USER_ID_1)),
+            $user2 = Owner::byUser(UserRepositoryMock::createUser('johnni.dunn@example.net', self::USER_ID_2)),
         ]);
 
         $this->domainNameRepository = new DomainNameRepositoryMock([
@@ -54,18 +56,18 @@ final class AssignDomainNameToUserHandlerTest extends TestCase
             ),
         ]);
 
-        $this->handler = new AssignDomainNameToUserHandler($this->domainNameRepository, $userRepository);
+        $this->handler = new AssignDomainNameToOwnerHandler($this->domainNameRepository, $userRepository);
     }
 
     /** @test */
-    public function transfer_to_space_as_primary(): void
+    public function transfer_to_owner_as_primary(): void
     {
-        $this->handler->__invoke(AssignDomainNameToUser::with(self::DOMAIN_ID_2, self::USER_ID_1));
+        $this->handler->__invoke(AssignDomainNameToOwner::with(self::DOMAIN_ID_2, self::USER_ID_1));
 
         $this->domainNameRepository->assertEntitiesCountWasSaved(1);
         $this->domainNameRepository->assertEntityWasSavedThat(
             self::DOMAIN_ID_2,
-            static fn (DomainName $domainName) => $domainName->space === null && UserId::equalsValueOfEntity(UserId::fromString(self::USER_ID_1), $domainName->owner, 'id')
+            static fn (DomainName $domainName) => $domainName->space === null && OwnerId::equalsValueOfEntity(OwnerId::fromString(self::USER_ID_1), $domainName->owner, 'id')
         );
     }
 }

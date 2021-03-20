@@ -16,6 +16,11 @@ use Faker\Generator as FakerGenerator;
 use ParkManager\Application\Command\Administrator\RegisterAdministrator;
 use ParkManager\Application\Command\BatchCommand;
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\Organization\Organization;
+use ParkManager\Domain\Organization\OrganizationId;
+use ParkManager\Domain\Organization\OrganizationRepository;
+use ParkManager\Domain\Owner;
+use ParkManager\Domain\OwnerRepository;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -26,16 +31,29 @@ final class AdminFixtures extends Fixture
     private MessageBusInterface $commandBus;
     private EncoderFactoryInterface $encoderFactory;
     private FakerGenerator $faker;
+    private OrganizationRepository $organizationRepository;
+    private OwnerRepository $ownerRepository;
 
-    public function __construct(MessageBusInterface $commandBus, EncoderFactoryInterface $encoderFactory, FakerGenerator $faker)
-    {
+    public function __construct(
+        MessageBusInterface $commandBus,
+        EncoderFactoryInterface $encoderFactory,
+        FakerGenerator $faker,
+        OrganizationRepository $organizationRepository,
+        OwnerRepository $ownerRepository
+    ) {
         $this->commandBus = $commandBus;
         $this->encoderFactory = $encoderFactory;
         $this->faker = $faker;
+        $this->organizationRepository = $organizationRepository;
+        $this->ownerRepository = $ownerRepository;
     }
 
     public function load(ObjectManager $manager): void
     {
+        // XXX This needs to be moved to an installer script as it's ALWAYS needed.
+        $this->organizationRepository->save($adminOrg = new Organization(OrganizationId::fromString(OrganizationId::ADMIN_ORG), 'Administrators'));
+        $this->ownerRepository->save(Owner::byOrganization($adminOrg));
+
         $admins = [];
 
         foreach (\range(1, 6) as $i) {
@@ -58,7 +76,7 @@ final class AdminFixtures extends Fixture
         $this->commandBus->dispatch(
             new BatchCommand(
                 (new RegisterAdministrator(
-                    $id = UserId::create(),
+                    UserId::create(),
                     new EmailAddress('janet@example.com'),
                     'Janet, Doe',
                     $this->encodePassword('&ltr@Sec3re!+')

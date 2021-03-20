@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Doctrine\Repository;
 
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\Owner;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
@@ -27,6 +28,7 @@ use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
 final class OrmQueryBuilderResultSetTest extends EntityRepositoryTestCase
 {
     private const OWNER_ID1 = '3f8da982-a528-11e7-a2da-acbc32b58315';
+    private const OWNER_ID2 = '2794711b-00ab-403c-9331-8926353a4663';
     private const SPACE_ID1 = '2d3fb900-a528-11e7-a027-acbc32b58315';
     private const SPACE_ID2 = '47f6db14-a69c-11e7-be13-acbc32b58315';
     private const SPACE_ID3 = '24802a63-2115-41e9-b7c8-0a1400583665';
@@ -36,22 +38,26 @@ final class OrmQueryBuilderResultSetTest extends EntityRepositoryTestCase
     public function it_limits_ids(): void
     {
         $user = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John', 'ashTong@8r949029');
+        $user2 = User::register(UserId::fromString(self::OWNER_ID2), new EmailAddress('John2@mustash.com'), 'Johny2', 'ashTong@8r949029');
 
         $em = $this->getEntityManager();
         $em->persist($user);
+        $em->persist($user2);
+        $em->persist($owner = Owner::byUser($user));
+        $em->persist($owner2 = Owner::byUser($user2));
 
         $repository = new WebhostingSpaceOrmRepository($this->getEntityManager());
-        $repository->save(Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID1), $user, new Constraints()));
-        $repository->save(Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID2), null, new Constraints()));
-        $repository->save(Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID3), null, new Constraints()));
-        $repository->save(Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID4), null, new Constraints()));
+        $repository->save(Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID1), $owner, new Constraints()));
+        $repository->save(Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID2), $owner2, new Constraints()));
+        $repository->save(Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID3), $owner2, new Constraints()));
+        $repository->save(Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID4), $owner2, new Constraints()));
 
         $em = $this->getEntityManager();
         $em->flush();
         $em->clear();
 
-        $this->assertIdsEquals([self::SPACE_ID2, self::SPACE_ID3, self::SPACE_ID4], $repository->allFromOwner(null));
-        $this->assertIdsEquals([self::SPACE_ID2, self::SPACE_ID4], $repository->allFromOwner(null)->limitToIds([self::SPACE_ID2, self::SPACE_ID4]));
-        $this->assertIdsEquals([], $repository->allFromOwner(null)->limitToIds([self::SPACE_ID1])); // can't expend the subselection
+        $this->assertIdsEquals([self::SPACE_ID2, self::SPACE_ID3, self::SPACE_ID4], $repository->allFromOwner($owner2->id));
+        $this->assertIdsEquals([self::SPACE_ID2, self::SPACE_ID4], $repository->allFromOwner($owner2->id)->limitToIds([self::SPACE_ID2, self::SPACE_ID4]));
+        $this->assertIdsEquals([], $repository->allFromOwner($owner2->id)->limitToIds([self::SPACE_ID1])); // can't expend the subselection
     }
 }

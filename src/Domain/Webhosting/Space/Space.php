@@ -16,7 +16,7 @@ use Carbon\Carbon;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\ByteSize;
-use ParkManager\Domain\User\User;
+use ParkManager\Domain\Owner;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 
@@ -47,10 +47,10 @@ class Space
     public Constraints $constraints;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=true, name="owner", referencedColumnName="id", onDelete="RESTRICT")
+     * @ORM\ManyToOne(targetEntity=Owner::class)
+     * @ORM\JoinColumn(name="owner", referencedColumnName="owner_id", onDelete="RESTRICT")
      */
-    public ?User $owner = null;
+    public Owner $owner;
 
     /**
      * @ORM\Column(name="expires_on", type="datetime_immutable", nullable=true)
@@ -75,7 +75,7 @@ class Space
      */
     public ?ByteSize $webQuota = null;
 
-    private function __construct(SpaceId $id, ?User $owner, Constraints $constraints)
+    private function __construct(SpaceId $id, Owner $owner, Constraints $constraints)
     {
         $this->id = $id;
         $this->owner = $owner;
@@ -85,7 +85,7 @@ class Space
         $this->constraints = $constraints;
     }
 
-    public static function register(SpaceId $id, ?User $owner, Plan $plan): self
+    public static function register(SpaceId $id, Owner $owner, Plan $plan): self
     {
         $space = new self($id, $owner, $plan->constraints);
         $space->plan = $plan;
@@ -93,7 +93,7 @@ class Space
         return $space;
     }
 
-    public static function registerWithCustomConstraints(SpaceId $id, ?User $owner, Constraints $constraints): self
+    public static function registerWithCustomConstraints(SpaceId $id, Owner $owner, Constraints $constraints): self
     {
         return new self($id, $owner, $constraints);
     }
@@ -156,7 +156,7 @@ class Space
         $this->webQuota = $size;
     }
 
-    public function switchOwner(?User $owner): void
+    public function switchToOwner(Owner $owner): void
     {
         $this->owner = $owner;
     }

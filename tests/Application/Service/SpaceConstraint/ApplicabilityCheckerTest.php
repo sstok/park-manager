@@ -20,7 +20,6 @@ use ParkManager\Domain\Webhosting\Constraint\DBConstraints;
 use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
 use ParkManager\Domain\Webhosting\Email\Mailbox;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
-use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Mock\Application\Service\CurrentStorageUsageRetrieverMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\MailboxRepositoryMock;
@@ -46,10 +45,9 @@ final class ApplicabilityCheckerTest extends TestCase
     {
         $this->spaceRepository = new SpaceRepositoryMock([
             $space1 = SpaceRepositoryMock::createSpace(self::SPACE_ID1),
-            $space2 = Space::registerWithCustomConstraints(
-                SpaceId::fromString(self::SPACE_ID2),
-                null, // Owner
-                new Constraints(
+            $space2 = SpaceRepositoryMock::createSpace(
+                self::SPACE_ID2,
+                constraints: new Constraints(
                     [
                         'monthlyTraffic' => 100,
                         'storageSize' => new ByteSize(100, 'GiB'),

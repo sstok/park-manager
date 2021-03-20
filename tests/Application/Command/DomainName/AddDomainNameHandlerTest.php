@@ -16,9 +16,11 @@ use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\DomainName\Exception\DomainNameAlreadyInUse;
-use ParkManager\Domain\User\User;
-use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\Organization\OrganizationId;
+use ParkManager\Domain\Owner;
+use ParkManager\Domain\OwnerId;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
+use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
@@ -28,20 +30,20 @@ use PHPUnit\Framework\TestCase;
 final class AddDomainNameHandlerTest extends TestCase
 {
     private DomainNameRepositoryMock $repository;
-    private UserRepositoryMock $userRepository;
+    private OwnerRepositoryMock $ownerRepository;
     private AddDomainNameHandler $handler;
 
     protected function setUp(): void
     {
-        $this->repository = new DomainNameRepositoryMock([$this->createExistingDomainWithOwner(new DomainNamePair('example', 'com'))]);
-        $this->userRepository = new UserRepositoryMock([UserRepositoryMock::createUser()]);
+        $this->ownerRepository = new OwnerRepositoryMock([$owner = Owner::byUser(UserRepositoryMock::createUser())]);
+        $this->repository = new DomainNameRepositoryMock([$this->createExistingDomainWithOwner(new DomainNamePair('example', 'com'), $owner)]);
 
-        $this->handler = new AddDomainNameHandler($this->repository, $this->userRepository);
+        $this->handler = new AddDomainNameHandler($this->repository, $this->ownerRepository);
     }
 
-    private function createExistingDomainWithOwner(DomainNamePair $domainName, ?User $user = null): DomainName
+    private function createExistingDomainWithOwner(DomainNamePair $domainName, Owner $owner): DomainName
     {
-        return DomainName::register(DomainNameId::fromString('10abb1db-6e93-4dfc-9ba1-cdd46a225657'), $domainName, $user);
+        return DomainName::register(DomainNameId::fromString('10abb1db-6e93-4dfc-9ba1-cdd46a225657'), $domainName, $owner);
     }
 
     /** @test */
@@ -59,26 +61,7 @@ final class AddDomainNameHandlerTest extends TestCase
                 return false;
             }
 
-            if (! UserId::equalsValueOfEntity(UserId::fromString(UserRepositoryMock::USER_ID1), $domainName->owner, 'id')) {
-                return false;
-            }
-
-            return $domainName->namePair->equals(new DomainNamePair('park-manager', 'com'));
-        });
-    }
-
-    /** @test */
-    public function handles_domain_registration_without_already_existing_and_null_user(): void
-    {
-        ($this->handler)(AddDomainName::with('e7621ab3-d543-4405-848b-eaf5b85a7f88', null, 'park-manager', 'com'));
-
-        $this->repository->assertEntitiesCountWasSaved(1);
-        $this->repository->assertHasEntityThat(static function (DomainName $domainName) {
-            if (! $domainName->id->equals(DomainNameId::fromString('e7621ab3-d543-4405-848b-eaf5b85a7f88'))) {
-                return false;
-            }
-
-            if ($domainName->owner !== null && $domainName->space !== null) {
+            if (! OwnerId::equalsValueOfEntity(OwnerId::fromString(UserRepositoryMock::USER_ID1), $domainName->owner, 'id')) {
                 return false;
             }
 
@@ -92,7 +75,7 @@ final class AddDomainNameHandlerTest extends TestCase
         $this->expectExceptionObject(new DomainNameAlreadyInUse(new DomainNamePair('example', 'com'), false));
         $this->expectExceptionMessageMatches('/is already in use\.$/');
 
-        ($this->handler)(AddDomainName::with('e7621ab3-d543-4405-848b-eaf5b85a7f88', UserRepositoryMock::USER_ID1, 'example', 'com'));
+        ($this->handler)(AddDomainName::with('e7621ab3-d543-4405-848b-eaf5b85a7f88', OrganizationId::ADMIN_ORG, 'example', 'com'));
     }
 
     /** @test */
@@ -101,6 +84,6 @@ final class AddDomainNameHandlerTest extends TestCase
         $this->expectExceptionObject(new DomainNameAlreadyInUse(new DomainNamePair('example', 'com'), true));
         $this->expectExceptionMessageMatches('/is already in use \(by same space owner\).$/');
 
-        ($this->handler)(AddDomainName::with('e7621ab3-d543-4405-848b-eaf5b85a7f88', null, 'example', 'com'));
+        ($this->handler)(AddDomainName::with('e7621ab3-d543-4405-848b-eaf5b85a7f88', UserRepositoryMock::USER_ID1, 'example', 'com'));
     }
 }

@@ -16,11 +16,11 @@ use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\DomainName\Exception\CannotAssignDomainNameWithDifferentOwner;
 use ParkManager\Domain\DomainName\Exception\CannotTransferPrimaryDomainName;
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\Owner;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
-use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Domain\Webhosting\Space\SpaceId;
+use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -51,9 +51,9 @@ final class DomainNameTest extends TestCase
         self::assertTrue($webhostingDomainName2->primary);
     }
 
-    private function createSpace(string $id, ?User $owner = null): Space
+    private function createSpace(string $id, ?Owner $owner = null): Space
     {
-        return Space::registerWithCustomConstraints(SpaceId::fromString($id), $owner, new Constraints());
+        return SpaceRepositoryMock::createSpace($id, $owner);
     }
 
     /** @test */
@@ -101,13 +101,13 @@ final class DomainNameTest extends TestCase
     /** @test */
     public function it_can_transfer_primary_domain_name_without_space_and_same_owner(): void
     {
-        $user = User::register(UserId::fromString('27758a8c-8731-419d-9470-7a2512396a08'), new EmailAddress('mitch@example.com'), 'Mitchel', 'Nope');
-        $space2 = $this->createSpace(self::SPACE_ID2, $user);
+        $owner = Owner::byUser(User::register(UserId::fromString('27758a8c-8731-419d-9470-7a2512396a08'), new EmailAddress('mitch@example.com'), 'Mitchel', 'Nope'));
+        $space2 = $this->createSpace(self::SPACE_ID2, $owner);
 
         $webhostingDomainName = DomainName::register(
             DomainNameId::create(),
             new DomainNamePair('example', 'com'),
-            $user
+            $owner
         );
 
         $webhostingDomainName->transferToSpace($space2, true);
@@ -131,8 +131,8 @@ final class DomainNameTest extends TestCase
     /** @test */
     public function it_cannot_transfer_with_different_owner(): void
     {
-        $space1 = $this->createSpace(self::SPACE_ID1, $this->createUser('e666bf16-7eb5-4473-bdbe-c6bc8b64e90f'));
-        $space2 = $this->createSpace(self::SPACE_ID2, $this->createUser('27758a8c-8731-419d-9470-7a2512396a08'));
+        $space1 = $this->createSpace(self::SPACE_ID1, Owner::byUser($this->createUser('e666bf16-7eb5-4473-bdbe-c6bc8b64e90f')));
+        $space2 = $this->createSpace(self::SPACE_ID2, Owner::byUser($this->createUser('27758a8c-8731-419d-9470-7a2512396a08')));
 
         $webhostingDomainName = DomainName::registerSecondaryForSpace(DomainNameId::create(), $space1, new DomainNamePair('example', 'com'));
 
@@ -150,13 +150,13 @@ final class DomainNameTest extends TestCase
     /** @test */
     public function it_cannot_assign_with_different_owner(): void
     {
-        $user = $this->createUser('e666bf16-7eb5-4473-bdbe-c6bc8b64e90f');
-        $space = $this->createSpace(self::SPACE_ID2, $this->createUser('27758a8c-8731-419d-9470-7a2512396a08'));
+        $owner = Owner::byUser($this->createUser('e666bf16-7eb5-4473-bdbe-c6bc8b64e90f'));
+        $space = $this->createSpace(self::SPACE_ID2, Owner::byUser($this->createUser('27758a8c-8731-419d-9470-7a2512396a08')));
 
         $webhostingDomainName = DomainName::register(
             DomainNameId::create(),
             new DomainNamePair('example', 'com'),
-            $user
+            $owner
         );
 
         $this->expectExceptionObject(new CannotAssignDomainNameWithDifferentOwner($webhostingDomainName->namePair, null, $space->id));

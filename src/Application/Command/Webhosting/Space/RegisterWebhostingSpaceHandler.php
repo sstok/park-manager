@@ -15,7 +15,7 @@ use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
-use ParkManager\Domain\User\UserRepository;
+use ParkManager\Domain\OwnerRepository;
 use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
@@ -25,23 +25,19 @@ final class RegisterWebhostingSpaceHandler
     private WebhostingSpaceRepository $spaceRepository;
     private PlanRepository $planRepository;
     private DomainNameRepository $domainNameRepository;
-    private UserRepository $userRepository;
+    private OwnerRepository $ownerRepository;
 
-    public function __construct(WebhostingSpaceRepository $spaceRepository, PlanRepository $planRepository, DomainNameRepository $domainNameRepository, UserRepository $userRepository)
+    public function __construct(WebhostingSpaceRepository $spaceRepository, PlanRepository $planRepository, DomainNameRepository $domainNameRepository, OwnerRepository $ownerRepository)
     {
         $this->spaceRepository = $spaceRepository;
         $this->planRepository = $planRepository;
         $this->domainNameRepository = $domainNameRepository;
-        $this->userRepository = $userRepository;
+        $this->ownerRepository = $ownerRepository;
     }
 
     public function __invoke(RegisterWebhostingSpace $command): void
     {
-        if ($command->owner !== null) {
-            $owner = $this->userRepository->get($command->owner);
-        } else {
-            $owner = null;
-        }
+        $owner = $this->ownerRepository->get($command->owner);
 
         if ($command->planId !== null) {
             $space = Space::register(
@@ -67,7 +63,7 @@ final class RegisterWebhostingSpaceHandler
 
             $currentRegistration->transferToSpace($space, true);
             $this->domainNameRepository->save($currentRegistration);
-        } catch (DomainNameNotFound $e) {
+        } catch (DomainNameNotFound) {
             $primaryDomainName = DomainName::registerForSpace(DomainNameId::create(), $space, $command->domainName);
             $this->domainNameRepository->save($primaryDomainName);
         }

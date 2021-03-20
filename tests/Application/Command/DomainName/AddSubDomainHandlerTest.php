@@ -12,6 +12,7 @@ namespace ParkManager\Tests\Application\Command\DomainName;
 
 use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Application\Command\Webhosting\SubDomain\AddSubDomain;
+use ParkManager\Application\Command\Webhosting\SubDomain\AddSubDomainHandler;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNamePair;
@@ -23,6 +24,7 @@ use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
 use ParkManager\Tests\Application\Service\TLS\CertificateFactoryMock;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\DomainName\SubDomainRepositoryMock;
+use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -33,19 +35,22 @@ final class AddSubDomainHandlerTest extends TestCase
     private const DOMAIN_ID_1 = '10abb1db-6e93-4dfc-9ba1-cdd46a225657';
     private const DOMAIN_ID_2 = '2c66cf58-4be8-4bfb-a3e4-4f3298790060';
 
+    private OwnerRepositoryMock $ownerRepository;
     private SubDomainRepositoryMock $subDomainRepository;
-    private \ParkManager\Application\Command\Webhosting\SubDomain\AddSubDomainHandler $handler;
+    private AddSubDomainHandler $handler;
 
     protected function setUp(): void
     {
-        $space = Space::registerWithCustomConstraints(SpaceId::create(), null, new Constraints());
+        $this->ownerRepository = new OwnerRepositoryMock();
+
+        $space = Space::registerWithCustomConstraints(SpaceId::create(), $this->ownerRepository->getAdminOrganization(), new Constraints());
         $domainNameRepository = new DomainNameRepositoryMock([
             DomainName::registerForSpace(DomainNameId::fromString(self::DOMAIN_ID_1), $space, new DomainNamePair('example', 'com')),
             DomainName::registerForSpace(DomainNameId::fromString(self::DOMAIN_ID_2), $space, new DomainNamePair('dev.rollerscapes', 'net')),
         ]);
 
         $this->subDomainRepository = new SubDomainRepositoryMock();
-        $this->handler = new \ParkManager\Application\Command\Webhosting\SubDomain\AddSubDomainHandler($domainNameRepository, $this->subDomainRepository, new CertificateFactoryMock());
+        $this->handler = new AddSubDomainHandler($domainNameRepository, $this->subDomainRepository, new CertificateFactoryMock());
     }
 
     /** @test */

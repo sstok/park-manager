@@ -14,6 +14,7 @@ use Assert\Assertion;
 use Assert\InvalidArgumentException;
 use DateTimeImmutable;
 use ParkManager\Domain\ByteSize;
+use ParkManager\Domain\Owner;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
@@ -41,7 +42,7 @@ final class SpaceTest extends TestCase
         $id = SpaceId::create();
         $constraints = new Constraints();
         $plan = $this->createPlan($constraints);
-        $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
+        $owner = Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1));
 
         $space = Space::register($id, $owner, $plan);
 
@@ -54,7 +55,7 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_registers_an_webhosting_space_with_custom_constraints(): void
     {
-        $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
+        $owner = Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1));
         $id = SpaceId::create();
         $constraints = new Constraints();
 
@@ -69,7 +70,7 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_allows_changing_constraint_set_assignment(): void
     {
-        $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
+        $owner = Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1));
         $constraints1 = new Constraints();
         $constraints2 = (new Constraints())->setMonthlyTraffic(50);
         $plan1 = $this->createPlan($constraints1);
@@ -90,7 +91,7 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_allows_changing_constraint_set_assignment_with_constraints(): void
     {
-        $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
+        $owner = Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1));
         $constraints1 = new Constraints();
         $constraints2 = (new Constraints())->setMonthlyTraffic(50);
         $plan1 = $this->createPlan($constraints1);
@@ -114,7 +115,7 @@ final class SpaceTest extends TestCase
         $plan = $this->createPlan(new Constraints());
         $space = Space::register(
             SpaceId::create(),
-            UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
+            Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1)),
             $plan
         );
 
@@ -131,7 +132,7 @@ final class SpaceTest extends TestCase
         $plan = $this->createPlan(new Constraints());
         $space = Space::register(
             SpaceId::create(),
-            UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
+            Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1)),
             $plan
         );
 
@@ -146,7 +147,7 @@ final class SpaceTest extends TestCase
     {
         $space = Space::registerWithCustomConstraints(
             SpaceId::create(),
-            UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
+            Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1)),
             new Constraints()
         );
 
@@ -162,7 +163,7 @@ final class SpaceTest extends TestCase
         $constraints = new Constraints();
         $space = Space::registerWithCustomConstraints(
             SpaceId::create(),
-            UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
+            Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1)),
             $constraints
         );
 
@@ -178,7 +179,7 @@ final class SpaceTest extends TestCase
         $constraints = new Constraints();
         $space = Space::registerWithCustomConstraints(
             SpaceId::create(),
-            UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
+            Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1)),
             $constraints
         );
 
@@ -199,7 +200,7 @@ final class SpaceTest extends TestCase
         $constraints = new Constraints(['storageSize' => $size = new ByteSize(12, 'GB')]);
         $space = Space::registerWithCustomConstraints(
             SpaceId::create(),
-            UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1),
+            Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1)),
             $constraints
         );
 
@@ -211,8 +212,8 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_supports_switching_the_space_owner(): void
     {
-        $owner1 = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
-        $owner2 = UserRepositoryMock::createUser('joHn@example.com', self::OWNER_ID2);
+        $owner1 = Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1));
+        $owner2 = Owner::byUser(UserRepositoryMock::createUser('joHn@example.com', self::OWNER_ID2));
         $space1 = Space::register(
             SpaceId::fromString(self::SPACE_ID),
             $owner1,
@@ -224,8 +225,8 @@ final class SpaceTest extends TestCase
             $this->createPlan(new Constraints())
         );
 
-        $space1->switchOwner($owner1);
-        $space2->switchOwner($owner2);
+        $space1->switchToOwner($owner1);
+        $space2->switchToOwner($owner2);
 
         self::assertEquals($owner1, $space1->owner);
         self::assertEquals($owner2, $space2->owner);
@@ -234,7 +235,7 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_allows_being_marked_for_removal(): void
     {
-        $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
+        $owner = Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1));
         $space1 = Space::register(
             SpaceId::fromString(self::SPACE_ID),
             $owner,
@@ -256,7 +257,7 @@ final class SpaceTest extends TestCase
     /** @test */
     public function it_can_expire(): void
     {
-        $owner = UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1);
+        $owner = Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1));
         $space1 = Space::register(
             SpaceId::fromString(self::SPACE_ID),
             $owner,

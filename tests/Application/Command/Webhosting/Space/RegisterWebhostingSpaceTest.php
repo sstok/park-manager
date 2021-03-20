@@ -12,7 +12,7 @@ namespace ParkManager\Tests\Application\Command\Webhosting\Space;
 
 use ParkManager\Application\Command\Webhosting\Space\RegisterWebhostingSpace;
 use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
@@ -38,7 +38,7 @@ final class RegisterWebhostingSpaceTest extends TestCase
         );
 
         self::assertEquals(SpaceId::fromString(self::SPACE_ID), $command->id);
-        self::assertEquals(UserId::fromString(self::USER_ID), $command->owner);
+        self::assertEquals(OwnerId::fromString(self::USER_ID), $command->owner);
         self::assertEquals(PlanId::fromString(self::SET_ID), $command->planId);
         self::assertEquals($domainName, $command->domainName);
         self::assertNull($command->customConstraints);
@@ -55,7 +55,7 @@ final class RegisterWebhostingSpaceTest extends TestCase
         );
 
         self::assertEquals(SpaceId::fromString(self::SPACE_ID), $command->id);
-        self::assertEquals(UserId::fromString(self::USER_ID), $command->owner);
+        self::assertEquals(OwnerId::fromString(self::USER_ID), $command->owner);
         self::assertEquals($constraints, $command->customConstraints);
         self::assertEquals($domainName, $command->domainName);
         self::assertNull($command->planId);

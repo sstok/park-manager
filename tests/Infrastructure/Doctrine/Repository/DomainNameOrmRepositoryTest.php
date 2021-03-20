@@ -17,6 +17,9 @@ use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\DomainName\Exception\CannotRemovePrimaryDomainName;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\Organization\OrganizationId;
+use ParkManager\Domain\Owner;
+use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
@@ -24,6 +27,7 @@ use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Infrastructure\Doctrine\Repository\DomainNameOrmRepository;
+use ParkManager\Infrastructure\Doctrine\Repository\OwnerOrmRepository;
 use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
 
 /**
@@ -57,31 +61,39 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
     {
         parent::setUp();
 
+        $em = $this->getEntityManager();
+        $ownerRepository = new OwnerOrmRepository($em);
+
         $user1 = User::register(UserId::fromString(self::OWNER_ID1), new EmailAddress('John@mustash.com'), 'John', 'ashTong@8r949029');
         $user2 = User::register(UserId::fromString(self::OWNER_ID2), new EmailAddress('Jane@mustash.com'), 'Jane', 'Tucker@5423');
+        $adminOrgOwner = $ownerRepository->get(OwnerId::fromString(OrganizationId::ADMIN_ORG));
+
+        $owner1 = Owner::byUser($user1);
+        $owner2 = Owner::byUser($user2);
 
         $this->space1 = Space::registerWithCustomConstraints(
             SpaceId::fromString(self::SPACE_ID1),
-            $user1,
+            $owner1,
             new Constraints()
         );
 
         $this->space2 = Space::registerWithCustomConstraints(
             SpaceId::fromString(self::SPACE_ID2),
-            $user2,
+            $owner2,
             new Constraints()
         );
 
         $this->space3 = Space::registerWithCustomConstraints(
             SpaceId::create(),
-            null,
+            $adminOrgOwner,
             new Constraints()
         );
 
-        $em = $this->getEntityManager();
-        $em->transactional(function (EntityManagerInterface $em) use ($user1, $user2): void {
+        $em->transactional(function (EntityManagerInterface $em) use ($user1, $user2, $owner1, $owner2): void {
             $em->persist($user1);
             $em->persist($user2);
+            $em->persist($owner1);
+            $em->persist($owner2);
             $em->persist($this->space1);
             $em->persist($this->space2);
             $em->persist($this->space3);
@@ -96,10 +108,10 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
         $webhostingDomainName3 = DomainName::registerSecondaryForSpace(DomainNameId::create(), $this->space2, new DomainNamePair('example', 'co.uk'));
         $this->id3 = $webhostingDomainName3->id;
 
-        $webhostingDomainName4 = DomainName::register(DomainNameId::create(), new DomainNamePair('example', 'nl'), null);
+        $webhostingDomainName4 = DomainName::register(DomainNameId::create(), new DomainNamePair('example', 'nl'), $adminOrgOwner);
         $this->id4 = $webhostingDomainName4->id;
 
-        $webhostingDomainName5 = DomainName::register(DomainNameId::create(), new DomainNamePair('example', 'nu'), $user1);
+        $webhostingDomainName5 = DomainName::register(DomainNameId::create(), new DomainNamePair('example', 'nu'), $owner1);
         $this->id5 = $webhostingDomainName5->id;
 
         $webhostingDomainName6 = DomainName::registerForSpace(DomainNameId::create(), $this->space3, new DomainNamePair('example', 'nu'));
@@ -178,10 +190,10 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
     /** @test */
     public function it_gets_all_accessible(): void
     {
-        $this->assertEntitiesEquals([], $this->repository->allAccessibleBy(UserId::fromString(self::SPACE_NOOP)));
-        $this->assertEntitiesEquals([$this->id1, $this->id5], $this->repository->allAccessibleBy(UserId::fromString(self::OWNER_ID1)));
-        $this->assertEntitiesEquals([$this->id2, $this->id3], $this->repository->allAccessibleBy(UserId::fromString(self::OWNER_ID2)));
-        $this->assertEntitiesEquals([$this->id4, $this->id6], $this->repository->allAccessibleBy(null));
+        $this->assertEntitiesEquals([], $this->repository->allAccessibleBy(OwnerId::fromString(self::SPACE_NOOP)));
+        $this->assertEntitiesEquals([$this->id1, $this->id5], $this->repository->allAccessibleBy(OwnerId::fromString(self::OWNER_ID1)));
+        $this->assertEntitiesEquals([$this->id2, $this->id3], $this->repository->allAccessibleBy(OwnerId::fromString(self::OWNER_ID2)));
+        $this->assertEntitiesEquals([$this->id4, $this->id6], $this->repository->allAccessibleBy(OwnerId::fromString(OrganizationId::ADMIN_ORG)));
     }
 
     /**

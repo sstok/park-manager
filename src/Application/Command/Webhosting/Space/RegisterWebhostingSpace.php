@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Application\Command\Webhosting\Space;
 
 use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
@@ -31,7 +31,7 @@ final class RegisterWebhostingSpace
     /**
      * READ-ONLY.
      */
-    public ?UserId$owner = null;
+    public OwnerId $owner;
 
     /**
      * READ-ONLY.
@@ -41,29 +41,26 @@ final class RegisterWebhostingSpace
     /**
      * READ-ONLY.
      */
-    public ?Constraints$customConstraints = null;
+    public ?Constraints $customConstraints = null;
 
-    private function __construct(string $id, ?string $owner, DomainNamePair $domainName, ?string $planId, ?Constraints $constraints)
+    private function __construct(string $id, string $owner, DomainNamePair $domainName, ?string $planId, ?Constraints $constraints)
     {
         $this->id = SpaceId::fromString($id);
         $this->domainName = $domainName;
         $this->customConstraints = $constraints;
-
-        if ($owner !== null) {
-            $this->owner = UserId::fromString($owner);
-        }
+        $this->owner = OwnerId::fromString($owner);
 
         if ($planId !== null) {
             $this->planId = PlanId::fromString($planId);
         }
     }
 
-    public static function withPlan(string $id, DomainNamePair $domainName, ?string $owner, string $planId): self
+    public static function withPlan(string $id, DomainNamePair $domainName, string $owner, string $planId): self
     {
         return new self($id, $owner, $domainName, $planId, null);
     }
 
-    public static function withCustomConstraints(string $id, DomainNamePair $domainName, ?string $owner, Constraints $constraints): self
+    public static function withCustomConstraints(string $id, DomainNamePair $domainName, string $owner, Constraints $constraints): self
     {
         return new self($id, $owner, $domainName, null, $constraints);
     }

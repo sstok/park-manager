@@ -34,7 +34,7 @@ class Owner implements \Stringable
      * @ORM\Column(type="park_manager_owner_id", name="owner_id")
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private OwnerId $id;
+    public OwnerId $id;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, fetch="EXTRA_LAZY")
