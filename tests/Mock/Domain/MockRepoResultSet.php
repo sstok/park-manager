@@ -34,7 +34,7 @@ final class MockRepoResultSet implements ResultSet
         return $this;
     }
 
-    public function setOrdering(string $field, ?string $order): self
+    public function setOrdering(?string $field, ?string $order): self
     {
         $this->ordering = [$field, $order];
 
@@ -68,7 +68,7 @@ final class MockRepoResultSet implements ResultSet
         \reset($this->result);
         $result = $this->result;
 
-        if ($this->ordering) {
+        if ($this->ordering[0] ?? false) {
             [$orderField, $order] = $this->ordering;
 
             \usort($result, static function (object $a, object $b) use ($orderField, $order) {
@@ -95,5 +95,10 @@ final class MockRepoResultSet implements ResultSet
         }
 
         return new ArrayCollection($result);
+    }
+
+    public function count(): int
+    {
+        return $this->getNbResults();
     }
 }

@@ -16,15 +16,15 @@ namespace ParkManager\Domain;
  *
  * Allowing to change how the collection is presented.
  */
-interface ResultSet extends \IteratorAggregate
+interface ResultSet extends \IteratorAggregate, \Countable
 {
-    public function setLimit(int $limit, ?int $offset = null): self;
+    public function setLimit(?int $limit, ?int $offset = null): self;
 
     /**
      * @param string $field an entity field-name
      * @param string $order either asc or desc
      */
-    public function setOrdering(string $field, string $order): self;
+    public function setOrdering(?string $field, ?string $order): self;
 
     /**
      * Pass an array of entity IDs to limit the returned result

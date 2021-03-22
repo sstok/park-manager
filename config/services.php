@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\Persistence\ObjectManager;
+use ParkManager\Application\Service\OwnershipUsageList;
 use ParkManager\Application\Service\PdpManager;
 use ParkManager\Application\Service\TLS\CertificateFactoryImpl;
 use ParkManager\Domain\DomainName\DomainNameId;
@@ -19,6 +20,7 @@ use ParkManager\Domain\Organization\Organization;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\Organization\OrganizationRepository;
 use ParkManager\Domain\Owner;
+use ParkManager\Domain\OwnerControlledRepository;
 use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\OwnerRepository;
 use ParkManager\Domain\User\User;
@@ -54,6 +56,9 @@ return static function (ContainerConfigurator $c): void {
 
     $di->instanceof(DomainNameSpaceUsageValidator::class)
         ->tag('park_manager.command_bus.domain_name_space_usage_validator');
+
+    $di->instanceof(OwnerControlledRepository::class)
+        ->tag('park_manager.owner_controlled_repository');
 
     $di->set(PsrStorageFactory::class)->args([
         inline_service(Psr16Cache::class)->arg(0, service('cache.public_prefix_db')),
@@ -122,6 +127,9 @@ return static function (ContainerConfigurator $c): void {
 
     $di->get(DomainNameSpaceAssignmentValidator::class)
         ->arg(1, tagged_iterator('park_manager.command_bus.domain_name_space_usage_validator'));
+
+    $di->get(OwnershipUsageList::class)
+        ->arg(0, tagged_iterator('park_manager.owner_controlled_repository'));
 
     $di->set(Argon2SplitTokenFactory::class);
     $di->alias(SplitTokenFactory::class, Argon2SplitTokenFactory::class);

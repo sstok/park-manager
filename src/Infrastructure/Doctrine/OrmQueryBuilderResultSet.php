@@ -45,7 +45,7 @@ final class OrmQueryBuilderResultSet implements ResultSet
         return $this;
     }
 
-    public function setOrdering(string $field, ?string $order): self
+    public function setOrdering(?string $field, ?string $order): self
     {
         $this->ordering = [$field, $order];
         $this->paginator = null;
@@ -78,6 +78,11 @@ final class OrmQueryBuilderResultSet implements ResultSet
         $query->setFirstResult($this->offset);
 
         return $this->paginator->getIterator();
+    }
+
+    public function count(): int
+    {
+        return $this->getNbResults();
     }
 
     private function getPaginator(): Paginator
