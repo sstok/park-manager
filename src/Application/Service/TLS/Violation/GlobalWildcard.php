@@ -19,6 +19,14 @@ final class GlobalWildcard extends Violation
 
     public function __construct(string $provided, string $suffixPattern)
     {
+        parent::__construct(
+            \sprintf(
+                'The certificate supported domain "%s" contains a global wildcard with suffix pattern "%s"',
+                $provided,
+                $suffixPattern
+            )
+        );
+
         $this->provided = $provided;
         $this->suffixPattern = $suffixPattern;
     }

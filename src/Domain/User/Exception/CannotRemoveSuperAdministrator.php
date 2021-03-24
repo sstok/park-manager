@@ -20,6 +20,8 @@ final class CannotRemoveSuperAdministrator extends InvalidArgumentException impl
 
     public function __construct(UserId $id)
     {
+        parent::__construct(\sprintf('User with id "%s" is a SuperAdmin and cannot be removed.', $id->toString()));
+
         $this->id = $id;
     }
 

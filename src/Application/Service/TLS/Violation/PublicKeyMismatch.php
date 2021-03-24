@@ -14,6 +14,11 @@ use ParkManager\Application\Service\TLS\Violation;
 
 final class PublicKeyMismatch extends Violation
 {
+    public function __construct()
+    {
+        parent::__construct('The public-key of the certificate does not match with the provided private-key.');
+    }
+
     public function getTranslatorId(): string
     {
         return 'tls.violation.public_key_mismatch';

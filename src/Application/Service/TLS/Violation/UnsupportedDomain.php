@@ -19,6 +19,8 @@ final class UnsupportedDomain extends Violation
 
     public function __construct(string $requiredPattern, string ...$supported)
     {
+        parent::__construct(\sprintf("The provided domain-names are not supported by required pattern. Required: '%s'\nProvided: '%s'.", $requiredPattern, \implode("', '", $supported)));
+
         $this->requiredPattern = $requiredPattern;
         $this->supported = $supported;
     }

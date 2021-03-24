@@ -19,6 +19,8 @@ final class KeyBitsToLow extends Violation
 
     public function __construct(int $expected, int $provided)
     {
+        parent::__construct(\sprintf('Private-key bits size %d lower than required %d.', $provided, $expected));
+
         $this->expected = $expected;
         $this->provided = $provided;
     }

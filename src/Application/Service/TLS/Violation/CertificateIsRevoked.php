@@ -45,6 +45,15 @@ final class CertificateIsRevoked extends Violation
 
     public function __construct(?\DateTimeInterface $revokedOn, ?int $reason, string $serialNumber)
     {
+        parent::__construct(
+            \sprintf(
+                'The certificate with serialNumber "%s" is revoked on "%s" due to reason "%s".',
+                $serialNumber,
+                $revokedOn ? $revokedOn->format(\DATE_ISO8601) : 'no-date',
+                (string) $reason
+            )
+        );
+
         $this->revokedOn = $revokedOn;
         $this->reason = $reason;
         $this->serial = $serialNumber;

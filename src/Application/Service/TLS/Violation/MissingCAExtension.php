@@ -18,7 +18,7 @@ final class MissingCAExtension extends Violation
 
     public function __construct(string $commonName)
     {
-        parent::__construct();
+        parent::__construct('Certificate does not contain required "CA:true" in "extensions.basicExtension".');
 
         $this->name = $commonName;
     }

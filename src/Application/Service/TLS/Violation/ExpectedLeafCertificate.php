@@ -14,6 +14,11 @@ use ParkManager\Application\Service\TLS\Violation;
 
 final class ExpectedLeafCertificate extends Violation
 {
+    public function __construct()
+    {
+        parent::__construct('The certificate is CA certificate where a leave (CA:false) certificate was expected.');
+    }
+
     public function getTranslatorId(): string
     {
         return 'tls.violation.expected_leaf_certificate';

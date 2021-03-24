@@ -18,7 +18,7 @@ final class UnableToResolveParent extends Violation
 
     public function __construct(string $name, int $code = 1)
     {
-        parent::__construct((string) \openssl_error_string(), $code);
+        parent::__construct(\sprintf('Unable to resolve the parent CA of certificate "%s".', $name));
         $this->name = $name;
     }
 

@@ -22,6 +22,14 @@ final class EmailAddressAlreadyInUse extends InvalidArgumentException implements
 
     public function __construct(UserId $id, EmailAddress $address)
     {
+        parent::__construct(
+            \sprintf(
+                'The email address "%s" is already in use by user with id "%s"',
+                $address->toString(),
+                $id->toString()
+            )
+        );
+
         $this->id = $id;
         $this->address = $address;
     }

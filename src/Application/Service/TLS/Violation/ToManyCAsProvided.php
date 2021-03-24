@@ -14,6 +14,11 @@ use ParkManager\Application\Service\TLS\Violation;
 
 final class ToManyCAsProvided extends Violation
 {
+    public function __construct()
+    {
+        parent::__construct('To many CAs were provided. A maximum of 3 is accepted.');
+    }
+
     public function getTranslatorId(): string
     {
         return 'tls.violation.to_many_ca_provided';
