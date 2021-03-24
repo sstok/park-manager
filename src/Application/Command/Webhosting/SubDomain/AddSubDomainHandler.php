@@ -12,6 +12,7 @@ namespace ParkManager\Application\Command\Webhosting\SubDomain;
 
 use ParkManager\Application\Service\TLS\CertificateFactory;
 use ParkManager\Domain\DomainName\DomainNameRepository;
+use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainRepository;
 
 final class AddSubDomainHandler
@@ -30,7 +31,7 @@ final class AddSubDomainHandler
     public function __invoke(AddSubDomain $command): void
     {
         $domainName = $this->domainNameRepository->get($command->domainNameId);
-        $subDomain = new \ParkManager\Domain\Webhosting\SubDomain\SubDomain($command->id, $domainName, $command->name, $command->homeDir, $command->config);
+        $subDomain = new SubDomain($command->id, $domainName, $command->name, $command->homeDir, $command->config);
 
         if ($command->certificate !== null) {
             $certificate = $this->certificateFactory->createCertificate($command->certificate, $command->privateKey, $command->caList);

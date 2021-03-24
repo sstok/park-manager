@@ -35,7 +35,7 @@ abstract class SubDomainCommand
         $this->config = $config;
     }
 
-    public static function with(string $id, string $domainId, string $name, string $homeDir = '/', array $config = []): self
+    public static function with(string $id, string $domainId, string $name, string $homeDir = '/', array $config = []): static
     {
         return new static(SubDomainNameId::fromString($id), DomainNameId::fromString($domainId), $name, $homeDir, $config);
     }
@@ -43,7 +43,7 @@ abstract class SubDomainCommand
     /**
      * @param array<string,string> $caList [user-provided CA-name => X509 contents]
      */
-    public function andTLSInformation(string $certificate, HiddenString $privateKey, array $caList = []): self
+    public function andTLSInformation(string $certificate, HiddenString $privateKey, array $caList = []): static
     {
         $this->certificate = $certificate;
         $this->privateKey = $privateKey;
