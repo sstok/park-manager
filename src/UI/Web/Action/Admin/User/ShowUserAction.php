@@ -12,7 +12,6 @@ namespace ParkManager\UI\Web\Action\Admin\User;
 
 use ParkManager\Domain\User\User;
 use ParkManager\UI\Web\Response\TwigResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,8 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
 final class ShowUserAction
 {
     /**
-     * @Security("is_granted('ROLE_SUPER_ADMIN')")
-     *
      * @Route(
      *     path="/user/{user}/show",
      *     methods={"GET", "HEAD"},
