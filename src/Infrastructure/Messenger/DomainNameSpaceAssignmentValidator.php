@@ -59,17 +59,24 @@ final class DomainNameSpaceAssignmentValidator implements MiddlewareInterface
             return;
         }
 
-        try {
-            /** @var DomainNameSpaceUsageValidator $validator */
-            foreach ($this->validators as $validator) {
-                $validator($domainName, $space);
-            }
-        } catch (CannotTransferInUseDomainName $e) {
-            if ($message instanceof RemoveDomainName) {
-                throw new CannotRemoveInUseDomainName($e->domainName, $e->current, $e->type, $e->id);
-            }
+        $usedByEntities = [];
 
-            throw $e;
+        /** @var DomainNameSpaceUsageValidator $validator */
+        foreach ($this->validators as $validator) {
+            $usedByEntities[] = $validator($domainName, $space);
         }
+
+        $usedByEntities = \array_merge(...$usedByEntities);
+        $usedByEntities = \array_filter($usedByEntities, static fn ($value): bool => \count($value) > 0);
+
+        if (\count($usedByEntities) === 0) {
+            return;
+        }
+
+        if ($message instanceof RemoveDomainName) {
+            throw new CannotRemoveInUseDomainName($domainName->namePair, $space->id, $usedByEntities);
+        }
+
+        throw new CannotTransferInUseDomainName($domainName->namePair, $space->id, $usedByEntities);
     }
 }

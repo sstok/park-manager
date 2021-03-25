@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
 
 use ParkManager\Domain\DomainName\DomainName;
-use ParkManager\Domain\DomainName\Exception\CannotTransferInUseDomainName;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainRepository;
@@ -26,13 +25,19 @@ final class SubDomainUsageValidator implements DomainNameSpaceUsageValidator
         $this->subDomainRepository = $subDomainRepository;
     }
 
-    public function __invoke(DomainName $domainName, Space $space): void
+    public function __invoke(DomainName $domainName, Space $space): array
     {
+        $entities = [
+            SubDomain::class => [],
+        ];
+
         /** @var SubDomain $subDomain */
         foreach ($this->subDomainRepository->allFromSpace($space->id) as $subDomain) {
             if ($subDomain->host === $domainName) {
-                new CannotTransferInUseDomainName($domainName->namePair, $space->id, 'subDomain', $subDomain->id->toString());
+                $entities[SubDomain::class][] = $domainName;
             }
         }
+
+        return $entities;
     }
 }

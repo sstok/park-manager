@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
 
 use ParkManager\Domain\DomainName\DomainName;
-use ParkManager\Domain\DomainName\Exception\CannotTransferInUseDomainName;
 use ParkManager\Domain\Webhosting\Email\Forward;
 use ParkManager\Domain\Webhosting\Email\ForwardRepository;
 use ParkManager\Domain\Webhosting\Email\Mailbox;
@@ -30,20 +29,25 @@ final class EmailAddressDomainNameUsageValidator implements DomainNameSpaceUsage
         $this->forwardRepository = $forwardRepository;
     }
 
-    public function __invoke(DomainName $domainName, Space $space): void
+    public function __invoke(DomainName $domainName, Space $space): array
     {
-        /** @var Mailbox $mailbox */
+        $entities = [
+            Mailbox::class => [],
+            Forward::class => [],
+        ];
+
         foreach ($this->mailboxRepository->allBySpace($space->id) as $mailbox) {
             if ($mailbox->domainName === $domainName) {
-                new CannotTransferInUseDomainName($domainName->namePair, $space->id, 'mailbox', $mailbox->id->toString());
+                $entities[Mailbox::class][] = $mailbox;
             }
         }
 
-        /** @var Forward $forward */
         foreach ($this->forwardRepository->allBySpace($space->id) as $forward) {
             if ($forward->domainName === $domainName) {
-                new CannotTransferInUseDomainName($domainName->namePair, $space->id, 'email_forward', $forward->id->toString());
+                $entities[Forward::class][] = $forward;
             }
         }
+
+        return $entities;
     }
 }

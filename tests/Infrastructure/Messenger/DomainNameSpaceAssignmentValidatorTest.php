@@ -20,8 +20,14 @@ use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\DomainName\Exception\CannotRemoveInUseDomainName;
 use ParkManager\Domain\DomainName\Exception\CannotTransferInUseDomainName;
 use ParkManager\Domain\Organization\OrganizationId;
+use ParkManager\Domain\Webhosting\Email\Forward;
+use ParkManager\Domain\Webhosting\Email\ForwardId;
+use ParkManager\Domain\Webhosting\Email\Mailbox;
+use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
+use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
+use ParkManager\Tests\Domain\EntityHydrator;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
@@ -69,23 +75,79 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_it_passes_through_when_unused(): void
+    {
+        $messageObj = RemoveDomainName::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494');
+        $id = $messageObj->id;
+
+        $space = SpaceRepositoryMock::createSpace();
+        $domainNamePair = new DomainNamePair('example', 'com');
+
+        $usageValidatorProphecy = $this->prophesize(DomainNameSpaceUsageValidator::class);
+        $usageValidatorProphecy->__invoke(Argument::which('id', $id), $space)->willReturn(
+            [
+                Mailbox::class => [],
+            ]
+        )->shouldBeCalled();
+        $usageValidator = $usageValidatorProphecy->reveal();
+
+        $validator = new DomainNameSpaceAssignmentValidator(new DomainNameRepositoryMock([DomainName::registerForSpace($id, $space, $domainNamePair)]), [$usageValidator]);
+        $stack = new StackMiddleware();
+
+        $validator->handle(Envelope::wrap($messageObj), $stack);
+    }
+
+    /**
+     * @test
      * @dataProvider provideSupportedClasses
      */
     public function it_executes_validators(object $messageObj): void
     {
         $space = SpaceRepositoryMock::createSpace();
         $domainNamePair = new DomainNamePair('example', 'com');
-
         $id = $messageObj->id;
 
         $usageValidatorProphecy = $this->prophesize(DomainNameSpaceUsageValidator::class);
-        $usageValidatorProphecy->__invoke(Argument::which('id', $id), $space)->willThrow(new CannotTransferInUseDomainName($domainNamePair, $space->id, 'email', '133984892'));
+        $usageValidatorProphecy->__invoke(Argument::which('id', $id), $space)->willReturn(
+            [
+                Mailbox::class => [],
+                Forward::class => [
+                    $entity1 = $this->createEntity(Forward::class, ForwardId::fromString('a55fdafc-0f3f-4869-acea-d5745afc4bd7')),
+                    $entity2 = $this->createEntity(Forward::class, ForwardId::fromString('71f2f48e-feb4-4b70-bda7-51677919ce63')),
+                ],
+            ]
+        );
         $usageValidator = $usageValidatorProphecy->reveal();
 
-        $validator = new DomainNameSpaceAssignmentValidator(new DomainNameRepositoryMock([DomainName::registerForSpace($id, $space, $domainNamePair)]), [$usageValidator]);
+        $usageValidatorProphecy2 = $this->prophesize(DomainNameSpaceUsageValidator::class);
+        $usageValidatorProphecy2->__invoke(Argument::which('id', $id), $space)->willReturn(
+            [
+                SubDomain::class => [
+                    $entity3 = $this->createEntity(SubDomain::class, SubDomainNameId::fromString('7e58def0-efec-4735-add8-f64bc512ed35')),
+                    $entity4 = $this->createEntity(SubDomain::class, SubDomainNameId::fromString('dc6951bb-235b-4bf1-976a-50088c9d7a70')),
+                ],
+            ]
+        );
+        $usageValidator2 = $usageValidatorProphecy2->reveal();
+
+        $validator = new DomainNameSpaceAssignmentValidator(new DomainNameRepositoryMock([DomainName::registerForSpace($id, $space, $domainNamePair)]), [$usageValidator, $usageValidator2]);
         $stack = new StackMiddleware();
 
-        $this->expectExceptionObject(new CannotTransferInUseDomainName($domainNamePair, $space->id, 'email', '133984892'));
+        $this->expectExceptionObject(
+            new CannotTransferInUseDomainName(
+                $domainNamePair, $space->id, [
+                    Forward::class => [
+                        $entity1,
+                        $entity2,
+                    ],
+                    SubDomain::class => [
+                        $entity3,
+                        $entity4,
+                    ],
+                ]
+            )
+        );
 
         $validator->handle(Envelope::wrap($messageObj), $stack);
     }
@@ -111,14 +173,36 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
         $domainNamePair = new DomainNamePair('example', 'com');
 
         $usageValidatorProphecy = $this->prophesize(DomainNameSpaceUsageValidator::class);
-        $usageValidatorProphecy->__invoke(Argument::which('id', $id), $space)->willThrow(new CannotTransferInUseDomainName($domainNamePair, $space->id, 'email', '133984892'));
+        $usageValidatorProphecy->__invoke(Argument::which('id', $id), $space)->willReturn(
+            [
+                Mailbox::class => [],
+                Forward::class => [
+                    $entity1 = $this->createEntity(Forward::class, ForwardId::fromString('a55fdafc-0f3f-4869-acea-d5745afc4bd7')),
+                    $entity2 = $this->createEntity(Forward::class, ForwardId::fromString('71f2f48e-feb4-4b70-bda7-51677919ce63')),
+                ],
+            ]
+        );
         $usageValidator = $usageValidatorProphecy->reveal();
 
         $validator = new DomainNameSpaceAssignmentValidator(new DomainNameRepositoryMock([DomainName::registerForSpace($id, $space, $domainNamePair)]), [$usageValidator]);
         $stack = new StackMiddleware();
 
-        $this->expectExceptionObject(new CannotRemoveInUseDomainName($domainNamePair, $space->id, 'email', '133984892'));
+        $this->expectExceptionObject(
+            new CannotRemoveInUseDomainName(
+                $domainNamePair, $space->id, [
+                    Forward::class => [
+                        $entity1,
+                        $entity2,
+                    ],
+                ]
+            )
+        );
 
         $validator->handle(Envelope::wrap($messageObj), $stack);
+    }
+
+    private function createEntity(string $class, object $value): object
+    {
+        return EntityHydrator::hydrateEntity($class)->set('id', $value)->getEntity();
     }
 }

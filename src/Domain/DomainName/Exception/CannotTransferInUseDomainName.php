@@ -10,48 +10,17 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\DomainName\Exception;
 
-use DomainException;
 use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\Exception\TranslatableException;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
-final class CannotTransferInUseDomainName extends DomainException implements TranslatableException
+final class CannotTransferInUseDomainName extends UseDomainNameException
 {
-    public DomainNamePair $domainName;
-    public SpaceId $current;
-    public string $type;
-    public string $id;
-
-    public function __construct(DomainNamePair $domainName, SpaceId $current, string $type, string $id)
+    protected function getInitMessage(DomainNamePair $domainName, SpaceId $current): string
     {
-        parent::__construct(
-            \sprintf(
-                'Domain name "%s" of space %s is still in use by "%s: %s" and cannot be transferred.',
-                $domainName->toString(),
-                $current->toString(),
-                $type,
-                $id,
-            )
+        return \sprintf(
+            'Domain name "%s" of Hosting Space %s cannot be transferred as it is still used by the following entities:' . "\n",
+            $domainName->toString(),
+            $current->toString()
         );
-
-        $this->domainName = $domainName;
-        $this->current = $current;
-        $this->type = $type;
-        $this->id = $id;
-    }
-
-    public function getTranslatorId(): string
-    {
-        return 'cannot_transfer_space_domain_name.used_by_' . $this->type;
-    }
-
-    public function getTranslationArgs(): array
-    {
-        return [
-            'domain_name' => $this->domainName->name,
-            'domain_tld' => $this->domainName->tld,
-            'current_space' => $this->current->toString(),
-            'id' => $this->id,
-        ];
     }
 }

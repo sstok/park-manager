@@ -11,14 +11,12 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Messenger;
 
 use ParkManager\Domain\DomainName\DomainName;
-use ParkManager\Domain\DomainName\Exception\CannotTransferInUseDomainName;
 use ParkManager\Domain\Webhosting\Space\Space;
 
 interface DomainNameSpaceUsageValidator
 {
     /**
-     * @throws CannotTransferInUseDomainName when the DomainName is still used somewhere within the Space;
-     *                                       either Mailbox, EmailForward, Mail filter, FTPUser, SubDomains
+     * @return array<class-string, array<int, object>> [EntityName => [entities]]
      */
-    public function __invoke(DomainName $domainName, Space $space): void;
+    public function __invoke(DomainName $domainName, Space $space): array;
 }

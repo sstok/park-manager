@@ -21,6 +21,8 @@ use ReflectionClass;
  * values. Without using the original constructor.
  *
  * Borrowed some stuff from https://github.com/PHP-CS-Fixer/AccessibleObject
+ *
+ * @template T
  */
 final class EntityHydrator
 {
@@ -63,6 +65,9 @@ final class EntityHydrator
         return $this;
     }
 
+    /**
+     * @return T
+     */
     public function getEntity(): object
     {
         return $this->object;

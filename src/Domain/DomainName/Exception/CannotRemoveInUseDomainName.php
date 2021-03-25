@@ -10,48 +10,17 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\DomainName\Exception;
 
-use DomainException;
 use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\Exception\TranslatableException;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
-final class CannotRemoveInUseDomainName extends DomainException implements TranslatableException
+final class CannotRemoveInUseDomainName extends UseDomainNameException
 {
-    private DomainNamePair $domainName;
-    private SpaceId $current;
-    private string $type;
-    private string $id;
-
-    public function __construct(DomainNamePair $domainName, SpaceId $current, string $type, string $id)
+    protected function getInitMessage(DomainNamePair $domainName, SpaceId $current): string
     {
-        parent::__construct(
-            \sprintf(
-                'Domain name "%s" of space %s is still in use by "%s: %s" and cannot be removed.',
-                $domainName->toString(),
-                $current->toString(),
-                $type,
-                $id,
-            )
+        return \sprintf(
+            'Domain name "%s" of Hosting Space %s cannot be removed as it is still used by the following entities:',
+            $domainName->toString(),
+            $current->toString()
         );
-
-        $this->domainName = $domainName;
-        $this->current = $current;
-        $this->type = $type;
-        $this->id = $id;
-    }
-
-    public function getTranslatorId(): string
-    {
-        return 'cannot_remove_space_domain_name.used_by_' . $this->type;
-    }
-
-    public function getTranslationArgs(): array
-    {
-        return [
-            'domain_name' => $this->domainName->name,
-            'domain_tld' => $this->domainName->tld,
-            'current_space' => $this->current->toString(),
-            'id' => $this->id,
-        ];
     }
 }
