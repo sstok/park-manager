@@ -14,6 +14,7 @@ use Doctrine\Persistence\ObjectManager;
 use ParkManager\Application\Service\OwnershipUsageList;
 use ParkManager\Application\Service\PdpManager;
 use ParkManager\Application\Service\TLS\CertificateFactoryImpl;
+use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\Organization\Organization;
@@ -115,6 +116,7 @@ return static function (ContainerConfigurator $c): void {
                 Owner::class => service(OwnerRepository::class),
                 Organization::class => service(OrganizationRepository::class),
                 Space::class => service(WebhostingSpaceRepository::class),
+                DomainName::class => service(DomainNameRepository::class),
                 DomainNameId::class => service(DomainNameRepository::class),
             ]),
             [
