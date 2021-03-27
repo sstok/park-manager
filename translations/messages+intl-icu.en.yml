@@ -55,6 +55,7 @@ label:
     confirm_reset: Confirm reset
     safe: Safe
     edit: Edit
+    actions: Actions
     show: Show
     add: Add
     cancel: Cancel
@@ -96,6 +97,7 @@ flash:
 
     domain_name_added: Domain Name was added.
     domain_name_changed: Domain Name was changed.
+    domain_name_removed: Domain Name was removed.
 
 user_login:
     heading: Login in to your account
@@ -179,3 +181,8 @@ domain_name:
         heading: Domain Names
     edit:
         heading: Change Domain Name Owner
+    remove:
+        heading: Remove Domain Name
+        confirm_warning: |
+            Do you want to remove the domain name {domainName}?<br>
+                <b>This will not remove the Domain Name DNS registration.</b>
