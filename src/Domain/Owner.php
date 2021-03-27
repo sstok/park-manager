@@ -37,13 +37,13 @@ class Owner implements \Stringable
     public OwnerId $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity=User::class, fetch="EAGER")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", name="user_id", onDelete="CASCADE", unique=true)
      */
     private ?User $user;
 
     /**
-     * @ORM\OneToOne(targetEntity=Organization::class, fetch="EXTRA_LAZY")
+     * @ORM\OneToOne(targetEntity=Organization::class, fetch="EAGER")
      * @ORM\JoinColumn(nullable=true, referencedColumnName="id", name="organization_id", onDelete="CASCADE", unique=true)
      */
     private ?Organization $organization;
