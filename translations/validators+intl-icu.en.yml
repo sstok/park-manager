@@ -4,6 +4,7 @@ cannot_remove_super_administrator: Cannot Remove SuperAdministrator. Revoke Supe
 value_does_not_match_expected_value: This value does not match the expected value "{required_value}".
 
 'This value is not a valid domain name.': This value is not a valid domain name.
+'Fractions are not accepted for Byte unit.':  Fractions are not accepted for Byte unit.
 
 password_reset:
     no_token: Sorry but no results were found with this reset token.<br><a href="{ reset_url }">Please try again</a>..

@@ -11,10 +11,12 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Constraint\Exception\PlanNotFound;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
+use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @method Plan|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,6 +26,11 @@ class PlanOrmRepository extends EntityRepository implements PlanRepository
     public function __construct(EntityManagerInterface $entityManager, string $className = Plan::class)
     {
         parent::__construct($entityManager, $className);
+    }
+
+    public function all(): ResultSet
+    {
+        return new OrmQueryBuilderResultSet($this->createQueryBuilder('p'), 'p', false);
     }
 
     public function get(PlanId $id): Plan

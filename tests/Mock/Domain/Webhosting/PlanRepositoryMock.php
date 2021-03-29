@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Constraint\Exception\PlanNotFound;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
@@ -25,6 +26,11 @@ final class PlanRepositoryMock implements PlanRepository
     public function get(PlanId $id): Plan
     {
         return $this->mockDoGetById($id);
+    }
+
+    public function all(): ResultSet
+    {
+        return $this->mockDoGetAll();
     }
 
     public function save(Plan $plan): void

@@ -1,7 +1,7 @@
 {% extends 'form/tailwind_base.html.twig' %}
 
 {%- block form_row -%}
-    {% set row_attr = row_attr|merge_attr_class('sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5') %}
+    {% set row_attr = row_attr|merge_attr_class('sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5 sm:pb-5') %}
     {%- set widget_attr = {attr: {'aria-describedby': id ~ "_help"}} -%}
     <div {% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
         {{- form_label(form) -}}

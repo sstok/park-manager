@@ -1,0 +1,43 @@
+{% extends 'form/tailwind_horizontal.html.twig' %}
+
+{% block webhosting_constraints_row %}
+    <div class="pt-5 pb-5">
+        {{ form_label(form, null, {'label_attr': {'class': 'text-lg'}}) }}
+        {{ form_errors(form) }}
+        {{ form_help(form) }}
+        {{ form_widget(form) }}
+    </div>
+{% endblock webhosting_constraints_row %}
+
+{% block webhosting_constraints_sub_row %}
+    <div class="border-t border-gray-200 pt-5 pb-5">
+        {{ form_label(form, null, { 'label_attr': { 'class': 'text-lg' }}) }}
+        {{ form_help(form, { 'help_attr': { 'class': 'text-sm text-gray-500' }}) }}
+        {{ form_errors(form) }}
+        <div class="border-t mt-5">
+            {{ form_widget(form, { 'attr': { 'class': 'border-0 border-t-0' } }) }}
+        </div>
+    </div>
+{% endblock webhosting_constraints_sub_row %}
+
+{% block webhosting_constraints_checkbox_row %}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~ "_help"}} -%}
+    {%- endif -%}
+
+    <div{% with {attr: row_attr| merge_attr_class('sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5') } %}{{ block('attributes') }}{% endwith %}>
+        <div></div>
+        <div class="flex items-center h-5">
+            {{- form_widget(form, widget_attr) -}}
+            {{- form_label(form, null, { 'label_attr': label_attr|merge_attr_class('ml-2') }) -}}
+        </div>
+        {{- form_errors(form) -}}
+        {{- form_help(form) -}}
+    </div>
+{% endblock webhosting_constraints_checkbox_row %}
+
+{% block integer_widget %}
+    {%- set field_width = 'w-20' -%}
+    {{- parent() -}}
+{% endblock integer_widget %}

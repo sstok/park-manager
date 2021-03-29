@@ -13,6 +13,7 @@ label:
     search: Search
     email: Email address
     status: Status
+    summary: Summary
     current_password: Current Password
     password: Password
     password2: Repeat Password
@@ -22,6 +23,7 @@ label:
     private_key_passphrase: Private-key passphrase
     domain_name: Domain name
     domain_suffix: Suffix/TLD
+    webhosting_constraints: Webhosting Constraints
     remove_tls: Remove TLS configuration
     user: User
     users: Users
@@ -30,7 +32,9 @@ label:
     internal_organization: 'Internal Organization'
     internal_organizations: 'Internal Organizations'
     owner: Owner
+    id: ID
     name: Name
+    description: Description
     display_name: Display name
     registered_on: Registered On
     role: Role
@@ -44,6 +48,7 @@ label:
     change_password: Change password
     change: Change
     value: Value
+    unit: Unit
     update_password: Update password
     open_main_menu: Open main menu
     open_user_menu: Open user menu
@@ -55,6 +60,7 @@ label:
     confirm_reset: Confirm reset
     save: Save
     edit: Edit
+    sync: Synchronize
     actions: Actions
     show: Show
     add: Add
@@ -62,6 +68,34 @@ label:
     remove: Remove
     expire_password: Expire password
     danger_zone: Danger Zone
+
+    # Webhosting
+    monthly_traffic: Monthly traffic
+    storage_size: Storage Size
+    webhosting_plan:
+        email_constraints: Email Constraints
+        email_max_storage_size: Maximum (assignable) mailbox storage size
+        maximum_email_address_count: Maximum amount addresses
+        address_count_controlled: Controlled by "Maximum amount addresses" ({ value, number })
+        maximum_emailbox_count: Maximum amount mailboxes
+        maximum_email_forward_count: Maximum amount mail forwards
+        spam_filter_count: Maximum amount (configurable) Spamfilters
+        email_list_count: Maximum amount email lists
+        database_constraints: Database Storage Constraints
+        database_provided_storage_size: Database storage-size provided minimum
+        database_maximum_amount_per_type: Maximum amount databases (per type)
+        database_enabled_pgsql: Enable PostgreSQL support
+        database_enabled_mysql: Enable MySQL support
+
+byte_size:
+    inf: Unlimited
+    byte: Byte
+    kb: KB
+    kib: KiB
+    mb: MB
+    mib: MiB
+    gb: GB
+    gib: GiB
 
 placeholder:
     _email: name@example.com
@@ -74,18 +108,33 @@ help:
     homedir: Either "blog/", "blog/2" or "site@1.0/public". Not "../blog", "blog/.2./", or "blog/@/". No special characters except "@" and "." (between letter and number characters).
     remove_tls: Removes all the assigned TLS configuration. Not required when setting new information.
     is_admin: Assign the user as an administrator. You can grant additional privileges later on.
+    byte_size_inf: Unlimited size, either no restriction limited by the free disk space.
+    byte_size_unit: Byte size unit in powers of 1024.
     domain_name_name: A valid domain-name, without the suffix or TLD.
     domain_name_suffix: A valid domain-name suffix or ICANN supported TLD.
     register_user:
         email: A valid email address, must not be already used by another user.
+    webhosting:
+        monthly_traffic: The provided amount of traffic, before any additional billing or throttling, on a monthly basis. In GiB. "-1" Means unlimited.
+        total_space_storage_size: The total assingable size for mailboxes and web-files storage of this webhosting space.
+        email_constraints: |
+            For "amount" fields use "0" for none, "-1" for unlimited.<br><br>
+
+            For the "Maximum amount addresses" field the following applies:<br>
+            If this value is "0" the maximum amount of mailboxes <em>and</em> forwards is controlled by the actual fields.<br>
+            If this value is <em>higher</em> than 0, the maximum number of mailboxes and forwards is counted as a whole, constrainted by this value.<br>
+            If this value is -1, there is no limit on the amount of mailboxes and forwards.<br>
 
 success: Success
 error: Error
 info: Information
 warning: Warnning
 dashboard: Dashboard
+yes: Yes
+no: No
 
 flash:
+    invalid_token_provided: Invalid token provided, please try again.
     password_reset_accepted: Password reset accepted. Please try to login with your new password.
     user_password_changed: Password changed.
     user_level_changed: User level changed.
@@ -98,6 +147,17 @@ flash:
     domain_name_added: Domain Name was added.
     domain_name_changed: Domain Name was changed.
     domain_name_removed: Domain Name was removed.
+
+    webhosting_plan:
+        added: Webhosting Plan was added.
+        removed: Webhosting Plan was removed.
+        updated: Webhosting Plan was updated.
+        assignment_update_dispatched: |
+            Webhosting Space Plan synchronization is dispatched. {spaces_count, plural,
+                =0    {No Spaces are expected to be updated.}
+                one   {One Space will be updated. Once the process is completed you should see the new constraints for the webhosting space.}
+                other {Approx # Spaces will be updated, this might take some time to complete. Once the process is completed you should see the new constraints for the webhosting spaces.}
+            }
 
 user_login:
     heading: Login in to your account
@@ -186,3 +246,23 @@ domain_name:
         confirm_warning: |
             Do you want to remove the domain name {domainName}?<br>
                 <b>This will not remove the Domain Name DNS registration.</b>
+
+webhosting:
+    plan:
+        list:
+            heading: Webhosting Plans
+        add:
+            heading: New Webhosting Plan
+        remove:
+            heading: Remove Webhosting Plan {id}
+            confirm_warning: |
+                This process cannot be undone! This Webhosting Plan is currently assigned
+                to { assignment_count, number } Webhosting Spaces.
+        edit:
+            heading: Update Webhosting Plan {id}
+            sync_warning: This will update the constraints of { spaces_count, number } Webhosting Spaces.
+            sync_label: Update linked Webhosting Spaces
+        show:
+            heading: Webhosting Plan {id}
+            sub_heading: Webhosting Plan
+            sync_label: Update linked Webhosting Spaces with Plan constraints

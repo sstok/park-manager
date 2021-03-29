@@ -1,0 +1,58 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% form_theme form 'form/tailwind_horizontal.html.twig' %}
+{% form_theme form.constraints 'form/webhosting_constraints.html.twig'  %}
+
+{% block title %}{{ 'webhosting.plan.add.heading'|trans }}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="#{#{{ path('park_manager.admin.webhosting.home') }}#}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ 'breadcrumbs.webhosting.home'|trans({}, 'navigation') }}</a>
+        </div>
+    </li>
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="{{ path('park_manager.admin.webhosting.plan.list') }}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ 'breadcrumbs.webhosting.plans'|trans({}, 'navigation') }}</a>
+        </div>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <div class="mt-8">
+        <div class="max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
+            <div class="bg-white p-8 border rounded-2xl shadow-sm">
+                {{ form_start(form, {attr: {'class': 'space-y-8 divide-y divide-gray-200'}}) }}
+                    <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
+                        <div>
+                            <div>
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                    {{ 'webhosting.plan.add.heading'|trans }}
+                                </h3>
+                            </div>
+                            {{ form_errors(form) }}
+                            <div class="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
+                                {{ form_row(form.constraints) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-5">
+                        <div class="flex justify-end">
+                            <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                {{ 'label.save'|trans() }}
+                            </button>
+                        </div>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

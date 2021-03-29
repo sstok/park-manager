@@ -11,6 +11,9 @@ breadcrumbs:
     dashboard: Dashboard
     users: Users
     domain_names: Domain Names
+    webhosting:
+        home: Webhosting
+        plans: Plans
 
 previous: Previous
 next: Next

@@ -27,6 +27,9 @@ use ParkManager\Domain\OwnerRepository;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
+use ParkManager\Domain\Webhosting\Constraint\Plan;
+use ParkManager\Domain\Webhosting\Constraint\PlanId;
+use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator;
@@ -116,6 +119,7 @@ return static function (ContainerConfigurator $c): void {
                 Owner::class => service(OwnerRepository::class),
                 Organization::class => service(OrganizationRepository::class),
                 Space::class => service(WebhostingSpaceRepository::class),
+                Plan::class => service(PlanRepository::class),
                 DomainName::class => service(DomainNameRepository::class),
                 DomainNameId::class => service(DomainNameRepository::class),
             ]),
@@ -124,6 +128,7 @@ return static function (ContainerConfigurator $c): void {
                 OwnerId::class => 'fromString',
                 OrganizationId::class => 'fromString',
                 DomainNameId::class => 'fromString',
+                PlanId::class => 'fromString',
             ],
         ]);
 

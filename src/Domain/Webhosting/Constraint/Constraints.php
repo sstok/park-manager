@@ -98,6 +98,14 @@ class Constraints
         return true;
     }
 
+    public function mergeFrom(self $other): self
+    {
+        return $this->setMonthlyTraffic($other->monthlyTraffic)
+            ->setStorageSize($other->storageSize)
+            ->setEmail($other->email)
+            ->setDatabase($other->database);
+    }
+
     public function setEmail(EmailConstraints $email): self
     {
         if ($this->email->equals($email)) {

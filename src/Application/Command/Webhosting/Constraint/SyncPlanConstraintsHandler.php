@@ -14,7 +14,7 @@ use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class UpdatePlanHandler
+final class SyncPlanConstraintsHandler
 {
     private PlanRepository $planRepository;
     private WebhostingSpaceRepository $spaceRepository;
@@ -27,23 +27,14 @@ final class UpdatePlanHandler
         $this->messageBus = $messageBus;
     }
 
-    public function __invoke(UpdatePlan $command): void
+    public function __invoke(SyncPlanConstraints $command): void
     {
         $plan = $this->planRepository->get($command->id);
-        $plan->changeConstraints($command->constraints);
 
-        if ($command->metadata !== null) {
-            $plan->withMetadata($command->metadata);
-        }
-
-        $this->planRepository->save($plan);
-
-        if ($command->updateLinkedSpaces) {
-            // The updating of Space constraints should happen async as this might result
-            // in heavy IO activity when computing acceptable levels.
-            foreach ($this->spaceRepository->allWithAssignedPlan($plan->id) as $space) {
-                $this->messageBus->dispatch(AssignPlanToSpace::withConstraints($plan->id, $space->id));
-            }
+        // The updating of Space constraints should happen async as this might result
+        // in heavy IO activity when computing acceptable levels.
+        foreach ($this->spaceRepository->allWithAssignedPlan($plan->id) as $space) {
+            $this->messageBus->dispatch(AssignPlanToSpace::withConstraints($plan->id, $space->id));
         }
     }
 }

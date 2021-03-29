@@ -236,6 +236,27 @@
     </div>
 {% endblock domain_name_pair_widget %}
 
+{% block byte_size_widget %}
+    <div class="flex rounded-md shadow-sm">
+        {{ form_widget(form.value, { 'attr': { 'class': 'rounded-r-none'}, 'field_width': 'w-20'}) }}
+        {{ form_errors(form.value) }}
+        <span class="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 bg-gray-50 sm:text-sm">
+            {{ form_widget(form.unit, { 'attr': { 'class': 'border-none rounded-l-none bg-gray-50'}}) }}
+        </span>
+    </div>
+
+    {% if form.isInf is defined %}
+        <div class="mt-2">
+            <div class="flex items-center h-5">
+                {{- form_widget(form.isInf, { attr: { 'aria-describedby': id ~ "_help" }} ) -}}
+                {{- form_label(form.isInf, null, { 'label_attr': form.isInf.vars.label_attr|merge_attr_class('ml-2') }) -}}
+            </div>
+            {{- form_errors(form.isInf) -}}
+            {{- form_help(form.isInf) -}}
+        </div>
+    {% endif %}
+{% endblock byte_size_widget %}
+
 {# Labels #}
 
 {% block form_label -%}

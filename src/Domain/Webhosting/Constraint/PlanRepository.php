@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Constraint;
 
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Constraint\Exception\PlanNotFound;
 
 interface PlanRepository
@@ -18,6 +19,11 @@ interface PlanRepository
      * @throws PlanNotFound
      */
     public function get(PlanId $id): Plan;
+
+    /**
+     * @return ResultSet<Plan>
+     */
+    public function all(): ResultSet;
 
     public function save(Plan $plan): void;
 
