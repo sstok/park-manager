@@ -53,7 +53,7 @@ label:
 
     sent_reset: Send reset
     confirm_reset: Confirm reset
-    safe: Safe
+    save: Save
     edit: Edit
     actions: Actions
     show: Show
