@@ -73,7 +73,7 @@ final class MessageFormType extends AbstractType
         $resolver->setAllowedTypes('command_factory', ['callable']);
         $resolver->setAllowedTypes('model_class', ['string', 'string[]', 'null']);
         $resolver->setAllowedTypes('disable_entity_mapping', ['bool']);
-        $resolver->setAllowedTypes('exception_mapping', ['callable[]']);
+        $resolver->setAllowedTypes('exception_mapping', ['array']); // [exceptionName] => {callable | 'string'}
         $resolver->setAllowedTypes('exception_fallback', ['callable', 'null']);
         $resolver->setAllowedTypes('violation_mapping', ['string[]']);
         $resolver->setNormalizer('model_class', static fn (Options $options, $value): ?array => $value !== null ? (array) $value : null);
@@ -152,7 +152,19 @@ final class MessageFormType extends AbstractType
             $exceptionName = \get_class($e);
 
             if (isset($exceptionMapping[$exceptionName])) {
-                $errors = $exceptionMapping[$exceptionName]($e, $this->translator, $form);
+                $handlerOrPath = $exceptionMapping[$exceptionName];
+
+                if (\is_string($handlerOrPath)) {
+                    $errors = [$handlerOrPath => new FormError(
+                        $this->translator->trans($e->getTranslatorId(), $e->getTranslationArgs(), 'validators'),
+                        $e->getTranslatorId(),
+                        $e->getTranslationArgs(),
+                        null,
+                        $e
+                    )];
+                } else {
+                    $errors = $handlerOrPath($e, $this->translator, $form);
+                }
             } elseif ($exceptionFallback !== null) {
                 $errors = $exceptionFallback($e, $this->translator, $form);
             } elseif ($e instanceof TranslatableException) {

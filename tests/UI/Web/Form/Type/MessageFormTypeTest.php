@@ -12,6 +12,7 @@ namespace ParkManager\Tests\UI\Web\Form\Type;
 
 use Exception;
 use InvalidArgumentException;
+use ParkManager\Domain\Exception\InvalidSplitTokenProvided;
 use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Tests\UI\Web\Form\IsFormErrorsEqual;
@@ -66,6 +67,10 @@ final class MessageFormTypeTest extends TypeTestCase
 
                     if ($command->id === 42) {
                         throw new Exception('You know nothing');
+                    }
+
+                    if ($command->id === 66) {
+                        throw new InvalidSplitTokenProvided();
                     }
 
                     if ($command->id === 77) {
@@ -147,6 +152,7 @@ final class MessageFormTypeTest extends TypeTestCase
                     null => [new FormError('Root problem is here2', null, [], null, $e)],
                     'username' => [new FormError('Username problem is here', null, [], null, $e)],
                 ],
+                InvalidSplitTokenProvided::class => 'profile.name',
             ],
             'exception_fallback' => static fn (Throwable $e, TranslatorInterface $translator) => [
                 'profile.contact.email' => new FormError($translator->trans('Contact Email problem is here'), null, [], null, $e),
@@ -250,6 +256,13 @@ final class MessageFormTypeTest extends TypeTestCase
                     new FormError('Lavara Cadabra My "[full_name]" is name "full_name"', 'Lavara My "[full_name]" is name "full_name"'),
                 ],
                 'profile.name' => [new FormError('Well yes, but actually no.')],
+            ],
+        ];
+
+        yield 'Exception mapped to form-path' => [
+            66,
+            [
+                'profile.name' => [new FormError('invalid_split_token')],
             ],
         ];
     }
