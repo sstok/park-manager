@@ -48,7 +48,11 @@ final class EntityType extends AbstractType
             return ChoiceList::loader(
                 $this,
                 new ResultSetChoiceLoader($options['resultset']),
-                // an array containing anything that "changes" the loader
+                // an array containing anything that "changes" the loader.
+                // Including which service provides the ResultSet, either the repository class-name.
+                //
+                // Caution: If this option is empty using multiple EntityTypes
+                // in the same Form will produce the same choices (for different results).
                 $options['choice_vary']
             );
         };

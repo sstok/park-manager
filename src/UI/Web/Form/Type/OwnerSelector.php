@@ -86,7 +86,7 @@ final class OwnerSelector extends AbstractType
 
                 return new CombinedResultSet(...$resultSets);
             },
-            'choice_vary' => [],
+            'choice_vary' => [\get_class($this->ownerRepository)],
             'choice_translation_domain' => false,
         ]);
     }
