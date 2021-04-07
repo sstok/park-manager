@@ -12,7 +12,7 @@ namespace ParkManager\Domain\Webhosting\SubDomain;
 
 use ParkManager\Domain\UuidTrait;
 
-final class SubDomainNameId
+final class SubDomainNameId implements \Stringable
 {
     use UuidTrait;
 }

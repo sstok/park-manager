@@ -12,7 +12,7 @@ namespace ParkManager\Domain\Webhosting\Email;
 
 use ParkManager\Domain\UuidTrait;
 
-final class MailboxId
+final class MailboxId implements \Stringable
 {
     use UuidTrait;
 }

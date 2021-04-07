@@ -16,7 +16,7 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * An Identity holds a single UUID value.
  *
- * Use this trait any in ValueObject that uniquely identifies an Entity.
+ * Use this trait in any ValueObject that uniquely identifies an Entity.
  */
 trait UuidTrait
 {
@@ -29,18 +29,12 @@ trait UuidTrait
         $this->stringValue = $value->toString();
     }
 
-    /**
-     * @return static
-     */
-    public static function create()
+    public static function create(): static
     {
         return new static(Uuid::uuid4());
     }
 
-    /**
-     * @return static
-     */
-    public static function fromString(string $value)
+    public static function fromString(string $value): static
     {
         return new static(Uuid::fromString($value));
     }

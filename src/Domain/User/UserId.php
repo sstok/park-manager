@@ -12,7 +12,7 @@ namespace ParkManager\Domain\User;
 
 use ParkManager\Domain\UuidTrait;
 
-final class UserId
+final class UserId implements \Stringable
 {
     use UuidTrait;
 }

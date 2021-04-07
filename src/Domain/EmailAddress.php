@@ -21,7 +21,7 @@ use const MB_CASE_LOWER;
 /**
  * @ORM\Embeddable
  */
-final class EmailAddress
+final class EmailAddress implements \Stringable
 {
     /**
      * READ-ONLY.

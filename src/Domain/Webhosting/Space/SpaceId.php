@@ -15,7 +15,7 @@ use ParkManager\Domain\UuidTrait;
 /**
  * @codeCoverageIgnore
  */
-final class SpaceId
+final class SpaceId implements \Stringable
 {
     use UuidTrait;
 }

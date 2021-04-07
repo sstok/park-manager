@@ -12,7 +12,7 @@ namespace ParkManager\Domain\Organization;
 
 use ParkManager\Domain\UuidTrait;
 
-final class OrganizationId
+final class OrganizationId implements \Stringable
 {
     /**
      * Administrator Organization (internal).

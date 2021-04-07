@@ -23,7 +23,7 @@ use ParkManager\Domain\Webhosting\Space\Space;
  *     @ORM\UniqueConstraint(name="uk_mailbox_address_name", columns={"address", "domain_name"})
  * })
  */
-class Mailbox
+class Mailbox implements \Stringable
 {
     /**
      * @ORM\Id
@@ -116,5 +116,10 @@ class Mailbox
     public function toString(): string
     {
         return $this->address . '@' . $this->domainName->toString();
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 }

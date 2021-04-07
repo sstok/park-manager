@@ -13,7 +13,7 @@ namespace ParkManager\Domain;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class TranslatableMessage implements TranslatableInterface
+final class TranslatableMessage implements TranslatableInterface, \Stringable
 {
     private string $message;
     private array $parameters;

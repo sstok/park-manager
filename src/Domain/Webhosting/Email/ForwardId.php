@@ -12,7 +12,7 @@ namespace ParkManager\Domain\Webhosting\Email;
 
 use ParkManager\Domain\UuidTrait;
 
-final class ForwardId
+final class ForwardId implements \Stringable
 {
     use UuidTrait;
 }

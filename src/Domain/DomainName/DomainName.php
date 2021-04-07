@@ -15,6 +15,7 @@ use ParkManager\Domain\DomainName\Exception\CannotAssignDomainNameWithDifferentO
 use ParkManager\Domain\DomainName\Exception\CannotTransferPrimaryDomainName;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\Webhosting\Space\Space;
+use Stringable;
 
 /**
  * @ORM\Entity
@@ -22,7 +23,7 @@ use ParkManager\Domain\Webhosting\Space\Space;
  *     @ORM\Index(name="domain_name_primary_marking_idx", columns={"space", "is_primary"}),
  * })
  */
-class DomainName
+class DomainName implements Stringable
 {
     /**
      * READ-ONLY.
@@ -155,5 +156,10 @@ class DomainName
         $this->space = null;
         $this->primary = true;
         $this->owner = $newOwner;
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 }
