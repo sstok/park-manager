@@ -38,6 +38,7 @@ use ParkManager\Infrastructure\Pdp\PsrStorageFactory;
 use ParkManager\Infrastructure\Security\Guard\FormAuthenticator;
 use ParkManager\Infrastructure\Security\PermissionExpressionProvider;
 use ParkManager\Infrastructure\Security\UserProvider;
+use ParkManager\Infrastructure\Service\EntityRenderer;
 use ParkManager\UI\Web\ArgumentResolver\ModelResolver;
 use ParkManager\UI\Web\ArgumentResolver\SplitTokenResolver;
 use Psr\Container\ContainerInterface;
@@ -99,6 +100,11 @@ return static function (ContainerConfigurator $c): void {
             __DIR__ . '/../src/UI/Web/Form/{ConfirmationHandler,DataTransformer,DataMapper}',
             __DIR__ . '/../src/UI/Web/Response',
         ]);
+
+    $di->get(EntityRenderer::class)->args([
+        service('twig'),
+        service('translator'),
+    ]);
 
     $di->get(CertificateFactoryImpl::class)
         ->args(['%env(base64:TLS_STORAGE_PUBKEY)%']);
