@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Domain\DomainName;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\UnicodeString;
 
 /**
  * @ORM\Embeddable
@@ -44,6 +45,25 @@ final class DomainNamePair implements \Stringable
         $this->idnValue ??= (string) \idn_to_utf8($this->name . '.' . $this->tld, \IDNA_DEFAULT, \INTL_IDNA_VARIANT_UTS46);
 
         return $this->idnValue;
+    }
+
+    public function toTruncatedString(int $length = 27, string $ellipsis = '[...]'): string
+    {
+        $address = $this->toString();
+
+        if ($length >= \mb_strlen($address)) {
+            return $address;
+        }
+
+        $text = new UnicodeString($address);
+        $separator = $text->indexOf('.');
+
+        $name = $text->slice(0, $separator);
+        $tld = $text->slice($separator);
+
+        $length -= $tld->length(); // TLD is never reduced
+
+        return $name->truncate($length, $ellipsis) . $tld;
     }
 
     public function equals(self $other): bool

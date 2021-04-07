@@ -12,6 +12,7 @@ namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\Expr\Join;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNamePair;
@@ -75,11 +76,12 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
 
     public function allFromOwner(OwnerId $id): ResultSet
     {
-        return $this->createQueryBuilder('d')
-            ->where('d.owner = :owner')
-            ->getQuery()
-            ->setParameter('owner', $id->toString())
-            ->getResult();
+        return new OrmQueryBuilderResultSet(
+            $this->createQueryBuilder('d')
+                ->where('d.owner = :owner')
+                ->setParameter('owner', $id->toString()),
+            'd'
+        );
     }
 
     public function all(): ResultSet
@@ -103,7 +105,7 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
     {
         return new OrmQueryBuilderResultSet(
             $this->createQueryBuilder('d')
-                ->join(Space::class, 's')
+                ->join(Space::class, 's', Join::WITH, 'd.space = s.id')
                 ->where('s.id = :space')
                 ->setParameter('space', $id->toString()),
             'd',

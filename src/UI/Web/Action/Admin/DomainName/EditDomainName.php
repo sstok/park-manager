@@ -23,6 +23,14 @@ final class EditDomainName
     #[Route(path: 'domain-name/{domainName}/edit/', name: 'park_manager.admin.domain_name.edit', methods: ['GET', 'POST'])]
     public function __invoke(Request $request, FormFactoryInterface $formFactory, DomainName $domainName): RouteRedirectResponse | TwigResponse
     {
+        if ($domainName->space !== null) {
+            return RouteRedirectResponse::toRoute('park_manager.admin.list_domain_names')->withFlash(
+                type: 'error',
+                message: 'flash.domain_name_space_owned',
+                arguments: ['name' => $domainName->namePair->toString()]
+            );
+        }
+
         $form = $formFactory->create(EditDomainNameForm::class, $domainName);
         $form->handleRequest($request);
 

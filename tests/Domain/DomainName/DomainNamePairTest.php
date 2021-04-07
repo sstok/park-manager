@@ -29,4 +29,19 @@ final class DomainNamePairTest extends TestCase
         self::assertFalse($namePair->equals(new DomainNamePair('example', 'net')));
         self::assertFalse($namePair->equals(new DomainNamePair('park-manager', 'com')));
     }
+
+    /** @test */
+    public function it_provides_truncated_string_version(): void
+    {
+        self::assertEquals('example.com', (new DomainNamePair('example', 'com'))->toTruncatedString());
+        self::assertEquals('日本レジストリサービス.jp', (new DomainNamePair('日本レジストリサービス', 'jp'))->toTruncatedString());
+        self::assertEquals('例子.测试', (new DomainNamePair('例子', '测试'))->toTruncatedString());
+        self::assertEquals('绝不会放弃你永远不会让你失望永远不会跑[...].测试', (new DomainNamePair('绝不会放弃你永远不会让你失望永远不会跑来跑去和抛弃你永远不会让你哭泣永远不会说再见永远不会撒谎和伤害你', '测试'))->toTruncatedString(27));
+        self::assertEquals('aaaaaaaaaaaaaaaaaa[...].com', (new DomainNamePair('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'com'))->toTruncatedString(27));
+        self::assertEquals('aaaaaaaaaaaaaaaaaaa[...].com', (new DomainNamePair('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'com'))->toTruncatedString(28));
+        self::assertEquals('aaaaaaaaaaaaaaaa[...].co.uk', (new DomainNamePair('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'co.uk'))->toTruncatedString(27));
+        self::assertEquals('aaaaaaaaaaaaaaaa[...].co.uk', (new DomainNamePair('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbb', 'co.uk'))->toTruncatedString(27));
+        self::assertEquals('aaaaaaaaaaaaaaaa[...].co.uk', (new DomainNamePair('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbb', 'co.uk'))->toTruncatedString(27));
+        self::assertEquals('yidianliangdiansan[...].com', (new DomainNamePair('yidianliangdiansandiansidianwudianliudianqidianbadianjiudianshi', 'com'))->toTruncatedString(27));
+    }
 }

@@ -48,6 +48,11 @@ interface DomainNameRepository extends OwnerControlledRepository
      */
     public function allFromSpace(SpaceId $id): ResultSet;
 
+    /**
+     * @return ResultSet<DomainName>
+     */
+    public function all(): ResultSet;
+
     public function save(DomainName $domainName): void;
 
     /**

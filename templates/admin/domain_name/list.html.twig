@@ -53,19 +53,25 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
                                 {% for domain_name in domain_names %}
                                     <tr>
+                                        <td class="px-6 py-4" title="{{ domain_name }}">
+                                            <span aria-hidden="true">{{ domain_name.toTruncatedString(45) }}</span>
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm text-gray-900">
-                                                {{ domain_name.toString() }}
+                                            {% if domain_name.space is not empty %}
+                                                <a class="hover:underline" href="#{#{{ path('park_manager.admin.webhosting.space.show', { 'space': domain_name.space.id }) }}#}">Webhosting Space</a>
                                             </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            {% else %}
                                             <div class="text-sm font-medium text-gray-900 truncate">
-                                                {{ _macros.owner_info_column(domain_name.owner) }}
+                                                {{- _macros.owner_info_column(domain_name.owner) -}}
                                             </div>
+                                            {% endif %}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            {% if domain_name.space is empty %}
                                             <a href="{{ path('park_manager.admin.domain_name.edit', {'domainName': domain_name.id }) }}" class="text-indigo-600 hover:text-indigo-900">{{ 'label.edit'|trans }}</a>
                                             <a href="{{ path('park_manager.admin.domain_name.remove', {'domainName': domain_name.id }) }}" class="text-indigo-600 hover:text-indigo-900">{{ 'label.remove'|trans }}</a>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                 {% endfor %}

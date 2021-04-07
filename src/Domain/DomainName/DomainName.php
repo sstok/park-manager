@@ -100,6 +100,11 @@ class DomainName implements Stringable
         return $this->namePair->toString();
     }
 
+    public function toTruncatedString(int $length = 27, string $ellipsis = '[...]'): string
+    {
+        return $this->namePair->toTruncatedString($length, $ellipsis);
+    }
+
     public function markPrimary(): void
     {
         $this->primary = true;

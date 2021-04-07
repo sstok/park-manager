@@ -147,6 +147,7 @@ flash:
     domain_name_added: Domain Name was added.
     domain_name_changed: Domain Name was changed.
     domain_name_removed: Domain Name was removed.
+    domain_name_space_owned: Domain Name "{name}" is assigned to a Webhosting Space and cannot be removed or assigned to another owner.
 
     webhosting_plan:
         added: Webhosting Plan was added.

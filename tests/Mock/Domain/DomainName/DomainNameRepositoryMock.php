@@ -97,6 +97,11 @@ final class DomainNameRepositoryMock implements DomainNameRepository
         return $this->mockDoGetMultiByField('space', (string) $id);
     }
 
+    public function all(): ResultSet
+    {
+        return $this->mockDoGetAll();
+    }
+
     public function save(DomainName $domainName): void
     {
         if ($domainName->isPrimary() && $domainName->space !== null) {
