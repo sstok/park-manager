@@ -136,10 +136,10 @@ class DomainName implements Stringable
             }
 
             if ($this->space->owner !== $space->owner) {
-                throw new CannotAssignDomainNameWithDifferentOwner($this->namePair, $this->space->id, $space->id);
+                throw CannotAssignDomainNameWithDifferentOwner::fromSpace($this->namePair, $this->space->id, $space->id);
             }
         } elseif ($this->owner !== $space->owner) {
-            throw new CannotAssignDomainNameWithDifferentOwner($this->namePair, null, $space->id);
+            throw CannotAssignDomainNameWithDifferentOwner::toSpace($this->namePair, $space->id);
         }
 
         $this->space = $space;

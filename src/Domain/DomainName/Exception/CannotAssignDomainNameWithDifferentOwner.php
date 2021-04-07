@@ -18,28 +18,48 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 final class CannotAssignDomainNameWithDifferentOwner extends DomainException implements TranslatableException
 {
     private DomainNamePair $domainName;
-    private ?SpaceId $current;
+    private ?SpaceId $current = null;
     private SpaceId $new;
 
-    public function __construct(DomainNamePair $domainName, ?SpaceId $current, SpaceId $new)
+    public static function toSpace(DomainNamePair $domainName, SpaceId $space): self
     {
-        parent::__construct(
-            \sprintf(
-                'Domain name "%s" of space %s does not have the same owner as space %s.',
+        $instance = new self(\sprintf(
+                'Domain name "%s" does not have the same owner as Space "%s".',
                 $domainName->toString(),
-                $current ? $current->toString() : '[none]',
+                $space->toString()
+            )
+        );
+
+        $instance->domainName = $domainName;
+        $instance->new = $space;
+
+        return $instance;
+    }
+
+    public static function fromSpace(DomainNamePair $domainName, SpaceId $current, SpaceId $new): self
+    {
+        $instance = new self(\sprintf(
+                'Domain name "%s" of Space %s does not have the same owner as Space %s.',
+                $domainName->toString(),
+                $current->toString(),
                 $new->toString()
             )
         );
 
-        $this->domainName = $domainName;
-        $this->current = $current;
-        $this->new = $new;
+        $instance->domainName = $domainName;
+        $instance->current = $current;
+        $instance->new = $new;
+
+        return $instance;
     }
 
     public function getTranslatorId(): string
     {
-        return 'cannot_assign_domain_name_with_different_owner';
+        if ($this->current) {
+            return 'domain_name.cannot_assign_domain_name_with_different_space_owner';
+        }
+
+        return 'domain_name.cannot_assign_domain_name_with_different_owner';
     }
 
     public function getTranslationArgs(): array

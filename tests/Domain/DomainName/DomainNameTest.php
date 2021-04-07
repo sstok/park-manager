@@ -136,8 +136,8 @@ final class DomainNameTest extends TestCase
 
         $webhostingDomainName = DomainName::registerSecondaryForSpace(DomainNameId::create(), $space1, new DomainNamePair('example', 'com'));
 
-        $this->expectExceptionObject(new CannotAssignDomainNameWithDifferentOwner($webhostingDomainName->namePair, $space1->id, $space2->id));
-        $this->expectExceptionMessage('Domain name "example.com" of space 374dd50e-9b9f-11e7-9730-acbc32b58315 does not have the same owner as space cfa42746-a6ac-11e7-bff0-acbc32b58315.');
+        $this->expectExceptionObject(CannotAssignDomainNameWithDifferentOwner::fromSpace($webhostingDomainName->namePair, $space1->id, $space2->id));
+        $this->expectExceptionMessage('Domain name "example.com" of Space 374dd50e-9b9f-11e7-9730-acbc32b58315 does not have the same owner as Space cfa42746-a6ac-11e7-bff0-acbc32b58315.');
 
         $webhostingDomainName->transferToSpace($space2);
     }
@@ -159,8 +159,8 @@ final class DomainNameTest extends TestCase
             $owner
         );
 
-        $this->expectExceptionObject(new CannotAssignDomainNameWithDifferentOwner($webhostingDomainName->namePair, null, $space->id));
-        $this->expectExceptionMessage('Domain name "example.com" of space [none] does not have the same owner as space cfa42746-a6ac-11e7-bff0-acbc32b58315.');
+        $this->expectExceptionObject(CannotAssignDomainNameWithDifferentOwner::toSpace($webhostingDomainName->namePair, $space->id));
+        $this->expectExceptionMessage('Domain name "example.com" does not have the same owner as Space "cfa42746-a6ac-11e7-bff0-acbc32b58315".');
 
         $webhostingDomainName->transferToSpace($space);
     }

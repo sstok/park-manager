@@ -140,7 +140,9 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
             self::assertEquals(new DomainNameAlreadyInUse($domainName), $e);
         }
 
-        $spaceRepository->assertNoEntitiesWereSaved();
+        // While technically no entities should be saved, the Space must be 'persisted'
+        // before the DomainName to prevent untracked entities in the UnitOfWork.
+        $spaceRepository->assertEntitiesCountWasSaved(1);
         $domainNameRepository->assertNoEntitiesWereSaved();
     }
 

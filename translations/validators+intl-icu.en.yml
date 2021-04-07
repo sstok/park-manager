@@ -47,3 +47,5 @@ tls:
 
 domain_name:
     already_in_use: DomainName "{name}.{tld}" is already in use.
+    cannot_assign_domain_name_with_different_space_owner: Cannot assign domain name "{name}.{tld}" to Space {new}. Space {current_space} has a different owner than Space {new}.
+    cannot_assign_domain_name_with_different_owner: Cannot assign domain name "{name}.{tld}" to Space. Domain name "{domain_name}.{domain_tld}" does not have same owner.

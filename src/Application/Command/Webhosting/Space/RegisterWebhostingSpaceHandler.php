@@ -54,6 +54,9 @@ final class RegisterWebhostingSpaceHandler
             );
         }
 
+        // Must be done before the domain-name assignment to ensure the Unit of work knows about this entity.
+        $this->spaceRepository->save($space);
+
         try {
             $currentRegistration = $this->domainNameRepository->getByName($command->domainName);
 
@@ -67,7 +70,5 @@ final class RegisterWebhostingSpaceHandler
             $primaryDomainName = DomainName::registerForSpace(DomainNameId::create(), $space, $command->domainName);
             $this->domainNameRepository->save($primaryDomainName);
         }
-
-        $this->spaceRepository->save($space);
     }
 }
