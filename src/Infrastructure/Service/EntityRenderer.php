@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Service;
 
+use ParkManager\Domain\ResultSet;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Twig\Environment as TwigEnvironment;
 
@@ -33,6 +34,22 @@ final class EntityRenderer
     {
         $this->twig = $twig;
         $this->localeAware = $localeAware;
+    }
+
+    public function getEntityLabel(string $entityName): string
+    {
+        if (! \str_starts_with($entityName, 'ParkManager\\Domain\\')) {
+            throw new \InvalidArgumentException(\sprintf('Expected %s to begin with "ParkManager\\Domain\\"', $entityName));
+        }
+
+        $class = \mb_substr(\ltrim($entityName, '\\'), 19); // Strips `ParkManager\Domain\`
+        $parts = \explode('\\', $class);
+
+        if (\count($parts) > 1 && $parts[\count($parts) - 1] === $parts[\count($parts) - 2]) {
+            \array_pop($parts);
+        }
+
+        return \mb_strtolower(\implode('.', $parts));
     }
 
     /**
@@ -82,5 +99,48 @@ final class EntityRenderer
     public function detailed(object $entity, array $extra = [], ?string $locale = null, string $format = 'html'): string
     {
         return $this->renderTemplate($entity, $extra, $format, 'detailed', $locale);
+    }
+
+    /**
+     * @param array<string, ResultSet<object>> $sets
+     */
+    public function listedBySet(array $sets, array $extra = [], ?string $locale = null): string
+    {
+        $currentLocale = $this->localeAware->getLocale();
+        $renderedSets = [];
+
+        try {
+            if ($locale) {
+                $this->localeAware->setLocale($locale);
+            }
+
+            foreach ($sets as $name => $resultSet) {
+                if ($resultSet->getNbResults() < 1) {
+                    continue;
+                }
+
+                // Reset for each new set.
+                $resolveTemplate = null;
+
+                $label = $this->getEntityLabel($name);
+                $renderedSets[$label] = [];
+
+                foreach ($resultSet as $entity) {
+                    $resolveTemplate ??= $this->resolveTemplate($entity);
+
+                    $renderedSets[$label][] = $this->twig->load(\sprintf('entity_rendering/%s.%s.twig',
+                        $resolveTemplate, 'html'))->renderBlock(
+                        'short',
+                        ['entity' => $entity] + $extra
+                    );
+                }
+            }
+
+            return $this->twig->render('entity_rendering/listed.html.twig', ['sets' => $renderedSets] + $extra);
+        } finally {
+            if ($locale) {
+                $this->localeAware->setLocale($currentLocale);
+            }
+        }
     }
 }

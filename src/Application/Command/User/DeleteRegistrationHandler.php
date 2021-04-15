@@ -10,24 +10,32 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\User;
 
+use ParkManager\Application\Service\OwnershipUsageList;
+use ParkManager\Domain\User\Exception\CannotRemoveActiveUser;
 use ParkManager\Domain\User\Exception\CannotRemoveSuperAdministrator;
 use ParkManager\Domain\User\UserRepository;
 
 final class DeleteRegistrationHandler
 {
     private UserRepository $repository;
+    private OwnershipUsageList $ownershipUsageList;
 
-    public function __construct(UserRepository $repository)
+    public function __construct(UserRepository $repository, OwnershipUsageList $ownershipUsageList)
     {
         $this->repository = $repository;
+        $this->ownershipUsageList = $ownershipUsageList;
     }
 
     public function __invoke(DeleteRegistration $command): void
     {
-        $user = $this->repository->get($command->id());
+        $user = $this->repository->get($command->id);
 
         if ($user->hasRole('ROLE_SUPER_ADMIN')) {
             throw new CannotRemoveSuperAdministrator($user->id);
+        }
+
+        if ($this->ownershipUsageList->isAnyAssignedTo($command->id->toOwnerId())) {
+            throw new CannotRemoveActiveUser($command->id, $this->ownershipUsageList->getByProvider($command->id->toOwnerId()));
         }
 
         $this->repository->remove($user);

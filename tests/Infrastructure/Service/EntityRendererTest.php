@@ -13,6 +13,7 @@ namespace ParkManager\Tests\Infrastructure\Service;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Infrastructure\Service\EntityRenderer;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -110,5 +111,14 @@ final class EntityRendererTest extends TestCase
         $localeAware->expects(self::exactly(2))->method('setLocale')->withConsecutive([$tempLocale], ['en']);
 
         return $localeAware;
+    }
+
+    /** @test */
+    public function it_gets_entity_label(): void
+    {
+        $renderer = new EntityRenderer($this->createTwigEnv(), $this->expectLocaleIsNotChanged());
+
+        self::assertEquals('user', $renderer->getEntityLabel(User::class));
+        self::assertEquals('webhosting.space', $renderer->getEntityLabel(Space::class));
     }
 }

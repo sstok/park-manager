@@ -11,7 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\Admin\User;
 
 use ParkManager\Application\Command\User\DeleteRegistration;
+use ParkManager\Domain\User\Exception\CannotRemoveActiveUser;
 use ParkManager\Domain\User\User;
+use ParkManager\Infrastructure\Service\EntityRenderer;
+use ParkManager\UI\Web\Form\RawFormError;
 use ParkManager\UI\Web\Form\Type\ConfirmationForm;
 use ParkManager\UI\Web\Response\RouteRedirectResponse;
 use ParkManager\UI\Web\Response\TwigResponse;
@@ -19,6 +22,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RemoveUserAction
 {
@@ -31,7 +35,7 @@ final class RemoveUserAction
      *     name="park_manager.admin.remove_user"
      * )
      */
-    public function __invoke(Request $request, User $id, FormFactoryInterface $formFactory)
+    public function __invoke(Request $request, User $id, FormFactoryInterface $formFactory, EntityRenderer $entityRenderer): TwigResponse | RouteRedirectResponse
     {
         $form = $formFactory->create(ConfirmationForm::class, null, [
             'confirmation_title' => 'user_management.remove.heading',
@@ -43,6 +47,19 @@ final class RemoveUserAction
             ],
             'required_value' => $id->displayName,
             'command_factory' => static fn () => new DeleteRegistration($id->id->toString()),
+            'exception_mapping' => [
+                CannotRemoveActiveUser::class => static function (CannotRemoveActiveUser $exception, TranslatorInterface $translator) use ($entityRenderer): RawFormError {
+                    return new RawFormError(
+                        $translator->trans(
+                            'cannot_remove_active_user',
+                            ['entities' => $entityRenderer->listedBySet($exception->entities, ['is_admin' => true])],
+                            'validators'
+                        ),
+                        'cannot_remove_active_user',
+                        cause: $exception
+                    );
+                },
+            ],
         ]);
 
         $form->handleRequest($request);

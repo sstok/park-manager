@@ -195,6 +195,7 @@
             </h3>
             <div class="mt-2 max-w-xl text-sm text-gray-500">
                 <p>{{ confirmation_message|trans_safe()|nl2br|raw }}</p>
+                {{ form_errors(form) }}
                 {% if form.children.required_value is defined %}
                     <div class="mt-2">
                         {{ form_label(form.required_value) }}
@@ -330,7 +331,7 @@
                                     {% if error.message == error.messageTemplate %}
                                         {% set error_message = error.messageTemplate|trans_safe(error.messageParameters, 'validators') %}
                                     {% else %}
-                                        {% set error_message = error.message|escape %}
+                                        {% set error_message = (error.raw is defined ? error.message|raw : error.message|escape) %}
                                     {% endif %}
 
                                     <li class="">
@@ -351,7 +352,7 @@
                     {% if error.message == error.messageTemplate %}
                         {% set error_message = error.messageTemplate|trans_safe(error.messageParameters, 'validators') %}
                     {% else %}
-                        {% set error_message = error.message|escape %}
+                        {% set error_message = (error.raw is defined ? error.message|raw : error.message|escape) %}
                     {% endif %}
 
                     <li class="flex lg:inline-flex">

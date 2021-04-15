@@ -1,0 +1,13 @@
+<dl>
+    {% for label, entities in sets %}
+        <dt class="text-bold">{{ ('entity_label.' ~ label)|trans }}</dt>
+        <dd>
+            <ul class="list-decimal list-inside">
+                {% for entity in entities %}
+                    <li>{{ entity|raw }}</li>
+                {% endfor %}
+            </ul>
+        </dd>
+    {% endfor %}
+</dl>
+

@@ -17,13 +17,13 @@ use ParkManager\Domain\ResultSet;
 
 final class OwnershipUsageList
 {
-    /** @var array<string, OwnerControlledRepository> */
-    private array $repositories;
+    /** @var iterable<string, OwnerControlledRepository> */
+    private iterable $repositories;
 
     /**
-     * @param array<string, OwnerControlledRepository> $repositories ['{RootEntityFullName}' => {SpaceRepository}]
+     * @param iterable<string, OwnerControlledRepository> $repositories ['{RootEntityFullName}' => {SpaceRepository}]
      */
-    public function __construct(array $repositories)
+    public function __construct(iterable $repositories)
     {
         Assertion::allIsInstanceOf($repositories, OwnerControlledRepository::class);
 

@@ -142,7 +142,10 @@ return static function (ContainerConfigurator $c): void {
         ->arg(1, tagged_iterator('park_manager.command_bus.domain_name_space_usage_validator'));
 
     $di->get(OwnershipUsageList::class)
-        ->arg(0, tagged_iterator('park_manager.owner_controlled_repository'));
+        ->arg(0, iterator([
+            Space::class => service(WebhostingSpaceRepository::class),
+            DomainName::class => service(DomainNameRepository::class),
+        ]));
 
     $di->set(Argon2SplitTokenFactory::class);
     $di->alias(SplitTokenFactory::class, Argon2SplitTokenFactory::class);

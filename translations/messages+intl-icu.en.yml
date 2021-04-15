@@ -87,6 +87,12 @@ label:
         database_enabled_pgsql: Enable PostgreSQL support
         database_enabled_mysql: Enable MySQL support
 
+entity_label:
+    user: User
+    domainname: Domain Name
+    webhosting:
+        space: Webhosting Space
+
 byte_size:
     inf: Unlimited
     byte: Byte

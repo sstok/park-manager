@@ -10,9 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\User;
 
+use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\UuidTrait;
 
 final class UserId implements \Stringable
 {
     use UuidTrait;
+
+    public function toOwnerId(): OwnerId
+    {
+        return OwnerId::fromString($this->toString());
+    }
 }
