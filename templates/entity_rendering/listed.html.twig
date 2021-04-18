@@ -1,8 +1,8 @@
 <dl>
     {% for label, entities in sets %}
-        <dt class="text-bold">{{ ('entity_label.' ~ label)|trans }}</dt>
+        <dt class="mt-4 font-bold">{{ ('entity_label.' ~ label)|trans }}</dt>
         <dd>
-            <ul class="list-decimal list-inside">
+            <ul class="list-disc list-inside">
                 {% for entity in entities %}
                     <li>{{ entity|raw }}</li>
                 {% endfor %}

@@ -16,6 +16,8 @@ use Carbon\Carbon;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\ByteSize;
+use ParkManager\Domain\DomainName\DomainName;
+use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
@@ -74,6 +76,16 @@ class Space
      * @ORM\Column(type="byte_size", nullable=true)
      */
     public ?ByteSize $webQuota = null;
+
+    /**
+     * READ-ONLY.
+     *
+     * This is a static value updated by `DomainName::transferToSpace(primary: true)`
+     * meant for display purposes only.
+     *
+     * @ORM\Embedded(class=DomainNamePair::class, columnPrefix="primary_domain_")
+     */
+    public DomainNamePair $primaryDomainLabel;
 
     private function __construct(SpaceId $id, Owner $owner, Constraints $constraints)
     {
@@ -203,5 +215,10 @@ class Space
     public function isMarkedForRemoval(): bool
     {
         return $this->markedForRemoval;
+    }
+
+    public function setPrimaryDomainLabel(DomainNamePair $primaryDomainLabel): void
+    {
+        $this->primaryDomainLabel = $primaryDomainLabel;
     }
 }

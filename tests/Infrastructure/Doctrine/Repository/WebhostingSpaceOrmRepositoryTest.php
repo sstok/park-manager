@@ -11,6 +11,9 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use ParkManager\Domain\DomainName\DomainName;
+use ParkManager\Domain\DomainName\DomainNameId;
+use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\User\User;
@@ -22,6 +25,7 @@ use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSp
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
+use ParkManager\Infrastructure\Doctrine\Repository\DomainNameOrmRepository;
 use ParkManager\Infrastructure\Doctrine\Repository\WebhostingSpaceOrmRepository;
 use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
 
@@ -42,6 +46,8 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     private Plan $plan;
     private Owner $owner1;
 
+    private DomainNameOrmRepository $domainRepository;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -60,11 +66,20 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
             $this->constraints
         );
 
+        $domainName1 = DomainName::register(DomainNameId::fromString(self::SPACE_ID1), new DomainNamePair('example', 'com'), $this->owner1);
+        $domainName2 = DomainName::register(DomainNameId::fromString(self::SPACE_ID2), new DomainNamePair('example', 'net'), $this->owner1);
+
         $em = $this->getEntityManager();
-        $em->transactional(function (EntityManagerInterface $em) use ($user): void {
+
+        $this->domainRepository = new DomainNameOrmRepository($em);
+
+        $em->transactional(function (EntityManagerInterface $em) use ($user, $domainName1, $domainName2): void {
             $em->persist($user);
             $em->persist($this->owner1);
             $em->persist($this->plan);
+
+            $this->domainRepository->save($domainName1);
+            $this->domainRepository->save($domainName2);
         });
     }
 
@@ -146,22 +161,34 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     private function setUpSpace1(WebhostingSpaceOrmRepository $repository): void
     {
         $repository->save(
-            Space::registerWithCustomConstraints(
+            $space = Space::registerWithCustomConstraints(
                 SpaceId::fromString(self::SPACE_ID1),
                 $this->owner1,
                 new Constraints()
             )
         );
+
+        $domainName = $this->domainRepository->get(DomainNameId::fromString(self::SPACE_ID1));
+        $domainName->transferToSpace($space, primary: true);
+
+        $this->domainRepository->save($domainName);
+        $repository->save($space);
     }
 
     private function setUpSpace2(WebhostingSpaceOrmRepository $repository): void
     {
         $repository->save(
-            Space::register(
+            $space = Space::register(
                 SpaceId::fromString(self::SPACE_ID2),
                 $this->owner1,
                 $this->plan
             )
         );
+
+        $domainName = $this->domainRepository->get(DomainNameId::fromString(self::SPACE_ID2));
+        $domainName->transferToSpace($space, primary: true);
+
+        $this->domainRepository->save($domainName);
+        $repository->save($space);
     }
 }

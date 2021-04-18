@@ -84,6 +84,8 @@ class DomainName implements Stringable
         $instance->space = $space;
         $instance->primary = true;
 
+        $space->setPrimaryDomainLabel($instance->namePair);
+
         return $instance;
     }
 
@@ -121,6 +123,7 @@ class DomainName implements Stringable
         // breached it should not result in an exception.
         if ($this->space === $space) {
             if ($primary) {
+                $space->setPrimaryDomainLabel($this->namePair);
                 $this->markPrimary();
             }
 
@@ -144,6 +147,10 @@ class DomainName implements Stringable
 
         $this->space = $space;
         $this->primary = $primary;
+
+        if ($primary) {
+            $space->setPrimaryDomainLabel($this->namePair);
+        }
 
         // Remove the ownership relation to reduce the need for synchronizing.
         $this->owner = null;

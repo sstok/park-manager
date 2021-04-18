@@ -1,5 +1,9 @@
 {%- block short -%}
+    {%- if entity.primaryDomainLabel is not empty -%}
+        {{ entity.primaryDomainLabel -}}
+    {%- else -%}
         {{ entity.id -}}
+    {% endif %}
 {%- endblock -%}
 
 {%- block detailed -%}

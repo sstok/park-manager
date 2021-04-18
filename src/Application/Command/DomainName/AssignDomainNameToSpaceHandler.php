@@ -31,6 +31,7 @@ final class AssignDomainNameToSpaceHandler
 
         $domainName->transferToSpace($space, $command->primary);
 
+        $this->spaceRepository->save($space);
         $this->domainNameRepository->save($domainName);
     }
 }

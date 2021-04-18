@@ -89,16 +89,6 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
             new Constraints()
         );
 
-        $em->transactional(function (EntityManagerInterface $em) use ($user1, $user2, $owner1, $owner2): void {
-            $em->persist($user1);
-            $em->persist($user2);
-            $em->persist($owner1);
-            $em->persist($owner2);
-            $em->persist($this->space1);
-            $em->persist($this->space2);
-            $em->persist($this->space3);
-        });
-
         $webhostingDomainName1 = DomainName::registerForSpace(DomainNameId::create(), $this->space1, new DomainNamePair('example', 'com'));
         $this->id1 = $webhostingDomainName1->id;
 
@@ -116,6 +106,16 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
 
         $webhostingDomainName6 = DomainName::registerForSpace(DomainNameId::create(), $this->space3, new DomainNamePair('example', 'nu'));
         $this->id6 = $webhostingDomainName6->id;
+
+        $em->transactional(function (EntityManagerInterface $em) use ($user1, $user2, $owner1, $owner2): void {
+            $em->persist($user1);
+            $em->persist($user2);
+            $em->persist($owner1);
+            $em->persist($owner2);
+            $em->persist($this->space1);
+            $em->persist($this->space2);
+            $em->persist($this->space3);
+        });
 
         $this->repository = new DomainNameOrmRepository($em);
         $this->repository->save($webhostingDomainName1);

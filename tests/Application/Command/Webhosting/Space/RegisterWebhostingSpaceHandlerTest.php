@@ -64,9 +64,10 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
 
         $handler(RegisterWebhostingSpace::withPlan(self::SPACE_ID1, $domainName, self::USER_ID1, self::SET_ID1));
 
-        $spaceRepository->assertEntitiesWereSaved([
-            Space::register(SpaceId::fromString(self::SPACE_ID1), $this->getUserOwner(), $plan),
-        ]);
+        $space = Space::register(SpaceId::fromString(self::SPACE_ID1), $this->getUserOwner(), $plan);
+        $space->setPrimaryDomainLabel($domainName);
+
+        $spaceRepository->assertEntitiesWereSaved([$space]);
 
         $domainNameRepository->assertEntitiesCountWasSaved(1);
         $domainNameRepository->assertHasEntityThat(static function (DomainName $storedDomainName) use ($domainName) {
@@ -100,9 +101,10 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
 
         $handler(RegisterWebhostingSpace::withCustomConstraints(self::SPACE_ID1, $domainName, UserRepositoryMock::USER_ID1, $constraints));
 
-        $spaceRepository->assertEntitiesWereSaved([
-            Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID1), $this->getUserOwner(), $constraints),
-        ]);
+        $space = Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID1), $this->getUserOwner(), $constraints);
+        $space->setPrimaryDomainLabel($domainName);
+
+        $spaceRepository->assertEntitiesWereSaved([$space]);
 
         $domainNameRepository->assertEntitiesCountWasSaved(1);
         $domainNameRepository->assertHasEntityThat(static function (DomainName $storedDomainName) use ($domainName) {
@@ -170,9 +172,10 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
 
         $handler(RegisterWebhostingSpace::withCustomConstraints(self::SPACE_ID1, $domainName, self::USER_ID1, $constraints));
 
-        $spaceRepository->assertEntitiesWereSaved([
-            Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID1), $this->getUserOwner(), $constraints),
-        ]);
+        $space = Space::registerWithCustomConstraints(SpaceId::fromString(self::SPACE_ID1), $this->getUserOwner(), $constraints);
+        $space->setPrimaryDomainLabel($domainName);
+
+        $spaceRepository->assertEntitiesWereSaved([$space]);
 
         $domainNameRepository->assertEntitiesCountWasSaved(1);
         $domainNameRepository->assertHasEntityThat(static function (DomainName $storedDomainName) use ($domainName) {
