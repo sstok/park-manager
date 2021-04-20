@@ -118,7 +118,7 @@ trait EnumTrait
     {
         static::initCases();
 
-        return array_values(static::$casesByName);
+        return \array_values(static::$casesByName);
     }
 
     public static function from(string | int $value): static
