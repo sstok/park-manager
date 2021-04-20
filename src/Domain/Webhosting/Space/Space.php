@@ -87,10 +87,16 @@ class Space
      */
     public DomainNamePair $primaryDomainLabel;
 
+    /**
+     * @ORM\Column(name="status", type="park_manager_webhosting_space_status")
+     */
+    public SpaceStatus $status;
+
     private function __construct(SpaceId $id, Owner $owner, Constraints $constraints)
     {
         $this->id = $id;
         $this->owner = $owner;
+        $this->status = SpaceStatus::get('Registered');
 
         // Store the constraints as part of the webhosting Space
         // the assigned constraints are immutable.
@@ -220,5 +226,25 @@ class Space
     public function setPrimaryDomainLabel(DomainNamePair $primaryDomainLabel): void
     {
         $this->primaryDomainLabel = $primaryDomainLabel;
+    }
+
+    public function assignStatus(SpaceStatus $newStatus): void
+    {
+        if ($this->status->equals($newStatus)) {
+            return;
+        }
+
+        SpaceStatus::validateNewStatus($this->status, $newStatus);
+
+        $this->status = $newStatus;
+    }
+
+    public function getStatusAsString(): string
+    {
+        if ($this->markedForRemoval) {
+            return 'marked_for_removal';
+        }
+
+        return $this->status->label();
     }
 }
