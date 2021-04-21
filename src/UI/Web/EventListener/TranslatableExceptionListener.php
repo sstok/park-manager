@@ -15,6 +15,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
 
@@ -44,7 +45,9 @@ final class TranslatableExceptionListener implements EventSubscriberInterface
         $arguments = $exception->getTranslationArgs();
 
         foreach ($arguments as $key => $value) {
-            if (\is_string($value) && \strncmp($key, '@', 1) === 0) {
+            if ($value instanceof TranslatableInterface) {
+                $arguments[$key] = $value->trans($this->translator);
+            } elseif (\is_string($value) && \strncmp($key, '@', 1) === 0) {
                 unset($arguments[$key]);
                 $arguments[\mb_substr($key, 1)] = $this->translator->trans($value);
             }

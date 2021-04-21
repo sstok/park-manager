@@ -10,11 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Space;
 
-use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceIsSuspended;
-use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
-final class RemoveSpaceExpirationDateHandler
+final class RemoveSpaceSuspensionHandler
 {
     private WebhostingSpaceRepository $spaceRepository;
 
@@ -23,19 +21,10 @@ final class RemoveSpaceExpirationDateHandler
         $this->spaceRepository = $spaceRepository;
     }
 
-    public function __invoke(RemoveSpaceExpirationDate $command): void
+    public function __invoke(RemoveSpaceSuspension $command): void
     {
         $space = $this->spaceRepository->get($command->id);
-
-        if ($space->isMarkedForRemoval()) {
-            return;
-        }
-
-        if (SuspensionLevel::equalsTo($space->accessSuspended, SuspensionLevel::get('LOCKED'))) {
-            throw new WebhostingSpaceIsSuspended($space->id, $space->accessSuspended);
-        }
-
-        $space->removeExpirationDate();
+        $space->removeAccessSuspension();
 
         $this->spaceRepository->save($space);
     }

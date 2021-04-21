@@ -87,6 +87,11 @@ label:
         database_enabled_pgsql: Enable PostgreSQL support
         database_enabled_mysql: Enable MySQL support
 
+    webhosting_suspension_level:
+        access_limited: Access Limited
+        access_restricted: Access Restricted
+        locked: Locked
+
 entity_label:
     user: User
     domainname: Domain Name

@@ -26,6 +26,7 @@ doctrine:
 
             # Enums
             park_manager_webhosting_space_status: 'ParkManager\Infrastructure\Doctrine\Type\SpaceStatusType'
+            park_manager_webhosting_suspension_level: 'ParkManager\Infrastructure\Doctrine\Type\SuspensionLevelType'
 
     orm:
         auto_generate_proxy_classes: true

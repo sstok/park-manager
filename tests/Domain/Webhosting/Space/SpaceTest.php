@@ -12,14 +12,18 @@ namespace ParkManager\Tests\Domain\Webhosting\Space;
 
 use Assert\Assertion;
 use Assert\InvalidArgumentException;
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
+use ParkManager\Domain\Webhosting\Space\AccessSuspensionLog;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
+use ParkManager\Domain\Webhosting\Space\SpaceStatus;
+use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
@@ -36,6 +40,14 @@ final class SpaceTest extends TestCase
     private const SET_ID_1 = '654665ea-9869-11e7-9563-acbc32b58315';
     private const SET_ID_2 = 'f5788aae-9aed-11e7-a3c9-acbc32b58315';
 
+    /**
+     * @after
+     */
+    public function resetTestTime(): void
+    {
+        CarbonImmutable::setTestNow(false);
+    }
+
     /** @test */
     public function it_registers_an_webhosting_space(): void
     {
@@ -50,6 +62,11 @@ final class SpaceTest extends TestCase
         self::assertEquals($owner, $space->owner);
         self::assertSame($plan, $space->getAssignedPlan());
         self::assertSame($constraints, $space->constraints);
+    }
+
+    private function createPlan(Constraints $constraints, string $id = self::SET_ID_1): Plan
+    {
+        return new Plan(PlanId::fromString($id), $constraints);
     }
 
     /** @test */
@@ -286,8 +303,39 @@ final class SpaceTest extends TestCase
         self::assertFalse($space2->isExpired($date->modify('+2 days')));
     }
 
-    private function createPlan(Constraints $constraints, string $id = self::SET_ID_1): Plan
+    /** @test */
+    public function it_allows_access_to_be_suspended(): void
     {
-        return new Plan(PlanId::fromString($id), $constraints);
+        $space = Space::register(
+            SpaceId::fromString(self::SPACE_ID),
+            Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1)),
+            $this->createPlan(new Constraints())
+        );
+        $space->assignStatus(SpaceStatus::from(SpaceStatus::GETTING_INITIALIZED));
+        $space->assignStatus(SpaceStatus::from(SpaceStatus::READY));
+
+        self::assertCount(0, $space->getSuspensions());
+
+        CarbonImmutable::setTestNow('2021-05-02T14:12:14.000000+0000');
+
+        $space->suspendAccess(SuspensionLevel::get('ACCESS_RESTRICTED'));
+        $space->suspendAccess(SuspensionLevel::get('LOCKED'));
+
+        CarbonImmutable::setTestNow('2021-06-02T14:12:14.000000+0000');
+
+        $space->suspendAccess(SuspensionLevel::get('LOCKED')); // Should not be logged
+        $space->suspendAccess(SuspensionLevel::get('ACCESS_RESTRICTED'));
+        $space->removeAccessSuspension();
+        $space->removeAccessSuspension();
+
+        self::assertEquals(
+            [
+                new AccessSuspensionLog($space, SuspensionLevel::get('ACCESS_RESTRICTED'), new CarbonImmutable('2021-05-02T14:12:14.000000+0000')),
+                new AccessSuspensionLog($space, SuspensionLevel::get('LOCKED'), new CarbonImmutable('2021-05-02T14:12:14.000000+0000')),
+                new AccessSuspensionLog($space, SuspensionLevel::get('ACCESS_RESTRICTED'), new CarbonImmutable('2021-06-02T14:12:14.000000+0000')),
+                new AccessSuspensionLog($space, null, new CarbonImmutable('2021-06-02T14:12:14.000000+0000')),
+            ],
+            $space->getSuspensions()->toArray()
+        );
     }
 }

@@ -39,9 +39,37 @@ trait EnumTrait
         $this->value = $value;
     }
 
-    public function equals(self $instance): bool
+    public function equals(?self $instance): bool
     {
+        if ($instance === null) {
+            return false;
+        }
+
         return $instance->name === $this->name;
+    }
+
+    public static function equalsTo(?self $instance, ?self $other): bool
+    {
+        if ($instance === null || $other === null) {
+            return false;
+        }
+
+        return $instance->name === $other->name;
+    }
+
+    public static function equalsToAny(?self $instance, ?self ...$other): bool
+    {
+        if ($instance === null) {
+            return false;
+        }
+
+        foreach ($other as $value) {
+            if ($value !== null && $instance->name === $value->name) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static function get(string $name): static

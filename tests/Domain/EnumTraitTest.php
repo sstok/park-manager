@@ -106,6 +106,35 @@ final class EnumTraitTest extends TestCase
 
         StringEnumStub::from(1);
     }
+
+    /** @test */
+    public function it_can_compare_to_other_instances(): void
+    {
+        // Note that these methods are custom. And should use be present in future language-native implementations.
+
+        self::assertFalse(StringEnumStub::get('FOO')->equals(StringEnumStub::get('BAR')));
+        self::assertFalse(StringEnumStub::get('FOO')->equals(null));
+        self::assertFalse(StringEnumStub::equalsTo(StringEnumStub::get('FOO'), StringEnumStub::get('BAR')));
+        self::assertFalse(StringEnumStub::equalsTo(StringEnumStub::get('FOO'), null));
+        self::assertFalse(StringEnumStub::equalsTo(null, StringEnumStub::get('FOO')));
+        self::assertFalse(StringEnumStub::equalsTo(null, null));
+
+        self::assertFalse(StringEnumStub::equalsToAny(StringEnumStub::get('FOO'), StringEnumStub::get('BAR')));
+        self::assertFalse(StringEnumStub::equalsToAny(StringEnumStub::get('FOO'), null));
+        self::assertFalse(StringEnumStub::equalsToAny(null, null));
+        self::assertFalse(StringEnumStub::equalsToAny(null));
+
+        self::assertTrue(StringEnumStub::get('FOO')->equals(StringEnumStub::get('FOO')));
+        self::assertTrue(StringEnumStub::equalsTo(StringEnumStub::get('FOO'), StringEnumStub::get('FOO')));
+        self::assertTrue(StringEnumStub::equalsToAny(StringEnumStub::get('FOO'), StringEnumStub::get('FOO')));
+        self::assertTrue(StringEnumStub::equalsToAny(StringEnumStub::get('FOO'), StringEnumStub::get('BAR'), StringEnumStub::get('FOO')));
+        self::assertTrue(StringEnumStub::equalsToAny(StringEnumStub::get('FOO'), StringEnumStub::get('FOO'), null));
+        self::assertTrue(StringEnumStub::equalsToAny(StringEnumStub::get('FOO'), null, StringEnumStub::get('FOO')));
+
+        // While cloning is prohibited, serializing is not considered illegal, but will still result in a new instance :(
+        // In future we can remove this work-around!
+        self::assertTrue(StringEnumStub::get('FOO')->equals(clone StringEnumStub::get('FOO')));
+    }
 }
 
 /**

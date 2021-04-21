@@ -13,7 +13,10 @@ namespace ParkManager\Domain\Webhosting\Space;
 use Assert\Assertion;
 use Assert\InvalidArgumentException as AssertionInvalidArgumentException;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\DomainName\DomainName;
@@ -92,11 +95,25 @@ class Space
      */
     public SpaceStatus $status;
 
+    /**
+     * @ORM\Column(name="access_suspended", type="park_manager_webhosting_suspension_level", nullable=true)
+     */
+    public ?SuspensionLevel $accessSuspended = null;
+
+    /**
+     * @ORM\OneToMany(targetEntity=AccessSuspensionLog::class, mappedBy="space", cascade={"PERSIST"})
+     * @ORM\OrderBy({"timestamp" = "ASC"})
+     *
+     * @var Collection<AccessSuspensionLog>
+     */
+    private Collection $suspensions;
+
     private function __construct(SpaceId $id, Owner $owner, Constraints $constraints)
     {
         $this->id = $id;
         $this->owner = $owner;
         $this->status = SpaceStatus::get('Registered');
+        $this->suspensions = new ArrayCollection();
 
         // Store the constraints as part of the webhosting Space
         // the assigned constraints are immutable.
@@ -245,6 +262,42 @@ class Space
             return 'marked_for_removal';
         }
 
+        if ($this->accessSuspended !== null) {
+            return 'suspended';
+        }
+
         return $this->status->label();
+    }
+
+    public function suspendAccess(SuspensionLevel $level): void
+    {
+        if (! $this->status->equals(SpaceStatus::get('ready'))) {
+            throw new \DomainException('Cannot set suspension level when Space has not completed initialization yet.');
+        }
+
+        if (SuspensionLevel::equalsTo($this->accessSuspended, $level)) {
+            return;
+        }
+
+        $this->accessSuspended = $level;
+        $this->suspensions->add(new AccessSuspensionLog($this, $level, CarbonImmutable::now()));
+    }
+
+    public function removeAccessSuspension(): void
+    {
+        if ($this->accessSuspended === null) {
+            return;
+        }
+
+        $this->suspensions->add(new AccessSuspensionLog($this, null, CarbonImmutable::now()));
+        $this->accessSuspended = null;
+    }
+
+    /**
+     * @return Collection<AccessSuspensionLog>
+     */
+    public function getSuspensions(): Collection
+    {
+        return $this->suspensions;
     }
 }

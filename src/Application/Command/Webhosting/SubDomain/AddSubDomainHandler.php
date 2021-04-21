@@ -12,6 +12,8 @@ namespace ParkManager\Application\Command\Webhosting\SubDomain;
 
 use ParkManager\Application\Service\TLS\CertificateFactory;
 use ParkManager\Domain\DomainName\DomainNameRepository;
+use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceIsSuspended;
+use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainRepository;
 
@@ -32,6 +34,11 @@ final class AddSubDomainHandler
     {
         $domainName = $this->domainNameRepository->get($command->domainNameId);
         $subDomain = new SubDomain($command->id, $domainName, $command->name, $command->homeDir, $command->config);
+        $space = $subDomain->space;
+
+        if (SuspensionLevel::equalsToAny($space->accessSuspended, SuspensionLevel::get('ACCESS_RESTRICTED'), SuspensionLevel::get('LOCKED'))) {
+            throw new WebhostingSpaceIsSuspended($space->id, $space->accessSuspended);
+        }
 
         if ($command->certificate !== null) {
             $certificate = $this->certificateFactory->createCertificate($command->certificate, $command->privateKey, $command->caList);

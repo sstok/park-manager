@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Application\Command\Webhosting\Space;
 
 use ParkManager\Domain\OwnerRepository;
+use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceIsSuspended;
+use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class SwitchSpaceOwnerHandler
@@ -28,6 +30,10 @@ final class SwitchSpaceOwnerHandler
     {
         $space = $this->spaceRepository->get($command->space);
         $owner = $this->ownerRepository->get($command->newOwner);
+
+        if (SuspensionLevel::equalsTo($space->accessSuspended, SuspensionLevel::get('LOCKED'))) {
+            throw new WebhostingSpaceIsSuspended($space->id, $space->accessSuspended);
+        }
 
         if ($space->owner === $owner) {
             return;

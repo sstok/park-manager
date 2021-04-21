@@ -13,6 +13,7 @@ namespace ParkManager\Application\Command\Webhosting\Constraint;
 use ParkManager\Application\Service\SpaceConstraint\ApplicabilityChecker;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
+use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class AssignPlanToSpaceHandler
@@ -34,6 +35,10 @@ final class AssignPlanToSpaceHandler
         $space = $this->spaceRepository->get($command->space);
 
         if (! $command->withConstraints && PlanId::equalsValueOfEntity($command->plan, $space->plan, 'id')) {
+            return;
+        }
+
+        if (SuspensionLevel::equalsTo($space->accessSuspended, SuspensionLevel::get('LOCKED'))) {
             return;
         }
 

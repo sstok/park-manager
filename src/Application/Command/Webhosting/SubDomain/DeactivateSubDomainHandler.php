@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\SubDomain;
 
+use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceIsSuspended;
+use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainRepository;
 
 final class DeactivateSubDomainHandler
@@ -24,6 +26,12 @@ final class DeactivateSubDomainHandler
     public function __invoke(DeactivateSubDomain $command): void
     {
         $subDomain = $this->subDomainRepository->get($command->id);
+        $space = $subDomain->space;
+
+        if (SuspensionLevel::equalsToAny($space->accessSuspended, SuspensionLevel::get('ACCESS_RESTRICTED'), SuspensionLevel::get('LOCKED'))) {
+            throw new WebhostingSpaceIsSuspended($space->id, $space->accessSuspended);
+        }
+
         $subDomain->deActivate();
 
         $this->subDomainRepository->save($subDomain);
