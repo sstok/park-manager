@@ -13,7 +13,7 @@ namespace ParkManager\Domain\Webhosting\Space;
 use ParkManager\Domain\EnumTrait;
 use ParkManager\Domain\Webhosting\Space\Exception\InvalidStatus;
 
-final class SpaceStatus
+final class SpaceSetupStatus
 {
     use EnumTrait;
 

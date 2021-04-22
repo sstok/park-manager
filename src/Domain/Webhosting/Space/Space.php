@@ -91,9 +91,9 @@ class Space
     public DomainNamePair $primaryDomainLabel;
 
     /**
-     * @ORM\Column(name="status", type="park_manager_webhosting_space_status")
+     * @ORM\Column(name="setup_status", type="park_manager_webhosting_space_setup_status")
      */
-    public SpaceStatus $status;
+    public SpaceSetupStatus $setupStatus;
 
     /**
      * @ORM\Column(name="access_suspended", type="park_manager_webhosting_suspension_level", nullable=true)
@@ -112,7 +112,7 @@ class Space
     {
         $this->id = $id;
         $this->owner = $owner;
-        $this->status = SpaceStatus::get('Registered');
+        $this->setupStatus = SpaceSetupStatus::get('Registered');
         $this->suspensions = new ArrayCollection();
 
         // Store the constraints as part of the webhosting Space
@@ -245,15 +245,15 @@ class Space
         $this->primaryDomainLabel = $primaryDomainLabel;
     }
 
-    public function assignStatus(SpaceStatus $newStatus): void
+    public function assignSetupStatus(SpaceSetupStatus $newStatus): void
     {
-        if ($this->status->equals($newStatus)) {
+        if ($this->setupStatus->equals($newStatus)) {
             return;
         }
 
-        SpaceStatus::validateNewStatus($this->status, $newStatus);
+        SpaceSetupStatus::validateNewStatus($this->setupStatus, $newStatus);
 
-        $this->status = $newStatus;
+        $this->setupStatus = $newStatus;
     }
 
     public function getStatusAsString(): string
@@ -266,12 +266,12 @@ class Space
             return 'suspended';
         }
 
-        return $this->status->label();
+        return $this->setupStatus->label();
     }
 
     public function suspendAccess(SuspensionLevel $level): void
     {
-        if (! $this->status->equals(SpaceStatus::get('ready'))) {
+        if (! $this->setupStatus->equals(SpaceSetupStatus::get('ready'))) {
             throw new \DomainException('Cannot set suspension level when Space has not completed initialization yet.');
         }
 

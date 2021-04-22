@@ -25,7 +25,7 @@ doctrine:
             park_manager_webhosting_mail_forward_id: 'ParkManager\Infrastructure\Doctrine\Type\MailForwardIdType'
 
             # Enums
-            park_manager_webhosting_space_status: 'ParkManager\Infrastructure\Doctrine\Type\SpaceStatusType'
+            park_manager_webhosting_space_setup_status: 'ParkManager\Infrastructure\Doctrine\Type\SpaceSetupStatusType'
             park_manager_webhosting_suspension_level: 'ParkManager\Infrastructure\Doctrine\Type\SuspensionLevelType'
 
     orm:

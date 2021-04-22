@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine\Type;
 
-use ParkManager\Domain\Webhosting\Space\SpaceStatus;
+use ParkManager\Domain\Webhosting\Space\SpaceSetupStatus;
 
-final class SpaceStatusType extends EnumType
+final class SpaceSetupStatusType extends EnumType
 {
-    public const NAME = 'park_manager_webhosting_space_status';
-    public const OBJECT_CLASS = SpaceStatus::class;
+    public const NAME = 'park_manager_webhosting_space_setup_status';
+    public const OBJECT_CLASS = SpaceSetupStatus::class;
     public const ENUM_TYPE = 'int';
 }

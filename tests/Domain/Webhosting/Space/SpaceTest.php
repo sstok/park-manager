@@ -22,7 +22,7 @@ use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\AccessSuspensionLog;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Domain\Webhosting\Space\SpaceStatus;
+use ParkManager\Domain\Webhosting\Space\SpaceSetupStatus;
 use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
@@ -311,8 +311,8 @@ final class SpaceTest extends TestCase
             Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1)),
             $this->createPlan(new Constraints())
         );
-        $space->assignStatus(SpaceStatus::from(SpaceStatus::GETTING_INITIALIZED));
-        $space->assignStatus(SpaceStatus::from(SpaceStatus::READY));
+        $space->assignSetupStatus(SpaceSetupStatus::from(SpaceSetupStatus::GETTING_INITIALIZED));
+        $space->assignSetupStatus(SpaceSetupStatus::from(SpaceSetupStatus::READY));
 
         self::assertCount(0, $space->getSuspensions());
 
