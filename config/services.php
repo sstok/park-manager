@@ -94,6 +94,7 @@ return static function (ContainerConfigurator $c): void {
             __DIR__ . '/../src/Application/{Command,Event}',
             __DIR__ . '/../src/Application/Service/TLS/Violation',
             __DIR__ . '/../src/Application/Service/PdpManager.php',
+            __DIR__ . '/../src/Application/Service/SystemGateway/**',
             __DIR__ . '/../src/Infrastructure/{Doctrine,Pdp}',
             __DIR__ . '/../src/Infrastructure/Security/*User.php',
             __DIR__ . '/../src/Infrastructure/Security/Permission',

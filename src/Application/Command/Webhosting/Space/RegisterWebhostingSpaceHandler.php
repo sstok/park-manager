@@ -19,6 +19,7 @@ use ParkManager\Domain\OwnerRepository;
 use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 final class RegisterWebhostingSpaceHandler
 {
@@ -26,13 +27,20 @@ final class RegisterWebhostingSpaceHandler
     private PlanRepository $planRepository;
     private DomainNameRepository $domainNameRepository;
     private OwnerRepository $ownerRepository;
+    private MessageBusInterface $commandBus;
 
-    public function __construct(WebhostingSpaceRepository $spaceRepository, PlanRepository $planRepository, DomainNameRepository $domainNameRepository, OwnerRepository $ownerRepository)
-    {
+    public function __construct(
+        WebhostingSpaceRepository $spaceRepository,
+        PlanRepository $planRepository,
+        DomainNameRepository $domainNameRepository,
+        OwnerRepository $ownerRepository,
+        MessageBusInterface $commandBus
+    ) {
         $this->spaceRepository = $spaceRepository;
         $this->planRepository = $planRepository;
         $this->domainNameRepository = $domainNameRepository;
         $this->ownerRepository = $ownerRepository;
+        $this->commandBus = $commandBus;
     }
 
     public function __invoke(RegisterWebhostingSpace $command): void
@@ -70,5 +78,10 @@ final class RegisterWebhostingSpaceHandler
             $primaryDomainName = DomainName::registerForSpace(DomainNameId::create(), $space, $command->domainName);
             $this->domainNameRepository->save($primaryDomainName);
         }
+
+        // Once a Webhosting Space is registered it must initialized, registering the system user
+        // and starting-up the server pool/cluster. As this is process is IO-blocking and might
+        // take some time, it must be handled async in the background.
+        $this->commandBus->dispatch(new InitializeWebhostingSpace($space->id));
     }
 }

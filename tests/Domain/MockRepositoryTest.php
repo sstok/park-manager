@@ -291,6 +291,77 @@ final class MockRepositoryTest extends TestCase
 
         $repository->get($entity1->id());
     }
+
+    /** @test */
+    public function it_executes_watchers_in_correct_order(): void
+    {
+        $entity1 = new MockEntity('fc86687e-0875-11e9-9701-acbc32b58315', 'John');
+        $entity2 = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315', 'Jane');
+
+        $repository = new class([$entity1, $entity2]) {
+            use MockRepository;
+
+            protected function throwOnNotFound($key): void
+            {
+                throw new InvalidArgumentException('No, I has not have that key: ' . $key);
+            }
+
+            public function save(MockEntity $entity): void
+            {
+                $this->mockDoSave($entity);
+            }
+        };
+
+        $order = [];
+        $order2 = [];
+
+        $repository->whenEntityIsSavedAt('fc86687e-0875-11e9-9701-acbc32b58315', static function (MockEntity $entity1) use (&$order): void {
+            $order[] = 'he1';
+        }, 0);
+        $repository->whenEntityIsSavedAt('fc86687e-0875-11e9-9701-acbc32b58315', static function (MockEntity $entity2) use (&$order): void {
+            $order[] = 'now2';
+        }, 1);
+        $repository->whenEntityIsSavedAt('fc86687e-0875-11e9-9701-acbc32b58315', static function (MockEntity $entity3) use (&$order): void {
+            $order[] = 'this4';
+        }, 4);
+        $repository->whenEntityIsSavedAt('fc86687e-0875-11e9-9701-acbc32b58315', static function (MockEntity $entity4) use (&$order): void {
+            $order[] = 'sing3';
+        } /* 3 */);
+
+        $repository->whenEntityIsSavedAt('9dab0b6a-0876-11e9-bfd1-acbc32b58315', static function (MockEntity $entity4) use (&$order2): void {
+            $order2[] = 'its me';
+        }, 2);
+        $repository->whenEntityIsSavedAt('9dab0b6a-0876-11e9-bfd1-acbc32b58315', static function (MockEntity $entity4) use (&$order2): void {
+            $order2[] = 'hello';
+        }, 1);
+
+        $repository->save($entity1);
+        $repository->save($entity2);
+        $repository->save($entity1);
+        $repository->save($entity1);
+        $repository->save($entity1);
+        $repository->save($entity1); // No more watchers at this point
+        $repository->save($entity2);
+
+        self::assertEquals(['he1', 'now2', 'sing3', 'this4'], $order);
+        self::assertEquals(['hello', 'its me'], $order2);
+
+        $order = [];
+
+        $repository->whenEntityIsSavedAt('fc86687e-0875-11e9-9701-acbc32b58315', static function (MockEntity $entity4) use (&$order): void {
+            $order[] = 'corrosion4';
+        }, 1);
+
+        $repository->whenEntityIsSavedAt('fc86687e-0875-11e9-9701-acbc32b58315', static function (MockEntity $entity4) use (&$order): void {
+            $order[] = 'on me5'; // Not executed.
+        }, 2);
+
+        // The old watchers should now all be popped.
+        // Meaning all new watchers should be executed in correct order.
+        $repository->save($entity1);
+
+        self::assertEquals(['corrosion4'], $order);
+    }
 }
 
 /** @internal */

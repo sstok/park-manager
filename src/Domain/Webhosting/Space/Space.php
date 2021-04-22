@@ -24,6 +24,7 @@ use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
+use ParkManager\Domain\Webhosting\Space\Exception\InvalidStatus;
 
 /**
  * @ORM\Entity
@@ -107,6 +108,11 @@ class Space
      * @var Collection<AccessSuspensionLog>
      */
     private Collection $suspensions;
+
+    /**
+     * @ORM\Embedded(class=SystemRegistration::class, columnPrefix="system_registration_")
+     */
+    public ?SystemRegistration $systemRegistration = null;
 
     private function __construct(SpaceId $id, Owner $owner, Constraints $constraints)
     {
@@ -299,5 +305,15 @@ class Space
     public function getSuspensions(): Collection
     {
         return $this->suspensions;
+    }
+
+    public function setupWith(int $userId, array $userGroups, string $homeDir): void
+    {
+        if (! $this->setupStatus->equals(SpaceSetupStatus::get('Getting_Initialized'))) {
+            throw new InvalidStatus(\sprintf('Cannot Setup Space when status is not "Getting_Initialized", current status is "%s".', $this->setupStatus->label()));
+        }
+
+        $this->systemRegistration = new SystemRegistration($userId, $userGroups, $homeDir);
+        $this->setupStatus = SpaceSetupStatus::get('Ready');
     }
 }

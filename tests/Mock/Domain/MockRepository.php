@@ -46,6 +46,11 @@ trait MockRepository
     /** @var array<string, array<string, array<int, T>>> [mapping-name][index-key] => {entity} */
     protected array $storedMultiByField = [];
 
+    /** @var array<int, array> */
+    protected array $watchers = [];
+
+    protected array $watcherPositions = [];
+
     /**
      * @psalm-param array<mixed,T> $initialEntities Array of initial entities (these are not counted as saved)
      */
@@ -147,8 +152,16 @@ trait MockRepository
     protected function mockDoSave(object $entity): void
     {
         $this->setInMockedStorage($entity);
-        $this->savedById[$this->getIdValue($entity)] = $entity;
+        $this->savedById[$id = $this->getIdValue($entity)] = $entity;
         ++$this->mockWasSaved;
+
+        if (isset($this->watchers[$id])) {
+            $watcher = \array_pop($this->watchers[$id]);
+
+            if ($watcher !== null) {
+                $watcher[1]($entity);
+            }
+        }
     }
 
     /**
@@ -338,6 +351,27 @@ trait MockRepository
         }
 
         Assert::fail('No entity was found (by saving) that gave a Closure condition.');
+    }
+
+    /**
+     * Adds a 'watcher' that is executed when an entity with this $id is saved,
+     * at the expected position (before actually saving!).
+     *
+     * When no explicit position is given the last position is used.
+     * This method is best used with assertions that check if the entity was actually saved.
+     */
+    public function whenEntityIsSavedAt($id, Closure $excepted, ?int $position = null): void
+    {
+        if (! isset($this->watchers[$id])) {
+            $this->watchers[$id] = [];
+            $this->watcherPositions[$id] = -1;
+        }
+
+        ++$this->watcherPositions[$id];
+        $this->watchers[$id][] = [$position ?? $this->watcherPositions[$id], $excepted];
+
+        // Sort in reverse order, the last item will be 'popped' and executed.
+        \uasort($this->watchers[$id], static fn (array $a, array $b): int => $b[0] <=> $a[0]);
     }
 
     public function assertEntitiesWereSavedThat(Closure $excepted): void

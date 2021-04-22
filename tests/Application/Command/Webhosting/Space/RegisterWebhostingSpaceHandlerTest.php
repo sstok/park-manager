@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\Webhosting\Space;
 
+use ParkManager\Application\Command\Webhosting\Space\InitializeWebhostingSpace;
 use ParkManager\Application\Command\Webhosting\Space\RegisterWebhostingSpace;
 use ParkManager\Application\Command\Webhosting\Space\RegisterWebhostingSpaceHandler;
 use ParkManager\Domain\DomainName\DomainName;
@@ -23,6 +24,7 @@ use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
+use ParkManager\Tests\Mock\Application\Service\SpyingMessageBus;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
@@ -59,8 +61,9 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         $spaceRepository = new SpaceRepositoryMock();
         $planRepository = new PlanRepositoryMock([$plan]);
         $domainNameRepository = new DomainNameRepositoryMock();
+        $messageBus = new SpyingMessageBus();
 
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $this->ownerRepository);
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $this->ownerRepository, $messageBus);
 
         $handler(RegisterWebhostingSpace::withPlan(self::SPACE_ID1, $domainName, self::USER_ID1, self::SET_ID1));
 
@@ -85,6 +88,8 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
 
             return true;
         });
+
+        self::assertEquals([new InitializeWebhostingSpace(SpaceId::fromString(self::SPACE_ID1))], $messageBus->dispatchedMessages);
     }
 
     /** @test */
@@ -96,8 +101,9 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         $spaceRepository = new SpaceRepositoryMock();
         $planRepository = new PlanRepositoryMock();
         $domainNameRepository = new DomainNameRepositoryMock();
+        $messageBus = new SpyingMessageBus();
 
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $this->ownerRepository);
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $this->ownerRepository, $messageBus);
 
         $handler(RegisterWebhostingSpace::withCustomConstraints(self::SPACE_ID1, $domainName, UserRepositoryMock::USER_ID1, $constraints));
 
@@ -122,6 +128,8 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
 
             return true;
         });
+
+        self::assertEquals([new InitializeWebhostingSpace(SpaceId::fromString(self::SPACE_ID1))], $messageBus->dispatchedMessages);
     }
 
     /** @test */
@@ -130,9 +138,10 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         $plan = new Plan(PlanId::fromString(self::SET_ID1), new Constraints());
         $planRepository = new PlanRepositoryMock([$plan]);
         $spaceRepository = new SpaceRepositoryMock();
-        $domainNameRepository = new DomainNameRepositoryMock([$this->createExistingDomain($domainName = new DomainNamePair('example', '.com'), $spaceId2 = SpaceId::fromString(self::SPACE_ID2))]);
+        $domainNameRepository = new DomainNameRepositoryMock([$this->createExistingDomain($domainName = new DomainNamePair('example', '.com'), SpaceId::fromString(self::SPACE_ID2))]);
+        $messageBus = new SpyingMessageBus();
 
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $this->ownerRepository);
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $this->ownerRepository, $messageBus);
 
         try {
             $handler(RegisterWebhostingSpace::withPlan(self::SPACE_ID1, $domainName, UserRepositoryMock::USER_ID1, self::SET_ID1));
@@ -146,6 +155,8 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         // before the DomainName to prevent untracked entities in the UnitOfWork.
         $spaceRepository->assertEntitiesCountWasSaved(1);
         $domainNameRepository->assertNoEntitiesWereSaved();
+
+        self::assertEquals([], $messageBus->dispatchedMessages);
     }
 
     private function createExistingDomain(DomainNamePair $domainName, SpaceId $existingSpaceId): DomainName
@@ -168,7 +179,9 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         $spaceRepository = new SpaceRepositoryMock();
         $planRepository = new PlanRepositoryMock();
         $domainNameRepository = new DomainNameRepositoryMock([$this->createExistingDomainWithOwner($domainName, $this->getUserOwner())]);
-        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $this->ownerRepository);
+        $messageBus = new SpyingMessageBus();
+
+        $handler = new RegisterWebhostingSpaceHandler($spaceRepository, $planRepository, $domainNameRepository, $this->ownerRepository, $messageBus);
 
         $handler(RegisterWebhostingSpace::withCustomConstraints(self::SPACE_ID1, $domainName, self::USER_ID1, $constraints));
 
@@ -193,6 +206,8 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
 
             return true;
         });
+
+        self::assertEquals([new InitializeWebhostingSpace(SpaceId::fromString(self::SPACE_ID1))], $messageBus->dispatchedMessages);
     }
 
     private function createExistingDomainWithOwner(DomainNamePair $domainName, Owner $owner): DomainName

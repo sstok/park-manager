@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
+use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\ResultSet;
@@ -61,16 +62,23 @@ final class SpaceRepositoryMock implements WebhostingSpaceRepository
         $this->mockDoRemove($space);
     }
 
-    public static function createSpace(string $id = self::ID1, ?Owner $owner = null, ?Constraints $constraints = null): Space
+    public static function createSpace(string $id = self::ID1, ?Owner $owner = null, ?Constraints $constraints = null, ?DomainNamePair $domainName = null): Space
     {
         self::$adminOwner ??= (new OwnerRepositoryMock())->getAdminOrganization();
 
-        return Space::registerWithCustomConstraints(SpaceId::fromString($id), $owner ?? self::$adminOwner, $constraints ?? new Constraints());
+        $space = Space::registerWithCustomConstraints(
+            SpaceId::fromString($id),
+            $owner ?? self::$adminOwner,
+            $constraints ?? new Constraints()
+        );
+        $space->setPrimaryDomainLabel($domainName ?? new DomainNamePair('example', 'com'));
+
+        return $space;
     }
 
     protected function throwOnNotFound($key): void
     {
-        throw new WebhostingSpaceNotFound($key);
+        throw WebhostingSpaceNotFound::withId($key);
     }
 
     protected function getFieldsIndexMultiMapping(): array
