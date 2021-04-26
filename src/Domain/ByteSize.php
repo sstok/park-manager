@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain;
 
-use ParkManager\Domain\Exception\InvalidArgumentException;
+use ParkManager\Domain\Exception\InvalidByteSize;
 
 final class ByteSize
 {
@@ -19,7 +19,7 @@ final class ByteSize
     public function __construct($size, string $unit)
     {
         if (! \is_int($size) && ! \is_float($size)) {
-            throw new InvalidArgumentException('Expected the size to be an integer or float.');
+            throw new InvalidByteSize('Expected the size to be an integer or float.');
         }
 
         $target = $size;
@@ -28,7 +28,7 @@ final class ByteSize
             case 'b':
             case 'byte':
                 if (! \ctype_digit(\ltrim((string) $size, '-'))) {
-                    throw new InvalidArgumentException('The unit "byte" must be a whole number without a fraction.');
+                    throw new InvalidByteSize('The unit "byte" must be a whole number without a fraction.');
                 }
 
                 break;
@@ -75,7 +75,7 @@ final class ByteSize
                 break;
 
             default:
-                throw new InvalidArgumentException(\sprintf('Unknown or unsupported unit "%s".', $unit));
+                throw new InvalidByteSize(\sprintf('Unknown or unsupported unit "%s".', $unit));
         }
 
         $this->value = (int) $target;
@@ -88,7 +88,7 @@ final class ByteSize
         }
 
         if (! \preg_match('{^(?P<size>\d+(?:\.\d{0,2})?)\h*(?P<unit>[a-z]{1,3})$}i', $input, $matches)) {
-            throw new InvalidArgumentException(\sprintf('Invalid ByteSize format provided "%s". Expected value and unit as either "12 Mib" or "12 MB". Or "inf" otherwise.', $input));
+            throw new InvalidByteSize(\sprintf('Invalid ByteSize format provided "%s". Expected value and unit as either "12 Mib" or "12 MB". Or "inf" otherwise.', $input));
         }
 
         return new self((float) $matches['size'], $matches['unit']);
@@ -225,5 +225,28 @@ final class ByteSize
         }
 
         return new self($this->value + $other->value, 'b');
+    }
+
+    /**
+     * Returns the remaining percentage of the original
+     * (this) value and the current.
+     *
+     * If original is 100 GiB and current is 60 GiB
+     * this leaves around 40% of remaining space.
+     *
+     * Returns 100 if either of the two values is Inf.
+     *
+     * Caution: Do not switch the values to invert the result.
+     */
+    public function getDiffRemainder(self $current): int | float
+    {
+        if ($this->isInf() || $current->isInf()) {
+            return 100;
+        }
+
+        $original = $this->value;
+        $diff = \abs($current->value - $original);
+
+        return ($diff / $original) * 100;
     }
 }

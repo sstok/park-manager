@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Domain;
 
 use ParkManager\Domain\ByteSize;
-use ParkManager\Domain\Exception\InvalidArgumentException;
+use ParkManager\Domain\Exception\InvalidByteSize;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -82,7 +82,7 @@ final class ByteSizeTest extends TestCase
     /** @test */
     public function fails_with_unsupported_unit(): void
     {
-        $this->expectExceptionObject(new InvalidArgumentException('Unknown or unsupported unit "Yib".'));
+        $this->expectExceptionObject(new InvalidByteSize('Unknown or unsupported unit "Yib".'));
 
         new ByteSize(1, 'Yib');
     }
@@ -90,7 +90,7 @@ final class ByteSizeTest extends TestCase
     /** @test */
     public function fails_with_fraction_for_byte_unit(): void
     {
-        $this->expectExceptionObject(new InvalidArgumentException('The unit "byte" must be a whole number without a fraction.'));
+        $this->expectExceptionObject(new InvalidByteSize('The unit "byte" must be a whole number without a fraction.'));
 
         new ByteSize(1.5, 'b');
     }
@@ -187,7 +187,7 @@ final class ByteSizeTest extends TestCase
      */
     public function fails_from_string_with_invalid_input(string $input, $message): void
     {
-        $this->expectExceptionObject(new InvalidArgumentException($message));
+        $this->expectExceptionObject(new InvalidByteSize($message));
 
         ByteSize::fromString($input);
     }
@@ -308,6 +308,29 @@ final class ByteSizeTest extends TestCase
         self::assertEquals('MiB', (new ByteSize(1025, 'Kib'))->getUnit());
         self::assertEquals('KiB', (new ByteSize(1, 'Kib'))->getUnit());
         self::assertEquals('GiB', (new ByteSize(1, 'Gib'))->getUnit());
+    }
+
+    /** @test */
+    public function gets_remaining_difference(): void
+    {
+        $this->assertDiffRemainderEquals(100, ByteSize::inf(), ByteSize::inf());
+        $this->assertDiffRemainderEquals(100, new ByteSize(100, 'b'), ByteSize::inf());
+        $this->assertDiffRemainderEquals(100, ByteSize::inf(), new ByteSize(100, 'b'));
+        $this->assertDiffRemainderEquals(0, new ByteSize(100, 'b'), new ByteSize(100, 'b'));
+        $this->assertDiffRemainderEquals(40, new ByteSize(100, 'b'), new ByteSize(60, 'b'));
+        $this->assertDiffRemainderEquals(40, new ByteSize(100, 'b'), new ByteSize(60, 'b'));
+        $this->assertDiffRemainderEquals(0, new ByteSize(100, 'b'), new ByteSize(100, 'b'));
+
+        // With different unites. Note that some lose of precision is acceptable.
+        $this->assertDiffRemainderEquals(100, new ByteSize(100, 'Gib'), new ByteSize(60, 'b'));
+        $this->assertDiffRemainderEquals(51, new ByteSize(1, 'Gib'), new ByteSize(500, 'MiB'));
+        $this->assertDiffRemainderEquals(10, new ByteSize(10, 'Gib'), new ByteSize(9, 'GiB'));
+        $this->assertDiffRemainderEquals(1, new ByteSize(10, 'Gib'), new ByteSize(9.9, 'GiB'));
+    }
+
+    private function assertDiffRemainderEquals(int $expected, ByteSize $original, ByteSize $current): void
+    {
+        self::assertEqualsWithDelta($expected, \round($original->getDiffRemainder($current), 0, \PHP_ROUND_HALF_UP), 0.0001);
     }
 
     /** @test */
