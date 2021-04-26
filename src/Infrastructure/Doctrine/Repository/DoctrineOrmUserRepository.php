@@ -45,6 +45,7 @@ class DoctrineOrmUserRepository extends EntityRepository implements UserReposito
 
     public function save(User $user): void
     {
+        $this->updateTimestamp($user);
         $this->_em->persist($user);
     }
 
@@ -70,7 +71,7 @@ class DoctrineOrmUserRepository extends EntityRepository implements UserReposito
 
     public function all(): ResultSet
     {
-        return (new OrmQueryBuilderResultSet($this->createQueryBuilder('u'), 'u', false))->setOrdering('u.regDate', 'DESC');
+        return (new OrmQueryBuilderResultSet($this->createQueryBuilder('u'), 'u', false))->setOrdering('u.registeredAt', 'DESC');
     }
 
     public function getByEmailAddressChangeToken(string $selector): User

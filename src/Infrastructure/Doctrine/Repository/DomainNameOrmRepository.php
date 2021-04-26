@@ -135,6 +135,8 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
                         ->execute(['id' => $primaryDomainName->id]);
 
                     $this->_em->refresh($primaryDomainName);
+
+                    $this->updateTimestamp($domainName);
                     $this->_em->persist($domainName);
                 });
 
@@ -142,6 +144,7 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
             }
         }
 
+        $this->updateTimestamp($domainName);
         $this->_em->persist($domainName);
     }
 

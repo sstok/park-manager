@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\Constraint;
 
 use Doctrine\ORM\Mapping as ORM;
+use ParkManager\Domain\TimestampableTrait;
 
 /**
  * @ORM\Entity
@@ -18,6 +19,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Plan
 {
+    use TimestampableTrait;
+
     /**
      * READ-ONLY.
      *

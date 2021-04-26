@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\Organization\Exception\OrganizationMemberNotFound;
+use ParkManager\Domain\TimestampableTrait;
 use ParkManager\Domain\User\User;
 
 /**
@@ -27,6 +28,8 @@ use ParkManager\Domain\User\User;
  */
 class Organization
 {
+    use TimestampableTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="park_manager_organization_id")

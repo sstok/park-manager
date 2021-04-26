@@ -46,6 +46,7 @@ class PlanOrmRepository extends EntityRepository implements PlanRepository
 
     public function save(Plan $plan): void
     {
+        $this->updateTimestamp($plan);
         $this->_em->persist($plan);
     }
 

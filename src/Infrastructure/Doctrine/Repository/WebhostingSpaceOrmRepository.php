@@ -62,6 +62,7 @@ class WebhostingSpaceOrmRepository extends EntityRepository implements Webhostin
 
     public function save(Space $space): void
     {
+        $this->updateTimestamp($space);
         $this->_em->persist($space);
     }
 

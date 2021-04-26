@@ -44,6 +44,7 @@ class OrganizationOrmRepository extends EntityRepository implements Organization
 
     public function save(Organization $organization): void
     {
+        $this->updateTimestamp($organization);
         $this->_em->persist($organization);
     }
 

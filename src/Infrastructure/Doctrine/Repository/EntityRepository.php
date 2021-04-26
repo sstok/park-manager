@@ -21,4 +21,11 @@ abstract class EntityRepository extends BaseEntityRepository
         $this->_class = $entityManager->getMetadataFactory()->getMetadataFor($className);
         $this->_entityName = $className;
     }
+
+    protected function updateTimestamp(object $entity): void
+    {
+        (function (): void {
+            $this->__updateTimestamp();
+        })->call($entity);
+    }
 }

@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\TimestampableTrait;
 use ParkManager\Domain\Webhosting\Space\Space;
 
 /**
@@ -25,6 +26,8 @@ use ParkManager\Domain\Webhosting\Space\Space;
  */
 class Mailbox implements \Stringable
 {
+    use TimestampableTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="park_manager_webhosting_mailbox_id")

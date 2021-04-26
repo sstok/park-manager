@@ -37,6 +37,9 @@ label:
     description: Description
     display_name: Display name
     registered_on: Registered On
+    registered: Registered
+    last_modified: Last modified
+    last_updated: Last updated
     role: Role
     is_admin: Is Administrator
     is_admin_owned: Is owned by administrators

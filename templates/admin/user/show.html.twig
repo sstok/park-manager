@@ -59,6 +59,13 @@
                                     </div>
 
                                     <div class="sm:col-span-1">
+                                        <dt class="text-sm font-medium text-gray-500">{{ 'label.last_updated'|trans }}</dt>
+                                        <dd class="flex flex-col mt-1 text-sm text-gray-900">
+                                            {{ user.updatedAt|format_datetime('long', 'short') }}
+                                        </dd>
+                                    </div>
+
+                                    <div class="sm:col-span-1">
                                         <dt class="text-sm font-medium text-gray-500">{{ 'label.email'|trans }}</dt>
                                         <dd class="flex mt-1 text-sm text-gray-900">
                                             {{ user.email|wordwrap(45, '<br>', true) }}

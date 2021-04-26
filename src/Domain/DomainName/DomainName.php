@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\DomainName\Exception\CannotAssignDomainNameWithDifferentOwner;
 use ParkManager\Domain\DomainName\Exception\CannotTransferPrimaryDomainName;
 use ParkManager\Domain\Owner;
+use ParkManager\Domain\TimestampableTrait;
 use ParkManager\Domain\Webhosting\Space\Space;
 use Stringable;
 
@@ -25,6 +26,8 @@ use Stringable;
  */
 class DomainName implements Stringable
 {
+    use TimestampableTrait;
+
     /**
      * READ-ONLY.
      *

@@ -19,9 +19,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\ByteSize;
-use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Owner;
+use ParkManager\Domain\TimestampableTrait;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Space\Exception\InvalidStatus;
@@ -32,6 +32,8 @@ use ParkManager\Domain\Webhosting\Space\Exception\InvalidStatus;
  */
 class Space
 {
+    use TimestampableTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="park_manager_webhosting_space_id")

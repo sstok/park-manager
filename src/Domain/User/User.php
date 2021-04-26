@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
+use ParkManager\Domain\TimestampableTrait;
 use ParkManager\Domain\User\Exception\CannotDisableSuperAdministrator;
 use ParkManager\Domain\User\Exception\CannotMakeUserSuperAdmin;
 use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
@@ -36,6 +37,8 @@ use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
  */
 class User
 {
+    use TimestampableTrait;
+
     public const DEFAULT_ROLES = ['ROLE_USER'];
 
     /**
@@ -44,11 +47,6 @@ class User
      * @ORM\GeneratedValue(strategy="NONE")
      */
     public UserId $id;
-
-    /**
-     * @ORM\Column(name="registration_date", type="carbon_immutable")
-     */
-    public CarbonImmutable $regDate;
 
     /**
      * @ORM\Embedded(class=EmailAddress::class, columnPrefix="email_")
@@ -104,7 +102,6 @@ class User
         $this->displayName = $displayName;
         $this->roles = new ArrayCollection(static::DEFAULT_ROLES);
         $this->password = $password;
-        $this->regDate = CarbonImmutable::now();
     }
 
     public static function register(UserId $id, EmailAddress $email, string $displayName, string $password): self

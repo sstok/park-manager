@@ -78,6 +78,7 @@ final class MailboxOrmRepository extends EntityRepository implements MailboxRepo
 
     public function save(Mailbox $mailbox): void
     {
+        $this->updateTimestamp($mailbox);
         $this->_em->persist($mailbox);
     }
 
