@@ -13,24 +13,14 @@ namespace ParkManager\Application\Command\User;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\UserId;
 
-final class RequestEmailAddressChange
+final class ChangeEmailAddress
 {
     public UserId $id;
-    public EmailAddress $email;
+    public EmailAddress $emailAddress;
 
-    public function __construct(UserId $id, EmailAddress $email)
+    public function __construct(UserId $id, EmailAddress $emailAddress)
     {
         $this->id = $id;
-        $this->email = $email;
-    }
-
-    public static function with(string $id, string $email): self
-    {
-        return new self(UserId::fromString($id), new EmailAddress($email));
-    }
-
-    public function email(): EmailAddress
-    {
-        return $this->email;
+        $this->emailAddress = $emailAddress;
     }
 }

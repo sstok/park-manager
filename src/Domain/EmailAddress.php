@@ -172,4 +172,13 @@ final class EmailAddress implements \Stringable
 
         return $text->slice(0, $atSign)->truncate($length, $ellipsis) . $text->slice($atSign)->truncate($length, $ellipsis);
     }
+
+    public function equals(self $other): bool
+    {
+        if ($other === $this) {
+            return true;
+        }
+
+        return $this->address === $other->address && $this->name === $other->name;
+    }
 }

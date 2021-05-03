@@ -212,4 +212,17 @@ final class EmailAddressTest extends TestCase
 
         new EmailAddress('info+labeled*@example.com');
     }
+
+    /** @test */
+    public function its_equatable(): void
+    {
+        self::assertTrue(($email = new EmailAddress('info+labeled@example.com'))->equals($email));
+        self::assertTrue((new EmailAddress('info+labeled@example.com'))->equals(new EmailAddress('info+labeled@example.com')));
+        self::assertTrue((new EmailAddress('info+labeled@example.com', 'he'))->equals(new EmailAddress('info+labeled@example.com', 'he')));
+
+        // Different
+        self::assertFalse((new EmailAddress('info@example.com'))->equals(new EmailAddress('info+labeled@example.com')));
+        self::assertFalse((new EmailAddress('info@example.com'))->equals(new EmailAddress('infO@example.com')));
+        self::assertFalse((new EmailAddress('info@example.com', 'hE'))->equals(new EmailAddress('info@example.com', 'he')));
+    }
 }

@@ -14,6 +14,10 @@ use DateTimeImmutable;
 use ParkManager\Application\Command\User\RequestEmailAddressChange;
 use ParkManager\Application\Command\User\RequestEmailAddressChangeHandler;
 use ParkManager\Application\Mailer\User\EmailAddressChangeRequestMailer;
+use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
+use ParkManager\Domain\User\User;
+use ParkManager\Domain\User\UserId;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -34,35 +38,66 @@ final class RequestEmailAddressChangeTest extends TestCase
     public function it_handles_email_address_change_request(): void
     {
         $handler = new RequestEmailAddressChangeHandler(
-            $repository = new UserRepositoryMock([$user = UserRepositoryMock::createUser()]),
+            $repository = new UserRepositoryMock([UserRepositoryMock::createUser()]),
             $this->createConfirmationMailer('John2@example.com'),
             FakeSplitTokenFactory::instance()
         );
 
-        $handler(new RequestEmailAddressChange(UserRepositoryMock::USER_ID1, 'John2@example.com'));
+        $handler(RequestEmailAddressChange::with(UserRepositoryMock::USER_ID1, 'John2@example.com'));
 
-        $repository->assertEntitiesWereSaved();
-        $token = $user->emailAddressChangeToken;
-        self::assertEquals(['email' => 'John2@example.com'], $token->metadata());
-        self::assertFalse($token->isExpired(new DateTimeImmutable('+ 5 seconds')));
-        self::assertTrue($token->isExpired(new DateTimeImmutable('+ 3700 seconds')));
+        $repository->assertEntityWasSavedThat(UserRepositoryMock::USER_ID1, static function (User $user) {
+            $token = $user->emailAddressChangeToken;
+
+            self::assertEquals(['email' => 'John2@example.com'], $token->metadata());
+            self::assertFalse($token->isExpired(new DateTimeImmutable('+ 5 seconds')));
+            self::assertTrue($token->isExpired(new DateTimeImmutable('+ 3700 seconds')));
+
+            return true;
+        });
+    }
+
+    /** @test */
+    public function it_handles_email_address_change_request_with_different_label(): void
+    {
+        $handler = new RequestEmailAddressChangeHandler(
+            $repository = new UserRepositoryMock([$user = UserRepositoryMock::createUser()]),
+            $this->createConfirmationMailer('John2+spam@example.com'),
+            FakeSplitTokenFactory::instance()
+        );
+
+        $handler(RequestEmailAddressChange::with(UserRepositoryMock::USER_ID1, 'John2+spam@example.com'));
+
+        $repository->assertEntityWasSavedThat(UserRepositoryMock::USER_ID1, static function (User $user) {
+            $token = $user->emailAddressChangeToken;
+
+            self::assertEquals(['email' => 'John2+spam@example.com'], $token->metadata());
+            self::assertFalse($token->isExpired(new DateTimeImmutable('+ 5 seconds')));
+            self::assertTrue($token->isExpired(new DateTimeImmutable('+ 3700 seconds')));
+
+            return true;
+        });
     }
 
     /** @test */
     public function it_handles_email_address_change_request_with_email_address_already_in_use(): void
     {
         $handler = new RequestEmailAddressChangeHandler(
-            $repository = new UserRepositoryMock([
+            new UserRepositoryMock([
                 UserRepositoryMock::createUser('janE@example.com'),
-                $user2 = UserRepositoryMock::createUser('John2@example.com'),
+                UserRepositoryMock::createUser('John2@example.com', self::USER_ID),
             ]),
             $this->expectNoConfirmationIsSendMailer(),
             FakeSplitTokenFactory::instance()
         );
 
-        $handler(new RequestEmailAddressChange(self::USER_ID, 'John2@example.com'));
+        $this->expectExceptionObject(
+            new EmailAddressAlreadyInUse(
+                UserId::fromString(UserRepositoryMock::USER_ID1),
+                new EmailAddress('janE@example.com')
+            )
+        );
 
-        $repository->assertNoEntitiesWereSaved();
+        $handler(RequestEmailAddressChange::with(self::USER_ID, 'janE@example.com'));
     }
 
     private function createConfirmationMailer(string $email): EmailAddressChangeRequestMailer

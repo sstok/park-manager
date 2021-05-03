@@ -43,7 +43,8 @@ label:
     role: Role
     is_admin: Is Administrator
     is_admin_owned: Is owned by administrators
-    mark_temp_password: Mark as temporary password.
+    mark_temp_password: Mark as temporary password
+    requires_confirm: Requires confirmation
     photo: Photo
     notifications: Notifications
 
@@ -128,6 +129,8 @@ help:
     domain_name_suffix: A valid domain-name suffix or ICANN supported TLD.
     register_user:
         email: A valid email address, must not be already used by another user.
+    user_management:
+        email_requires_confirm: Requires that the user confirms (by being able to receive the message) they are the owner of this email address.
     webhosting:
         monthly_traffic: The provided amount of traffic, before any additional billing or throttling, on a monthly basis. In GiB. "-1" Means unlimited.
         total_space_storage_size: The total assingable size for mailboxes and web-files storage of this webhosting space.
@@ -151,6 +154,8 @@ flash:
     invalid_token_provided: Invalid token provided, please try again.
     password_reset_accepted: Password reset accepted. Please try to login with your new password.
     user_password_changed: Password changed.
+    email_address_changed: Email Address was changed.
+    email_address_change_requested: Email Address change request was send.
     user_level_changed: User level changed.
     password_reset_send: |
         If this email address is valid, (opted into account recovery), and no reset was requested recently,
@@ -219,6 +224,10 @@ user_management:
         password_expired_short: 'Password expired'
         banned: Email address banned
         new_email_pending_confirm: New email address pending confirmation.
+
+    change_email_address:
+        heading: Change user email address
+        request_pending: 'There is an email address change-request pending, to change the address to: { email }'
 
     security:
         heading: User Security Settings

@@ -120,6 +120,7 @@ class User
     public function changeEmail(EmailAddress $email): void
     {
         $this->email = $email;
+        $this->emailAddressChangeToken = null;
     }
 
     public function disableLogin(): void

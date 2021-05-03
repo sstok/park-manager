@@ -12,6 +12,7 @@ namespace ParkManager\Application\Command\User;
 
 use DateTimeImmutable;
 use ParkManager\Application\Mailer\User\EmailAddressChangeRequestMailer as ConfirmationMailer;
+use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
 use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\UserRepository;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
@@ -36,27 +37,26 @@ final class RequestEmailAddressChangeHandler
 
     public function __invoke(RequestEmailAddressChange $command): void
     {
-        $email = $command->email();
-
         try {
-            $this->repository->getByEmail($email);
+            $existing = $this->repository->getByEmail($command->email);
 
-            // Email address is already in use by (another) user. To prevent exposing existence simply do nothing.
-            // This also covers when the email address was not actually changed.
-            return;
-        } catch (UserNotFound $e) {
+            // It's possible only the name, casing or label is changed.
+            // But the effective address is still has the same user.
+            if (! $existing->id->equals($command->id)) {
+                throw new EmailAddressAlreadyInUse($existing->id, $command->email);
+            }
+        } catch (UserNotFound) {
             // No-op
         }
 
-        $id = $command->id();
-        $user = $this->repository->get($id);
+        $user = $this->repository->get($command->id);
 
         $tokenExpiration = new DateTimeImmutable('+ ' . $this->tokenTTL . ' seconds');
         $splitToken = $this->splitTokenFactory->generate()->expireAt($tokenExpiration);
 
-        if ($user->requestEmailChange($email, $splitToken)) {
+        if ($user->requestEmailChange($command->email, $splitToken)) {
             $this->repository->save($user);
-            $this->confirmationMailer->send($email, $splitToken);
+            $this->confirmationMailer->send($command->email, $splitToken);
         }
     }
 }
