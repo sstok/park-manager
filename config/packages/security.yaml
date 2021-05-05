@@ -47,6 +47,12 @@ security:
                 httponly:             true
                 always_remember_me:   false
 
+            switch_user: { role: CAN_SWITCH_USER, parameter: _impersonate_user }
+
+    access_decision_manager:
+        strategy: priority # Stop as soon as one voter votes deny or allow
+        allow_if_all_abstain: false
+
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: '^/admin/', requires_channel: https, role: ROLE_ADMIN }

@@ -71,6 +71,7 @@ label:
     cancel: Cancel
     remove: Remove
     expire_password: Expire password
+    impersonate: Impersonate
     danger_zone: Danger Zone
 
     # Webhosting
@@ -234,6 +235,9 @@ user_management:
         change_password: Change Password
         change_user_level: Change User Level
         new_user_level: New User Level
+    impersonate:
+        message: Impersonating a user allows you to perform operations as if you are logged-in as this user.
+        cannot_impersonate_admin: Cannot impersonate an administrator.
 
 user_password_reset:
     heading: Password Reset

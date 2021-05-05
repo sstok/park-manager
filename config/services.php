@@ -38,6 +38,8 @@ use ParkManager\Infrastructure\Pdp\PsrStorageFactory;
 use ParkManager\Infrastructure\Security\Guard\FormAuthenticator;
 use ParkManager\Infrastructure\Security\PermissionExpressionProvider;
 use ParkManager\Infrastructure\Security\UserProvider;
+use ParkManager\Infrastructure\Security\Voter\SuperAdminVoter;
+use ParkManager\Infrastructure\Security\Voter\SwitchUserVoter;
 use ParkManager\Infrastructure\Service\EntityRenderer;
 use ParkManager\UI\Web\ArgumentResolver\ModelResolver;
 use ParkManager\UI\Web\ArgumentResolver\SplitTokenResolver;
@@ -97,7 +99,7 @@ return static function (ContainerConfigurator $c): void {
             __DIR__ . '/../src/Application/Service/SystemGateway/**',
             __DIR__ . '/../src/Infrastructure/{Doctrine,Pdp}',
             __DIR__ . '/../src/Infrastructure/Security/*User.php',
-            __DIR__ . '/../src/Infrastructure/Security/Permission',
+            __DIR__ . '/../src/Infrastructure/Security/{Permission, Voter}',
             __DIR__ . '/../src/UI/Web/Form/{ConfirmationHandler,DataTransformer,DataMapper}',
             __DIR__ . '/../src/UI/Web/Response',
         ]);
@@ -116,6 +118,8 @@ return static function (ContainerConfigurator $c): void {
     $di->get(SplitTokenResolver::class)
         ->tag('controller.argument_value_resolver', ['priority' => 255])
         ->autoconfigure(false);
+
+
 
     $di->get(ModelResolver::class)
         ->tag('controller.argument_value_resolver', ['priority' => 255])
@@ -157,6 +161,14 @@ return static function (ContainerConfigurator $c): void {
     // -- Security
     $di->set('park_manager.security.user_provider', UserProvider::class);
     $di->set('park_manager.security.guard.form', FormAuthenticator::class);
+
+    // After AuthenticatedVoter
+    $di->set(SwitchUserVoter::class)
+        ->tag('security.voter', ['priority' => 252]);
+
+    // After AuthenticatedVoter and SwitchUserVoter. But before Role voters.
+    $di->set(SuperAdminVoter::class)
+        ->tag('security.voter', ['priority' => 248]);
 
     $di->set(PermissionExpressionProvider::class)
         ->tag('security.expression_language_provider')

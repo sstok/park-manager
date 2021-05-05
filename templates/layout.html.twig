@@ -113,6 +113,9 @@
                                 <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">{{ 'your_profile'|trans({}, 'navigation') }}</a>
                                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">{{ 'settings'|trans({}, 'navigation') }}</a>
+                                    {% if is_granted('IS_IMPERSONATOR') %}
+                                        <a href="{{ impersonation_exit_path(path('park_manager.user.home') ) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">{{ 'exit_impersonation'|trans({}, 'navigation') }}</a>
+                                    {% endif %}
                                     <a href="{{ logout_path() }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">{{ 'logout'|trans({}, 'navigation') }}</a>
                                 </div>
                             </div>
@@ -153,6 +156,9 @@
                     <div class="mt-3 px-2 space-y-1">
                         <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">{{ 'your_profile'|trans({}, 'navigation') }}</a>
                         <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">{{ 'settings'|trans({}, 'navigation') }}</a>
+                        {% if is_granted('IS_IMPERSONATOR') %}
+                            <a href="{{ impersonation_exit_path(path('park_manager.user.home') ) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">{{ 'exit_impersonation'|trans({}, 'navigation') }}</a>
+                        {% endif %}
                         <a href="{{ logout_path() }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">{{ 'logout'|trans({}, 'navigation') }}</a>
                     </div>
                 </div>

@@ -20,7 +20,11 @@ final class SuperAdminVoter implements VoterInterface
     {
         $user = $token->getUser();
 
-        if ($user instanceof SecurityUser && $user->isEnabled() && $user->isSuperAdmin()) {
+        if (! $user instanceof SecurityUser || ! $user->isEnabled()) {
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
+
+        if ($user->isSuperAdmin()) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
