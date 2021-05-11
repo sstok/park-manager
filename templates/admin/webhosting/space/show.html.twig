@@ -201,6 +201,15 @@
                                     </div>
                                 </dl>
 
+                                <dl class="grid grid-cols-1 gap-y-8 sm:grid-cols-2 px-8 py-4">
+                                    <div class="sm:col-span-1">
+                                        <dt class="text-sm font-medium text-gray-500">{{ 'webhosting.space.show.transfer_label'|trans }}</dt>
+                                        <dd class="mt-1 w-96 lg:w-full text-sm text-gray-800">{{ 'webhosting.space.show.transfer_warning'|trans }}</dd>
+                                    </div>
+                                    <div class="sm:col-span-1 flex flex-none flex-grow-0 justify-end h-10 self-center">
+                                        <a href="{{ path('park_manager.admin.webhosting.space.transfer_to_owner', { 'space': space.id }) }}" class="inline-flex justify-center px-4 py-2 border border-red-400 shadow-sm text-sm font-medium rounded-md text-gray-100 bg-red-600">{{ 'label.transfer'|trans }}</a>
+                                    </div>
+                                </dl>
                             </div>
                         </div>
                     </section>

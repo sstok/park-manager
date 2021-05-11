@@ -68,6 +68,7 @@ label:
     save: Save
     edit: Edit
     sync: Synchronize
+    transfer: Transfer
     actions: Actions
     show: Show
     add: Add
@@ -209,8 +210,10 @@ flash:
 
     webhosting_space:
         registered: Webhosting Space registration was queued. You should be automatically notified when it's ready for usage.
+        owner_transferred: The Webhosting Space was transfered to the new owner.
         access_suspended: The Webhosting Space access was suspended. It might take some time before the changes take effect.
         access_suspension_removed: The Webhosting Space access suspension was removed. It might take some time before the changes take effect.
+
 user_login:
     heading: Login in to your account
     forgot_password: Forgot your password?
@@ -341,6 +344,8 @@ webhosting:
         register:
             heading: Register Webhosting Space
             constraints: Space Constraints
+        owner_transfer:
+            heading: Transfer Webhosting Space to owner
         list:
             heading: Webhosting Spaces
         show:
@@ -352,6 +357,9 @@ webhosting:
 
             suspend_label: Suspend Access
             suspend_warning: If access is suspended the website is no longer accessible.
+
+            transfer_label: Transfer Ownership
+            transfer_warning: Transfer the Webhosting Space (and assigned domain names) to a User or Organization.
         suspend_access:
             heading: Suspend webhosting space access
             change_heading: Change webhosting space suspension level
