@@ -21,7 +21,7 @@ use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
 use ParkManager\Domain\Webhosting\Email\Mailbox;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Tests\Mock\Application\Service\CurrentStorageUsageRetrieverMock;
+use ParkManager\Tests\Mock\Application\Service\StorageUsageMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\MailboxRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
 use ParkManager\Tests\SpaceConstraintsEquals;
@@ -84,7 +84,7 @@ final class ApplicabilityCheckerTest extends TestCase
                 new Mailbox(MailboxId::fromString(self::MAILBOX_ID2), $space2, 'doe', $domainName2, new ByteSize(2, 'GiB'), 'nope'),
             ]
         );
-        $storageUsageRetriever = new CurrentStorageUsageRetrieverMock(
+        $storageUsageRetriever = new StorageUsageMock(
             [
                 self::SPACE_ID1 => new ByteSize(500, 'MiB'),
                 self::SPACE_ID2 => new ByteSize(9, 'GiB'),

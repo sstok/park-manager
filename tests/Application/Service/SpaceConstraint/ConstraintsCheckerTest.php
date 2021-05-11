@@ -24,7 +24,7 @@ use ParkManager\Domain\Webhosting\Email\ForwardId;
 use ParkManager\Domain\Webhosting\Email\Mailbox;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Tests\Mock\Application\Service\CurrentStorageUsageRetrieverMock;
+use ParkManager\Tests\Mock\Application\Service\StorageUsageMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\ForwardRepositoryMock as EmailForwardRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\MailboxRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
@@ -44,7 +44,7 @@ final class ConstraintsCheckerTest extends TestCase
     private SpaceRepositoryMock $spaceRepository;
     private MailboxRepositoryMock $mailboxRepository;
     private EmailForwardRepositoryMock $emailForwardRepository;
-    private CurrentStorageUsageRetrieverMock $storageUsageRetriever;
+    private StorageUsageMock $storageUsageRetriever;
     private ConstraintsChecker $constraintChecker;
 
     protected function setUp(): void
@@ -90,7 +90,7 @@ final class ConstraintsCheckerTest extends TestCase
             Forward::toAddress(ForwardId::create(), $space2, 'nope-reply', $domainName2, new EmailAddress('hello@exampel.com')),
             Forward::toAddress(ForwardId::create(), $space2, 'secret', $domainName2, new EmailAddress('security@exampel.com')),
         ]);
-        $this->storageUsageRetriever = new CurrentStorageUsageRetrieverMock(
+        $this->storageUsageRetriever = new StorageUsageMock(
             [
                 self::SPACE_ID1 => new ByteSize(500, 'MiB'),
                 self::SPACE_ID2 => new ByteSize(9, 'GiB'),

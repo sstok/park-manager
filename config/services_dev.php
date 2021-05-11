@@ -12,8 +12,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Faker\Factory as Faker;
 use Faker\Generator as FakerGenerator;
-use ParkManager\Application\Service\CurrentStorageUsageRetriever;
-use ParkManager\Tests\Mock\Application\Service\CurrentStorageUsageRetrieverMock;
 
 return static function (ContainerConfigurator $c): void {
     $di = $c->services()->defaults()
@@ -23,9 +21,6 @@ return static function (ContainerConfigurator $c): void {
         ->bind('$commandBus', service('park_manager.command_bus'));
 
     $di->load('ParkManager\\DataFixtures\\', __DIR__ . '/../src/DataFixtures');
-
-    $di->set(CurrentStorageUsageRetrieverMock::class);
-    $di->alias(CurrentStorageUsageRetriever::class, CurrentStorageUsageRetrieverMock::class);
 
     $di->set(FakerGenerator::class)
         ->factory([Faker::class, 'create']);

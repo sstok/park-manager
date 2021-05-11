@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Service\SpaceConstraint;
 
-use ParkManager\Application\Service\CurrentStorageUsageRetriever;
+use ParkManager\Application\Service\StorageUsage;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
@@ -27,9 +27,9 @@ class ConstraintsChecker
     private WebhostingSpaceRepository $spaceRepository;
     private MailboxRepository $mailboxRepository;
     private EmailForwardRepository $emailForwardRepository;
-    private CurrentStorageUsageRetriever $storageUsageRetriever;
+    private StorageUsage $storageUsageRetriever;
 
-    public function __construct(WebhostingSpaceRepository $spaceRepository, MailboxRepository $mailboxRepository, EmailForwardRepository $emailForwardRepository, CurrentStorageUsageRetriever $storageUsageRetriever)
+    public function __construct(WebhostingSpaceRepository $spaceRepository, MailboxRepository $mailboxRepository, EmailForwardRepository $emailForwardRepository, StorageUsage $storageUsageRetriever)
     {
         $this->spaceRepository = $spaceRepository;
         $this->mailboxRepository = $mailboxRepository;

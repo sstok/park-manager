@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Service\SpaceConstraint;
 
-use ParkManager\Application\Service\CurrentStorageUsageRetriever;
+use ParkManager\Application\Service\StorageUsage;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Email\MailboxRepository;
@@ -34,9 +34,9 @@ class ApplicabilityChecker
 {
     private WebhostingSpaceRepository $spaceRepository;
     private MailboxRepository $mailboxRepository;
-    private CurrentStorageUsageRetriever $storageUsageRetriever;
+    private StorageUsage $storageUsageRetriever;
 
-    public function __construct(WebhostingSpaceRepository $spaceRepository, MailboxRepository $mailboxRepository, CurrentStorageUsageRetriever $storageUsageRetriever)
+    public function __construct(WebhostingSpaceRepository $spaceRepository, MailboxRepository $mailboxRepository, StorageUsage $storageUsageRetriever)
     {
         $this->spaceRepository = $spaceRepository;
         $this->mailboxRepository = $mailboxRepository;

@@ -14,7 +14,7 @@ use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
-interface CurrentStorageUsageRetriever
+interface StorageUsage
 {
     /**
      * Gets the total disk-space usage of a Space.

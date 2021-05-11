@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Mock\Application\Service;
 
 use Assert\Assertion;
-use ParkManager\Application\Service\CurrentStorageUsageRetriever;
+use ParkManager\Application\Service\StorageUsage;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Email\Exception\MailboxNotFound;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
@@ -23,7 +23,7 @@ use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
 /**
  * @internal
  */
-final class CurrentStorageUsageRetrieverMock implements CurrentStorageUsageRetriever
+final class StorageUsageMock implements StorageUsage
 {
     /**
      * [$id => {ByteSize}].
