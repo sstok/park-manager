@@ -1,0 +1,11 @@
+{% macro render_unlimited(value, append = '') %}
+    {%- if value == -1 -%}
+        {{ 'byte_size.inf'|trans }}
+    {%- else -%}
+        {{ value }} {{ append }}
+    {%- endif -%}
+{% endmacro %}
+
+{% macro render_bool(value) %}
+    {{ (value ? 'yes' : 'no' )|trans }}
+{% endmacro %}

@@ -100,6 +100,7 @@ final class ByteSizeTest extends TestCase
     {
         self::assertEquals(ByteSize::inf(), ByteSize::inf());
         self::assertEquals(-1, ByteSize::inf()->value);
+        self::assertEquals(-1, ByteSize::inf()->getNormSize());
         self::assertTrue(ByteSize::inf()->isInf());
     }
 
@@ -308,6 +309,17 @@ final class ByteSizeTest extends TestCase
         self::assertEquals('MiB', (new ByteSize(1025, 'Kib'))->getUnit());
         self::assertEquals('KiB', (new ByteSize(1, 'Kib'))->getUnit());
         self::assertEquals('GiB', (new ByteSize(1, 'Gib'))->getUnit());
+    }
+
+    /** @test */
+    public function gets_norm_size(): void
+    {
+        self::assertEquals(200, (new ByteSize(200, 'b'))->getNormSize());
+        self::assertEquals(1, (new ByteSize(1, 'Mib'))->getNormSize());
+        self::assertEquals(1, (new ByteSize(1025, 'Kib'))->getNormSize()); // 1.00 MiB
+        self::assertEquals(1.95, (new ByteSize(2000, 'Kib'))->getNormSize()); // 1.95 MiB
+        self::assertEquals(1, (new ByteSize(1, 'Kib'))->getNormSize());
+        self::assertEquals(1, (new ByteSize(1, 'Gib'))->getNormSize());
     }
 
     /** @test */

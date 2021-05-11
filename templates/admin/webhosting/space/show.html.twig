@@ -1,0 +1,159 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% import 'admin/user/_macros.html.twig' as user_macros %}
+{% import 'webhosting/_macros.html.twig' as webhosting_macros %}
+{% import 'macros.twig' as macros %}
+
+{% block title %}{{ 'webhosting.space.show.heading'|trans }}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="#{#{{ path('park_manager.admin.webhosting.home') }}#}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ 'breadcrumbs.webhosting.home'|trans({}, 'navigation') }}</a>
+        </div>
+    </li>
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="{{ path('park_manager.admin.webhosting.space.list') }}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ 'breadcrumbs.webhosting.spaces'|trans({}, 'navigation') }}</a>
+        </div>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <div class="mt-8">
+        <div class="max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
+
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
+                <div class="flex items-center space-x-5">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">{{ 'webhosting.space.show.heading'|trans }}</h1>
+                        <p class="text-sm font-medium text-gray-500">
+                            {{ domain_name.namePair }}
+                        </p>
+                    </div>
+                </div>
+                <nav class="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-0 md:flex-row md:space-x-3">
+                </nav>
+            </div>
+
+            <div class="mt-8 max-w-3xl mx-auto sm:px-6 lg:max-w-7xl">
+                <div class="space-y-6">
+
+                    <!-- Description list-->
+                    <section class="bg-white shadow sm:rounded-lg" aria-labelledby="constraints-information-title">
+                        <h2 id="constraints-information-title" class="px-4 py-5 sm:px-6 text-lg leading-6 font-medium text-gray-900">{{ 'webhosting.space.show.subheading'|trans }}</h2>
+                        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">{{ 'label.owner'|trans }}</dt>
+                                    <dd class="flex mt-1 text-sm text-gray-900">
+                                        {{ user_macros.owner_info_short(space.owner) }}
+                                    </dd>
+                                </div>
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">{{ 'label.status'|trans }}</dt>
+                                    <dd class="flex mt-1 text-sm text-gray-900">
+                                        {{ webhosting_macros.space_status(space) }}
+                                    </dd>
+                                </div>
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">{{ 'label.plan'|trans }}</dt>
+                                    <dd class="flex mt-1 text-sm text-gray-900">
+                                        {% if space.plan is not empty %}
+                                            <a href="{{ path('park_manager.admin.webhosting.plan.show', { 'plan': space.plan.id }) }}" class="text-blue-500 underline">{{ space.plan.getLabel() }}</a>
+                                        {% else %}
+                                            {{ 'label.placeholder_custom'|trans }}
+                                        {% endif %}
+                                    </dd>
+                                </div>
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">{{ 'label.registered_on'|trans }}</dt>
+                                    <dd class="flex mt-1 text-sm text-gray-900">
+                                        {{ space.registeredAt|format_date }}
+                                    </dd>
+                                </div>
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">{{ 'label.last_modified'|trans }}</dt>
+                                    <dd class="flex mt-1 text-sm text-gray-900">
+                                        {{ space.updatedAt|format_date }}
+                                    </dd>
+                                </div>
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">{{ 'label.domain_names'|trans }}</dt>
+                                    <dd class="flex mt-1 text-sm text-gray-900">
+                                        {{ domain_names_count|number_format(0) }}
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+
+                        <h2 class="px-4 py-5 sm:px-6 text-lg leading-6 font-medium text-gray-900">Statistics - Last 30 days</h2>
+                        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500 truncate flex">
+                                        {{ 'label.traffic_usage'|trans }}
+
+                                        {% if space.constraints.monthlyTraffic is not same as (-1) and create_byte_size(space.constraints.monthlyTraffic ~ ' GiB').getDiffRemainder(traffic_usage) < 90.0 %}
+                                            <!-- Heroicon name: exclamation -->
+                                            <svg class="ml-1 self-center flex-shrink-0 h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="sr-only">{{ 'warning'|trans }}</span>
+                                        {% endif %}
+                                    </dt>
+                                    <dd class="flex mt-1 text-sm text-gray-900">
+                                        {{ traffic_usage.format() }} of {{ macros.render_unlimited(space.constraints.monthlyTraffic, 'GiB') }}
+                                    </dd>
+                                </div>
+                                <div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500 truncate flex">
+                                        <div>
+                                            {{ 'label.disk_usage'|trans }}
+                                        </div>
+                                        {% if space.constraints.storageSize.getDiffRemainder(disk_usage) < 90.0 %}
+                                            <!-- Heroicon name: exclamation -->
+                                            <svg class="ml-1 self-center flex-shrink-0 h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="sr-only">{{ 'warning'|trans }}</span>
+                                        {% endif %}
+                                    </dt>
+                                    <dd class="flex mt-1 text-sm text-gray-900">
+                                        {{ disk_usage|render_byte_size() }} of {{ space.constraints.storageSize|render_byte_size() }}
+                                    </dd>
+                                </div>
+
+                                {# Planned for Later. This requires a system resource-usage monitor #}
+                                {#<div class="sm:col-span-1">
+                                    <dt class="text-sm font-medium text-gray-500">Avg. System usage</dt>
+                                    <dd class="flex items-baseline">
+                                        <div class="text-sm text-gray-900">
+                                            24.57%
+                                        </div>
+
+                                        <div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
+                                            <svg class="self-center flex-shrink-0 h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span class="sr-only">Decreased by</span> 3.2%
+                                        </div>
+                                    </dd>
+                                </div>#}
+                            </dl>
+                        </div>
+                    </section>
+
+                    {% include 'webhosting/_constraints_details.html.twig' with { 'constraints': space.constraints } %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

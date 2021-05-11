@@ -22,8 +22,10 @@ label:
     private_key_file: Private key file
     private_key_passphrase: Private-key passphrase
     domain_name: Domain name
+    primary_domain_name: Primary Domain name
     domain_suffix: Suffix/TLD
     webhosting_constraints: Webhosting Constraints
+    constraints: Constraints
     remove_tls: Remove TLS configuration
     user: User
     users: Users
@@ -74,10 +76,15 @@ label:
     expire_password: Expire password
     impersonate: Impersonate
     danger_zone: Danger Zone
+    placeholder_custom: -- Custom --
 
     # Webhosting
     monthly_traffic: Monthly traffic
-    storage_size: Storage Size
+    storage_size: Storage size
+    traffic_usage: Traffic usage
+    disk_usage: Disk usage
+    domain_names: Domain Names
+
     webhosting_plan:
         email_constraints: Email Constraints
         email_max_storage_size: Maximum (assignable) mailbox storage size
@@ -106,7 +113,9 @@ entity_label:
 
 byte_size:
     inf: Unlimited
+    format: '{ value, number } { unit }'
     byte: Byte
+    b: Byte
     kb: KB
     kib: KiB
     mb: MB
@@ -296,5 +305,17 @@ webhosting:
             sub_heading: Webhosting Plan
             sync_label: Update linked Webhosting Spaces with Plan constraints
     space:
+        status_level:
+            error: Error. See opertations log for details.
+            registered: Registered
+            getting_initialized: Getting Initialized
+            initialized: Initialized (Ready)
+            suspended: Access Suspended
+            marked_for_expiration: Marked for expiration on { remove_on, date, medium }
+            marked_for_removal: Marked for removal
         list:
             heading: Webhosting Spaces
+        show:
+            heading: Webhosting Space
+            subheading: Information
+

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Twig;
 
+use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
@@ -60,6 +61,11 @@ final class ParkManagerExtension extends AbstractExtension
 
                 return $this->wrappedTranslator->trans($id, $parameters, $domain, $locale);
             }
+
+            public function getLocale(): string
+            {
+                return $this->wrappedTranslator->getLocale();
+            }
         };
     }
 
@@ -68,6 +74,7 @@ final class ParkManagerExtension extends AbstractExtension
         return [
             new TwigFilter('trans_safe', [$this, 'trans'], ['needs_environment' => true, 'is_safe' => ['all']]),
             new TwigFilter('wordwrap', [$this, 'wordwrap'], ['needs_environment' => true, 'is_safe' => ['all']]),
+            new TwigFilter('render_byte_size', [$this, 'renderByteSize'], ['is_safe' => ['all']]),
             new TwigFilter('merge_attr_class', [$this, 'mergeAttrClass']),
         ];
     }
@@ -76,6 +83,7 @@ final class ParkManagerExtension extends AbstractExtension
     {
         return [
             new TwigFunction('get_current_user', [$this, 'getCurrentUser']),
+            new TwigFunction('create_byte_size', [ByteSize::class, 'fromString']),
         ];
     }
 
@@ -131,6 +139,27 @@ final class ParkManagerExtension extends AbstractExtension
         $attributes['class'] = \trim($attributes['class']);
 
         return $attributes;
+    }
+
+    public function renderByteSize(ByteSize $value): string
+    {
+        if ($value->isInf()) {
+            return $this->translator->trans('byte_size.inf');
+        }
+
+        $unit = \mb_strtolower($value->getUnit());
+
+        if ($unit === 'b') {
+            $unit = 'byte';
+        }
+
+        return $this->translator->trans(
+            'byte_size.format',
+            [
+                'value' => $value->getNormSize(),
+                'unit' => $this->translator->trans('byte_size.' . $unit),
+            ]
+        );
     }
 
     public function getCurrentUser(): User

@@ -1,0 +1,104 @@
+{% import 'macros.twig' as macros %}
+
+<section class="bg-white shadow sm:rounded-lg" aria-labelledby="constraints-information-title">
+    <h2 id="constraints-information-title" class="px-4 py-5 sm:px-6 text-lg leading-6 font-medium text-gray-900">{{ 'label.webhosting_constraints'|trans }}</h2>
+    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">{{ 'label.monthly_traffic'|trans }}</dt>
+                <dd class="flex mt-1 text-sm text-gray-900">
+                    {{ macros.render_unlimited(constraints.monthlyTraffic, 'GiB') }}
+                </dd>
+            </div>
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">{{ 'label.storage_size'|trans }}</dt>
+                <dd class="flex mt-1 text-sm text-gray-900">
+                    {{ constraints.storageSize|render_byte_size() }}
+                </dd>
+            </div>
+        </dl>
+    </div>
+
+    <h2 class="px-4 py-5 sm:px-6 text-lg leading-6 font-medium text-gray-900">{{ 'label.webhosting_plan.email_constraints'|trans }}</h2>
+    {% if constraints.email.maximumAddressCount == -1 %}
+        {% set maximumMailboxCount = 'byte_size.inf'|trans %}
+        {% set maximumForwardCount = maximumMailboxCount %}
+    {% elseif constraints.email.maximumAddressCount > 0 %}
+        {% set maximumMailboxCount = 'label.webhosting_plan.address_count_controlled'|trans({ 'value': constraints.email.maximumAddressCount }) %}
+        {% set maximumForwardCount = maximumMailboxCount %}
+    {% else %}
+        {% set maximumMailboxCount = macros.render_unlimited(constraints.email.maximumMailboxCount) %}
+        {% set maximumForwardCount = macros.render_unlimited(constraints.email.maximumForwardCount) %}
+    {% endif %}
+
+    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">{{ 'label.webhosting_plan.email_max_storage_size'|trans }}</dt>
+                <dd class="flex mt-1 text-sm text-gray-900">
+                    {{ constraints.email.maxStorageSize|render_byte_size() }}
+                </dd>
+            </div>
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">{{ 'label.webhosting_plan.maximum_email_address_count'|trans }}</dt>
+                <dd class="flex mt-1 text-sm text-gray-900">
+                    {{ macros.render_unlimited(constraints.email.maximumAddressCount) }}
+                </dd>
+            </div>
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">{{ 'label.webhosting_plan.maximum_emailbox_count'|trans }}</dt>
+                <dd class="flex mt-1 text-sm text-gray-900">
+                    {{ maximumMailboxCount }}
+                </dd>
+            </div>
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">{{ 'label.webhosting_plan.maximum_email_forward_count'|trans }}</dt>
+                <dd class="flex mt-1 text-sm text-gray-900">
+                    {{ maximumForwardCount }}
+                </dd>
+            </div>
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">{{ 'label.webhosting_plan.spam_filter_count'|trans }}</dt>
+                <dd class="flex mt-1 text-sm text-gray-900">
+                    {{ macros.render_unlimited(constraints.email.spamFilterCount) }}
+                </dd>
+            </div>
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">{{ 'label.webhosting_plan.email_list_count'|trans }}</dt>
+                <dd class="flex mt-1 text-sm text-gray-900">
+                    {{ macros.render_unlimited(constraints.email.mailListCount) }}
+                </dd>
+            </div>
+        </dl>
+    </div>
+
+    <h2 class="px-4 py-5 sm:px-6 text-lg leading-6 font-medium text-gray-900">{{ 'label.webhosting_plan.database_constraints'|trans }}</h2>
+    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">{{ 'label.webhosting_plan.database_provided_storage_size'|trans }}</dt>
+                <dd class="flex mt-1 text-sm text-gray-900">
+                    {{ constraints.database.providedStorageSize|render_byte_size() }}
+                </dd>
+            </div>
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">{{ 'label.webhosting_plan.database_maximum_amount_per_type'|trans }}</dt>
+                <dd class="flex mt-1 text-sm text-gray-900">
+                    {{ macros.render_unlimited(constraints.database.maximumAmountPerType) }}
+                </dd>
+            </div>
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">{{ 'label.webhosting_plan.database_enabled_pgsql'|trans }}</dt>
+                <dd class="flex mt-1 text-sm text-gray-900">
+                    {{ macros.render_bool(constraints.database.enabledPgsql) }}
+                </dd>
+            </div>
+            <div class="sm:col-span-1">
+                <dt class="text-sm font-medium text-gray-500">{{ 'label.webhosting_plan.database_enabled_mysql'|trans }}</dt>
+                <dd class="flex mt-1 text-sm text-gray-900">
+                    {{ macros.render_bool(constraints.database.enabledMysql) }}
+                </dd>
+            </div>
+        </dl>
+    </div>
+</section>

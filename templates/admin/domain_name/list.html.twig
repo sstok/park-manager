@@ -62,7 +62,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm text-gray-900">
                                             {% if domain_name.space is not empty %}
-                                                <a class="hover:underline" href="#{#{{ path('park_manager.admin.webhosting.space.show', { 'space': domain_name.space.id }) }}#}">Webhosting Space</a>
+                                                <a class="hover:underline" href="{{ path('park_manager.admin.webhosting.space.show', { 'space': domain_name.space.id }) }}">Webhosting Space</a>
                                             </div>
                                             {% else %}
                                             <div class="text-sm font-medium text-gray-900 truncate">

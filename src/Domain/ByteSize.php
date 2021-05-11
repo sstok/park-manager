@@ -106,15 +106,15 @@ final class ByteSize
         }
 
         if ($this->value >= 1024 * 1024 * 1024) {
-            return \sprintf('%.2f GiB', $this->value / 1024 / 1024 / 1024);
+            return \sprintf('%.2f GiB', \round($this->value / 1024 / 1024 / 1024, 2));
         }
 
         if ($this->value >= 1024 * 1024) {
-            return \sprintf('%.2f MiB', $this->value / 1024 / 1024);
+            return \sprintf('%.2f MiB', \round($this->value / 1024 / 1024, 2));
         }
 
         if ($this->value >= 1024) {
-            return \sprintf('%.2f KiB', $this->value / 1024);
+            return \sprintf('%.2f KiB', \round($this->value / 1024, 2));
         }
 
         return \sprintf('%d B', $this->value);
@@ -126,6 +126,28 @@ final class ByteSize
             'value' => $this->value,
             '_formatted' => $this->format(),
         ];
+    }
+
+    /**
+     * Returns the size in a normalized format to their nearest Ibi-byte unit-size.
+     *
+     * Caution: Float values are rounded too two digits and might loose some precession.
+     */
+    public function getNormSize(): int | float
+    {
+        if ($this->value >= 1024 * 1024 * 1024) {
+            return \round($this->value / 1024 / 1024 / 1024, 2);
+        }
+
+        if ($this->value >= 1024 * 1024) {
+            return \round($this->value / 1024 / 1024, 2);
+        }
+
+        if ($this->value >= 1024) {
+            return \round($this->value / 1024, 2);
+        }
+
+        return $this->value;
     }
 
     public function getUnit(): string

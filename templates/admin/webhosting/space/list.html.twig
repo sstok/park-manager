@@ -73,7 +73,7 @@
                                             {% endif %}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right font-medium">
-                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">{{ 'label.show'|trans }}</a>
+                                            <a href="{{ path('park_manager.admin.webhosting.space.show', {'space': space.id }) }}" class="text-indigo-600 hover:text-indigo-900">{{ 'label.show'|trans }}</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
