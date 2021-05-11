@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Space;
 
+use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class RemoveSpaceSuspensionHandler
@@ -24,6 +25,11 @@ final class RemoveSpaceSuspensionHandler
     public function __invoke(RemoveSpaceSuspension $command): void
     {
         $space = $this->spaceRepository->get($command->id);
+
+        if ($space->isMarkedForRemoval()) {
+            throw new WebhostingSpaceBeingRemoved($space->primaryDomainLabel);
+        }
+
         $space->removeAccessSuspension();
 
         $this->spaceRepository->save($space);

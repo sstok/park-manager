@@ -53,6 +53,7 @@ label:
 
     login: Login
     change_password: Change password
+    change_plan: Change Plan
     change: Change
     value: Value
     unit: Unit
@@ -74,10 +75,13 @@ label:
     add: Add
     cancel: Cancel
     remove: Remove
+    assign_expiration: Assign expiration
+    remove_expiration: Remove expiration
     suspend: Suspend
     level: Level
     remove_restriction: Remove Restriction
     remove_suspension: Remove Suspension
+    expiration_date: Expiration date
     expire_password: Expire password
     impersonate: Impersonate
     danger_zone: Danger Zone
@@ -213,6 +217,12 @@ flash:
         owner_transferred: The Webhosting Space was transfered to the new owner.
         access_suspended: The Webhosting Space access was suspended. It might take some time before the changes take effect.
         access_suspension_removed: The Webhosting Space access suspension was removed. It might take some time before the changes take effect.
+        marked_for_expiration: |
+            The webhosting space was marked for expiration and { has_date, select,
+                true { will expire on { date, date, medium } }
+                other { will be removed no later than today. }
+            }
+        removed_expiration: The webhosting space expiration marking was removed.
 
 user_login:
     heading: Login in to your account
@@ -344,6 +354,20 @@ webhosting:
         register:
             heading: Register Webhosting Space
             constraints: Space Constraints
+        assign_expiration:
+            heading: Expire Webhosting Space { domain_name }
+            message: |
+                Set a date when the webhosting space must expire (be removed). This date cannot be in the past.<br>
+                When the webhosting space must expire immediately, use today's date <b>(this cannot be undone!)</b>.<br>
+                Type-in the name of the webhosting space "{ domain_name }" for verification.
+            warning: |
+                Once the removal process has started it cannot be undone or cancelled!<br>
+                All the webhosting space's information, including mailboxes, files and traffic statistics
+                will be completely removed.
+        remove_expiration:
+            heading: Remove expiration of webhosting space { domain_name }
+            message: Remove the assigned expiration date of the webhosting space.
+            cannot_remove_expiration: The expiration is set for today cannot be removed.
         owner_transfer:
             heading: Transfer Webhosting Space to owner
         list:
@@ -354,6 +378,10 @@ webhosting:
 
             access_suspened_title: Access Suspended
             access_suspened_message: 'Access to this Webhosting Space is restricted at level: { level }'
+
+            remove_label: Remove this space
+            remove_warning: Once a space is removed there is no going back. Please be certain.
+            removal_notice: This space is marked for removal and cannot be changed.
 
             suspend_label: Suspend Access
             suspend_warning: If access is suspended the website is no longer accessible.

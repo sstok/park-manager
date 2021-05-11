@@ -30,6 +30,7 @@ final class ConfirmationForm extends AbstractType
         if ($options['required_value']) {
             $builder->add('required_value', TextType::class, [
                 'mapped' => true,
+                'getter' => static fn (): string => '',
                 'label' => 'label.value',
                 'constraints' => new Callback([
                     'callback' => static function ($value, ExecutionContextInterface $context) use ($options): void {

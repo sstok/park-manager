@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Space;
 
+use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class ExpireSpaceOnHandler
@@ -26,7 +27,7 @@ final class ExpireSpaceOnHandler
         $space = $this->spaceRepository->get($command->id);
 
         if ($space->isMarkedForRemoval()) {
-            return;
+            throw new WebhostingSpaceBeingRemoved($space->primaryDomainLabel);
         }
 
         $space->markExpirationDate($command->expirationDate);

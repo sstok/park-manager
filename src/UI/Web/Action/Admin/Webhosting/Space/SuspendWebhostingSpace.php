@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Space;
 
+use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\UI\Web\Form\Type\Webhosting\Space\SuspendWebhostingSpaceForm;
 use ParkManager\UI\Web\Response\RouteRedirectResponse;
@@ -23,6 +24,10 @@ final class SuspendWebhostingSpace
     #[Route(path: 'webhosting/space/{space}/suspend-access', name: 'park_manager.admin.webhosting.space.suspend_access', methods: ['POST', 'GET'])]
     public function __invoke(Request $request, FormFactoryInterface $formFactory, Space $space): RouteRedirectResponse | TwigResponse
     {
+        if ($space->isMarkedForRemoval()) {
+            throw new WebhostingSpaceBeingRemoved($space->primaryDomainLabel);
+        }
+
         $form = $formFactory->create(SuspendWebhostingSpaceForm::class, $space);
         $form->handleRequest($request);
 

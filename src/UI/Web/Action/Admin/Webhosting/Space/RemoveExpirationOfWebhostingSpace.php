@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Space;
 
-use ParkManager\Application\Command\Webhosting\Space\RemoveSpaceSuspension;
+use ParkManager\Application\Command\Webhosting\Space\RemoveSpaceExpirationDate;
 use ParkManager\Domain\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Space;
@@ -22,29 +22,34 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class RemoveSuspensionOfWebhostingSpace extends AbstractController
+final class RemoveExpirationOfWebhostingSpace extends AbstractController
 {
-    #[Route(path: 'webhosting/space/{space}/remove-access-suspension', name: 'park_manager.admin.webhosting.space.remove_access_suspension', methods: ['POST', 'GET'])]
+    #[Route(path: 'webhosting/space/{space}/remove-expiration', name: 'park_manager.admin.webhosting.space.remove_expiration', methods: ['POST', 'GET'])]
     public function __invoke(Request $request, FormFactoryInterface $formFactory, Space $space): RouteRedirectResponse | TwigResponse
     {
         if ($space->isMarkedForRemoval()) {
             throw new WebhostingSpaceBeingRemoved($space->primaryDomainLabel);
         }
 
-        $form = $formFactory->create(ConfirmationForm::class, null, [
-            'confirmation_title' => new TranslatableMessage('webhosting.space.remove_suspension.title', ['domain_name' => $space->primaryDomainLabel->toString()]),
-            'confirmation_message' => new TranslatableMessage('webhosting.space.remove_suspension.message', ['change_url' => $this->generateUrl('park_manager.admin.webhosting.space.suspend_access', ['space' => $space->id])]),
-            'confirmation_label' => 'label.remove_suspension',
+        if ($space->expirationDate === null) {
+            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id])
+                ->withFlash('success', 'flash.webhosting_space.removed_expiration');
+        }
+
+        $form = $formFactory->create(ConfirmationForm::class, $space, [
+            'confirmation_title' => new TranslatableMessage('webhosting.space.remove_expiration.heading', ['domain_name' => $space->primaryDomainLabel->toString()]),
+            'confirmation_message' => 'webhosting.space.remove_expiration.message',
+            'confirmation_label' => 'label.remove',
             'cancel_route' => ['name' => 'park_manager.admin.webhosting.space.show', 'arguments' => ['space' => $space->id]],
-            'command_factory' => static fn () => new RemoveSpaceSuspension($space->id),
+            'command_factory' => static fn (): object => new RemoveSpaceExpirationDate($space->id),
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id])
-                ->withFlash('success', 'flash.webhosting_space.access_suspension_removed');
+                ->withFlash('success', 'flash.webhosting_space.removed_expiration');
         }
 
-        return new TwigResponse('admin/webhosting/space/remove_access_suspension.html.twig', $form);
+        return new TwigResponse('admin/webhosting/space/remove_expiration.html.twig', ['form' => $form->createView(), 'space' => $space]);
     }
 }

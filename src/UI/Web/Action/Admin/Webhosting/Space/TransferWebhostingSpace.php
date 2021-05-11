@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Space;
 
+use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\UI\Web\Form\Type\Webhosting\Space\TransferWebhostingSpaceForm;
 use ParkManager\UI\Web\Response\RouteRedirectResponse;
@@ -23,6 +24,10 @@ final class TransferWebhostingSpace
     #[Route(path: 'webhosting/space/{space}/transfer-to-owner', name: 'park_manager.admin.webhosting.space.transfer_to_owner', methods: ['POST', 'GET'])]
     public function __invoke(Request $request, FormFactoryInterface $formFactory, Space $space): RouteRedirectResponse | TwigResponse
     {
+        if ($space->isMarkedForRemoval()) {
+            throw new WebhostingSpaceBeingRemoved($space->primaryDomainLabel);
+        }
+
         $form = $formFactory->create(TransferWebhostingSpaceForm::class, $space);
         $form->handleRequest($request);
 

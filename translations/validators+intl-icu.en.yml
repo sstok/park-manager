@@ -53,3 +53,4 @@ domain_name:
 
 webhosting_space:
     plan_constraints_mismatch: The provided Constraints are different than the selected Plan, please check "Do not link to Plan" when the custom constraints should be used.
+    is_being_removed: Webhosting space { domain_name } is currently being removed (or is marked for removal) and cannot be updated or changed.
