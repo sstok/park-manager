@@ -1,0 +1,73 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% form_theme form 'form/tailwind_horizontal.html.twig' %}
+
+{% block title %}{{ 'webhosting.space.suspend_access.heading'|trans }}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="#{#{{ path('park_manager.admin.webhosting.home') }}#}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ 'breadcrumbs.webhosting.home'|trans({}, 'navigation') }}</a>
+        </div>
+    </li>
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="{{ path('park_manager.admin.webhosting.space.list') }}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ 'breadcrumbs.webhosting.spaces'|trans({}, 'navigation') }}</a>
+        </div>
+    </li>
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="{{ path('park_manager.admin.webhosting.space.show', {'space': space.id}) }}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ space.primaryDomainLabel }}</a>
+        </div>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <div class="mt-8">
+        <div class="max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
+            <div class="bg-white p-8 border rounded-2xl shadow-sm">
+                {{ form_start(form, {attr: {'class': 'space-y-8 divide-y divide-gray-200'}}) }}
+                    <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
+                        <div>
+                            <div class="mb-5">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                    {{ (space.accessSuspended is not empty ? 'webhosting.space.suspend_access.change_heading'|trans : 'webhosting.space.suspend_access.heading'|trans) }}
+                                </h3>
+                                <div class="text-sm text-gray-500">
+                                    {{ 'webhosting.space.suspend_access.message'|trans_safe }}
+                                </div>
+                                {{ form_help(form) }}
+                                {{ form_errors(form) }}
+                            </div>
+                            {{ form_row(form.level) }}
+                        </div>
+                    </div>
+
+                    <div class="pt-5">
+                        <div class="flex justify-end">
+                            <button type="submit" class="mr-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                {{ (space.accessSuspended is not empty ? 'label.change'|trans : 'label.suspend'|trans) }}
+                            </button>
+                            {% if space.accessSuspended is not empty %}
+                                <a href="{{ path('park_manager.admin.webhosting.space.remove_access_suspension', { 'space': space.id }) }}" tabindex="3" class="mr-3 inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:w-auto sm:text-sm">
+                                    {{ 'label.remove_suspension'|trans }}
+                                </a>
+                            {% endif %}
+                            <a href="{{ path('park_manager.admin.webhosting.space.show', { 'space': space.id }) }}" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{{ 'label.cancel'|trans }}</a>
+                        </div>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

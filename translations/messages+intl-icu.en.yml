@@ -73,6 +73,10 @@ label:
     add: Add
     cancel: Cancel
     remove: Remove
+    suspend: Suspend
+    level: Level
+    remove_restriction: Remove Restriction
+    remove_suspension: Remove Suspension
     expire_password: Expire password
     impersonate: Impersonate
     danger_zone: Danger Zone
@@ -205,6 +209,8 @@ flash:
 
     webhosting_space:
         registered: Webhosting Space registration was queued. You should be automatically notified when it's ready for usage.
+        access_suspended: The Webhosting Space access was suspended. It might take some time before the changes take effect.
+        access_suspension_removed: The Webhosting Space access suspension was removed. It might take some time before the changes take effect.
 user_login:
     heading: Login in to your account
     forgot_password: Forgot your password?
@@ -328,6 +334,10 @@ webhosting:
             suspended: Access Suspended
             marked_for_expiration: Marked for expiration on { remove_on, date, medium }
             marked_for_removal: Marked for removal
+        suspension_level:
+            access_limited: Access limited. FTP and mail is accessible.
+            access_restricted: Access restricted. Data is <b>read only</b>, FTP and mail access is disabled.
+            locked: Locked. Data and configuration is <b>read only</b>.
         register:
             heading: Register Webhosting Space
             constraints: Space Constraints
@@ -337,3 +347,19 @@ webhosting:
             heading: Webhosting Space
             subheading: Information
 
+            access_suspened_title: Access Suspended
+            access_suspened_message: 'Access to this Webhosting Space is restricted at level: { level }'
+
+            suspend_label: Suspend Access
+            suspend_warning: If access is suspended the website is no longer accessible.
+        suspend_access:
+            heading: Suspend webhosting space access
+            change_heading: Change webhosting space suspension level
+            message: |
+                When a Space is marked as Suspended the web access is always disabled.<br>
+                Except for level 'locked' the owner is still abble to change settings but these wont have any effect.
+        remove_suspension:
+            title: Remove suspension status of webhosting space { domain_name }
+            message: |
+                This will make the webhosting space fully accessible again.
+                Or <a href="{ change_url }" class="underline">change the suspension level</a> instead.
