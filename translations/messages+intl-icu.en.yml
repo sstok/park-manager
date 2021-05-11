@@ -86,6 +86,8 @@ label:
     domain_names: Domain Names
 
     webhosting_plan:
+        no_plan_link: Do not link to Plan
+
         email_constraints: Email Constraints
         email_max_storage_size: Maximum (assignable) mailbox storage size
         maximum_email_address_count: Maximum amount addresses
@@ -152,6 +154,17 @@ help:
             If this value is "0" the maximum amount of mailboxes <em>and</em> forwards is controlled by the actual fields.<br>
             If this value is <em>higher</em> than 0, the maximum number of mailboxes and forwards is counted as a whole, constrainted by this value.<br>
             If this value is -1, there is no limit on the amount of mailboxes and forwards.<br>
+        no_plan_link: |
+            This will use the Plan's Constraints as provided. But when the plan's constraints
+            change they will not be synchronize to this Space. This option is implicit for "Custom".
+        space_register: Once a Webhosting Space is registered it might take some time before it's ready for usage.
+        space_register_domain: |
+            If the domain name already exists (and has the same owner) it will be assigned to this Space as primary.
+            When it's already assigned to another Space, the Domain Name must first be assigned to the Owner.
+        space_constraints: |
+            Instead of selecting a Webhosting Plan you can also specify the constraints manually.
+            Note that changing any of the constraints (provided by the Plan) will remove the Plan assignment.
+            You can either use a Webhosting Plan <i>or</i> provide custom constraints.
 
 success: Success
 error: Error
@@ -190,6 +203,8 @@ flash:
                 other {Approx # Spaces will be updated, this might take some time to complete. Once the process is completed you should see the new constraints for the webhosting spaces.}
             }
 
+    webhosting_space:
+        registered: Webhosting Space registration was queued. You should be automatically notified when it's ready for usage.
 user_login:
     heading: Login in to your account
     forgot_password: Forgot your password?
@@ -313,6 +328,9 @@ webhosting:
             suspended: Access Suspended
             marked_for_expiration: Marked for expiration on { remove_on, date, medium }
             marked_for_removal: Marked for removal
+        register:
+            heading: Register Webhosting Space
+            constraints: Space Constraints
         list:
             heading: Webhosting Spaces
         show:
