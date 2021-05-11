@@ -32,6 +32,7 @@ label:
     internal_organization: 'Internal Organization'
     internal_organizations: 'Internal Organizations'
     owner: Owner
+    plan: Plan
     id: ID
     name: Name
     description: Description
@@ -294,3 +295,6 @@ webhosting:
             heading: Webhosting Plan {id}
             sub_heading: Webhosting Plan
             sync_label: Update linked Webhosting Spaces with Plan constraints
+    space:
+        list:
+            heading: Webhosting Spaces

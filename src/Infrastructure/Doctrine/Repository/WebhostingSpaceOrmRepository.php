@@ -42,6 +42,15 @@ class WebhostingSpaceOrmRepository extends EntityRepository implements Webhostin
         return $space;
     }
 
+    public function all(): ResultSet
+    {
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->select(['s', 'p'])
+            ->leftJoin('s.plan', 'p');
+
+        return new OrmQueryBuilderResultSet($queryBuilder, 's', fetchJoinCollection: true);
+    }
+
     public function allWithAssignedPlan(PlanId $id): ResultSet
     {
         $queryBuilder = $this->createQueryBuilder('s')

@@ -1,0 +1,89 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% import 'admin/user/_macros.html.twig' as user_macros %}
+
+{% block title %}{{ 'webhosting.space.list.heading'|trans() }}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="#{#{{ path('park_manager.admin.webhosting.home') }}#}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ 'breadcrumbs.webhosting.home'|trans({}, 'navigation') }}</a>
+        </div>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <div class="mt-8">
+        <div class="max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
+            <div class="md:flex md:items-center md:justify-between mb-8">
+                <div class="flex-1 min-w-0">
+                    <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                        {{ 'webhosting.space.list.heading'|trans() }}
+                    </h1>
+                </div>
+                <div class="mt-4 flex md:mt-0 md:ml-4">
+                </div>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            {{ 'label.domain_name'|trans }}
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            {{ 'label.owner'|trans }}
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            {{ 'label.registered_on'|trans }}
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            {{ 'label.plan'|trans }}
+                                        </th>
+                                        <th scope="col" class="relative px-6 py-3">
+                                            <span class="sr-only">{{ 'label.actions'|trans }}</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200 text-sm text-gray-900">
+                                {% for space in spaces %}
+                                    <tr>
+                                        <td class="px-6 py-4" title="{{ space.primaryDomainLabel }}">
+                                            <span aria-hidden="true">{{ space.primaryDomainLabel.toTruncatedString(30) }}</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            {{ user_macros.owner_info_column(space.owner) }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <time class="flex items-center text-sm text-gray-90" datetime="{{ space.registeredAt|format_datetime(pattern="YYYY-MM-DD'T'HH:mm:ssZZ") }}">
+                                                {{ space.registeredAt|format_datetime('medium', 'short') }}
+                                            </time>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            {% if space.plan is not empty %}
+                                                <a href="{{ path('park_manager.admin.webhosting.plan.show', { 'plan': space.plan.id }) }}" class="text-gray-600 hover:text-indigo-900 hover:underline">{{ space.plan.label }}</a>
+                                            {% endif %}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right font-medium">
+                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">{{ 'label.show'|trans }}</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            {{ pagerfanta(spaces) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

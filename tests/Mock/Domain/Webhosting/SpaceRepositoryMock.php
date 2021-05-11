@@ -38,6 +38,11 @@ final class SpaceRepositoryMock implements WebhostingSpaceRepository
         return $this->mockDoGetById($id);
     }
 
+    public function all(): ResultSet
+    {
+        return $this->mockDoGetAll();
+    }
+
     public function allWithAssignedPlan(PlanId $id): ResultSet
     {
         return $this->mockDoGetMultiByField('plan', $id->toString());

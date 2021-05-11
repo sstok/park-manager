@@ -29,6 +29,11 @@ interface WebhostingSpaceRepository extends OwnerControlledRepository
     /**
      * @return ResultSet<Space>
      */
+    public function all(): ResultSet;
+
+    /**
+     * @return ResultSet<Space>
+     */
     public function allWithAssignedPlan(PlanId $id): ResultSet;
 
     public function save(Space $space): void;
