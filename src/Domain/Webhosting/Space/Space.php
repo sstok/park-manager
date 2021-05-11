@@ -199,7 +199,7 @@ class Space
         $this->webQuota = $size;
     }
 
-    public function switchToOwner(Owner $owner): void
+    public function transferToOwner(Owner $owner): void
     {
         $this->owner = $owner;
     }

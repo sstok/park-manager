@@ -13,7 +13,7 @@ namespace ParkManager\Application\Command\Webhosting\Space;
 use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
-final class SwitchSpaceOwner
+final class TransferSpaceToOwner
 {
     public SpaceId $space;
     public OwnerId $newOwner;

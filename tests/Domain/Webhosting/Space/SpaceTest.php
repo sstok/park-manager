@@ -242,8 +242,8 @@ final class SpaceTest extends TestCase
             $this->createPlan(new Constraints())
         );
 
-        $space1->switchToOwner($owner1);
-        $space2->switchToOwner($owner2);
+        $space1->transferToOwner($owner1);
+        $space2->transferToOwner($owner2);
 
         self::assertEquals($owner1, $space1->owner);
         self::assertEquals($owner2, $space2->owner);

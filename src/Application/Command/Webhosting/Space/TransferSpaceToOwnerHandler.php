@@ -15,7 +15,7 @@ use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceIsSuspended;
 use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
-final class SwitchSpaceOwnerHandler
+final class TransferSpaceToOwnerHandler
 {
     private WebhostingSpaceRepository $spaceRepository;
     private OwnerRepository $ownerRepository;
@@ -26,7 +26,7 @@ final class SwitchSpaceOwnerHandler
         $this->ownerRepository = $ownerRepository;
     }
 
-    public function __invoke(SwitchSpaceOwner $command): void
+    public function __invoke(TransferSpaceToOwner $command): void
     {
         $space = $this->spaceRepository->get($command->space);
         $owner = $this->ownerRepository->get($command->newOwner);
@@ -39,7 +39,7 @@ final class SwitchSpaceOwnerHandler
             return;
         }
 
-        $space->switchToOwner($owner);
+        $space->transferToOwner($owner);
         $this->spaceRepository->save($space);
     }
 }
