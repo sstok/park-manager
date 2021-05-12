@@ -223,6 +223,8 @@ flash:
                 other { will be removed no later than today. }
             }
         removed_expiration: The webhosting space expiration marking was removed.
+        constraints_assigned: The new webhosting space constraints were assigned.
+        plan_assigned: The webhosting space plan was assigned.
 
 user_login:
     heading: Login in to your account
@@ -370,6 +372,12 @@ webhosting:
             cannot_remove_expiration: The expiration is set for today cannot be removed.
         owner_transfer:
             heading: Transfer Webhosting Space to owner
+        change_plan:
+            heading: Change plan of webhosting space { domain_name }
+            help: |
+                Assign a new webhosting plan or change the configured constraints.<br>
+                When the current usage is higher than the new constraints an alternative configuration
+                is computed and applied instead.
         list:
             heading: Webhosting Spaces
         show:
