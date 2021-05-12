@@ -1,0 +1,102 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% import 'admin/user/_macros.html.twig' as _macros %}
+
+{% block title %}{{ 'webhosting.domain_name.list.heading'|trans({ 'primary_name': space.primaryDomainLabel }) }}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="#{#{{ path('park_manager.admin.webhosting.home') }}#}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ 'breadcrumbs.webhosting.home'|trans({}, 'navigation') }}</a>
+        </div>
+    </li>
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="{{ path('park_manager.admin.webhosting.space.list') }}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ 'breadcrumbs.webhosting.spaces'|trans({}, 'navigation') }}</a>
+        </div>
+    </li>
+    <li class="flex">
+        <div class="flex items-center">
+            <svg class="flex-shrink-0 w-6 h-full text-gray-200" preserverAspectRatio="none" viewBox="0 0 24 44" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+            </svg>
+            <a href="{{ path('park_manager.admin.webhosting.space.show', {'space': space.id}) }}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ space.primaryDomainLabel }}</a>
+        </div>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <div class="mt-8">
+        <div class="max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
+            <div class="md:flex md:items-center md:justify-between mb-8">
+                <div class="flex-1 min-w-0">
+                    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                        {{ 'webhosting.domain_name.list.heading'|trans({ 'primary_name': space.primaryDomainLabel }) }}
+                    </h2>
+                </div>
+                <div class="mt-4 flex md:mt-0 md:ml-4">
+                </div>
+            </div>
+
+            <div class="flex flex-col">
+                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            {{ 'label.name'|trans }}
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            {{ 'label.registered_on'|trans }}
+                                        </th>
+                                        <th scope="col" class="relative px-6 py-3">
+                                            <span class="sr-only">{{ 'label.actions'|trans }}</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                {% for domain_name in domain_names %}
+                                    <tr>
+                                        <td class="flex px-6 py-4" title="{{ domain_name }}">
+                                            <span aria-hidden="true">{{ domain_name.toTruncatedString(45) }}</span>
+                                            {% if domain_name.isPrimary() %}
+                                                <div class="ml-2" title="{{ 'primary'|trans }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <time class="flex items-center text-sm text-gray-90" datetime="{{ domain_name.registeredAt|format_datetime(pattern="YYYY-MM-DD'T'HH:mm:ssZZ") }}">
+                                                {{ domain_name.registeredAt|format_datetime('medium', 'none') }}
+                                            </time>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            {% if not domain_name.isPrimary() %}
+                                                <a href="{#{{ path('park_manager.admin.webhosting.domain_name.make_primary', {'domainName': domain_name.id }) }}#}" class="text-indigo-600 hover:text-indigo-900">{{ 'label.make_primary'|trans }}</a>
+                                            {% else %}
+                                                <a href="{#{{ path('park_manager.admin.webhosting.domain_name.remove', {'domainName': domain_name.id }) }}#}" class="text-indigo-600 hover:text-indigo-900">{{ 'label.remove'|trans }}</a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            {{ pagerfanta(domain_names) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

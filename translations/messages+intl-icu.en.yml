@@ -75,6 +75,7 @@ label:
     add: Add
     cancel: Cancel
     remove: Remove
+    make_primary: Make primary
     assign_expiration: Assign expiration
     remove_expiration: Remove expiration
     suspend: Suspend
@@ -180,6 +181,7 @@ error: Error
 info: Information
 warning: Warnning
 dashboard: Dashboard
+primary: Primary
 yes: Yes
 no: No
 
@@ -407,3 +409,7 @@ webhosting:
             message: |
                 This will make the webhosting space fully accessible again.
                 Or <a href="{ change_url }" class="underline">change the suspension level</a> instead.
+    domain_name:
+        list:
+            heading: Assigned Domain Names of { primary_name }
+
