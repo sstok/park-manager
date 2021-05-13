@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Application\Service;
 
 use ArrayIterator;
+use Doctrine\Common\Collections\Expr\Comparison;
+use Doctrine\Common\Collections\Expr\Expression;
 use ParkManager\Application\Service\CombinedResultSet;
 use ParkManager\Domain\ResultSet;
 use PHPUnit\Framework\TestCase;
@@ -43,22 +45,24 @@ final class CombinedResultSetTest extends TestCase
         self::assertEquals([], \iterator_to_array($resultSetCombination->getIterator()));
 
         $resultSetCombination = (new CombinedResultSet(
-            $this->getResultSetMock(new ArrayIterator(), limit: [1, 2], ordering: ['id', 'ASC'], ids: ['2', '5', '10']),
-            $this->getResultSetMock(new ArrayIterator(), limit: [1, 2], ordering: ['id', 'ASC'], ids: ['2', '5', '10']),
+            $this->getResultSetMock(new ArrayIterator(), limit: [1, 2], ordering: ['id', 'ASC'], ids: ['2', '5', '10'], expression: $expression = new Comparison('id', Comparison::EQ, '1')),
+            $this->getResultSetMock(new ArrayIterator(), limit: [1, 2], ordering: ['id', 'ASC'], ids: ['2', '5', '10'], expression: $expression),
         ))
             ->setLimit(1, 2)
             ->setOrdering('id', 'ASC')
+            ->filter($expression)
             ->limitToIds(['2', '5', '10']);
 
         self::assertEquals([], \iterator_to_array($resultSetCombination->getIterator()));
     }
 
-    private function getResultSetMock(ArrayIterator $iterator, array $limit = [null, null], array $ordering = [null, null], ?array $ids = null): ResultSet
+    private function getResultSetMock(ArrayIterator $iterator, array $limit = [null, null], array $ordering = [null, null], ?array $ids = null, ?Expression $expression = null): ResultSet
     {
         $resultSetProphecy1 = $this->prophesize(ResultSet::class);
         $resultSetProphecy1->setLimit(...$limit)->willReturn($resultSetProphecy1)->shouldBeCalled();
         $resultSetProphecy1->setOrdering(...$ordering)->willReturn($resultSetProphecy1)->shouldBeCalled();
         $resultSetProphecy1->limitToIds($ids)->willReturn($resultSetProphecy1)->shouldBeCalled();
+        $resultSetProphecy1->filter($expression)->willReturn($resultSetProphecy1)->shouldBeCalled();
         $resultSetProphecy1->getIterator()->willReturn($iterator);
         $resultSetProphecy1->getNbResults()->willReturn(\count($iterator));
 
@@ -89,6 +93,7 @@ final class CombinedResultSetTest extends TestCase
         $resultSetProphecy->setLimit(null, null)->willReturn($resultSetProphecy)->shouldBeCalled();
         $resultSetProphecy->setOrdering(null, null)->willReturn($resultSetProphecy)->shouldBeCalled();
         $resultSetProphecy->limitToIds(null)->willReturn($resultSetProphecy)->shouldBeCalled();
+        $resultSetProphecy->filter(null)->willReturn($resultSetProphecy)->shouldBeCalled();
         // Not changing
         $resultSetProphecy->getIterator()->willReturn(new ArrayIterator());
         $resultSetProphecy->getNbResults()->willReturn(0);
@@ -113,5 +118,6 @@ final class CombinedResultSetTest extends TestCase
         yield 'setLimit' => ['setLimit', [1, 5]];
         yield 'setOrdering' => ['setOrdering', ['id', 'ASC']];
         yield 'limitToIds' => ['limitToIds', [['1', '2', '5']]];
+        yield 'filter' => ['filter', [new Comparison('id', Comparison::EQ, '1')]];
     }
 }

@@ -11,12 +11,14 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\SubDomain\Exception\SubDomainAlreadyExists;
 use ParkManager\Domain\Webhosting\SubDomain\Exception\SubDomainNotFound;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainRepository;
+use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @method SubDomain|null find($id, $lockMode = null, $lockVersion = null)
@@ -39,13 +41,12 @@ final class SubDomainOrmRepository extends EntityRepository implements SubDomain
         return $domainName;
     }
 
-    public function allFromSpace(SpaceId $id): iterable
+    public function allFromSpace(SpaceId $id): ResultSet
     {
-        return $this->createQueryBuilder('d')
-            ->where('d.space = :space')
-            ->getQuery()
-            ->setParameter('space', $id->toString())
-            ->getResult();
+        return new OrmQueryBuilderResultSet(
+            $this->createQueryBuilder('d')->where('d.space = :space')->setParameter('space', $id->toString()),
+            'd'
+        );
     }
 
     public function save(SubDomain $subDomain): void

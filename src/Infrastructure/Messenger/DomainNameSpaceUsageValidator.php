@@ -11,12 +11,13 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Messenger;
 
 use ParkManager\Domain\DomainName\DomainName;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\Space;
 
 interface DomainNameSpaceUsageValidator
 {
     /**
-     * @return array<class-string, array<int, object>> [EntityName => [entities]]
+     * @return array<class-string, ResultSet> ["EntityName" => {ResultSet<EntityName>}]
      */
     public function __invoke(DomainName $domainName, Space $space): array;
 }

@@ -14,11 +14,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNamePair;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Email\Exception\MailboxNotFound;
 use ParkManager\Domain\Webhosting\Email\Mailbox;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 use ParkManager\Domain\Webhosting\Email\MailboxRepository;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
+use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @method Mailbox|null find($id, $lockMode = null, $lockVersion = null)
@@ -57,13 +59,14 @@ final class MailboxOrmRepository extends EntityRepository implements MailboxRepo
         }
     }
 
-    public function allBySpace(SpaceId $space): iterable
+    public function allBySpace(SpaceId $space): ResultSet
     {
-        return $this->createQueryBuilder('m')
-            ->where('m.space = :space')
-            ->getQuery()
-            ->setParameter('space', $space->toString())
-            ->getResult();
+        return new OrmQueryBuilderResultSet(
+            $this->createQueryBuilder('m')
+                ->where('m.space = :space')
+                ->setParameter('space', $space->toString()),
+            'm'
+        );
     }
 
     public function countBySpace(SpaceId $space): int

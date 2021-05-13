@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\DomainName;
 
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\SubDomain\Exception\SubDomainAlreadyExists;
 use ParkManager\Domain\Webhosting\SubDomain\Exception\SubDomainNotFound;
@@ -41,7 +42,7 @@ final class SubDomainRepositoryMock implements SubDomainRepository
         return $this->mockDoGetById($id);
     }
 
-    public function allFromSpace(SpaceId $spaceId): iterable
+    public function allFromSpace(SpaceId $spaceId): ResultSet
     {
         return $this->mockDoGetMultiByField('space', $spaceId->toString());
     }

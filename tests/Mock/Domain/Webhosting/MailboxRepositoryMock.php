@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
 use ParkManager\Domain\DomainName\DomainNamePair;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Email\Exception\MailboxNotFound;
 use ParkManager\Domain\Webhosting\Email\Mailbox;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
@@ -49,7 +50,7 @@ final class MailboxRepositoryMock implements MailboxRepository
         return $this->mockDoGetByField('full_address', $address . '@' . $domainNamePair->toString());
     }
 
-    public function allBySpace(SpaceId $space): iterable
+    public function allBySpace(SpaceId $space): ResultSet
     {
         return $this->mockDoGetMultiByField('space_id', $space->toString());
     }

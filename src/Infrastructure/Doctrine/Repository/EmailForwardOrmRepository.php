@@ -14,11 +14,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNamePair;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Email\Exception\EmailForwardNotFound;
 use ParkManager\Domain\Webhosting\Email\Forward;
 use ParkManager\Domain\Webhosting\Email\ForwardId;
 use ParkManager\Domain\Webhosting\Email\ForwardRepository;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
+use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @method Forward|null find($id, $lockMode = null, $lockVersion = null)
@@ -57,13 +59,14 @@ final class EmailForwardOrmRepository extends EntityRepository implements Forwar
         }
     }
 
-    public function allBySpace(SpaceId $space): iterable
+    public function allBySpace(SpaceId $space): ResultSet
     {
-        return $this->createQueryBuilder('f')
-            ->where('f.space = :space')
-            ->getQuery()
-            ->setParameter('space', $space->toString())
-            ->getResult();
+        return new OrmQueryBuilderResultSet(
+            $this->createQueryBuilder('f')
+                ->where('f.space = :space')
+                ->setParameter('space', $space->toString()),
+            'f'
+        );
     }
 
     public function countBySpace(SpaceId $space): int

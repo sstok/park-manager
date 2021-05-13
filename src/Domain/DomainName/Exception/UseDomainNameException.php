@@ -12,26 +12,27 @@ namespace ParkManager\Domain\DomainName\Exception;
 
 use DomainException;
 use ParkManager\Domain\DomainName\DomainNamePair;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 abstract class UseDomainNameException extends DomainException
 {
     public DomainNamePair $domainName;
     public SpaceId $current;
-    /** @var array<class-string, array<int, object>> [EntityName => [entities]] */
+    /** @var array<class-string, ResultSet> ["EntityName" => {ResultSet<EntityName>}] */
     public array $entities;
 
     /**
-     * @param array<class-string, array<int, object>> [EntityName => [entities]]
+     * @param array<class-string, ResultSet> ["EntityName" => {ResultSet<EntityName>}]
      */
     public function __construct(DomainNamePair $domainName, SpaceId $current, array $entities)
     {
         $message = $this->getInitMessage($domainName, $current);
 
-        foreach ($entities as $className => $entitiesList) {
+        foreach ($entities as $className => $resultSet) {
             $message .= "{$className}: \n";
 
-            foreach ($entitiesList as $entity) {
+            foreach ($resultSet as $entity) {
                 $message .= "- {$entity->id->toString()}\n";
             }
 

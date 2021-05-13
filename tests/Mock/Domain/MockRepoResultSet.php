@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Mock\Domain;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Expr\Expression;
 use ParkManager\Domain\ResultSet;
 
 final class MockRepoResultSet implements ResultSet
@@ -19,6 +21,7 @@ final class MockRepoResultSet implements ResultSet
     public ?int $limit = null;
     public ?int $offset = null;
     public ?array $ordering = null;
+    public ?Expression $expression = null;
     public ?array $limitedToIds = null;
 
     public function __construct(array $originalResult)
@@ -41,6 +44,13 @@ final class MockRepoResultSet implements ResultSet
         return $this;
     }
 
+    public function filter(?Expression $expression): self
+    {
+        $this->expression = $expression;
+
+        return $this;
+    }
+
     public function limitToIds(?array $ids): self
     {
         $this->limitedToIds = $ids;
@@ -56,6 +66,11 @@ final class MockRepoResultSet implements ResultSet
         \reset($this->result);
         $result = $this->result;
 
+        if ($this->expression) {
+            $result = new ArrayCollection($result);
+            $result = $result->matching(new Criteria($this->expression))->toArray();
+        }
+
         if ($this->limitedToIds) {
             $result = \array_filter($result, fn (object $v) => \in_array($v->id->toString(), $this->limitedToIds, true));
         }
@@ -68,6 +83,7 @@ final class MockRepoResultSet implements ResultSet
         \reset($this->result);
         $result = $this->result;
 
+        // Don't apply the order at ArrayCollection as we need to cast the values to string.
         if ($this->ordering[0] ?? false) {
             [$orderField, $order] = $this->ordering;
 
@@ -84,17 +100,35 @@ final class MockRepoResultSet implements ResultSet
             });
         }
 
+        $result = new ArrayCollection($result);
+        $criteria = new Criteria();
+        $hasCriteria = false;
+
+        if ($this->expression) {
+            $criteria->where($this->expression);
+            $hasCriteria = true;
+        }
+
         if ($this->offset) {
-            $result = \array_slice($result, $this->offset, $this->limit);
-        } elseif ($this->limit) {
-            $result = \array_slice($result, 0, $this->limit);
+            $criteria->setFirstResult($this->offset);
+            $hasCriteria = true;
+        }
+
+        if ($this->limit) {
+            $criteria->setMaxResults($this->limit);
+            $hasCriteria = true;
         }
 
         if ($this->limitedToIds) {
-            $result = \array_filter($result, fn (object $v) => \in_array($v->id->toString(), $this->limitedToIds, true));
+            $criteria->andWhere(Criteria::expr()->in('id', $this->limitedToIds));
+            $hasCriteria = true;
         }
 
-        return new ArrayCollection($result);
+        if ($hasCriteria) {
+            $result = $result->matching($criteria);
+        }
+
+        return $result;
     }
 
     public function count(): int

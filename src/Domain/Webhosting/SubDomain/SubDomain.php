@@ -21,7 +21,7 @@ use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
  * @ORM\Table(
  *     name="sub_domain",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="sub_domain_uniq", columns={"host", "name_part"}),
+ *         @ORM\UniqueConstraint(name="sub_domain_uniq", columns={"host_id", "name_part"}),
  *     }
  * )
  */
@@ -38,13 +38,13 @@ class SubDomain
      * READ-ONLY.
      *
      * @ORM\ManyToOne(targetEntity=DomainName::class)
-     * @ORM\JoinColumn(name="host", nullable=false)
+     * @ORM\JoinColumn(name="host_id", onDelete="RESTRICT", nullable=false)
      */
     public DomainName $host;
 
     /**
      * @ORM\ManyToOne(targetEntity=Space::class)
-     * @ORM\JoinColumn(onDelete="RESTRICT", name="space", referencedColumnName="id")
+     * @ORM\JoinColumn(onDelete="RESTRICT", name="space", referencedColumnName="id", nullable=false)
      */
     public Space $space;
 

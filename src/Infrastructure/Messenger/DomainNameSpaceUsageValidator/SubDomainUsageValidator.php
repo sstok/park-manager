@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
 
+use Doctrine\Common\Collections\Criteria;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
@@ -27,17 +28,10 @@ final class SubDomainUsageValidator implements DomainNameSpaceUsageValidator
 
     public function __invoke(DomainName $domainName, Space $space): array
     {
-        $entities = [
-            SubDomain::class => [],
+        return [
+            SubDomain::class => $this->subDomainRepository->allFromSpace($space->id)
+                ->filter(Criteria::expr()->eq('host', $domainName))
+                ->setLimit(20),
         ];
-
-        /** @var SubDomain $subDomain */
-        foreach ($this->subDomainRepository->allFromSpace($space->id) as $subDomain) {
-            if ($subDomain->host === $domainName) {
-                $entities[SubDomain::class][] = $domainName;
-            }
-        }
-
-        return $entities;
     }
 }

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Service;
 
+use Doctrine\Common\Collections\Expr\Expression;
 use ParkManager\Domain\ResultSet;
 use Traversable;
 
@@ -19,6 +20,7 @@ final class CombinedResultSet implements ResultSet
     private ?int $limit = null;
     private ?int $offset = null;
     private ?array $ordering = null;
+    public ?Expression $expression = null;
     private ?array $limitedToIds = null;
     private ?array $iterators = null;
     private ?int $nbResults = null;
@@ -88,11 +90,20 @@ final class CombinedResultSet implements ResultSet
         foreach ($this->resultSets as $resultSet) {
             $resultSet = $resultSet
                 ->setLimit($this->limit, $this->offset)
+                ->filter($this->expression)
                 ->setOrdering($this->ordering[0] ?? null, $this->ordering[1] ?? null)
                 ->limitToIds($this->limitedToIds);
 
             $this->nbResults += $resultSet->getNbResults();
             $this->iterators[] = $resultSet->getIterator();
         }
+    }
+
+    public function filter(?Expression $expression): ResultSet
+    {
+        $this->expression = $expression;
+        $this->iterators = null;
+
+        return $this;
     }
 }

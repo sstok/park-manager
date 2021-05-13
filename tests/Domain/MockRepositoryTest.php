@@ -71,7 +71,7 @@ final class MockRepositoryTest extends TestCase
     public function it_gets_multiple_entities(): void
     {
         $entity1 = new MockEntity('fc86687e-0875-11e9-9701-acbc32b58315', 'bla', 'example.com');
-        $entity2 = new MockEntity('fc86687e-0875-11e9-9701-acbc32b58315', 'bla', 'example.com');
+        $entity2 = new MockEntity('d7b8386b-ac16-49c1-9257-0bf047337e6f', 'bla', 'example.com');
         $entity3 = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315', 'barfoo', 'example2.com');
         $entity4 = new MockEntity('566eb8e3-d9ba-4d6d-8d3c-c4a744df85ae', 'foobar', 'example2.com');
         $entity5 = new MockEntity('f1acc3fb-de6a-4fc4-af6e-dde2327b4425', 'foobar', 'example2.com');
@@ -89,9 +89,14 @@ final class MockRepositoryTest extends TestCase
                 return $this->mockDoGetById($id);
             }
 
-            public function all(string $key): ResultSet
+            public function allByDomain(string $key): ResultSet
             {
                 return $this->mockDoGetMultiByField('domain', $key);
+            }
+
+            public function all(): ResultSet
+            {
+                return $this->mockDoGetAll();
             }
 
             public function remove(MockEntity $entity): void
@@ -112,10 +117,19 @@ final class MockRepositoryTest extends TestCase
         $repository->assertHasEntity($entity1->id(), static function (): void { });
         $repository->assertHasEntity($entity3->id(), static function (): void { });
 
-        self::assertEquals([$entity1, $entity2], [...$repository->all('example.com')]);
-        self::assertEquals([$entity3, $entity4], [...$repository->all('example2.com')]);
-        self::assertEquals([$entity3], [...$repository->all('example2.com')->limitToIds(['9dab0b6a-0876-11e9-bfd1-acbc32b58315'])]);
-        self::assertEquals([], [...$repository->all('example2.com')->limitToIds(['f1acc3fb-de6a-4fc4-af6e-dde2327b4425'])]);
+        self::assertEquals([$entity1, $entity2], [...$repository->allByDomain('example.com')]);
+        self::assertEquals([$entity3, $entity4], [...$repository->allByDomain('example2.com')]);
+        self::assertEquals([$entity1, $entity2, $entity3, $entity4], [...$repository->all()]);
+
+        self::assertEquals([$entity3], [...$repository->allByDomain('example2.com')->limitToIds(['9dab0b6a-0876-11e9-bfd1-acbc32b58315'])]);
+        self::assertEquals([], [...$repository->allByDomain('example2.com')->limitToIds(['f1acc3fb-de6a-4fc4-af6e-dde2327b4425'])]);
+
+        self::assertEquals([$entity1, $entity2], [...$repository->all()->setLimit(2)]);
+        self::assertEquals([$entity3, $entity4], [...$repository->all()->setLimit(2, 2)]);
+        self::assertEquals([$entity3, $entity4], [...$repository->all()->setLimit(null, 2)]);
+
+        self::assertEquals([$entity1, $entity2, $entity3, $entity4], [...$repository->all()->setOrdering('id', 'desc')]);
+        self::assertEquals([$entity4, $entity3, $entity2, $entity1], [...$repository->all()->setOrdering('id', 'asc')]);
     }
 
     /** @test */

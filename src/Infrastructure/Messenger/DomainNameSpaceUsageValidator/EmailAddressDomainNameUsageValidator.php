@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
 
+use Doctrine\Common\Collections\Criteria;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\Webhosting\Email\Forward;
 use ParkManager\Domain\Webhosting\Email\ForwardRepository;
@@ -31,23 +32,13 @@ final class EmailAddressDomainNameUsageValidator implements DomainNameSpaceUsage
 
     public function __invoke(DomainName $domainName, Space $space): array
     {
-        $entities = [
-            Mailbox::class => [],
-            Forward::class => [],
+        return [
+            Mailbox::class => $this->mailboxRepository->allBySpace($space->id)
+                ->filter(Criteria::expr()->eq('domainName', $domainName))
+                ->setLimit(20),
+            Forward::class => $this->forwardRepository->allBySpace($space->id)
+                ->filter(Criteria::expr()->eq('domainName', $domainName))
+                ->setLimit(20),
         ];
-
-        foreach ($this->mailboxRepository->allBySpace($space->id) as $mailbox) {
-            if ($mailbox->domainName === $domainName) {
-                $entities[Mailbox::class][] = $mailbox;
-            }
-        }
-
-        foreach ($this->forwardRepository->allBySpace($space->id) as $forward) {
-            if ($forward->domainName === $domainName) {
-                $entities[Forward::class][] = $forward;
-            }
-        }
-
-        return $entities;
     }
 }

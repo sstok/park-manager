@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\SubDomain;
 
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\SubDomain\Exception\SubDomainAlreadyExists;
 use ParkManager\Domain\Webhosting\SubDomain\Exception\SubDomainNotFound;
@@ -22,9 +23,9 @@ interface SubDomainRepository
     public function get(SubDomainNameId $id): SubDomain;
 
     /**
-     * @return iterable<SubDomain>
+     * @return ResultSet<SubDomain>
      */
-    public function allFromSpace(SpaceId $spaceId): iterable;
+    public function allFromSpace(SpaceId $spaceId): ResultSet;
 
     /**
      * @throws SubDomainAlreadyExists

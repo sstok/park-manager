@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\Email;
 
 use ParkManager\Domain\DomainName\DomainNamePair;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Email\Exception\MailboxNotFound;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
@@ -27,9 +28,9 @@ interface MailboxRepository
     public function getByName(string $address, DomainNamePair $domainNamePair): Mailbox;
 
     /**
-     * @return iterable<Mailbox>
+     * @return ResultSet<Mailbox>
      */
-    public function allBySpace(SpaceId $space): iterable;
+    public function allBySpace(SpaceId $space): ResultSet;
 
     public function countBySpace(SpaceId $space): int;
 

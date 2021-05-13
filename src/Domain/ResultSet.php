@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain;
 
+use Doctrine\Common\Collections\Expr\Expression;
+
 /**
  * A ResultSet functions as a proxy between a repository,
  * and the application/UI.
@@ -25,6 +27,13 @@ interface ResultSet extends \IteratorAggregate, \Countable
      * @param string $order either asc or desc
      */
     public function setOrdering(?string $field, ?string $order): self;
+
+    /**
+     * Apply a filtering expression on the result.
+     *
+     * This should (internally) be applied before limitToIds().
+     */
+    public function filter(?Expression $expression): self;
 
     /**
      * Pass an array of entity IDs to limit the returned result

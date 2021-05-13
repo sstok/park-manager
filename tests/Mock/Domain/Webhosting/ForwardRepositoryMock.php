@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
 use ParkManager\Domain\DomainName\DomainNamePair;
+use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Email\Exception\EmailForwardNotFound;
 use ParkManager\Domain\Webhosting\Email\Forward;
 use ParkManager\Domain\Webhosting\Email\ForwardId;
@@ -49,7 +50,7 @@ final class ForwardRepositoryMock implements ForwardRepository
         return $this->mockDoGetByField('full_address', $address . '@' . $domainNamePair->toString());
     }
 
-    public function allBySpace(SpaceId $space): iterable
+    public function allBySpace(SpaceId $space): ResultSet
     {
         return $this->mockDoGetMultiByField('space_id', $space->toString());
     }

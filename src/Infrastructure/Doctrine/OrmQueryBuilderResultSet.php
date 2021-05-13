@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine;
 
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Expr\Expression;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -23,6 +25,7 @@ final class OrmQueryBuilderResultSet implements ResultSet
     private ?int $length = null;
     private ?int $offset = null;
     private ?array $ordering = null;
+    private ?Expression $expression = null;
     private ?array $limitedToIds = null;
     private ?Paginator $paginator = null;
 
@@ -49,6 +52,13 @@ final class OrmQueryBuilderResultSet implements ResultSet
     {
         $this->ordering = $field === null ? null : [$field, $order];
         $this->paginator = null;
+
+        return $this;
+    }
+
+    public function filter(?Expression $expression): self
+    {
+        $this->expression = $expression;
 
         return $this;
     }
@@ -95,6 +105,10 @@ final class OrmQueryBuilderResultSet implements ResultSet
 
         if ($this->ordering) {
             $queryBuilder->orderBy(...$this->ordering);
+        }
+
+        if ($this->expression) {
+            $queryBuilder->addCriteria(new Criteria($this->expression));
         }
 
         if ($this->limitedToIds) {

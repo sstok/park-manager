@@ -66,7 +66,11 @@ final class RemoveDomainNameAction
                 CannotTransferInUseDomainName::class => static fn (CannotTransferInUseDomainName $exception, TranslatorInterface $translator): RawFormError => new RawFormError(
                     $translator->trans(
                         'domain_name.cannot_transfer_in_use_by_space',
-                        ['entities' => $entityRenderer->listedBySet($exception->entities, ['is_admin' => true])],
+                        [
+                            'entities' => $entityRenderer->listedBySet($exception->entities, ['is_admin' => true]),
+                            'domain_name' => $exception->domainName->name,
+                            'domain_tld' => $exception->domainName->tld,
+                        ],
                         'validators'
                     ),
                     'domain_name.cannot_transfer_in_use_by_space',
