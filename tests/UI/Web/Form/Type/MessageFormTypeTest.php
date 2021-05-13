@@ -40,6 +40,7 @@ use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
+use ValueError;
 
 /**
  * @internal
@@ -120,7 +121,20 @@ final class MessageFormTypeTest extends TypeTestCase
             }
         };
 
-        return new MessageBus([$validationMiddleware, new HandleMessageMiddleware(new HandlersLocator($handlers), $allowNoHandlers)]);
+        $exceptionAtMiddleware = new class() implements MiddlewareInterface {
+            public function handle(Envelope $envelope, StackInterface $stack): Envelope
+            {
+                $message = $envelope->getMessage();
+
+                if ($message instanceof StubCommand && $message->id === 725) {
+                    throw new ValueError('It works on my machine');
+                }
+
+                return $stack->next()->handle($envelope, $stack);
+            }
+        };
+
+        return new MessageBus([$validationMiddleware, $exceptionAtMiddleware, new HandleMessageMiddleware(new HandlersLocator($handlers), $allowNoHandlers)]);
     }
 
     /** @test */
@@ -153,6 +167,7 @@ final class MessageFormTypeTest extends TypeTestCase
                     'username' => [new FormError('Username problem is here', null, [], null, $e)],
                 ],
                 InvalidSplitTokenProvided::class => 'profile.name',
+                ValueError::class => static fn (Throwable $e) => new FormError($e->getMessage(), null, [], null, $e),
             ],
             'exception_fallback' => static fn (Throwable $e, TranslatorInterface $translator) => [
                 'profile.contact.email' => new FormError($translator->trans('Contact Email problem is here'), null, [], null, $e),
@@ -242,6 +257,13 @@ final class MessageFormTypeTest extends TypeTestCase
             77,
             [
                 '' => [new FormError('User with id "f2df40e4-2f27-47e8-b03f-27d1456eed7a" does not exist.', 'User with id "{id}" does not exist.', ['{id}' => 'f2df40e4-2f27-47e8-b03f-27d1456eed7a'], null, UserNotFound::withId(UserId::fromString('f2df40e4-2f27-47e8-b03f-27d1456eed7a')))],
+            ],
+        ];
+
+        yield 'Exception outside of handler (in middleware)' => [
+            725,
+            [
+                '' => [new FormError('It works on my machine', cause: new ValueError('It works on my machine'))],
             ],
         ];
 

@@ -91,7 +91,7 @@
                                                 </span>
                                             {% else %}
                                                 <a href="{{ path('park_manager.admin.webhosting.space.domain_name.make_primary', { 'space': space.id, 'domainName': domain_name.id }) }}" class="text-indigo-600 hover:text-indigo-900">{{ 'label.make_primary'|trans }}</a>
-                                                <a href="{#{{ path('park_manager.admin.webhosting.domain_name.remove', {'domainName': domain_name.id }) }}#}" class="text-indigo-600 hover:text-indigo-900">{{ 'label.remove'|trans }}</a>
+                                                <a href="{{ path('park_manager.admin.webhosting.space.domain_name.remove', { 'space': space.id, 'domainName': domain_name.id }) }}" class="text-indigo-600 hover:text-indigo-900">{{ 'label.remove'|trans }}</a>
                                             {% endif %}
                                         </td>
                                     </tr>

@@ -203,7 +203,9 @@ flash:
     domain_name_added: Domain Name was added.
     domain_name_changed: Domain Name was changed.
     domain_name_removed: Domain Name was removed.
+    domain_name_assignment_removed: Domain Name assignment was removed. Ownership was handed back to the space owner.
     domain_name_marked_as_primary: Domain Name was marked as primary.
+    domain_name_cannot_remove_primary: Domain Name is marked as primary and cannot be removed. Assign a different domain as primary first.
     domain_name_space_owned: Domain Name "{name}" is assigned to a Webhosting Space and cannot be removed or assigned to another owner.
     domain_name_not_space_owned: Domain Name "{name}" is not assigned to a webhosting space.
 
@@ -424,3 +426,11 @@ webhosting:
             message: |
                 The current primary name is <b>{ current_name }</b>. <br>
                 Subdomains and mailboxes will be not changed, this only effects the 'default' selected name, and the label that is used to identify the space.
+        remove:
+            heading: Remove domain name { name } (assignment)
+            confirm_warning: |
+                Do you want to remove the domain name <b>"{ domain_name }"</b> from space { primary_name }?<br>
+                <b>This will not remove the domain name DNS registration.</b>
+                Ownership will be transfered back to the owner of this space.
+
+                Type-in the full name "{ domain_name }" to confirm removal.

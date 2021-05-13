@@ -32,6 +32,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Throwable;
 
 final class MessageFormType extends AbstractType
 {
@@ -142,11 +143,14 @@ final class MessageFormType extends AbstractType
             foreach ($e->getViolations() as $violation) {
                 $this->violationMapper->mapViolation($violation, $form);
             }
-        } catch (HandlerFailedException $e) {
-            $e = \current($e->getNestedExceptions());
+        } catch (Throwable $e) {
+            // It's still possible to exception was thrown at a middleware.
+            if ($e instanceof HandlerFailedException) {
+                $e = \current($e->getNestedExceptions());
 
-            if ($e === false) {
-                return;
+                if ($e === false) {
+                    return;
+                }
             }
 
             $exceptionName = \get_class($e);
