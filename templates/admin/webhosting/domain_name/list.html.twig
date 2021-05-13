@@ -85,9 +85,12 @@
                                             </time>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            {% if not domain_name.isPrimary() %}
-                                                <a href="{#{{ path('park_manager.admin.webhosting.domain_name.make_primary', {'domainName': domain_name.id }) }}#}" class="text-indigo-600 hover:text-indigo-900">{{ 'label.make_primary'|trans }}</a>
+                                            {% if domain_name.isPrimary() %}
+                                                <span class="text-gray-500 text-xs">
+                                                    {{ 'label.cannot_remove_primary'|trans }}
+                                                </span>
                                             {% else %}
+                                                <a href="{{ path('park_manager.admin.webhosting.space.domain_name.make_primary', { 'space': space.id, 'domainName': domain_name.id }) }}" class="text-indigo-600 hover:text-indigo-900">{{ 'label.make_primary'|trans }}</a>
                                                 <a href="{#{{ path('park_manager.admin.webhosting.domain_name.remove', {'domainName': domain_name.id }) }}#}" class="text-indigo-600 hover:text-indigo-900">{{ 'label.remove'|trans }}</a>
                                             {% endif %}
                                         </td>

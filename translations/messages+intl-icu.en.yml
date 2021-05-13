@@ -88,6 +88,8 @@ label:
     danger_zone: Danger Zone
     placeholder_custom: -- Custom --
 
+    cannot_remove_primary: Cannot remove primary
+
     # Webhosting
     monthly_traffic: Monthly traffic
     storage_size: Storage size
@@ -201,7 +203,9 @@ flash:
     domain_name_added: Domain Name was added.
     domain_name_changed: Domain Name was changed.
     domain_name_removed: Domain Name was removed.
+    domain_name_marked_as_primary: Domain Name was marked as primary.
     domain_name_space_owned: Domain Name "{name}" is assigned to a Webhosting Space and cannot be removed or assigned to another owner.
+    domain_name_not_space_owned: Domain Name "{name}" is not assigned to a webhosting space.
 
     webhosting_plan:
         added: Webhosting Plan was added.
@@ -414,4 +418,9 @@ webhosting:
             heading: Assigned Domain Names of { primary_name }
         add:
             heading: Add domain name to { primary_name }
-
+        make_primary:
+            title: Change primary domain name of { primary_name }
+            heading: Make { domain_name } the primary domain name
+            message: |
+                The current primary name is <b>{ current_name }</b>. <br>
+                Subdomains and mailboxes will be not changed, this only effects the 'default' selected name, and the label that is used to identify the space.
