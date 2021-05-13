@@ -412,4 +412,6 @@ webhosting:
     domain_name:
         list:
             heading: Assigned Domain Names of { primary_name }
+        add:
+            heading: Add domain name to { primary_name }
 

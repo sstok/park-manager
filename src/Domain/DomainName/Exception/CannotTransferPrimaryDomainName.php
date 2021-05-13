@@ -39,7 +39,7 @@ final class CannotTransferPrimaryDomainName extends DomainException implements T
 
     public function getTranslatorId(): string
     {
-        return 'cannot_transfer_space_primary_domain_name';
+        return 'domain_name.cannot_transfer_space_primary_domain_name';
     }
 
     public function getTranslationArgs(): array
