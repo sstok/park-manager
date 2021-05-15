@@ -30,8 +30,7 @@ If your problem definitely looks like a bug, report it using the official bug
   (providing a unit test that illustrates the bug is best);
 
 * Give as much detail as possible about your environment (OS, Docker version,
-  PHP version, Symfony version, Park-Manager version, enabled extensions,
-  used modules, ...);
+  PHP version, Symfony version, Park-Manager version, ...);
 
 * If you want to provide a stack trace you got on an HTML page, be sure to
   provide the plain text version, which should appear at the bottom of the

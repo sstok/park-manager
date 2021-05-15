@@ -139,10 +139,11 @@ Routing Naming Conventions
 * A route name contains groups, separated by dots;
 
 * All Park-Manager routes use ``park_manager`` as first group,
-  the module name (except for core) as second group,
-  and optionally the section as third;
+  the ui-section name (like webhosting) as second group;
 
-* The last group always revers to the action (either ``ftp_user_list``
+* Use ``admin`` as the second part if Administrator related;
+
+* The last group always refers to the action (either ``ftp_user_list``
   or ``ftp_user_register``);
 
 * Use lowercase letters for names;
@@ -153,7 +154,7 @@ Routing Naming Conventions
 
 * ``park_manager.security_login``
 * ``park_manager.security_confirm_password_reset``
-* ``park_manager.webhosting.client.account_list``
-* ``park_manager.webhosting.client.ftp_user_list``
+* ``park_manager.admin.webhosting.create_space``
+* ``park_manager.webhosting.ftp_user_list``
 
 .. _`Yoda conditions`: https://en.wikipedia.org/wiki/Yoda_conditions
