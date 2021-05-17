@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Security;
 
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\Exception\MalformedEmailAddress;
 use ParkManager\Domain\Exception\NotFoundException;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
@@ -19,7 +20,7 @@ use ParkManager\Infrastructure\Security\UserProvider;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -43,17 +44,33 @@ final class UserProviderTest extends TestCase
     }
 
     /** @test */
-    public function it_throws_fails_when_no_result_was_found(): void
+    public function it_fails_when_no_result_was_found(): void
     {
         $provider = new UserProvider(new UserRepositoryMock());
 
         try {
-            $provider->loadUserByUsername('foobar@example.com');
+            $provider->loadUserByIdentifier('foobar@example.com');
 
             self::fail('Expected exception');
-        } catch (UsernameNotFoundException $e) {
-            self::assertEquals('foobar@example.com', $e->getUsername());
+        } catch (UserNotFoundException $e) {
+            self::assertEquals('foobar@example.com', $e->getUserIdentifier());
             self::assertInstanceOf(NotFoundException::class, $e->getPrevious());
+            self::assertEquals(0, $e->getCode());
+        }
+    }
+
+    /** @test */
+    public function it_fails_when_email_address_is_invalid(): void
+    {
+        $provider = new UserProvider(new UserRepositoryMock());
+
+        try {
+            $provider->loadUserByIdentifier('foobar@');
+
+            self::fail('Expected exception');
+        } catch (UserNotFoundException $e) {
+            self::assertEquals('foobar@', $e->getUserIdentifier());
+            self::assertInstanceOf(MalformedEmailAddress::class, $e->getPrevious());
             self::assertEquals(0, $e->getCode());
         }
     }
@@ -67,8 +84,8 @@ final class UserProviderTest extends TestCase
             $provider->refreshUser(new SecurityUser(self::USER_ID1, 'nope', true, ['ROLE_USER']));
 
             self::fail('Expected exception');
-        } catch (UsernameNotFoundException $e) {
-            self::assertEquals(self::USER_ID1, $e->getUsername());
+        } catch (UserNotFoundException $e) {
+            self::assertEquals(self::USER_ID1, $e->getUserIdentifier());
             self::assertInstanceOf(NotFoundException::class, $e->getPrevious());
             self::assertEquals(0, $e->getCode());
         }
@@ -90,9 +107,9 @@ final class UserProviderTest extends TestCase
     {
         $provider = new UserProvider($this->createUserRepositoryStub());
 
-        self::assertEquals(new SecurityUser(self::USER_ID1, 'maybe', true, ['ROLE_USER']), $provider->loadUserByUsername('foobar@example.com'));
-        self::assertEquals(new SecurityUser(self::USER_ID2, 'maybe', true, ['ROLE_USER']), $provider->loadUserByUsername('bar@example.com'));
-        self::assertEquals(new SecurityUser(self::ADMIN_ID1, 'nope3', true, ['ROLE_USER', 'ROLE_ADMIN']), $provider->loadUserByUsername('moo@example.com'));
+        self::assertEquals(new SecurityUser(self::USER_ID1, 'maybe', true, ['ROLE_USER']), $provider->loadUserByIdentifier('foobar@example.com'));
+        self::assertEquals(new SecurityUser(self::USER_ID2, 'maybe', true, ['ROLE_USER']), $provider->loadUserByIdentifier('bar@example.com'));
+        self::assertEquals(new SecurityUser(self::ADMIN_ID1, 'nope3', true, ['ROLE_USER', 'ROLE_ADMIN']), $provider->loadUserByIdentifier('moo@example.com'));
     }
 
     private function createUserRepositoryStub(): UserRepositoryMock
@@ -109,7 +126,7 @@ final class UserProviderTest extends TestCase
     public function it_refreshes_a_security_user(): void
     {
         $provider = new UserProvider($userRepo = $this->createUserRepositoryStub());
-        $securityUser = $provider->loadUserByUsername('foobar@example.com');
+        $securityUser = $provider->loadUserByIdentifier('foobar@example.com');
 
         $user = $userRepo->get(UserId::fromString(self::USER_ID1));
         $user->changePassword('new-password-is-here');

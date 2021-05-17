@@ -12,15 +12,16 @@ namespace ParkManager\Infrastructure\Security;
 
 use Serializable;
 use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * The SecurityUser wraps around a User-model and keeps only
  * the information related to authentication.
  */
-final class SecurityUser implements UserInterface, EquatableInterface, Serializable
+final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface, Serializable
 {
-    private string $username;
+    private string $id;
     private string $password;
     private array $roles;
     private bool $enabled;
@@ -32,7 +33,7 @@ final class SecurityUser implements UserInterface, EquatableInterface, Serializa
     {
         \sort($roles, \SORT_STRING);
 
-        $this->username = $id;
+        $this->id = $id;
         $this->password = $password;
         $this->enabled = $enabled;
         $this->roles = $roles;
@@ -41,7 +42,7 @@ final class SecurityUser implements UserInterface, EquatableInterface, Serializa
     public function serialize(): string
     {
         return \serialize([
-            'username' => $this->getUsername(),
+            'id' => $this->getUserIdentifier(),
             'password' => $this->getPassword(),
             'enabled' => $this->isEnabled(),
             'roles' => $this->getRoles(),
@@ -52,7 +53,7 @@ final class SecurityUser implements UserInterface, EquatableInterface, Serializa
     {
         $info = \unserialize($data, ['allowed_classes' => false]);
 
-        $this->username = $info['username'];
+        $this->id = $info['id'];
         $this->password = $info['password'];
         $this->enabled = $info['enabled'];
         $this->roles = $info['roles'];
@@ -63,7 +64,7 @@ final class SecurityUser implements UserInterface, EquatableInterface, Serializa
         return $this->roles;
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -75,12 +76,17 @@ final class SecurityUser implements UserInterface, EquatableInterface, Serializa
 
     public function getUsername(): string
     {
-        return $this->username;
+        return $this->id;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->id;
     }
 
     public function getId(): string
     {
-        return $this->username;
+        return $this->id;
     }
 
     public function isEnabled(): bool
@@ -103,7 +109,7 @@ final class SecurityUser implements UserInterface, EquatableInterface, Serializa
         }
 
         // Should never mismatch, this is a safety precaution against a broken user-provider.
-        if ($user->getUsername() !== $this->getUsername()) {
+        if ($user->getUserIdentifier() !== $this->getUserIdentifier()) {
             return false;
         }
 

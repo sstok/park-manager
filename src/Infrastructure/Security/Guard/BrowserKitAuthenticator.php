@@ -15,8 +15,8 @@ use ParkManager\Infrastructure\Security\UserProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -28,11 +28,11 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
  */
 final class BrowserKitAuthenticator extends AbstractGuardAuthenticator
 {
-    private UserPasswordEncoderInterface $passwordEncoder;
+    private UserPasswordHasherInterface $userPasswordHasher;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher)
     {
-        $this->passwordEncoder = $passwordEncoder;
+        $this->userPasswordHasher = $userPasswordHasher;
     }
 
     public function getCredentials(Request $request): array
@@ -44,19 +44,18 @@ final class BrowserKitAuthenticator extends AbstractGuardAuthenticator
         ];
     }
 
-    /**
-     * @param array        $credentials
-     * @param UserProvider $userProvider
-     */
     public function getUser($credentials, UserProviderInterface $userProvider): ?SecurityUser
     {
+        \assert(\is_array($credentials));
+        \assert($userProvider instanceof UserProvider);
+
         $email = $credentials['username'];
 
         if ($email === null) {
             return null;
         }
 
-        return $userProvider->loadUserByUsername($email);
+        return $userProvider->loadUserByIdentifier($email);
     }
 
     /**
@@ -65,13 +64,16 @@ final class BrowserKitAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
+        \assert(\is_array($credentials));
+        \assert($user instanceof SecurityUser);
+
         if (! $user->isEnabled()) {
             throw new AuthenticationException();
         }
 
-        if (! $this->passwordEncoder->isPasswordValid($user, $credentials['password'])
+        if (! $this->userPasswordHasher->isPasswordValid($user, $credentials['password'])
             && ($credentials['password_new'] !== null
-             && ! $this->passwordEncoder->isPasswordValid($user, $credentials['password_new']))
+             && ! $this->userPasswordHasher->isPasswordValid($user, $credentials['password_new']))
         ) {
             throw new BadCredentialsException();
         }

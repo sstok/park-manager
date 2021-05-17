@@ -15,8 +15,8 @@ use ParkManager\UI\Web\Form\Type\Security\SecurityUserHashedPasswordType;
 use RuntimeException;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 use Symfony\Component\Form\Test\TypeTestCase;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 /**
  * @internal
@@ -25,28 +25,28 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
 {
     use ValidatorExtensionTrait;
 
-    private object $encoderFactory;
+    private object $hasherFactory;
 
     protected function setUp(): void
     {
-        $encoder = new class() implements PasswordEncoderInterface {
-            public function encodePassword($raw, $salt): string
+        $passwordHasher = new class() implements PasswordHasherInterface {
+            public function hash(string $plainPassword): string
             {
-                return 'encoded(' . $raw . ')';
+                return 'encoded(' . $plainPassword . ')';
             }
 
-            public function isPasswordValid($encoded, $raw, $salt): bool
+            public function verify(string $hashedPassword, string $plainPassword): bool
             {
                 return false;
             }
 
-            public function needsRehash(string $encoded): bool
+            public function needsRehash(string $hashedPassword): bool
             {
                 return false;
             }
         };
 
-        $this->encoderFactory = new class($encoder) implements EncoderFactoryInterface {
+        $this->hasherFactory = new class($passwordHasher) implements PasswordHasherFactoryInterface {
             private $encoder;
 
             public function __construct($encoder)
@@ -54,7 +54,7 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
                 $this->encoder = $encoder;
             }
 
-            public function getEncoder($user): PasswordEncoderInterface
+            public function getPasswordHasher($user): PasswordHasherInterface
             {
                 if ($user !== SecurityUser::class) {
                     throw new RuntimeException('Nope, that is not the right user.');
@@ -70,7 +70,7 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
     protected function getTypes(): array
     {
         return [
-            new SecurityUserHashedPasswordType($this->encoderFactory),
+            new SecurityUserHashedPasswordType($this->hasherFactory),
         ];
     }
 

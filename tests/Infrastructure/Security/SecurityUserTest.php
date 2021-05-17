@@ -31,6 +31,7 @@ final class SecurityUserTest extends TestCase
 
         self::assertSame(self::ID1, $securityUser->getUsername());
         self::assertSame(self::ID2, $securityUser2->getUsername());
+        self::assertSame(self::ID2, $securityUser2->getUserIdentifier());
         self::assertSame(self::ID1, $securityUser->getId());
         self::assertSame(self::ID2, $securityUser2->getId());
     }
@@ -113,11 +114,34 @@ final class SecurityUserTest extends TestCase
 
     private function createSecurityUserSecond(string $username): UserInterface
     {
-        $user = $this->createMock(UserInterface::class);
-        $user->method('getUsername')->willReturn($username);
-        $user->method('getPassword')->willReturn(self::PASSWORD);
-        $user->method('getRoles')->willReturn(['ROLE_USER']);
+        return new class($username, self::PASSWORD, ['ROLE_USER']) implements UserInterface {
+            public function __construct(private string $identifier, private string $password, private array $roles)
+            {
+            }
 
-        return $user;
+            public function getRoles()
+            {
+                return $this->roles;
+            }
+
+            public function getPassword(): ?string
+            {
+                return $this->password;
+            }
+
+            public function getSalt(): ?string
+            {
+                return null;
+            }
+
+            public function eraseCredentials(): void
+            {
+            }
+
+            public function getUserIdentifier(): string
+            {
+                return $this->identifier;
+            }
+        };
     }
 }

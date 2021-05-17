@@ -13,7 +13,7 @@ namespace ParkManager\Tests\UI\Web\Form\Type;
 use Closure;
 use ParkManager\Tests\Form\TransformationFailureExtension;
 use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
-use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHashFactory;
+use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHasherFactory;
 use ParkManager\UI\Web\Form\Type\Security\ChangePasswordType;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 
@@ -24,7 +24,7 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
 {
     use ValidatorExtensionTrait;
 
-    private FakePasswordHashFactory $encoderFactory;
+    private FakePasswordHasherFactory $hasherFactory;
 
     protected function getExtensions(): array
     {
@@ -48,7 +48,7 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
     protected function setUp(): void
     {
         $this->commandHandler = static function (ChangeUserPassword $command): void { };
-        $this->encoderFactory = new FakePasswordHashFactory();
+        $this->hasherFactory = new FakePasswordHasherFactory();
 
         parent::setUp();
     }
@@ -57,7 +57,7 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
     {
         return [
             $this->getMessageType(),
-            new ChangePasswordType($this->encoderFactory),
+            new ChangePasswordType($this->hasherFactory),
         ];
     }
 
@@ -121,7 +121,6 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
 class ChangeUserPassword
 {
     public string $id;
-
     public string $password;
 
     public function __construct(string $id, string $password)

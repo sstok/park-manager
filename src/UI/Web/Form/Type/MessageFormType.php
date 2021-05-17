@@ -162,7 +162,7 @@ final class MessageFormType extends AbstractType
                 $handlerOrPath = $exceptionMapping[$exceptionName];
 
                 if (\is_string($handlerOrPath)) {
-                    assert($e instanceof TranslatableException);
+                    \assert($e instanceof TranslatableException);
 
                     $errors = [$handlerOrPath => new FormError(
                         $this->translator->trans($e->getTranslatorId(), $e->getTranslationArgs(), 'validators'),

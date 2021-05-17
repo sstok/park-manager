@@ -12,43 +12,42 @@ namespace ParkManager\Tests\UI\Web\Form\Type\Mocks;
 
 use ParkManager\Infrastructure\Security\SecurityUser;
 use RuntimeException;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 /** @internal */
-final class FakePasswordHashFactory implements EncoderFactoryInterface
+final class FakePasswordHasherFactory implements PasswordHasherFactoryInterface
 {
-    private object $encoder;
-
+    private object $hasher;
     private string $userClass;
 
     public function __construct()
     {
         $this->userClass = SecurityUser::class;
-        $this->encoder = new class() implements PasswordEncoderInterface {
-            public function encodePassword($raw, $salt): string
+        $this->hasher = new class() implements PasswordHasherInterface {
+            public function hash($plainPassword): string
             {
-                return 'encoded(' . $raw . ')';
+                return 'encoded(' . $plainPassword . ')';
             }
 
-            public function isPasswordValid($encoded, $raw, $salt): bool
+            public function verify(string $hashedPassword, string $plainPassword): bool
             {
                 return false;
             }
 
-            public function needsRehash(string $encoded): bool
+            public function needsRehash(string $hashedPassword): bool
             {
                 return false;
             }
         };
     }
 
-    public function getEncoder($user): PasswordEncoderInterface
+    public function getPasswordHasher($user): PasswordHasherInterface
     {
         if ($user !== $this->userClass) {
             throw new RuntimeException('Nope, that is not the right user.');
         }
 
-        return $this->encoder;
+        return $this->hasher;
     }
 }

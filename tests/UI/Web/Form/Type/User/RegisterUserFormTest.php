@@ -15,7 +15,7 @@ use ParkManager\Application\Command\User\RegisterUser;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
-use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHashFactory;
+use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHasherFactory;
 use ParkManager\UI\Web\Form\Type\EmailTypeDomainValueExtension;
 use ParkManager\UI\Web\Form\Type\Security\SecurityUserHashedPasswordType;
 use ParkManager\UI\Web\Form\Type\User\RegisterUserForm;
@@ -34,7 +34,7 @@ final class RegisterUserFormTest extends MessageFormTestCase
     {
         return [
             $this->getMessageType(),
-            new SecurityUserHashedPasswordType(new FakePasswordHashFactory()),
+            new SecurityUserHashedPasswordType(new FakePasswordHasherFactory()),
         ];
     }
 

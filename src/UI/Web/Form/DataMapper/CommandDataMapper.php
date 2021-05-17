@@ -39,7 +39,7 @@ final class CommandDataMapper implements DataMapperInterface
         $this->dataAccessor = $dataAccessor;
     }
 
-    public function mapDataToForms($viewData, iterable $forms): void
+    public function mapDataToForms($viewData, \Traversable $forms): void
     {
         if (! \is_array($viewData) || ! \array_key_exists('model', $viewData) || ! \array_key_exists('fields', $viewData)) {
             throw new UnexpectedTypeException($viewData, 'array with keys "model" and "fields"');
@@ -48,7 +48,7 @@ final class CommandDataMapper implements DataMapperInterface
         $this->wrappedDataMapper->mapDataToForms($viewData['model'], $forms);
     }
 
-    public function mapFormsToData(iterable $forms, &$viewData): void
+    public function mapFormsToData(\Traversable $forms, &$viewData): void
     {
         if (! \is_array($viewData) || ! \array_key_exists('model', $viewData) || ! \array_key_exists('fields', $viewData)) {
             throw new UnexpectedTypeException($viewData, 'array with keys "model" and "fields"');

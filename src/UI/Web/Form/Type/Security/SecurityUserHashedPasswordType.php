@@ -14,16 +14,16 @@ use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface as EncoderFactory;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use function Sodium\memzero;
 
 final class SecurityUserHashedPasswordType extends AbstractType
 {
-    private EncoderFactory $encoderFactory;
+    private PasswordHasherFactoryInterface $hasherFactory;
 
-    public function __construct(EncoderFactory $encoderFactory)
+    public function __construct(PasswordHasherFactoryInterface $hasherFactory)
     {
-        $this->encoderFactory = $encoderFactory;
+        $this->hasherFactory = $hasherFactory;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -31,11 +31,11 @@ final class SecurityUserHashedPasswordType extends AbstractType
         $resolver
             ->setDefault('algorithm', function (Options $options) {
                 return function (string $value) {
-                    $encoded = $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword($value, null);
+                    $hashed = $this->hasherFactory->getPasswordHasher(SecurityUser::class)->hash($value);
 
                     memzero($value);
 
-                    return $encoded;
+                    return $hashed;
                 };
             });
     }

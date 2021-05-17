@@ -15,9 +15,9 @@ use ParkManager\Infrastructure\Security\UserProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as UrlGenerator;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface as UserPasswordEncoder;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\DisabledException;
@@ -35,15 +35,13 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
     use TargetPathTrait;
 
     private CsrfTokenManager $csrfTokenManager;
-
-    private UserPasswordEncoder $passwordEncoder;
-
+    private UserPasswordHasherInterface $userPasswordHasher;
     private UrlGenerator $urlGenerator;
 
-    public function __construct(CsrfTokenManager $csrfTokenManager, UserPasswordEncoder $passwordEncoder, UrlGenerator $urlGenerator)
+    public function __construct(CsrfTokenManager $csrfTokenManager, UserPasswordHasherInterface $userPasswordHasher, UrlGenerator $urlGenerator)
     {
         $this->csrfTokenManager = $csrfTokenManager;
-        $this->passwordEncoder = $passwordEncoder;
+        $this->userPasswordHasher = $userPasswordHasher;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -84,7 +82,7 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        return $userProvider->loadUserByUsername($email);
+        return $userProvider->loadUserByIdentifier($email);
     }
 
     /**
@@ -93,7 +91,7 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
-        if (! $this->passwordEncoder->isPasswordValid($user, $credentials['password'])) {
+        if (! $this->userPasswordHasher->isPasswordValid($user, $credentials['password'])) {
             throw new BadCredentialsException();
         }
 

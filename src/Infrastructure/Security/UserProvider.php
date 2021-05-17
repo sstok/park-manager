@@ -11,11 +11,12 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Security;
 
 use ParkManager\Domain\EmailAddress;
+use ParkManager\Domain\Exception\MalformedEmailAddress;
 use ParkManager\Domain\Exception\NotFoundException;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -28,13 +29,13 @@ final class UserProvider implements UserProviderInterface
         $this->repository = $userRepository;
     }
 
-    public function loadUserByUsername(string $username): SecurityUser
+    public function loadUserByIdentifier(string $identifier): SecurityUser
     {
         try {
-            $user = $this->repository->getByEmail(new EmailAddress($username));
-        } catch (NotFoundException $e) {
-            $e = new UsernameNotFoundException('', 0, $e);
-            $e->setUsername($username);
+            $user = $this->repository->getByEmail(new EmailAddress($identifier));
+        } catch (NotFoundException | MalformedEmailAddress $e) {
+            $e = new UserNotFoundException('', 0, $e);
+            $e->setUserIdentifier($identifier);
 
             throw $e;
         }
@@ -42,9 +43,6 @@ final class UserProvider implements UserProviderInterface
         return $user->toSecurityUser();
     }
 
-    /**
-     * @param SecurityUser $user
-     */
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (! $user instanceof SecurityUser) {
@@ -52,10 +50,10 @@ final class UserProvider implements UserProviderInterface
         }
 
         try {
-            $storedUser = $this->repository->get(UserId::fromString($user->getUsername()));
+            $storedUser = $this->repository->get(UserId::fromString($user->getUserIdentifier()));
         } catch (NotFoundException $e) {
-            $e = new UsernameNotFoundException('', 0, $e);
-            $e->setUsername($user->getUsername());
+            $e = new UserNotFoundException('', 0, $e);
+            $e->setUserIdentifier($user->getUserIdentifier());
 
             throw $e;
         }

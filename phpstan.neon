@@ -35,7 +35,6 @@ parameters:
         - '#Call to an undefined method Faker\\Generator\:\:#'
 
         - '#Property Doctrine\\ORM\\EntityRepository<mixed>\:\:\$_em \(Doctrine\\ORM\\EntityManager\) does not accept Doctrine\\ORM\\EntityManagerInterface#' # Doctrine PHPDoc bug
-        - '#Property Doctrine\\ORM\\EntityRepository<mixed>\:\:\$_class \(Doctrine\\ORM\\Mapping\\ClassMetadata\) does not accept Doctrine\\Persistence\\Mapping\\ClassMetadata#'
 
         # Unum
         -

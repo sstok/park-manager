@@ -18,17 +18,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface as EncoderFactory;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Validator\Constraint;
 use function Sodium\memzero;
 
 final class ChangePasswordType extends AbstractType
 {
-    private EncoderFactory $encoderFactory;
+    private PasswordHasherFactoryInterface $encoderFactory;
 
-    public function __construct(EncoderFactory $encoderFactory)
+    public function __construct(PasswordHasherFactoryInterface $hasherFactory)
     {
-        $this->encoderFactory = $encoderFactory;
+        $this->encoderFactory = $hasherFactory;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -49,11 +49,11 @@ final class ChangePasswordType extends AbstractType
                     'constraints' => $options['password_constraints'],
                 ],
                 'algorithm' => function (string $value) {
-                    $encoded = $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword($value, '');
+                    $hashed = $this->encoderFactory->getPasswordHasher(SecurityUser::class)->hash($value);
 
                     memzero($value);
 
-                    return $encoded;
+                    return $hashed;
                 },
             ]);
     }

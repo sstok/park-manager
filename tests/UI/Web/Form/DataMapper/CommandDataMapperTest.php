@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\DataMapper;
 
+use ArrayIterator;
 use ParkManager\UI\Web\Form\DataMapper\CommandDataMapper;
 use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectAccessor;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -34,7 +35,7 @@ final class CommandDataMapperTest extends FormIntegrationTestCase
 
         $this->expectExceptionObject(new UnexpectedTypeException($input, 'array with keys "model" and "fields"'));
 
-        $dataMapper->mapDataToForms($input, []);
+        $dataMapper->mapDataToForms($input, new ArrayIterator([]));
     }
 
     public function provide_invalid_input(): iterable
@@ -58,7 +59,7 @@ final class CommandDataMapperTest extends FormIntegrationTestCase
 
         $this->expectExceptionObject(new UnexpectedTypeException($input, 'array with keys "model" and "fields"'));
 
-        $dataMapper->mapFormsToData([], $input);
+        $dataMapper->mapFormsToData(new ArrayIterator([]), $input);
     }
 
     /**
@@ -70,16 +71,16 @@ final class CommandDataMapperTest extends FormIntegrationTestCase
         $data = ['id' => 1];
 
         $wrappedDataMapperProphecy = $this->prophesize(DataMapperInterface::class);
-        $wrappedDataMapperProphecy->mapDataToForms($data, [null, 2])->shouldBeCalled();
-        $wrappedDataMapperProphecy->mapFormsToData([null], $fields)->shouldNotBeCalled();
+        $wrappedDataMapperProphecy->mapDataToForms($data, new ArrayIterator([null, 2]))->shouldBeCalled();
+        $wrappedDataMapperProphecy->mapFormsToData(new ArrayIterator([null]), $fields)->shouldNotBeCalled();
 
         $form = $this->factory->createBuilder()->getForm();
 
         $dataMapper = new CommandDataMapper($wrappedDataMapperProphecy->reveal(), new PropertyPathObjectAccessor());
 
-        $dataMapper->mapDataToForms(['model' => $data, 'fields' => $fields], [null, 2]);
+        $dataMapper->mapDataToForms(['model' => $data, 'fields' => $fields], new ArrayIterator([null, 2]));
 
         $viewData = ['model' => $data, 'fields' => $fields];
-        $dataMapper->mapFormsToData([$form], $viewData);
+        $dataMapper->mapFormsToData(new ArrayIterator([$form]), $viewData);
     }
 }

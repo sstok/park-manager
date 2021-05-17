@@ -162,6 +162,24 @@ final class EmailAddressTest extends TestCase
     }
 
     /** @test */
+    public function it_validates_basic_formatting_empty_domain(): void
+    {
+        $this->expectExceptionObject(MalformedEmailAddress::idnError('info@', \IDNA_ERROR_EMPTY_LABEL));
+        $this->expectExceptionCode(2);
+
+        new EmailAddress('info@');
+    }
+
+    /** @test */
+    public function it_validates_basic_formatting_empty_domain_with_space(): void
+    {
+        $this->expectExceptionObject(MalformedEmailAddress::idnError('info@  ', \IDNA_ERROR_EMPTY_LABEL));
+        $this->expectExceptionCode(2);
+
+        new EmailAddress('info@  ');
+    }
+
+    /** @test */
     public function it_validates_advanced_formatting(): void
     {
         $this->expectException(RfcComplianceException::class);

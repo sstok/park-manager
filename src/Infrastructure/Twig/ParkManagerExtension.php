@@ -173,7 +173,7 @@ final class ParkManagerExtension extends AbstractExtension
 
         if ($currentToken !== $token) {
             $currentToken = $token;
-            $currentUser = $this->userRepository->get(UserId::fromString($token->getUsername()));
+            $currentUser = $this->userRepository->get(UserId::fromString($token->getUserIdentifier()));
         }
 
         return $currentUser;

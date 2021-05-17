@@ -3,7 +3,11 @@ import { definitionsFromContext } from "stimulus/webpack-helpers";
 import '@symfony/autoimport';
 
 // Registers Stimulus controllers from controllers.json and in the controllers/ directory
-export const app = startStimulusApp(require.context('./controllers', true, /\.(j|t)sx?$/));
+export const app = startStimulusApp(require.context(
+    '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
+    true,
+    /\.(j|t)sx?$/
+));
 
 // Import and register all TailwindCSS Components
 import { Dropdown, Modal, Tabs, Popover, Toggle, Slideover } from "tailwindcss-stimulus-components";

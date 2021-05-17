@@ -13,7 +13,7 @@ namespace ParkManager\Tests\UI\Web\Form\Type;
 use Closure;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
-use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHashFactory;
+use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHasherFactory;
 use ParkManager\UI\Web\Form\Type\Security\ConfirmPasswordResetType;
 use ParkManager\UI\Web\Form\Type\Security\SecurityUserHashedPasswordType;
 use ParkManager\UI\Web\Form\Type\Security\SplitTokenType;
@@ -35,7 +35,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     use ProphecyTrait;
 
     private FakeSplitTokenFactory $splitTokenFactory;
-    private FakePasswordHashFactory $encoderFactory;
+    private FakePasswordHasherFactory $hasherFactory;
     private UrlGeneratorInterface $urlGenerator;
 
     protected static function getCommandName(): string
@@ -47,7 +47,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     {
         $this->commandHandler = static function (ConfirmUserPasswordReset $command): void { };
         $this->splitTokenFactory = new FakeSplitTokenFactory();
-        $this->encoderFactory = new FakePasswordHashFactory();
+        $this->hasherFactory = new FakePasswordHasherFactory();
 
         $urlGeneratorProphecy = $this->prophesize(UrlGeneratorInterface::class);
         $urlGeneratorProphecy->generate('park_manager.security_request_password_reset')->willReturn('/password-reset/request');
@@ -61,7 +61,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         return [
             $this->getMessageType(),
             new SplitTokenType($this->splitTokenFactory),
-            new SecurityUserHashedPasswordType($this->encoderFactory),
+            new SecurityUserHashedPasswordType($this->hasherFactory),
             new ConfirmPasswordResetType($this->urlGenerator),
         ];
     }

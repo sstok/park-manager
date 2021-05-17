@@ -131,6 +131,11 @@ final class EmailAddress implements \Stringable
         $local = $this->extractLabel($local, $label);
 
         $domain = \mb_substr($address, $atPos + 1);
+
+        if (\trim($domain) === '') {
+            throw MalformedEmailAddress::idnError($address, \IDNA_ERROR_EMPTY_LABEL);
+        }
+
         $domain = (string) \idn_to_utf8($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, $idnaInfo);
 
         if ($idnaInfo['errors'] !== 0) {

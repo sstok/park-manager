@@ -1,4 +1,6 @@
 security:
+    enable_authenticator_manager: true
+
     encoders:
         'ParkManager\Infrastructure\Security\SecurityUser':
             algorithm: auto
@@ -15,32 +17,30 @@ security:
         api:
             pattern: '^/api/'
             provider: api
-            anonymous: false
             stateless: true
 
             http_basic: ~ # XXX Needs a custom guard and user for split-token with hex-encoded
 
-        client:
+        main:
             pattern: '^/'
-            context: app
             provider: app
-            anonymous: true
 
             logout:
                 csrf_parameter:       _csrf_token
                 csrf_token_generator: security.csrf.token_manager
-                csrf_token_id:        logout_client
+                csrf_token_id:        logout_main
                 path:                 '/logout'
                 target:               '/'
+
             guard:
                 authenticators:
                     - park_manager.security.guard.form
 
             remember_me:
                 secret:               '%env(APP_SECRET)%'
-                token_provider:       ~
+                token_provider:       { doctrine: true }
                 catch_exceptions:     true
-                name:                 CLIENT_REMEMBERME
+                name:                 REMEMBERME
                 lifetime:             604800 # one week
                 path:                 /
                 secure:               true
@@ -56,6 +56,6 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: '^/admin/', requires_channel: https, role: ROLE_ADMIN }
-        - { path: '^/login$', requires_channel: https, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: '^/password-reset', requires_channel: https, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/login$', requires_channel: https, role: PUBLIC_ACCESS }
+        - { path: '^/password-reset', requires_channel: https, role: PUBLIC_ACCESS }
         - { path: '^/', requires_channel: https, role: ROLE_USER }

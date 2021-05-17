@@ -83,8 +83,8 @@ final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
     /** @test */
     public function it_ignores_when_user_is_not_a_security_user(): void
     {
-        $user = $this->createMock(UserInterface::class);
-        $user->method('getUsername')->willReturn(self::ID1);
+        $user = $this->createMock(NewUser::class);
+        $user->method('getUserIdentifier')->willReturn(self::ID1);
         $userProvider = $this->createUserProviderWithRefresh();
         $tokenStorage = $this->createProvidingOnlyTokenStorage($token = new PostAuthenticationGuardToken($user, 'main', ['ROLE_USER']));
 
@@ -140,7 +140,7 @@ final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
     public function it_checks_the_correct_user_provider_was_used(): void
     {
         $currentUser = $this->createUser1('pass-north');
-        $userProvider = $this->createUserProviderExpectsCurrentUser($currentUser, $this->createMock(UserInterface::class));
+        $userProvider = $this->createUserProviderExpectsCurrentUser($currentUser, $this->createMock(NewUser::class));
         $tokenStorage = $this->createProvidingOnlyTokenStorage($token = new PostAuthenticationGuardToken($currentUser, 'main', ['ROLE_USER']));
 
         $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
@@ -173,4 +173,12 @@ final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
 
         return $tokenStorageProphecy->reveal();
     }
+}
+
+/**
+ * @internal
+ */
+interface NewUser extends UserInterface
+{
+    public function getUserIdentifier(): string;
 }
