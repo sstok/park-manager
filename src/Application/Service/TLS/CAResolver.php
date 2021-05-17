@@ -91,7 +91,7 @@ class CAResolver
                 continue;
             }
 
-            $data = $this->getX509Data($contents, (string) $index);
+            $data = $this->getX509Data($contents, $index);
             $this->validateCA($data);
 
             if (! $this->isSignatureValid($certificate, $data['_pubKey'])) {

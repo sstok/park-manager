@@ -30,7 +30,7 @@ final class RegisterUserAction
      *     name="park_manager.admin.register_user"
      * )
      */
-    public function __invoke(Request $request, FormFactoryInterface $formFactory)
+    public function __invoke(Request $request, FormFactoryInterface $formFactory): TwigResponse | RouteRedirectResponse
     {
         $userId = UserId::create();
 

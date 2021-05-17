@@ -19,6 +19,8 @@ final class ArrayCollectionType extends JsonType
 {
     /**
      * @param Collection|null $value
+     *
+     * @throws \JsonException
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
@@ -29,6 +31,9 @@ final class ArrayCollectionType extends JsonType
         return \json_encode($value->toArray(), \JSON_THROW_ON_ERROR, 512);
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function convertToPHPValue($value, AbstractPlatform $platform): ArrayCollection
     {
         if ($value === null || $value === '') {

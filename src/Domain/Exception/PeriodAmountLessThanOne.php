@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Exception;
 
-final class PeriodAmountLessThanOne extends InvalidArgumentException
+final class PeriodAmountLessThanOne extends InvalidArgument
 {
     public string $unit;
 

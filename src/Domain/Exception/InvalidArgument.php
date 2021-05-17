@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Exception;
 
-use InvalidArgumentException as BaseInvalidArgumentException;
+use InvalidArgumentException;
 
-class InvalidArgumentException extends BaseInvalidArgumentException implements TranslatableException
+class InvalidArgument extends InvalidArgumentException implements TranslatableException
 {
     public function getTranslatorId(): string
     {

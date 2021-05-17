@@ -39,7 +39,7 @@ class TwigResponse extends Response
     /**
      * @param array|Form $variables A Form object is passed as [form => createView()]
      */
-    public function setTemplateVariables($variables): void
+    public function setTemplateVariables(array | Form $variables): void
     {
         if (! \is_array($variables)) {
             if (! $variables instanceof Form) {

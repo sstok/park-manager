@@ -54,7 +54,7 @@ final class MailboxOrmRepository extends EntityRepository implements MailboxRepo
                 ->setParameter('domain_name', $domainNamePair->name)
                 ->setParameter('domain_tld', $domainNamePair->tld)
                 ->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             throw MailboxNotFound::withName($address . '@' . $domainNamePair->toString());
         }
     }

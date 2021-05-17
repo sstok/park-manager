@@ -48,7 +48,7 @@ final class X509DataExtractor
 
         try {
             $fingerprint = \openssl_x509_fingerprint($x509Read, $rawData['signatureTypeSN']) ?: '';
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             $fingerprint = '';
         }
 
@@ -61,8 +61,7 @@ final class X509DataExtractor
 
             $pubKey = \openssl_pkey_get_details($pubKeyRead);
 
-            \openssl_pkey_free($pubKeyRead);
-            \openssl_x509_free($x509Read);
+            unset($pubKeyRead, $x509Read);
         } else {
             $pubKey = null;
         }
@@ -119,7 +118,6 @@ final class X509DataExtractor
     public function getPrivateKeyDetails(HiddenString $privateKey): array
     {
         $key = $privateKey->getString();
-        $r = null;
 
         try {
             $r = \openssl_pkey_get_private($key);
@@ -137,10 +135,7 @@ final class X509DataExtractor
                 throw new \RuntimeException('Unable to read private key-data. Unknown error.');
             }
         } finally {
-            if (\is_resource($r)) {
-                @\openssl_pkey_free($r);
-            }
-
+            unset($r);
             \sodium_memzero($key);
         }
         // @codeCoverageIgnoreEnd

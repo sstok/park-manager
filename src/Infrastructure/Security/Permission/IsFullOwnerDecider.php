@@ -13,7 +13,6 @@ namespace ParkManager\Infrastructure\Security\Permission;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\Organization\OrganizationMember;
 use ParkManager\Domain\Organization\OrganizationRepository;
-use ParkManager\Domain\OwnerRepository;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
 use ParkManager\Infrastructure\Security\Permission;
@@ -24,13 +23,11 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 final class IsFullOwnerDecider implements PermissionDecider
 {
-    private OwnerRepository $ownerRepository;
     private OrganizationRepository $organizationRepository;
     private UserRepository $userRepository;
 
-    public function __construct(OwnerRepository $ownerRepository, OrganizationRepository $organizationRepository, UserRepository $userRepository)
+    public function __construct(OrganizationRepository $organizationRepository, UserRepository $userRepository)
     {
-        $this->ownerRepository = $ownerRepository;
         $this->organizationRepository = $organizationRepository;
         $this->userRepository = $userRepository;
     }

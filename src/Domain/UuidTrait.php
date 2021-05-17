@@ -49,10 +49,7 @@ trait UuidTrait
         return $this->stringValue;
     }
 
-    /**
-     * @param mixed|static $identity
-     */
-    public function equals($identity): bool
+    public function equals(mixed $identity): bool
     {
         if (! $identity instanceof self) {
             return false;
@@ -66,11 +63,8 @@ trait UuidTrait
      *
      * NOTE: This will only return true if both identities
      * are of "this" instance type. Or both are null.
-     *
-     * @param object|static|null $identity1
-     * @param object|static|null $identity2
      */
-    public static function equalsValue($identity1, $identity2): bool
+    public static function equalsValue(mixed $identity1, mixed $identity2): bool
     {
         if ($identity1 === null && $identity2 === null) {
             return true;
@@ -90,7 +84,7 @@ trait UuidTrait
      * @param object|null        $entity   Entity object to extract the property from or null
      * @param string             $property The property-name of $entity to get the identity VO
      */
-    public static function equalsValueOfEntity($identity, $entity, string $property): bool
+    public static function equalsValueOfEntity(mixed $identity, ?object $entity, string $property): bool
     {
         if ($entity === null && $identity === null) {
             return true;

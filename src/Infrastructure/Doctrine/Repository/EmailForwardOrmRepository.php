@@ -54,7 +54,7 @@ final class EmailForwardOrmRepository extends EntityRepository implements Forwar
                 ->setParameter('domain_name', $domainNamePair->name)
                 ->setParameter('domain_tld', $domainNamePair->tld)
                 ->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             throw EmailForwardNotFound::withName($address . '@' . $domainNamePair->toString());
         }
     }

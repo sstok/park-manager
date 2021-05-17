@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Webhosting\Plan;
 
+use Locale;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
 use ParkManager\UI\Web\Form\Type\EntityType;
@@ -30,8 +31,8 @@ final class WebhostingPlanSelector extends AbstractType
         $resolver->setDefaults([
             'label' => 'label.plan',
             'resultset' => $this->planRepository->all(),
-            'choice_label' => static fn (Plan $plan): string => $plan->getLabel(\Locale::getDefault()),
-            'choice_vary' => [\get_class($this->planRepository), \Locale::getDefault()],
+            'choice_label' => static fn (Plan $plan): string => $plan->getLabel(Locale::getDefault()),
+            'choice_vary' => [\get_class($this->planRepository), Locale::getDefault()],
         ]);
     }
 

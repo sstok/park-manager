@@ -17,7 +17,7 @@ use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSp
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 
 /**
- * @implements OwnerControlledRepository<Space>
+ * @extends OwnerControlledRepository<Space>
  */
 interface WebhostingSpaceRepository extends OwnerControlledRepository
 {

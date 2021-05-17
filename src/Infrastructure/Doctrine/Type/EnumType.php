@@ -29,7 +29,7 @@ abstract class EnumType extends Type
         return true;
     }
 
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         if (static::ENUM_TYPE === 'string') {
             return $platform->getVarcharTypeDeclarationSQL($column);

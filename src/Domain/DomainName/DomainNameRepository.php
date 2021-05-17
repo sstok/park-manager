@@ -19,7 +19,7 @@ use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 /**
- * @implements OwnerControlledRepository<DomainName>
+ * @extends OwnerControlledRepository<DomainName>
  */
 interface DomainNameRepository extends OwnerControlledRepository
 {

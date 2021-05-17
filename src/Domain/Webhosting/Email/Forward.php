@@ -69,10 +69,7 @@ class Forward
 
     public function setAddress(string $address, ?DomainName $domainName = null): void
     {
-        if ($domainName === null) {
-            $domainName = $this->domainName;
-        }
-
+        $domainName ??= $this->domainName;
         $emailAddress = new EmailAddress($address . '@' . $domainName->namePair->toString());
         $emailAddress->validate();
 

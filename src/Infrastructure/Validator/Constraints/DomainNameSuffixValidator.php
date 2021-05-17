@@ -93,8 +93,6 @@ final class DomainNameSuffixValidator extends ConstraintValidator
                 ->setCode(DomainNameSuffix::ICANN_UNKNOWN)
                 ->setInvalidValue($value)
                 ->addViolation();
-
-            return;
         }
     }
 }

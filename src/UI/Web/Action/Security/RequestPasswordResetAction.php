@@ -30,7 +30,7 @@ final class RequestPasswordResetAction
      */
     public function __invoke(Request $request, FormFactoryInterface $formFactory): object
     {
-        $form = $formFactory->create(RequestPasswordResetType::class, null);
+        $form = $formFactory->create(RequestPasswordResetType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

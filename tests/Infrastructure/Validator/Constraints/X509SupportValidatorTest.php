@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Validator\Constraints;
 
-use ParkManager\Domain\Exception\InvalidArgumentException;
+use ParkManager\Domain\Exception\InvalidArgument;
 use ParkManager\Infrastructure\Validator\Constraints\X509CertificateBundle;
 use ParkManager\Infrastructure\Validator\Constraints\X509Support;
 use ParkManager\Infrastructure\Validator\Constraints\X509SupportValidator;
@@ -25,11 +25,8 @@ final class X509SupportValidatorTest extends X509ValidatorTestCase
     /** @test */
     public function it_ignores_null(): void
     {
-        $exception = null;
-        $callback = static function ($data) use (&$exception): void {
-            $exception = new X509SupportStubException('Salsha-4234', $data['_signatureAlgorithm']);
-
-            throw $exception;
+        $callback = static function ($data): void {
+            throw new X509SupportStubViolation('Salsha-4234', $data['_signatureAlgorithm']);
         };
 
         $this->validator->validate(null, new X509Support($callback));
@@ -41,7 +38,7 @@ final class X509SupportValidatorTest extends X509ValidatorTestCase
     {
         $exception = null;
         $callback = static function ($data) use (&$exception): void {
-            $exception = new X509SupportStubException('Salsha-4234', $data['_signatureAlgorithm']);
+            $exception = new X509SupportStubViolation('Salsha-4234', $data['_signatureAlgorithm']);
 
             throw $exception;
         };
@@ -92,7 +89,7 @@ final class X509SupportValidatorTest extends X509ValidatorTestCase
 /**
  * @internal
  */
-final class X509SupportStubException extends InvalidArgumentException
+final class X509SupportStubViolation extends InvalidArgument
 {
     private string $expected;
     private string $provided;

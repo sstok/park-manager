@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Exception;
 
-final class PeriodEndNotGreaterThanStart extends InvalidArgumentException
+final class PeriodEndNotGreaterThanStart extends InvalidArgument
 {
     public function __construct()
     {

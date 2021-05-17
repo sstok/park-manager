@@ -61,7 +61,7 @@ final class EditSubDomainType extends SubDomainType
         });
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'edit_sub_domain';
     }

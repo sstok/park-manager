@@ -26,16 +26,9 @@ use Symfony\Component\Translation\TranslatableMessage;
 
 final class SecuritySettingsAction
 {
-    /**
-     * @Security("is_granted('ROLE_SUPER_ADMIN')")
-     *
-     * @Route(
-     *     path="/user/{id}/security-settings",
-     *     methods={"GET", "POST", "HEAD"},
-     *     name="park_manager.admin.user_security_settings"
-     * )
-     */
-    public function __invoke(Request $request, User $id, UserInterface $securityUser, FormFactoryInterface $formFactory)
+    #[Security("is_granted('ROLE_SUPER_ADMIN')")]
+    #[Route(path: '/user/{id}/security-settings', name: 'park_manager.admin.user_security_settings', methods: ['GET', 'POST', 'HEAD'])]
+    public function __invoke(Request $request, User $id, UserInterface $securityUser, FormFactoryInterface $formFactory): TwigResponse | RouteRedirectResponse
     {
         if (UserId::fromString($securityUser->getId())->equals($id->id)) {
             return new TwigResponse('error.html.twig', ['message_translate' => new TranslatableMessage('user_management.self_edit_error')], Response::HTTP_FORBIDDEN);

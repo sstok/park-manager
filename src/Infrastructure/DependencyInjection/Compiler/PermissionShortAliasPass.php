@@ -23,7 +23,7 @@ final class PermissionShortAliasPass implements CompilerPassInterface
 
         $finder = new Finder();
         $finder
-            ->in($dir = \dirname(__DIR__, 2) . '/Security/Permission')
+            ->in(\dirname(__DIR__, 2) . '/Security/Permission')
             ->files()
             ->name('{(?<!Decider)\.php$}');
 

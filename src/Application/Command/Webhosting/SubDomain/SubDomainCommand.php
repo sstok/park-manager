@@ -26,7 +26,7 @@ abstract class SubDomainCommand
     public ?HiddenString $privateKey = null;
     public array $caList = [];
 
-    public function __construct(SubDomainNameId $id, DomainNameId $domainNameId, string $name, string $homeDir = '/', array $config = [])
+    final public function __construct(SubDomainNameId $id, DomainNameId $domainNameId, string $name, string $homeDir = '/', array $config = [])
     {
         $this->id = $id;
         $this->domainNameId = $domainNameId;

@@ -24,35 +24,32 @@ final class SplitTokenToStringTransformer implements DataTransformerInterface
         $this->splitTokenFactory = $splitTokenFactory;
     }
 
-    public function transform($token): string
+    public function transform($value): string
     {
         // If a string was passed assume transformation in the Form failed
-        if ($token === null || \is_string($token)) {
+        if ($value === null || \is_string($value)) {
             return '';
         }
 
-        if ($token instanceof SplitToken) {
-            return $token->token()->getString();
+        if ($value instanceof SplitToken) {
+            return $value->token()->getString();
         }
 
         throw new TransformationFailedException('Expected a SplitToken object.');
     }
 
-    /**
-     * @param string $token
-     */
-    public function reverseTransform($token): ?SplitToken
+    public function reverseTransform($value): ?SplitToken
     {
-        if (! \is_string($token)) {
+        if (! \is_string($value)) {
             throw new TransformationFailedException('Expected a string.');
         }
 
-        if ($token === '') {
+        if ($value === '') {
             return null;
         }
 
         try {
-            return $this->splitTokenFactory->fromString($token);
+            return $this->splitTokenFactory->fromString($value);
         } catch (\Throwable $e) {
             throw new TransformationFailedException('Invalid SplitToken provided.', 0, $e);
         }

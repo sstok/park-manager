@@ -78,12 +78,12 @@ class Organization
     }
 
     /**
-     * @return array{0: mixed, 1: OrganizationMember}
+     * @return array{0: OrganizationMember|null, 1: int}
      */
     private function findMembership(User $user): array
     {
         $expression = Criteria::expr();
-        /** @var Collection<OrganizationMember> $members */
+        /** @var Collection<int, OrganizationMember> $members */
         $members = $this->members->matching(new Criteria($expression->eq('user', $user)));
 
         if ($members->count() === 0) {

@@ -41,10 +41,10 @@ final class SubDomainOrmRepository extends EntityRepository implements SubDomain
         return $domainName;
     }
 
-    public function allFromSpace(SpaceId $id): ResultSet
+    public function allFromSpace(SpaceId $space): ResultSet
     {
         return new OrmQueryBuilderResultSet(
-            $this->createQueryBuilder('d')->where('d.space = :space')->setParameter('space', $id->toString()),
+            $this->createQueryBuilder('d')->where('d.space = :space')->setParameter('space', $space->toString()),
             'd'
         );
     }

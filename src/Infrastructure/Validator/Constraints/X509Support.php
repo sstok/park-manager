@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraint;
  * @Annotation
  * @Target({"ANNOTATION"})
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 final class X509Support extends Constraint
 {
     /**

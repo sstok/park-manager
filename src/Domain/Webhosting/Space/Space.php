@@ -63,7 +63,7 @@ class Space
     /**
      * @ORM\Column(name="expires_on", type="datetime_immutable", nullable=true)
      */
-    public ?\DateTimeImmutable $expirationDate = null;
+    public ?DateTimeImmutable $expirationDate = null;
 
     /**
      * @ORM\Column(name="marked_for_removal", type="boolean", nullable=true)

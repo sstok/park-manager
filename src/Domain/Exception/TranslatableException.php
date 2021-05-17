@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Exception;
 
+use Symfony\Contracts\Translation\TranslatableInterface;
 use Throwable;
 
 /**
@@ -29,9 +30,10 @@ interface TranslatableException extends Throwable
      *
      * The values of arguments can be translated separately
      * (passing the value of an argument to translator) by
-     * prefixing their key with `@`, like `@status`.
+     * prefixing their key with `@`, like `@status`
+     * or using a `TranslatableInterface` instance as value.
      *
-     * @return array<string, \DateTimeInterface|float|int|string|null>
+     * @return array<string, \DateTimeInterface|TranslatableInterface|float|int|string|null>
      */
     public function getTranslationArgs(): array;
 }

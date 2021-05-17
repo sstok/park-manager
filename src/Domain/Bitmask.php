@@ -15,7 +15,7 @@ use InvalidArgumentException;
 /**
  * Immutable Bitmask ValueObject.
  *
- * Possible masks are expected to be powers of 2 (with duplicates):
+ * Possible masks are expected to be powers of 2 (without duplicates):
  *
  * const VIEW = 1 << 0;          // 1
  * const CREATE = 1 << 1;        // 2
@@ -34,7 +34,7 @@ abstract class Bitmask
 {
     protected int $mask;
 
-    public function __construct(string | int ...$mask)
+    final public function __construct(string | int ...$mask)
     {
         $this->mask = 0;
 

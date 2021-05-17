@@ -89,7 +89,7 @@ final class PEMPrivateKeyType extends AbstractType implements DataMapperInterfac
 
         $contents = '';
         @\openssl_pkey_export($privateR, $contents);
-        @\openssl_pkey_free($privateR);
+        unset($privateR);
 
         $viewData = new HiddenString($contents);
         \sodium_memzero($contents);
@@ -98,7 +98,7 @@ final class PEMPrivateKeyType extends AbstractType implements DataMapperInterfac
         // If the file also contains a cert leave it. We will remove it later.
         //
         // @codeCoverageIgnoreStart
-        if (\mb_strpos($fileContents, '-----BEGIN CERTIFICATE-----') === false && \is_uploaded_file($file->getPathname())) {
+        if (! \str_contains($fileContents, '-----BEGIN CERTIFICATE-----') && \is_uploaded_file($file->getPathname())) {
             // Remove the temp-file to prevent leaking at application level.
             // Nullifying the file contents unneeded as the file will be written to
             // disk in a later state (but under a different ownership).

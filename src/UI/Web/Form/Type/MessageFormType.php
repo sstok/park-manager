@@ -131,6 +131,9 @@ final class MessageFormType extends AbstractType
         }, -1050);
     }
 
+    /**
+     * @throws Throwable
+     */
     private function dispatchCommand(?object $command, FormInterface $form, array $exceptionMapping, ?callable $exceptionFallback): void
     {
         if ($command === null) {
@@ -159,6 +162,8 @@ final class MessageFormType extends AbstractType
                 $handlerOrPath = $exceptionMapping[$exceptionName];
 
                 if (\is_string($handlerOrPath)) {
+                    assert($e instanceof TranslatableException);
+
                     $errors = [$handlerOrPath => new FormError(
                         $this->translator->trans($e->getTranslatorId(), $e->getTranslationArgs(), 'validators'),
                         $e->getTranslatorId(),
@@ -190,7 +195,7 @@ final class MessageFormType extends AbstractType
     /**
      * @param array<string|null, FormError>|FormError $errors
      */
-    private function mapErrors($errors, FormInterface $form): void
+    private function mapErrors(array | FormError $errors, FormInterface $form): void
     {
         if (! \is_array($errors)) {
             $errors = [null => [$errors]];

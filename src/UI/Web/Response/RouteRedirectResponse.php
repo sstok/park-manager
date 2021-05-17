@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 final class RouteRedirectResponse
 {
     private string $route;
-    private array $parameters = [];
-    private int $status = 302;
+    private array $parameters;
+    private int $status;
     private array $flashes = [];
 
     public function __construct(string $route, array $parameters = [], int $status = 302)
@@ -51,7 +51,7 @@ final class RouteRedirectResponse
         return $this->status;
     }
 
-    public function withFlash(string $type, string $message, ?array $arguments = null)
+    public function withFlash(string $type, string $message, ?array $arguments = null): self
     {
         $this->flashes[] = [$type, $message, $arguments];
 

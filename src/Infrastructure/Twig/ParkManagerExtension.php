@@ -29,7 +29,7 @@ use Twig\TwigFunction;
 final class ParkManagerExtension extends AbstractExtension
 {
     private TranslatorInterface $translator;
-    private TranslatorInterface $argumentsTranslator;
+    private object $argumentsTranslator;
     private TokenStorageInterface $tokenStorage;
     private UserRepository $userRepository;
 
@@ -79,7 +79,7 @@ final class ParkManagerExtension extends AbstractExtension
         ];
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('get_current_user', [$this, 'getCurrentUser']),
@@ -88,10 +88,9 @@ final class ParkManagerExtension extends AbstractExtension
     }
 
     /**
-     * @param string|Stringable|TranslatableInterface|null $message
-     * @param array|string                                 $arguments Can be the locale as a string when $message is a TranslatableInterface
+     * @param array|string $arguments Can be the locale as a string when $message is a TranslatableInterface
      */
-    public function trans(Environment $env, $message, $arguments = [], string $domain = null, string $locale = null, int $count = null): string
+    public function trans(Environment $env, TranslatableInterface | Stringable | string | null $message, array | string $arguments = [], string $domain = null, string $locale = null, int $count = null): string
     {
         if ($message instanceof TranslatableInterface) {
             if ($arguments !== [] && ! \is_string($arguments)) {
@@ -180,10 +179,7 @@ final class ParkManagerExtension extends AbstractExtension
         return $currentUser;
     }
 
-    /**
-     * @param string|Stringable|UnicodeString $text
-     */
-    public function wordwrap(Environment $env, $text, int $width = 75, string $break = "\n", bool $cut = false, bool $escape = true): string
+    public function wordwrap(Environment $env, string | Stringable | UnicodeString $text, int $width = 75, string $break = "\n", bool $cut = false, bool $escape = true): string
     {
         if ($escape) {
             $text = twig_escape_filter($env, (string) $text);

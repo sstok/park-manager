@@ -25,7 +25,7 @@ interface SubDomainRepository
     /**
      * @return ResultSet<SubDomain>
      */
-    public function allFromSpace(SpaceId $spaceId): ResultSet;
+    public function allFromSpace(SpaceId $space): ResultSet;
 
     /**
      * @throws SubDomainAlreadyExists

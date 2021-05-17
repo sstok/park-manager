@@ -114,12 +114,12 @@ final class PEMCertificateType extends AbstractType implements DataMapperInterfa
 
         $contents = '';
         @\openssl_x509_export($x509Read, $contents);
-        @\openssl_x509_free($x509Read);
+        unset($x509Read);
 
         // When the file contains a private-key remove it now (unless when a test).
 
         // @codeCoverageIgnoreStart
-        if (\mb_strpos($fileContents, '-----BEGIN PRIVATE KEY-----') !== false && \is_uploaded_file($certificate->getPathname())) {
+        if (\str_contains($fileContents, '-----BEGIN PRIVATE KEY-----') && \is_uploaded_file($certificate->getPathname())) {
             // Remove the temp-file and memory-contents to prevent leaking at application level.
             \unlink($certificate->getPathname());
             \sodium_memzero($fileContents);

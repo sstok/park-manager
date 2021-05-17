@@ -40,7 +40,6 @@ class KeyValidator
     public function validate(HiddenString $privateKey, string $certificate): void
     {
         $certR = @\openssl_x509_read($certificate);
-        $privateR = null;
 
         if ($certR === false) {
             throw new UnprocessablePEM('');
@@ -88,14 +87,8 @@ class KeyValidator
                 throw new KeyBitsToLow(self::MINIMUM_BIT_COUNT, $details['bits']);
             }
         } finally {
-            if (\is_resource($privateR)) {
-                @\openssl_pkey_free($privateR);
-                @\openssl_pkey_free($pupKey);
-                @\openssl_x509_free($certR);
-            }
-
             \sodium_memzero($key);
-            unset($key);
+            unset($key, $privateR, $pupKey, $certR);
         }
     }
 }

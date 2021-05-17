@@ -27,7 +27,7 @@ final class ChangeUserEmailAddressAction
 {
     #[Security("is_granted('ROLE_SUPER_ADMIN')")]
     #[Route(path: '/user/{user}/change-email-address', name: 'park_manager.admin.user_change_email_address', methods: ['GET', 'POST', 'HEAD'])]
-    public function __invoke(Request $request, User $user, UserInterface $securityUser, FormFactoryInterface $formFactory)
+    public function __invoke(Request $request, User $user, UserInterface $securityUser, FormFactoryInterface $formFactory): TwigResponse | RouteRedirectResponse
     {
         if (UserId::fromString($securityUser->getId())->equals($user->id)) {
             return new TwigResponse('error.html.twig', ['message_translate' => new TranslatableMessage('user_management.self_edit_error')], Response::HTTP_FORBIDDEN);

@@ -22,9 +22,6 @@ final class PermissionExpression implements Permission
     /** @var array<int,mixed> */
     public array $arguments;
 
-    /**
-     * @param mixed[] ...$arguments
-     */
     public function __construct(string $name, ...$arguments)
     {
         $this->name = $name;

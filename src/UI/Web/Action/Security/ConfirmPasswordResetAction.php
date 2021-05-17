@@ -30,7 +30,7 @@ final class ConfirmPasswordResetAction
      *
      * @return RouteRedirectResponse|TwigResponse
      */
-    public function __invoke(Request $request, SplitToken $token, FormFactoryInterface $formFactory)
+    public function __invoke(Request $request, SplitToken $token, FormFactoryInterface $formFactory): TwigResponse | RouteRedirectResponse
     {
         $form = $formFactory->create(ConfirmPasswordResetType::class, ['reset_token' => $token]);
         $form->handleRequest($request);

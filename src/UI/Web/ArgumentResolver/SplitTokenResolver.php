@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use Throwable;
 
 final class SplitTokenResolver implements ArgumentValueResolverInterface
 {
@@ -48,7 +49,7 @@ final class SplitTokenResolver implements ArgumentValueResolverInterface
     {
         try {
             return $this->splitTokenFactory->fromString($value);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             throw new InvalidSplitTokenProvided('Invalid token', Response::HTTP_BAD_REQUEST, $e);
         }
     }

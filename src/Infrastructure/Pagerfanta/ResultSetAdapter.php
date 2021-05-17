@@ -22,7 +22,7 @@ final class ResultSetAdapter implements AdapterInterface
         $this->resultSet = $resultSet;
     }
 
-    public function getNbResults()
+    public function getNbResults(): int
     {
         return $this->resultSet->getNbResults();
     }

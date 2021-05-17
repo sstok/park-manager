@@ -35,7 +35,7 @@ final class RegisterUserHandler
             $user = $this->repository->getByEmail($command->email);
 
             throw new EmailAddressAlreadyInUse($user->id, $command->email);
-        } catch (UserNotFound $e) {
+        } catch (UserNotFound) {
             // No-op
         }
 

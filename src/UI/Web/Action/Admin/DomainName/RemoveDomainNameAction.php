@@ -23,7 +23,7 @@ use Symfony\Component\Translation\TranslatableMessage;
 final class RemoveDomainNameAction
 {
     #[Route(path: 'domain-name/{domainName}/remove', name: 'park_manager.admin.domain_name.remove', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request, DomainName $domainName, FormFactoryInterface $formFactory)
+    public function __invoke(Request $request, DomainName $domainName, FormFactoryInterface $formFactory): TwigResponse | RouteRedirectResponse
     {
         if ($domainName->space !== null) {
             return RouteRedirectResponse::toRoute('park_manager.admin.list_domain_names')->withFlash(

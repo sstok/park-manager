@@ -21,7 +21,7 @@ final class DeactivateSubDomain
         $this->id = $id;
     }
 
-    public static function with(string $id): static
+    public static function with(string $id): self
     {
         return new self(SubDomainNameId::fromString($id));
     }

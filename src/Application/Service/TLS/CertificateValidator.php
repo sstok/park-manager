@@ -107,7 +107,7 @@ class CertificateValidator
         $rules = $this->suffixManager->getPublicSuffixList();
 
         foreach ($domains as $domain) {
-            if (\mb_strpos($domain, '*') === false) {
+            if (! \str_contains($domain, '*')) {
                 continue;
             }
 
@@ -179,13 +179,13 @@ class CertificateValidator
 
     public function validateCertificatePurpose(string $certificate, string ...$requiredPurpose): void
     {
-        $requiredPurpose = \array_fill_keys($requiredPurpose, true);
+        $requiredPurposes = \array_fill_keys($requiredPurpose, true);
 
-        if (isset($requiredPurpose[self::PURPOSE_SMIME])) {
-            unset($requiredPurpose[self::PURPOSE_SMIME]);
+        if (isset($requiredPurposes[self::PURPOSE_SMIME])) {
+            unset($requiredPurposes[self::PURPOSE_SMIME]);
 
-            $requiredPurpose['S/MIME signing'] = true;
-            $requiredPurpose['S/MIME encryption'] = true;
+            $requiredPurposes['S/MIME signing'] = true;
+            $requiredPurposes['S/MIME encryption'] = true;
         }
 
         $purposes = [];
@@ -194,7 +194,7 @@ class CertificateValidator
             $purposes[$purpose[2]] = $purpose[0];
         }
 
-        foreach ($requiredPurpose as $requirement => $v) {
+        foreach ($requiredPurposes as $requirement => $v) {
             if (($purposes[$requirement] ?? false) === false) {
                 throw new UnsupportedPurpose($requirement);
             }

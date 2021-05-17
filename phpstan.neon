@@ -12,12 +12,14 @@ parameters:
         - ./src
         - ./public
         - ./bin
-    excludes_analyse:
+    excludePaths:
         - var/
-        - vendor/
         - templates/
         - translations/
         - tests/
+
+        # Enums
+        - src/Domain/EnumTrait.php
 
     checkNullables: false # To many false positives
 
@@ -27,7 +29,15 @@ parameters:
 
     ignoreErrors:
         - '#Cannot cast Symfony\\Component\\Validator\\ConstraintViolationListInterface to string#'
+        - '#Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getId\(\)#'
 
         ## False positive
+        - '#Call to an undefined method Faker\\Generator\:\:#'
+
         - '#Property Doctrine\\ORM\\EntityRepository<mixed>\:\:\$_em \(Doctrine\\ORM\\EntityManager\) does not accept Doctrine\\ORM\\EntityManagerInterface#' # Doctrine PHPDoc bug
         - '#Property Doctrine\\ORM\\EntityRepository<mixed>\:\:\$_class \(Doctrine\\ORM\\Mapping\\ClassMetadata\) does not accept Doctrine\\Persistence\\Mapping\\ClassMetadata#'
+
+        # Unum
+        -
+            message: '#Match expression does not handle remaining values: int<min, -2>|int<4, max>|string#'
+            path: src/Domain/Webhosting/Space/SpaceSetupStatus.php

@@ -48,7 +48,7 @@ final class RequestPasswordResetHandler
 
         try {
             $user = $this->repository->getByEmail($command->email());
-        } catch (UserNotFound $e) {
+        } catch (UserNotFound) {
             // No user with this email address. To prevent exposing existence simply do nothing.
             return;
         }

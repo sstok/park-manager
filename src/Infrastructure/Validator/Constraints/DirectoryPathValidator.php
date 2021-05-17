@@ -59,7 +59,7 @@ final class DirectoryPathValidator extends ConstraintValidator
             }
 
             // Can start with a dot, must not end with a special character. No combined special characters.
-            if (! \preg_match('~^\.?(?:\w+(?:\.?[@\w-])*)$~u', $chunk) || \preg_match('~(?:[.@-_]$)|[@_.-]{2}~', $chunk)) {
+            if (! \preg_match('~^\.?\w+(?:\.?[@\w-])*$~u', $chunk) || \preg_match('~(?:[.@-_]$)|[@_.-]{2}~', $chunk)) {
                 $this->context->buildViolation($constraint->message)
                     ->setInvalidValue($value)
                     ->setParameter('{{ value }}', $this->formatValue($value))

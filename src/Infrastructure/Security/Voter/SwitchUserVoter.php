@@ -18,7 +18,7 @@ final class SwitchUserVoter implements VoterInterface
 {
     public const CAN_SWITCH_USER = 'CAN_SWITCH_USER';
 
-    public function vote(TokenInterface $token, $subject, array $attributes)
+    public function vote(TokenInterface $token, $subject, array $attributes): int
     {
         $user = $token->getUser();
 

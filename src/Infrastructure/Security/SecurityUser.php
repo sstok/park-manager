@@ -48,14 +48,14 @@ final class SecurityUser implements UserInterface, EquatableInterface, Serializa
         ]);
     }
 
-    public function unserialize($serialized): void
+    public function unserialize($data): void
     {
-        $data = \unserialize($serialized, ['allowed_classes' => false]);
+        $info = \unserialize($data, ['allowed_classes' => false]);
 
-        $this->username = $data['username'];
-        $this->password = $data['password'];
-        $this->enabled = $data['enabled'];
-        $this->roles = $data['roles'];
+        $this->username = $info['username'];
+        $this->password = $info['password'];
+        $this->enabled = $info['enabled'];
+        $this->roles = $info['roles'];
     }
 
     public function getRoles(): array

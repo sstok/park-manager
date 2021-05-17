@@ -79,7 +79,7 @@ class PermissionAccessManager
 
     private function resolvePermissionExpression(PermissionExpression $permission): Permission
     {
-        if (\mb_strpos($permission->name, '\\') !== false) {
+        if (\str_contains($permission->name, '\\')) {
             return new $permission->name(...$permission->arguments);
         }
 
@@ -91,7 +91,7 @@ class PermissionAccessManager
         $candidates = [];
 
         foreach (\array_keys($this->permissionsShortNames) as $shortName) {
-            if (\mb_strpos($shortName, $name) !== false || (\levenshtein($name, $shortName) <= \mb_strlen($name) / 3)) {
+            if (\str_contains($shortName, $name) || (\levenshtein($name, $shortName) <= \mb_strlen($name) / 3)) {
                 $candidates[] = $shortName;
             }
         }

@@ -78,7 +78,7 @@ final class EmailAddress implements \Stringable
         $this->canonical = $this->canonicalize($address, $this->local, $this->domain, $this->label);
         $this->name = $name;
 
-        if (\mb_strpos($address, '*') !== false) {
+        if (\str_contains($address, '*')) {
             $this->validatePattern();
 
             $this->isPattern = true;

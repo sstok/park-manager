@@ -47,9 +47,9 @@ final class IsFullOwnerDeciderTest extends TestCase
         $user = UserRepositoryMock::createUser(id: self::USER_ID);
         $this->userRepository = new UserRepositoryMock([$user]);
         $this->orgRepository = new OrganizationRepositoryMock($this->userRepository);
-        $this->ownerRepository = new OwnerRepositoryMock([$owner = Owner::byUser($user)], $this->orgRepository);
+        $this->ownerRepository = new OwnerRepositoryMock([Owner::byUser($user)], $this->orgRepository);
 
-        $this->decider = new IsFullOwnerDecider($this->ownerRepository, $this->orgRepository, $this->userRepository);
+        $this->decider = new IsFullOwnerDecider($this->orgRepository, $this->userRepository);
     }
 
     /** @test */

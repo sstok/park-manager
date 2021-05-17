@@ -124,7 +124,7 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
         return $this->urlGenerator->generate('park_manager.user.home');
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
     {
         if ($request->hasSession()) {
             $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);

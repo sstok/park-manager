@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Exception;
 
-final class InvalidSplitTokenProvided extends InvalidArgumentException
+final class InvalidSplitTokenProvided extends InvalidArgument
 {
     public function getTranslatorId(): string
     {

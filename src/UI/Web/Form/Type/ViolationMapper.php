@@ -14,7 +14,7 @@ use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRendererInterface;
-use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ViolationMapper
@@ -28,7 +28,7 @@ final class ViolationMapper
         $this->formRenderer = $formRenderer;
     }
 
-    public function mapViolation(ConstraintViolation $violation, FormInterface $form): void
+    public function mapViolation(ConstraintViolationInterface $violation, FormInterface $form): void
     {
         $message = (string) $violation->getMessage();
         $messageTemplate = $violation->getMessageTemplate();
@@ -91,7 +91,7 @@ final class ViolationMapper
 
     private function resolveMessageLabel(string $message, string $messageTemplate, FormInterface $form): array
     {
-        if (\mb_strpos($message, '{{ label }}') === false && \mb_strpos($messageTemplate, '{{ label }}') === false) {
+        if (! \str_contains($message, '{{ label }}') && ! \str_contains($messageTemplate, '{{ label }}')) {
             return [$message, $messageTemplate];
         }
 

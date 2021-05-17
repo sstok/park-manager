@@ -29,7 +29,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class RemoveDomainNameAction
 {
     #[Route(path: 'webhosting/space/{space}/domain-name/{domainName}/remove', name: 'park_manager.admin.webhosting.space.domain_name.remove', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request, Space $space, DomainName $domainName, FormFactoryInterface $formFactory, EntityRenderer $entityRenderer)
+    public function __invoke(Request $request, Space $space, DomainName $domainName, FormFactoryInterface $formFactory, EntityRenderer $entityRenderer): TwigResponse | RouteRedirectResponse
     {
         if ($domainName->space === null) {
             return RouteRedirectResponse::toRoute('park_manager.admin.list_domain_names')->withFlash(

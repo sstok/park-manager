@@ -23,7 +23,7 @@ class CA
     }
 
     /** @var array<int,CA>|null */
-    private $tree;
+    private ?array $tree;
 
     /**
      * @param array<string, mixed> $rawFields

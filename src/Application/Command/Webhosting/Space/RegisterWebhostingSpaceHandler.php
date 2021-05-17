@@ -69,7 +69,7 @@ final class RegisterWebhostingSpaceHandler
             $currentRegistration = $this->domainNameRepository->getByName($command->domainName);
 
             if ($currentRegistration->space !== null) {
-                throw new DomainNameAlreadyInUse($command->domainName, $currentRegistration->space->owner === $owner);
+                throw new DomainNameAlreadyInUse($command->domainName);
             }
 
             $currentRegistration->transferToSpace($space, true);

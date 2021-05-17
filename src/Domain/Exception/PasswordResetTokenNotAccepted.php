@@ -22,12 +22,13 @@ use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
  */
 final class PasswordResetTokenNotAccepted extends DomainException
 {
-    private ?SplitTokenValueHolder$storedToken = null;
-    private ?SplitToken$providedToken = null;
+    private ?SplitTokenValueHolder $storedToken;
+    private ?SplitToken $providedToken;
 
     public function __construct(?SplitTokenValueHolder $storedToken = null, ?SplitToken $providedToken = null)
     {
         parent::__construct('PasswordReset is invalid (expired, no result or verifier mismatch).');
+
         $this->storedToken = $storedToken;
         $this->providedToken = $providedToken;
     }

@@ -37,7 +37,7 @@ final class OwnershipUsageList
      */
     public function isAnyAssignedTo(OwnerId $id): bool
     {
-        foreach ($this->repositories as $name => $repository) {
+        foreach ($this->repositories as $repository) {
             // Ordering doesn't matter, so remove this to provide some Query optimization.
             $iterator = $repository->allFromOwner($id)
                 ->setOrdering(null, null);

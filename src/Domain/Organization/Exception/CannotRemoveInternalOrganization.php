@@ -10,11 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Organization\Exception;
 
-use ParkManager\Domain\Exception\InvalidArgumentException;
-use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\Exception\InvalidArgument;
 use ParkManager\Domain\Organization\OrganizationId;
 
-final class CannotRemoveInternalOrganization extends InvalidArgumentException implements TranslatableException
+final class CannotRemoveInternalOrganization extends InvalidArgument
 {
     private array $translationArgs;
 
