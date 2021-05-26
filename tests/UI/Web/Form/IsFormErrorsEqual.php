@@ -54,7 +54,7 @@ final class IsFormErrorsEqual extends Constraint
                 return false;
             }
 
-            throw new ExpectationFailedException(\trim($description . "\n" . $f->getMessage()), $f);
+            throw new ExpectationFailedException(trim($description . "\n" . $f->getMessage()), $f);
         }
 
         return true;
@@ -62,6 +62,6 @@ final class IsFormErrorsEqual extends Constraint
 
     public function toString(): string
     {
-        return \sprintf('is equal to %s', $this->exporter()->export($this->value));
+        return sprintf('is equal to %s', $this->exporter()->export($this->value));
     }
 }

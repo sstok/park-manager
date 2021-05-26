@@ -77,7 +77,8 @@ final class X509SupportValidatorTest extends X509ValidatorTestCase
             ->setCause($exception)
             ->setParameter('{expected}', 'Salsha-4234')
             ->setParameter('{provided}', 'RSA-SHA1')
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     protected function createValidator(): ConstraintValidatorInterface

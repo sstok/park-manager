@@ -63,11 +63,11 @@ final class ViolationMapper
 
         $scope = $form;
 
-        foreach (\explode('.', $formPath) as $child) {
+        foreach (explode('.', $formPath) as $child) {
             if (! $scope->has($child)) {
                 if ($violationPath === null) {
                     throw new InvalidConfigurationException(
-                        \sprintf(
+                        sprintf(
                             'Unable to resolve ViolationPath "%s" to a valid Form path, set the "violation_mapping" option with an explicit mapping.',
                             $formPath,
                         )
@@ -75,7 +75,7 @@ final class ViolationMapper
                 }
 
                 throw new InvalidConfigurationException(
-                    \sprintf(
+                    sprintf(
                         'Unable to resolve ViolationPath "%s" to a valid Form path, configured violation-path "%s" does not resolve a form.',
                         $formPath,
                         $violationPath,
@@ -91,14 +91,14 @@ final class ViolationMapper
 
     private function resolveMessageLabel(string $message, string $messageTemplate, FormInterface $form): array
     {
-        if (! \str_contains($message, '{{ label }}') && ! \str_contains($messageTemplate, '{{ label }}')) {
+        if (! str_contains($message, '{{ label }}') && ! str_contains($messageTemplate, '{{ label }}')) {
             return [$message, $messageTemplate];
         }
 
         $labelFormat = $form->getConfig()->getOption('label_format');
 
         if ($labelFormat !== null) {
-            $label = \str_replace(
+            $label = str_replace(
                 [
                     '%name%',
                     '%id%',
@@ -124,8 +124,8 @@ final class ViolationMapper
                 $form->getConfig()->getOption('translation_domain')
             );
 
-            $message = \str_replace('{{ label }}', $label, $message);
-            $messageTemplate = \str_replace('{{ label }}', $label, $messageTemplate);
+            $message = str_replace('{{ label }}', $label, $message);
+            $messageTemplate = str_replace('{{ label }}', $label, $messageTemplate);
         }
 
         return [$message, $messageTemplate];

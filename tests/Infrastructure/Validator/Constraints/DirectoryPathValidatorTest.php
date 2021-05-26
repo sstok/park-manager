@@ -25,19 +25,20 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
     {
         $constraint = new DirectoryPath();
 
-        $this->validator->validate($v = \str_repeat('A', 3097), $constraint);
+        $this->validator->validate($v = str_repeat('A', 3097), $constraint);
 
         $this->buildViolation($constraint->pathToLongMessage)
             ->setInvalidValue($v)
             ->setCode(DirectoryPath::PATH_TO_LONG_ERROR)
             ->setParameter('{{ max }}', 3096)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     /** @test */
     public function it_fails_with_chunk_to_long(): void
     {
-        $v = \str_repeat('A', 256);
+        $v = str_repeat('A', 256);
         $constraint = new DirectoryPath();
 
         $this->validator->validate('testing-deep/' . $v, $constraint);
@@ -48,14 +49,15 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
             ->setParameter('{{ value }}', '"testing-deep/' . $v . '"')
             ->setParameter('{{ chunk }}', '"' . $v . '"')
             ->setParameter('{{ max }}', '255')
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     /**
      * @test
      * @dataProvider provideInvalidValues
      */
-    public function it_fails_with_invalid_path(string $value, string $chunk = null): void
+    public function it_fails_with_invalid_path(string $value, ?string $chunk = null): void
     {
         $constraint = new DirectoryPath();
 
@@ -67,7 +69,8 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
             ->setCode(DirectoryPath::INVALID_PATH)
             ->setParameter('{{ value }}', '"' . $value . '"')
             ->setParameter('{{ chunk }}', '"' . $chunk . '"')
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     public function provideInvalidValues(): iterable

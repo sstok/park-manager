@@ -40,7 +40,7 @@ final class RegisterWebhostingSpaceTest extends TestCase
         self::assertEquals(SpaceId::fromString(self::SPACE_ID), $command->id);
         self::assertEquals(OwnerId::fromString(self::USER_ID), $command->owner);
         self::assertEquals(PlanId::fromString(self::SET_ID), $command->planId);
-        self::assertEquals($domainName, $command->domainName);
+        self::assertSame($domainName, $command->domainName);
         self::assertNull($command->customConstraints);
     }
 
@@ -56,8 +56,8 @@ final class RegisterWebhostingSpaceTest extends TestCase
 
         self::assertEquals(SpaceId::fromString(self::SPACE_ID), $command->id);
         self::assertEquals(OwnerId::fromString(self::USER_ID), $command->owner);
-        self::assertEquals($constraints, $command->customConstraints);
-        self::assertEquals($domainName, $command->domainName);
+        self::assertSame($constraints, $command->customConstraints);
+        self::assertSame($domainName, $command->domainName);
         self::assertNull($command->planId);
     }
 }

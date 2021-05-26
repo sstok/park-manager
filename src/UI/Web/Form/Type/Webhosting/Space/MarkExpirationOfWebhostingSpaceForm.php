@@ -34,7 +34,8 @@ final class MarkExpirationOfWebhostingSpaceForm extends AbstractType
                     'min' => $min->format('Y-m-d'),
                 ],
                 'input' => 'datetime_immutable',
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -44,7 +45,8 @@ final class MarkExpirationOfWebhostingSpaceForm extends AbstractType
             ->setDefault(
                 'command_factory',
                 static fn (array $fields, Space $model): object => CarbonImmutable::instance($fields['expirationDate'])->isCurrentDay() ? new MarkSpaceForRemoval($model->id) : new ExpireSpaceOn($model->id, $fields['expirationDate']),
-        );
+        )
+        ;
     }
 
     public function getBlockPrefix(): string

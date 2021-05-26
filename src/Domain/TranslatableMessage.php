@@ -19,7 +19,7 @@ final class TranslatableMessage implements TranslatableInterface, \Stringable
     private array $parameters;
     private ?string $domain;
 
-    public function __construct(string $message, array $parameters = [], string $domain = null)
+    public function __construct(string $message, array $parameters = [], ?string $domain = null)
     {
         $this->message = $message;
         $this->parameters = $parameters;
@@ -46,14 +46,14 @@ final class TranslatableMessage implements TranslatableInterface, \Stringable
         return $this->domain;
     }
 
-    public function trans(TranslatorInterface $translator, string $locale = null): string
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
         $parameters = $this->getParameters();
 
         foreach ($parameters as $key => $value) {
             if ($value instanceof TranslatableInterface) {
                 $parameters[$key] = $value->trans($translator, $locale);
-            } elseif (\is_object($value) && \method_exists($value, '__toString')) {
+            } elseif (\is_object($value) && method_exists($value, '__toString')) {
                 $parameters[$key] = $value->__toString();
             }
         }

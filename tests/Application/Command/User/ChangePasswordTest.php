@@ -24,16 +24,16 @@ final class ChangePasswordTest extends TestCase
     /** @test */
     public function its_constructable(): void
     {
-        $command = new ChangeUserPassword($id = self::USER_ID, 'empty');
+        $command = new ChangeUserPassword(self::USER_ID, 'empty');
 
         self::assertEquals(UserId::fromString(self::USER_ID), $command->id);
-        self::assertEquals('empty', $command->password);
+        self::assertSame('empty', $command->password);
     }
 
     /** @test */
     public function its_password_can_be_null(): void
     {
-        $command = new ChangeUserPassword($id = self::USER_ID, null);
+        $command = new ChangeUserPassword(self::USER_ID, null);
 
         self::assertEquals(UserId::fromString(self::USER_ID), $command->id);
         self::assertNull($command->password);

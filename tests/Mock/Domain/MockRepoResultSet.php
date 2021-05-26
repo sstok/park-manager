@@ -63,7 +63,7 @@ final class MockRepoResultSet implements ResultSet
      */
     public function getNbResults(): int
     {
-        \reset($this->result);
+        reset($this->result);
         $result = $this->result;
 
         if ($this->expression) {
@@ -72,7 +72,7 @@ final class MockRepoResultSet implements ResultSet
         }
 
         if ($this->limitedToIds) {
-            $result = \array_filter($result, fn (object $v) => \in_array($v->id->toString(), $this->limitedToIds, true));
+            $result = array_filter($result, fn (object $v): bool => \in_array($v->id->toString(), $this->limitedToIds, true));
         }
 
         return \count($result);
@@ -80,14 +80,14 @@ final class MockRepoResultSet implements ResultSet
 
     public function getIterator(): \Traversable
     {
-        \reset($this->result);
+        reset($this->result);
         $result = $this->result;
 
         // Don't apply the order at ArrayCollection as we need to cast the values to string.
         if ($this->ordering[0] ?? false) {
             [$orderField, $order] = $this->ordering;
 
-            \usort($result, static function (object $a, object $b) use ($orderField, $order) {
+            usort($result, static function (object $a, object $b) use ($orderField, $order): int {
                 if ($a->{$orderField} === $b->{$orderField}) {
                     return 0;
                 }

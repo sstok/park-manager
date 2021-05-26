@@ -25,13 +25,13 @@ final class EmailAddressTest extends TestCase
     {
         $value = new EmailAddress('info@example.com');
 
-        self::assertEquals('info@example.com', $value->address);
-        self::assertEquals('info@example.com', $value->toString());
-        self::assertEquals('info@example.com', $value->canonical);
-        self::assertEquals('info', $value->local);
-        self::assertEquals('example.com', $value->domain);
-        self::assertEquals('', $value->name);
-        self::assertEquals('', $value->label);
+        self::assertSame('info@example.com', $value->address);
+        self::assertSame('info@example.com', $value->toString());
+        self::assertSame('info@example.com', $value->canonical);
+        self::assertSame('info', $value->local);
+        self::assertSame('example.com', $value->domain);
+        self::assertNull($value->name);
+        self::assertSame('', $value->label);
 
         $value->validate();
     }
@@ -41,20 +41,20 @@ final class EmailAddressTest extends TestCase
     {
         $value = new EmailAddress('info+webmaster@example.com', 'Teacher');
 
-        self::assertEquals('info+webmaster@example.com', $value->address);
-        self::assertEquals('info+webmaster@example.com', $value->toString());
-        self::assertEquals('info@example.com', $value->canonical);
-        self::assertEquals('info', $value->local);
-        self::assertEquals('example.com', $value->domain);
-        self::assertEquals('Teacher', $value->name);
-        self::assertEquals('webmaster', $value->label);
+        self::assertSame('info+webmaster@example.com', $value->address);
+        self::assertSame('info+webmaster@example.com', $value->toString());
+        self::assertSame('info@example.com', $value->canonical);
+        self::assertSame('info', $value->local);
+        self::assertSame('example.com', $value->domain);
+        self::assertSame('Teacher', $value->name);
+        self::assertSame('webmaster', $value->label);
 
-        self::assertEquals('info+webmaster@example.com', $value->truncate(29));
-        self::assertEquals('info+webmaster@example.com', $value->truncate(30));
-        self::assertEquals('info+w...@examp...', $value->truncate(10));
-        self::assertEquals('info+we...@exampl...', $value->truncate(11));
-        self::assertEquals('info+webm#@example.#', $value->truncate(10, '#'));
-        self::assertEquals('info+webm...@example.com', $value->truncate(13));
+        self::assertSame('info+webmaster@example.com', $value->truncate(29));
+        self::assertSame('info+webmaster@example.com', $value->truncate(30));
+        self::assertSame('info+w...@examp...', $value->truncate(10));
+        self::assertSame('info+we...@exampl...', $value->truncate(11));
+        self::assertSame('info+webm#@example.#', $value->truncate(10, '#'));
+        self::assertSame('info+webm...@example.com', $value->truncate(13));
 
         $value->validate();
     }
@@ -64,18 +64,18 @@ final class EmailAddressTest extends TestCase
     {
         $value = new EmailAddress('"info@hello"@example.com');
 
-        self::assertEquals('"info@hello"@example.com', $value->address);
-        self::assertEquals('"info@hello"@example.com', $value->toString());
-        self::assertEquals('"info@hello"@example.com', $value->canonical);
-        self::assertEquals('"info@hello"', $value->local);
-        self::assertEquals('example.com', $value->domain);
-        self::assertEquals('', $value->name);
-        self::assertEquals('', $value->label);
+        self::assertSame('"info@hello"@example.com', $value->address);
+        self::assertSame('"info@hello"@example.com', $value->toString());
+        self::assertSame('"info@hello"@example.com', $value->canonical);
+        self::assertSame('"info@hello"', $value->local);
+        self::assertSame('example.com', $value->domain);
+        self::assertNull($value->name);
+        self::assertSame('', $value->label);
         self::assertFalse($value->isPattern);
 
-        self::assertEquals('"info@hello"@example.com', $value->truncate(29));
-        self::assertEquals('"info@hello"@example.com', $value->truncate(30));
-        self::assertEquals('"info@...@examp...', $value->truncate(10));
+        self::assertSame('"info@hello"@example.com', $value->truncate(29));
+        self::assertSame('"info@hello"@example.com', $value->truncate(30));
+        self::assertSame('"info@...@examp...', $value->truncate(10));
 
         $value->validate();
     }
@@ -85,17 +85,17 @@ final class EmailAddressTest extends TestCase
     {
         $value = new EmailAddress('*@example.com');
 
-        self::assertEquals('*@example.com', $value->address);
-        self::assertEquals('*@example.com', $value->toString());
-        self::assertEquals('*@example.com', $value->canonical);
-        self::assertEquals('*', $value->local);
-        self::assertEquals('example.com', $value->domain);
-        self::assertEquals('', $value->name);
-        self::assertEquals('', $value->label);
+        self::assertSame('*@example.com', $value->address);
+        self::assertSame('*@example.com', $value->toString());
+        self::assertSame('*@example.com', $value->canonical);
+        self::assertSame('*', $value->local);
+        self::assertSame('example.com', $value->domain);
+        self::assertNull($value->name);
+        self::assertSame('', $value->label);
         self::assertTrue($value->isPattern);
 
-        self::assertEquals('*@example.com', $value->truncate(30));
-        self::assertEquals('*@exa#', $value->truncate(5, '#'));
+        self::assertSame('*@example.com', $value->truncate(30));
+        self::assertSame('*@exa#', $value->truncate(5, '#'));
 
         $value->validate();
     }
@@ -105,10 +105,10 @@ final class EmailAddressTest extends TestCase
     {
         $value = new EmailAddress('info@example.com', 'Janet Doe');
 
-        self::assertEquals('info@example.com', $value->address);
-        self::assertEquals('info@example.com', $value->canonical);
-        self::assertEquals('Janet Doe', $value->name);
-        self::assertEquals('', $value->label);
+        self::assertSame('info@example.com', $value->address);
+        self::assertSame('info@example.com', $value->canonical);
+        self::assertSame('Janet Doe', $value->name);
+        self::assertSame('', $value->label);
     }
 
     /** @test */
@@ -116,12 +116,12 @@ final class EmailAddressTest extends TestCase
     {
         $value = new EmailAddress('infO@EXAMPLE.com');
 
-        self::assertEquals('infO@EXAMPLE.com', $value->address);
-        self::assertEquals('info@example.com', $value->canonical);
-        self::assertEquals('info', $value->local);
-        self::assertEquals('example.com', $value->domain);
-        self::assertEquals('', $value->name);
-        self::assertEquals('', $value->label);
+        self::assertSame('infO@EXAMPLE.com', $value->address);
+        self::assertSame('info@example.com', $value->canonical);
+        self::assertSame('info', $value->local);
+        self::assertSame('example.com', $value->domain);
+        self::assertNull($value->name);
+        self::assertSame('', $value->label);
     }
 
     /** @test */
@@ -131,12 +131,12 @@ final class EmailAddressTest extends TestCase
 
         // Note. Original value is not transformed as some IDN TLDs
         // are not supported natively (Emoji for example).
-        self::assertEquals('info@xn--tst-qla.de', $value->address);
-        self::assertEquals('info@täst.de', $value->canonical);
-        self::assertEquals('info', $value->local);
-        self::assertEquals('täst.de', $value->domain);
-        self::assertEquals('', $value->name);
-        self::assertEquals('', $value->label);
+        self::assertSame('info@xn--tst-qla.de', $value->address);
+        self::assertSame('info@täst.de', $value->canonical);
+        self::assertSame('info', $value->local);
+        self::assertSame('täst.de', $value->domain);
+        self::assertNull($value->name);
+        self::assertSame('', $value->label);
     }
 
     /** @test */
@@ -144,12 +144,12 @@ final class EmailAddressTest extends TestCase
     {
         $value = new EmailAddress('info+hello@example.com');
 
-        self::assertEquals('info+hello@example.com', $value->address);
-        self::assertEquals('info@example.com', $value->canonical);
-        self::assertEquals('info', $value->local);
-        self::assertEquals('example.com', $value->domain);
-        self::assertEquals('', $value->name);
-        self::assertEquals('hello', $value->label);
+        self::assertSame('info+hello@example.com', $value->address);
+        self::assertSame('info@example.com', $value->canonical);
+        self::assertSame('info', $value->local);
+        self::assertSame('example.com', $value->domain);
+        self::assertNull($value->name);
+        self::assertSame('hello', $value->label);
     }
 
     /** @test */
@@ -201,13 +201,14 @@ final class EmailAddressTest extends TestCase
     public function idn_error_codes(): void
     {
         $message = MalformedEmailAddress::idnError('nope@example.com', \IDNA_ERROR_EMPTY_LABEL | \IDNA_ERROR_LABEL_TOO_LONG)
-            ->getMessage();
+            ->getMessage()
+        ;
 
         self::assertStringContainsString('a non-final domain name label (or the whole domain name) is empty', $message);
         self::assertStringContainsString('a domain name label is longer than 63 bytes', $message);
         self::assertStringNotContainsString('a label starts with a combining mark', $message);
 
-        self::assertEquals(
+        self::assertSame(
             'Malformed email address "nope@example.com" (IDN Error reported Unknown IDNA conversion error.)',
             MalformedEmailAddress::idnError('nope@example.com', 0)->getMessage()
         );

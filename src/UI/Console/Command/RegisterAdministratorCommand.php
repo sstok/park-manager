@@ -48,7 +48,8 @@ final class RegisterAdministratorCommand extends Command
             ->setHelp(<<<'EOT'
                 The <info>%command.name%</info> command registers a new Administrator user.
                 EOT
-        );
+        )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -68,7 +69,8 @@ final class RegisterAdministratorCommand extends Command
         });
 
         $password = $this->passwordEncoder->getEncoder(SecurityUser::class)
-            ->encodePassword($io->askHidden('Password'), '');
+            ->encodePassword($io->askHidden('Password'), '')
+        ;
 
         $this->commandBus->dispatch(
             new RegisterAdministrator(UserId::create(), $email, $displayName, $password)

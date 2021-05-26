@@ -46,7 +46,7 @@ final class UserProvider implements UserProviderInterface
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (! $user instanceof SecurityUser) {
-            throw new UnsupportedUserException(\sprintf('Expected an instance of %s, but got "%s".', SecurityUser::class, \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Expected an instance of %s, but got "%s".', SecurityUser::class, \get_class($user)));
         }
 
         try {

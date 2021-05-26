@@ -60,13 +60,13 @@ class CAResolver
 
     private function isSignatureValid(string $contents, string $pupKey): bool
     {
-        $result = \openssl_x509_verify($contents, $pupKey);
+        $result = openssl_x509_verify($contents, $pupKey);
 
         if ($result === 1) {
             return true;
         }
 
-        @\openssl_error_string();
+        @openssl_error_string();
 
         return false;
     }
@@ -135,7 +135,7 @@ class CAResolver
 
     private function validateCA(array $data): void
     {
-        if (! isset($data['extensions']['basicConstraints']) || \mb_stripos($data['extensions']['basicConstraints'], 'CA:TRUE') === false) {
+        if (! isset($data['extensions']['basicConstraints']) || mb_stripos($data['extensions']['basicConstraints'], 'CA:TRUE') === false) {
             throw new MissingCAExtension($data['subject']['commonName']);
         }
     }

@@ -38,7 +38,7 @@ final class UserFixtures extends Fixture
     {
         $users = [];
 
-        foreach (\range(1, 20) as $i) {
+        foreach (range(1, 20) as $i) {
             $users[] = $user = new RegisterUser(
                 UserId::create(),
                 new EmailAddress($this->faker->unique()->email()),

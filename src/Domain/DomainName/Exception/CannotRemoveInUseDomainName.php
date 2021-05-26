@@ -17,7 +17,7 @@ final class CannotRemoveInUseDomainName extends UseDomainNameException
 {
     protected function getInitMessage(DomainNamePair $domainName, SpaceId $current): string
     {
-        return \sprintf(
+        return sprintf(
             'Domain name "%s" of Hosting Space %s cannot be removed as it is still used by the following entities:',
             $domainName->toString(),
             $current->toString()

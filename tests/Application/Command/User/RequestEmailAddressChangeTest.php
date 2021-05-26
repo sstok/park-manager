@@ -45,10 +45,10 @@ final class RequestEmailAddressChangeTest extends TestCase
 
         $handler(RequestEmailAddressChange::with(UserRepositoryMock::USER_ID1, 'John2@example.com'));
 
-        $repository->assertEntityWasSavedThat(UserRepositoryMock::USER_ID1, static function (User $user) {
+        $repository->assertEntityWasSavedThat(UserRepositoryMock::USER_ID1, static function (User $user): bool {
             $token = $user->emailAddressChangeToken;
 
-            self::assertEquals(['email' => 'John2@example.com'], $token->metadata());
+            self::assertSame(['email' => 'John2@example.com'], $token->metadata());
             self::assertFalse($token->isExpired(new DateTimeImmutable('+ 5 seconds')));
             self::assertTrue($token->isExpired(new DateTimeImmutable('+ 3700 seconds')));
 
@@ -60,17 +60,17 @@ final class RequestEmailAddressChangeTest extends TestCase
     public function it_handles_email_address_change_request_with_different_label(): void
     {
         $handler = new RequestEmailAddressChangeHandler(
-            $repository = new UserRepositoryMock([$user = UserRepositoryMock::createUser()]),
+            $repository = new UserRepositoryMock([UserRepositoryMock::createUser()]),
             $this->createConfirmationMailer('John2+spam@example.com'),
             FakeSplitTokenFactory::instance()
         );
 
         $handler(RequestEmailAddressChange::with(UserRepositoryMock::USER_ID1, 'John2+spam@example.com'));
 
-        $repository->assertEntityWasSavedThat(UserRepositoryMock::USER_ID1, static function (User $user) {
+        $repository->assertEntityWasSavedThat(UserRepositoryMock::USER_ID1, static function (User $user): bool {
             $token = $user->emailAddressChangeToken;
 
-            self::assertEquals(['email' => 'John2+spam@example.com'], $token->metadata());
+            self::assertSame(['email' => 'John2+spam@example.com'], $token->metadata());
             self::assertFalse($token->isExpired(new DateTimeImmutable('+ 5 seconds')));
             self::assertTrue($token->isExpired(new DateTimeImmutable('+ 3700 seconds')));
 
@@ -106,7 +106,7 @@ final class RequestEmailAddressChangeTest extends TestCase
         $confirmationMailerProphecy->send(
             $email,
             Argument::that(
-                static fn (SplitToken $splitToken) => $splitToken->token()->getString() !== ''
+                static fn (SplitToken $splitToken): bool => $splitToken->token()->getString() !== ''
             )
         )->shouldBeCalledTimes(1);
 

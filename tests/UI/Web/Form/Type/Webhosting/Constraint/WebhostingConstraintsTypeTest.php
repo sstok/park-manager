@@ -97,9 +97,9 @@ final class WebhostingConstraintsTypeTest extends TypeTestCase
             ],
         ];
 
-        $merged = \array_merge($orig, $submit);
-        $merged['email'] = \array_merge($orig['email'], $submit['email'] ?? []);
-        $merged['database'] = \array_merge($orig['database'], $submit['database'] ?? []);
+        $merged = array_merge($orig, $submit);
+        $merged['email'] = array_merge($orig['email'], $submit['email'] ?? []);
+        $merged['database'] = array_merge($orig['database'], $submit['database'] ?? []);
         $form->submit($merged);
 
         self::assertTrue($form->isSubmitted());

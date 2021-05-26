@@ -26,7 +26,7 @@ final class CrawlerSelectorTextContains extends Constraint
 
     public function toString(): string
     {
-        return \sprintf('has a node matching selector "%s" with content containing "%s"', $this->selector, $this->expectedText);
+        return sprintf('has a node matching selector "%s" with content containing "%s"', $this->selector, $this->expectedText);
     }
 
     /**
@@ -36,7 +36,8 @@ final class CrawlerSelectorTextContains extends Constraint
     {
         $crawler = $crawler
             ->filter($this->selector)
-            ->reduce(fn (Crawler $node, int $i) => \mb_strpos($node->text(null, false), $this->expectedText) === false);
+            ->reduce(fn (Crawler $node, int $i): bool => ! str_contains($node->text(null, false), $this->expectedText))
+        ;
 
         return \count($crawler) > 0;
     }

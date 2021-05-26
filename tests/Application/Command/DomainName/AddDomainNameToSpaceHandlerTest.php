@@ -81,11 +81,7 @@ final class AddDomainNameToSpaceHandlerTest extends TestCase
                 return false;
             }
 
-            if (! $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1))) {
-                return false;
-            }
-
-            return true;
+            return $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1));
         });
     }
 
@@ -99,16 +95,12 @@ final class AddDomainNameToSpaceHandlerTest extends TestCase
 
         $this->spaceRepository->assertHasEntity(self::SPACE_ID1, static fn (Space $space): bool => $space->primaryDomainLabel !== $domainName);
         $this->domainNameRepository->assertEntitiesCountWasSaved(1);
-        $this->domainNameRepository->assertHasEntity(self::EXISTING_DOMAIN1, static function (DomainName $storedDomainName) {
+        $this->domainNameRepository->assertHasEntity(self::EXISTING_DOMAIN1, static function (DomainName $storedDomainName): bool {
             if ($storedDomainName->isPrimary()) {
                 return false;
             }
 
-            if (! $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1))) {
-                return false;
-            }
-
-            return true;
+            return $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1));
         });
     }
 
@@ -122,16 +114,12 @@ final class AddDomainNameToSpaceHandlerTest extends TestCase
 
         $this->spaceRepository->assertHasEntity(self::SPACE_ID1, static fn (Space $space): bool => $space->primaryDomainLabel === $domainName);
         $this->domainNameRepository->assertEntitiesCountWasSaved(2); // Internally the first one is changed from primary
-        $this->domainNameRepository->assertHasEntity(self::EXISTING_DOMAIN1, static function (DomainName $storedDomainName) {
+        $this->domainNameRepository->assertHasEntity(self::EXISTING_DOMAIN1, static function (DomainName $storedDomainName): bool {
             if (! $storedDomainName->isPrimary()) {
                 return false;
             }
 
-            if (! $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1))) {
-                return false;
-            }
-
-            return true;
+            return $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1));
         });
     }
 }

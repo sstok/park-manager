@@ -48,7 +48,7 @@ final class ConstraintsComparator extends Comparator
             $exportedExpected = $this->exporter->export($expected),
             $exportedActual = $this->exporter->export($actual),
             false,
-            \sprintf(
+            sprintf(
                 'Failed asserting that %s equals expected %s.',
                 $exportedActual,
                 $exportedExpected

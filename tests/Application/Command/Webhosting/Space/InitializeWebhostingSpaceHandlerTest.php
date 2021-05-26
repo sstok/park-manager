@@ -71,13 +71,13 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
                 }
 
                 return throw new \InvalidArgumentException(
-                    \sprintf('Unsupported SystemCommand %s', \get_class($command))
+                    sprintf('Unsupported SystemCommand %s', \get_class($command))
                 );
             }
 
             public function query(SystemQuery $command): OperationResult
             {
-                throw new \InvalidArgumentException(\sprintf('Unsupported SystemQuery %s', \get_class($command)));
+                throw new \InvalidArgumentException(sprintf('Unsupported SystemQuery %s', \get_class($command)));
             }
         };
 
@@ -114,9 +114,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
         ($this->handler)(new InitializeWebhostingSpace($id = SpaceId::fromString(SpaceRepositoryMock::ID1)));
 
         $this->spaceRepository->assertEntitiesCountWasSaved(2);
-        $this->spaceRepository->assertEntityWasSavedThat(SpaceRepositoryMock::ID1, static function (Space $space) {
-            return $space->setupStatus->equals(SpaceSetupStatus::get('Ready'));
-        });
+        $this->spaceRepository->assertEntityWasSavedThat(SpaceRepositoryMock::ID1, static fn (Space $space): bool => $space->setupStatus->equals(SpaceSetupStatus::get('Ready')));
 
         self::assertEquals([new WebhostingSpaceWasInitialized($id)], $this->eventDispatcher->dispatchedEvents);
         self::assertEmpty($this->logger->records);
@@ -145,9 +143,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
         ($this->handler)(new InitializeWebhostingSpace($id = SpaceId::fromString(self::SPACE_ID2)));
 
         $this->spaceRepository->assertEntitiesCountWasSaved(2);
-        $this->spaceRepository->assertEntityWasSavedThat(self::SPACE_ID2, static function (Space $space) {
-            return $space->setupStatus->equals(SpaceSetupStatus::get('Error'));
-        });
+        $this->spaceRepository->assertEntityWasSavedThat(self::SPACE_ID2, static fn (Space $space): bool => $space->setupStatus->equals(SpaceSetupStatus::get('Error')));
 
         self::assertTrue(
             $this->logger->hasRecordThatPasses(
@@ -194,7 +190,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
         ($this->handler)(new InitializeWebhostingSpace(SpaceId::fromString(self::SPACE_ID2)));
 
         $this->spaceRepository->assertEntitiesCountWasSaved(0);
-        self::assertEquals([], $this->eventDispatcher->dispatchedEvents);
+        self::assertSame([], $this->eventDispatcher->dispatchedEvents);
         self::assertEmpty($this->logger->records);
     }
 
@@ -210,7 +206,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
         ($this->handler)(new InitializeWebhostingSpace(SpaceId::fromString(self::SPACE_ID2)));
 
         $this->spaceRepository->assertEntitiesCountWasSaved(0);
-        self::assertEquals([], $this->eventDispatcher->dispatchedEvents);
+        self::assertSame([], $this->eventDispatcher->dispatchedEvents);
         self::assertEmpty($this->logger->records);
     }
 }

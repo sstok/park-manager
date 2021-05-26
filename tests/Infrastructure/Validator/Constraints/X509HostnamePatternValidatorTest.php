@@ -64,7 +64,8 @@ final class X509HostnamePatternValidatorTest extends X509ValidatorTestCase
             ->setInvalidValue($cert)
             ->setParameter('{required_pattern}', '*example.com')
             ->setParameter('{supported}', 'bop.dev.rollerscapes.net')
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     protected function createValidator(): ConstraintValidatorInterface

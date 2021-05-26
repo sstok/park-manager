@@ -130,14 +130,14 @@ final class CertificateFactoryImplTest extends TestCase
         );
 
         // - and try multiple certificate types (RSA-SHA1, RSA-SHA256, etc). Or one with a fingerprint...
-        self::assertEquals(['bop.dev.rollerscapes.net'], $certificate->getDomains());
-        self::assertEquals('bop.dev.rollerscapes.net', $certificate->getCommonName());
-        self::assertEquals([], $certificate->getAdditionalDomains());
-        self::assertEquals('RSA-SHA1', $certificate->getSignatureAlgorithm());
-        self::assertEquals('5990c7371c6e72708f0df1444c057a14c193131d', $certificate->getFingerprint());
-        self::assertEquals('2014-07-27 13:02:33', $certificate->validFromDate()->toDateTimeString());
-        self::assertEquals('2018-07-26 13:02:33', $certificate->expirationDate()->toDateTimeString());
-        self::assertEquals(<<<'PUBKEY'
+        self::assertSame(['bop.dev.rollerscapes.net'], $certificate->getDomains());
+        self::assertSame('bop.dev.rollerscapes.net', $certificate->getCommonName());
+        self::assertSame([], $certificate->getAdditionalDomains());
+        self::assertSame('RSA-SHA1', $certificate->getSignatureAlgorithm());
+        self::assertSame('5990c7371c6e72708f0df1444c057a14c193131d', $certificate->getFingerprint());
+        self::assertSame('2014-07-27 13:02:33', $certificate->validFromDate()->toDateTimeString());
+        self::assertSame('2018-07-26 13:02:33', $certificate->expirationDate()->toDateTimeString());
+        self::assertSame(<<<'PUBKEY'
             -----BEGIN PUBLIC KEY-----
             MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxTe++fCJwTyCBEP1aGK4
             /6aEdWxhHLqQAfkOvEdguWnORBkDMGjgwqYT9UXrSxhyRPuIbLPRsyW+ei3y0isu
@@ -188,14 +188,15 @@ final class CertificateFactoryImplTest extends TestCase
             $certificate->getRawFields()
         );
 
-        self::assertEquals($ca, $certificate->ca);
+        self::assertSame($ca, $certificate->ca);
         self::assertSame(
             $privateKey,
             Crypto::unseal($certificate->getPrivateKey(), new EncryptionSecretKey(new HiddenString(Base64::decode(self::PRIVATE_KEY))), Halite::ENCODE_BASE64)
                 ->getString()
         );
+
         $objectManager->assertEntitiesCountWasSaved(1);
-        $objectManager->assertEntitiesWereSavedThat(static fn (Certificate $certificate) => $certificate->getContents() === $certContents);
+        $objectManager->assertEntitiesWereSavedThat(static fn (Certificate $certificate): bool => $certificate->getContents() === $certContents);
     }
 
     /** @test */
@@ -311,15 +312,15 @@ final class CertificateFactoryImplTest extends TestCase
 
         $certificate = $factory->createCertificate($certContents, $privateKey);
 
-        self::assertEquals('slack.com', $certificate->getDomain());
-        self::assertEquals('slack.com', $certificate->getCommonName());
-        self::assertEquals(['slack.com', '*.slack.com'], $certificate->getDomains());
-        self::assertEquals(['slack.com', '*.slack.com'], $certificate->getAdditionalDomains());
-        self::assertEquals('RSA-SHA256', $certificate->getSignatureAlgorithm());
-        self::assertEquals('5f187452a024f2af605e8c01f2a5e22a7a530870a36ba459ca8b56048a454187', $certificate->getFingerprint());
-        self::assertEquals('2018-02-08 00:00:00', $certificate->validFromDate()->toDateTimeString());
-        self::assertEquals('2021-02-12 12:00:00', $certificate->expirationDate()->toDateTimeString());
-        self::assertEquals(<<<'PUBKEY'
+        self::assertSame('slack.com', $certificate->getDomain());
+        self::assertSame('slack.com', $certificate->getCommonName());
+        self::assertSame(['slack.com', '*.slack.com'], $certificate->getDomains());
+        self::assertSame(['slack.com', '*.slack.com'], $certificate->getAdditionalDomains());
+        self::assertSame('RSA-SHA256', $certificate->getSignatureAlgorithm());
+        self::assertSame('5f187452a024f2af605e8c01f2a5e22a7a530870a36ba459ca8b56048a454187', $certificate->getFingerprint());
+        self::assertSame('2018-02-08 00:00:00', $certificate->validFromDate()->toDateTimeString());
+        self::assertSame('2021-02-12 12:00:00', $certificate->expirationDate()->toDateTimeString());
+        self::assertSame(<<<'PUBKEY'
             -----BEGIN PUBLIC KEY-----
             MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqb0QCgBUkwHwC1AUT1N1
             W6wfbKSUZGSQ9Pf7EovdVIt1f8hrq5KZOvVUaU/5qsS9UMm1GGqhjVrFqRKv//rZ
@@ -333,9 +334,10 @@ final class CertificateFactoryImplTest extends TestCase
             PUBKEY,
             $certificate->getPublicKey()
         );
-        self::assertEquals($ca, $certificate->ca);
+        self::assertSame($ca, $certificate->ca);
+
         $objectManager->assertEntitiesCountWasSaved(1);
-        $objectManager->assertEntitiesWereSavedThat(static fn (Certificate $certificate) => $certificate->getContents() === $certContents);
+        $objectManager->assertEntitiesWereSavedThat(static fn (Certificate $certificate): bool => $certificate->getContents() === $certContents);
     }
 
     /** @test */
@@ -411,11 +413,11 @@ final class CertificateFactoryImplTest extends TestCase
 
         $certificate = $factory->createCertificate($certContents, $privateKey);
 
-        self::assertEquals('park-manager.com', $certificate->getDomain());
-        self::assertEquals('park-manager.com', $certificate->getCommonName());
-        self::assertEquals(['0:0:FF:FFFF:FFFF:FFFF:FFFF:FFFF', '127.0.0.1', '666:0:75:63:6B:20:74:68', 'park-manager.com'], $certificate->getDomains());
-        self::assertEquals(['0:0:FF:FFFF:FFFF:FFFF:FFFF:FFFF', '127.0.0.1', '666:0:75:63:6B:20:74:68'], $certificate->getAdditionalDomains());
-        self::assertEquals('RSA-SHA256', $certificate->getSignatureAlgorithm());
+        self::assertSame('park-manager.com', $certificate->getDomain());
+        self::assertSame('park-manager.com', $certificate->getCommonName());
+        self::assertSame(['0:0:FF:FFFF:FFFF:FFFF:FFFF:FFFF', '127.0.0.1', '666:0:75:63:6B:20:74:68', 'park-manager.com'], $certificate->getDomains());
+        self::assertSame(['0:0:FF:FFFF:FFFF:FFFF:FFFF:FFFF', '127.0.0.1', '666:0:75:63:6B:20:74:68'], $certificate->getAdditionalDomains());
+        self::assertSame('RSA-SHA256', $certificate->getSignatureAlgorithm());
         self::assertNull($certificate->ca);
     }
 
@@ -663,7 +665,7 @@ final class CertificateFactoryImplTest extends TestCase
         );
 
         $objectManager->assertEntitiesCountWasSaved(2);
-        $objectManager->assertEntitiesWereSavedThat(static fn (object $entity) => $entity->getContents() === $cert);
-        $objectManager->assertEntitiesWereSavedThat(static fn (object $entity) => $entity->getContents() === $ca);
+        $objectManager->assertEntitiesWereSavedThat(static fn (object $entity): bool => $entity->getContents() === $cert);
+        $objectManager->assertEntitiesWereSavedThat(static fn (object $entity): bool => $entity->getContents() === $ca);
     }
 }

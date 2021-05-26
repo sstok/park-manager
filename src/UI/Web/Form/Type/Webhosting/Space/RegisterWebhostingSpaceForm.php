@@ -68,16 +68,17 @@ final class RegisterWebhostingSpaceForm extends AbstractType
                 'required' => false,
                 'help_html' => true,
                 'help' => 'help.webhosting.space_constraints',
-            ]);
+            ])
+        ;
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (PostSubmitEvent $event): void {
             $data = $event->getData();
 
             if ($data['plan'] !== null && ! $data['no_link_plan']) {
-                /** @var Plan $plan */
                 $plan = $data['plan'];
-                /** @var Constraints $constraints */
+                \assert($plan instanceof Plan);
                 $constraints = $data['constraints'];
+                \assert($constraints instanceof Constraints);
 
                 if (! $constraints->equals($plan->constraints)) {
                     $message = $this->translator->trans('webhosting_space.plan_constraints_mismatch', [], 'validators');
@@ -113,7 +114,8 @@ final class RegisterWebhostingSpaceForm extends AbstractType
                         CannotAssignDomainNameWithDifferentOwner::class => 'domain_name',
                     ],
                 ]
-            );
+            )
+        ;
     }
 
     public function getBlockPrefix(): string

@@ -26,7 +26,7 @@ final class CertificateFactoryImpl implements CertificateFactory
     private KeyValidator $keyValidator;
     private X509DataExtractor $extractor;
 
-    public function __construct(string $encryptionKey, ObjectManager $objectManager, CAResolver $caResolver, KeyValidator $keyValidator = null, ?X509DataExtractor $dataExtractor = null)
+    public function __construct(string $encryptionKey, ObjectManager $objectManager, CAResolver $caResolver, ?KeyValidator $keyValidator = null, ?X509DataExtractor $dataExtractor = null)
     {
         $this->encryptionKey = new EncryptionPublicKey(new HiddenString($encryptionKey));
         $this->objectManager = $objectManager;
@@ -59,7 +59,7 @@ final class CertificateFactoryImpl implements CertificateFactory
         $ca = $this->caResolver->resolve($contents, $caList);
         $fields = $this->extractor->extractRawData($contents, '', true);
 
-        if (isset($fields['extensions']['basicConstraints']) && \mb_stripos($fields['extensions']['basicConstraints'], 'CA:TRUE') !== false) {
+        if (isset($fields['extensions']['basicConstraints']) && mb_stripos($fields['extensions']['basicConstraints'], 'CA:TRUE') !== false) {
             throw new ExpectedLeafCertificate();
         }
 

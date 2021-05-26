@@ -39,13 +39,13 @@ final class HashedPasswordType extends AbstractType
             }
 
             $encodePassword = $encoder($value);
-            \sodium_memzero($value);
+            sodium_memzero($value);
 
             $event->setData($encodePassword);
         });
 
         $passwordOptions = $options['password_options'] + ['required' => $options['required']];
-        $passwordOptions['attr'] = \array_merge(
+        $passwordOptions['attr'] = array_merge(
             $passwordOptions['attr'] ?? [],
             [
                 'autocomplete' => 'off',

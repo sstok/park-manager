@@ -88,10 +88,9 @@ final class MessageFormTypeTest extends TypeTestCase
         $formRenderer
             ->method('humanize')
             ->willReturnCallback(
-                static fn (string $text): string => \ucfirst(
-                    \mb_strtolower(\trim(\preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '], $text)))
-                )
-            );
+                static fn (string $text): string => ucfirst(mb_strtolower(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '], $text))))
+            )
+        ;
 
         return [
             new MessageFormType($messageBus, $translator, new ViolationMapper($translator, $formRenderer)),
@@ -150,12 +149,14 @@ final class MessageFormTypeTest extends TypeTestCase
     {
         $profileContactFormType = $this->factory->createNamedBuilder('contact')
             ->add('email', TextType::class, ['required' => false])
-            ->add('address', TextType::class, ['required' => false]);
+            ->add('address', TextType::class, ['required' => false])
+        ;
 
         $profileFormType = $this->factory->createNamedBuilder('profile')
             ->add('name', TextType::class, ['required' => false])
             ->add('full_name', TextType::class, ['required' => false, 'label_format' => 'My "%id%" is name "%name%"'])
-            ->add($profileContactFormType);
+            ->add($profileContactFormType)
+        ;
 
         $options = [
             'command_factory' => static fn (array $data): StubCommand => new StubCommand($data['id'], $data['username'], $data['profile'] ?? null),
@@ -170,7 +171,7 @@ final class MessageFormTypeTest extends TypeTestCase
                 ValueError::class => static fn (Throwable $e) => new FormError($e->getMessage(), null, [], null, $e),
             ],
             'exception_fallback' => static fn (Throwable $e, TranslatorInterface $translator) => [
-                'profile.contact.email' => new FormError($translator->trans('Contact Email problem is here'), null, [], null, $e),
+                'profile.contact.email' => new FormError($translator->trans(/** @Ignore */ 'Contact Email problem is here'), null, [], null, $e),
             ],
             'violation_mapping' => [
                 'is_admin' => 'profile.full_name',
@@ -186,7 +187,8 @@ final class MessageFormTypeTest extends TypeTestCase
             ->add('id', IntegerType::class, ['required' => false])
             ->add('username', TextType::class, ['required' => false])
             ->add($profileFormType)
-            ->getForm();
+            ->getForm()
+        ;
     }
 
     /**
@@ -209,7 +211,7 @@ final class MessageFormTypeTest extends TypeTestCase
             $currentForm = $form;
 
             if ($formPath !== '') {
-                foreach (\explode('.', $formPath) as $child) {
+                foreach (explode('.', $formPath) as $child) {
                     $currentForm = $currentForm->get($child);
                 }
             }
@@ -302,7 +304,8 @@ final class MessageFormTypeTest extends TypeTestCase
         ])
             ->add('id', IntegerType::class, ['required' => false])
             ->add('username', TextType::class, ['required' => false])
-            ->getForm();
+            ->getForm()
+        ;
 
         $this->expectException(Throwable::class);
         $this->expectExceptionMessage('You know nothing');
@@ -315,8 +318,8 @@ final class MessageFormTypeTest extends TypeTestCase
     {
         $form = $this->createFormForCommand(new MessageFormTypeEntity());
 
-        self::assertEquals(50, $form->get('id')->getData());
-        self::assertEquals('Bernard', $form->get('username')->getData());
+        self::assertSame(50, $form->get('id')->getData());
+        self::assertSame('Bernard', $form->get('username')->getData());
         self::assertNull($form->get('profile')->getData());
     }
 
@@ -334,7 +337,8 @@ final class MessageFormTypeTest extends TypeTestCase
         $this->factory->createNamedBuilder('register_user', MessageFormType::class, new MessageFormTypeEntity(), $options)
             ->add('id', IntegerType::class, ['required' => false])
             ->add('username', TextType::class, ['required' => false])
-            ->getForm();
+            ->getForm()
+        ;
     }
 
     /** @test */
@@ -351,7 +355,8 @@ final class MessageFormTypeTest extends TypeTestCase
         $this->factory->createNamedBuilder('register_user', MessageFormType::class, new MessageFormTypeEntity(), $options)
             ->add('id', IntegerType::class, ['required' => false])
             ->add('username', TextType::class, ['required' => false])
-            ->getForm();
+            ->getForm()
+        ;
     }
 
     /** @test */
@@ -359,8 +364,8 @@ final class MessageFormTypeTest extends TypeTestCase
     {
         $form = $this->createFormForCommand(['id' => '9', 'username' => 'Dio']);
 
-        self::assertEquals(9, $form->get('id')->getData());
-        self::assertEquals('Dio', $form->get('username')->getData());
+        self::assertSame('9', $form->get('id')->getData());
+        self::assertSame('Dio', $form->get('username')->getData());
         self::assertNull($form->get('profile')->getData());
 
         $form->submit(['id' => '8', 'username' => 'Nero']);
@@ -376,9 +381,9 @@ final class MessageFormTypeTest extends TypeTestCase
             ],
         ]), $this->dispatchedCommand);
 
-        self::assertEquals(8, $form->get('id')->getData());
-        self::assertEquals('Nero', $form->get('username')->getData());
-        self::assertEquals(
+        self::assertSame(8, $form->get('id')->getData());
+        self::assertSame('Nero', $form->get('username')->getData());
+        self::assertSame(
             [
                 'name' => null,
                 'full_name' => null,

@@ -83,7 +83,7 @@ final class PEMCertificateType extends AbstractType implements DataMapperInterfa
      */
     public function mapFormsToData(iterable $forms, &$viewData): void
     {
-        $forms = \iterator_to_array($forms);
+        $forms = iterator_to_array($forms);
         /** @var FormInterface[] $forms */
         $certificate = $forms['certificate']->getData();
 
@@ -106,23 +106,23 @@ final class PEMCertificateType extends AbstractType implements DataMapperInterfa
 
     private function extractCertData(UploadedFile $certificate, bool $checkForPrivate = false): string
     {
-        $x509Read = @\openssl_x509_read($fileContents = \file_get_contents($certificate->getPathname()));
+        $x509Read = @openssl_x509_read($fileContents = file_get_contents($certificate->getPathname()));
 
         if ($x509Read === false) {
-            throw new TransformationFailedException('Unable to read certificate data: : ' . \openssl_error_string());
+            throw new TransformationFailedException('Unable to read certificate data: : ' . openssl_error_string());
         }
 
         $contents = '';
-        @\openssl_x509_export($x509Read, $contents);
+        @openssl_x509_export($x509Read, $contents);
         unset($x509Read);
 
         // When the file contains a private-key remove it now (unless when a test).
 
         // @codeCoverageIgnoreStart
-        if (\str_contains($fileContents, '-----BEGIN PRIVATE KEY-----') && \is_uploaded_file($certificate->getPathname())) {
+        if (str_contains($fileContents, '-----BEGIN PRIVATE KEY-----') && is_uploaded_file($certificate->getPathname())) {
             // Remove the temp-file and memory-contents to prevent leaking at application level.
-            \unlink($certificate->getPathname());
-            \sodium_memzero($fileContents);
+            unlink($certificate->getPathname());
+            sodium_memzero($fileContents);
         }
         // @codeCoverageIgnoreEnd
 

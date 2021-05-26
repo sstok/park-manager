@@ -98,8 +98,8 @@ final class CertificateValidatorTest extends TestCase
 
             self::fail('Exception was expected.');
         } catch (UnprocessablePEM $e) {
-            self::assertEquals(['name' => ''], $e->getTranslationArgs());
-            self::assertEquals($certContents, $e->getPrevious()->getPrevious()->getMessage());
+            self::assertSame(['name' => ''], $e->getTranslationArgs());
+            self::assertSame($certContents, $e->getPrevious()->getPrevious()->getMessage());
         }
     }
 
@@ -190,7 +190,7 @@ final class CertificateValidatorTest extends TestCase
 
             self::fail('Exception was expected.');
         } catch (GlobalWildcard $e) {
-            self::assertEquals([
+            self::assertSame([
                 'provided' => $provided,
                 'suffix_pattern' => $suffixPattern,
             ], $e->getTranslationArgs());
@@ -327,7 +327,7 @@ final class CertificateValidatorTest extends TestCase
 
             self::fail('Exception was expected.');
         } catch (WeakSignatureAlgorithm $e) {
-            self::assertEquals([
+            self::assertSame([
                 'expected' => 'SHA256',
                 'provided' => 'sha1WithRSAEncryption',
             ], $e->getTranslationArgs());
@@ -353,8 +353,8 @@ final class CertificateValidatorTest extends TestCase
 
             self::fail('Exception was expected.');
         } catch (UnprocessablePEM $e) {
-            self::assertEquals($certContents, $e->getPrevious()->getPrevious()->getMessage());
-            self::assertEquals([
+            self::assertSame($certContents, $e->getPrevious()->getPrevious()->getMessage());
+            self::assertSame([
                 'name' => '',
             ], $e->getTranslationArgs());
         }
@@ -468,7 +468,7 @@ final class CertificateValidatorTest extends TestCase
         $objectManager = new TLSPersistenceRepositoryMock();
 
         $responseFactory = static function ($method, $url, $options) {
-            self::assertEquals('http://ocsp.digicert.com/', $url);
+            self::assertSame('http://ocsp.digicert.com/', $url);
 
             return new MockResponse($options['body'], ['response_headers' => ['content-type' => Ocsp::OCSP_RESPONSE_MEDIATYPE]]);
         };
@@ -482,7 +482,8 @@ final class CertificateValidatorTest extends TestCase
                 '8130451905380357229031687250908825482',
                 $revokedOn = new DateTimeImmutable('2020-01-29T14:12:14.000000+0000'),
                 OcspResponse::REVOCATIONREASON_PRIVILEGEWITHDRAWN)
-            );
+            )
+        ;
         $ocsp = $ocspProphecy->reveal();
 
         $this->certificateValidator = new CertificateValidator(
@@ -501,10 +502,10 @@ final class CertificateValidatorTest extends TestCase
 
             self::fail('Exception was expected.');
         } catch (CertificateIsRevoked $e) {
-            self::assertEquals([
+            self::assertSame([
                 'revoked_on' => $revokedOn,
-                '@reason' => 'tls.revocation_reason.privilege_withdrawn',
                 'reason_code' => 'privilege_withdrawn',
+                '@reason' => 'tls.revocation_reason.privilege_withdrawn',
                 'serial' => '8130451905380357229031687250908825482',
             ], $e->getTranslationArgs());
         }
@@ -618,7 +619,7 @@ final class CertificateValidatorTest extends TestCase
         $objectManager = new TLSPersistenceRepositoryMock();
 
         $responseFactory = static function ($method, $url, $options) {
-            self::assertEquals('http://ocsp.digicert.com/', $url);
+            self::assertSame('http://ocsp.digicert.com/', $url);
 
             return new MockResponse($options['body'], ['response_headers' => ['content-type' => 'text/html']]);
         };
@@ -755,7 +756,7 @@ final class CertificateValidatorTest extends TestCase
         $objectManager = new TLSPersistenceRepositoryMock();
 
         $responseFactory = static function ($method, $url, $options) {
-            self::assertEquals('http://ocsp.digicert.com/', $url);
+            self::assertSame('http://ocsp.digicert.com/', $url);
 
             return new MockResponse($options['body'], ['response_headers' => ['content-type' => Ocsp::OCSP_RESPONSE_MEDIATYPE], 'http_code' => 500]);
         };
@@ -837,7 +838,7 @@ final class CertificateValidatorTest extends TestCase
 
             self::fail('Exception was expected.');
         } catch (UnsupportedPurpose $e) {
-            self::assertEquals(['@required_purpose' => 'S/MIME signing'], $e->getTranslationArgs());
+            self::assertSame(['@required_purpose' => 'S/MIME signing'], $e->getTranslationArgs());
         }
     }
 
@@ -882,7 +883,7 @@ final class CertificateValidatorTest extends TestCase
 
             self::fail('Exception was expected.');
         } catch (UnsupportedDomain $e) {
-            self::assertEquals(['required_pattern' => $hostPattern, 'supported' => $supported], $e->getTranslationArgs());
+            self::assertSame(['required_pattern' => $hostPattern, 'supported' => $supported], $e->getTranslationArgs());
         }
     }
 
@@ -1045,7 +1046,7 @@ final class CertificateValidatorTest extends TestCase
             CERT;
 
         $callback = static function (array $fields, string $certContents, CertificateValidator $validator) use ($cert): void {
-            self::assertEquals($cert, $certContents);
+            self::assertSame($cert, $certContents);
 
             self::assertArrayHasKey('subject', $fields);
             self::assertArrayHasKey('_domains', $fields);

@@ -77,7 +77,7 @@ trait MockRepository
 
         foreach ($this->getFieldsIndexMultiMapping() as $mapping => $getter) {
             if (isset($indexMapping[$mapping])) {
-                throw new \RuntimeException(\sprintf('Multi-mapping name "%s" already exists in single mapping.', $mapping));
+                throw new \RuntimeException(sprintf('Multi-mapping name "%s" already exists in single mapping.', $mapping));
             }
 
             $withGetter = $this->getValueWithGetter($entity, $getter);
@@ -105,22 +105,22 @@ trait MockRepository
             return $getter($object);
         }
 
-        if (\mb_strpos($getter, '#') === 0) {
-            return $object->{\mb_substr($getter, 1)};
+        if (mb_strpos($getter, '#') === 0) {
+            return $object->{mb_substr($getter, 1)};
         }
 
         switch (true) {
-            case \method_exists($object, $getter):
+            case method_exists($object, $getter):
                 return $object->{$getter}();
 
-            case \method_exists($object, 'get' . \ucfirst($getter)):
-                return $object->{'get' . \ucfirst($getter)}();
+            case method_exists($object, 'get' . ucfirst($getter)):
+                return $object->{'get' . ucfirst($getter)}();
 
-            case \property_exists($object, $getter):
+            case property_exists($object, $getter):
                 return $object->{$getter};
 
             default:
-                throw new \InvalidArgumentException(\sprintf('Unable to get field value for "%s" with getter "%s", neither "%2$s()", "get%3$s()" or property "%2$s" exists.', \get_class($object), $getter, \ucfirst($getter)));
+                throw new \InvalidArgumentException(sprintf('Unable to get field value for "%s" with getter "%s", neither "%2$s()", "get%3$s()" or property "%2$s" exists.', \get_class($object), $getter, ucfirst($getter)));
         }
     }
 
@@ -156,7 +156,7 @@ trait MockRepository
         ++$this->mockWasSaved;
 
         if (isset($this->watchers[$id])) {
-            $watcher = \array_pop($this->watchers[$id]);
+            $watcher = array_pop($this->watchers[$id]);
 
             if ($watcher !== null) {
                 $watcher[1]($entity);
@@ -302,11 +302,7 @@ trait MockRepository
             return false;
         }
 
-        if (isset($this->removedById[$this->getValueWithGetter($this->storedByField[$key][$value], 'id')->toString()])) {
-            return false;
-        }
-
-        return true;
+        return ! isset($this->removedById[$this->getValueWithGetter($this->storedByField[$key][$value], 'id')->toString()]);
     }
 
     /**
@@ -333,7 +329,7 @@ trait MockRepository
         Assert::assertGreaterThan(0, $this->mockWasSaved, 'Entities were expected to be stored');
 
         if ($entities) {
-            Assert::assertEquals($entities, \array_values($this->savedById));
+            Assert::assertEquals($entities, array_values($this->savedById));
         }
     }
 
@@ -371,7 +367,7 @@ trait MockRepository
         $this->watchers[$id][] = [$position ?? $this->watcherPositions[$id], $excepted];
 
         // Sort in reverse order, the last item will be 'popped' and executed.
-        \uasort($this->watchers[$id], static fn (array $a, array $b): int => $b[0] <=> $a[0]);
+        uasort($this->watchers[$id], static fn (array $a, array $b): int => $b[0] <=> $a[0]);
     }
 
     public function assertEntitiesWereSavedThat(Closure $excepted): void
@@ -397,7 +393,7 @@ trait MockRepository
     public function assertNoEntitiesWereRemoved(): void
     {
         if ($this->mockWasRemoved > 0) {
-            Assert::fail(\sprintf('No entities were expected to be removed, but %d entities were removed.', $this->mockWasSaved));
+            Assert::fail(sprintf('No entities were expected to be removed, but %d entities were removed.', $this->mockWasSaved));
         }
     }
 
@@ -408,10 +404,10 @@ trait MockRepository
     {
         Assert::assertGreaterThan(0, $this->mockWasRemoved, 'No entities were removed');
 
-        if (\is_string(\reset($entities))) {
-            Assert::assertEquals($entities, \array_keys($this->removedById));
+        if (\is_string(reset($entities))) {
+            Assert::assertEquals($entities, array_keys($this->removedById));
         } else {
-            Assert::assertEquals($entities, \array_values($this->removedById));
+            Assert::assertEquals($entities, array_values($this->removedById));
         }
     }
 

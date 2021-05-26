@@ -47,6 +47,6 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
             $resultIds[$entity->id->toString()] = $entity;
         }
 
-        static::assertEquals($expected, \array_keys($resultIds));
+        static::assertSame($expected, array_keys($resultIds));
     }
 }

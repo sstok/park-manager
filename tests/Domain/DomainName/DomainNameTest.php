@@ -42,11 +42,11 @@ final class DomainNameTest extends TestCase
         $webhostingDomainName = DomainName::registerForSpace(DomainNameId::create(), $space, $domainName);
         $webhostingDomainName2 = DomainName::registerForSpace(DomainNameId::create(), $space2, $domainName2);
 
-        self::assertNotEquals($webhostingDomainName, $webhostingDomainName2);
-        self::assertEquals($domainName, $webhostingDomainName->namePair);
-        self::assertEquals($domainName2, $webhostingDomainName2->namePair);
-        self::assertEquals($space, $webhostingDomainName->space);
-        self::assertEquals($space2, $webhostingDomainName2->space);
+        self::assertNotSame($webhostingDomainName, $webhostingDomainName2);
+        self::assertSame($domainName, $webhostingDomainName->namePair);
+        self::assertSame($domainName2, $webhostingDomainName2->namePair);
+        self::assertSame($space, $webhostingDomainName->space);
+        self::assertSame($space2, $webhostingDomainName2->space);
         self::assertTrue($webhostingDomainName->primary);
         self::assertTrue($webhostingDomainName2->primary);
     }
@@ -64,8 +64,8 @@ final class DomainNameTest extends TestCase
 
         $webhostingDomainName = DomainName::registerSecondaryForSpace(DomainNameId::create(), $space, $domainName2);
 
-        self::assertEquals($domainName2, $webhostingDomainName->namePair);
-        self::assertEquals($space, $webhostingDomainName->space);
+        self::assertSame($domainName2, $webhostingDomainName->namePair);
+        self::assertSame($space, $webhostingDomainName->space);
         self::assertFalse($webhostingDomainName->primary);
     }
 
@@ -78,7 +78,7 @@ final class DomainNameTest extends TestCase
         $webhostingDomainName = DomainName::registerSecondaryForSpace(DomainNameId::create(), $space, $domainName);
         $webhostingDomainName->markPrimary();
 
-        self::assertEquals($domainName, $webhostingDomainName->namePair);
+        self::assertSame($domainName, $webhostingDomainName->namePair);
         self::assertTrue($webhostingDomainName->primary);
     }
 
@@ -94,7 +94,7 @@ final class DomainNameTest extends TestCase
 
         $webhostingDomainName->transferToSpace($space2);
 
-        self::assertEquals($space2, $webhostingDomainName->space);
+        self::assertSame($space2, $webhostingDomainName->space);
         self::assertFalse($webhostingDomainName->primary);
     }
 
@@ -112,7 +112,7 @@ final class DomainNameTest extends TestCase
 
         $webhostingDomainName->transferToSpace($space2, true);
 
-        self::assertEquals($space2, $webhostingDomainName->space);
+        self::assertSame($space2, $webhostingDomainName->space);
         self::assertTrue($webhostingDomainName->primary);
     }
 

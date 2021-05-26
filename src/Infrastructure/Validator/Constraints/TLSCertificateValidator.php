@@ -45,7 +45,8 @@ abstract class TLSCertificateValidator extends ConstraintValidator
                 ->setParameters($this->getTranslationArguments($violation))
                 ->setInvalidValue($value->certificate)
                 ->setCause($violation)
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 
@@ -60,12 +61,12 @@ abstract class TLSCertificateValidator extends ConstraintValidator
         foreach ($arguments as $key => $v) {
             unset($arguments[$key]);
 
-            if (\is_string($v) && \strncmp($key, '@', 1) === 0) {
-                $key = \mb_substr($key, 1);
+            if (\is_string($v) && strncmp($key, '@', 1) === 0) {
+                $key = mb_substr($key, 1);
                 $v = $this->translator->trans($v);
             }
 
-            $arguments[\sprintf('{%s}', $key)] = $v;
+            $arguments[sprintf('{%s}', $key)] = $v;
         }
 
         return $arguments;

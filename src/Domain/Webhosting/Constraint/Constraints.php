@@ -65,7 +65,7 @@ class Constraints
         $this->database = new DBConstraints();
 
         foreach ($fields as $name => $value) {
-            if (\property_exists($this, $name)) {
+            if (property_exists($this, $name)) {
                 $this->{$name} = $value;
             }
         }
@@ -91,11 +91,7 @@ class Constraints
             return false;
         }
 
-        if ($this->monthlyTraffic !== $other->monthlyTraffic) {
-            return false;
-        }
-
-        return true;
+        return $this->monthlyTraffic === $other->monthlyTraffic;
     }
 
     public function mergeFrom(self $other): self
@@ -103,7 +99,8 @@ class Constraints
         return $this->setMonthlyTraffic($other->monthlyTraffic)
             ->setStorageSize($other->storageSize)
             ->setEmail($other->email)
-            ->setDatabase($other->database);
+            ->setDatabase($other->database)
+        ;
     }
 
     public function setEmail(EmailConstraints $email): self

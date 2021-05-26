@@ -45,7 +45,8 @@ final class RemoveDomainNameAction
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.list_domain_names', ['user' => $domainName->id->toString()])
-                ->withFlash('success', 'flash.domain_name_removed');
+                ->withFlash('success', 'flash.domain_name_removed')
+            ;
         }
 
         return new TwigResponse('admin/user/remove.html.twig', ['form' => $form->createView(), 'domainName' => $domainName]);

@@ -23,7 +23,8 @@ final class EditDomainNameForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('owner', OwnerSelector::class, ['label' => 'label.owner']);
+            ->add('owner', OwnerSelector::class, ['label' => 'label.owner'])
+        ;
     }
 
     public function getParent(): string
@@ -37,6 +38,7 @@ final class EditDomainNameForm extends AbstractType
             ->setDefault(
                 'command_factory',
                 static fn (array $fields, DomainName $model) => new AssignDomainNameToOwner($model->id, $fields['owner']->id)
-            );
+            )
+        ;
     }
 }

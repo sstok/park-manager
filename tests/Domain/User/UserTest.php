@@ -47,8 +47,8 @@ final class UserTest extends TestCase
             'Tucker@5423'
         );
 
-        self::assertEquals($id, $user->id);
-        self::assertEquals($email, $user->email);
+        self::assertSame($id, $user->id);
+        self::assertSame($email, $user->email);
     }
 
     /** @test */
@@ -57,7 +57,7 @@ final class UserTest extends TestCase
         $user = $this->registerUser();
         $user->changeEmail($email = new EmailAddress('Doh@example.com'));
 
-        self::assertEquals($email, $user->email);
+        self::assertSame($email, $user->email);
     }
 
     private function registerUser(string $password = 'Tucker@5423'): User
@@ -71,7 +71,7 @@ final class UserTest extends TestCase
         $user = $this->registerUser();
         $user->changeName('Jenny');
 
-        self::assertEquals('Jenny', $user->displayName);
+        self::assertSame('Jenny', $user->displayName);
     }
 
     /** @test */
@@ -100,7 +100,7 @@ final class UserTest extends TestCase
 
         $user->changePassword('security-is-null');
 
-        self::assertEquals('security-is-null', $user->password);
+        self::assertSame('security-is-null', $user->password);
     }
 
     /** @test */
@@ -164,7 +164,7 @@ final class UserTest extends TestCase
             $user->confirmEmailChange($token);
 
             self::fail('EmailChangeConfirmationRejected was expected');
-        } catch (EmailChangeConfirmationRejected $e) {
+        } catch (EmailChangeConfirmationRejected) {
             $this->addToAssertionCount(1);
         }
     }
@@ -193,7 +193,7 @@ final class UserTest extends TestCase
 
     private function generateSecondToken(): SplitToken
     {
-        return FakeSplitTokenFactory::instance(\str_repeat('na', SplitToken::TOKEN_CHAR_LENGTH))->generate();
+        return FakeSplitTokenFactory::instance(str_repeat('na', SplitToken::TOKEN_CHAR_LENGTH))->generate();
     }
 
     /** @test */
@@ -219,7 +219,7 @@ final class UserTest extends TestCase
         $user->addRole('ROLE_SUPER_ADMIN');
         $user->addRole('ROLE_SUPER_ADMIN'); // Ensure there're no duplicates
 
-        self::assertEquals(['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'], $user->getRoles());
+        self::assertSame(['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'], $user->getRoles());
         self::assertTrue($user->hasRole('ROLE_ADMIN'));
         self::assertTrue($user->hasRole('ROLE_SUPER_ADMIN'));
     }
@@ -233,7 +233,7 @@ final class UserTest extends TestCase
 
         $user->removeRole('ROLE_SUPER_ADMIN');
 
-        self::assertEquals(['ROLE_USER', 'ROLE_ADMIN'], $user->getRoles());
+        self::assertSame(['ROLE_USER', 'ROLE_ADMIN'], $user->getRoles());
         self::assertTrue($user->hasRole('ROLE_ADMIN'));
         self::assertFalse($user->hasRole('ROLE_SUPER_ADMIN'));
     }
@@ -303,7 +303,7 @@ final class UserTest extends TestCase
 
         $user->confirmPasswordReset($token2 = $this->getTokenString($token), 'new-password');
 
-        self::assertEquals('new-password', $user->password);
+        self::assertSame('new-password', $user->password);
         self::assertNull($user->passwordResetToken);
     }
 
@@ -361,7 +361,7 @@ final class UserTest extends TestCase
 
         $this->assertPasswordResetThrowsRejected($user, $token);
 
-        self::assertEquals('pass-my-word', $user->password);
+        self::assertSame('pass-my-word', $user->password);
         self::assertNull($user->passwordResetToken);
     }
 

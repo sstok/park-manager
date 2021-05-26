@@ -61,10 +61,11 @@ abstract class MessageFormTestCase extends TypeTestCase
         $formRenderer
             ->method('humanize')
             ->willReturnCallback(
-                static fn (string $text): string => \ucfirst(
-                    \mb_strtolower(\trim(\preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '], $text)))
+                static fn (string $text): string => ucfirst(
+                    mb_strtolower(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '], $text)))
                 )
-            );
+            )
+        ;
 
         return new MessageFormType($messageBus, $translator, new ViolationMapper($translator, $formRenderer));
     }
@@ -84,8 +85,8 @@ abstract class MessageFormTestCase extends TypeTestCase
             $formPath = (string) $formPath;
             $currentForm = $form;
 
-            if ($formPath !== '' && ! \ctype_digit($formPath)) {
-                foreach (\explode('.', $formPath) as $child) {
+            if ($formPath !== '' && ! ctype_digit($formPath)) {
+                foreach (explode('.', $formPath) as $child) {
                     $currentForm = $currentForm->get($child);
                 }
             }
@@ -105,14 +106,14 @@ abstract class MessageFormTestCase extends TypeTestCase
 
                 if ($cause instanceof ConstraintViolationInterface) {
                     $causeStr .= '(ConstraintViolation)' . $cause->getMessage();
-                    $cause = \method_exists($cause, 'getCause') ? $cause->getCause() : null;
+                    $cause = method_exists($cause, 'getCause') ? $cause->getCause() : null;
                 }
 
                 if ($cause instanceof \Exception) {
                     $causeStr .= $cause->getMessage() . "\n" . $cause->getTraceAsString();
                 }
 
-                $errors .= \sprintf(
+                $errors .= sprintf(
                     "Message: %s\nOrigin: %s\nCause: %s\n==========================================\n\n",
                     $error->getMessage(),
                     \is_object($error->getOrigin()) ? $error->getOrigin()->getName() : 'null',

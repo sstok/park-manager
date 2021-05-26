@@ -46,7 +46,7 @@ final class DomainNameRegistrable extends Constraint
         ?string $lengthMessage = null,
         ?string $privateMessage = null,
 
-        array $groups = null,
+        ?array $groups = null,
         mixed $payload = null,
         array $options = []
     ) {

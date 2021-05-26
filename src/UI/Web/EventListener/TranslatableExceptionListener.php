@@ -47,9 +47,9 @@ final class TranslatableExceptionListener implements EventSubscriberInterface
         foreach ($arguments as $key => $value) {
             if ($value instanceof TranslatableInterface) {
                 $arguments[$key] = $value->trans($this->translator);
-            } elseif (\is_string($value) && \strncmp($key, '@', 1) === 0) {
+            } elseif (\is_string($value) && strncmp($key, '@', 1) === 0) {
                 unset($arguments[$key]);
-                $arguments[\mb_substr($key, 1)] = $this->translator->trans($value);
+                $arguments[mb_substr($key, 1)] = $this->translator->trans($value);
             }
         }
 

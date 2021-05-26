@@ -29,7 +29,8 @@ final class EditWebhostingPlanForm extends AbstractType
                 'required' => false,
                 'label' => 'webhosting.plan.edit.sync_label',
                 'getter' => static fn (): bool => false, // Unmapped, but we still need the data.
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

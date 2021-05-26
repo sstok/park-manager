@@ -17,6 +17,6 @@ final class PlanNotFound extends NotFoundException
 {
     public static function withId(PlanId $id): self
     {
-        return new self(\sprintf('Plan with id "%s" does not exist.', $id->toString()));
+        return new self(sprintf('Plan with id "%s" does not exist.', $id->toString()));
     }
 }

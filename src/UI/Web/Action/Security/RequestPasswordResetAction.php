@@ -35,7 +35,8 @@ final class RequestPasswordResetAction
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.security_login')
-                ->withFlash('success', 'flash.password_reset_send');
+                ->withFlash('success', 'flash.password_reset_send')
+            ;
         }
 
         $response = new TwigResponse('security/password_reset.html.twig', $form);

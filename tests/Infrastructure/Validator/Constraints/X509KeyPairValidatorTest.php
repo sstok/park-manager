@@ -46,7 +46,8 @@ final class X509KeyPairValidatorTest extends X509ValidatorTestCase
         $this->buildViolation('tls.violation.unprocessable_pem')
             ->setInvalidValue('NopeNopeNopeNope')
             ->setParameter('{name}', '')
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     /** @test */
@@ -84,7 +85,8 @@ final class X509KeyPairValidatorTest extends X509ValidatorTestCase
 
         $this->buildViolation('tls.violation.unprocessable_key')
             ->setInvalidValue($cert)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     /** @test */
@@ -172,7 +174,8 @@ final class X509KeyPairValidatorTest extends X509ValidatorTestCase
 
         $this->buildViolation('tls.violation.public_key_mismatch')
             ->setInvalidValue($cert)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     protected function createValidator(): ConstraintValidatorInterface

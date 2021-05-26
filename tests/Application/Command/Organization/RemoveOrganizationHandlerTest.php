@@ -49,12 +49,9 @@ final class RemoveOrganizationHandlerTest extends TestCase
         );
         $orgOwner = Owner::byOrganization($org);
 
-        $spaceRepository = new SpaceRepositoryMock([
-            $space1 = SpaceRepositoryMock::createSpace(owner: $orgOwner),
-        ]);
-
+        $spaceRepository = new SpaceRepositoryMock([SpaceRepositoryMock::createSpace(owner: $orgOwner)]);
         $domainNameRepository = new DomainNameRepositoryMock([
-            $domainName1 = DomainName::register(
+            DomainName::register(
                 DomainNameId::fromString('9f2e0b4f-274c-4571-a50a-685f7894fdec'),
                 new DomainNamePair('example', 'com'),
                 $orgOwner
@@ -89,7 +86,7 @@ final class RemoveOrganizationHandlerTest extends TestCase
 
             self::fail('Exception was expected.');
         } catch (CannotRemoveActiveOrganization $e) {
-            self::assertEquals($id, $e->id);
+            self::assertSame($id, $e->id);
 
             // Actual testing of the result is unneeded.
             self::assertArrayHasKey('space', $e->activeEntities);

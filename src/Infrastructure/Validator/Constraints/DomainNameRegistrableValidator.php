@@ -38,11 +38,11 @@ final class DomainNameRegistrableValidator extends ConstraintValidator
             return;
         }
 
-        if (! \is_scalar($value)
+        if (! is_scalar($value)
             && ! $value instanceof Domain
-            && ! (\is_object($value) && \method_exists($value, '__toString'))
+            && ! (\is_object($value) && method_exists($value, '__toString'))
         ) {
-            throw new UnexpectedValueException($value, \implode('|', ['string', Domain::class]));
+            throw new UnexpectedValueException($value, implode('|', ['string', Domain::class]));
         }
 
         if (! $constraint instanceof DomainNameRegistrable) {
@@ -52,7 +52,7 @@ final class DomainNameRegistrableValidator extends ConstraintValidator
         try {
             $domainName = Domain::fromIDNA2008($value);
 
-            if (\str_ends_with($domainName->toString(), '.')) {
+            if (str_ends_with($domainName->toString(), '.')) {
                 throw SyntaxError::dueToMalformedValue($value);
             }
 
@@ -62,16 +62,18 @@ final class DomainNameRegistrableValidator extends ConstraintValidator
                 ->setCode(DomainNameRegistrable::INVALID_SYNTAX)
                 ->setInvalidValue((string) $value)
                 ->setCause($e)
-                ->addViolation();
+                ->addViolation()
+            ;
 
             return;
         }
 
-        if (\str_contains($domainName->toString(), '*')) {
+        if (str_contains($domainName->toString(), '*')) {
             $this->context->buildViolation($constraint->message)
                 ->setCode(DomainNameRegistrable::NOT_REGISTRABLE)
                 ->setInvalidValue((string) $value)
-                ->addViolation();
+                ->addViolation()
+            ;
 
             return;
         }
@@ -80,7 +82,8 @@ final class DomainNameRegistrableValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->lengthMessage, ['{registrable}' => $resolvedDomainName->registrableDomain()->toString()])
                 ->setCode(DomainNameRegistrable::REGISTRABLE_LENGTH_EXCEEDED)
                 ->setInvalidValue((string) $value)
-                ->addViolation();
+                ->addViolation()
+            ;
 
             return;
         }
@@ -90,7 +93,8 @@ final class DomainNameRegistrableValidator extends ConstraintValidator
                 ->atPath('suffix')
                 ->setCode(DomainNameRegistrable::PRIVATE_SUFFIX)
                 ->setInvalidValue((string) $value)
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 }

@@ -39,7 +39,8 @@ final class SecuritySettingsAction
 
         if ($changeUserLevel->isSubmitted() && $changeUserLevel->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.show_user', ['user' => $id->id->toString()])
-                ->withFlash('success', 'flash.user_level_changed');
+                ->withFlash('success', 'flash.user_level_changed')
+            ;
         }
 
         $changePasswordForm = $formFactory->create(ChangeUserPasswordForm::class, $id);
@@ -47,7 +48,8 @@ final class SecuritySettingsAction
 
         if ($changePasswordForm->isSubmitted() && $changePasswordForm->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.show_user', ['user' => $id->id->toString()])
-                ->withFlash('success', 'flash.user_password_changed');
+                ->withFlash('success', 'flash.user_password_changed')
+            ;
         }
 
         return new TwigResponse('admin/user/security_settings.html.twig', [

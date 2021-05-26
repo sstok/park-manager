@@ -31,8 +31,8 @@ final class AddSubDomainType extends SubDomainType
             );
 
             if ($form['tlsInfo'] !== null) {
-                /** @var X509CertificateBundle $tlsInformation */
                 $tlsInformation = $form['tlsInfo'];
+                \assert($tlsInformation instanceof X509CertificateBundle);
                 $command->andTLSInformation($tlsInformation->certificate, $tlsInformation->privateKey, $tlsInformation->caList);
             }
 

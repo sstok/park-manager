@@ -41,11 +41,11 @@ final class PlanOrmRepositoryTest extends EntityRepositoryTestCase
         $plan2 = $repository->get($id2);
 
         self::assertEquals($id, $plan->id);
-        self::assertEquals(['title' => 'Supper Gold XL'], $plan->metadata);
+        self::assertSame(['title' => 'Supper Gold XL'], $plan->metadata);
         self::assertTrue($plan->constraints->equals((new Constraints())->setMonthlyTraffic(5)));
 
         self::assertEquals($id2, $plan2->id);
-        self::assertEquals([], $plan2->metadata);
+        self::assertSame([], $plan2->metadata);
         self::assertTrue($plan2->constraints->equals((new Constraints())->setMonthlyTraffic(5)));
     }
 

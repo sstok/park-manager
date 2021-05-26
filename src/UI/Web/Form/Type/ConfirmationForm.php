@@ -34,13 +34,14 @@ final class ConfirmationForm extends AbstractType
                 'label' => 'label.value',
                 'constraints' => new Callback([
                     'callback' => static function ($value, ExecutionContextInterface $context) use ($options): void {
-                        if (! \preg_match('/^\s*(' . \preg_quote($options['required_value'], '/') . ')\s*$/i', $value)) {
+                        if (! preg_match('/^\s*(' . preg_quote($options['required_value'], '/') . ')\s*$/i', $value)) {
                             $context
                                 ->buildViolation('value_does_not_match_expected_value')
                                 ->setParameter('{{ value }}', $value)
                                 ->setParameter('{{ required_value }}', $options['required_value'])
                                 ->setInvalidValue($value)
-                                ->addViolation();
+                                ->addViolation()
+                            ;
                         }
                     },
                 ]),
@@ -99,16 +100,17 @@ final class ConfirmationForm extends AbstractType
 
                     if (! isset($value['name'], $value['arguments'])) {
                         throw new InvalidOptionsException(
-                            \sprintf(
+                            sprintf(
                                 'The "cancel_route" option must be either a string or array with keys "name" and "arguments", but got array with the following key(s): "%s".',
-                                \implode('", "', \array_keys($value))
+                                implode('", "', array_keys($value))
                             )
                         );
                     }
 
                     return $value;
                 }
-            );
+            )
+        ;
     }
 
     public function getBlockPrefix(): string

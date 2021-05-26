@@ -45,7 +45,8 @@ final class AssignExpirationForWebhostingSpace extends AbstractController
                 ->withFlash('success', 'flash.webhosting_space.marked_for_expiration', [
                     'has_date' => CarbonImmutable::instance($form->get('expirationDate')->getData())->isCurrentDay() ? 'false' : 'true',
                     'date' => $form->get('expirationDate')->getData(),
-                ]);
+                ])
+            ;
         }
 
         return new TwigResponse('admin/webhosting/space/assign_expiration.html.twig', ['form' => $form->createView(), 'space' => $space]);

@@ -16,6 +16,6 @@ final class OwnerNotFound extends NotFoundException
 {
     public static function withId(OwnerId $id): self
     {
-        return new self(\sprintf('Owner with ID %s does not exist. The actual owner must be registered first.', $id->toString()), ['id' => $id->toString()]);
+        return new self(sprintf('Owner with ID %s does not exist. The actual owner must be registered first.', $id->toString()), ['id' => $id->toString()]);
     }
 }

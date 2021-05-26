@@ -41,7 +41,8 @@ final class WebhostingDomainNameSelector extends AbstractType
                 'preferred_choices' => static fn (DomainName $domainName) => $domainName->primary,
                 'resultset' => fn (Options $options) => $this->domainNameRepository->allFromSpace($options['space_id']),
                 'constraints' => [new NotNull()],
-            ]);
+            ])
+        ;
     }
 
     public function getBlockPrefix(): string

@@ -25,7 +25,8 @@ final class PermissionShortAliasPass implements CompilerPassInterface
         $finder
             ->in(\dirname(__DIR__, 2) . '/Security/Permission')
             ->files()
-            ->name('{(?<!Decider)\.php$}');
+            ->name('{(?<!Decider)\.php$}')
+        ;
 
         foreach ($finder as $file) {
             $className = $file->getFilenameWithoutExtension();
@@ -33,8 +34,8 @@ final class PermissionShortAliasPass implements CompilerPassInterface
             $name = self::underscore($className);
 
             if ($subPath !== '') {
-                $name = self::underscore(\str_replace(['/', '\\'], '.', $subPath)) . '.' . $name;
-                $className = \str_replace('/', '\\', $subPath) . '\\' . $className;
+                $name = self::underscore(str_replace(['/', '\\'], '.', $subPath)) . '.' . $name;
+                $className = str_replace('/', '\\', $subPath) . '\\' . $className;
             }
 
             $permissionShortNames[$name] = 'ParkManager\\Infrastructure\\Security\\Permission\\' . $className;
@@ -46,6 +47,6 @@ final class PermissionShortAliasPass implements CompilerPassInterface
 
     private static function underscore(string $string): string
     {
-        return \mb_strtolower(\preg_replace(['/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], ['\\1_\\2', '\\1_\\2'], $string));
+        return mb_strtolower(preg_replace(['/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], ['\\1_\\2', '\\1_\\2'], $string));
     }
 }

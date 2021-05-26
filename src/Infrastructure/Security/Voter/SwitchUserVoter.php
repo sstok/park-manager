@@ -46,10 +46,6 @@ final class SwitchUserVoter implements VoterInterface
             return false;
         }
 
-        if ($user->isAdmin()) {
-            return true;
-        }
-
-        return false;
+        return $user->isAdmin();
     }
 }

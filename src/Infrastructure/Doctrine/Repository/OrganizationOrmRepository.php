@@ -62,7 +62,8 @@ class OrganizationOrmRepository extends EntityRepository implements Organization
     {
         $queryBuilder = $this->createQueryBuilder('o')
             ->join('o.members', 'om', Join::WITH, 'om.user = :user')
-            ->setParameter('user', $userId->toString());
+            ->setParameter('user', $userId->toString())
+        ;
 
         return new OrmQueryBuilderResultSet($queryBuilder, rootAlias: 'o', fetchJoinCollection: true);
     }

@@ -159,7 +159,8 @@ final class SubDomainTLSValidatorTest extends ConstraintValidatorTestCase
                         -----END CERTIFICATE-----
                         CA,
                 ]
-            );
+            )
+        ;
 
         $this->createSubDomainValidatorContext($value, 'www.example.com');
 
@@ -248,7 +249,8 @@ final class SubDomainTLSValidatorTest extends ConstraintValidatorTestCase
                         -----END CERTIFICATE-----
                         CA,
                 ]
-            );
+            )
+        ;
 
         $this->createSubDomainValidatorContext($value, 'example.com');
 
@@ -280,12 +282,14 @@ final class SubDomainTLSValidatorTest extends ConstraintValidatorTestCase
                         new X509KeyPair(),
                     ]
                 )
-            );
+            )
+        ;
 
         $validator->expects(self::any())
             ->method('inContext')
             ->with($context)
-            ->willReturn($contextualValidator);
+            ->willReturn($contextualValidator)
+        ;
 
         $this->context = $context;
         $this->validator->initialize($this->context);

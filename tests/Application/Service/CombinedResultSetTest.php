@@ -30,8 +30,8 @@ final class CombinedResultSetTest extends TestCase
     {
         $resultSetCombination = (new CombinedResultSet());
 
-        self::assertEquals(0, $resultSetCombination->getNbResults());
-        self::assertEquals([], \iterator_to_array($resultSetCombination->getIterator()));
+        self::assertSame(0, $resultSetCombination->getNbResults());
+        self::assertSame([], iterator_to_array($resultSetCombination->getIterator()));
     }
 
     /** @test */
@@ -42,7 +42,7 @@ final class CombinedResultSetTest extends TestCase
             $this->getResultSetMock(new ArrayIterator())
         );
 
-        self::assertEquals([], \iterator_to_array($resultSetCombination->getIterator()));
+        self::assertSame([], iterator_to_array($resultSetCombination->getIterator()));
 
         $resultSetCombination = (new CombinedResultSet(
             $this->getResultSetMock(new ArrayIterator(), limit: [1, 2], ordering: ['id', 'ASC'], ids: ['2', '5', '10'], expression: $expression = new Comparison('id', Comparison::EQ, '1')),
@@ -51,9 +51,10 @@ final class CombinedResultSetTest extends TestCase
             ->setLimit(1, 2)
             ->setOrdering('id', 'ASC')
             ->filter($expression)
-            ->limitToIds(['2', '5', '10']);
+            ->limitToIds(['2', '5', '10'])
+        ;
 
-        self::assertEquals([], \iterator_to_array($resultSetCombination->getIterator()));
+        self::assertSame([], iterator_to_array($resultSetCombination->getIterator()));
     }
 
     private function getResultSetMock(ArrayIterator $iterator, array $limit = [null, null], array $ordering = [null, null], ?array $ids = null, ?Expression $expression = null): ResultSet
@@ -78,8 +79,8 @@ final class CombinedResultSetTest extends TestCase
             $this->getResultSetMock(new ArrayIterator()),
         ));
 
-        self::assertEquals(6, $resultSetCombination->getNbResults());
-        self::assertEquals(['1', '5', 'aa', '9', '7', 'ddd'], \iterator_to_array($resultSetCombination->getIterator()));
+        self::assertSame(6, $resultSetCombination->getNbResults());
+        self::assertSame(['1', '5', 'aa', '9', '7', 'ddd'], iterator_to_array($resultSetCombination->getIterator()));
     }
 
     /**
@@ -105,12 +106,12 @@ final class CombinedResultSetTest extends TestCase
             $resultSetProphecy->reveal(),
         ));
 
-        self::assertEquals([], \iterator_to_array($resultSetCombination->getIterator()));
+        self::assertSame([], iterator_to_array($resultSetCombination->getIterator()));
 
         // Change the setting
         $resultSetCombination->{$method}(...$arguments);
 
-        self::assertEquals([], \iterator_to_array($resultSetCombination->getIterator()));
+        self::assertSame([], iterator_to_array($resultSetCombination->getIterator()));
     }
 
     public function provideChangingSettingsMethods(): iterable

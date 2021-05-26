@@ -53,7 +53,7 @@ final class ParkManagerExtension extends AbstractExtension
                 $this->env = $env;
             }
 
-            public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
+            public function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
             {
                 foreach ($parameters as $name => $value) {
                     $parameters[$name] = twig_escape_filter($this->env, $value);
@@ -90,11 +90,11 @@ final class ParkManagerExtension extends AbstractExtension
     /**
      * @param array|string $arguments Can be the locale as a string when $message is a TranslatableInterface
      */
-    public function trans(Environment $env, TranslatableInterface | Stringable | string | null $message, array | string $arguments = [], string $domain = null, string $locale = null, int $count = null): string
+    public function trans(Environment $env, TranslatableInterface | Stringable | string | null $message, array | string $arguments = [], ?string $domain = null, ?string $locale = null, ?int $count = null): string
     {
         if ($message instanceof TranslatableInterface) {
             if ($arguments !== [] && ! \is_string($arguments)) {
-                throw new \TypeError(\sprintf('Argument 2 passed to "%s()" must be a locale passed as a string when the message is a "%s", "%s" given.', __METHOD__, TranslatableInterface::class, \get_debug_type($arguments)));
+                throw new \TypeError(sprintf('Argument 2 passed to "%s()" must be a locale passed as a string when the message is a "%s", "%s" given.', __METHOD__, TranslatableInterface::class, get_debug_type($arguments)));
             }
 
             $this->argumentsTranslator->setEnv($env);
@@ -103,7 +103,7 @@ final class ParkManagerExtension extends AbstractExtension
         }
 
         if (! \is_array($arguments)) {
-            throw new \TypeError(\sprintf('Unless the message is a "%s", argument 2 passed to "%s()" must be an array of parameters, "%s" given.', TranslatableInterface::class, __METHOD__, \get_debug_type($arguments)));
+            throw new \TypeError(sprintf('Unless the message is a "%s", argument 2 passed to "%s()" must be an array of parameters, "%s" given.', TranslatableInterface::class, __METHOD__, get_debug_type($arguments)));
         }
 
         $message = (string) $message;
@@ -135,7 +135,7 @@ final class ParkManagerExtension extends AbstractExtension
             $attributes['class'] = $class . ' ' . $attributes['class'];
         }
 
-        $attributes['class'] = \trim($attributes['class']);
+        $attributes['class'] = trim($attributes['class']);
 
         return $attributes;
     }
@@ -146,7 +146,7 @@ final class ParkManagerExtension extends AbstractExtension
             return $this->translator->trans('byte_size.inf');
         }
 
-        $unit = \mb_strtolower($value->getUnit());
+        $unit = mb_strtolower($value->getUnit());
 
         if ($unit === 'b') {
             $unit = 'byte';
@@ -194,4 +194,4 @@ final class ParkManagerExtension extends AbstractExtension
 }
 
 // Force autoloading of the EscaperExtension as we need the twig_escape_filter() function
-\class_exists(EscaperExtension::class);
+class_exists(EscaperExtension::class);

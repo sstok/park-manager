@@ -60,7 +60,8 @@ class DoctrineOrmUserRepository extends EntityRepository implements UserReposito
             ->where('u.email.canonical = :email')
             ->getQuery()
             ->setParameter('email', $email->canonical)
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
 
         if ($user === null) {
             throw UserNotFound::withEmail($email);
@@ -80,7 +81,8 @@ class DoctrineOrmUserRepository extends EntityRepository implements UserReposito
             ->where('u.emailAddressChangeToken.selector = :selector')
             ->getQuery()
             ->setParameter('selector', $selector)
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
 
         if ($user === null) {
             throw new EmailChangeConfirmationRejected();
@@ -95,7 +97,8 @@ class DoctrineOrmUserRepository extends EntityRepository implements UserReposito
             ->where('u.passwordResetToken.selector = :selector')
             ->getQuery()
             ->setParameter('selector', $selector)
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
 
         if ($user === null) {
             throw new PasswordResetTokenNotAccepted();

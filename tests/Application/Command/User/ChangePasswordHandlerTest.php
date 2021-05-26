@@ -39,7 +39,7 @@ final class ChangePasswordHandlerTest extends TestCase
 
         $repository->assertEntitiesWereSaved();
         $repository->assertHasEntity($id, static function (User $user): void {
-            self::assertEquals('new-password', $user->password);
+            self::assertSame('new-password', $user->password);
         });
     }
 }

@@ -45,7 +45,8 @@ abstract class SubDomainType extends AbstractType
                 'constraints' => [new DirectoryPath()],
                 'help' => 'help.homedir',
             ])
-            ->add('tlsInfo', PEMCertificateType::class, ['requires_private_key' => true, 'getter' => static fn () => null]);
+            ->add('tlsInfo', PEMCertificateType::class, ['requires_private_key' => true, 'getter' => static fn () => null])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

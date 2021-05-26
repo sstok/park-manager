@@ -44,6 +44,7 @@ class Kernel extends BaseKernel
         $container->addCompilerPass(new PermissionDeciderPass());
         $container->addCompilerPass(new PermissionShortAliasPass());
         $container->registerForAutoconfiguration(PermissionDecider::class)
-            ->addTag('park_manager.security.permission_decider'); // Needs CompilerPass
+            ->addTag('park_manager.security.permission_decider') // Needs CompilerPass
+        ;
     }
 }

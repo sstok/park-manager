@@ -43,8 +43,8 @@ class PermissionAccessManager
             return PermissionDecider::DECIDE_DENY;
         }
 
-        /** @var SecurityUser $user */
         $user = $token->getUser();
+        \assert($user instanceof SecurityUser);
 
         if ($permission instanceof PermissionExpression) {
             $permission = $this->resolvePermissionExpression($permission);
@@ -57,11 +57,11 @@ class PermissionAccessManager
         $class = $this->resolvePermissionName($permission);
 
         if (! $this->deciders->has($class)) {
-            throw new RuntimeException(\sprintf('No Decider is registered for Permission "%s".', $class));
+            throw new RuntimeException(sprintf('No Decider is registered for Permission "%s".', $class));
         }
 
-        /** @var PermissionDecider $decider */
         $decider = $this->deciders->get($class);
+        \assert($decider instanceof PermissionDecider);
 
         return $decider->decide($permission, $token, $user, $this);
     }
@@ -74,12 +74,12 @@ class PermissionAccessManager
             $class = $permission->getAlias();
         }
 
-        return \ltrim($class, '\\');
+        return ltrim($class, '\\');
     }
 
     private function resolvePermissionExpression(PermissionExpression $permission): Permission
     {
-        if (\str_contains($permission->name, '\\')) {
+        if (str_contains($permission->name, '\\')) {
             return new $permission->name(...$permission->arguments);
         }
 
@@ -90,20 +90,20 @@ class PermissionAccessManager
         $name = $permission->name;
         $candidates = [];
 
-        foreach (\array_keys($this->permissionsShortNames) as $shortName) {
-            if (\str_contains($shortName, $name) || (\levenshtein($name, $shortName) <= \mb_strlen($name) / 3)) {
+        foreach (array_keys($this->permissionsShortNames) as $shortName) {
+            if (str_contains($shortName, $name) || (levenshtein($name, $shortName) <= mb_strlen($name) / 3)) {
                 $candidates[] = $shortName;
             }
         }
 
         if ($candidates) {
-            \sort($candidates);
+            sort($candidates);
 
-            $message = \sprintf("\nDid you e.g. mean \"%s\"", \implode('", "', $candidates));
+            $message = sprintf("\nDid you e.g. mean \"%s\"", implode('", "', $candidates));
         } else {
-            $message = \sprintf("\nSupported \"%s\"", \implode('", "', \array_keys($this->permissionsShortNames)));
+            $message = sprintf("\nSupported \"%s\"", implode('", "', array_keys($this->permissionsShortNames)));
         }
 
-        throw new RuntimeException(\sprintf('No Permission can be found for short-name "%s".', $permission->name) . $message);
+        throw new RuntimeException(sprintf('No Permission can be found for short-name "%s".', $permission->name) . $message);
     }
 }

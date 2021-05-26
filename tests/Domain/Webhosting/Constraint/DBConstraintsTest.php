@@ -30,9 +30,9 @@ final class DBConstraintsTest extends TestCase
             'enabledMysql' => false,
         ]);
 
-        self::assertEquals([], $constraints->changes);
+        self::assertSame([], $constraints->changes);
         self::assertEquals(new ByteSize(200, 'MiB'), $constraints->providedStorageSize);
-        self::assertEquals(10, $constraints->maximumAmountPerType);
+        self::assertSame(10, $constraints->maximumAmountPerType);
         self::assertTrue($constraints->enabledPgsql);
         self::assertFalse($constraints->enabledMysql);
     }
@@ -41,7 +41,8 @@ final class DBConstraintsTest extends TestCase
     public function its_equatable(): void
     {
         $constraints = (new DBConstraints())
-            ->setProvidedStorageSize(new ByteSize(12, 'GB'));
+            ->setProvidedStorageSize(new ByteSize(12, 'GB'))
+        ;
 
         $constraints2 = new DBConstraints([
             'providedStorageSize' => new ByteSize(12, 'GB'),
@@ -67,20 +68,20 @@ final class DBConstraintsTest extends TestCase
 
         if (\is_bool($value)) {
             /** @var Constraints $new */
-            $new = $constraints->{'disable' . \ucfirst($field)}();
+            $new = $constraints->{'disable' . ucfirst($field)}();
         } else {
             /** @var Constraints $new */
-            $new = $constraints->{'set' . \ucfirst($field)}($value);
+            $new = $constraints->{'set' . ucfirst($field)}($value);
         }
 
         if (\is_bool($value)) {
-            $field = 'enabled' . \ucfirst($field);
+            $field = 'enabled' . ucfirst($field);
         }
 
         self::assertNotSame($constraints, $new);
-        self::assertEquals([$field => $constraints->{$field}], $new->changes);
-        self::assertEquals($value, $new->{$field});
-        self::assertNotEquals($constraints->{$field}, $new->{$field});
+        self::assertSame([$field => $constraints->{$field}], $new->changes);
+        self::assertSame($value, $new->{$field});
+        self::assertNotSame($constraints->{$field}, $new->{$field});
     }
 
     public function provideFields(): iterable

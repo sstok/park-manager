@@ -38,7 +38,8 @@ final class ByteSizeType extends AbstractType
                 'preferred_choices' => 'byte',
                 'label' => 'label.unit',
                 'help' => 'help.byte_size_unit',
-            ]);
+            ])
+        ;
 
         if ($options['allow_infinite']) {
             $builder->add('isInf', CheckboxType::class, [
@@ -48,8 +49,8 @@ final class ByteSizeType extends AbstractType
             ]);
         } else {
             $builder->addEventListener(FormEvents::PRE_SET_DATA, static function (PreSetDataEvent $event) use ($options): void {
-                /** @var ByteSize|null $data */
                 $data = $event->getData();
+                \assert($data instanceof ByteSize || $data === null);
 
                 if ($data !== null && $data->isInf()) {
                     $event->setData($options['infinite_replacement']);

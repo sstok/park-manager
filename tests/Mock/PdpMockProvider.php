@@ -31,11 +31,11 @@ final class PdpMockProvider
         $httpClient = new MockHttpClient(
             static function ($method, $url): MockResponse {
                 if ($url === ResourceUri::PUBLIC_SUFFIX_LIST_URI) {
-                    return new MockResponse(\file_get_contents(__DIR__ . '/../Fixtures/public_suffix_list.dat'));
+                    return new MockResponse(file_get_contents(__DIR__ . '/../Fixtures/public_suffix_list.dat'));
                 }
 
                 if ($url === ResourceUri::TOP_LEVEL_DOMAIN_LIST_URI) {
-                    return new MockResponse(\file_get_contents(__DIR__ . '/../Fixtures/tlds-alpha-by-domain.txt'));
+                    return new MockResponse(file_get_contents(__DIR__ . '/../Fixtures/tlds-alpha-by-domain.txt'));
                 }
             }
         );

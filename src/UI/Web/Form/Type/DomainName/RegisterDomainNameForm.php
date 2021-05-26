@@ -28,7 +28,8 @@ final class RegisterDomainNameForm extends AbstractType
                 'label' => 'label.domain_name',
                 'error_bubbling' => false,
             ])
-            ->add('owner', OwnerSelector::class, ['label' => 'label.owner']);
+            ->add('owner', OwnerSelector::class, ['label' => 'label.owner'])
+        ;
     }
 
     public function getParent(): string
@@ -43,6 +44,7 @@ final class RegisterDomainNameForm extends AbstractType
             ->setDefault(
                 'command_factory',
                 static fn ($fields) => new AddDomainName(DomainNameId::create(), $fields['owner']->id, $fields['name'])
-            );
+            )
+        ;
     }
 }

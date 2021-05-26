@@ -44,7 +44,7 @@ class ResultSetChoiceLoader extends AbstractChoiceLoader
 
         $objects = [];
         $objectsById = [];
-        $values = \array_filter($values);
+        $values = array_filter($values);
 
         // Maintain order and indices from the given $values.
         foreach ($resultSet->limitToIds($values) as $object) {

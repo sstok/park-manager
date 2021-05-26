@@ -31,10 +31,11 @@ final class EntityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if ($options['multiple'] && \interface_exists(Collection::class)) {
+        if ($options['multiple'] && interface_exists(Collection::class)) {
             $builder
                 ->addEventSubscriber(new MergeDoctrineCollectionListener())
-                ->addViewTransformer(new CollectionToArrayTransformer(), true);
+                ->addViewTransformer(new CollectionToArrayTransformer(), true)
+            ;
         }
     }
 
@@ -69,7 +70,8 @@ final class EntityType extends AbstractType
                 'choice_translation_domain' => false,
             ])
             ->setAllowedTypes('resultset', ResultSet::class)
-            ->setAllowedTypes('choice_vary', 'array');
+            ->setAllowedTypes('choice_vary', 'array')
+        ;
 
         $resolver->setNormalizer('choice_name', function (Options $options, $value) {
             if ($value instanceof AbstractStaticOption) {
@@ -133,7 +135,7 @@ final class EntityType extends AbstractType
         }
 
         // ID's are UUID (hex) formatted, so we can't guarantee it doesn't start numeric
-        return 'choice_' . \str_replace('-', '_', (string) $choice->id);
+        return 'choice_' . str_replace('-', '_', (string) $choice->id);
     }
 
     /**

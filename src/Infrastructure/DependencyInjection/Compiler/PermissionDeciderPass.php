@@ -28,10 +28,10 @@ final class PermissionDeciderPass implements CompilerPassInterface
             $class = $container->getDefinition($serviceId)->getClass();
 
             if ($class === null) {
-                throw new InvalidArgumentException(\sprintf('Service "%s" is expected to have a class set.', $serviceId));
+                throw new InvalidArgumentException(sprintf('Service "%s" is expected to have a class set.', $serviceId));
             }
 
-            $className = \mb_substr($class, 0, -7);
+            $className = mb_substr($class, 0, -7);
             $collected[$className] = new Reference($serviceId);
         }
 

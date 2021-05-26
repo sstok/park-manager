@@ -33,7 +33,8 @@ final class RemoveExpirationOfWebhostingSpace extends AbstractController
 
         if ($space->expirationDate === null) {
             return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id])
-                ->withFlash('success', 'flash.webhosting_space.removed_expiration');
+                ->withFlash('success', 'flash.webhosting_space.removed_expiration')
+            ;
         }
 
         $form = $formFactory->create(ConfirmationForm::class, $space, [
@@ -47,7 +48,8 @@ final class RemoveExpirationOfWebhostingSpace extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id])
-                ->withFlash('success', 'flash.webhosting_space.removed_expiration');
+                ->withFlash('success', 'flash.webhosting_space.removed_expiration')
+            ;
         }
 
         return new TwigResponse('admin/webhosting/space/remove_expiration.html.twig', ['form' => $form->createView(), 'space' => $space]);

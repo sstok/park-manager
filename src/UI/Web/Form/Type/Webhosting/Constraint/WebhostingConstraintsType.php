@@ -50,7 +50,8 @@ final class WebhostingConstraintsType extends AbstractType
                 'help' => 'help.webhosting.total_space_storage_size',
             ])
             ->add($this->getEmailConstraintsForm($builder))
-            ->add($this->getDBConstraintsForm($builder));
+            ->add($this->getDBConstraintsForm($builder))
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -90,7 +91,8 @@ final class WebhostingConstraintsType extends AbstractType
             ->add('mailListCount', IntegerType::class, [
                 'label' => 'label.webhosting_plan.email_list_count',
                 'constraints' => new GreaterThanOrEqual(-1),
-            ]);
+            ])
+        ;
     }
 
     private function getDBConstraintsForm(FormBuilderInterface $builder): FormBuilderInterface
@@ -117,7 +119,8 @@ final class WebhostingConstraintsType extends AbstractType
                 'label' => 'label.webhosting_plan.database_enabled_mysql',
                 'block_prefix' => 'webhosting_constraints_checkbox',
                 'required' => false,
-            ]);
+            ])
+        ;
     }
 
     public function getBlockPrefix(): string

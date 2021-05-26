@@ -82,7 +82,7 @@ trait x509Data
 
     public static function getHash(string $contents): string
     {
-        return \hash('sha256', $contents);
+        return hash('sha256', $contents);
     }
 
     public function getPublicKey(): string
@@ -92,7 +92,7 @@ trait x509Data
                 throw new \InvalidArgumentException('PublicKey resource was not initialized.');
             }
 
-            $this->publicKeyString = \stream_get_contents($this->publicKey);
+            $this->publicKeyString = stream_get_contents($this->publicKey);
         }
 
         return $this->publicKeyString;
@@ -105,7 +105,7 @@ trait x509Data
                 throw new \InvalidArgumentException('Contents resource was not initialized.');
             }
 
-            $this->contentsString = \stream_get_contents($this->contents);
+            $this->contentsString = stream_get_contents($this->contents);
         }
 
         return $this->contentsString;

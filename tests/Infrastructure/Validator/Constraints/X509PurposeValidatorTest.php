@@ -85,7 +85,8 @@ final class X509PurposeValidatorTest extends X509ValidatorTestCase
         $this->buildViolation('tls.violation.unsupported_purpose')
             ->setInvalidValue($cert)
             ->setParameter('{required_purpose}', 'S/MIME signing')
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     protected function createValidator(): ConstraintValidatorInterface

@@ -45,12 +45,12 @@ final class SpyingEventDispatcher implements EventDispatcherInterface
         $this->dispatcher->removeSubscriber($subscriber);
     }
 
-    public function getListeners(string $eventName = null): array
+    public function getListeners(?string $eventName = null): array
     {
         return $this->dispatcher->getListeners($eventName);
     }
 
-    public function dispatch(object $event, string $eventName = null): object
+    public function dispatch(object $event, ?string $eventName = null): object
     {
         $this->dispatchedEvents[] = $event;
 
@@ -62,7 +62,7 @@ final class SpyingEventDispatcher implements EventDispatcherInterface
         return $this->dispatcher->getListenerPriority($eventName, $listener);
     }
 
-    public function hasListeners(string $eventName = null): bool
+    public function hasListeners(?string $eventName = null): bool
     {
         return $this->dispatcher->hasListeners($eventName);
     }

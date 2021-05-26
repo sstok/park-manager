@@ -93,7 +93,8 @@ final class DomainNameRegistrableValidatorTest extends ConstraintValidatorTestCa
             ->atPath('property.path.suffix')
             ->setCode(DomainNameRegistrable::PRIVATE_SUFFIX)
             ->setInvalidValue($name)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     public function provideRejectedDomainNames(): iterable
@@ -108,7 +109,8 @@ final class DomainNameRegistrableValidatorTest extends ConstraintValidatorTestCa
         $this->buildViolation($constraints->message)
             ->setCode(DomainNameRegistrable::NOT_REGISTRABLE)
             ->setInvalidValue('*.example.com')
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     /**
@@ -122,7 +124,8 @@ final class DomainNameRegistrableValidatorTest extends ConstraintValidatorTestCa
             ->setParameter('{registrable}', $registrablePart)
             ->setCode(DomainNameRegistrable::REGISTRABLE_LENGTH_EXCEEDED)
             ->setInvalidValue($name)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     public function provideRegistrableNamesExceedingPath(): iterable
@@ -142,7 +145,8 @@ final class DomainNameRegistrableValidatorTest extends ConstraintValidatorTestCa
         $this->buildViolation('This value is not a valid domain-name.')
             ->setCode(DomainNameRegistrable::INVALID_SYNTAX)
             ->setInvalidValue($name)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     public function provideWrongFormattedDomains(): iterable

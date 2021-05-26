@@ -62,7 +62,8 @@ final class EmailTypeDomainValueExtension extends AbstractTypeExtension
     {
         $resolver
             ->setDefault('transform_to_model', false)
-            ->setAllowedTypes('transform_to_model', ['bool']);
+            ->setAllowedTypes('transform_to_model', ['bool'])
+        ;
     }
 
     public static function getExtendedTypes(): iterable

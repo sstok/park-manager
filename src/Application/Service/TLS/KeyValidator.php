@@ -39,23 +39,23 @@ class KeyValidator
      */
     public function validate(HiddenString $privateKey, string $certificate): void
     {
-        $certR = @\openssl_x509_read($certificate);
+        $certR = @openssl_x509_read($certificate);
 
         if ($certR === false) {
             throw new UnprocessablePEM('');
         }
 
-        $pupKey = \openssl_pkey_get_public($certR);
+        $pupKey = openssl_pkey_get_public($certR);
         $key = $privateKey->getString();
 
         try {
-            $privateR = @\openssl_pkey_get_private($key);
+            $privateR = @openssl_pkey_get_private($key);
 
             if ($privateR === false) {
                 throw new UnprocessableKey('Unable to read private key-data, invalid key provided?');
             }
 
-            if (! @\openssl_x509_check_private_key($certR, $privateR)) {
+            if (! @openssl_x509_check_private_key($certR, $privateR)) {
                 throw new PublicKeyMismatch();
             }
 
@@ -68,15 +68,15 @@ class KeyValidator
             $original = "I just wanna tell you how I'm feeling\nGotta make you understand";
             $encrypted = '';
 
-            if (! @\openssl_public_encrypt($original, $encrypted, $pupKey, \OPENSSL_PKCS1_OAEP_PADDING)) {
+            if (! @openssl_public_encrypt($original, $encrypted, $pupKey, \OPENSSL_PKCS1_OAEP_PADDING)) {
                 throw new UnprocessableKey('Unable to encrypt data, invalid key provided?');
             }
 
-            if (! @\openssl_private_decrypt($encrypted, $decrypted, $privateR, \OPENSSL_PKCS1_OAEP_PADDING) || $decrypted !== $original) {
+            if (! @openssl_private_decrypt($encrypted, $decrypted, $privateR, \OPENSSL_PKCS1_OAEP_PADDING) || $decrypted !== $original) {
                 throw new CertificateMismatch();
             }
 
-            $details = @\openssl_pkey_get_details($privateR);
+            $details = @openssl_pkey_get_details($privateR);
 
             if ($details === false) {
                 throw new UnprocessableKey('Unable to read private key-data.');
@@ -87,7 +87,7 @@ class KeyValidator
                 throw new KeyBitsToLow(self::MINIMUM_BIT_COUNT, $details['bits']);
             }
         } finally {
-            \sodium_memzero($key);
+            sodium_memzero($key);
             unset($key, $privateR, $pupKey, $certR);
         }
     }

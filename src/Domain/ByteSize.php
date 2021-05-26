@@ -24,10 +24,10 @@ final class ByteSize
 
         $target = $size;
 
-        switch (\mb_strtolower($unit)) {
+        switch (mb_strtolower($unit)) {
             case 'b':
             case 'byte':
-                if (! \ctype_digit(\ltrim((string) $size, '-'))) {
+                if (! ctype_digit(ltrim((string) $size, '-'))) {
                     throw new InvalidByteSize('The unit "byte" must be a whole number without a fraction.');
                 }
 
@@ -75,7 +75,7 @@ final class ByteSize
                 break;
 
             default:
-                throw new InvalidByteSize(\sprintf('Unknown or unsupported unit "%s".', $unit));
+                throw new InvalidByteSize(sprintf('Unknown or unsupported unit "%s".', $unit));
         }
 
         $this->value = (int) $target;
@@ -83,12 +83,12 @@ final class ByteSize
 
     public static function fromString(string $input): self
     {
-        if ($input === '-1' || \mb_strtolower($input) === 'inf') {
+        if ($input === '-1' || mb_strtolower($input) === 'inf') {
             return self::inf();
         }
 
-        if (! \preg_match('{^(?P<size>\d+(?:\.\d{0,2})?)\h*(?P<unit>[a-z]{1,3})$}i', $input, $matches)) {
-            throw new InvalidByteSize(\sprintf('Invalid ByteSize format provided "%s". Expected value and unit as either "12 Mib" or "12 MB". Or "inf" otherwise.', $input));
+        if (! preg_match('{^(?P<size>\d+(?:\.\d{0,2})?)\h*(?P<unit>[a-z]{1,3})$}i', $input, $matches)) {
+            throw new InvalidByteSize(sprintf('Invalid ByteSize format provided "%s". Expected value and unit as either "12 Mib" or "12 MB". Or "inf" otherwise.', $input));
         }
 
         return new self((float) $matches['size'], $matches['unit']);
@@ -106,18 +106,18 @@ final class ByteSize
         }
 
         if ($this->value >= 1024 * 1024 * 1024) {
-            return \sprintf('%.2f GiB', \round($this->value / 1024 / 1024 / 1024, 2));
+            return sprintf('%.2f GiB', round($this->value / 1024 / 1024 / 1024, 2));
         }
 
         if ($this->value >= 1024 * 1024) {
-            return \sprintf('%.2f MiB', \round($this->value / 1024 / 1024, 2));
+            return sprintf('%.2f MiB', round($this->value / 1024 / 1024, 2));
         }
 
         if ($this->value >= 1024) {
-            return \sprintf('%.2f KiB', \round($this->value / 1024, 2));
+            return sprintf('%.2f KiB', round($this->value / 1024, 2));
         }
 
-        return \sprintf('%d B', $this->value);
+        return sprintf('%d B', $this->value);
     }
 
     public function __debugInfo()
@@ -136,15 +136,15 @@ final class ByteSize
     public function getNormSize(): int | float
     {
         if ($this->value >= 1024 * 1024 * 1024) {
-            return \round($this->value / 1024 / 1024 / 1024, 2);
+            return round($this->value / 1024 / 1024 / 1024, 2);
         }
 
         if ($this->value >= 1024 * 1024) {
-            return \round($this->value / 1024 / 1024, 2);
+            return round($this->value / 1024 / 1024, 2);
         }
 
         if ($this->value >= 1024) {
-            return \round($this->value / 1024, 2);
+            return round($this->value / 1024, 2);
         }
 
         return $this->value;
@@ -267,7 +267,7 @@ final class ByteSize
         }
 
         $original = $this->value;
-        $diff = \abs($current->value - $original);
+        $diff = abs($current->value - $original);
 
         return ($diff / $original) * 100;
     }

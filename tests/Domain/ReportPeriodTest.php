@@ -60,8 +60,8 @@ final class ReportPeriodTest extends TestCase
     {
         $period = new ReportPeriod($start, $end, PeriodUnit::from($unit));
 
-        self::assertEquals($start, $period->start);
-        self::assertEquals($end, $period->end);
+        self::assertSame($start, $period->start);
+        self::assertSame($end, $period->end);
     }
 
     public function provideEnoughUnitAmount(): iterable

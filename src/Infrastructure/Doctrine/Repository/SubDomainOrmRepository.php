@@ -57,7 +57,8 @@ final class SubDomainOrmRepository extends EntityRepository implements SubDomain
             ->getQuery()
             ->setParameter('host_id', $subDomain->host->id->toString())
             ->setParameter('name', $subDomain->name)
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
 
         if ($existing !== null && ! $existing->id->equals($subDomain->id)) {
             throw new SubDomainAlreadyExists($subDomain->host->namePair, $subDomain->name, $existing->id->toString());

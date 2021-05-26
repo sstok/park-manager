@@ -24,7 +24,7 @@ final class X509DataExtractor
      */
     public function extractRawData(string $contents, string $name = '', bool $withPublicKey = false): array
     {
-        $hash = \hash('sha256', $contents);
+        $hash = hash('sha256', $contents);
 
         // The same cert information is likely to be validated multiple times
         // So keep a local cache to speed-up the parsing process a little.
@@ -32,14 +32,14 @@ final class X509DataExtractor
             return $this->fields;
         }
 
-        $x509Read = @\openssl_x509_read($contents);
+        $x509Read = @openssl_x509_read($contents);
 
         if ($x509Read === false) {
             throw new UnprocessablePEM($name, $contents);
         }
 
         // @codeCoverageIgnoreStart
-        $rawData = @\openssl_x509_parse($x509Read, false);
+        $rawData = @openssl_x509_parse($x509Read, false);
 
         if ($rawData === false) {
             throw new UnprocessablePEM($name, $contents);
@@ -47,19 +47,19 @@ final class X509DataExtractor
         // @codeCoverageIgnoreEnd
 
         try {
-            $fingerprint = \openssl_x509_fingerprint($x509Read, $rawData['signatureTypeSN']) ?: '';
+            $fingerprint = openssl_x509_fingerprint($x509Read, $rawData['signatureTypeSN']) ?: '';
         } catch (\Throwable) {
             $fingerprint = '';
         }
 
         if ($withPublicKey) {
-            $pubKeyRead = \openssl_pkey_get_public($x509Read);
+            $pubKeyRead = openssl_pkey_get_public($x509Read);
 
             if ($pubKeyRead === false) {
                 throw new UnprocessablePEM($name, $contents);
             }
 
-            $pubKey = \openssl_pkey_get_details($pubKeyRead);
+            $pubKey = openssl_pkey_get_details($pubKeyRead);
 
             unset($pubKeyRead, $x509Read);
         } else {
@@ -68,7 +68,7 @@ final class X509DataExtractor
 
         $altNames = $this->getAltNames($rawData);
         $rawData += [
-            '_commonName' => \trim($rawData['subject']['commonName']),
+            '_commonName' => trim($rawData['subject']['commonName']),
             '_altNames' => $altNames,
             '_emails' => $altNames['rfc822'] ?? [],
             '_signatureAlgorithm' => $rawData['signatureTypeSN'],
@@ -78,12 +78,12 @@ final class X509DataExtractor
             '_pubKey' => $pubKey['key'] ?? '',
         ];
 
-        $rawData['_domains'] = \array_merge($rawData['_altNames']['dns'] ?? [], $rawData['_altNames']['ip address'] ?? []);
+        $rawData['_domains'] = array_merge($rawData['_altNames']['dns'] ?? [], $rawData['_altNames']['ip address'] ?? []);
         $rawData['_alt_domains'] = $rawData['_domains'];
         $rawData['_domains'][] = $rawData['_commonName'];
 
         // Remove any duplicates and ensure the keys are incremental.
-        $rawData['_domains'] = \array_unique($rawData['_domains']);
+        $rawData['_domains'] = array_unique($rawData['_domains']);
 
         $this->hash = $hash;
         $this->fields = $rawData;
@@ -104,9 +104,9 @@ final class X509DataExtractor
 
         $altNames = [];
 
-        foreach (\explode(',', $rawData['extensions']['subjectAltName']) as $altName) {
-            [$type, $value] = \explode(':', \trim($altName), 2);
-            $altNames[\mb_strtolower($type)][] = $value;
+        foreach (explode(',', $rawData['extensions']['subjectAltName']) as $altName) {
+            [$type, $value] = explode(':', trim($altName), 2);
+            $altNames[mb_strtolower($type)][] = $value;
         }
 
         return $altNames;
@@ -120,7 +120,7 @@ final class X509DataExtractor
         $key = $privateKey->getString();
 
         try {
-            $r = \openssl_pkey_get_private($key);
+            $r = openssl_pkey_get_private($key);
 
             // Note that the KeyValidator will already check if the key is in-fact valid.
             // This failure will only happen in exceptional situations.
@@ -129,14 +129,14 @@ final class X509DataExtractor
             }
 
             // @codeCoverageIgnoreStart
-            $details = \openssl_pkey_get_details($r);
+            $details = openssl_pkey_get_details($r);
 
             if ($details === false) {
                 throw new \RuntimeException('Unable to read private key-data. Unknown error.');
             }
         } finally {
             unset($r);
-            \sodium_memzero($key);
+            sodium_memzero($key);
         }
         // @codeCoverageIgnoreEnd
 

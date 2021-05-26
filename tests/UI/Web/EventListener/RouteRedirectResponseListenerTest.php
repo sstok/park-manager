@@ -62,8 +62,8 @@ final class RouteRedirectResponseListenerTest extends TestCase
     {
         /* @var RedirectResponse $response */
         self::assertInstanceOf(RedirectResponse::class, $response);
-        self::assertEquals($expectedTargetUrl, $response->getTargetUrl());
-        self::assertEquals($expectedStatus, $response->getStatusCode());
+        self::assertSame($expectedTargetUrl, $response->getTargetUrl());
+        self::assertSame($expectedStatus, $response->getStatusCode());
     }
 
     private function createNotUsedSession(): Session
@@ -81,7 +81,8 @@ final class RouteRedirectResponseListenerTest extends TestCase
         $urlGeneratorProphecy = $this->prophesize(UrlGeneratorInterface::class);
         $urlGeneratorProphecy
             ->generate('foobar', ['he' => 'bar'])
-            ->willReturn('https://park-manager.com/webhosting');
+            ->willReturn('https://park-manager.com/webhosting')
+        ;
         $urlGenerator = $urlGeneratorProphecy->reveal();
 
         $session = $this->createNotUsedSession();
@@ -100,7 +101,8 @@ final class RouteRedirectResponseListenerTest extends TestCase
         $urlGeneratorProphecy = $this->prophesize(UrlGeneratorInterface::class);
         $urlGeneratorProphecy
             ->generate('foobar', ['he' => 'bar'])
-            ->willReturn('https://park-manager.com/webhosting');
+            ->willReturn('https://park-manager.com/webhosting')
+        ;
         $urlGenerator = $urlGeneratorProphecy->reveal();
 
         $session = $this->createNotUsedSession();
@@ -123,7 +125,8 @@ final class RouteRedirectResponseListenerTest extends TestCase
         $urlGeneratorProphecy = $this->prophesize(UrlGeneratorInterface::class);
         $urlGeneratorProphecy
             ->generate('foobar', ['he' => 'bar'])
-            ->willReturn('https://park-manager.com/webhosting');
+            ->willReturn('https://park-manager.com/webhosting')
+        ;
         $urlGenerator = $urlGeneratorProphecy->reveal();
 
         $session = $this->createSessionHandlerWithFlashes();
@@ -138,7 +141,7 @@ final class RouteRedirectResponseListenerTest extends TestCase
         $listener->onKernelView($event);
 
         $this->assertResponseIsRedirect($event->getResponse(), 'https://park-manager.com/webhosting');
-        self::assertEquals(
+        self::assertSame(
             [
                 'success' => [
                     ['message' => 'Perfect {id}', 'parameters' => ['id' => 200]],

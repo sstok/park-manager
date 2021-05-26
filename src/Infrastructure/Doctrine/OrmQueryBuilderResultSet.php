@@ -112,7 +112,7 @@ final class OrmQueryBuilderResultSet implements ResultSet
         }
 
         if ($this->limitedToIds) {
-            $queryBuilder->andWhere(\sprintf('%s.id IN(:result_limited_ids)', $this->rootAlias));
+            $queryBuilder->andWhere(sprintf('%s.id IN(:result_limited_ids)', $this->rootAlias));
             $queryBuilder->setParameter('result_limited_ids', $this->limitedToIds, Connection::PARAM_STR_ARRAY);
         }
 

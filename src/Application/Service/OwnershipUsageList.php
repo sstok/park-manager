@@ -40,7 +40,8 @@ final class OwnershipUsageList
         foreach ($this->repositories as $repository) {
             // Ordering doesn't matter, so remove this to provide some Query optimization.
             $iterator = $repository->allFromOwner($id)
-                ->setOrdering(null, null);
+                ->setOrdering(null, null)
+            ;
 
             if ($iterator->getNbResults() > 0) {
                 return true;

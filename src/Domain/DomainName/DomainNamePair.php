@@ -42,7 +42,7 @@ final class DomainNamePair implements \Stringable
 
     public function toString(): string
     {
-        $this->idnValue ??= (string) \idn_to_utf8($this->name . '.' . $this->tld, \IDNA_DEFAULT, \INTL_IDNA_VARIANT_UTS46);
+        $this->idnValue ??= (string) idn_to_utf8($this->name . '.' . $this->tld, \IDNA_DEFAULT, \INTL_IDNA_VARIANT_UTS46);
 
         return $this->idnValue;
     }
@@ -51,7 +51,7 @@ final class DomainNamePair implements \Stringable
     {
         $address = $this->toString();
 
-        if ($length >= \mb_strlen($address)) {
+        if ($length >= mb_strlen($address)) {
             return $address;
         }
 

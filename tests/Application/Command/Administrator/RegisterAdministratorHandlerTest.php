@@ -48,8 +48,8 @@ final class RegisterAdministratorHandlerTest extends TestCase
         $repo->assertHasEntity(self::ID_NEW, static function (User $user): void {
             self::assertEquals(UserId::fromString(self::ID_NEW), $user->id);
             self::assertEquals(new EmailAddress('John@example.com'), $user->email);
-            self::assertEquals('My name', $user->displayName);
-            self::assertEquals('my-password', $user->password);
+            self::assertSame('My name', $user->displayName);
+            self::assertSame('my-password', $user->password);
             self::assertNull($user->passwordExpiresOn);
             self::assertFalse($user->hasRole('ROLE_SUPER_ADMIN'));
         });
@@ -65,14 +65,15 @@ final class RegisterAdministratorHandlerTest extends TestCase
         CarbonImmutable::setTestNow($now);
 
         $command = RegisterAdministrator::with(self::ID_NEW, 'John@example.com', 'My name', 'my-password')
-            ->requireNewPassword();
+            ->requireNewPassword()
+        ;
         $handler($command);
 
         $repo->assertHasEntity(self::ID_NEW, static function (User $user) use ($now): void {
             self::assertEquals(UserId::fromString(self::ID_NEW), $user->id);
             self::assertEquals(new EmailAddress('John@example.com'), $user->email);
-            self::assertEquals('My name', $user->displayName);
-            self::assertEquals('my-password', $user->password);
+            self::assertSame('My name', $user->displayName);
+            self::assertSame('my-password', $user->password);
             self::assertNotNull($user->passwordExpiresOn);
             self::assertTrue($now->modify('-1 year')->equalTo($user->passwordExpiresOn));
             self::assertFalse($user->hasRole('ROLE_SUPER_ADMIN'));
@@ -91,8 +92,8 @@ final class RegisterAdministratorHandlerTest extends TestCase
         $repo->assertHasEntity(self::ID_NEW, static function (User $user): void {
             self::assertEquals(UserId::fromString(self::ID_NEW), $user->id);
             self::assertEquals(new EmailAddress('John@example.com'), $user->email);
-            self::assertEquals('My name', $user->displayName);
-            self::assertEquals('my-password', $user->password);
+            self::assertSame('My name', $user->displayName);
+            self::assertSame('my-password', $user->password);
             self::assertTrue($user->hasRole('ROLE_SUPER_ADMIN'));
         });
     }

@@ -52,7 +52,7 @@ final class SubDomainTLSValidator extends ConstraintValidator
         if ($value->name === '@') {
             $requiredName = $domainName->toString();
         } else {
-            $requiredName = \sprintf('%s.%s', $value->name, $domainName->toString());
+            $requiredName = sprintf('%s.%s', $value->name, $domainName->toString());
         }
 
         $context = $this->context;

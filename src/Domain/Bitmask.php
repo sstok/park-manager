@@ -77,10 +77,10 @@ abstract class Bitmask
             return $code;
         }
 
-        $name = \sprintf('static::%s', \mb_strtoupper($code));
+        $name = sprintf('static::%s', mb_strtoupper($code));
 
         if (! \defined($name)) {
-            throw new InvalidArgumentException(\sprintf('The code "%s" is not supported', $code));
+            throw new InvalidArgumentException(sprintf('The code "%s" is not supported', $code));
         }
 
         return \constant($name);

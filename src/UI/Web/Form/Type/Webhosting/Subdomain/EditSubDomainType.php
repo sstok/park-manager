@@ -26,8 +26,8 @@ final class EditSubDomainType extends SubDomainType
         parent::buildForm($builder, $options);
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, static function (PostSetDataEvent $event): void {
-            /** @var SubDomain $model */
             $model = $event->getData()['model'];
+            \assert($model instanceof SubDomain);
 
             if ($model->tlsCert) {
                 $event->getForm()->add('removeTLS', CheckboxType::class, ['data' => false, 'label' => 'label.remove_tls', 'help' => 'help.remove_tls', 'getter' => static fn () => false]);
@@ -50,8 +50,8 @@ final class EditSubDomainType extends SubDomainType
             );
 
             if ($form['tlsInfo'] !== null) {
-                /** @var X509CertificateBundle $tlsInformation */
                 $tlsInformation = $form['tlsInfo'];
+                \assert($tlsInformation instanceof X509CertificateBundle);
                 $command->andTLSInformation($tlsInformation->certificate, $tlsInformation->privateKey, $tlsInformation->caList);
             } elseif ($form['removeTLS'] ?? false) {
                 $command->removeTLSInformation();

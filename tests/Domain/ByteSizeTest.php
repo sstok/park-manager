@@ -22,61 +22,61 @@ final class ByteSizeTest extends TestCase
     /** @test */
     public function constructable_with_various_units(): void
     {
-        self::assertEquals(1, (new ByteSize(1, 'b'))->value);
-        self::assertEquals(1, (new ByteSize(1, 'byte'))->value);
+        self::assertSame(1, (new ByteSize(1, 'b'))->value);
+        self::assertSame(1, (new ByteSize(1, 'byte'))->value);
 
         // Ibi bytes
-        self::assertEquals(1024, (new ByteSize(1, 'kib'))->value);
-        self::assertEquals(1024 * 1024, (new ByteSize(1, 'mib'))->value);
-        self::assertEquals(1024 * 1024 * 1024, (new ByteSize(1, 'gib'))->value);
+        self::assertSame(1024, (new ByteSize(1, 'kib'))->value);
+        self::assertSame(1024 * 1024, (new ByteSize(1, 'mib'))->value);
+        self::assertSame(1024 * 1024 * 1024, (new ByteSize(1, 'gib'))->value);
 
-        self::assertEquals(1024, (new ByteSize(1, 'ki'))->value);
-        self::assertEquals(1024 * 1024, (new ByteSize(1, 'mi'))->value);
-        self::assertEquals(1024 * 1024 * 1024, (new ByteSize(1, 'gi'))->value);
+        self::assertSame(1024, (new ByteSize(1, 'ki'))->value);
+        self::assertSame(1024 * 1024, (new ByteSize(1, 'mi'))->value);
+        self::assertSame(1024 * 1024 * 1024, (new ByteSize(1, 'gi'))->value);
 
         // Normal bytes
-        self::assertEquals(1000, (new ByteSize(1, 'kb'))->value);
-        self::assertEquals(1000 * 1000, (new ByteSize(1, 'mb'))->value);
-        self::assertEquals(1000 * 1000 * 1000, (new ByteSize(1, 'gb'))->value);
+        self::assertSame(1000, (new ByteSize(1, 'kb'))->value);
+        self::assertSame(1000 * 1000, (new ByteSize(1, 'mb'))->value);
+        self::assertSame(1000 * 1000 * 1000, (new ByteSize(1, 'gb'))->value);
 
-        self::assertEquals(1000, (new ByteSize(1, 'k'))->value);
-        self::assertEquals(1000 * 1000, (new ByteSize(1, 'm'))->value);
-        self::assertEquals(1000 * 1000 * 1000, (new ByteSize(1, 'g'))->value);
+        self::assertSame(1000, (new ByteSize(1, 'k'))->value);
+        self::assertSame(1000 * 1000, (new ByteSize(1, 'm'))->value);
+        self::assertSame(1000 * 1000 * 1000, (new ByteSize(1, 'g'))->value);
 
         // Different value
-        self::assertEquals(1024 * 5, (new ByteSize(5, 'kib'))->value);
-        self::assertEquals(1024 * 1024 * 5, (new ByteSize(5, 'mib'))->value);
-        self::assertEquals(1024 * 1024 * 1024 * 5, (new ByteSize(5, 'gib'))->value);
-        self::assertEquals(1024 * 5, (new ByteSize(5, 'ki'))->value);
-        self::assertEquals(1024 * 1024 * 5, (new ByteSize(5, 'mi'))->value);
-        self::assertEquals(1024 * 1024 * 1024 * 5, (new ByteSize(5, 'gi'))->value);
-        self::assertEquals(1000 * 5, (new ByteSize(5, 'kb'))->value);
-        self::assertEquals(1000 * 1000 * 5, (new ByteSize(5, 'mb'))->value);
-        self::assertEquals(1000 * 1000 * 1000 * 5, (new ByteSize(5, 'gb'))->value);
-        self::assertEquals(1000 * 5, (new ByteSize(5, 'k'))->value);
-        self::assertEquals(1000 * 1000 * 5, (new ByteSize(5, 'm'))->value);
-        self::assertEquals(1000 * 1000 * 1000 * 5, (new ByteSize(5, 'g'))->value);
+        self::assertSame(1024 * 5, (new ByteSize(5, 'kib'))->value);
+        self::assertSame(1024 * 1024 * 5, (new ByteSize(5, 'mib'))->value);
+        self::assertSame(1024 * 1024 * 1024 * 5, (new ByteSize(5, 'gib'))->value);
+        self::assertSame(1024 * 5, (new ByteSize(5, 'ki'))->value);
+        self::assertSame(1024 * 1024 * 5, (new ByteSize(5, 'mi'))->value);
+        self::assertSame(1024 * 1024 * 1024 * 5, (new ByteSize(5, 'gi'))->value);
+        self::assertSame(1000 * 5, (new ByteSize(5, 'kb'))->value);
+        self::assertSame(1000 * 1000 * 5, (new ByteSize(5, 'mb'))->value);
+        self::assertSame(1000 * 1000 * 1000 * 5, (new ByteSize(5, 'gb'))->value);
+        self::assertSame(1000 * 5, (new ByteSize(5, 'k'))->value);
+        self::assertSame(1000 * 1000 * 5, (new ByteSize(5, 'm'))->value);
+        self::assertSame(1000 * 1000 * 1000 * 5, (new ByteSize(5, 'g'))->value);
 
         // Fractions
-        self::assertEquals((int) (1024 * 1.30), (new ByteSize(1.30, 'kib'))->value);
-        self::assertEquals((int) (1024 * 1024 * 1.30), (new ByteSize(1.30, 'mib'))->value);
-        self::assertEquals((int) (1024 * 1024 * 1024 * 1.30), (new ByteSize(1.30, 'gib'))->value);
+        self::assertSame((int) (1024 * 1.30), (new ByteSize(1.30, 'kib'))->value);
+        self::assertSame((int) (1024 * 1024 * 1.30), (new ByteSize(1.30, 'mib'))->value);
+        self::assertSame((int) (1024 * 1024 * 1024 * 1.30), (new ByteSize(1.30, 'gib'))->value);
 
-        self::assertEquals((int) (1000 * 1.6), (new ByteSize(1.60, 'k'))->value);
-        self::assertEquals((int) (1000 * 1000 * 1.6), (new ByteSize(1.60, 'm'))->value);
-        self::assertEquals((int) (1000 * 1000 * 1000 * 1.6), (new ByteSize(1.60, 'g'))->value);
+        self::assertSame((int) (1000 * 1.6), (new ByteSize(1.60, 'k'))->value);
+        self::assertSame((int) (1000 * 1000 * 1.6), (new ByteSize(1.60, 'm'))->value);
+        self::assertSame((int) (1000 * 1000 * 1000 * 1.6), (new ByteSize(1.60, 'g'))->value);
 
-        self::assertEquals((int) (1024 * 1.30), (new ByteSize(1.30, 'kib'))->value);
-        self::assertEquals((int) (1024 * 1024 * 1.30), (new ByteSize(1.30, 'mib'))->value);
-        self::assertEquals((int) (1024 * 1024 * 1024 * 1.30), (new ByteSize(1.30, 'gib'))->value);
+        self::assertSame((int) (1024 * 1.30), (new ByteSize(1.30, 'kib'))->value);
+        self::assertSame((int) (1024 * 1024 * 1.30), (new ByteSize(1.30, 'mib'))->value);
+        self::assertSame((int) (1024 * 1024 * 1024 * 1.30), (new ByteSize(1.30, 'gib'))->value);
 
-        self::assertEquals((int) (1000 * 1.5), (new ByteSize(1.50, 'k'))->value);
-        self::assertEquals((int) (1000 * 1000 * 1.5), (new ByteSize(1.50, 'm'))->value);
-        self::assertEquals((int) (1000 * 1000 * 1000 * 1.5), (new ByteSize(1.50, 'g'))->value);
+        self::assertSame((int) (1000 * 1.5), (new ByteSize(1.50, 'k'))->value);
+        self::assertSame((int) (1000 * 1000 * 1.5), (new ByteSize(1.50, 'm'))->value);
+        self::assertSame((int) (1000 * 1000 * 1000 * 1.5), (new ByteSize(1.50, 'g'))->value);
 
-        self::assertEquals((int) (1000 * 1.6), (new ByteSize(1.60, 'k'))->value);
-        self::assertEquals((int) (1000 * 1000 * 1.6), (new ByteSize(1.60, 'm'))->value);
-        self::assertEquals((int) (1000 * 1000 * 1000 * 1.6), (new ByteSize(1.60, 'g'))->value);
+        self::assertSame((int) (1000 * 1.6), (new ByteSize(1.60, 'k'))->value);
+        self::assertSame((int) (1000 * 1000 * 1.6), (new ByteSize(1.60, 'm'))->value);
+        self::assertSame((int) (1000 * 1000 * 1000 * 1.6), (new ByteSize(1.60, 'g'))->value);
     }
 
     /** @test */
@@ -114,11 +114,11 @@ final class ByteSizeTest extends TestCase
 
         self::assertEquals($expected, $byteSize);
 
-        if (\mb_stripos($input, 'i') !== false) {
+        if (mb_stripos($input, 'i') !== false) {
             self::assertEquals(
                 $expected,
                 ByteSize::fromString($byteSize->format()),
-                \sprintf('With input "%s" got "%s".', $input, $byteSize->format())
+                sprintf('With input "%s" got "%s".', $input, $byteSize->format())
             );
         }
     }
@@ -290,36 +290,36 @@ final class ByteSizeTest extends TestCase
     /** @test */
     public function formats(): void
     {
-        self::assertEquals('200 B', (new ByteSize(200, 'b'))->format());
-        self::assertEquals('1.00 MiB', (new ByteSize(1, 'Mib'))->format());
-        self::assertEquals('1.00 KiB', (new ByteSize(1, 'Kib'))->format());
-        self::assertEquals('1.00 GiB', (new ByteSize(1, 'Gib'))->format());
-        self::assertEquals('200.00 GiB', (new ByteSize(200, 'Gib'))->format());
+        self::assertSame('200 B', (new ByteSize(200, 'b'))->format());
+        self::assertSame('1.00 MiB', (new ByteSize(1, 'Mib'))->format());
+        self::assertSame('1.00 KiB', (new ByteSize(1, 'Kib'))->format());
+        self::assertSame('1.00 GiB', (new ByteSize(1, 'Gib'))->format());
+        self::assertSame('200.00 GiB', (new ByteSize(200, 'Gib'))->format());
 
-        self::assertEquals('1.49 MiB', (new ByteSize(1, 'Mib'))->increase(new ByteSize(500, 'Kib'))->format());
-        self::assertEquals('5.00 MiB', (new ByteSize(1, 'Kib'))->increase(new ByteSize(5, 'Mib'))->format());
-        self::assertEquals('1.49 GiB', (new ByteSize(1, 'Gib'))->increase(new ByteSize(500, 'Mib'))->format());
+        self::assertSame('1.49 MiB', (new ByteSize(1, 'Mib'))->increase(new ByteSize(500, 'Kib'))->format());
+        self::assertSame('5.00 MiB', (new ByteSize(1, 'Kib'))->increase(new ByteSize(5, 'Mib'))->format());
+        self::assertSame('1.49 GiB', (new ByteSize(1, 'Gib'))->increase(new ByteSize(500, 'Mib'))->format());
     }
 
     /** @test */
     public function gets_unit(): void
     {
-        self::assertEquals('B', (new ByteSize(200, 'b'))->getUnit());
-        self::assertEquals('MiB', (new ByteSize(1, 'Mib'))->getUnit());
-        self::assertEquals('MiB', (new ByteSize(1025, 'Kib'))->getUnit());
-        self::assertEquals('KiB', (new ByteSize(1, 'Kib'))->getUnit());
-        self::assertEquals('GiB', (new ByteSize(1, 'Gib'))->getUnit());
+        self::assertSame('B', (new ByteSize(200, 'b'))->getUnit());
+        self::assertSame('MiB', (new ByteSize(1, 'Mib'))->getUnit());
+        self::assertSame('MiB', (new ByteSize(1025, 'Kib'))->getUnit());
+        self::assertSame('KiB', (new ByteSize(1, 'Kib'))->getUnit());
+        self::assertSame('GiB', (new ByteSize(1, 'Gib'))->getUnit());
     }
 
     /** @test */
     public function gets_norm_size(): void
     {
-        self::assertEquals(200, (new ByteSize(200, 'b'))->getNormSize());
-        self::assertEquals(1, (new ByteSize(1, 'Mib'))->getNormSize());
-        self::assertEquals(1, (new ByteSize(1025, 'Kib'))->getNormSize()); // 1.00 MiB
-        self::assertEquals(1.95, (new ByteSize(2000, 'Kib'))->getNormSize()); // 1.95 MiB
-        self::assertEquals(1, (new ByteSize(1, 'Kib'))->getNormSize());
-        self::assertEquals(1, (new ByteSize(1, 'Gib'))->getNormSize());
+        self::assertSame(200, (new ByteSize(200, 'b'))->getNormSize());
+        self::assertSame(1.0, (new ByteSize(1, 'Mib'))->getNormSize());
+        self::assertSame(1.0, (new ByteSize(1025, 'Kib'))->getNormSize()); // 1.00 MiB
+        self::assertSame(1.95, (new ByteSize(2000, 'Kib'))->getNormSize()); // 1.95 MiB
+        self::assertSame(1.0, (new ByteSize(1, 'Kib'))->getNormSize());
+        self::assertSame(1.0, (new ByteSize(1, 'Gib'))->getNormSize());
     }
 
     /** @test */
@@ -342,13 +342,13 @@ final class ByteSizeTest extends TestCase
 
     private function assertDiffRemainderEquals(int $expected, ByteSize $original, ByteSize $current): void
     {
-        self::assertEqualsWithDelta($expected, \round($original->getDiffRemainder($current), 0, \PHP_ROUND_HALF_UP), 0.0001);
+        self::assertEqualsWithDelta($expected, round($original->getDiffRemainder($current), 0, \PHP_ROUND_HALF_UP), 0.0001);
     }
 
     /** @test */
     public function provides_debug_information(): void
     {
-        self::assertEquals(
+        self::assertSame(
             [
                 'value' => 209715200,
                 '_formatted' => '200.00 MiB',

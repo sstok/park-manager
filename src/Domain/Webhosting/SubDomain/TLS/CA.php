@@ -58,7 +58,7 @@ class CA
                 $list[] = $ca;
             }
 
-            $this->tree = \array_reverse($list);
+            $this->tree = array_reverse($list);
         }
 
         return $this->tree;

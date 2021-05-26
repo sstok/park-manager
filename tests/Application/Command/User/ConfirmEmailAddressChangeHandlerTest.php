@@ -63,7 +63,7 @@ final class ConfirmEmailAddressChangeHandlerTest extends TestCase
         $handler = new ConfirmEmailAddressChangeHandler($repository);
 
         try {
-            $invalidToken = FakeSplitTokenFactory::instance()->fromString(FakeSplitTokenFactory::SELECTOR . \str_rot13(FakeSplitTokenFactory::VERIFIER));
+            $invalidToken = FakeSplitTokenFactory::instance()->fromString(FakeSplitTokenFactory::SELECTOR . str_rot13(FakeSplitTokenFactory::VERIFIER));
             $handler(new ConfirmEmailAddressChange($invalidToken));
 
             self::fail('Exception was expected.');

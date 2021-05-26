@@ -54,7 +54,8 @@ final class MakeDomainNamePrimaryOfSpace
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id])
-                ->withFlash(type: 'success', message: 'flash.domain_name_marked_as_primary');
+                ->withFlash(type: 'success', message: 'flash.domain_name_marked_as_primary')
+            ;
         }
 
         return new TwigResponse('admin/webhosting/domain_name/make_primary.html.twig', [

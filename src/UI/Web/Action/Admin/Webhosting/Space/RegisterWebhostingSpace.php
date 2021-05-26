@@ -27,7 +27,8 @@ final class RegisterWebhostingSpace
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.list')
-                ->withFlash('success', 'flash.webhosting_space.registered');
+                ->withFlash('success', 'flash.webhosting_space.registered')
+            ;
         }
 
         return new TwigResponse('admin/webhosting/space/register.html.twig', $form);

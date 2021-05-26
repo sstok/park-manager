@@ -42,7 +42,7 @@ trait TimestampableTrait
     protected function __updateTimestamp(): void
     {
         // Create a datetime with microseconds
-        $this->updatedAt = CarbonImmutable::createFromFormat('U.u', \sprintf('%.6F', \microtime(true)));
+        $this->updatedAt = CarbonImmutable::createFromFormat('U.u', sprintf('%.6F', microtime(true)));
 
         if (! isset($this->registeredAt)) {
             $this->registeredAt = $this->updatedAt;

@@ -11,11 +11,11 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Form\Type\Security;
 
 use ParkManager\Infrastructure\Security\SecurityUser;
+use function Sodium\memzero;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
-use function Sodium\memzero;
 
 final class SecurityUserHashedPasswordType extends AbstractType
 {
@@ -37,7 +37,8 @@ final class SecurityUserHashedPasswordType extends AbstractType
 
                     return $hashed;
                 };
-            });
+            })
+        ;
     }
 
     public function getParent(): ?string

@@ -63,9 +63,9 @@ final class AddSubDomainHandlerTest extends TestCase
             '26fdb3e9-d8aa-4fa4-a8da-8b889fd86ab6',
             static function (SubDomain $entity) {
                 self::assertTrue($entity->host->id->equals(DomainNameId::fromString(self::DOMAIN_ID_1)), 'Host should equal');
-                self::assertEquals('blog', $entity->name, 'Name should equal');
-                self::assertEquals('blog/', $entity->homeDir, 'Homedir should equal');
-                self::assertEquals(['php-version' => '7.5'], $entity->config, 'Config should equal');
+                self::assertSame('blog', $entity->name, 'Name should equal');
+                self::assertSame('blog/', $entity->homeDir, 'Homedir should equal');
+                self::assertSame(['php-version' => '7.5'], $entity->config, 'Config should equal');
                 self::assertNull($entity->tlsCert, 'TLSCert should be null');
 
                 return true;
@@ -165,7 +165,8 @@ final class AddSubDomainHandlerTest extends TestCase
                         Jzgsmb7yKoigkH/BZ5sm/spdlz3/eXuEtcC6gLfsPA==
                         -----END CERTIFICATE-----
                         CA,
-                ]);
+                ])
+        ;
 
         $this->handler->__invoke($command);
 
@@ -174,11 +175,11 @@ final class AddSubDomainHandlerTest extends TestCase
             '26fdb3e9-d8aa-4fa4-a8da-8b889fd86ab6',
             static function (SubDomain $entity) use ($cert) {
                 self::assertTrue($entity->host->id->equals(DomainNameId::fromString(self::DOMAIN_ID_1)), 'Host should equal');
-                self::assertEquals('blog', $entity->name, 'Name should equal');
-                self::assertEquals('blog/', $entity->homeDir, 'Homedir should equal');
-                self::assertEquals(['php-version' => '7.5'], $entity->config, 'Config should equal');
+                self::assertSame('blog', $entity->name, 'Name should equal');
+                self::assertSame('blog/', $entity->homeDir, 'Homedir should equal');
+                self::assertSame(['php-version' => '7.5'], $entity->config, 'Config should equal');
                 self::assertNotNull($entity->tlsCert, 'TLSCert should be not null');
-                self::assertEquals($entity->tlsCert->getContents(), $cert);
+                self::assertSame($entity->tlsCert->getContents(), $cert);
 
                 return true;
             }

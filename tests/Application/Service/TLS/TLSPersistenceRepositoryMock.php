@@ -45,7 +45,7 @@ final class TLSPersistenceRepositoryMock extends ObjectManagerDecorator
 
     protected function throwOnNotFound($key): void
     {
-        [$class, $id] = \explode(':', $key, 2);
+        [$class, $id] = explode(':', $key, 2);
 
         throw EntityNotFoundException::fromClassNameAndIdentifier($class, ['id' => $id]);
     }

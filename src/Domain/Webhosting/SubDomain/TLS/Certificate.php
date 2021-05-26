@@ -69,7 +69,7 @@ class Certificate
     public function supportsDomain(string $domain): bool
     {
         foreach ($this->getDomains() as $value) {
-            if (\preg_match('#^' . \str_replace(['.', '*'], ['\.', '[^.]*'], $value) . '$#', $domain)) {
+            if (preg_match('#^' . str_replace(['.', '*'], ['\.', '[^.]*'], $value) . '$#', $domain)) {
                 return true;
             }
         }
@@ -103,7 +103,7 @@ class Certificate
                 throw new \InvalidArgumentException('PrivateKey resource was not initialized.');
             }
 
-            $this->privateKeyString = \stream_get_contents($this->privateKey);
+            $this->privateKeyString = stream_get_contents($this->privateKey);
         }
 
         return $this->privateKeyString;

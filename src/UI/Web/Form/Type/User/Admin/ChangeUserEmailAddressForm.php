@@ -31,7 +31,8 @@ final class ChangeUserEmailAddressForm extends AbstractType
                 'help' => 'help.user_management.email_requires_confirm',
                 'required' => false,
                 'getter' => static fn (): bool => false,
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

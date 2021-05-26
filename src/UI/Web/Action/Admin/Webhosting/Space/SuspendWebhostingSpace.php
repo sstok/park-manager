@@ -33,7 +33,8 @@ final class SuspendWebhostingSpace
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id])
-                ->withFlash('success', 'flash.webhosting_space.access_suspended');
+                ->withFlash('success', 'flash.webhosting_space.access_suspended')
+            ;
         }
 
         return new TwigResponse('admin/webhosting/space/suspend_access.html.twig', ['form' => $form->createView(), 'space' => $space]);

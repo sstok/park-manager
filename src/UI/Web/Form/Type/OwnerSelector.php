@@ -104,7 +104,7 @@ final class OwnerSelector extends AbstractType
     public function getLabel(User | Organization $owner): string
     {
         if ($owner instanceof User) {
-            return \sprintf(
+            return sprintf(
                 '%s (%s)',
                 $owner->displayName,
                 $owner->email->canonical,
@@ -115,7 +115,7 @@ final class OwnerSelector extends AbstractType
             return $owner->name;
         }
 
-        return \sprintf('%s (%s)', $owner->name, $owner->id->toString());
+        return sprintf('%s (%s)', $owner->name, $owner->id->toString());
     }
 
     public function getGroup(User | Organization $owner): string

@@ -24,13 +24,13 @@ final class SystemGatewayImpl implements SystemGateway
         // XXX Mocked-up results.
 
         return match (\get_class($command)) {
-            RegisterSystemUser::class => new RegisterSystemUserResult(['id' => $id = \mt_rand(), 'groups' => [500], 'homedir' => '/data/site_' . $id]),
-            default => throw new \InvalidArgumentException(\sprintf('Unsupported SystemCommand %s', \get_class($command))),
+            RegisterSystemUser::class => new RegisterSystemUserResult(['id' => $id = mt_rand(), 'groups' => [500], 'homedir' => '/data/site_' . $id]),
+            default => throw new \InvalidArgumentException(sprintf('Unsupported SystemCommand %s', \get_class($command))),
         };
     }
 
     public function query(SystemQuery $command): OperationResult
     {
-        throw new \InvalidArgumentException(\sprintf('Unsupported SystemQuery %s', \get_class($command)));
+        throw new \InvalidArgumentException(sprintf('Unsupported SystemQuery %s', \get_class($command)));
     }
 }

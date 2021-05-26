@@ -38,7 +38,8 @@ final class ChangeUserEmailAddressAction
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.show_user', ['user' => $user->id->toString()])
-                ->withFlash('success', $form->get('require_confirm')->getData() ? 'flash.email_address_change_requested' : 'flash.email_address_changed');
+                ->withFlash('success', $form->get('require_confirm')->getData() ? 'flash.email_address_change_requested' : 'flash.email_address_changed')
+            ;
         }
 
         return new TwigResponse('admin/user/change_email_address.html.twig', [

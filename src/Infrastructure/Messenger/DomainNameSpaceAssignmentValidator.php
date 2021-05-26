@@ -66,8 +66,8 @@ final class DomainNameSpaceAssignmentValidator implements MiddlewareInterface
             $usedByEntities[] = $validator($domainName, $space);
         }
 
-        $usedByEntities = \array_merge(...$usedByEntities);
-        $usedByEntities = \array_filter($usedByEntities, static fn ($value): bool => \count($value) > 0);
+        $usedByEntities = array_merge(...$usedByEntities);
+        $usedByEntities = array_filter($usedByEntities, static fn ($value): bool => \count($value) > 0);
 
         if (\count($usedByEntities) === 0) {
             return;

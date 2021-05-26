@@ -135,21 +135,21 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
         $webhostingDomainName = $this->repository->get($this->id1);
 
         self::assertTrue($webhostingDomainName->id->equals($this->id1), 'ID should equal');
-        self::assertEquals($this->space1, $webhostingDomainName->space);
+        self::assertSame($this->space1, $webhostingDomainName->space);
         self::assertEquals(new DomainNamePair('example', 'com'), $webhostingDomainName->namePair);
         self::assertTrue($webhostingDomainName->isPrimary());
 
         $webhostingDomainName = $this->repository->get($this->id2);
 
         self::assertTrue($webhostingDomainName->id->equals($this->id2), 'ID should equal');
-        self::assertEquals($this->space2, $webhostingDomainName->space);
+        self::assertSame($this->space2, $webhostingDomainName->space);
         self::assertEquals(new DomainNamePair('example', 'net'), $webhostingDomainName->namePair);
         self::assertTrue($webhostingDomainName->isPrimary());
 
         $webhostingDomainName = $this->repository->get($this->id3);
 
         self::assertTrue($webhostingDomainName->id->equals($this->id3), 'ID should equal');
-        self::assertEquals($this->space2, $webhostingDomainName->space);
+        self::assertSame($this->space2, $webhostingDomainName->space);
         self::assertEquals(new DomainNamePair('example', 'co.uk'), $webhostingDomainName->namePair);
         self::assertFalse($webhostingDomainName->isPrimary());
     }
@@ -212,10 +212,10 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
             $expected[$id->toString()] = $this->repository->get($id);
         }
 
-        \ksort($expected, \SORT_STRING);
-        \ksort($found, \SORT_STRING);
+        ksort($expected, \SORT_STRING);
+        ksort($found, \SORT_STRING);
 
-        self::assertEquals($expected, $found);
+        self::assertSame($expected, $found);
     }
 
     /** @test */

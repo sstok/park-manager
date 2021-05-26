@@ -18,7 +18,7 @@ final class OrganizationNotFound extends NotFoundException
     public static function withId(OrganizationId $id): self
     {
         return new self(
-            \sprintf('Organization with id "%s" does not exist.', $id->toString()),
+            sprintf('Organization with id "%s" does not exist.', $id->toString()),
             [
                 'organization' => $id,
             ]

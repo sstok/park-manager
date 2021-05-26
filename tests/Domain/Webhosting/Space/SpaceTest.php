@@ -58,8 +58,8 @@ final class SpaceTest extends TestCase
 
         $space = Space::register($id, $owner, $plan);
 
-        self::assertEquals($id, $space->id);
-        self::assertEquals($owner, $space->owner);
+        self::assertSame($id, $space->id);
+        self::assertSame($owner, $space->owner);
         self::assertSame($plan, $space->getAssignedPlan());
         self::assertSame($constraints, $space->constraints);
     }
@@ -78,8 +78,8 @@ final class SpaceTest extends TestCase
 
         $space = Space::registerWithCustomConstraints($id, $owner, $constraints);
 
-        self::assertEquals($id, $space->id);
-        self::assertEquals($owner, $space->owner);
+        self::assertSame($id, $space->id);
+        self::assertSame($owner, $space->owner);
         self::assertSame($constraints, $space->constraints);
         self::assertNull($space->getAssignedPlan());
     }
@@ -203,7 +203,7 @@ final class SpaceTest extends TestCase
         self::assertNull($space->webQuota);
 
         $space->setWebQuota($size = new ByteSize(12, 'GB'));
-        self::assertEquals($size, $space->webQuota);
+        self::assertSame($size, $space->webQuota);
 
         // Not changed.
         $space->setWebQuota($size2 = new ByteSize(12, 'GB'));
@@ -245,8 +245,8 @@ final class SpaceTest extends TestCase
         $space1->transferToOwner($owner1);
         $space2->transferToOwner($owner2);
 
-        self::assertEquals($owner1, $space1->owner);
-        self::assertEquals($owner2, $space2->owner);
+        self::assertSame($owner1, $space1->owner);
+        self::assertSame($owner2, $space2->owner);
     }
 
     /** @test */

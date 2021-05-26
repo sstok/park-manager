@@ -16,7 +16,7 @@ final class MalformedEmailAddress extends InvalidArgumentException
 {
     public static function missingAtSign(string $address): self
     {
-        return new self(\sprintf('Malformed email address "%s" (missing @)', $address), 1);
+        return new self(sprintf('Malformed email address "%s" (missing @)', $address), 1);
     }
 
     public static function idnError(string $address, int $errors): self
@@ -51,18 +51,18 @@ final class MalformedEmailAddress extends InvalidArgumentException
             }
         }
 
-        $errorsString = $res === [] ? 'Unknown IDNA conversion error.' : \implode(', ', $res) . '.';
+        $errorsString = $res === [] ? 'Unknown IDNA conversion error.' : implode(', ', $res) . '.';
 
-        return new self(\sprintf('Malformed email address "%s" (IDN Error reported %s)', $address, $errorsString), 2);
+        return new self(sprintf('Malformed email address "%s" (IDN Error reported %s)', $address, $errorsString), 2);
     }
 
     public static function patternMultipleWildcards(string $address): self
     {
-        return new self(\sprintf('Malformed email address pattern "%s", multiple wildcards found.', $address), 3);
+        return new self(sprintf('Malformed email address pattern "%s", multiple wildcards found.', $address), 3);
     }
 
     public static function patternWildcardInLabel(string $address): self
     {
-        return new self(\sprintf('Malformed email address pattern "%s", wildcard found in label part.', $address), 4);
+        return new self(sprintf('Malformed email address pattern "%s", wildcard found in label part.', $address), 4);
     }
 }

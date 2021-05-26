@@ -39,7 +39,8 @@ final class RegisterUserAction
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.show_user', ['user' => $userId->toString()])
-                ->withFlash('success', 'flash.user_registered');
+                ->withFlash('success', 'flash.user_registered')
+            ;
         }
 
         return new TwigResponse('admin/user/register.html.twig', $form);

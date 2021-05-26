@@ -17,7 +17,7 @@ final class CannotTransferInUseDomainName extends UseDomainNameException
 {
     protected function getInitMessage(DomainNamePair $domainName, SpaceId $current): string
     {
-        return \sprintf(
+        return sprintf(
             'Domain name "%s" of Hosting Space %s cannot be transferred as it is still used by the following entities:' . "\n",
             $domainName->toString(),
             $current->toString()

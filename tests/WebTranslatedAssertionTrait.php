@@ -28,7 +28,7 @@ trait WebTranslatedAssertionTrait
         }
 
         $translated = static::$container->get('translator')->trans($id, $parameters, $domain, $locale);
-        $translated = \trim(\preg_replace('/(?:\s{2,}+|[^\S ])/', ' ', \strip_tags($translated)));
+        $translated = trim(preg_replace('/(?:\s{2,}+|[^\S ])/', ' ', strip_tags($translated)));
 
         try {
             self::assertSelectorExists($selector);
@@ -37,15 +37,15 @@ trait WebTranslatedAssertionTrait
                 $message
             );
         } catch (ExpectationFailedException $exception) {
-            /** @var Response $response */
             $response = self::executePrivateMethod('getResponse');
+            \assert($response instanceof Response);
 
             if (($serverExceptionMessage = $response->headers->get('X-Debug-Exception'))
                 && ($serverExceptionFile = $response->headers->get('X-Debug-Exception-File'))) {
-                $serverExceptionFile = \explode(':', $serverExceptionFile);
-                $exception->__construct($exception->getMessage(), $exception->getComparisonFailure(), new ErrorException(\rawurldecode($serverExceptionMessage), 0, 1, \rawurldecode($serverExceptionFile[0]), $serverExceptionFile[1]), $exception->getPrevious());
+                $serverExceptionFile = explode(':', $serverExceptionFile);
+                $exception->__construct($exception->getMessage(), $exception->getComparisonFailure(), new ErrorException(rawurldecode($serverExceptionMessage), 0, 1, rawurldecode($serverExceptionFile[0]), $serverExceptionFile[1]), $exception->getPrevious());
             } else {
-                $exception->__construct($exception->getMessage(), $exception->getComparisonFailure(), new PreconditionFailedHttpException(\rawurldecode($response->getContent()), $exception->getPrevious()));
+                $exception->__construct($exception->getMessage(), $exception->getComparisonFailure(), new PreconditionFailedHttpException(rawurldecode($response->getContent()), $exception->getPrevious()));
             }
 
             throw $exception;

@@ -29,7 +29,8 @@ final class SyncWebhostingPlanConstraintsAction extends AbstractController
 
         if (! $this->isCsrfTokenValid($tokenId, $token)) {
             return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.plan.show', ['plan' => $plan->id->toString()])
-                ->withFlash(type: 'error', message: 'flash.invalid_token_provided');
+                ->withFlash(type: 'error', message: 'flash.invalid_token_provided')
+            ;
         }
 
         $this->container->get('security.csrf.token_manager')->removeToken($tokenId);
@@ -38,7 +39,8 @@ final class SyncWebhostingPlanConstraintsAction extends AbstractController
         $usedBySpacesNb = $this->get(WebhostingSpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
 
         return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.plan.show', ['plan' => $plan->id->toString()])
-            ->withFlash(type: 'success', message: 'flash.webhosting_plan.assignment_update_dispatched', arguments: ['spaces_count' => $usedBySpacesNb]);
+            ->withFlash(type: 'success', message: 'flash.webhosting_plan.assignment_update_dispatched', arguments: ['spaces_count' => $usedBySpacesNb])
+        ;
     }
 
     public static function getSubscribedServices(): array

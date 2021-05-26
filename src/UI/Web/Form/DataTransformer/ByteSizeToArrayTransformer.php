@@ -35,12 +35,12 @@ final class ByteSizeToArrayTransformer implements DataTransformerInterface
             ];
         }
 
-        [$value, $unit] = \explode(' ', $value->format());
+        [$value, $unit] = explode(' ', $value->format());
 
         return [
             'isInf' => false,
             'value' => (float) $value,
-            'unit' => \mb_strtolower($unit),
+            'unit' => mb_strtolower($unit),
         ];
     }
 
@@ -58,7 +58,7 @@ final class ByteSizeToArrayTransformer implements DataTransformerInterface
             return null;
         }
 
-        if ($value['unit'] === 'byte' && \preg_match('/\.[1-9]/', (string) $value['value']) === 1) {
+        if ($value['unit'] === 'byte' && preg_match('/\.[1-9]/', (string) $value['value']) === 1) {
             throw new TransformationFailedException(
                 'Fractions are not accepted for Byte unit.',
                 invalidMessage: 'Fractions are not accepted for Byte unit.'

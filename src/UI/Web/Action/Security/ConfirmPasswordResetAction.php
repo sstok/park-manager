@@ -27,8 +27,6 @@ final class ConfirmPasswordResetAction
      *     requirements={"token" = ".+"},
      *     methods={"GET", "POST"}
      * )
-     *
-     * @return RouteRedirectResponse|TwigResponse
      */
     public function __invoke(Request $request, SplitToken $token, FormFactoryInterface $formFactory): TwigResponse | RouteRedirectResponse
     {
@@ -37,7 +35,8 @@ final class ConfirmPasswordResetAction
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.security_login')
-                ->withFlash('success', 'flash.password_reset_accepted');
+                ->withFlash('success', 'flash.password_reset_accepted')
+            ;
         }
 
         $response = new TwigResponse('security/password_reset_confirm.html.twig', $form);

@@ -24,7 +24,6 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use const false;
 
 /**
  * @internal
@@ -95,7 +94,7 @@ final class ModelResolverTest extends TestCase
 
         self::assertCount(1, $resolved);
         self::assertInstanceof($class, $resolved[0]);
-        self::assertEquals($id ?? $default, $resolved[0]->id->toString());
+        self::assertSame($id ?? $default, $resolved[0]->id->toString());
     }
 
     /** @test */

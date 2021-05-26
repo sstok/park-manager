@@ -57,8 +57,8 @@ final class InitializeWebhostingSpaceHandler
         $this->spaceRepository->save($space);
 
         try {
-            /** @var RegisterSystemUserResult $result */
             $result = $this->systemGateway->execute(new RegisterSystemUser($space->id));
+            \assert($result instanceof RegisterSystemUserResult);
 
             $space->setupWith($result->userId(), $result->userGroups(), $result->homeDirectory());
 

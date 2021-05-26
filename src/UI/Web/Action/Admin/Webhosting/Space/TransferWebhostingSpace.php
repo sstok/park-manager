@@ -33,7 +33,8 @@ final class TransferWebhostingSpace
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id])
-                ->withFlash('success', 'flash.webhosting_space.owner_transferred');
+                ->withFlash('success', 'flash.webhosting_space.owner_transferred')
+            ;
         }
 
         return new TwigResponse('admin/webhosting/space/owner_transfer.html.twig', ['form' => $form->createView(), 'space' => $space]);

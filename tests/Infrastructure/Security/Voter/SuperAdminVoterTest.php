@@ -32,9 +32,9 @@ final class SuperAdminVoterTest extends TestCase
         $token = $this->createToken(new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_ADMIN', 'ROLE_SUPER_ADMIN']));
         $voter = new SuperAdminVoter();
 
-        self::assertEquals(VoterInterface::ACCESS_GRANTED, $voter->vote($token, null, []));
-        self::assertEquals(VoterInterface::ACCESS_GRANTED, $voter->vote($token, new stdClass(), []));
-        self::assertEquals(VoterInterface::ACCESS_GRANTED, $voter->vote($token, new stdClass(), ['ACTION_NEW']));
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, null, []));
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, new stdClass(), []));
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, new stdClass(), ['ACTION_NEW']));
     }
 
     private function createToken(?object $user = null): TokenInterface
@@ -54,7 +54,7 @@ final class SuperAdminVoterTest extends TestCase
         $token = $this->createToken($user);
         $voter = new SuperAdminVoter();
 
-        self::assertEquals(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, null, []));
+        self::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, null, []));
     }
 
     public function provideAbstainedAccessFor(): iterable

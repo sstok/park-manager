@@ -69,13 +69,13 @@ final class OwnershipUsageListTest extends TestCase
 
         $list = new OwnershipUsageList(['space' => $repository, 'domainName' => $repository2]);
 
-        self::assertEquals([$space1, $domainName1, $domainName2], self::getEntities($list->getAllEntities($owner1->id)));
-        self::assertEquals([$space2], self::getEntities($list->getAllEntities($owner2->id)));
-        self::assertEquals([], self::getEntities($list->getAllEntities($owner3->id)));
+        self::assertSame([$space1, $domainName1, $domainName2], self::getEntities($list->getAllEntities($owner1->id)));
+        self::assertSame([$space2], self::getEntities($list->getAllEntities($owner2->id)));
+        self::assertSame([], self::getEntities($list->getAllEntities($owner3->id)));
 
-        self::assertEquals(['space' => [$space1], 'domainName' => [$domainName1, $domainName2]], self::getEntities($list->getByProvider($owner1->id)));
-        self::assertEquals(['space' => [$space2], 'domainName' => []], self::getEntities($list->getByProvider($owner2->id)));
-        self::assertEquals(['space' => [], 'domainName' => []], self::getEntities($list->getByProvider($owner3->id)));
+        self::assertSame(['space' => [$space1], 'domainName' => [$domainName1, $domainName2]], self::getEntities($list->getByProvider($owner1->id)));
+        self::assertSame(['space' => [$space2], 'domainName' => []], self::getEntities($list->getByProvider($owner2->id)));
+        self::assertSame(['space' => [], 'domainName' => []], self::getEntities($list->getByProvider($owner3->id)));
     }
 
     private static function getEntities(ResultSet | array $resultSet): array
@@ -90,6 +90,6 @@ final class OwnershipUsageListTest extends TestCase
             return $entities;
         }
 
-        return \iterator_to_array($resultSet->getIterator());
+        return iterator_to_array($resultSet->getIterator());
     }
 }

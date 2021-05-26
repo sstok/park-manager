@@ -40,7 +40,8 @@ final class DomainNamePairType extends AbstractType implements DataMapperInterfa
                     'constraints' => new Length(max: 63),
                 ]
             )
-            ->add('suffix', TextType::class, ['label' => 'label.domain_suffix', 'help' => 'help.domain_name_suffix']);
+            ->add('suffix', TextType::class, ['label' => 'label.domain_suffix', 'help' => 'help.domain_name_suffix'])
+        ;
     }
 
     public function getBlockPrefix(): string
@@ -61,7 +62,7 @@ final class DomainNamePairType extends AbstractType implements DataMapperInterfa
             throw new UnexpectedTypeException($viewData, DomainNamePair::class);
         }
 
-        $forms = \iterator_to_array($forms);
+        $forms = iterator_to_array($forms);
         /** @var FormInterface[] $forms */
         $forms['name']->setData($viewData->name);
         $forms['suffix']->setData($viewData->tld);
@@ -72,7 +73,7 @@ final class DomainNamePairType extends AbstractType implements DataMapperInterfa
      */
     public function mapFormsToData(iterable $forms, &$viewData): void
     {
-        $forms = \iterator_to_array($forms);
+        $forms = iterator_to_array($forms);
         /** @var FormInterface[] $forms */
         $name = $forms['name']->getData();
         $suffix = $forms['suffix']->getData();

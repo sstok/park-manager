@@ -598,7 +598,7 @@ final class CAResolverTest extends TestCase
             'DigiCert SHA2 Secure Server CA' => $ca1,
         ]);
 
-        self::assertEquals($intermediateCA, $ca);
+        self::assertSame($intermediateCA, $ca);
         $objectManager->assertNoEntitiesWereSaved();
     }
 
@@ -781,7 +781,7 @@ final class CAResolverTest extends TestCase
 
         self::assertEquals($intermediateCA, $ca);
         $objectManager->assertEntitiesCountWasSaved(1);
-        $objectManager->assertEntitiesWereSavedThat(static fn (CA $ca) => $ca->getContents() === $ca1);
+        $objectManager->assertEntitiesWereSavedThat(static fn (CA $ca): bool => $ca->getContents() === $ca1);
     }
 
     /** @test */

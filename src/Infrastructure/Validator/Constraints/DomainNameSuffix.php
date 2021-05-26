@@ -39,7 +39,7 @@ final class DomainNameSuffix extends Constraint
 
     public function __construct(
         bool $requireICANN = true,
-        array $groups = null,
+        ?array $groups = null,
         mixed $payload = null,
         array $options = []
     ) {

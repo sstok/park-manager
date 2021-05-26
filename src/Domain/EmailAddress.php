@@ -11,12 +11,12 @@ declare(strict_types=1);
 namespace ParkManager\Domain;
 
 use Doctrine\ORM\Mapping as ORM;
-use ParkManager\Domain\Exception\MalformedEmailAddress;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\String\UnicodeString;
 use const IDNA_DEFAULT;
 use const INTL_IDNA_VARIANT_UTS46;
 use const MB_CASE_LOWER;
+use ParkManager\Domain\Exception\MalformedEmailAddress;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\String\UnicodeString;
 
 /**
  * @ORM\Embeddable
@@ -78,7 +78,7 @@ final class EmailAddress implements \Stringable
         $this->canonical = $this->canonicalize($address, $this->local, $this->domain, $this->label);
         $this->name = $name;
 
-        if (\str_contains($address, '*')) {
+        if (str_contains($address, '*')) {
             $this->validatePattern();
 
             $this->isPattern = true;
@@ -87,11 +87,11 @@ final class EmailAddress implements \Stringable
 
     private function validatePattern(): void
     {
-        if (\mb_substr_count($this->address, '*') > 1) {
+        if (mb_substr_count($this->address, '*') > 1) {
             throw MalformedEmailAddress::patternMultipleWildcards($this->address);
         }
 
-        if (\mb_strrpos($this->label, '*') !== false) {
+        if (mb_strrpos($this->label, '*') !== false) {
             throw MalformedEmailAddress::patternWildcardInLabel($this->address);
         }
     }
@@ -118,7 +118,7 @@ final class EmailAddress implements \Stringable
 
     private function canonicalize(string $address, string &$local, string &$domain, string &$label): string
     {
-        $atPos = \mb_strrpos($address, '@', 0, 'UTF-8');
+        $atPos = mb_strrpos($address, '@', 0, 'UTF-8');
 
         if ($atPos === false) {
             throw MalformedEmailAddress::missingAtSign($address);
@@ -127,16 +127,16 @@ final class EmailAddress implements \Stringable
         // The label is only used for information, but still points to the same
         // inbox. Keeping this would make it possible to reuse the same address
         // for the same user, leading to all kinds of trouble.
-        $local = \mb_substr($address, 0, $atPos, 'UTF-8');
+        $local = mb_substr($address, 0, $atPos, 'UTF-8');
         $local = $this->extractLabel($local, $label);
 
-        $domain = \mb_substr($address, $atPos + 1);
+        $domain = mb_substr($address, $atPos + 1);
 
-        if (\trim($domain) === '') {
+        if (trim($domain) === '') {
             throw MalformedEmailAddress::idnError($address, \IDNA_ERROR_EMPTY_LABEL);
         }
 
-        $domain = (string) \idn_to_utf8($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, $idnaInfo);
+        $domain = (string) idn_to_utf8($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, $idnaInfo);
 
         if ($idnaInfo['errors'] !== 0) {
             throw MalformedEmailAddress::idnError($address, $idnaInfo['errors']);
@@ -146,19 +146,19 @@ final class EmailAddress implements \Stringable
         // better to lowercase the local part also to prevent spoofing and typo's
         // (and nobody uses case-sensitive addresses ¯\_(ツ)_/¯ )
 
-        $local = \mb_convert_case($local, MB_CASE_LOWER, 'UTF-8');
-        $domain = \mb_convert_case($domain, MB_CASE_LOWER, 'UTF-8');
+        $local = mb_convert_case($local, MB_CASE_LOWER, 'UTF-8');
+        $domain = mb_convert_case($domain, MB_CASE_LOWER, 'UTF-8');
 
         return $local . '@' . $domain;
     }
 
     private function extractLabel(string $local, string &$label): string
     {
-        $labelPos = \mb_strrpos($local, '+', 0, 'UTF-8');
+        $labelPos = mb_strrpos($local, '+', 0, 'UTF-8');
 
         if ($labelPos !== false) {
-            $label = \mb_substr($local, $labelPos + 1, \mb_strlen($local, 'UTF-8'), 'UTF-8');
-            $local = \mb_substr($local, 0, $labelPos, 'UTF-8');
+            $label = mb_substr($local, $labelPos + 1, mb_strlen($local, 'UTF-8'), 'UTF-8');
+            $local = mb_substr($local, 0, $labelPos, 'UTF-8');
         }
 
         return $local;
@@ -166,11 +166,11 @@ final class EmailAddress implements \Stringable
 
     public function truncate(int $length = 27, string $ellipsis = '...'): string
     {
-        if ($length >= \mb_strlen($this->address)) {
+        if ($length >= mb_strlen($this->address)) {
             return $this->address;
         }
 
-        $length -= (int) \floor((\mb_strlen($ellipsis)) / 2);
+        $length -= (int) floor((mb_strlen($ellipsis)) / 2);
 
         $text = new UnicodeString($this->address);
         $atSign = $text->indexOfLast('@');

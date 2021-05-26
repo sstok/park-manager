@@ -13,6 +13,7 @@ namespace ParkManager\UI\Web\Form\Type\Security;
 use ParkManager\Application\Command\User\ChangeUserPassword;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
+use function Sodium\memzero;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -20,7 +21,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Validator\Constraint;
-use function Sodium\memzero;
 
 final class ChangePasswordType extends AbstractType
 {
@@ -55,7 +55,8 @@ final class ChangePasswordType extends AbstractType
 
                     return $hashed;
                 },
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -64,7 +65,8 @@ final class ChangePasswordType extends AbstractType
             ->setDefault('password_constraints', [])
             ->setDefault('empty_data', null)
             ->setDefault('command_factory', static fn (array $fields, array $model) => new ChangeUserPassword($model['id'], $fields['password']))
-            ->setAllowedTypes('password_constraints', [Constraint::class . '[]', Constraint::class]);
+            ->setAllowedTypes('password_constraints', [Constraint::class . '[]', Constraint::class])
+        ;
     }
 
     public function getBlockPrefix(): string

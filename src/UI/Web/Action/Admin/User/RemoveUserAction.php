@@ -66,7 +66,8 @@ final class RemoveUserAction
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.list_users', ['user' => $id->id->toString()])
-                ->withFlash('success', 'flash.user_removed');
+                ->withFlash('success', 'flash.user_removed')
+            ;
         }
 
         return new TwigResponse('admin/user/remove.html.twig', ['form' => $form->createView(), 'user' => $id]);

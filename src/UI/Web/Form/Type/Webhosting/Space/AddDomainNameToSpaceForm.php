@@ -29,7 +29,8 @@ final class AddDomainNameToSpaceForm extends AbstractType
                 'label' => 'label.domain_name',
                 'error_bubbling' => false,
             ])
-            ->add('primary', CheckboxType::class, ['label' => 'primary', 'required' => false]);
+            ->add('primary', CheckboxType::class, ['label' => 'primary', 'required' => false])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -41,7 +42,8 @@ final class AddDomainNameToSpaceForm extends AbstractType
             ->setDefault(
                 'command_factory',
                 static fn (array $fields, FormInterface $form) => new AddDomainNameToSpace($fields['name'], $form->getConfig()->getOption('space'), $fields['primary'])
-            );
+            )
+        ;
     }
 
     public function getParent(): string

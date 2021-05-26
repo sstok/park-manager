@@ -18,7 +18,7 @@ final class CertificateIsExpired extends Violation
 
     public function __construct(\DateTimeInterface $expiredOn)
     {
-        parent::__construct(\sprintf('The certificate has expired on "%s"', $expiredOn->format(\DATE_RFC3339)));
+        parent::__construct(sprintf('The certificate has expired on "%s"', $expiredOn->format(\DATE_RFC3339)));
 
         $this->expiredOn = $expiredOn;
     }

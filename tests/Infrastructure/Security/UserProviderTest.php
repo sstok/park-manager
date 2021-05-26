@@ -53,9 +53,9 @@ final class UserProviderTest extends TestCase
 
             self::fail('Expected exception');
         } catch (UserNotFoundException $e) {
-            self::assertEquals('foobar@example.com', $e->getUserIdentifier());
+            self::assertSame('foobar@example.com', $e->getUserIdentifier());
             self::assertInstanceOf(NotFoundException::class, $e->getPrevious());
-            self::assertEquals(0, $e->getCode());
+            self::assertSame(0, $e->getCode());
         }
     }
 
@@ -69,9 +69,9 @@ final class UserProviderTest extends TestCase
 
             self::fail('Expected exception');
         } catch (UserNotFoundException $e) {
-            self::assertEquals('foobar@', $e->getUserIdentifier());
+            self::assertSame('foobar@', $e->getUserIdentifier());
             self::assertInstanceOf(MalformedEmailAddress::class, $e->getPrevious());
-            self::assertEquals(0, $e->getCode());
+            self::assertSame(0, $e->getCode());
         }
     }
 
@@ -85,9 +85,9 @@ final class UserProviderTest extends TestCase
 
             self::fail('Expected exception');
         } catch (UserNotFoundException $e) {
-            self::assertEquals(self::USER_ID1, $e->getUserIdentifier());
+            self::assertSame(self::USER_ID1, $e->getUserIdentifier());
             self::assertInstanceOf(NotFoundException::class, $e->getPrevious());
-            self::assertEquals(0, $e->getCode());
+            self::assertSame(0, $e->getCode());
         }
     }
 
@@ -97,7 +97,7 @@ final class UserProviderTest extends TestCase
         $provider = new UserProvider(new UserRepositoryMock());
 
         $this->expectException(UnsupportedUserException::class);
-        $this->expectExceptionMessage(\sprintf('Expected an instance of %s, but got ', SecurityUser::class));
+        $this->expectExceptionMessage(sprintf('Expected an instance of %s, but got ', SecurityUser::class));
 
         $provider->refreshUser($this->createMock(UserInterface::class));
     }

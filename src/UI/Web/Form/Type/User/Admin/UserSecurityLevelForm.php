@@ -34,7 +34,8 @@ final class UserSecurityLevelForm extends AbstractType
                     'user_role.user' => 'ROLE_USER',
                 ],
                 'data' => $options['selected_level'],
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -58,12 +59,12 @@ final class UserSecurityLevelForm extends AbstractType
 
                     return 'ROLE_USER';
                 },
-                'command_factory' => static function (array $fields, FormInterface $form) {
+                'command_factory' => static function (array $fields, FormInterface $form): ?object {
                     $oldLevel = $form->getConfig()->getOption('selected_level');
                     $newLevel = $fields['level'];
 
                     if ($oldLevel === $newLevel) {
-                        return;
+                        return null;
                     }
 
                     /** @var User $user */
@@ -88,7 +89,8 @@ final class UserSecurityLevelForm extends AbstractType
 
                     return new RevokeUserRole($id, 'ROLE_SUPER_ADMIN', 'ROLE_ADMIN');
                 },
-            ]);
+            ])
+        ;
     }
 
     public function getBlockPrefix(): string

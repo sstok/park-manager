@@ -53,7 +53,8 @@ final class MailboxOrmRepository extends EntityRepository implements MailboxRepo
                 ->setParameter('address', $address)
                 ->setParameter('domain_name', $domainNamePair->name)
                 ->setParameter('domain_tld', $domainNamePair->tld)
-                ->getSingleResult();
+                ->getSingleResult()
+            ;
         } catch (NoResultException) {
             throw MailboxNotFound::withName($address . '@' . $domainNamePair->toString());
         }
@@ -76,7 +77,8 @@ final class MailboxOrmRepository extends EntityRepository implements MailboxRepo
             ->where('m.space = :space')
             ->getQuery()
             ->setParameter('space', $space->toString())
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
     }
 
     public function save(Mailbox $mailbox): void

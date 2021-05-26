@@ -43,7 +43,7 @@ class TwigResponse extends Response
     {
         if (! \is_array($variables)) {
             if (! $variables instanceof Form) {
-                throw new InvalidArgumentException(\sprintf('TwigResponse $variables expects an array or %s object.', Form::class));
+                throw new InvalidArgumentException(sprintf('TwigResponse $variables expects an array or %s object.', Form::class));
             }
 
             $variables = ['form' => $variables->createView()];

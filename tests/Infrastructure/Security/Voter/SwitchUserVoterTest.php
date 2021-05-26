@@ -34,8 +34,8 @@ final class SwitchUserVoterTest extends TestCase
 
         $toSwitchUser = new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER']);
 
-        self::assertEquals(VoterInterface::ACCESS_GRANTED, $voter->vote($token, $toSwitchUser, [SwitchUserVoter::CAN_SWITCH_USER]));
-        self::assertEquals(VoterInterface::ACCESS_GRANTED, $voter->vote($token, $toSwitchUser, [true, SwitchUserVoter::CAN_SWITCH_USER]));
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, $toSwitchUser, [SwitchUserVoter::CAN_SWITCH_USER]));
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, $toSwitchUser, [true, SwitchUserVoter::CAN_SWITCH_USER]));
     }
 
     private function createToken(?object $user = null): TokenInterface
@@ -55,7 +55,7 @@ final class SwitchUserVoterTest extends TestCase
         $token = $this->createToken($currentUser);
         $voter = new SwitchUserVoter();
 
-        self::assertEquals(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, $subject, [SwitchUserVoter::CAN_SWITCH_USER]));
+        self::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, $subject, [SwitchUserVoter::CAN_SWITCH_USER]));
     }
 
     public function provideAbstainedAccessFor(): iterable
@@ -76,7 +76,7 @@ final class SwitchUserVoterTest extends TestCase
         $token = $this->createToken($currentUser);
         $voter = new SwitchUserVoter();
 
-        self::assertEquals(VoterInterface::ACCESS_DENIED, $voter->vote($token, $subject, [SwitchUserVoter::CAN_SWITCH_USER]));
+        self::assertSame(VoterInterface::ACCESS_DENIED, $voter->vote($token, $subject, [SwitchUserVoter::CAN_SWITCH_USER]));
     }
 
     public function provideDeniedAccessFor(): iterable
@@ -99,7 +99,7 @@ final class SwitchUserVoterTest extends TestCase
 
         $toSwitchUser = new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER']);
 
-        self::assertEquals(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, $toSwitchUser, [$attribute]));
+        self::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, $toSwitchUser, [$attribute]));
     }
 
     public function provideIgnoredAttributes(): iterable

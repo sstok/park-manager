@@ -13,6 +13,7 @@ namespace ParkManager\Tests\UI\Web\Form\Type;
 use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use ParkManager\UI\Web\Form\Type\ConfirmationForm;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Translation\TranslatableMessage;
 
 /**
  * @internal
@@ -31,7 +32,7 @@ final class ConfirmationFormTest extends MessageFormTestCase
         $this->commandHandler = static fn () => null;
     }
 
-    protected function getTypes()
+    protected function getTypes(): array
     {
         return [
             $this->getMessageType(),
@@ -54,10 +55,10 @@ final class ConfirmationFormTest extends MessageFormTestCase
         );
         $view = $form->createView()->vars;
 
-        self::assertEquals('Do you confirm?', $view['confirmation_title']);
-        self::assertEquals('This cannot be undone, the world will come undone if you continue now!', $view['confirmation_message']);
-        self::assertEquals('DO IT!', $view['confirmation_label']);
-        self::assertEquals(['name' => 'ui.stop', 'arguments' => []], $view['cancel_route']);
+        self::assertSame('Do you confirm?', $view['confirmation_title']);
+        self::assertSame('This cannot be undone, the world will come undone if you continue now!', $view['confirmation_message']);
+        self::assertSame('DO IT!', $view['confirmation_label']);
+        self::assertSame(['name' => 'ui.stop', 'arguments' => []], $view['cancel_route']);
         self::assertNull($view['required_value']);
 
         $form = $this->factory->create(
@@ -74,11 +75,11 @@ final class ConfirmationFormTest extends MessageFormTestCase
         );
         $view = $form->createView()->vars;
 
-        self::assertEquals('Do you confirm?', $view['confirmation_title']);
-        self::assertEquals('This cannot be undone, the world will come undone if you continue now!', $view['confirmation_message']);
-        self::assertEquals('DO IT!', $view['confirmation_label']);
-        self::assertEquals(['name' => 'ui.stop', 'arguments' => ['id' => 5]], $view['cancel_route']);
-        self::assertEquals('oglaZ!', $view['required_value']);
+        self::assertSame('Do you confirm?', $view['confirmation_title']);
+        self::assertEquals(new TranslatableMessage('This cannot be undone, the world will come undone if you continue now!', ['required_value' => 'oglaZ!']), $view['confirmation_message']);
+        self::assertSame('DO IT!', $view['confirmation_label']);
+        self::assertSame(['name' => 'ui.stop', 'arguments' => ['id' => 5]], $view['cancel_route']);
+        self::assertSame('oglaZ!', $view['required_value']);
     }
 
     /** @test */
@@ -201,6 +202,9 @@ final class ConfirmationFormTest extends MessageFormTestCase
     }
 }
 
+/**
+ * @internal
+ */
 final class ConfirmCommand
 {
 }

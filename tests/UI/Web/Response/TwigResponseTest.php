@@ -43,6 +43,6 @@ final class TwigResponseTest extends TestCase
     {
         $response = new TwigResponse('client/show_user.html.twig', ['foo' => 'bar'], 200, ['X-Foo' => 'bar']);
 
-        self::assertEquals('bar', $response->headers->get('X-Foo'));
+        self::assertSame('bar', $response->headers->get('X-Foo'));
     }
 }

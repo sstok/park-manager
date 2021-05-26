@@ -37,7 +37,8 @@ final class EmailAddressChangeRequestMailerImp implements EmailAddressChangeRequ
             ->context([
                 'url' => $this->urlGenerator->generate('park_manager.confirm_email_address_change', ['token' => $splitToken->token()], UrlGenerator::ABSOLUTE_URL),
                 'expiration_date' => $splitToken->getExpirationTime(),
-            ]);
+            ])
+        ;
 
         $this->mailer->send($email);
     }

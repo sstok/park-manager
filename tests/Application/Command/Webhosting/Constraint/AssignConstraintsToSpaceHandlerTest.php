@@ -68,7 +68,7 @@ final class AssignConstraintsToSpaceHandlerTest extends TestCase
         $this->handler->__invoke(new AssignConstraintsToSpace($id2 = SpaceId::fromString(self::SPACE_ID_2), $constraints2 = new Constraints(['monthlyTraffic' => 30])));
 
         $this->spaceRepository->assertEntitiesCountWasSaved(2);
-        $this->spaceRepository->assertEntityWasSavedThat($id1, static fn (Space $space) => $space->constraints->equals($constraints1) && $space->plan === null);
-        $this->spaceRepository->assertEntityWasSavedThat($id2, static fn (Space $space) => $space->constraints->equals($constraints2) && $space->plan === null);
+        $this->spaceRepository->assertEntityWasSavedThat($id1, static fn (Space $space): bool => $space->constraints->equals($constraints1) && $space->plan === null);
+        $this->spaceRepository->assertEntityWasSavedThat($id2, static fn (Space $space): bool => $space->constraints->equals($constraints2) && $space->plan === null);
     }
 }

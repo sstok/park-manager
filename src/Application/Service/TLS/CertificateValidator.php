@@ -94,7 +94,7 @@ class CertificateValidator
 
     private function validateSignatureAlgorithm(string $signatureType): void
     {
-        $normSignatureType = \mb_strtolower(\preg_replace('/(WithRSAEncryption$)|(^ecdsa-with-)/i', '', $signatureType));
+        $normSignatureType = mb_strtolower(preg_replace('/(WithRSAEncryption$)|(^ecdsa-with-)/i', '', $signatureType));
 
         // While sha224 is considered the same as sha256 it's no longer part of TLS 1.3
         if (\in_array($normSignatureType, ['none', 'md2', 'md5', 'sha1', 'sha224'], true)) {
@@ -107,7 +107,7 @@ class CertificateValidator
         $rules = $this->suffixManager->getPublicSuffixList();
 
         foreach ($domains as $domain) {
-            if (! \str_contains($domain, '*')) {
+            if (! str_contains($domain, '*')) {
                 continue;
             }
 
@@ -123,7 +123,7 @@ class CertificateValidator
 
             $publicSuffix = $domainInfo->suffix()->toString();
 
-            if (\rtrim(\mb_substr($domainInfo->toString(), 0, -\mb_strlen($publicSuffix)), '.') === '*') {
+            if (rtrim(mb_substr($domainInfo->toString(), 0, -mb_strlen($publicSuffix)), '.') === '*') {
                 throw new GlobalWildcard($domain, $publicSuffix);
             }
         }
@@ -179,7 +179,7 @@ class CertificateValidator
 
     public function validateCertificatePurpose(string $certificate, string ...$requiredPurpose): void
     {
-        $requiredPurposes = \array_fill_keys($requiredPurpose, true);
+        $requiredPurposes = array_fill_keys($requiredPurpose, true);
 
         if (isset($requiredPurposes[self::PURPOSE_SMIME])) {
             unset($requiredPurposes[self::PURPOSE_SMIME]);
@@ -208,7 +208,7 @@ class CertificateValidator
         $data = $this->extractRawData($certificate);
 
         foreach ($data['_domains'] as $value) {
-            if (\preg_match('#^' . \str_replace(['.', '*'], ['\.', '[^.]*'], $value) . '$#', $hostPattern)) {
+            if (preg_match('#^' . str_replace(['.', '*'], ['\.', '[^.]*'], $value) . '$#', $hostPattern)) {
                 return;
             }
         }

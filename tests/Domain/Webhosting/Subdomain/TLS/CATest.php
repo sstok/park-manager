@@ -45,15 +45,15 @@ final class CATest extends TestCase
             'issuer' => ['commonName' => 'Example Corp CA'],
         ]);
 
-        self::assertEquals('Here\'s the key Robby Hood!', $ca->getPublicKey());
-        self::assertEquals('sha1WithRSAEncryption', $ca->getSignatureAlgorithm());
-        self::assertEquals('a52f33ab5dad33e8af695dad33e8af695dad33e8af69', $ca->getFingerprint());
+        self::assertSame('Here\'s the key Robby Hood!', $ca->getPublicKey());
+        self::assertSame('sha1WithRSAEncryption', $ca->getSignatureAlgorithm());
+        self::assertSame('a52f33ab5dad33e8af695dad33e8af695dad33e8af69', $ca->getFingerprint());
         self::assertSame([$ca], $ca->toTree());
-        self::assertEquals(31, $ca->daysUntilExpirationDate());
+        self::assertSame(31, $ca->daysUntilExpirationDate());
         self::assertEquals($validFrom, $ca->validFromDate());
         self::assertEquals($validTo, $ca->expirationDate());
-        self::assertEquals(['commonName' => 'Example Corp CA'], $ca->getIssuer());
-        self::assertEquals(['commonName' => 'Example Corp CA'], $ca->getSubject());
+        self::assertSame(['commonName' => 'Example Corp CA'], $ca->getIssuer());
+        self::assertSame(['commonName' => 'Example Corp CA'], $ca->getSubject());
         self::assertNull($ca->ca);
         self::assertTrue($ca->isValidUntil(Carbon::tomorrow()));
         self::assertFalse($ca->isExpired());
@@ -84,7 +84,7 @@ final class CATest extends TestCase
             'issuer' => ['commonName' => 'Example Corp CA'],
         ], $rootCA);
 
-        self::assertEquals('Here\'s the key Robby!', $ca->getPublicKey());
+        self::assertSame('Here\'s the key Robby!', $ca->getPublicKey());
         self::assertSame($rootCA, $ca->getParent());
         self::assertSame($rootCA, $ca->ca);
         self::assertTrue($ca->isValid());

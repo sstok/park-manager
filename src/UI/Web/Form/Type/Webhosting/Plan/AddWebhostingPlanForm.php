@@ -23,7 +23,8 @@ final class AddWebhostingPlanForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('constraints', WebhostingConstraintsType::class);
+            ->add('constraints', WebhostingConstraintsType::class)
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

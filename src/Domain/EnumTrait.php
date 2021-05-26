@@ -76,10 +76,10 @@ trait EnumTrait
     {
         static::initCases();
 
-        $nameNorm = \mb_strtolower($name);
+        $nameNorm = mb_strtolower($name);
 
         if (! isset(static::$casesByName[$nameNorm])) {
-            throw new Error(\sprintf('Enum case %s is not defined', $name));
+            throw new Error(sprintf('Enum case %s is not defined', $name));
         }
 
         return static::$casesByName[$nameNorm];
@@ -101,17 +101,17 @@ trait EnumTrait
         foreach ($reflection->getConstants(ReflectionClassConstant::IS_PUBLIC) as $name => $value) {
             // Names are case-insensitive according to the original RFC, but constants are not.
             // For technical reasons we still use the original name with the instance.
-            $nameNorm = \mb_strtolower($name);
+            $nameNorm = mb_strtolower($name);
 
             if (isset(static::$casesByName[$nameNorm])) {
                 throw new Error(
-                    \sprintf('Cannot redeclare %s::%s', static::class, static::$casesByName[$nameNorm]->name)
+                    sprintf('Cannot redeclare %s::%s', static::class, static::$casesByName[$nameNorm]->name)
                 );
             }
 
             if (isset(static::$casesByValue[$value])) {
                 throw new Error(
-                    \sprintf(
+                    sprintf(
                         'Duplicate value in enum %s for cases %s and %s',
                         static::class,
                         static::$casesByValue[$value]->name,
@@ -146,7 +146,7 @@ trait EnumTrait
     {
         static::initCases();
 
-        return \array_values(static::$casesByName);
+        return array_values(static::$casesByName);
     }
 
     public static function from(string | int $value): static
@@ -155,7 +155,7 @@ trait EnumTrait
         static::assertExpectedType($value, 'from');
 
         if (! isset(static::$casesByValue[$value])) {
-            throw new Error(\sprintf('Unable to find matching case for value "%s"', $value));
+            throw new Error(sprintf('Unable to find matching case for value "%s"', $value));
         }
 
         return static::$casesByValue[$value];
@@ -165,13 +165,13 @@ trait EnumTrait
     {
         if (static::$isInt && ! \is_int($value)) {
             throw new TypeError(
-                \sprintf('%s::%s(): Argument #1 ($value) must be of type int, string given', static::class, $method)
+                sprintf('%s::%s(): Argument #1 ($value) must be of type int, string given', static::class, $method)
             );
         }
 
         if (! static::$isInt && ! \is_string($value)) {
             throw new TypeError(
-                \sprintf('%s::%s(): Argument #1 ($value) must be of type string, int given', static::class, $method)
+                sprintf('%s::%s(): Argument #1 ($value) must be of type string, int given', static::class, $method)
             );
         }
     }

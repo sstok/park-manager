@@ -40,7 +40,8 @@ final class PasswordResetMailerImpl implements PasswordResetMailer
                     UrlGenerator::ABSOLUTE_URL
                 ),
                 'expiration_date' => $splitToken->getExpirationTime(),
-            ]);
+            ])
+        ;
 
         $this->mailer->send($email);
     }

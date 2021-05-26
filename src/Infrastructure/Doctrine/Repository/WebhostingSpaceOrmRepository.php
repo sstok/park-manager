@@ -46,7 +46,8 @@ class WebhostingSpaceOrmRepository extends EntityRepository implements Webhostin
     {
         $queryBuilder = $this->createQueryBuilder('s')
             ->select(['s', 'p'])
-            ->leftJoin('s.plan', 'p');
+            ->leftJoin('s.plan', 'p')
+        ;
 
         return new OrmQueryBuilderResultSet($queryBuilder, 's', fetchJoinCollection: true);
     }
@@ -55,7 +56,8 @@ class WebhostingSpaceOrmRepository extends EntityRepository implements Webhostin
     {
         $queryBuilder = $this->createQueryBuilder('s')
             ->andWhere('s.plan = :id')
-            ->setParameter('id', $id->toString());
+            ->setParameter('id', $id->toString())
+        ;
 
         return new OrmQueryBuilderResultSet($queryBuilder, 's');
     }
@@ -64,7 +66,8 @@ class WebhostingSpaceOrmRepository extends EntityRepository implements Webhostin
     {
         $queryBuilder = $this->createQueryBuilder('s');
         $queryBuilder->andWhere('s.owner = :id')
-            ->setParameter('id', $id->toString());
+            ->setParameter('id', $id->toString())
+        ;
 
         return new OrmQueryBuilderResultSet($queryBuilder, 's');
     }

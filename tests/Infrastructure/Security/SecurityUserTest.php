@@ -92,7 +92,7 @@ final class SecurityUserTest extends TestCase
     public function its_serializable(): void
     {
         $securityUser = new SecurityUser(self::ID1, self::PASSWORD, false, ['ROLE_USER', 'ROLE_OPERATOR']);
-        $unserialized = \unserialize(\serialize($securityUser), []);
+        $unserialized = unserialize(serialize($securityUser), []);
 
         self::assertTrue($securityUser->isEqualTo($unserialized));
     }

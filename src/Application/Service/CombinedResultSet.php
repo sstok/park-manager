@@ -92,7 +92,8 @@ final class CombinedResultSet implements ResultSet
                 ->setLimit($this->limit, $this->offset)
                 ->filter($this->expression)
                 ->setOrdering($this->ordering[0] ?? null, $this->ordering[1] ?? null)
-                ->limitToIds($this->limitedToIds);
+                ->limitToIds($this->limitedToIds)
+            ;
 
             $this->nbResults += $resultSet->getNbResults();
             $this->iterators[] = $resultSet->getIterator();

@@ -41,7 +41,8 @@ final class RemoveWebhostingPlanAction extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.plan.list', ['plan' => $plan->id->toString()])
-                ->withFlash('success', 'flash.webhosting_plan.removed');
+                ->withFlash('success', 'flash.webhosting_plan.removed')
+            ;
         }
 
         return new TwigResponse('admin/webhosting/plan/remove.html.twig', ['form' => $form->createView(), 'plan' => $plan]);

@@ -75,7 +75,7 @@ final class ByteSizeTypeTest extends TypeTestCase
             ['allow_infinite' => false, 'infinite_replacement' => $replacement = new ByteSize(10.10, 'gib')]
         );
 
-        self::assertEquals($replacement, $form->getData());
+        self::assertSame($replacement, $form->getData());
     }
 
     /**

@@ -28,14 +28,15 @@ final class HashedPasswordTypeTest extends TypeTestCase
             ->add('password', HashedPasswordType::class, [
                 'algorithm' => static fn (string $raw) => 'encoded(' . $raw . ')',
             ])
-            ->getForm();
+            ->getForm()
+        ;
 
         $form->submit([
             'password' => ['password' => 'Hello there'],
         ]);
 
         self::assertTrue($form->isValid());
-        self::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
+        self::assertSame(['password' => 'encoded(Hello there)'], $form->getData());
     }
 
     /** @test */
@@ -46,13 +47,14 @@ final class HashedPasswordTypeTest extends TypeTestCase
                 'algorithm' => static fn (string $raw) => 'encoded(' . $raw . ')',
                 'password_confirm' => true,
             ])
-            ->getForm();
+            ->getForm()
+        ;
 
         $form->submit([
             'password' => ['password' => ['first' => 'Hello there', 'second' => 'Hello there']],
         ]);
 
         self::assertTrue($form->isValid());
-        self::assertEquals(['password' => 'encoded(Hello there)'], $form->getData());
+        self::assertSame(['password' => 'encoded(Hello there)'], $form->getData());
     }
 }

@@ -38,18 +38,18 @@ final class EntityRenderer
 
     public function getEntityLabel(string $entityName): string
     {
-        if (! \str_starts_with($entityName, 'ParkManager\\Domain\\')) {
-            throw new \InvalidArgumentException(\sprintf('Expected %s to begin with "ParkManager\\Domain\\"', $entityName));
+        if (! str_starts_with($entityName, 'ParkManager\\Domain\\')) {
+            throw new \InvalidArgumentException(sprintf('Expected %s to begin with "ParkManager\\Domain\\"', $entityName));
         }
 
-        $class = \mb_substr(\ltrim($entityName, '\\'), 19); // Strips `ParkManager\Domain\`
-        $parts = \explode('\\', $class);
+        $class = mb_substr(ltrim($entityName, '\\'), 19); // Strips `ParkManager\Domain\`
+        $parts = explode('\\', $class);
 
         if (\count($parts) > 1 && $parts[\count($parts) - 1] === $parts[\count($parts) - 2]) {
-            \array_pop($parts);
+            array_pop($parts);
         }
 
-        return \mb_strtolower(\implode('.', $parts));
+        return mb_strtolower(implode('.', $parts));
     }
 
     /**
@@ -72,7 +72,7 @@ final class EntityRenderer
                 $this->localeAware->setLocale($locale);
             }
 
-            return $this->twig->load(\sprintf('entity_rendering/%s.%s.twig', $this->resolveTemplate($entity), $format))->renderBlock(
+            return $this->twig->load(sprintf('entity_rendering/%s.%s.twig', $this->resolveTemplate($entity), $format))->renderBlock(
                 $block,
                 ['entity' => $entity] + $extra
             );
@@ -85,9 +85,9 @@ final class EntityRenderer
 
     private function resolveTemplate(object $entity): string
     {
-        $class = \mb_substr(\get_class($entity), 19); // Strips `ParkManager\Domain\`
+        $class = mb_substr(\get_class($entity), 19); // Strips `ParkManager\Domain\`
 
-        return \mb_strtolower(\str_replace('\\', '/', $class));
+        return mb_strtolower(str_replace('\\', '/', $class));
     }
 
     /**
@@ -128,7 +128,7 @@ final class EntityRenderer
                 foreach ($resultSet as $entity) {
                     $resolveTemplate ??= $this->resolveTemplate($entity);
 
-                    $renderedSets[$label][] = $this->twig->load(\sprintf('entity_rendering/%s.%s.twig',
+                    $renderedSets[$label][] = $this->twig->load(sprintf('entity_rendering/%s.%s.twig',
                         $resolveTemplate, 'html'))->renderBlock(
                         'short',
                         ['entity' => $entity] + $extra

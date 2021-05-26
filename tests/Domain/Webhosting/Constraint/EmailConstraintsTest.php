@@ -32,20 +32,21 @@ final class EmailConstraintsTest extends TestCase
             'mailListCount' => 8,
         ]);
 
-        self::assertEquals([], $constraints->changes);
+        self::assertSame([], $constraints->changes);
         self::assertEquals(new ByteSize(22, 'GB'), $constraints->maxStorageSize);
-        self::assertEquals(10, $constraints->maximumMailboxCount);
-        self::assertEquals(20, $constraints->maximumForwardCount);
-        self::assertEquals(60, $constraints->maximumAddressCount);
-        self::assertEquals(15, $constraints->spamFilterCount);
-        self::assertEquals(8, $constraints->mailListCount);
+        self::assertSame(10, $constraints->maximumMailboxCount);
+        self::assertSame(20, $constraints->maximumForwardCount);
+        self::assertSame(60, $constraints->maximumAddressCount);
+        self::assertSame(15, $constraints->spamFilterCount);
+        self::assertSame(8, $constraints->mailListCount);
     }
 
     /** @test */
     public function its_equatable(): void
     {
         $constraints = (new EmailConstraints())
-            ->setMaxStorageSize(new ByteSize(12, 'GB'));
+            ->setMaxStorageSize(new ByteSize(12, 'GB'))
+        ;
 
         $constraints2 = new EmailConstraints([
             'maxStorageSize' => new ByteSize(12, 'GB'),
@@ -72,22 +73,22 @@ final class EmailConstraintsTest extends TestCase
         $constraints = new EmailConstraints();
 
         /** @var Constraints $new */
-        $new = $constraints->{'set' . \ucfirst($field)}($constraints->{$field});
+        $new = $constraints->{'set' . ucfirst($field)}($constraints->{$field});
 
         self::assertSame($constraints, $new);
-        self::assertEquals([], $new->changes);
-        self::assertEquals($constraints->{$field}, $new->{$field});
+        self::assertSame([], $new->changes);
+        self::assertSame($constraints->{$field}, $new->{$field});
 
         if (\is_object($value)) {
             self::assertSame($constraints, $new);
         }
 
         /** @var Constraints $new */
-        $new = $constraints->{'set' . \ucfirst($field)}($value);
+        $new = $constraints->{'set' . ucfirst($field)}($value);
 
         self::assertNotSame($constraints, $new);
-        self::assertEquals([$field => $constraints->{$field}], $new->changes);
-        self::assertEquals($value, $new->{$field});
+        self::assertSame([$field => $constraints->{$field}], $new->changes);
+        self::assertSame($value, $new->{$field});
     }
 
     public function provideFields(): iterable

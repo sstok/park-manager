@@ -57,7 +57,7 @@ final class SystemRegistration
      */
     public function __construct(int $userId, array $userGroups, string $homeDir)
     {
-        \sort($userGroups, \SORT_REGULAR);
+        sort($userGroups, \SORT_REGULAR);
 
         $this->userId = $userId;
         $this->userGroups = $userGroups;

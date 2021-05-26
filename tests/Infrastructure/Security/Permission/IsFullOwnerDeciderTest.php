@@ -59,7 +59,7 @@ final class IsFullOwnerDeciderTest extends TestCase
         $token = $this->createAuthenticationToken($securityUser);
 
         $permission = new IsFullOwner($this->ownerRepository->getAdminOrganization());
-        self::assertEquals(PermissionDecider::DECIDE_DENY, $this->decider->decide($permission, $token, $securityUser, $this->createMock(PermissionAccessManager::class)));
+        self::assertSame(PermissionDecider::DECIDE_DENY, $this->decider->decide($permission, $token, $securityUser, $this->createMock(PermissionAccessManager::class)));
     }
 
     private function createAuthenticationToken(SecurityUser $securityUser): AbstractToken
@@ -77,7 +77,7 @@ final class IsFullOwnerDeciderTest extends TestCase
         $token = $this->createAuthenticationToken($securityUser);
 
         $permission = new IsFullOwner($this->ownerRepository->getAdminOrganization());
-        self::assertEquals(PermissionDecider::DECIDE_ALLOW, $this->decider->decide($permission, $token, $securityUser, $this->createMock(PermissionAccessManager::class)));
+        self::assertSame(PermissionDecider::DECIDE_ALLOW, $this->decider->decide($permission, $token, $securityUser, $this->createMock(PermissionAccessManager::class)));
     }
 
     /** @test */
@@ -87,7 +87,7 @@ final class IsFullOwnerDeciderTest extends TestCase
         $token = $this->createAuthenticationToken($securityUser);
 
         $permission = new IsFullOwner($this->getOwner());
-        self::assertEquals(PermissionDecider::DECIDE_ALLOW, $this->decider->decide($permission, $token, $securityUser, $this->createMock(PermissionAccessManager::class)));
+        self::assertSame(PermissionDecider::DECIDE_ALLOW, $this->decider->decide($permission, $token, $securityUser, $this->createMock(PermissionAccessManager::class)));
     }
 
     private function getOwner(string $id = self::USER_ID): Owner
@@ -105,7 +105,7 @@ final class IsFullOwnerDeciderTest extends TestCase
         $this->ownerRepository->save($owner = Owner::byOrganization($org));
 
         $permission = new IsFullOwner($owner);
-        self::assertEquals(PermissionDecider::DECIDE_ABSTAIN, $this->decider->decide($permission, $token, $securityUser, $this->createMock(PermissionAccessManager::class)));
+        self::assertSame(PermissionDecider::DECIDE_ABSTAIN, $this->decider->decide($permission, $token, $securityUser, $this->createMock(PermissionAccessManager::class)));
     }
 
     /** @test */
@@ -121,6 +121,6 @@ final class IsFullOwnerDeciderTest extends TestCase
         $this->ownerRepository->save($owner = Owner::byOrganization($org));
 
         $permission = new IsFullOwner($owner);
-        self::assertEquals(PermissionDecider::DECIDE_ALLOW, $this->decider->decide($permission, $token, $securityUser, $this->createMock(PermissionAccessManager::class)));
+        self::assertSame(PermissionDecider::DECIDE_ALLOW, $this->decider->decide($permission, $token, $securityUser, $this->createMock(PermissionAccessManager::class)));
     }
 }

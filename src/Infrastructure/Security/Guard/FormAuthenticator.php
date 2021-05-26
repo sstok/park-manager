@@ -141,7 +141,7 @@ final class FormAuthenticator extends AbstractGuardAuthenticator
         return $request->request->has('_email');
     }
 
-    public function start(Request $request, AuthenticationException $authException = null): Response
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
     {
         return new RedirectResponse($this->getLoginUrl($request));
     }

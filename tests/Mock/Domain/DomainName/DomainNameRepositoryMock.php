@@ -144,8 +144,8 @@ final class DomainNameRepositoryMock implements DomainNameRepository
             throw DomainNameNotFound::withId($key);
         }
 
-        if (\mb_strpos($key, '.') !== false) {
-            throw DomainNameNotFound::withName(new DomainNamePair(...\explode('.', $key, 2)));
+        if (mb_strpos($key, '.') !== false) {
+            throw DomainNameNotFound::withName(new DomainNamePair(...explode('.', $key, 2)));
         }
 
         throw DomainNameNotFound::withId(DomainNameId::fromString($key));

@@ -54,7 +54,8 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
                 ->where('d.space = :id AND d.primary = true')
                 ->getQuery()
                 ->setParameter('id', $id->toString())
-                ->getSingleResult();
+                ->getSingleResult()
+            ;
         } catch (NoResultException) {
             throw WebhostingSpaceNotFound::withId($id);
         }
@@ -68,7 +69,8 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
                 ->getQuery()
                 ->setParameter('name', $name->name)
                 ->setParameter('tld', $name->tld)
-                ->getSingleResult();
+                ->getSingleResult()
+            ;
         } catch (NoResultException) {
             throw DomainNameNotFound::withName($name);
         }
@@ -133,7 +135,8 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
                         ->where('d.id = :id')
                         ->getQuery()
                         ->setParameter('id', $primaryDomainName->id)
-                        ->execute();
+                        ->execute()
+                    ;
 
                     $this->_em->refresh($primaryDomainName);
 

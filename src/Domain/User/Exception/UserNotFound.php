@@ -18,12 +18,12 @@ final class UserNotFound extends NotFoundException
 {
     public static function withId(UserId $userId): self
     {
-        return new self(\sprintf('User with id "%s" does not exist.', $userId->toString()), ['{id}' => $userId->toString()]);
+        return new self(sprintf('User with id "%s" does not exist.', $userId->toString()), ['{id}' => $userId->toString()]);
     }
 
     public static function withEmail(EmailAddress $address): self
     {
-        return new self(\sprintf('User with email address "%s" does not exist.', $address->toString()), ['{email}' => $address->toString()]);
+        return new self(sprintf('User with email address "%s" does not exist.', $address->toString()), ['{email}' => $address->toString()]);
     }
 
     public function getTranslatorId(): string

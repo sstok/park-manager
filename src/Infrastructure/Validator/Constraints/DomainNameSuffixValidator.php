@@ -48,11 +48,11 @@ final class DomainNameSuffixValidator extends ConstraintValidator
             return;
         }
 
-        if (! \is_scalar($value)
+        if (! is_scalar($value)
             && ! $value instanceof Domain
-            && ! (\is_object($value) && \method_exists($value, '__toString'))
+            && ! (\is_object($value) && method_exists($value, '__toString'))
         ) {
-            throw new UnexpectedValueException($value, \implode('|', ['string', Domain::class]));
+            throw new UnexpectedValueException($value, implode('|', ['string', Domain::class]));
         }
 
         if (! $constraint instanceof DomainNameSuffix) {
@@ -62,7 +62,7 @@ final class DomainNameSuffixValidator extends ConstraintValidator
         try {
             $domainName = Domain::fromIDNA2008($value);
 
-            if (\str_ends_with($domainName->toString(), '.')) {
+            if (str_ends_with($domainName->toString(), '.')) {
                 throw SyntaxError::dueToMalformedValue($value);
             }
 
@@ -72,7 +72,8 @@ final class DomainNameSuffixValidator extends ConstraintValidator
                 ->setCode(DomainNameSuffix::INVALID_SYNTAX)
                 ->setInvalidValue($value)
                 ->setCause($e)
-                ->addViolation();
+                ->addViolation()
+            ;
 
             return;
         }
@@ -82,7 +83,8 @@ final class DomainNameSuffixValidator extends ConstraintValidator
                 ->atPath('suffix')
                 ->setCode(\in_array($domainName->label(0), self::RESERVED_TLDS, true) ? DomainNameSuffix::RESERVED_TLD_USED : DomainNameSuffix::UNKNOWN_SUFFIX)
                 ->setInvalidValue($value)
-                ->addViolation();
+                ->addViolation()
+            ;
 
             return;
         }
@@ -92,7 +94,8 @@ final class DomainNameSuffixValidator extends ConstraintValidator
                 ->atPath('suffix')
                 ->setCode(DomainNameSuffix::ICANN_UNKNOWN)
                 ->setInvalidValue($value)
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 }

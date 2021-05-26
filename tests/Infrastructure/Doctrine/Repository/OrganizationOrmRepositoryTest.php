@@ -71,13 +71,13 @@ final class OrganizationOrmRepositoryTest extends EntityRepositoryTestCase
     /** @test */
     public function it_gets_accessible_by_user(): void
     {
-        self::assertEquals([], \iterator_to_array($this->repository->allAccessibleBy(UserId::fromString('b848e67b-b091-4d46-94e1-e369d9530788'))));
-        self::assertEquals(
+        self::assertSame([], iterator_to_array($this->repository->allAccessibleBy(UserId::fromString('b848e67b-b091-4d46-94e1-e369d9530788'))));
+        self::assertSame(
             [
                 $this->repository->get(OrganizationId::fromString('4e067c53-52ca-4bc1-879e-0270a78da248')),
                 $this->repository->get(OrganizationId::fromString('761c332a-5b81-4699-afac-3e305b452d12')),
             ],
-            \iterator_to_array($this->repository->allAccessibleBy(UserId::fromString('649cd487-b6bc-4ed7-a4ad-0f894cdcfeb6')))
+            iterator_to_array($this->repository->allAccessibleBy(UserId::fromString('649cd487-b6bc-4ed7-a4ad-0f894cdcfeb6')))
         );
     }
 }

@@ -54,7 +54,7 @@ final class SplitTokenTypeTest extends TypeTestCase
         $form = $this->factory->create(SplitTokenType::class);
 
         self::assertNull($form->getData());
-        self::assertEquals('', $form->getViewData());
+        self::assertSame('', $form->getViewData());
         self::assertFormIsValid($form);
     }
 
@@ -70,7 +70,7 @@ final class SplitTokenTypeTest extends TypeTestCase
         $form = $this->factory->create(SplitTokenType::class, FakeSplitTokenFactory::FULL_TOKEN);
 
         self::assertEquals($this->splitTokenFactory->fromString(FakeSplitTokenFactory::FULL_TOKEN), $form->getData());
-        self::assertEquals(FakeSplitTokenFactory::FULL_TOKEN, $form->getViewData());
+        self::assertSame(FakeSplitTokenFactory::FULL_TOKEN, $form->getViewData());
         self::assertFormIsValid($form);
     }
 
@@ -80,7 +80,7 @@ final class SplitTokenTypeTest extends TypeTestCase
         $form = $this->factory->create(SplitTokenType::class, $token = $this->splitTokenFactory->generate());
 
         self::assertEquals($token, $form->getData());
-        self::assertEquals(FakeSplitTokenFactory::FULL_TOKEN, $form->getViewData());
+        self::assertSame(FakeSplitTokenFactory::FULL_TOKEN, $form->getViewData());
         self::assertFormIsValid($form);
     }
 
@@ -92,7 +92,7 @@ final class SplitTokenTypeTest extends TypeTestCase
         $form->submit('Nope');
 
         self::assertNull($form->getData());
-        self::assertEquals('Nope', $form->getViewData());
+        self::assertSame('Nope', $form->getViewData());
 
         self::assertNotNull($form->getTransformationFailure());
         self::assertStringEndsWith('Invalid SplitToken provided.', $form->getTransformationFailure()->getMessage());
@@ -106,7 +106,7 @@ final class SplitTokenTypeTest extends TypeTestCase
         $form->submit('');
 
         self::assertNull($form->getData());
-        self::assertEquals('', $form->getViewData());
+        self::assertSame('', $form->getViewData());
         self::assertFormIsValid($form);
     }
 
@@ -115,10 +115,10 @@ final class SplitTokenTypeTest extends TypeTestCase
     {
         $form = $this->factory->create(SplitTokenType::class);
 
-        $form->submit(1);
+        $form->submit('1');
 
         self::assertNull($form->getData());
-        self::assertEquals(1, $form->getViewData());
+        self::assertSame('1', $form->getViewData());
 
         self::assertNotNull($form->getTransformationFailure());
         self::assertStringEndsWith('Invalid SplitToken provided.', $form->getTransformationFailure()->getMessage());
@@ -129,15 +129,15 @@ final class SplitTokenTypeTest extends TypeTestCase
     {
         $form = $this->factory->create(SplitTokenType::class, 'Nope');
 
-        self::assertEquals('Nope', $form->getData());
-        self::assertEquals('', $form->getViewData());
+        self::assertSame('Nope', $form->getData());
+        self::assertSame('', $form->getViewData());
 
         self::assertNull($form->getTransformationFailure());
 
         $errors = $form->getErrors();
 
         self::assertCount(1, $errors);
-        self::assertEquals('invalid_split_token', $errors->current()->getMessage());
+        self::assertSame('invalid_split_token', $errors->current()->getMessage());
     }
 
     /** @test */

@@ -30,8 +30,8 @@ final class PlanTest extends TestCase
             $constraints = new Constraints()
         );
 
-        self::assertEquals($constraints, $plan->constraints);
-        self::assertEquals([], $plan->metadata);
+        self::assertSame($constraints, $plan->constraints);
+        self::assertSame([], $plan->metadata);
     }
 
     /** @test */
@@ -42,7 +42,7 @@ final class PlanTest extends TestCase
             $constraints = (new Constraints())->setMonthlyTraffic(50)
         );
 
-        self::assertEquals($constraints, $plan->constraints);
+        self::assertSame($constraints, $plan->constraints);
     }
 
     /** @test */
@@ -51,7 +51,7 @@ final class PlanTest extends TestCase
         $plan = $this->create();
         $plan->withMetadata(['label' => 'Gold']);
 
-        self::assertEquals(['label' => 'Gold'], $plan->metadata);
+        self::assertSame(['label' => 'Gold'], $plan->metadata);
     }
 
     private function create(): Plan

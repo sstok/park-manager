@@ -31,7 +31,7 @@ final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInte
      */
     public function __construct(string $id, string $password, bool $enabled, array $roles)
     {
-        \sort($roles, \SORT_STRING);
+        sort($roles, \SORT_STRING);
 
         $this->id = $id;
         $this->password = $password;
@@ -41,7 +41,7 @@ final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInte
 
     public function serialize(): string
     {
-        return \serialize([
+        return serialize([
             'id' => $this->getUserIdentifier(),
             'password' => $this->getPassword(),
             'enabled' => $this->isEnabled(),
@@ -51,7 +51,7 @@ final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInte
 
     public function unserialize($data): void
     {
-        $info = \unserialize($data, ['allowed_classes' => false]);
+        $info = unserialize($data, ['allowed_classes' => false]);
 
         $this->id = $info['id'];
         $this->password = $info['password'];

@@ -17,7 +17,7 @@ final class UnprocessableKey extends Violation
 {
     public function __construct(string $message = '')
     {
-        parent::__construct($message, 0, new Error(\openssl_error_string(), 1));
+        parent::__construct($message, 0, new Error(openssl_error_string(), 1));
     }
 
     public function getTranslatorId(): string

@@ -49,7 +49,7 @@ final class FormErrorComparator extends Comparator
             $exportedExpected = $this->exporter->export($expected),
             $exportedActual = $this->exporter->export($actual),
             false,
-            \sprintf(
+            sprintf(
                 'Failed asserting that %s matches expected %s.',
                 $exportedActual,
                 $exportedExpected

@@ -42,7 +42,7 @@ final class MessageFormType extends AbstractType
     private DataMapper $dataMapper;
     private ViolationMapper $violationMapper;
 
-    public function __construct(MessageBusInterface $messageBus, TranslatorInterface $translator, ViolationMapper $violationMapper, PropertyAccessorInterface $propertyAccessor = null)
+    public function __construct(MessageBusInterface $messageBus, TranslatorInterface $translator, ViolationMapper $violationMapper, ?PropertyAccessorInterface $propertyAccessor = null)
     {
         $propertyAccessor ??= PropertyAccess::createPropertyAccessor();
 
@@ -89,10 +89,10 @@ final class MessageFormType extends AbstractType
 
                 if ($acceptedModelClass !== null && ! \in_array(\get_class($event->getData()), $acceptedModelClass, true)) {
                     throw new InvalidArgumentException(
-                        \sprintf(
+                        sprintf(
                             'Expected model class of type "%s". But "%s" was given for "%s".',
-                            \implode('", "', $acceptedModelClass),
-                            \get_debug_type($event->getData()),
+                            implode('", "', $acceptedModelClass),
+                            get_debug_type($event->getData()),
                             $event->getForm()->getName()
                         )
                     );
@@ -149,7 +149,7 @@ final class MessageFormType extends AbstractType
         } catch (Throwable $e) {
             // It's still possible to exception was thrown at a middleware.
             if ($e instanceof HandlerFailedException) {
-                $e = \current($e->getNestedExceptions());
+                $e = current($e->getNestedExceptions());
 
                 if ($e === false) {
                     return;
@@ -209,7 +209,7 @@ final class MessageFormType extends AbstractType
             $formPath = (string) $formPath;
 
             if ($formPath !== '') {
-                foreach (\explode('.', $formPath) as $child) {
+                foreach (explode('.', $formPath) as $child) {
                     $form = $form->get($child);
                 }
             }

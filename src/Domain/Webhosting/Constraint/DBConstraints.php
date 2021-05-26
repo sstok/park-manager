@@ -60,7 +60,7 @@ final class DBConstraints
         $this->providedStorageSize = ByteSize::inf();
 
         foreach ($fields as $name => $value) {
-            if (\property_exists($this, $name)) {
+            if (property_exists($this, $name)) {
                 $this->{$name} = $value;
             }
         }

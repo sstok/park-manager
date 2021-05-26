@@ -49,18 +49,18 @@ final class CertificateTest extends TestCase
             'issuer' => ['commonName' => 'example.com'],
         ]);
 
-        self::assertEquals('Here\'s the key Robby!', $cert->getPublicKey());
-        self::assertEquals('private-keep-of-the-7-keys', $cert->getPrivateKey());
-        self::assertEquals('x509-information', $cert->getContents());
-        self::assertEquals('sha1WithRSAEncryption', $cert->getSignatureAlgorithm());
-        self::assertEquals('a52f33ab5dad33e8af695dad33e8af695dad33e8af69', $cert->getFingerprint());
-        self::assertEquals(31, $cert->daysUntilExpirationDate());
+        self::assertSame('Here\'s the key Robby!', $cert->getPublicKey());
+        self::assertSame('private-keep-of-the-7-keys', $cert->getPrivateKey());
+        self::assertSame('x509-information', $cert->getContents());
+        self::assertSame('sha1WithRSAEncryption', $cert->getSignatureAlgorithm());
+        self::assertSame('a52f33ab5dad33e8af695dad33e8af695dad33e8af69', $cert->getFingerprint());
+        self::assertSame(31, $cert->daysUntilExpirationDate());
         self::assertEquals($validFrom, $cert->validFromDate());
         self::assertEquals($validTo, $cert->expirationDate());
-        self::assertEquals(['commonName' => 'example.com'], $cert->getIssuer());
-        self::assertEquals('example.com', $cert->getDomain());
-        self::assertEquals(['example.com'], $cert->getDomains());
-        self::assertEquals([], $cert->getAdditionalDomains());
+        self::assertSame(['commonName' => 'example.com'], $cert->getIssuer());
+        self::assertSame('example.com', $cert->getDomain());
+        self::assertSame(['example.com'], $cert->getDomains());
+        self::assertSame([], $cert->getAdditionalDomains());
         self::assertNull($cert->ca);
         self::assertTrue($cert->isValidUntil(Carbon::tomorrow()));
         self::assertFalse($cert->isExpired());
@@ -86,10 +86,10 @@ final class CertificateTest extends TestCase
     public function it_properly_handles_streamed_content_holders(): void
     {
         $resourceFactory = static function (string $str) {
-            $fp = \fopen('php://temp', 'rb+');
+            $fp = fopen('php://temp', 'rb+');
             \assert(\is_resource($fp));
-            \fwrite($fp, $str);
-            \fseek($fp, 0);
+            fwrite($fp, $str);
+            fseek($fp, 0);
 
             return $fp;
         };
@@ -97,11 +97,12 @@ final class CertificateTest extends TestCase
         $object = EntityHydrator::hydrateEntity(Certificate::class)
             ->set('contents', $resourceFactory('x509-information'))
             ->set('publicKey', $resourceFactory('Here\'s the key Robby!'))
-            ->set('privateKey', $resourceFactory('private-keep-of-the-7-keys'));
+            ->set('privateKey', $resourceFactory('private-keep-of-the-7-keys'))
+        ;
 
-        self::assertEquals('x509-information', $object->getEntity()->getContents());
-        self::assertEquals('Here\'s the key Robby!', $object->getEntity()->getPublicKey());
-        self::assertEquals('private-keep-of-the-7-keys', $object->getEntity()->getPrivateKey());
+        self::assertSame('x509-information', $object->getEntity()->getContents());
+        self::assertSame('Here\'s the key Robby!', $object->getEntity()->getPublicKey());
+        self::assertSame('private-keep-of-the-7-keys', $object->getEntity()->getPrivateKey());
     }
 
     /** @test */
@@ -119,7 +120,7 @@ final class CertificateTest extends TestCase
             'issuer' => ['commonName' => 'example.com'],
         ]);
 
-        self::assertEquals(['example.net'], $cert->getAdditionalDomains());
+        self::assertSame(['example.net'], $cert->getAdditionalDomains());
     }
 
     /** @test */
@@ -146,7 +147,7 @@ final class CertificateTest extends TestCase
             'issuer' => ['commonName' => 'Example Corp CA'],
         ], $ca);
 
-        self::assertEquals('Here\'s the key Robby Hood!', $cert->getPublicKey());
+        self::assertSame('Here\'s the key Robby Hood!', $cert->getPublicKey());
         self::assertSame($ca, $cert->ca);
         self::assertTrue($cert->isValid());
         self::assertFalse($cert->isSelfSigned());
@@ -187,7 +188,7 @@ final class CertificateTest extends TestCase
         unset($data[$removeKey]);
 
         $this->expectException(AssertionFailedException::class);
-        $this->expectExceptionMessage(\sprintf('Array does not contain an element with key "%s"', $removeKey));
+        $this->expectExceptionMessage(sprintf('Array does not contain an element with key "%s"', $removeKey));
 
         new Certificate('x509-information', 'private-keep-of-the-7-keys', $data);
     }

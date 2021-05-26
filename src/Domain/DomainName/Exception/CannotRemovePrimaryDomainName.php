@@ -23,7 +23,7 @@ final class CannotRemovePrimaryDomainName extends DomainException implements Tra
     public function __construct(DomainNameId $domainName, SpaceId $spaceId)
     {
         parent::__construct(
-            \sprintf(
+            sprintf(
                 'Domain-name "%s" of space %s is marked as primary and cannot be removed.',
                 $domainName->toString(),
                 $spaceId->toString()

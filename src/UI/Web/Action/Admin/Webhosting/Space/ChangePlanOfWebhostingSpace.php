@@ -33,7 +33,8 @@ final class ChangePlanOfWebhostingSpace
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id])
-                ->withFlash('success', $form->get('no_link_plan')->getData() ? 'flash.webhosting_space.constraints_assigned' : 'flash.webhosting_space.plan_assigned');
+                ->withFlash('success', $form->get('no_link_plan')->getData() ? 'flash.webhosting_space.constraints_assigned' : 'flash.webhosting_space.plan_assigned')
+            ;
         }
 
         return new TwigResponse('admin/webhosting/space/change_plan.html.twig', ['form' => $form->createView(), 'space' => $space]);

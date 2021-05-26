@@ -31,8 +31,8 @@ final class ConstraintsTest extends TestCase
             'database' => new DBConstraints(['maximumAmountPerType' => 5]),
         ]);
 
-        self::assertEquals([], $constraints->changes);
-        self::assertEquals(50, $constraints->monthlyTraffic);
+        self::assertSame([], $constraints->changes);
+        self::assertSame(50, $constraints->monthlyTraffic);
         self::assertEquals(new ByteSize(22, 'GB'), $constraints->storageSize);
         self::assertEquals(new EmailConstraints(['maximumAddressCount' => 50]), $constraints->email);
         self::assertEquals(new DBConstraints(['maximumAmountPerType' => 5]), $constraints->database);
@@ -43,7 +43,8 @@ final class ConstraintsTest extends TestCase
     {
         $constraints = (new Constraints())
             ->setStorageSize(new ByteSize(12, 'GB'))
-            ->setMonthlyTraffic(10);
+            ->setMonthlyTraffic(10)
+        ;
 
         $constraints2 = new Constraints([
             'storageSize' => new ByteSize(12, 'GB'),
@@ -68,22 +69,22 @@ final class ConstraintsTest extends TestCase
         $constraints = new Constraints();
 
         /** @var Constraints $new */
-        $new = $constraints->{'set' . \ucfirst($field)}($constraints->{$field});
+        $new = $constraints->{'set' . ucfirst($field)}($constraints->{$field});
 
         self::assertSame($constraints, $new);
-        self::assertEquals([], $new->changes);
-        self::assertEquals($constraints->{$field}, $new->{$field});
+        self::assertSame([], $new->changes);
+        self::assertSame($constraints->{$field}, $new->{$field});
 
         if (\is_object($value)) {
             self::assertSame($constraints, $new);
         }
 
         /** @var Constraints $new */
-        $new = $constraints->{'set' . \ucfirst($field)}($value);
+        $new = $constraints->{'set' . ucfirst($field)}($value);
 
         self::assertNotSame($constraints, $new);
-        self::assertEquals([$field => $constraints->{$field}], $new->changes);
-        self::assertEquals($value, $new->{$field});
+        self::assertSame([$field => $constraints->{$field}], $new->changes);
+        self::assertSame($value, $new->{$field});
     }
 
     public function provideFields(): iterable

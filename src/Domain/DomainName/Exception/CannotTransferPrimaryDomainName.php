@@ -24,7 +24,7 @@ final class CannotTransferPrimaryDomainName extends DomainException implements T
     public function __construct(DomainNamePair $domainName, SpaceId $current, ?SpaceId $new)
     {
         parent::__construct(
-            \sprintf(
+            sprintf(
                 'Domain name "%s" of space %s is marked as primary and cannot be transferred to space %s.',
                 $domainName->toString(),
                 $current->toString(),

@@ -22,7 +22,7 @@ final class WebhostingSpaceIsSuspended extends \DomainException implements Trans
 
     public function __construct(SpaceId $id, SuspensionLevel $level)
     {
-        parent::__construct(\sprintf('Webhosting Space "%s" is suspended with level %s', $id->toString(), $level->name));
+        parent::__construct(sprintf('Webhosting Space "%s" is suspended with level %s', $id->toString(), $level->name));
 
         $this->id = $id;
         $this->level = $level;
@@ -37,7 +37,7 @@ final class WebhostingSpaceIsSuspended extends \DomainException implements Trans
     {
         return [
             'id' => $this->id->toString(),
-            'level' => new TranslatableMessage('webhosting_suspension_level' . \mb_strtolower($this->level->name)),
+            'level' => new TranslatableMessage('webhosting_suspension_level' . mb_strtolower($this->level->name)),
         ];
     }
 }

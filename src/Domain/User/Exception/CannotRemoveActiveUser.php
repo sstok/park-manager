@@ -31,7 +31,7 @@ final class CannotRemoveActiveUser extends InvalidArgumentException implements T
      */
     public function __construct(UserId $id, array $result)
     {
-        parent::__construct(\sprintf('User with id "%s" cannot be removed as they are still assigned as owner to one or more entities.', $id->toString()));
+        parent::__construct(sprintf('User with id "%s" cannot be removed as they are still assigned as owner to one or more entities.', $id->toString()));
 
         $this->id = $id;
         $this->entities = $result;

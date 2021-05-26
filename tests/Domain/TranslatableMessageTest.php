@@ -24,19 +24,19 @@ final class TranslatableMessageTest extends TestCase
     public function its_constructable(): void
     {
         $message = new TranslatableMessage('test.message');
-        self::assertEquals('test.message', $message->getMessage());
-        self::assertEquals([], $message->getParameters());
+        self::assertSame('test.message', $message->getMessage());
+        self::assertSame([], $message->getParameters());
         self::assertNull($message->getDomain());
 
         $message = new TranslatableMessage('test.message', ['count' => 5]);
-        self::assertEquals('test.message', $message->getMessage());
-        self::assertEquals(['count' => 5], $message->getParameters());
+        self::assertSame('test.message', $message->getMessage());
+        self::assertSame(['count' => 5], $message->getParameters());
         self::assertNull($message->getDomain());
 
         $message = new TranslatableMessage('test.message', ['count' => 5], domain: 'navigation');
-        self::assertEquals('test.message', $message->getMessage());
-        self::assertEquals(['count' => 5], $message->getParameters());
-        self::assertEquals('navigation', $message->getDomain());
+        self::assertSame('test.message', $message->getMessage());
+        self::assertSame(['count' => 5], $message->getParameters());
+        self::assertSame('navigation', $message->getDomain());
     }
 
     /**

@@ -19,7 +19,7 @@ final class CannotDisableSuperAdministrator extends InvalidArgumentException
 
     public function __construct(UserId $id)
     {
-        parent::__construct(\sprintf('User with id "%s" is a SuperAdmin cannot have their access disabled.', $id->toString()));
+        parent::__construct(sprintf('User with id "%s" is a SuperAdmin cannot have their access disabled.', $id->toString()));
 
         $this->id = $id;
     }

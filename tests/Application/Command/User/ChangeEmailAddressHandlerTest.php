@@ -65,9 +65,7 @@ final class ChangeEmailAddressHandlerTest extends TestCase
     {
         ($this->handler)(new ChangeEmailAddress(UserId::fromString(self::ID1), new EmailAddress('jimy2@example.com')));
 
-        $this->repository->assertEntityWasSavedThat(self::ID1, static function (User $user) {
-            return $user->email->equals(new EmailAddress('jimy2@example.com'));
-        });
+        $this->repository->assertEntityWasSavedThat(self::ID1, static fn (User $user): bool => $user->email->equals(new EmailAddress('jimy2@example.com')));
     }
 
     /** @test */
@@ -75,8 +73,6 @@ final class ChangeEmailAddressHandlerTest extends TestCase
     {
         ($this->handler)(new ChangeEmailAddress(UserId::fromString(self::ID1), new EmailAddress('jimy+spam@example.com')));
 
-        $this->repository->assertEntityWasSavedThat(self::ID1, static function (User $user) {
-            return $user->email->equals(new EmailAddress('jimy+spam@example.com'));
-        });
+        $this->repository->assertEntityWasSavedThat(self::ID1, static fn (User $user): bool => $user->email->equals(new EmailAddress('jimy+spam@example.com')));
     }
 }

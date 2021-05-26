@@ -19,57 +19,59 @@
     <exclude-pattern>src/Migrations</exclude-pattern>
     <exclude-pattern>*/config/*</exclude-pattern>
 
+    <!-- Forbid duplicate classes -->
+    <rule ref="Generic.Classes.DuplicateClassName"/>
+
+    <!-- Forbid empty statements -->
     <rule ref="Generic.CodeAnalysis.EmptyStatement">
         <!-- But allow empty catch -->
         <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedCatch"/>
     </rule>
+
     <!-- Forbid useless empty method overrides -->
     <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
+
     <!-- Forbid inline HTML in PHP code -->
     <rule ref="Generic.Files.InlineHTML"/>
+
+    <rule ref="Generic.CodeAnalysis.EmptyStatement">
+        <!-- But allow empty catch -->
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedCatch"/>
+    </rule>
+
+    <!-- Force whitespace after `!` -->
+    <!-- XXX This needs to be done with PHP-CS-Fixer instead -->
+    <rule ref="Generic.Formatting.SpaceAfterNot"/>
+
+    <!-- Forbid any content before opening tag -->
+    <rule ref="Generic.PHP.CharacterBeforePHPOpeningTag"/>
+
     <!-- Forbid deprecated functions -->
     <rule ref="Generic.PHP.DeprecatedFunctions"/>
-    <!-- Forbid alias functions, i.e. `sizeof()`, `delete()` -->
-    <rule ref="Generic.PHP.ForbiddenFunctions">
+
+    <!-- Forbid backtick operator -->
+    <rule ref="Generic.PHP.BacktickOperator"/>
+
+    <!-- Require presence of constant visibility -->
+    <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility">
         <properties>
-            <property name="forbiddenFunctions" type="array">
-                <element key="chop" value="rtrim"/>
-                <element key="close" value="closedir"/>
-                <element key="compact" value="null"/>
-                <element key="delete" value="unset"/>
-                <element key="doubleval" value="floatval"/>
-                <element key="extract" value="null"/>
-                <element key="fputs" value="fwrite"/>
-                <element key="ini_alter" value="ini_set"/>
-                <element key="is_double" value="is_float"/>
-                <element key="is_integer" value="is_int"/>
-                <element key="is_long" value="is_int"/>
-                <element key="is_null" value="null"/>
-                <element key="is_real" value="is_float"/>
-                <element key="is_writeable" value="is_writable"/>
-                <element key="join" value="implode"/>
-                <element key="key_exists" value="array_key_exists"/>
-                <element key="pos" value="current"/>
-                <element key="settype" value="null"/>
-                <element key="show_source" value="highlight_file"/>
-                <element key="sizeof" value="count"/>
-                <element key="strchr" value="strstr"/>
-            </property>
+            <property name="fixable" value="true"/>
         </properties>
     </rule>
+
     <!-- Forbid LSB for constants (static::FOO) -->
-    <!-- XX This needs fixing in Doctrine types -->
+    <!-- XXX This needs fixing in Doctrine types -->
     <!--<rule ref="SlevomatCodingStandard.Classes.DisallowLateStaticBindingForConstants"/>-->
+
     <!-- Forbid prefix and suffix "Abstract" for abstract classes -->
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming"/>
+
     <!-- Forbid prefix and suffix "Exception" for exception classes -->
-    <rule ref="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming">
-        <exclude-pattern>src/Domain/Exception/InvalidArgumentException.php</exclude-pattern>
-    </rule>
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming" />
+
     <!-- Forbid prefix and suffix "Interface" for interfaces -->
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming"/>
-    <!-- Forbid suffix "Trait" for interfaces -->
-    <!--<rule ref="SlevomatCodingStandard.Classes.SuperfluousTraitNaming"/>-->
+
     <!-- Forbid useless comments -->
     <rule ref="SlevomatCodingStandard.Commenting.ForbiddenComments">
         <properties>
@@ -82,26 +84,78 @@
             </property>
         </properties>
     </rule>
+
+    <!-- Forbid assignments in conditions -->
+    <rule ref="SlevomatCodingStandard.ControlStructures.AssignmentInCondition">
+        <exclude-pattern>tests/WebTranslatedAssertionTrait.php</exclude-pattern>
+    </rule>
+
+    <!-- Require usage of early exit -->
+    <!--<rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit"/>-->
+
+    <!-- Require usage of null coalesce operator equal operator when possible -->
+    <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceEqualOperator"/>
+
+    <!-- Require usage of null coalesce operator when possible -->
+    <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
+
+    <!-- Forbid usage of conditions when a simple return can be used -->
+    <rule ref="SlevomatCodingStandard.ControlStructures.UselessIfConditionWithReturn"/>
+
+    <!-- Forbid usage of boolean-only ternary operator usage (e.g. $foo ? true : false) -->
+    <rule ref="SlevomatCodingStandard.ControlStructures.UselessTernaryOperator"/>
+
     <!-- Forbid useless unreachable catch blocks -->
     <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
+
     <!-- Require using Throwable instead of Exception -->
     <rule ref="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly"/>
+
     <!-- Require closures not referencing $this be static -->
     <rule ref="SlevomatCodingStandard.Functions.StaticClosure"/>
+
     <!-- Forbid unused variables passed to closures via `use` -->
     <rule ref="SlevomatCodingStandard.Functions.UnusedInheritedVariablePassedToClosure"/>
+
+    <!-- Forbid spacing before the negative operator `-` -->
+    <rule ref="SlevomatCodingStandard.Operators.NegationOperatorSpacing"/>
+
     <!-- Require the usage of assignment operators, eg `+=`, `.=` when possible -->
     <rule ref="SlevomatCodingStandard.Operators.RequireCombinedAssignmentOperator"/>
-    <!-- forbid argument unpacking for functions specialized by PHP VM -->
+
+    <!-- Forbid argument unpacking for functions specialized by PHP VM -->
     <rule ref="SlevomatCodingStandard.PHP.OptimizedFunctionsWithoutUnpacking"/>
-    <!-- Require /* @var type $foo */ and similar simple inline annotations to be replaced by assert() -->
-    <!--<rule ref="SlevomatCodingStandard.PHP.RequireExplicitAssertion"/>-->
+
+    <!-- Require ? when default value is null -->
+    <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
+
+    <!-- Forbid useless phpDocs for functions -->
+    <rule ref="SlevomatCodingStandard.Commenting.UselessFunctionDocComment">
+        <properties>
+            <property name="traversableTypeHints" type="array">
+                <element value="Traversable"/>
+                <element value="Iterator"/>
+                <element value="IteratorAggregate"/>
+                <element value="Doctrine\Common\Collections\Collection"/>
+            </property>
+        </properties>
+    </rule>
+
     <!-- Forbid duplicated variables assignments -->
     <rule ref="SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable"/>
+
     <!-- Forbid useless variables -->
     <rule ref="SlevomatCodingStandard.Variables.UselessVariable"/>
+
+    <!-- Forbid useless unreachable catch blocks -->
+    <rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
+
+    <!-- Require /* @var type $foo */ and similar simple inline annotations to be replaced by assert() -->
+    <!--<rule ref="SlevomatCodingStandard.PHP.RequireExplicitAssertion"/>-->
+
     <!-- Forbid dead code -->
     <rule ref="Squiz.PHP.NonExecutableCode"/>
+
     <!-- Forbid `$this` inside static function -->
     <rule ref="Squiz.Scope.StaticThisUsage"/>
 

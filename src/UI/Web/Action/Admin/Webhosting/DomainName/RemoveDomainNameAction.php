@@ -49,7 +49,8 @@ final class RemoveDomainNameAction
 
         if ($domainName->isPrimary()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id])
-                ->withFlash('error', 'flash.domain_name_cannot_remove_primary');
+                ->withFlash('error', 'flash.domain_name_cannot_remove_primary')
+            ;
         }
 
         $form = $formFactory->create(ConfirmationForm::class, null, [
@@ -83,7 +84,8 @@ final class RemoveDomainNameAction
 
         if ($form->isSubmitted() && $form->isValid()) {
             return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id])
-                ->withFlash('success', 'flash.domain_name_removed');
+                ->withFlash('success', 'flash.domain_name_removed')
+            ;
         }
 
         return new TwigResponse('admin/webhosting/domain_name/remove.html.twig', ['form' => $form->createView(), 'domain' => $domainName, 'space' => $space]);

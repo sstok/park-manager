@@ -91,25 +91,29 @@ final class UuidTraitTest extends TestCase
     {
         $id = MockUuidIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
 
-        self::assertEquals('56253090-3960-11e7-94fd-acbc32b58315', (string) $id);
+        self::assertSame('56253090-3960-11e7-94fd-acbc32b58315', (string) $id);
     }
 
     /** @test */
     public function its_serializable(): void
     {
         $id = MockUuidIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
-        $serialized = \serialize($id);
+        $serialized = serialize($id);
 
-        self::assertEquals($id, \unserialize($serialized, []));
+        self::assertEquals($id, unserialize($serialized, []));
     }
 
-    /** @test */
+    /**
+     * @test
+     *
+     * @throws \JsonException
+     */
     public function its_json_serializable(): void
     {
         $id = MockUuidIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
-        $serialized = \json_encode($id, \JSON_THROW_ON_ERROR, 512);
+        $serialized = json_encode($id, \JSON_THROW_ON_ERROR, 512);
 
-        self::assertEquals('56253090-3960-11e7-94fd-acbc32b58315', \json_decode($serialized, true, 512, \JSON_THROW_ON_ERROR));
+        self::assertSame('56253090-3960-11e7-94fd-acbc32b58315', json_decode($serialized, true, 512, \JSON_THROW_ON_ERROR));
     }
 }
 

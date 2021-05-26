@@ -73,7 +73,7 @@ final class ConstraintViolationComparator extends Comparator
             $exportedExpected = $this->exporter->export($expected),
             $exportedActual = $this->exporter->export($actual),
             false,
-            \sprintf(
+            sprintf(
                 'Failed asserting that %s matches expected %s.',
                 $exportedActual,
                 $exportedExpected
@@ -85,14 +85,17 @@ final class ConstraintViolationComparator extends Comparator
     {
         try {
             $this->factory->getComparatorFor($expected->getParameters(), $actual->getParameters())
-                ->assertEquals($expected->getParameters(), $actual->getParameters());
+                ->assertEquals($expected->getParameters(), $actual->getParameters())
+            ;
 
             $this->factory->getComparatorFor($expected->getInvalidValue(), $actual->getInvalidValue())
-                ->assertEquals($expected->getInvalidValue(), $actual->getInvalidValue());
+                ->assertEquals($expected->getInvalidValue(), $actual->getInvalidValue())
+            ;
 
             if ($expected->getCause() !== null) {
                 $this->factory->getComparatorFor($expected->getCause(), $actual->getCause())
-                    ->assertEquals($expected->getCause(), $actual->getCause());
+                    ->assertEquals($expected->getCause(), $actual->getCause())
+                ;
             }
 
             return true;

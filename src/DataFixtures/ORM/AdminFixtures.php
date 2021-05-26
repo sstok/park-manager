@@ -56,7 +56,7 @@ final class AdminFixtures extends Fixture
 
         $admins = [];
 
-        foreach (\range(1, 6) as $i) {
+        foreach (range(1, 6) as $i) {
             $admins[] = $admin = new RegisterAdministrator(
                 UserId::create(),
                 new EmailAddress($this->faker->unique()->email()),

@@ -82,11 +82,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
                 return false;
             }
 
-            if (! $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1))) {
-                return false;
-            }
-
-            return true;
+            return $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1));
         });
 
         self::assertEquals([new InitializeWebhostingSpace(SpaceId::fromString(self::SPACE_ID1))], $messageBus->dispatchedMessages);
@@ -122,11 +118,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
                 return false;
             }
 
-            if (! $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1))) {
-                return false;
-            }
-
-            return true;
+            return $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1));
         });
 
         self::assertEquals([new InitializeWebhostingSpace(SpaceId::fromString(self::SPACE_ID1))], $messageBus->dispatchedMessages);
@@ -156,7 +148,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
         $spaceRepository->assertEntitiesCountWasSaved(1);
         $domainNameRepository->assertNoEntitiesWereSaved();
 
-        self::assertEquals([], $messageBus->dispatchedMessages);
+        self::assertSame([], $messageBus->dispatchedMessages);
     }
 
     private function createExistingDomain(DomainNamePair $domainName, SpaceId $existingSpaceId): DomainName
@@ -200,11 +192,7 @@ final class RegisterWebhostingSpaceHandlerTest extends TestCase
                 return false;
             }
 
-            if (! $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1))) {
-                return false;
-            }
-
-            return true;
+            return $storedDomainName->space->id->equals(SpaceId::fromString(self::SPACE_ID1));
         });
 
         self::assertEquals([new InitializeWebhostingSpace(SpaceId::fromString(self::SPACE_ID1))], $messageBus->dispatchedMessages);

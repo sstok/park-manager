@@ -29,7 +29,7 @@ final class MailboxRepositoryMock implements MailboxRepository
     protected function getFieldsIndexMapping(): array
     {
         return [
-            'full_address' => static fn (Mailbox $mailbox): string => \sprintf('%s@%s', $mailbox->address, $mailbox->domainName->namePair->toString()),
+            'full_address' => static fn (Mailbox $mailbox): string => sprintf('%s@%s', $mailbox->address, $mailbox->domainName->namePair->toString()),
         ];
     }
 

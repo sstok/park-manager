@@ -53,7 +53,8 @@ final class EmailForwardOrmRepository extends EntityRepository implements Forwar
                 ->setParameter('address', $address)
                 ->setParameter('domain_name', $domainNamePair->name)
                 ->setParameter('domain_tld', $domainNamePair->tld)
-                ->getSingleResult();
+                ->getSingleResult()
+            ;
         } catch (NoResultException) {
             throw EmailForwardNotFound::withName($address . '@' . $domainNamePair->toString());
         }
@@ -76,7 +77,8 @@ final class EmailForwardOrmRepository extends EntityRepository implements Forwar
             ->where('f.space = :space')
             ->getQuery()
             ->setParameter('space', $space->toString())
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
     }
 
     public function save(Forward $forward): void

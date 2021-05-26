@@ -117,19 +117,19 @@ final class MockRepositoryTest extends TestCase
         $repository->assertHasEntity($entity1->id(), static function (): void { });
         $repository->assertHasEntity($entity3->id(), static function (): void { });
 
-        self::assertEquals([$entity1, $entity2], [...$repository->allByDomain('example.com')]);
-        self::assertEquals([$entity3, $entity4], [...$repository->allByDomain('example2.com')]);
-        self::assertEquals([$entity1, $entity2, $entity3, $entity4], [...$repository->all()]);
+        self::assertSame([$entity1, $entity2], [...$repository->allByDomain('example.com')]);
+        self::assertSame([$entity3, $entity4], [...$repository->allByDomain('example2.com')]);
+        self::assertSame([$entity1, $entity2, $entity3, $entity4], [...$repository->all()]);
 
-        self::assertEquals([$entity3], [...$repository->allByDomain('example2.com')->limitToIds(['9dab0b6a-0876-11e9-bfd1-acbc32b58315'])]);
-        self::assertEquals([], [...$repository->allByDomain('example2.com')->limitToIds(['f1acc3fb-de6a-4fc4-af6e-dde2327b4425'])]);
+        self::assertSame([$entity3], [...$repository->allByDomain('example2.com')->limitToIds(['9dab0b6a-0876-11e9-bfd1-acbc32b58315'])]);
+        self::assertSame([], [...$repository->allByDomain('example2.com')->limitToIds(['f1acc3fb-de6a-4fc4-af6e-dde2327b4425'])]);
 
-        self::assertEquals([$entity1, $entity2], [...$repository->all()->setLimit(2)]);
-        self::assertEquals([$entity3, $entity4], [...$repository->all()->setLimit(2, 2)]);
-        self::assertEquals([$entity3, $entity4], [...$repository->all()->setLimit(null, 2)]);
+        self::assertSame([$entity1, $entity2], [...$repository->all()->setLimit(2)]);
+        self::assertSame([$entity3, $entity4], [...$repository->all()->setLimit(2, 2)]);
+        self::assertSame([$entity3, $entity4], [...$repository->all()->setLimit(null, 2)]);
 
-        self::assertEquals([$entity1, $entity2, $entity3, $entity4], [...$repository->all()->setOrdering('id', 'desc')]);
-        self::assertEquals([$entity4, $entity3, $entity2, $entity1], [...$repository->all()->setOrdering('id', 'asc')]);
+        self::assertSame([$entity1, $entity2, $entity3, $entity4], [...$repository->all()->setOrdering('id', 'desc')]);
+        self::assertSame([$entity4, $entity3, $entity2, $entity1], [...$repository->all()->setOrdering('id', 'asc')]);
     }
 
     /** @test */
@@ -209,7 +209,7 @@ final class MockRepositoryTest extends TestCase
 
             protected function getFieldsIndexMapping(): array
             {
-                return ['last_name' => static fn (MockEntity $entity) => \mb_strtolower($entity->lastName())];
+                return ['last_name' => static fn (MockEntity $entity): string => mb_strtolower($entity->lastName())];
             }
 
             public function getByLastName(string $name): MockEntity
@@ -261,8 +261,8 @@ final class MockRepositoryTest extends TestCase
 
         $repository->assertEntitiesWereSaved();
         $repository->assertNoEntitiesWereRemoved();
-        $repository->assertEntitiesWereSavedThat(static fn (MockEntity $savedEntity) => $savedEntity->name === 'Jones' || $savedEntity->name === 'Jane');
-        $repository->assertEntityWasSavedThat($entity1->id, static fn (MockEntity $savedEntity) => $savedEntity->name === 'Jones');
+        $repository->assertEntitiesWereSavedThat(static fn (MockEntity $savedEntity): bool => $savedEntity->name === 'Jones' || $savedEntity->name === 'Jane');
+        $repository->assertEntityWasSavedThat($entity1->id, static fn (MockEntity $savedEntity): bool => $savedEntity->name === 'Jones');
 
         self::assertSame($entity1, $repository->getByName('Jones'));
         self::assertSame($entity2, $repository->getByName('Jane'));
@@ -357,8 +357,8 @@ final class MockRepositoryTest extends TestCase
         $repository->save($entity1); // No more watchers at this point
         $repository->save($entity2);
 
-        self::assertEquals(['he1', 'now2', 'sing3', 'this4'], $order);
-        self::assertEquals(['hello', 'its me'], $order2);
+        self::assertSame(['he1', 'now2', 'sing3', 'this4'], $order);
+        self::assertSame(['hello', 'its me'], $order2);
 
         $order = [];
 
@@ -374,7 +374,7 @@ final class MockRepositoryTest extends TestCase
         // Meaning all new watchers should be executed in correct order.
         $repository->save($entity1);
 
-        self::assertEquals(['corrosion4'], $order);
+        self::assertSame(['corrosion4'], $order);
     }
 }
 
@@ -390,9 +390,9 @@ final class MockEntity
     public MockIdentity $id;
     public ?string $name = null;
     private string $lastName;
-    private ?string $domain = null;
+    private ?string $domain;
 
-    public function __construct(string $id = 'fc86687e-0875-11e9-9701-acbc32b58315', string $name = 'Foobar', string $domain = null)
+    public function __construct(string $id = 'fc86687e-0875-11e9-9701-acbc32b58315', string $name = 'Foobar', ?string $domain = null)
     {
         $this->id = MockIdentity::fromString($id);
         $this->lastName = $name;

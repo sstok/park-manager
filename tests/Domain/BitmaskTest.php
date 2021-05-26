@@ -21,8 +21,8 @@ final class BitmaskTest extends TestCase
     /** @test */
     public function its_constructable(): void
     {
-        self::assertEquals(0, (new BitmaskStub())->get());
-        self::assertEquals(123456, (new BitmaskStub(123456))->get());
+        self::assertSame(0, (new BitmaskStub())->get());
+        self::assertSame(123456, (new BitmaskStub(123456))->get());
     }
 
     /** @test */
@@ -30,8 +30,8 @@ final class BitmaskTest extends TestCase
     {
         $bitmask = new BitmaskStub();
 
-        self::assertEquals(BitmaskStub::VIEW, $bitmask->resolveMask('view'));
-        self::assertEquals(BitmaskStub::VIEW, $bitmask->resolveMask(BitmaskStub::VIEW));
+        self::assertSame(BitmaskStub::VIEW, $bitmask->resolveMask('view'));
+        self::assertSame(BitmaskStub::VIEW, $bitmask->resolveMask(BitmaskStub::VIEW));
     }
 
     /** @test */
@@ -45,22 +45,23 @@ final class BitmaskTest extends TestCase
         $bitmask = new BitmaskStub();
         $bitmask = $bitmask
             ->add('view')
-            ->add('eDiT', 'ownEr');
+            ->add('eDiT', 'ownEr')
+        ;
 
         $mask = $bitmask->get();
 
         self::assertTrue($bitmask->has(BitmaskStub::VIEW));
         self::assertTrue($bitmask->has('view'));
 
-        self::assertEquals(BitmaskStub::VIEW, $mask & BitmaskStub::VIEW);
-        self::assertEquals(BitmaskStub::EDIT, $mask & BitmaskStub::EDIT);
-        self::assertEquals(BitmaskStub::OWNER, $mask & BitmaskStub::OWNER);
+        self::assertSame(BitmaskStub::VIEW, $mask & BitmaskStub::VIEW);
+        self::assertSame(BitmaskStub::EDIT, $mask & BitmaskStub::EDIT);
+        self::assertSame(BitmaskStub::OWNER, $mask & BitmaskStub::OWNER);
         self::assertTrue($bitmask->has(BitmaskStub::OWNER));
 
-        self::assertEquals(0, $mask & BitmaskStub::MASTER);
-        self::assertEquals(0, $mask & BitmaskStub::CREATE);
-        self::assertEquals(0, $mask & BitmaskStub::DELETE);
-        self::assertEquals(0, $mask & BitmaskStub::UNDELETE);
+        self::assertSame(0, $mask & BitmaskStub::MASTER);
+        self::assertSame(0, $mask & BitmaskStub::CREATE);
+        self::assertSame(0, $mask & BitmaskStub::DELETE);
+        self::assertSame(0, $mask & BitmaskStub::UNDELETE);
 
         // Remove
         $bitmaskRemoved = $bitmask->remove('edit', 'OWner');
@@ -68,22 +69,22 @@ final class BitmaskTest extends TestCase
 
         self::assertNotSame($bitmask, $bitmaskRemoved);
         self::assertFalse($bitmaskRemoved->has(BitmaskStub::OWNER));
-        self::assertEquals(0, $mask & BitmaskStub::EDIT);
-        self::assertEquals(0, $mask & BitmaskStub::OWNER);
-        self::assertEquals(BitmaskStub::VIEW, $mask & BitmaskStub::VIEW);
+        self::assertSame(0, $mask & BitmaskStub::EDIT);
+        self::assertSame(0, $mask & BitmaskStub::OWNER);
+        self::assertSame(BitmaskStub::VIEW, $mask & BitmaskStub::VIEW);
     }
 
     /** @test */
     public function it_clears(): void
     {
         $bitmask = new BitmaskStub();
-        self::assertEquals(0, $bitmask->get());
+        self::assertSame(0, $bitmask->get());
 
         $bitmask = $bitmask->add('view');
         self::assertTrue($bitmask->get() > 0);
 
         $bitmask = $bitmask->clear();
-        self::assertEquals(0, $bitmask->get());
+        self::assertSame(0, $bitmask->get());
     }
 }
 

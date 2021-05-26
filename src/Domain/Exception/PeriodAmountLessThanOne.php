@@ -16,7 +16,7 @@ final class PeriodAmountLessThanOne extends InvalidArgument
 
     public function __construct(string $unit)
     {
-        parent::__construct(\sprintf('A TrafficPeriod with unit "%s" must contain at least one %s.', \ucfirst(\mb_strtolower($unit)), \mb_strtolower($unit)));
+        parent::__construct(sprintf('A TrafficPeriod with unit "%s" must contain at least one %s.', ucfirst(mb_strtolower($unit)), mb_strtolower($unit)));
 
         $this->unit = $unit;
     }

@@ -20,7 +20,7 @@ final class WebhostingSpaceBeingRemoved extends \RuntimeException implements Tra
     public function __construct(DomainNamePair $name)
     {
         parent::__construct(
-            \sprintf(
+            sprintf(
                 'Webhosting space %s is currently being removed (or is marked for removal) and cannot be updated or changed.',
                 $name->toString()
             )

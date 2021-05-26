@@ -41,12 +41,12 @@ final class EntityRendererTest extends TestCase
             'hacked-by-9lives'
         );
 
-        self::assertEquals('short: Freddy Mc. Fee', $renderer->short($entity, ['expiration' => 'nope']));
-        self::assertEquals('detailed: Freddy Mc. Fee.', $renderer->detailed($entity));
-        self::assertEquals('detailed: Freddy Mc. Fee.expiration: nope', $renderer->detailed($entity, ['expiration' => 'nope']));
+        self::assertSame('short: Freddy Mc. Fee', $renderer->short($entity, ['expiration' => 'nope']));
+        self::assertSame('detailed: Freddy Mc. Fee.', $renderer->detailed($entity));
+        self::assertSame('detailed: Freddy Mc. Fee.expiration: nope', $renderer->detailed($entity, ['expiration' => 'nope']));
 
-        self::assertEquals('short: Freddy Mc. Fee===============================', $renderer->short($entity, format: 'md'));
-        self::assertEquals('detailed: Freddy Mc. Fee===============================', $renderer->detailed($entity, format: 'md'));
+        self::assertSame('short: Freddy Mc. Fee===============================', $renderer->short($entity, format: 'md'));
+        self::assertSame('detailed: Freddy Mc. Fee===============================', $renderer->detailed($entity, format: 'md'));
     }
 
     private function createTwigEnv(): Environment
@@ -101,7 +101,7 @@ final class EntityRendererTest extends TestCase
             'hacked-by-9lives'
         );
 
-        self::assertEquals('detailed: Freddy Mc. Fee.', $renderer->detailed($entity, locale: 'de'));
+        self::assertSame('detailed: Freddy Mc. Fee.', $renderer->detailed($entity, locale: 'de'));
     }
 
     private function expectLocaleIsChanged(string $tempLocale): LocaleAwareInterface
@@ -118,7 +118,7 @@ final class EntityRendererTest extends TestCase
     {
         $renderer = new EntityRenderer($this->createTwigEnv(), $this->expectLocaleIsNotChanged());
 
-        self::assertEquals('user', $renderer->getEntityLabel(User::class));
-        self::assertEquals('webhosting.space', $renderer->getEntityLabel(Space::class));
+        self::assertSame('user', $renderer->getEntityLabel(User::class));
+        self::assertSame('webhosting.space', $renderer->getEntityLabel(Space::class));
     }
 }

@@ -56,7 +56,8 @@ final class RegisterUserForm extends AbstractType
                     new Length(['min' => 6, 'max' => 20]), // this is a temporary password, but still should be relatively secure
                 ],
             ])
-            ->add('is_admin', CheckboxType::class, ['label' => 'label.is_admin', 'help' => 'help.is_admin', 'required' => false]);
+            ->add('is_admin', CheckboxType::class, ['label' => 'label.is_admin', 'help' => 'help.is_admin', 'required' => false])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -100,7 +101,8 @@ final class RegisterUserForm extends AbstractType
                         ),
                     ],
                 ],
-            ]);
+            ])
+        ;
     }
 
     public function getBlockPrefix(): string

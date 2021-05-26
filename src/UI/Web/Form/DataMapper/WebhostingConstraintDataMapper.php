@@ -32,7 +32,7 @@ final class WebhostingConstraintDataMapper implements DataMapperInterface
             throw new UnexpectedTypeException($viewData, $this->constraintClass);
         }
 
-        $forms = \iterator_to_array($forms);
+        $forms = iterator_to_array($forms);
         /** @var FormInterface[] $forms */
         foreach ($forms as $name => $form) {
             $form->setData($viewData->{$name});
@@ -48,7 +48,7 @@ final class WebhostingConstraintDataMapper implements DataMapperInterface
             throw new UnexpectedTypeException($viewData, $this->constraintClass);
         }
 
-        $forms = \iterator_to_array($forms);
+        $forms = iterator_to_array($forms);
         /** @var FormInterface[] $forms */
         $fields = [];
 

@@ -50,11 +50,7 @@ final class ModelResolver implements ArgumentValueResolverInterface
             return true;
         }
 
-        if ($this->entitiesRepositories->has($type)) {
-            return true;
-        }
-
-        return false;
+        return $this->entitiesRepositories->has($type);
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
@@ -64,7 +60,7 @@ final class ModelResolver implements ArgumentValueResolverInterface
         $value = $request->attributes->get($argument->getName(), $default);
 
         if ($value === null || $type === null) {
-            throw new RuntimeException(\sprintf('Value/type for argument "%s" cannot be null.', $argument->getName()));
+            throw new RuntimeException(sprintf('Value/type for argument "%s" cannot be null.', $argument->getName()));
         }
 
         if ($type === EmailAddress::class) {

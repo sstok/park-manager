@@ -96,7 +96,8 @@ final class DomainNameSuffixValidatorTest extends ConstraintValidatorTestCase
             ->atPath('property.path.suffix')
             ->setCode($code)
             ->setInvalidValue($name)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     public function provideRejectedDomainNames(): iterable
@@ -121,7 +122,8 @@ final class DomainNameSuffixValidatorTest extends ConstraintValidatorTestCase
             ->atPath('property.path.suffix')
             ->setCode($code)
             ->setInvalidValue($name)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     /**
@@ -135,7 +137,8 @@ final class DomainNameSuffixValidatorTest extends ConstraintValidatorTestCase
             ->atPath('property.path.suffix')
             ->setCode(DomainNameSuffix::ICANN_UNKNOWN)
             ->setInvalidValue($name)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     public function provideRejectedICANNDomainNames(): iterable
@@ -153,7 +156,8 @@ final class DomainNameSuffixValidatorTest extends ConstraintValidatorTestCase
         $this->buildViolation('This value is not a valid domain-name.')
             ->setCode(DomainNameSuffix::INVALID_SYNTAX)
             ->setInvalidValue($name)
-            ->assertRaised();
+            ->assertRaised()
+        ;
     }
 
     public function provideWrongFormattedDomains(): iterable

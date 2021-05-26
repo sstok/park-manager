@@ -42,8 +42,8 @@ final class EntityHydrator
 
     public function __get($name)
     {
-        if (! \property_exists($this->object, $name)) {
-            throw new \LogicException(\sprintf('Cannot get non existing property %s->%s.', \get_class($this->object), $name));
+        if (! property_exists($this->object, $name)) {
+            throw new \LogicException(sprintf('Cannot get non existing property %s->%s.', \get_class($this->object), $name));
         }
 
         $property = $this->reflection->getProperty($name);
@@ -54,8 +54,8 @@ final class EntityHydrator
 
     public function set(string $name, $value): self
     {
-        if (! \property_exists($this->object, $name)) {
-            throw new \LogicException(\sprintf('Cannot set non existing property %s->%s = %s.', \get_class($this->object), $name, \var_export($value, true)));
+        if (! property_exists($this->object, $name)) {
+            throw new \LogicException(sprintf('Cannot set non existing property %s->%s = %s.', \get_class($this->object), $name, var_export($value, true)));
         }
 
         $property = $this->reflection->getProperty($name);

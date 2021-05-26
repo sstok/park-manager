@@ -73,7 +73,7 @@ class Plan
         $this->metadata = $metadata;
     }
 
-    public function getLabel(string $locale = null): string
+    public function getLabel(?string $locale = null): string
     {
         return $this->id->toString();
     }
