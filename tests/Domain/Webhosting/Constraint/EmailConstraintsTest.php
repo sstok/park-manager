@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Domain\Webhosting\Constraint;
 
 use ParkManager\Domain\ByteSize;
-use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
 use PHPUnit\Framework\TestCase;
 
@@ -68,27 +67,16 @@ final class EmailConstraintsTest extends TestCase
      * @test
      * @dataProvider provideFields
      */
-    public function its_changeable(string $field, $value): void
+    public function its_keeps_same_instance_when_unchanged(string $field, mixed $value): void
     {
         $constraints = new EmailConstraints();
 
-        /** @var Constraints $new */
+        /** @var EmailConstraints $new */
         $new = $constraints->{'set' . ucfirst($field)}($constraints->{$field});
 
         self::assertSame($constraints, $new);
         self::assertSame([], $new->changes);
         self::assertSame($constraints->{$field}, $new->{$field});
-
-        if (\is_object($value)) {
-            self::assertSame($constraints, $new);
-        }
-
-        /** @var Constraints $new */
-        $new = $constraints->{'set' . ucfirst($field)}($value);
-
-        self::assertNotSame($constraints, $new);
-        self::assertSame([$field => $constraints->{$field}], $new->changes);
-        self::assertSame($value, $new->{$field});
     }
 
     public function provideFields(): iterable
@@ -104,5 +92,21 @@ final class EmailConstraintsTest extends TestCase
         yield ['spamFilterCount', 15];
 
         yield ['mailListCount', 8];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideFields
+     */
+    public function its_changeable(string $field, mixed $value): void
+    {
+        $constraints = new EmailConstraints();
+
+        /** @var EmailConstraints $new */
+        $new = $constraints->{'set' . ucfirst($field)}($value);
+
+        self::assertNotSame($constraints, $new);
+        self::assertSame([$field => $constraints->{$field}], $new->changes);
+        self::assertSame($value, $new->{$field});
     }
 }

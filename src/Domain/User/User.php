@@ -66,7 +66,7 @@ class User
     /**
      * @ORM\Column(type="array_collection")
      *
-     * @var Collection<int,string>
+     * @var Collection<int, string>
      */
     public Collection $roles;
 
@@ -143,7 +143,7 @@ class User
     }
 
     /**
-     * @return array<int,string>
+     * @return array<int, string>
      */
     public function getRoles(): array
     {

@@ -197,7 +197,7 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
     }
 
     /**
-     * @param array<int,object> $expectedIds
+     * @param array<int, object> $expectedIds
      */
     private function assertEntitiesEquals(array $expectedIds, iterable $result): void
     {

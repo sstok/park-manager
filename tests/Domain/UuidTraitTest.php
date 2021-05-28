@@ -38,14 +38,12 @@ final class UuidTraitTest extends TestCase
 
         self::assertTrue($id->equals($id));
         self::assertFalse($id->equals($id2));
-        self::assertFalse($id->equals(false));
         self::assertFalse($id->equals(null));
 
         $id = MockUuidIdentity::fromString('56253090-3960-11e7-94fd-acbc32b58315');
 
         self::assertTrue($id->equals($id));
         self::assertFalse($id->equals($id2));
-        self::assertFalse($id->equals(false));
     }
 
     /** @test */

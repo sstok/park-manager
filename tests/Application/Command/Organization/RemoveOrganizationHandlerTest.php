@@ -21,6 +21,7 @@ use ParkManager\Domain\Organization\Exception\CannotRemoveInternalOrganization;
 use ParkManager\Domain\Organization\Organization;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\Owner;
+use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Organization\OrganizationRepositoryMock;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
@@ -59,8 +60,8 @@ final class RemoveOrganizationHandlerTest extends TestCase
         ]);
 
         $ownershipUsageList = new OwnershipUsageList([
-            'space' => $spaceRepository,
-            'domainName' => $domainNameRepository,
+            Space::class => $spaceRepository,
+            DomainName::class => $domainNameRepository,
         ]);
 
         $this->handler = new RemoveOrganizationHandler($this->orgRepository, $ownershipUsageList);
@@ -89,10 +90,10 @@ final class RemoveOrganizationHandlerTest extends TestCase
             self::assertSame($id, $e->id);
 
             // Actual testing of the result is unneeded.
-            self::assertArrayHasKey('space', $e->activeEntities);
-            self::assertArrayHasKey('domainName', $e->activeEntities);
-            self::assertCount(1, $e->activeEntities['space']);
-            self::assertCount(1, $e->activeEntities['domainName']);
+            self::assertArrayHasKey(Space::class, $e->activeEntities);
+            self::assertArrayHasKey(DomainName::class, $e->activeEntities);
+            self::assertCount(1, $e->activeEntities[Space::class]);
+            self::assertCount(1, $e->activeEntities[DomainName::class]);
         }
     }
 

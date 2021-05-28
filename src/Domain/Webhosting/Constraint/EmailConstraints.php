@@ -76,7 +76,7 @@ final class EmailConstraints
      *
      * [name] => old-value
      *
-     * @var array<string,mixed>
+     * @var array<string, mixed>
      */
     public array $changes = [];
 

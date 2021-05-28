@@ -23,7 +23,7 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
- * @method Forward|null find($id, $lockMode = null, $lockVersion = null)
+ * @extends EntityRepository<Forward>
  */
 final class EmailForwardOrmRepository extends EntityRepository implements ForwardRepository
 {

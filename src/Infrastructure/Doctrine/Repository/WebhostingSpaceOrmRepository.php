@@ -22,7 +22,7 @@ use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
- * @method Space|null find($id, $lockMode = null, $lockVersion = null)
+ * @extends EntityRepository<Space>
  */
 class WebhostingSpaceOrmRepository extends EntityRepository implements WebhostingSpaceRepository
 {

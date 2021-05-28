@@ -17,7 +17,9 @@ use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
 use ParkManager\Tests\Mock\Domain\MockRepository;
 
-/** @internal */
+/**
+ * @internal
+ */
 final class PlanRepositoryMock implements PlanRepository
 {
     /** @use MockRepository<Plan> */

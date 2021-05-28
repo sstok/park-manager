@@ -27,7 +27,7 @@ trait WebTranslatedAssertionTrait
             unset($parameters['__trans_locale']);
         }
 
-        $translated = static::$container->get('translator')->trans($id, $parameters, $domain, $locale);
+        $translated = static::getContainer()->get('translator')->trans($id, $parameters, $domain, $locale);
         $translated = trim(preg_replace('/(?:\s{2,}+|[^\S ])/', ' ', strip_tags($translated)));
 
         try {
@@ -40,15 +40,31 @@ trait WebTranslatedAssertionTrait
             $response = self::executePrivateMethod('getResponse');
             \assert($response instanceof Response);
 
-            if (($serverExceptionMessage = $response->headers->get('X-Debug-Exception'))
-                && ($serverExceptionFile = $response->headers->get('X-Debug-Exception-File'))) {
+            $serverExceptionMessage = $response->headers->get('X-Debug-Exception');
+            $serverExceptionFile = $response->headers->get('X-Debug-Exception-File');
+
+            if ($serverExceptionMessage !== null && $serverExceptionFile !== null) {
                 $serverExceptionFile = explode(':', $serverExceptionFile);
-                $exception->__construct($exception->getMessage(), $exception->getComparisonFailure(), new ErrorException(rawurldecode($serverExceptionMessage), 0, 1, rawurldecode($serverExceptionFile[0]), $serverExceptionFile[1]), $exception->getPrevious());
-            } else {
-                $exception->__construct($exception->getMessage(), $exception->getComparisonFailure(), new PreconditionFailedHttpException(rawurldecode($response->getContent()), $exception->getPrevious()));
+
+                throw new ExpectationFailedException(
+                    $exception->getMessage(),
+                    $exception->getComparisonFailure(),
+                    new ErrorException(
+                        rawurldecode($serverExceptionMessage),
+                        0,
+                        1,
+                        rawurldecode($serverExceptionFile[0]),
+                        (int) $serverExceptionFile[1],
+                        $exception->getPrevious()
+                    )
+                );
             }
 
-            throw $exception;
+            throw new ExpectationFailedException(
+                $exception->getMessage(),
+                $exception->getComparisonFailure(),
+                new PreconditionFailedHttpException(rawurldecode($response->getContent()), $exception->getPrevious())
+            );
         }
     }
 

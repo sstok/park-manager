@@ -20,6 +20,7 @@ use ParkManager\Domain\OwnerRepository;
 
 final class OwnerRepositoryMock implements OwnerRepository
 {
+    /** @use MockRepository<Owner> */
     use MockRepository {
         __construct as construct;
     }

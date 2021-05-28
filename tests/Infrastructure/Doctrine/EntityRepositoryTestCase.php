@@ -27,8 +27,7 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
 
     protected function getEntityManager(?string $manager = 'doctrine.orm.default_entity_manager'): EntityManagerInterface
     {
-        /** @var EntityManagerInterface $manager */
-        return self::$container->get($manager ?? $this->getDefaultManagerName());
+        return self::getContainer()->get($manager ?? $this->getDefaultManagerName());
     }
 
     protected function getDefaultManagerName(): string
@@ -37,7 +36,7 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
     }
 
     /**
-     * @param array<int,string> $expected IDs provided as string-array
+     * @param array<int, string> $expected IDs provided as string-array
      */
     protected function assertIdsEquals(array $expected, ResultSet $resultSet): void
     {

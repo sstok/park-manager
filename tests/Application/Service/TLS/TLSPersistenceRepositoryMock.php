@@ -19,13 +19,14 @@ use ParkManager\Tests\Mock\Domain\MockRepository;
  */
 final class TLSPersistenceRepositoryMock extends ObjectManagerDecorator
 {
+    /** @use MockRepository<object> */
     use MockRepository;
 
     public function find($className, $id): ?object
     {
         try {
             return $this->mockDoGetByField('hash', $className . ':' . $id);
-        } catch (EntityNotFoundException $e) {
+        } catch (EntityNotFoundException) {
             return null;
         }
     }

@@ -67,7 +67,7 @@ final class UserRepositoryMock implements UserRepository
     {
         try {
             return $this->mockDoGetByField('passwordResetToken', $selector);
-        } catch (UserNotFound $e) {
+        } catch (UserNotFound) {
             throw new PasswordResetTokenNotAccepted();
         }
     }
@@ -76,7 +76,7 @@ final class UserRepositoryMock implements UserRepository
     {
         try {
             return $this->mockDoGetByField('emailChangeToken', $selector);
-        } catch (UserNotFound $e) {
+        } catch (UserNotFound) {
             throw new EmailChangeConfirmationRejected();
         }
     }

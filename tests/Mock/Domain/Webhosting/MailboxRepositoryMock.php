@@ -22,6 +22,7 @@ use ParkManager\Tests\Mock\Domain\MockRepository;
 /** @internal */
 final class MailboxRepositoryMock implements MailboxRepository
 {
+    /** @use MockRepository<Mailbox> */
     use MockRepository;
 
     public const ID1 = '61c957ca-a74f-48ce-843a-a6adc9af2d62';

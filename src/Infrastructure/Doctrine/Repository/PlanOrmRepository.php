@@ -19,7 +19,7 @@ use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
 use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
- * @method Plan|null find($id, $lockMode = null, $lockVersion = null)
+ * @extends EntityRepository<Plan>
  */
 class PlanOrmRepository extends EntityRepository implements PlanRepository
 {

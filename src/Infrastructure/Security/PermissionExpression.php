@@ -19,7 +19,7 @@ final class PermissionExpression implements Permission
 {
     public string $name;
 
-    /** @var array<int,mixed> */
+    /** @var array<int, mixed> */
     public array $arguments;
 
     public function __construct(string $name, ...$arguments)

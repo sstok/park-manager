@@ -22,6 +22,7 @@ use ParkManager\Tests\Mock\Domain\MockRepository;
 /** @internal */
 final class ForwardRepositoryMock implements ForwardRepository
 {
+    /** @use MockRepository<Forward> */
     use MockRepository;
 
     public const ID1 = 'c0a358cb-cecb-4faa-b274-9b4f7e8294cc';

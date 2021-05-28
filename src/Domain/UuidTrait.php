@@ -12,6 +12,7 @@ namespace ParkManager\Domain;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Stringable;
 
 /**
  * An Identity holds a single UUID value.
@@ -34,9 +35,9 @@ trait UuidTrait
         return new static(Uuid::uuid4());
     }
 
-    public static function fromString(string $value): static
+    public static function fromString(string | Stringable $value): static
     {
-        return new static(Uuid::fromString($value));
+        return new static(Uuid::fromString((string) $value));
     }
 
     public function __toString(): string
@@ -49,7 +50,7 @@ trait UuidTrait
         return $this->stringValue;
     }
 
-    public function equals(mixed $identity): bool
+    public function equals(?object $identity): bool
     {
         if (! $identity instanceof self) {
             return false;
@@ -64,7 +65,7 @@ trait UuidTrait
      * NOTE: This will only return true if both identities
      * are of "this" instance type. Or both are null.
      */
-    public static function equalsValue(mixed $identity1, mixed $identity2): bool
+    public static function equalsValue(?object $identity1, ?object $identity2): bool
     {
         if ($identity1 === null && $identity2 === null) {
             return true;
@@ -80,11 +81,11 @@ trait UuidTrait
      * NOTE: This will only return true if both identities
      * are of "this" instance type. Or both are null.
      *
-     * @param object|static|null $identity Identity (of this instance) object or null
-     * @param object|null        $entity   Entity object to extract the property from or null
-     * @param string             $property The property-name of $entity to get the identity VO
+     * @param object|null $identity Identity (of this instance) object or null
+     * @param object|null $entity   Entity object to extract the property from or null
+     * @param string      $property The property-name of $entity to get the identity VO
      */
-    public static function equalsValueOfEntity(mixed $identity, ?object $entity, string $property): bool
+    public static function equalsValueOfEntity(?object $identity, ?object $entity, string $property): bool
     {
         if ($entity === null && $identity === null) {
             return true;

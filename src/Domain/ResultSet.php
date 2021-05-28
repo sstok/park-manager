@@ -10,21 +10,31 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain;
 
+use Countable;
 use Doctrine\Common\Collections\Expr\Expression;
+use IteratorAggregate;
 
 /**
  * A ResultSet functions as a proxy between a repository,
  * and the application/UI.
  *
  * Allowing to change how the collection is presented.
+ *
+ * @template T
+ * @template-extends IteratorAggregate<T>
  */
-interface ResultSet extends \IteratorAggregate, \Countable
+interface ResultSet extends IteratorAggregate, Countable
 {
+    /**
+     * @return $this
+     */
     public function setLimit(?int $limit, ?int $offset = null): self;
 
     /**
      * @param string $field an entity field-name
      * @param string $order either asc or desc
+     *
+     * @return $this
      */
     public function setOrdering(?string $field, ?string $order): self;
 
@@ -32,6 +42,8 @@ interface ResultSet extends \IteratorAggregate, \Countable
      * Apply a filtering expression on the result.
      *
      * This should (internally) be applied before limitToIds().
+     *
+     * @return $this
      */
     public function filter(?Expression $expression): self;
 
@@ -39,7 +51,9 @@ interface ResultSet extends \IteratorAggregate, \Countable
      * Pass an array of entity IDs to limit the returned result
      * to only the IDs in the original collection.
      *
-     * @param array<int,string>|null $ids
+     * @param array<int, string>|null $ids
+     *
+     * @return $this
      */
     public function limitToIds(?array $ids): self;
 

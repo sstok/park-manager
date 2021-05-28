@@ -97,7 +97,10 @@ final class MessageFormTypeTest extends TypeTestCase
         ];
     }
 
-    private function createMessageBus(array $handlers, bool $allowNoHandlers = false): MessageBus
+    /**
+     * @param array<class-string, callable[]> $handlers
+     */
+    private function createMessageBus(array $handlers): MessageBus
     {
         $validationMiddleware = new class() implements MiddlewareInterface {
             public function handle(Envelope $envelope, StackInterface $stack): Envelope
@@ -133,7 +136,7 @@ final class MessageFormTypeTest extends TypeTestCase
             }
         };
 
-        return new MessageBus([$validationMiddleware, $exceptionAtMiddleware, new HandleMessageMiddleware(new HandlersLocator($handlers), $allowNoHandlers)]);
+        return new MessageBus([$validationMiddleware, $exceptionAtMiddleware, new HandleMessageMiddleware(new HandlersLocator($handlers), false)]);
     }
 
     /** @test */
@@ -415,7 +418,10 @@ final class MessageFormTypeTest extends TypeTestCase
     }
 }
 
-class MessageFormTypeEntity
+/**
+ * @internal
+ */
+final class MessageFormTypeEntity
 {
     public $id = 50;
     public $username = 'Bernard';

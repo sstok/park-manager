@@ -14,6 +14,9 @@ use Doctrine\Common\Collections\Expr\Expression;
 use ParkManager\Domain\ResultSet;
 use Traversable;
 
+/**
+ * @template-implements ResultSet<mixed>
+ */
 final class CombinedResultSet implements ResultSet
 {
     private array $resultSets;
@@ -62,6 +65,9 @@ final class CombinedResultSet implements ResultSet
         return $this->nbResults;
     }
 
+    /**
+     * @return \Generator<int, mixed, mixed, void>
+     */
     public function getIterator(): Traversable
     {
         $this->init();

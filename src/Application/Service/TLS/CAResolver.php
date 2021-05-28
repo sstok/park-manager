@@ -31,7 +31,7 @@ class CAResolver
     }
 
     /**
-     * @param array<string,string> $caList
+     * @param array<string, string> $caList
      */
     public function resolve(string $certificate, array $caList): ?CA
     {
@@ -51,7 +51,7 @@ class CAResolver
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     private function getX509Data(string $contents, string $name, bool $withKey = true): array
     {
@@ -72,7 +72,7 @@ class CAResolver
     }
 
     /**
-     * @param array<string,string> $caList
+     * @param array<string, string> $caList
      */
     private function resolveCA(string $certificate, array $caList): CA
     {

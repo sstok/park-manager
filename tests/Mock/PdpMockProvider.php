@@ -37,6 +37,8 @@ final class PdpMockProvider
                 if ($url === ResourceUri::TOP_LEVEL_DOMAIN_LIST_URI) {
                     return new MockResponse(file_get_contents(__DIR__ . '/../Fixtures/tlds-alpha-by-domain.txt'));
                 }
+
+                throw new \InvalidArgumentException(sprintf('Unknown url %s requested.', $url));
             }
         );
         $factory = new PsrStorageFactory(

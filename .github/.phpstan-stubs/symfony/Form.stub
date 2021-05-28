@@ -1,0 +1,17 @@
+<?php
+
+namespace Symfony\Component\Form;
+
+interface FormInterface
+{
+     /**
+      * Returns the model data in the format needed for the underlying object.
+      *
+      * @return mixed When the field is not submitted, the default data is returned.
+      *               When the field is submitted, the default data has been bound
+      *               to the submitted view data.
+      *
+      * @phpstan-impure
+      */
+     public function getData();
+}

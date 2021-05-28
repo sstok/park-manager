@@ -27,6 +27,7 @@ use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 /** @internal */
 final class SpaceRepositoryMock implements WebhostingSpaceRepository
 {
+    /** @use MockRepository<Space> */
     use MockRepository;
 
     public const ID1 = 'a52f33ab-a419-4b62-8ec5-5dad33e8af69';
@@ -61,7 +62,7 @@ final class SpaceRepositoryMock implements WebhostingSpaceRepository
     public function remove(Space $space): void
     {
         if (! $space->isMarkedForRemoval()) {
-            throw new CannotRemoveActiveWebhostingSpace($space->id);
+            throw CannotRemoveActiveWebhostingSpace::withId($space->id);
         }
 
         $this->mockDoRemove($space);

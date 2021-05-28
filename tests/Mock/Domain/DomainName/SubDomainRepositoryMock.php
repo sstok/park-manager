@@ -21,6 +21,7 @@ use ParkManager\Tests\Mock\Domain\MockRepository;
 
 final class SubDomainRepositoryMock implements SubDomainRepository
 {
+    /** @use MockRepository<Subdomain> */
     use MockRepository;
 
     protected function getFieldsIndexMapping(): array
@@ -42,9 +43,9 @@ final class SubDomainRepositoryMock implements SubDomainRepository
         return $this->mockDoGetById($id);
     }
 
-    public function allFromSpace(SpaceId $spaceId): ResultSet
+    public function allFromSpace(SpaceId $space): ResultSet
     {
-        return $this->mockDoGetMultiByField('space', $spaceId->toString());
+        return $this->mockDoGetMultiByField('space', $space->toString());
     }
 
     public function save(SubDomain $subDomain): void

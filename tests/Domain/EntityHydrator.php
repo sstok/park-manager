@@ -22,25 +22,37 @@ use ReflectionClass;
  *
  * Borrowed some stuff from https://github.com/PHP-CS-Fixer/AccessibleObject
  *
- * @template T
+ * @template T of object
+ * @mixin T
  */
 final class EntityHydrator
 {
+    /** @var ReflectionClass<T> */
     private ReflectionClass $reflection;
+
+    /** @var T */
     private object $object;
 
+    /**
+     * @param class-string<T> $class
+     */
     private function __construct(string $class)
     {
         $this->reflection = new ReflectionClass($class);
         $this->object = $this->reflection->newInstanceWithoutConstructor();
     }
 
+    /**
+     * @param class-string<T> $class
+     *
+     * @return self<T>
+     */
     public static function hydrateEntity(string $class): self
     {
         return new self($class);
     }
 
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         if (! property_exists($this->object, $name)) {
             throw new \LogicException(sprintf('Cannot get non existing property %s->%s.', \get_class($this->object), $name));
@@ -52,7 +64,10 @@ final class EntityHydrator
         return $property->getValue($this->object);
     }
 
-    public function set(string $name, $value): self
+    /**
+     * @return $this
+     */
+    public function set(string $name, mixed $value): self
     {
         if (! property_exists($this->object, $name)) {
             throw new \LogicException(sprintf('Cannot set non existing property %s->%s = %s.', \get_class($this->object), $name, var_export($value, true)));

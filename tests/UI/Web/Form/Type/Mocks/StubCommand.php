@@ -13,8 +13,8 @@ namespace ParkManager\Tests\UI\Web\Form\Type\Mocks;
 /** @internal */
 final class StubCommand
 {
-    public $id;
-    public $username;
+    public int $id;
+    public ?string $username;
     public $profile;
 
     public function __construct($id = 5, $username = null, $profile = null)

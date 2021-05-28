@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine;
 
+use ArrayIterator;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Expression;
 use Doctrine\DBAL\Connection;
@@ -17,6 +18,10 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use ParkManager\Domain\ResultSet;
 
+/**
+ * @template T
+ * @implements ResultSet<T>
+ */
 final class OrmQueryBuilderResultSet implements ResultSet
 {
     private QueryBuilder $queryBuilder;
@@ -76,7 +81,10 @@ final class OrmQueryBuilderResultSet implements ResultSet
         return \count($this->getPaginator());
     }
 
-    public function getIterator(): \Traversable
+    /**
+     * @return ArrayIterator<array-key, T>
+     */
+    public function getIterator(): ArrayIterator
     {
         $paginator = $this->getPaginator();
 

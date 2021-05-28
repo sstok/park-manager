@@ -28,20 +28,20 @@ final class StorageUsageMock implements StorageUsage
     /**
      * [$id => {ByteSize}].
      *
-     * @var array<string,ByteSize>
+     * @var array<string, ByteSize>
      */
     private array $spaces;
 
     /**
      * [$id => {ByteSize}].
      *
-     * @var array<string,ByteSize>
+     * @var array<string, ByteSize>
      */
     private array $mailboxes;
 
     /**
-     * @param array<string,ByteSize>|null $spaces    [$id => {ByteSize}] or null for mock-example
-     * @param array<string,ByteSize>|null $mailboxes [$id => {ByteSize}] or null for mock-example
+     * @param array<string, ByteSize>|null $spaces    [$id => {ByteSize}] or null for mock-example
+     * @param array<string, ByteSize>|null $mailboxes [$id => {ByteSize}] or null for mock-example
      */
     public function __construct(?array $spaces = null, ?array $mailboxes = null)
     {

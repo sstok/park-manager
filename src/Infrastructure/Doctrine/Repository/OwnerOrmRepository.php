@@ -17,7 +17,7 @@ use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\OwnerRepository;
 
 /**
- * @method Owner|null find($id, $lockMode = null, $lockVersion = null)
+ * @extends EntityRepository<Owner>
  */
 final class OwnerOrmRepository extends EntityRepository implements OwnerRepository
 {

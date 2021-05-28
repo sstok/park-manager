@@ -21,6 +21,7 @@ use ParkManager\Tests\Mock\Domain\MockRepository;
 
 final class OrganizationRepositoryMock implements OrganizationRepository
 {
+    /** @use MockRepository<Organization> */
     use MockRepository {
         __construct as mockConstructor;
     }
@@ -53,7 +54,7 @@ final class OrganizationRepositoryMock implements OrganizationRepository
 
     public function allAccessibleBy(UserId $userId): ResultSet
     {
-        return $this->mockDoGetMultiByCondition(static fn (Organization $organization) => $organization->hasMember($this->userRepository->get($userId)));
+        return $this->mockDoGetMultiByCondition(fn (Organization $organization) => $organization->hasMember($this->userRepository->get($userId)));
     }
 
     public function save(Organization $organization): void

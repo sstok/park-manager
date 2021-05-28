@@ -27,6 +27,7 @@ final class MockRepositoryTest extends TestCase
     public function it_has_no_entities_saved_or_removed(): void
     {
         $repository = new class() {
+            /** @use <MockEntity> */
             use MockRepository;
 
             protected function throwOnNotFound($key): void

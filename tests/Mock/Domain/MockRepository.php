@@ -17,17 +17,17 @@ use Throwable;
 /**
  * Helps to quickly set-up an in-memory repository.
  *
- * @template T
+ * @template T of object
  */
 trait MockRepository
 {
-    /** @var array<string,T> */
+    /** @var array<string, T> */
     protected array $storedById = [];
 
-    /** @var array<string,T> */
+    /** @var array<string, T> */
     protected array $savedById = [];
 
-    /** @var array<string,T> */
+    /** @var array<string, T> */
     protected array $removedById = [];
 
     /**
@@ -46,13 +46,13 @@ trait MockRepository
     /** @var array<string, array<string, array<int, T>>> [mapping-name][index-key] => {entity} */
     protected array $storedMultiByField = [];
 
-    /** @var array<int, array> */
+    /** @var array<string|int, array> */
     protected array $watchers = [];
 
     protected array $watcherPositions = [];
 
     /**
-     * @psalm-param array<mixed,T> $initialEntities Array of initial entities (these are not counted as saved)
+     * @param array<array-key, T> $initialEntities Array of initial entities (these are not counted as saved)
      */
     public function __construct(array $initialEntities = [])
     {
@@ -62,7 +62,7 @@ trait MockRepository
     }
 
     /**
-     * @param-param T $entity
+     * @param T $entity
      */
     private function setInMockedStorage(object $entity): void
     {
@@ -85,6 +85,9 @@ trait MockRepository
         }
     }
 
+    /**
+     * @param T $entity
+     */
     private function getIdValue(object $entity): string
     {
         $id = $this->getValueWithGetter($entity, 'id');
@@ -96,39 +99,36 @@ trait MockRepository
         return (string) $id;
     }
 
-    /**
-     * @param Closure|string $getter
-     */
-    private function getValueWithGetter(object $object, $getter)
+    private function getValueWithGetter(object $object, string | Closure $getter): mixed
     {
         if ($getter instanceof Closure) {
             return $getter($object);
         }
 
-        if (mb_strpos($getter, '#') === 0) {
+        if (str_starts_with($getter, '#')) {
             return $object->{mb_substr($getter, 1)};
         }
 
-        switch (true) {
-            case method_exists($object, $getter):
-                return $object->{$getter}();
-
-            case method_exists($object, 'get' . ucfirst($getter)):
-                return $object->{'get' . ucfirst($getter)}();
-
-            case property_exists($object, $getter):
-                return $object->{$getter};
-
-            default:
-                throw new \InvalidArgumentException(sprintf('Unable to get field value for "%s" with getter "%s", neither "%2$s()", "get%3$s()" or property "%2$s" exists.', \get_class($object), $getter, ucfirst($getter)));
-        }
+        return match (true) {
+            method_exists($object, $getter) => $object->{$getter}(),
+            method_exists($object, 'get' . ucfirst($getter)) => $object->{'get' . ucfirst($getter)}(),
+            property_exists($object, $getter) => $object->{$getter},
+            default => throw new \InvalidArgumentException(
+                sprintf(
+                    'Unable to get field value for "%s" with getter "%s", neither "%2$s()", "get%3$s()" or property "%2$s" exists.',
+                    \get_class($object),
+                    $getter,
+                    ucfirst($getter)
+                )
+            ),
+        };
     }
 
     /**
      * Returns a list fields (#property, method-name or Closure for extracting)
      * to use for mapping the entity in storage.
      *
-     * @return array<string,Closure|string> [mapping-name] => '#property or method'
+     * @return array<string, Closure|string> [mapping-name] => '#property or method'
      */
     protected function getFieldsIndexMapping(): array
     {
@@ -139,7 +139,7 @@ trait MockRepository
      * Returns a list fields (#property, method-name or Closure for extracting)
      * to use for mapping the entity in storage.
      *
-     * @return array<string,Closure|string> [mapping-name] => '#property or method'
+     * @return array<string, Closure|string> [mapping-name] => '#property or method'
      */
     protected function getFieldsIndexMultiMapping(): array
     {
@@ -147,7 +147,7 @@ trait MockRepository
     }
 
     /**
-     * @psalm-param T $entity
+     * @param T $entity
      */
     protected function mockDoSave(object $entity): void
     {
@@ -165,7 +165,7 @@ trait MockRepository
     }
 
     /**
-     * @psalm-param T $entity
+     * @param T $entity
      */
     protected function mockDoRemove(object $entity): void
     {
@@ -173,7 +173,10 @@ trait MockRepository
         ++$this->mockWasRemoved;
     }
 
-    protected function mockDoGetById($id)
+    /**
+     * @return T
+     */
+    protected function mockDoGetById(string | object | int $id): object
     {
         $idStr = \is_object($id) ? $id->toString() : (string) $id;
 
@@ -196,11 +199,9 @@ trait MockRepository
     }
 
     /**
-     * @psalm-return T
-     *
-     * @param float|int|string|null $value
+     * @return T
      */
-    protected function mockDoGetByField(string $key, $value)
+    protected function mockDoGetByField(string $key, float | int | string | null $value): object
     {
         if (! isset($this->storedByField[$key][$value])) {
             $this->throwOnNotFound($value);
@@ -213,15 +214,16 @@ trait MockRepository
     }
 
     /**
-     * @param float|int|string|null $value
+     * @return MockRepoResultSet<T>
      */
-    protected function mockDoGetMultiByField(string $key, $value): MockRepoResultSet
+    protected function mockDoGetMultiByField(string $key, float | int | string | null $value): MockRepoResultSet
     {
         if (! isset($this->storedMultiByField[$key][$value])) {
             return new MockRepoResultSet([]);
         }
 
         if (\count($this->removedById) > 0) {
+            /** @var array<int, T> $entities */
             $entities = [];
 
             foreach ($this->storedMultiByField[$key][$value] as $entity) {
@@ -240,6 +242,9 @@ trait MockRepository
         return new MockRepoResultSet($this->storedMultiByField[$key][$value]);
     }
 
+    /**
+     * @return MockRepoResultSet<T>
+     */
     protected function mockDoGetAll(): MockRepoResultSet
     {
         if (! \count($this->storedById)) {
@@ -267,6 +272,8 @@ trait MockRepository
 
     /**
      * @param Closure(T): bool $condition
+     *
+     * @return MockRepoResultSet<T>
      */
     protected function mockDoGetMultiByCondition(Closure $condition): MockRepoResultSet
     {
@@ -283,20 +290,15 @@ trait MockRepository
                 continue;
             }
 
-            if (! $condition($entity)) {
-                continue;
+            if ($condition($entity)) {
+                $entities[] = $entity;
             }
-
-            $entities[] = $entity;
         }
 
         return new MockRepoResultSet($entities);
     }
 
-    /**
-     * @param float|int|string|null $value
-     */
-    protected function mockDoHasByField(string $key, $value): bool
+    protected function mockDoHasByField(string $key, float | int | string | null $value): bool
     {
         if (! isset($this->storedByField[$key][$value])) {
             return false;
@@ -308,7 +310,7 @@ trait MockRepository
     /**
      * @throws Throwable
      */
-    abstract protected function throwOnNotFound($key): void;
+    abstract protected function throwOnNotFound(mixed $key): void;
 
     public function assertNoEntitiesWereSaved(): void
     {
@@ -322,7 +324,7 @@ trait MockRepository
     }
 
     /**
-     * @param-param array<int,T> $entities
+     * @param array<int, T> $entities
      */
     public function assertEntitiesWereSaved(array $entities = []): void
     {
@@ -333,14 +335,17 @@ trait MockRepository
         }
     }
 
-    public function assertEntityWasSavedThat($id, Closure $excepted): void
+    /**
+     * @param Closure(T): bool $expected
+     */
+    public function assertEntityWasSavedThat(string | int | object $id, Closure $expected): void
     {
         Assert::assertGreaterThan(0, $this->mockWasSaved, 'Entities were expected to be stored');
 
         $key = (string) $id;
         Assert::assertArrayHasKey($key, $this->savedById);
 
-        if ($excepted($this->savedById[$key])) {
+        if ($expected($this->savedById[$key])) {
             $this->guardNotRemoved($this->getValueWithGetter($this->savedById[$key], 'id'));
 
             return;
@@ -355,8 +360,10 @@ trait MockRepository
      *
      * When no explicit position is given the last position is used.
      * This method is best used with assertions that check if the entity was actually saved.
+     *
+     * @param Closure(T): void $excepted
      */
-    public function whenEntityIsSavedAt($id, Closure $excepted, ?int $position = null): void
+    public function whenEntityIsSavedAt(string | int | object $id, Closure $excepted, ?int $position = null): void
     {
         if (! isset($this->watchers[$id])) {
             $this->watchers[$id] = [];
@@ -370,6 +377,9 @@ trait MockRepository
         uasort($this->watchers[$id], static fn (array $a, array $b): int => $b[0] <=> $a[0]);
     }
 
+    /**
+     * @param Closure(T): bool $excepted
+     */
     public function assertEntitiesWereSavedThat(Closure $excepted): void
     {
         Assert::assertGreaterThan(0, $this->mockWasSaved, 'Entities were expected to be stored');
@@ -398,28 +408,39 @@ trait MockRepository
     }
 
     /**
-     * @param-param array<int,(T|string)> $entities
+     * @param array<int, (T|scalar)> $entities
      */
     public function assertEntitiesWereRemoved(array $entities): void
     {
         Assert::assertGreaterThan(0, $this->mockWasRemoved, 'No entities were removed');
 
-        if (\is_string(reset($entities))) {
+        if (is_scalar(reset($entities))) {
             Assert::assertEquals($entities, array_keys($this->removedById));
         } else {
             Assert::assertEquals($entities, array_values($this->removedById));
         }
     }
 
-    public function assertHasEntity($id, Closure $excepted): void
+    /**
+     * @phpstan-param Closure(T): (void|bool) $excepted
+     */
+    public function assertHasEntity(string | int | object $id, Closure $excepted): void
     {
         $key = (string) $id;
         Assert::assertArrayHasKey($key, $this->storedById);
-        $excepted($this->storedById[$key]);
+
+        $result = $excepted($this->storedById[$key]);
+
+        if (\is_bool($result)) {
+            Assert::assertTrue($result, sprintf('Expected that an entity with "%s" exists that passes the Closure expectation.', $key));
+        }
 
         $this->guardNotRemoved($this->getValueWithGetter($this->storedById[$key], 'id'));
     }
 
+    /**
+     * @param Closure(T): bool $excepted
+     */
     public function assertHasEntityThat(Closure $excepted): void
     {
         foreach ($this->storedById as $entity) {

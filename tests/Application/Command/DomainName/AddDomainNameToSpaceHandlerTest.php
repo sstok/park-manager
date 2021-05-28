@@ -19,7 +19,6 @@ use ParkManager\Domain\Owner;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
-use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
 use PHPUnit\Framework\TestCase;
@@ -37,7 +36,6 @@ final class AddDomainNameToSpaceHandlerTest extends TestCase
 
     private const EXISTING_DOMAIN1 = 'dce04e6d-a4d9-47aa-9be0-bda8bab41b63';
 
-    private OwnerRepositoryMock $ownerRepository;
     private DomainNameRepositoryMock $domainNameRepository;
     private SpaceRepositoryMock $spaceRepository;
 
@@ -112,7 +110,7 @@ final class AddDomainNameToSpaceHandlerTest extends TestCase
         $domainName = new DomainNamePair('example', 'international');
         $handler(new AddDomainNameToSpace($domainName, SpaceId::fromString(self::SPACE_ID1), primary: true));
 
-        $this->spaceRepository->assertHasEntity(self::SPACE_ID1, static fn (Space $space): bool => $space->primaryDomainLabel === $domainName);
+        $this->spaceRepository->assertHasEntity(self::SPACE_ID1, static fn (Space $space): bool => $space->primaryDomainLabel->equals($domainName));
         $this->domainNameRepository->assertEntitiesCountWasSaved(2); // Internally the first one is changed from primary
         $this->domainNameRepository->assertHasEntity(self::EXISTING_DOMAIN1, static function (DomainName $storedDomainName): bool {
             if (! $storedDomainName->isPrimary()) {

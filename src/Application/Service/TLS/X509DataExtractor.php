@@ -20,7 +20,7 @@ final class X509DataExtractor
     private ?array $fields = null;
 
     /**
-     * @return array<string,mixed> Note that normalized data key's start with an underscore
+     * @return array<string, mixed> Note that normalized data key's start with an underscore
      */
     public function extractRawData(string $contents, string $name = '', bool $withPublicKey = false): array
     {
@@ -92,7 +92,7 @@ final class X509DataExtractor
     }
 
     /**
-     * @param array<string,mixed> $rawData
+     * @param array<string, mixed> $rawData
      *
      * @return array<string, array<int, string>>
      */
@@ -113,7 +113,7 @@ final class X509DataExtractor
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     public function getPrivateKeyDetails(HiddenString $privateKey): array
     {

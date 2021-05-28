@@ -26,12 +26,12 @@ final class X509CertificateBundle
     public ?HiddenString $privateKey;
 
     /**
-     * @var array<string,string> [user-provided CA-name => X509 contents]
+     * @var array<string, string> [user-provided CA-name => X509 contents]
      */
     public array $caList;
 
     /**
-     * @param array<string,string> $caList [user-provided CA-name => X509 contents]
+     * @param array<string, string> $caList [user-provided CA-name => X509 contents]
      */
     public function __construct(string $certificate, ?HiddenString $privateKey = null, array $caList = [])
     {

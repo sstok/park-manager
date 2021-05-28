@@ -13,15 +13,26 @@ namespace ParkManager\Infrastructure\Doctrine\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository as BaseEntityRepository;
 
+/**
+ * @template T of object
+ * @template-extends BaseEntityRepository<T>
+ *
+ * @method ?T find($id, $lockMode = null, $lockVersion = null)
+ * @method ?T findOneBy(array $criteria, array $orderBy = null)
+ */
 abstract class EntityRepository extends BaseEntityRepository
 {
+    /**
+     * @param class-string<T> $className The class name of the entity this repository manages
+     */
     public function __construct(EntityManagerInterface $entityManager, string $className)
     {
-        $this->_em = $entityManager;
-        $this->_class = $entityManager->getMetadataFactory()->getMetadataFor($className);
-        $this->_entityName = $className;
+        parent::__construct($entityManager, $entityManager->getMetadataFactory()->getMetadataFor($className));
     }
 
+    /**
+     * @param T $entity
+     */
     protected function updateTimestamp(object $entity): void
     {
         (function (): void {

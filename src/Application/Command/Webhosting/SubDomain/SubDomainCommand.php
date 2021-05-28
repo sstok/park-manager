@@ -41,7 +41,7 @@ abstract class SubDomainCommand
     }
 
     /**
-     * @param array<string,string> $caList [user-provided CA-name => X509 contents]
+     * @param array<string, string> $caList [user-provided CA-name => X509 contents]
      */
     public function andTLSInformation(string $certificate, HiddenString $privateKey, array $caList = []): static
     {

@@ -27,6 +27,7 @@ use ParkManager\Tests\Mock\PdpMockProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Psr\Log\Test\TestLogger;
@@ -36,6 +37,7 @@ use Symfony\Component\ErrorHandler\BufferingLogger;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * @internal
@@ -68,6 +70,7 @@ final class CertificateValidatorTest extends TestCase
     {
         $objectManager = new TLSPersistenceRepositoryMock();
 
+        /** @var HttpClientInterface&LoggerAwareInterface $httpClient */
         $httpClient = HttpClient::create();
         $httpClient->setLogger(new BufferingLogger());
 

@@ -21,8 +21,7 @@ use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
- * @method Organization|null find($id, $lockMode = null, $lockVersion = null)
- * @method Organization|null findOneBy(array $criteria, array $orderBy = null)
+ * @extends EntityRepository<Organization>
  */
 class OrganizationOrmRepository extends EntityRepository implements OrganizationRepository
 {

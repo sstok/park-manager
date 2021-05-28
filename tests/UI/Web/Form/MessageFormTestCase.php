@@ -73,7 +73,7 @@ abstract class MessageFormTestCase extends TypeTestCase
     abstract protected static function getCommandName(): string;
 
     /**
-     * @param array<string|null,FormError[]> $expectedErrors
+     * @param array<string|null, FormError[]> $expectedErrors
      */
     protected function assertFormHasErrors(FormInterface $form, iterable $expectedErrors): void
     {

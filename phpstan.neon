@@ -4,24 +4,28 @@ includes:
 	- vendor/phpstan/phpstan-phpunit/extension.neon
 	- vendor/jangregor/phpstan-prophecy/extension.neon
 
+	- vendor/phpstan/phpstan-phpunit/rules.neon
+
 parameters:
     #reportUnmatchedIgnoredErrors: false
 
     level: 5
     paths:
         - ./src
+        - ./tests
         - ./public
         - ./bin
     excludePaths:
         - var/
         - templates/
         - translations/
-        - tests/
 
         # Enums
         - src/Domain/EnumTrait.php
+        - tests/Domain/EnumTraitTest.php
 
-    checkNullables: false # To many false positives
+    stubFiles:
+        - .github/.phpstan-stubs/symfony/Form.stub
 
     symfony:
         container_xml_path: %currentWorkingDirectory%/var/cache/dev/ParkManager_KernelDevDebugContainer.xml
@@ -33,8 +37,6 @@ parameters:
 
         ## False positive
         - '#Call to an undefined method Faker\\Generator\:\:#'
-
-        - '#Property Doctrine\\ORM\\EntityRepository<mixed>\:\:\$_em \(Doctrine\\ORM\\EntityManager\) does not accept Doctrine\\ORM\\EntityManagerInterface#' # Doctrine PHPDoc bug
 
         # Unum
         -

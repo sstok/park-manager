@@ -78,7 +78,7 @@ class CertificateValidator
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     protected function extractRawData(string $contents): array
     {

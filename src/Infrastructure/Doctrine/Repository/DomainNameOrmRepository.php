@@ -27,7 +27,7 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
- * @method DomainName|null find($id, $lockMode = null, $lockVersion = null)
+ * @extends EntityRepository<DomainName>
  */
 final class DomainNameOrmRepository extends EntityRepository implements DomainNameRepository
 {

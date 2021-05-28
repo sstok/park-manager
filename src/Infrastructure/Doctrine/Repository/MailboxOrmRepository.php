@@ -23,7 +23,7 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
- * @method Mailbox|null find($id, $lockMode = null, $lockVersion = null)
+ * @extends EntityRepository<Mailbox>
  */
 final class MailboxOrmRepository extends EntityRepository implements MailboxRepository
 {

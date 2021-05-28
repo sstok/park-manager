@@ -21,13 +21,13 @@ use ParkManager\Domain\Webhosting\SubDomain\SubDomainRepository;
 use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
- * @method SubDomain|null find($id, $lockMode = null, $lockVersion = null)
+ * @extends EntityRepository<Subdomain>
  */
 final class SubDomainOrmRepository extends EntityRepository implements SubDomainRepository
 {
-    public function __construct(EntityManagerInterface $entityManager, string $className = SubDomain::class)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        parent::__construct($entityManager, $className);
+        parent::__construct($entityManager, SubDomain::class);
     }
 
     public function get(SubDomainNameId $id): SubDomain

@@ -22,7 +22,7 @@ class CA
         __construct as construct;
     }
 
-    /** @var array<int,CA>|null */
+    /** @var array<int, CA>|null */
     private ?array $tree;
 
     /**

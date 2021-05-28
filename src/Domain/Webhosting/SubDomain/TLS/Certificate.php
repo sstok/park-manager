@@ -44,7 +44,7 @@ class Certificate
     private ?string $privateKeyString;
 
     /**
-     * @param array<string, string> $rawFields
+     * @param array<string, array<int|string, string>|string> $rawFields
      */
     public function __construct(string $contents, string $privateKey, array $rawFields, ?CA $ca = null)
     {

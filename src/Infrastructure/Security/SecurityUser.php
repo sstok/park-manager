@@ -99,9 +99,6 @@ final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInte
         // no-op
     }
 
-    /**
-     * @param static $user
-     */
     public function isEqualTo(UserInterface $user): bool
     {
         if (! $user instanceof self) {

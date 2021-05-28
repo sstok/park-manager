@@ -15,16 +15,30 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Expression;
 use ParkManager\Domain\ResultSet;
 
+/**
+ * @template T
+ * @template-implements ResultSet<T>
+ */
 final class MockRepoResultSet implements ResultSet
 {
+    /**
+     * @var array<T>
+     */
     private array $result;
     public ?int $limit = null;
     public ?int $offset = null;
     public ?array $ordering = null;
     public ?Expression $expression = null;
+
+    /**
+     * @var array<int, string|int>
+     */
     public ?array $limitedToIds = null;
 
-    public function __construct(array $originalResult)
+    /**
+     * @param array<T> $originalResult
+     */
+    public function __construct(array $originalResult = [])
     {
         $this->result = $originalResult;
     }

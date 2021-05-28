@@ -162,7 +162,7 @@ trait x509Data
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     public function getRawFields(): array
     {

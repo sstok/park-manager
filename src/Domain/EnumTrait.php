@@ -140,7 +140,7 @@ trait EnumTrait
     }
 
     /**
-     * @return array<string, static>
+     * @return array<array-key, static>
      */
     public static function cases(): array
     {

@@ -23,7 +23,7 @@ class PermissionAccessManager
     private TokenStorageInterface $tokenStorage;
     private ContainerInterface $deciders;
 
-    /** @var array<string,string> */
+    /** @var array<string, string> */
     private array $permissionsShortNames;
 
     public function __construct(TokenStorageInterface $tokenStorage, ContainerInterface $deciders, array $permissionsShortNames)

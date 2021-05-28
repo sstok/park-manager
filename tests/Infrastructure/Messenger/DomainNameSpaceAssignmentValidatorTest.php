@@ -29,6 +29,7 @@ use ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
 use ParkManager\Tests\Domain\EntityHydrator;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
+use ParkManager\Tests\Mock\Domain\MockRepoResultSet;
 use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
 use PHPUnit\Framework\TestCase;
@@ -136,15 +137,17 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
 
         $this->expectExceptionObject(
             new CannotTransferInUseDomainName(
-                $domainNamePair, $space->id, [
-                    Forward::class => [
+                $domainNamePair,
+                $space->id,
+                [
+                    Forward::class => new MockRepoResultSet([
                         $entity1,
                         $entity2,
-                    ],
-                    SubDomain::class => [
+                    ]),
+                    SubDomain::class => new MockRepoResultSet([
                         $entity3,
                         $entity4,
-                    ],
+                    ]),
                 ]
             )
         );
@@ -189,11 +192,13 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
 
         $this->expectExceptionObject(
             new CannotRemoveInUseDomainName(
-                $domainNamePair, $space->id, [
-                    Forward::class => [
+                $domainNamePair,
+                $space->id,
+                [
+                    Forward::class => new MockRepoResultSet([
                         $entity1,
                         $entity2,
-                    ],
+                    ]),
                 ]
             )
         );

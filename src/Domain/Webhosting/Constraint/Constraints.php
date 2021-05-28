@@ -54,7 +54,7 @@ class Constraints
      *
      * [name] => old-value
      *
-     * @var array<string,mixed>
+     * @var array<string, mixed>
      */
     public array $changes = [];
 

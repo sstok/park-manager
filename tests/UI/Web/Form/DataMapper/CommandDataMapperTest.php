@@ -16,6 +16,7 @@ use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectAccessor;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
 /**
@@ -70,15 +71,17 @@ final class CommandDataMapperTest extends FormIntegrationTestCase
         $fields = ['field1' => true];
         $data = ['id' => 1];
 
+        $forms = [$this->createMock(FormInterface::class), $this->createMock(FormInterface::class)];
+
         $wrappedDataMapperProphecy = $this->prophesize(DataMapperInterface::class);
-        $wrappedDataMapperProphecy->mapDataToForms($data, new ArrayIterator([null, 2]))->shouldBeCalled();
+        $wrappedDataMapperProphecy->mapDataToForms($data, new ArrayIterator($forms))->shouldBeCalled();
         $wrappedDataMapperProphecy->mapFormsToData(new ArrayIterator([null]), $fields)->shouldNotBeCalled();
 
         $form = $this->factory->createBuilder()->getForm();
 
         $dataMapper = new CommandDataMapper($wrappedDataMapperProphecy->reveal(), new PropertyPathObjectAccessor());
 
-        $dataMapper->mapDataToForms(['model' => $data, 'fields' => $fields], new ArrayIterator([null, 2]));
+        $dataMapper->mapDataToForms(['model' => $data, 'fields' => $fields], new ArrayIterator($forms));
 
         $viewData = ['model' => $data, 'fields' => $fields];
         $dataMapper->mapFormsToData(new ArrayIterator([$form]), $viewData);

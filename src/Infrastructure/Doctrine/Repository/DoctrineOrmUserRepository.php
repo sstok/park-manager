@@ -22,8 +22,7 @@ use ParkManager\Domain\User\UserRepository;
 use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
- * @method User|null find($id, $lockMode = null, $lockVersion = null)
- * @method User|null findOneBy(array $criteria, array $orderBy = null)
+ * @extends EntityRepository<User>
  */
 class DoctrineOrmUserRepository extends EntityRepository implements UserRepository
 {
