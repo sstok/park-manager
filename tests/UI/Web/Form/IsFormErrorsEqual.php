@@ -18,17 +18,23 @@ use Symfony\Component\Form\FormError;
 
 final class IsFormErrorsEqual extends Constraint
 {
+    /** @var array<array-key, FormError> */
     private array $value;
 
     /**
-     * @param FormError|FormError[] $expected
+     * @param array<array-key, FormError>|FormError $expected
      */
-    public function __construct($expected)
+    public function __construct(array | object $expected)
     {
         $this->value = $this->ensureArray($expected);
     }
 
-    private function ensureArray($other): array
+    /**
+     * @param array<array-key, FormError>|FormError $other
+     *
+     * @return array<array-key, FormError>
+     */
+    private function ensureArray(array | object $other): array
     {
         if (\is_object($other) && $other instanceof FormError) {
             $other = [$other];
@@ -39,6 +45,9 @@ final class IsFormErrorsEqual extends Constraint
         return $other;
     }
 
+    /**
+     * @param array<array-key, FormError>|FormError $other
+     */
     public function evaluate($other, string $description = '', bool $returnResult = false): bool
     {
         $other = $this->ensureArray($other);

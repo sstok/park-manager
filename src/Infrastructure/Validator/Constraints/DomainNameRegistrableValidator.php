@@ -53,7 +53,7 @@ final class DomainNameRegistrableValidator extends ConstraintValidator
             $domainName = Domain::fromIDNA2008($value);
 
             if (str_ends_with($domainName->toString(), '.')) {
-                throw SyntaxError::dueToMalformedValue($value);
+                throw SyntaxError::dueToMalformedValue($domainName->toString());
             }
 
             $resolvedDomainName = $this->pdpManager->getPublicSuffixList()->resolve($domainName)->toUnicode();

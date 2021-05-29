@@ -15,8 +15,12 @@ use ParkManager\Domain\ResultSet;
 
 final class ResultSetAdapter implements AdapterInterface
 {
+    /** @var ResultSet<mixed> */
     private ResultSet $resultSet;
 
+    /**
+     * @param ResultSet<mixed> $resultSet
+     */
     public function __construct(ResultSet $resultSet)
     {
         $this->resultSet = $resultSet;
@@ -27,7 +31,13 @@ final class ResultSetAdapter implements AdapterInterface
         return $this->resultSet->getNbResults();
     }
 
-    public function getSlice($offset, $length): iterable
+    /**
+     * @param int $offset
+     * @param int $length
+     *
+     * @return \Traversable<array-key, mixed>
+     */
+    public function getSlice($offset, $length): \Traversable
     {
         $result = clone $this->resultSet;
         $result->setLimit($length, $offset);

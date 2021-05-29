@@ -78,6 +78,11 @@ final class OwnershipUsageListTest extends TestCase
         self::assertSame(['space' => [], 'domainName' => []], self::getEntities($list->getByProvider($owner3->id)));
     }
 
+    /**
+     * @param ResultSet<mixed>|array<string, ResultSet<mixed>> $resultSet
+     *
+     * @return array<int, object>|array<string, array<int, object>>
+     */
     private static function getEntities(ResultSet | array $resultSet): array
     {
         if (\is_array($resultSet)) {

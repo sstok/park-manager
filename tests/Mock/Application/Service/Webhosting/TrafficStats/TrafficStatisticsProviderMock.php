@@ -63,7 +63,7 @@ final class TrafficStatisticsProviderMock implements TrafficStatisticsProvider
 
     public function getFromPeriod(ReportPeriod $period, ?TrafficType $types = null): ?TrafficReport
     {
-        $types ??= TrafficType::ALL;
+        $types ??= new TrafficType(TrafficType::ALL);
 
         foreach ($this->reports as $report) {
             if ($report->periodStart->eq($period->start)

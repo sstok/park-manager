@@ -15,6 +15,8 @@ use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\Type\TransformationFailureExtension;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeExtensionInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 use Symfony\Component\Form\Test\TypeTestCase;
 
@@ -34,6 +36,9 @@ final class SplitTokenTypeTest extends TypeTestCase
         parent::setUp();
     }
 
+    /**
+     * @return FormTypeInterface[]
+     */
     protected function getTypes(): array
     {
         return [
@@ -41,6 +46,9 @@ final class SplitTokenTypeTest extends TypeTestCase
         ];
     }
 
+    /**
+     * @return FormTypeExtensionInterface[]
+     */
     protected function getTypeExtensions(): array
     {
         return [

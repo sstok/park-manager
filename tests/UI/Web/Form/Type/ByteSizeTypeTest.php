@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type;
 
+use Generator;
 use ParkManager\Domain\ByteSize;
 use ParkManager\UI\Web\Form\Type\ByteSizeType;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -52,12 +53,15 @@ final class ByteSizeTypeTest extends TypeTestCase
      */
     public function it_transforms_from_model_format(ByteSize $input): void
     {
-        $form = $this->factory->create(ByteSizeType::class, $input, ['infinite_replacement' => $replacement = new ByteSize(10.10, 'gib')]);
+        $form = $this->factory->create(ByteSizeType::class, $input, ['infinite_replacement' => new ByteSize(10.10, 'gib')]);
 
         self::assertEquals($input, $form->getData());
     }
 
-    public function provideModelFormats(): iterable
+    /**
+     * @return Generator<int, array{0: ByteSize}>
+     */
+    public function provideModelFormats(): Generator
     {
         yield [new ByteSize(10, 'byte')];
         yield [new ByteSize(10.10, 'kib')];
@@ -81,6 +85,8 @@ final class ByteSizeTypeTest extends TypeTestCase
     /**
      * @test
      * @dataProvider provideInputsFormats
+     *
+     * @param array{value: float, unit: string} $input
      */
     public function it_transforms_from_view_format(ByteSize $expected, array $input): void
     {
@@ -92,7 +98,10 @@ final class ByteSizeTypeTest extends TypeTestCase
         self::assertEquals($expected, $form->getData());
     }
 
-    public function provideInputsFormats(): iterable
+    /**
+     * @return Generator<int, array{0: ByteSize, 1: array{value: float, unit: string}}>
+     */
+    public function provideInputsFormats(): Generator
     {
         yield [new ByteSize(10, 'byte'), ['value' => 10, 'unit' => 'byte']];
         yield [new ByteSize(10, 'byte'), ['value' => 10.00, 'unit' => 'byte']]; // While fractions are not accepted, using 0 is accepted.

@@ -27,25 +27,28 @@ final class X509Support extends Constraint
     /**
      * The callback receives the information as ([$rawDate], "$certificate", {CertificateValidator}).
      *
-     * @var callable
+     * @var callable(array<string, mixed>, string, CertificateValidator): void
      */
     public $callback;
 
     /**
-     * @param array|callable|null $options
+     * @param callable(array<string, mixed>, string, CertificateValidator): void $callback The callback or a set of options
+     * @param mixed|null                                                         $payload
      */
-    public function __construct($options = null)
+    public function __construct(?callable $callback = null, array $groups = null, $payload = null, array $options = [])
     {
         // Invocation through annotations with an array parameter only
-        if (\is_array($options) && \count($options) === 1 && isset($options['value'])) {
-            $options = $options['value'];
+        if (\is_array($callback) && \count($callback) === 1 && isset($callback['value'])) {
+            $callback = $callback['value'];
         }
 
-        if (\is_array($options) && ! isset($options['callback']) && ! isset($options['groups']) && ! isset($options['payload'])) {
-            $options = ['callback' => $options];
+        if (! \is_array($callback) || (! isset($callback['callback']) && ! isset($callback['groups']) && ! isset($callback['payload']))) {
+            $options['callback'] = $callback;
+        } else {
+            $options = array_merge($callback, $options);
         }
 
-        parent::__construct($options);
+        parent::__construct($options, $groups, $payload);
     }
 
     public function getDefaultOption(): string
@@ -58,7 +61,7 @@ final class X509Support extends Constraint
         return ['callback'];
     }
 
-    public function getTargets(): array
+    public function getTargets(): string | array
     {
         return [self::CLASS_CONSTRAINT, self::PROPERTY_CONSTRAINT];
     }

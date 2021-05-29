@@ -17,9 +17,13 @@ final class UpdatePlan
 {
     public PlanId $id;
     public Constraints $constraints;
+    /** @var array<string, mixed>|null */
     public ?array $metadata;
     public bool $updateLinkedSpaces;
 
+    /**
+     * @param array<string, mixed>|null $metadata metadata is only updated (in full) when this value is non-null
+     */
     public function __construct(PlanId $id, Constraints $constraints, ?array $metadata, bool $updateLinkedSpaces = false)
     {
         $this->id = $id;

@@ -23,11 +23,13 @@ final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInte
 {
     private string $id;
     private string $password;
+
+    /** @var array<int, string> */
     private array $roles;
     private bool $enabled;
 
     /**
-     * @param string[] $roles
+     * @param array<int, string> $roles
      */
     public function __construct(string $id, string $password, bool $enabled, array $roles)
     {
@@ -59,6 +61,9 @@ final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInte
         $this->roles = $info['roles'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function getRoles(): array
     {
         return $this->roles;

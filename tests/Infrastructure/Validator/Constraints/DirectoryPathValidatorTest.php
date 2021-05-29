@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Validator\Constraints;
 
+use Generator;
 use ParkManager\Infrastructure\Validator\Constraints\DirectoryPath;
 use ParkManager\Infrastructure\Validator\Constraints\DirectoryPathValidator;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
@@ -73,7 +74,10 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
         ;
     }
 
-    public function provideInvalidValues(): iterable
+    /**
+     * @return Generator<int, array<int, string>>
+     */
+    public function provideInvalidValues(): Generator
     {
         yield ['@'];
         yield ['%2ef'];
@@ -128,7 +132,7 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
      * @test
      * @dataProvider provideValidValues
      */
-    public function it_accepts_valid_path($value): void
+    public function it_accepts_valid_path(?string $value): void
     {
         $constraint = new DirectoryPath();
 
@@ -137,7 +141,10 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function provideValidValues(): iterable
+    /**
+     * @return Generator<int, array{0: string|null}>
+     */
+    public function provideValidValues(): Generator
     {
         yield [null];
         yield ['l'];

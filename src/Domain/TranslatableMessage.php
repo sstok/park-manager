@@ -16,9 +16,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class TranslatableMessage implements TranslatableInterface, \Stringable
 {
     private string $message;
+    /** @var array<string, mixed> */
     private array $parameters;
     private ?string $domain;
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function __construct(string $message, array $parameters = [], ?string $domain = null)
     {
         $this->message = $message;
@@ -36,6 +40,9 @@ final class TranslatableMessage implements TranslatableInterface, \Stringable
         return $this->message;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getParameters(): array
     {
         return $this->parameters;

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain;
 
+use Closure;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Domain\ResultSet;
@@ -26,6 +27,9 @@ final class UserRepositoryMock implements UserRepository
 
     public const USER_ID1 = 'dba1f6a0-3c5e-4cc2-9d10-2b8ddf3ce605';
 
+    /**
+     * @return array<string, string|Closure>
+     */
     protected function getFieldsIndexMapping(): array
     {
         return [
@@ -43,7 +47,7 @@ final class UserRepositoryMock implements UserRepository
         ];
     }
 
-    public static function createUser($email = 'janE@example.com', $id = self::USER_ID1): User
+    public static function createUser(string $email = 'janE@example.com', string $id = self::USER_ID1): User
     {
         return User::register(UserId::fromString($id), new EmailAddress($email), 'J', 'nope');
     }
@@ -91,7 +95,7 @@ final class UserRepositoryMock implements UserRepository
         $this->mockDoRemove($administrator);
     }
 
-    protected function throwOnNotFound($key): void
+    protected function throwOnNotFound(mixed $key): void
     {
         throw new UserNotFound((string) $key);
     }

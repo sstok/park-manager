@@ -20,10 +20,13 @@ final class CannotRemoveActiveOrganization extends \DomainException
     /**
      * The entities organization per ["EntityName" => {ResultSet<EntityName>}].
      *
-     * @var array<class-string, ResultSet>
+     * @var array<class-string, ResultSet<object>>
      */
     public array $activeEntities;
 
+    /**
+     * @param array<class-string, ResultSet<object>> $activeEntities
+     */
     public function __construct(OrganizationId $id, array $activeEntities)
     {
         parent::__construct('Organization with id "%s" is still assigned as Owner to 1 or more entities. Change their Owner assignment first.');

@@ -25,9 +25,6 @@ final class DomainNameRegistrable extends Constraint
     public const REGISTRABLE_LENGTH_EXCEEDED = 'd539cb2a-7800-4b44-a4ba-cd926f6ebe91';
     public const PRIVATE_SUFFIX = '5c21a871-bbd9-43e0-b048-cdc8ad7bd7c6';
 
-    /**
-     * @var array<string, string>
-     */
     protected static $errorNames = [
         self::INVALID_SYNTAX => 'INVALID_SYNTAX',
         self::NOT_REGISTRABLE => 'NOT_REGISTRABLE',
@@ -41,14 +38,13 @@ final class DomainNameRegistrable extends Constraint
     public string $privateMessage = 'This value contains a domain-name suffix that is not publicly registrable.';
 
     public function __construct(
+        array $options = [],
+        ?array $groups = null,
+        mixed $payload = null,
         bool $allowPrivate = false,
         ?string $message = null,
         ?string $lengthMessage = null,
         ?string $privateMessage = null,
-
-        ?array $groups = null,
-        mixed $payload = null,
-        array $options = []
     ) {
         parent::__construct($options, $groups, $payload);
 
@@ -57,5 +53,10 @@ final class DomainNameRegistrable extends Constraint
         $this->message ??= $message;
         $this->lengthMessage ??= $lengthMessage;
         $this->privateMessage ??= $privateMessage;
+    }
+
+    public function getTargets(): string | array
+    {
+        return [self::CLASS_CONSTRAINT, self::PROPERTY_CONSTRAINT];
     }
 }

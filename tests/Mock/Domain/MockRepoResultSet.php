@@ -21,29 +21,25 @@ use ParkManager\Domain\ResultSet;
  */
 final class MockRepoResultSet implements ResultSet
 {
-    /**
-     * @var array<T>
-     */
+    /** @var array<array-key, T> */
     private array $result;
     public ?int $limit = null;
     public ?int $offset = null;
+    /** @var array<int, string>|null */
     public ?array $ordering = null;
     public ?Expression $expression = null;
-
-    /**
-     * @var array<int, string|int>
-     */
+    /** @var array<int, string|int>|null */
     public ?array $limitedToIds = null;
 
     /**
-     * @param array<T> $originalResult
+     * @param array<array-key, T> $originalResult
      */
     public function __construct(array $originalResult = [])
     {
         $this->result = $originalResult;
     }
 
-    public function setLimit(?int $limit, ?int $offset = null): self
+    public function setLimit(?int $limit, ?int $offset = null): static
     {
         $this->limit = $limit;
         $this->offset = $offset;
@@ -51,30 +47,31 @@ final class MockRepoResultSet implements ResultSet
         return $this;
     }
 
-    public function setOrdering(?string $field, ?string $order): self
+    public function setOrdering(?string $field, ?string $order): static
     {
-        $this->ordering = $field === null ? null : [$field, $order];
+        if ($field === null || $order === null) {
+            $this->ordering = null;
+        } else {
+            $this->ordering = [$field, $order];
+        }
 
         return $this;
     }
 
-    public function filter(?Expression $expression): self
+    public function filter(?Expression $expression): static
     {
         $this->expression = $expression;
 
         return $this;
     }
 
-    public function limitToIds(?array $ids): self
+    public function limitToIds(?array $ids): static
     {
         $this->limitedToIds = $ids;
 
         return $this;
     }
 
-    /**
-     * Returns the number of items in the set.
-     */
     public function getNbResults(): int
     {
         reset($this->result);
@@ -92,6 +89,9 @@ final class MockRepoResultSet implements ResultSet
         return \count($result);
     }
 
+    /**
+     * @return ArrayCollection<array-key, T>
+     */
     public function getIterator(): \Traversable
     {
         reset($this->result);

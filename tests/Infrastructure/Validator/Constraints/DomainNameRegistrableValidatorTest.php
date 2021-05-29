@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Validator\Constraints;
 
+use Generator;
 use ParkManager\Infrastructure\Validator\Constraints\DomainNameRegistrable;
 use ParkManager\Infrastructure\Validator\Constraints\DomainNameRegistrableValidator;
 use ParkManager\Tests\Mock\PdpMockProvider;
@@ -51,7 +52,10 @@ final class DomainNameRegistrableValidatorTest extends ConstraintValidatorTestCa
         $this->assertNoViolation();
     }
 
-    public function provideAcceptedDomainNames(): iterable
+    /**
+     * @return Generator<int, array{0: string}>
+     */
+    public function provideAcceptedDomainNames(): Generator
     {
         yield ['example.com'];
         yield ['example.net'];
@@ -70,7 +74,10 @@ final class DomainNameRegistrableValidatorTest extends ConstraintValidatorTestCa
         $this->assertNoViolation();
     }
 
-    public function provideAcceptedPrivateSuffixes(): iterable
+    /**
+     * @return Generator<int, array{0: string}>
+     */
+    public function provideAcceptedPrivateSuffixes(): Generator
     {
         yield ['example.com'];
         yield ['example.net'];
@@ -97,7 +104,10 @@ final class DomainNameRegistrableValidatorTest extends ConstraintValidatorTestCa
         ;
     }
 
-    public function provideRejectedDomainNames(): iterable
+    /**
+     * @return Generator<int, array{0: string}>
+     */
+    public function provideRejectedDomainNames(): Generator
     {
         yield ['example.github.io'];
     }
@@ -128,7 +138,10 @@ final class DomainNameRegistrableValidatorTest extends ConstraintValidatorTestCa
         ;
     }
 
-    public function provideRegistrableNamesExceedingPath(): iterable
+    /**
+     * @return Generator<int, array{0: string, 1: string}>
+     */
+    public function provideRegistrableNamesExceedingPath(): Generator
     {
         yield ['example.no.co.uk', 'no.co.uk'];
         yield ['test.example.github.io', 'example.github.io'];
@@ -149,7 +162,10 @@ final class DomainNameRegistrableValidatorTest extends ConstraintValidatorTestCa
         ;
     }
 
-    public function provideWrongFormattedDomains(): iterable
+    /**
+     * @return Generator<int, array{0: string}>
+     */
+    public function provideWrongFormattedDomains(): Generator
     {
         yield ['xn--94823482.nl']; // invalid IDN, which is actually thrown during the resolver phase
         yield ['nope.'];

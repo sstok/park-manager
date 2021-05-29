@@ -48,17 +48,17 @@ final class RouteRedirectResponseListenerTest extends TestCase
         self::assertFalse($event->isPropagationStopped());
     }
 
-    private function createEvent($result): ViewEvent
+    private function createEvent(mixed $result): ViewEvent
     {
         return new ViewEvent(
             $this->createMock(HttpKernelInterface::class),
             new Request(),
-            HttpKernelInterface::MASTER_REQUEST,
+            HttpKernelInterface::MAIN_REQUEST,
             $result
         );
     }
 
-    private function assertResponseIsRedirect($response, string $expectedTargetUrl, int $expectedStatus = 302): void
+    private function assertResponseIsRedirect(object $response, string $expectedTargetUrl, int $expectedStatus = 302): void
     {
         /* @var RedirectResponse $response */
         self::assertInstanceOf(RedirectResponse::class, $response);

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\UI\Web\Form\DataMapper;
 
 use ArrayIterator;
+use Generator;
 use ParkManager\UI\Web\Form\DataMapper\CommandDataMapper;
 use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectAccessor;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -30,7 +31,7 @@ final class CommandDataMapperTest extends FormIntegrationTestCase
      * @test
      * @dataProvider provide_invalid_input
      */
-    public function it_only_accepts_array_as_data_to_form($input): void
+    public function it_only_accepts_array_as_data_to_form(mixed $input): void
     {
         $dataMapper = new CommandDataMapper($this->createMock(DataMapperInterface::class), new PropertyPathObjectAccessor());
 
@@ -39,7 +40,10 @@ final class CommandDataMapperTest extends FormIntegrationTestCase
         $dataMapper->mapDataToForms($input, new ArrayIterator([]));
     }
 
-    public function provide_invalid_input(): iterable
+    /**
+     * @return Generator<int, array<int, mixed>>
+     */
+    public function provide_invalid_input(): Generator
     {
         yield [null];
 
@@ -54,7 +58,7 @@ final class CommandDataMapperTest extends FormIntegrationTestCase
      * @test
      * @dataProvider provide_invalid_input
      */
-    public function it_only_accepts_array_as_forms_to_data($input): void
+    public function it_only_accepts_array_as_forms_to_data(mixed $input): void
     {
         $dataMapper = new CommandDataMapper($this->createMock(DataMapperInterface::class), new PropertyPathObjectAccessor());
 

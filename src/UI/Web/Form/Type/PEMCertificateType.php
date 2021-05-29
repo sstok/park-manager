@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Sequentially;
+use Traversable;
 
 /**
  * A PEM X.509 file-upload for a Certificate, with (optional) private-key and CA list.
@@ -73,29 +74,33 @@ final class PEMCertificateType extends AbstractType implements DataMapperInterfa
         $resolver->setAllowedTypes('requires_private_key', ['boolean']);
     }
 
-    public function mapDataToForms($viewData, iterable $forms): void
+    /**
+     * @param Traversable<FormInterface> $forms
+     */
+    public function mapDataToForms($viewData, Traversable $forms): void
     {
         // No-op. Fields are empty by default.
     }
 
     /**
-     * @param \RecursiveIteratorIterator $forms
+     * @param Traversable<FormInterface> $forms
      */
-    public function mapFormsToData(iterable $forms, &$viewData): void
+    public function mapFormsToData(Traversable $forms, &$viewData): void
     {
-        $forms = iterator_to_array($forms);
-        /** @var FormInterface[] $forms */
-        $certificate = $forms['certificate']->getData();
+        /** @var FormInterface[] $fields */
+        $fields = iterator_to_array($forms);
+
+        $certificate = $fields['certificate']->getData();
 
         if ($certificate === null) {
             return;
         }
 
         $certificate = $this->extractCertData($certificate, true);
-        $privateKey = isset($forms['privateKey']) ? $forms['privateKey']->getData() : null;
+        $privateKey = isset($fields['privateKey']) ? $fields['privateKey']->getData() : null;
         $caList = [];
 
-        foreach ($forms['caList']->getData() ?? [] as $file) {
+        foreach ($fields['caList']->getData() ?? [] as $file) {
             if ($file !== null) {
                 $caList[$file->getClientOriginalName()] = $this->extractCertData($file);
             }

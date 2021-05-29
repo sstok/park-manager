@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\DomainName;
 
+use Closure;
 use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\SubDomain\Exception\SubDomainAlreadyExists;
@@ -24,6 +25,9 @@ final class SubDomainRepositoryMock implements SubDomainRepository
     /** @use MockRepository<Subdomain> */
     use MockRepository;
 
+    /**
+     * @return array<string, string|Closure>
+     */
     protected function getFieldsIndexMapping(): array
     {
         return [
@@ -31,6 +35,9 @@ final class SubDomainRepositoryMock implements SubDomainRepository
         ];
     }
 
+    /**
+     * @return array<string, string|Closure>
+     */
     protected function getFieldsIndexMultiMapping(): array
     {
         return [
@@ -69,7 +76,7 @@ final class SubDomainRepositoryMock implements SubDomainRepository
         $this->mockDoRemove($subDomain);
     }
 
-    protected function throwOnNotFound($key): void
+    protected function throwOnNotFound(mixed $key): void
     {
         throw new SubDomainNotFound($key);
     }

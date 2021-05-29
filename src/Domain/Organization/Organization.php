@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Organization;
 
-use Assert\Assertion;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -45,7 +44,7 @@ class Organization
     /**
      * @ORM\OneToMany(targetEntity=OrganizationMember::class, cascade={"ALL"}, mappedBy="organization")
      *
-     * @var Collection<OrganizationMember>
+     * @var Collection<int, OrganizationMember>
      */
     public Collection $members;
 
@@ -62,12 +61,15 @@ class Organization
      * When the User is already a member their access-level
      * is updated instead.
      */
-    public function addMember(User $user, int $level = OrganizationMember::LEVEL_MANAGER): void
+    public function addMember(User $user, ?AccessLevel $level = null): void
     {
+        $level ??= AccessLevel::get('LEVEL_MANAGER');
+
+        /** @var OrganizationMember|null $member */
         [$member, $memberId] = $this->findMembership($user);
 
         if ($member !== null) {
-            if ($member->accessLevel !== $level) {
+            if (! $member->accessLevel->equals($level)) {
                 $member->changeAccessLevel($level);
 
                 $this->members->set($memberId, $member);
@@ -93,6 +95,8 @@ class Organization
         /** @var OrganizationMember $member */
         $member = $members->first();
         $memberId = $members->key();
+
+        \assert($memberId !== false);
 
         return [$member, $memberId];
     }
@@ -125,8 +129,9 @@ class Organization
         return $member;
     }
 
-    public function hasMember(User $user, ?int $accessLevel = null): bool
+    public function hasMember(User $user, ?AccessLevel $accessLevel = null): bool
     {
+        /** @var OrganizationMember|null $member */
         [$member,] = $this->findMembership($user);
 
         if ($member === null) {
@@ -134,11 +139,7 @@ class Organization
         }
 
         if ($accessLevel !== null) {
-            Assertion::between($accessLevel, 1, 2, 'Access-level must be either LEVEL_MANAGER or LEVEL_COLLABORATOR', 'level');
-
-            if ($member->accessLevel !== $accessLevel) {
-                return false;
-            }
+            return $member->accessLevel->equals($accessLevel);
         }
 
         return true;

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Security\Voter;
 
+use Generator;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\Infrastructure\Security\Voter\SuperAdminVoter;
 use PHPUnit\Framework\TestCase;
@@ -57,7 +58,10 @@ final class SuperAdminVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, null, []));
     }
 
-    public function provideAbstainedAccessFor(): iterable
+    /**
+     * @return Generator<string, array{0: SecurityUser|User}>
+     */
+    public function provideAbstainedAccessFor(): Generator
     {
         yield 'not a super admin' => [new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_ADMIN'])];
 

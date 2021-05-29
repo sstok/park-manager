@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Security\Voter;
 
+use Generator;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\Infrastructure\Security\Voter\SwitchUserVoter;
 use PHPUnit\Framework\TestCase;
@@ -58,7 +59,10 @@ final class SwitchUserVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, $subject, [SwitchUserVoter::CAN_SWITCH_USER]));
     }
 
-    public function provideAbstainedAccessFor(): iterable
+    /**
+     * @return Generator<string, array{0: SecurityUser|User, 1: SecurityUser|User|null}>
+     */
+    public function provideAbstainedAccessFor(): Generator
     {
         $toSwitchUser = new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER']);
 
@@ -79,7 +83,10 @@ final class SwitchUserVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_DENIED, $voter->vote($token, $subject, [SwitchUserVoter::CAN_SWITCH_USER]));
     }
 
-    public function provideDeniedAccessFor(): iterable
+    /**
+     * @return Generator<string, array{0: SecurityUser|User, 1: SecurityUser|User}>
+     */
+    public function provideDeniedAccessFor(): Generator
     {
         $toSwitchUser = new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER']);
 
@@ -102,7 +109,10 @@ final class SwitchUserVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, $toSwitchUser, [$attribute]));
     }
 
-    public function provideIgnoredAttributes(): iterable
+    /**
+     * @return Generator<int, array{0: string}>
+     */
+    public function provideIgnoredAttributes(): Generator
     {
         yield [AuthenticatedVoter::IS_AUTHENTICATED_FULLY];
         yield [AuthenticatedVoter::IS_AUTHENTICATED_REMEMBERED];

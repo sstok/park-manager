@@ -12,8 +12,10 @@ namespace ParkManager\Tests\Application\Service\TLS;
 
 use Carbon\Carbon;
 use DateTimeImmutable;
+use Generator;
 use Ocsp\Ocsp;
 use Ocsp\Response as OcspResponse;
+use ParkManager\Application\Service\PdpManager;
 use ParkManager\Application\Service\TLS\CAResolver;
 use ParkManager\Application\Service\TLS\CertificateValidator;
 use ParkManager\Application\Service\TLS\Violation\CertificateIsExpired;
@@ -47,8 +49,8 @@ final class CertificateValidatorTest extends TestCase
     use ProphecyTrait;
 
     private ?CertificateValidator $certificateValidator = null;
-    private $pdpManager;
-    private static $cache;
+    private ?PdpManager $pdpManager;
+    private static ?Psr16Cache $cache;
 
     /** @after */
     public function unFreezeTime(): void
@@ -170,6 +172,8 @@ final class CertificateValidatorTest extends TestCase
      * @test
      *
      * @dataProvider provideGlobalWildcard
+     *
+     * @param array<int, string> $domains
      */
     public function validate_certificate_host_contains_global_wildcard(array $domains, string $provided, string $suffixPattern): void
     {
@@ -200,7 +204,10 @@ final class CertificateValidatorTest extends TestCase
         }
     }
 
-    public function provideGlobalWildcard(): iterable
+    /**
+     * @return Generator<int, array{0: array<int, string>, 1: string, 2: string}>
+     */
+    public function provideGlobalWildcard(): Generator
     {
         yield [['example.com', '*'], '*', '*'];
 
@@ -219,6 +226,8 @@ final class CertificateValidatorTest extends TestCase
      * @test
      *
      * @dataProvider provideAcceptedWildcard
+     *
+     * @param array<int, string> $domains
      */
     public function validate_certificate_host_wildcard_without_known_prefix(array $domains): void
     {
@@ -265,7 +274,10 @@ final class CertificateValidatorTest extends TestCase
         $this->certificateValidator->validateCertificate($cert, []);
     }
 
-    public function provideAcceptedWildcard(): iterable
+    /**
+     * @return Generator<int, array<int, array{0: string, 1: string}>>
+     */
+    public function provideAcceptedWildcard(): Generator
     {
         yield [['example.com', '*.doodoodooo']];
 
@@ -890,7 +902,10 @@ final class CertificateValidatorTest extends TestCase
         }
     }
 
-    public function provideUnSupportedHosts(): iterable
+    /**
+     * @return Generator<int, array{0: string, 1: string, 2: string}>
+     */
+    public function provideUnSupportedHosts(): Generator
     {
         $cert1 = <<<'CERT'
             -----BEGIN CERTIFICATE-----
@@ -1062,7 +1077,7 @@ final class CertificateValidatorTest extends TestCase
         $this->certificateValidator->validateCertificateSupport($cert, $callback);
     }
 
-    private function expectNoFailureLogs()
+    private function expectNoFailureLogs(): LoggerInterface
     {
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects(self::never())->method('error');
@@ -1077,8 +1092,12 @@ final class CertificateValidatorTest extends TestCase
  */
 final class FakedCertificateValidator extends CertificateValidator
 {
+    /** @var array<string, mixed> */
     private array $fields;
 
+    /**
+     * @param array<string, mixed> $fields
+     */
     public function setFields(array $fields): void
     {
         $this->fields = $fields;

@@ -17,7 +17,7 @@ use ParkManager\Domain\Webhosting\Space\Space;
 interface DomainNameSpaceUsageValidator
 {
     /**
-     * @return array<class-string, ResultSet> ["EntityName" => {ResultSet<EntityName>}]
+     * @return array<class-string, ResultSet<mixed>> ["EntityName" => {ResultSet<EntityName>}]
      */
     public function __invoke(DomainName $domainName, Space $space): array;
 }

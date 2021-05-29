@@ -25,6 +25,9 @@ final class OwnerRepositoryMock implements OwnerRepository
         __construct as construct;
     }
 
+    /**
+     * @param array<int, Owner> $initialEntities
+     */
     public function __construct(array $initialEntities = [], ?OrganizationRepository $organizationRepository = null)
     {
         if ($organizationRepository) {
@@ -37,7 +40,7 @@ final class OwnerRepositoryMock implements OwnerRepository
         $this->construct($initialEntities);
     }
 
-    protected function throwOnNotFound($key): void
+    protected function throwOnNotFound(mixed $key): void
     {
         throw OwnerNotFound::withId($key);
     }

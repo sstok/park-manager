@@ -23,6 +23,7 @@ use ParkManager\Application\Service\TLS\Violation\UnsupportedDomain;
 use ParkManager\Application\Service\TLS\Violation\UnsupportedPurpose;
 use ParkManager\Application\Service\TLS\Violation\WeakSignatureAlgorithm;
 use ParkManager\Domain\Webhosting\SubDomain\TLS\CA;
+use Pdp\Domain;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -57,6 +58,8 @@ class CertificateValidator
     }
 
     /**
+     * @param array<string, string> $caList
+     *
      * @throws Violation
      */
     public function validateCertificate(string $certificate, array $caList = []): void
@@ -102,6 +105,9 @@ class CertificateValidator
         }
     }
 
+    /**
+     * @param array<array-key, string> $domains
+     */
     private function validateDomainsWildcard(array $domains): void
     {
         $rules = $this->suffixManager->getPublicSuffixList();
@@ -115,7 +121,7 @@ class CertificateValidator
                 throw new GlobalWildcard($domain, '*');
             }
 
-            $domainInfo = $rules->resolve($domain);
+            $domainInfo = $rules->resolve(Domain::fromIDNA2008($domain));
 
             if (! $domainInfo->suffix()->isKnown()) {
                 return;
@@ -129,6 +135,9 @@ class CertificateValidator
         }
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     private function validateOCSPStatus(string $certificate, array $data, CA $ca): void
     {
         static $certificateLoader, $certificateInfo;
@@ -216,6 +225,9 @@ class CertificateValidator
         throw new UnsupportedDomain($hostPattern, ...$data['_domains']);
     }
 
+    /**
+     * @param callable(array<string, mixed>, string, $this): void $validator
+     */
     public function validateCertificateSupport(string $certificate, callable $validator): void
     {
         $data = $this->extractRawData($certificate);

@@ -55,6 +55,9 @@ final class DBConstraints
      */
     public array $changes = [];
 
+    /**
+     * @param array<string, ByteSize|bool|int> $fields
+     */
     public function __construct(array $fields = [])
     {
         $this->providedStorageSize = ByteSize::inf();

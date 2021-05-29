@@ -17,11 +17,11 @@ use ParkManager\Domain\ResultSet;
 
 final class OwnershipUsageList
 {
-    /** @var iterable<string, OwnerControlledRepository> */
+    /** @var iterable<class-string, OwnerControlledRepository<object>> */
     private iterable $repositories;
 
     /**
-     * @param iterable<string, OwnerControlledRepository> $repositories ['{RootEntityFullName}' => {SpaceRepository}]
+     * @param iterable<class-string, OwnerControlledRepository<mixed>> $repositories ['{RootEntityFullName}' => {SpaceRepository}]
      */
     public function __construct(iterable $repositories)
     {
@@ -74,7 +74,7 @@ final class OwnershipUsageList
      * Returns all the entities (from all repositories) in an Aggregate collection
      * combined per "type", either ["\ParkManager\Domain\Webhosting\Space\Space" => ResultSet<Space>].
      *
-     * @return array<string, ResultSet<object>>
+     * @return array<class-string, ResultSet<object>>
      */
     public function getByProvider(OwnerId $id): array
     {

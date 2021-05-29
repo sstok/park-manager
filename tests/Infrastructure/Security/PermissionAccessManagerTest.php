@@ -58,7 +58,7 @@ final class PermissionAccessManagerTest extends TestCase
         self::assertSame(PermissionDecider::DECIDE_DENY, $manager->decide($this->createMock(Permission::class), $token));
     }
 
-    private function createToken(bool $authenticated, $user = null): TokenInterface
+    private function createToken(bool $authenticated, mixed $user = null): TokenInterface
     {
         $tokenProphecy = $this->prophesize(TokenInterface::class);
         $tokenProphecy->isAuthenticated()->willReturn($authenticated);
@@ -200,7 +200,7 @@ final class PermissionAccessManagerTest extends TestCase
 
 class MockPermission implements Permission
 {
-    public $permission;
+    public int $permission;
 
     public function __construct(int $permission)
     {
@@ -225,13 +225,6 @@ class MockSelfPermission implements SelfDecidingPermission
 
 class MockAliasedPermission extends MockPermission implements AliasedPermission
 {
-    public $permission;
-
-    public function __construct(int $permission)
-    {
-        $this->permission = $permission;
-    }
-
     public function getAlias(): string
     {
         return '\\' . MockPermission::class;

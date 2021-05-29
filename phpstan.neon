@@ -9,7 +9,7 @@ includes:
 parameters:
     #reportUnmatchedIgnoredErrors: false
 
-    level: 5
+    level: 6
     paths:
         - ./src
         - ./tests
@@ -24,19 +24,29 @@ parameters:
         - src/Domain/EnumTrait.php
         - tests/Domain/EnumTraitTest.php
 
+        - src/Infrastructure/Security/Guard/*.php # These files are deprecated and need to be replaced
+        - src/UI/Web/Action/FormExampleAction.php # No functional purpose
+
     stubFiles:
         - .github/.phpstan-stubs/symfony/Form.stub
+        - .github/.phpstan-stubs/symfony/Constraint.stub
+        - .github/.phpstan-stubs/symfony/Request.stub
+        - .github/.phpstan-stubs/symfony/ArgumentValueResolverInterface.stub
 
     symfony:
         container_xml_path: %currentWorkingDirectory%/var/cache/dev/ParkManager_KernelDevDebugContainer.xml
-        constant_hassers: false
+        constant_hassers: true
 
     ignoreErrors:
         - '#Cannot cast Symfony\\Component\\Validator\\ConstraintViolationListInterface to string#'
         - '#Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getId\(\)#'
 
+        - '#Method ParkManager\\Infrastructure\\Validator\\Constraints\\([^:]+)\:\:__construct\(\) has parameter \$options with no value type specified in iterable type array#'
+        - '#Method ParkManager\\Infrastructure\\Validator\\Constraints\\([^:]+)\:\:getTargets\(\) return type has no value type specified in iterable type array#'
+
         ## False positive
         - '#Call to an undefined method Faker\\Generator\:\:#'
+        - '#Method ([^:]+)\:\:unserialize\(\) has parameter \$serialized with no typehint specified#'
 
         # Unum
         -

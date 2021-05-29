@@ -17,12 +17,14 @@ use Symfony\Component\HttpFoundation\Response;
 class TwigResponse extends Response
 {
     private string $template;
+    /** @var array<string, mixed> */
     private array $variables;
 
     /**
-     * @param array|Form $variables A Form object is passed as [form => createView()]
+     * @param array<string, mixed>|Form                $variables A Form object is passed as [form => createView()]
+     * @param array<string, string|array<int, string>> $headers
      */
-    public function __construct(string $template, $variables = [], int $status = 200, array $headers = [])
+    public function __construct(string $template, array | Form $variables = [], int $status = 200, array $headers = [])
     {
         parent::__construct('', $status, $headers);
 
@@ -37,7 +39,7 @@ class TwigResponse extends Response
     }
 
     /**
-     * @param array|Form $variables A Form object is passed as [form => createView()]
+     * @param array<string, mixed>|Form $variables A Form object is passed as [form => createView()]
      */
     public function setTemplateVariables(array | Form $variables): void
     {
@@ -52,6 +54,9 @@ class TwigResponse extends Response
         $this->variables = $variables;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getTemplateVariables(): array
     {
         return $this->variables;

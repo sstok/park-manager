@@ -12,8 +12,12 @@ namespace ParkManager\Application\Service\SystemGateway;
 
 abstract class OperationResult
 {
+    /** @var array<string, mixed> */
     protected array $parameters;
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     final public function __construct(array $parameters)
     {
         $this->validateParameters($parameters);
@@ -21,6 +25,9 @@ abstract class OperationResult
         $this->parameters = $parameters;
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     protected function validateParameters(array $parameters): void
     {
         // No-op. Template method.

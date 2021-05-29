@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\Webhosting\Space;
 
+use Generator;
 use ParkManager\Domain\Webhosting\Space\Exception\InvalidStatus;
 use ParkManager\Domain\Webhosting\Space\SpaceSetupStatus;
 use PHPUnit\Framework\TestCase;
@@ -21,6 +22,7 @@ final class SpaceSetupStatusTest extends TestCase
 {
     /**
      * @test
+     *
      * @dataProvider provideInvalidTransitions
      */
     public function it_validates_improper_transitions(SpaceSetupStatus $current, SpaceSetupStatus $new, string $message): void
@@ -30,7 +32,10 @@ final class SpaceSetupStatusTest extends TestCase
         SpaceSetupStatus::validateNewStatus($current, $new);
     }
 
-    public function provideInvalidTransitions(): iterable
+    /**
+     * @return Generator<int, array{0: SpaceSetupStatus, 1: SpaceSetupStatus, 2: string}>
+     */
+    public function provideInvalidTransitions(): Generator
     {
         yield [SpaceSetupStatus::get('READY'), SpaceSetupStatus::get('ERROR'), 'Cannot change status when already initialized.'];
         yield [SpaceSetupStatus::get('READY'), SpaceSetupStatus::get('REINITIALIZED'), 'Cannot change status when already initialized.'];
@@ -48,7 +53,9 @@ final class SpaceSetupStatusTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider provideValidTransitions
+     *
      * @doesNotPerformAssertions
      */
     public function it_allows_proper_transitions(SpaceSetupStatus $current, SpaceSetupStatus $new): void
@@ -56,7 +63,10 @@ final class SpaceSetupStatusTest extends TestCase
         SpaceSetupStatus::validateNewStatus($current, $new);
     }
 
-    public function provideValidTransitions(): iterable
+    /**
+     * @return Generator<int, array{0: SpaceSetupStatus, 1: SpaceSetupStatus}>
+     */
+    public function provideValidTransitions(): Generator
     {
         yield [SpaceSetupStatus::get('REINITIALIZED'), SpaceSetupStatus::get('GETTING_INITIALIZED')];
         yield [SpaceSetupStatus::get('GETTING_INITIALIZED'), SpaceSetupStatus::get('READY')];

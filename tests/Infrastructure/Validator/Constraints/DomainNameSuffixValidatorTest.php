@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Validator\Constraints;
 
+use Generator;
 use ParkManager\Infrastructure\Validator\Constraints\DomainNameSuffix;
 use ParkManager\Infrastructure\Validator\Constraints\DomainNameSuffixValidator;
 use ParkManager\Tests\Mock\PdpMockProvider;
@@ -51,7 +52,10 @@ final class DomainNameSuffixValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function provideAcceptedDomainNames(): iterable
+    /**
+     * @return Generator<int, array{0: string}>
+     */
+    public function provideAcceptedDomainNames(): Generator
     {
         yield ['example.com'];
         yield ['example.com'];
@@ -72,7 +76,10 @@ final class DomainNameSuffixValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function provideAcceptedNoNICANNDomainNames(): iterable
+    /**
+     * @return Generator<int, array{0: string}>
+     */
+    public function provideAcceptedNoNICANNDomainNames(): Generator
     {
         yield ['example.com'];
         yield ['example.com'];
@@ -100,7 +107,10 @@ final class DomainNameSuffixValidatorTest extends ConstraintValidatorTestCase
         ;
     }
 
-    public function provideRejectedDomainNames(): iterable
+    /**
+     * @return Generator<int, array{0: string}|array{0: string, 1: string}>
+     */
+    public function provideRejectedDomainNames(): Generator
     {
         yield ['example.cong'];
         yield ['example.co.urk'];
@@ -141,7 +151,10 @@ final class DomainNameSuffixValidatorTest extends ConstraintValidatorTestCase
         ;
     }
 
-    public function provideRejectedICANNDomainNames(): iterable
+    /**
+     * @return Generator<int, array{0: string}>
+     */
+    public function provideRejectedICANNDomainNames(): Generator
     {
         yield ['example.github.io']; // Private suffix-registration.
     }
@@ -160,7 +173,10 @@ final class DomainNameSuffixValidatorTest extends ConstraintValidatorTestCase
         ;
     }
 
-    public function provideWrongFormattedDomains(): iterable
+    /**
+     * @return Generator<int, array{0: string}>
+     */
+    public function provideWrongFormattedDomains(): Generator
     {
         yield ['xn--94823482.nl']; // invalid IDN, which is actually thrown during the resolver phase
         yield ['nope.'];

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type\User\Admin;
 
+use Generator;
 use ParkManager\Application\Command\User\GrantUserRole;
 use ParkManager\Application\Command\User\RevokeUserRole;
 use ParkManager\Domain\EmailAddress;
@@ -17,6 +18,7 @@ use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use ParkManager\UI\Web\Form\Type\User\Admin\UserSecurityLevelForm;
+use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * @internal
@@ -35,6 +37,9 @@ final class UserSecurityLevelFormTest extends MessageFormTestCase
         $this->commandHandler = static fn () => null;
     }
 
+    /**
+     * @return FormTypeInterface[]
+     */
     protected function getTypes(): array
     {
         return [
@@ -54,7 +59,10 @@ final class UserSecurityLevelFormTest extends MessageFormTestCase
         self::assertNull($this->dispatchedCommand);
     }
 
-    public function provideUnchangedLevelUsers(): iterable
+    /**
+     * @return Generator<int, array{0: User, 1: string}>
+     */
+    public function provideUnchangedLevelUsers(): Generator
     {
         yield [User::register(UserId::create(), new EmailAddress('janE@example.com'), 'J', 'nope'), 'ROLE_USER'];
         yield [User::registerAdmin(UserId::create(), new EmailAddress('janE@example.com'), 'J', 'nope'), 'ROLE_ADMIN'];
@@ -73,7 +81,10 @@ final class UserSecurityLevelFormTest extends MessageFormTestCase
         self::assertEquals($expectedCommand, $this->dispatchedCommand);
     }
 
-    public function provideChangedUserLevel(): iterable
+    /**
+     * @return Generator<string, array{0: User, 1: string, 2: object}>
+     */
+    public function provideChangedUserLevel(): Generator
     {
         // Revoke
         yield 'Revoke SUPER_ADMIN, to admin' => [$user = $this->createSuperAdmin(), 'ROLE_ADMIN', new RevokeUserRole($user->id, 'ROLE_SUPER_ADMIN')];

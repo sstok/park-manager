@@ -13,6 +13,7 @@ namespace ParkManager\Tests\Application\Service;
 use ArrayIterator;
 use Doctrine\Common\Collections\Expr\Comparison;
 use Doctrine\Common\Collections\Expr\Expression;
+use Generator;
 use ParkManager\Application\Service\CombinedResultSet;
 use ParkManager\Domain\ResultSet;
 use PHPUnit\Framework\TestCase;
@@ -45,8 +46,8 @@ final class CombinedResultSetTest extends TestCase
         self::assertSame([], iterator_to_array($resultSetCombination->getIterator()));
 
         $resultSetCombination = (new CombinedResultSet(
-            $this->getResultSetMock(new ArrayIterator(), limit: [1, 2], ordering: ['id', 'ASC'], ids: ['2', '5', '10'], expression: $expression = new Comparison('id', Comparison::EQ, '1')),
-            $this->getResultSetMock(new ArrayIterator(), limit: [1, 2], ordering: ['id', 'ASC'], ids: ['2', '5', '10'], expression: $expression),
+            $this->getResultSetMock(new ArrayIterator(), limitAndOffset: [1, 2], ordering: ['id', 'ASC'], ids: ['2', '5', '10'], expression: $expression = new Comparison('id', Comparison::EQ, '1')),
+            $this->getResultSetMock(new ArrayIterator(), limitAndOffset: [1, 2], ordering: ['id', 'ASC'], ids: ['2', '5', '10'], expression: $expression),
         ))
             ->setLimit(1, 2)
             ->setOrdering('id', 'ASC')
@@ -57,17 +58,25 @@ final class CombinedResultSetTest extends TestCase
         self::assertSame([], iterator_to_array($resultSetCombination->getIterator()));
     }
 
-    private function getResultSetMock(ArrayIterator $iterator, array $limit = [null, null], array $ordering = [null, null], ?array $ids = null, ?Expression $expression = null): ResultSet
+    /**
+     * @param ArrayIterator<int, mixed>   $iterator
+     * @param array<int, int|null>        $limitAndOffset
+     * @param array<int, string|null>     $ordering
+     * @param array<int, string|int>|null $ids
+     *
+     * @return ResultSet<mixed>
+     */
+    private function getResultSetMock(ArrayIterator $iterator, array $limitAndOffset = [null, null], array $ordering = [null, null], ?array $ids = null, ?Expression $expression = null): ResultSet
     {
-        $resultSetProphecy1 = $this->prophesize(ResultSet::class);
-        $resultSetProphecy1->setLimit(...$limit)->willReturn($resultSetProphecy1)->shouldBeCalled();
-        $resultSetProphecy1->setOrdering(...$ordering)->willReturn($resultSetProphecy1)->shouldBeCalled();
-        $resultSetProphecy1->limitToIds($ids)->willReturn($resultSetProphecy1)->shouldBeCalled();
-        $resultSetProphecy1->filter($expression)->willReturn($resultSetProphecy1)->shouldBeCalled();
-        $resultSetProphecy1->getIterator()->willReturn($iterator);
-        $resultSetProphecy1->getNbResults()->willReturn(\count($iterator));
+        $resultSetProphecy = $this->prophesize(ResultSet::class);
+        $resultSetProphecy->setLimit(...$limitAndOffset)->willReturn($resultSetProphecy)->shouldBeCalled();
+        $resultSetProphecy->setOrdering(...$ordering)->willReturn($resultSetProphecy)->shouldBeCalled();
+        $resultSetProphecy->limitToIds($ids)->willReturn($resultSetProphecy)->shouldBeCalled();
+        $resultSetProphecy->filter($expression)->willReturn($resultSetProphecy)->shouldBeCalled();
+        $resultSetProphecy->getIterator()->willReturn($iterator);
+        $resultSetProphecy->getNbResults()->willReturn(\count($iterator));
 
-        return $resultSetProphecy1->reveal();
+        return $resultSetProphecy->reveal();
     }
 
     /** @test */
@@ -86,6 +95,8 @@ final class CombinedResultSetTest extends TestCase
     /**
      * @test
      * @dataProvider provideChangingSettingsMethods
+     *
+     * @param array<int, mixed> $arguments
      */
     public function it_resets_internal_iterator_when_settings_change(string $method, array $arguments): void
     {
@@ -114,7 +125,10 @@ final class CombinedResultSetTest extends TestCase
         self::assertSame([], iterator_to_array($resultSetCombination->getIterator()));
     }
 
-    public function provideChangingSettingsMethods(): iterable
+    /**
+     * @return Generator<string, array<int, mixed>>
+     */
+    public function provideChangingSettingsMethods(): Generator
     {
         yield 'setLimit' => ['setLimit', [1, 5]];
         yield 'setOrdering' => ['setOrdering', ['id', 'ASC']];

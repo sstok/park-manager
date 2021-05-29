@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain;
 
+use Generator;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Exception\InvalidByteSize;
 use PHPUnit\Framework\TestCase;
@@ -123,7 +124,10 @@ final class ByteSizeTest extends TestCase
         }
     }
 
-    public function provideFromStringExamples(): iterable
+    /**
+     * @return Generator<string, array{0: ByteSize, 1: string}>
+     */
+    public function provideFromStringExamples(): Generator
     {
         // Inf
         yield 'Inf' => [ByteSize::inf(), 'Inf'];
@@ -186,14 +190,17 @@ final class ByteSizeTest extends TestCase
      * @test
      * @dataProvider provideFromStringInvalidExamples
      */
-    public function fails_from_string_with_invalid_input(string $input, $message): void
+    public function fails_from_string_with_invalid_input(string $input, string $message): void
     {
         $this->expectExceptionObject(new InvalidByteSize($message));
 
         ByteSize::fromString($input);
     }
 
-    public function provideFromStringInvalidExamples(): iterable
+    /**
+     * @return Generator<string, array{0: string, 1: string}>
+     */
+    public function provideFromStringInvalidExamples(): Generator
     {
         yield '-Inf' => ['-Inf', 'Invalid ByteSize format provided "-Inf". Expected value and unit as either "12 Mib" or "12 MB". Or "inf" otherwise.'];
         yield 'v 12' => ['12', 'Invalid ByteSize format provided "12". Expected value and unit as either "12 Mib" or "12 MB". Or "inf" otherwise.'];

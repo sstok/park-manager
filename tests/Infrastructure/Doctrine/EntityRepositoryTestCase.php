@@ -16,6 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @group functional
+ *
+ * @property object $repository
  */
 abstract class EntityRepositoryTestCase extends KernelTestCase
 {
@@ -36,7 +38,8 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
     }
 
     /**
-     * @param array<int, string> $expected IDs provided as string-array
+     * @param array<array-key, string> $expected  IDs provided as string-array
+     * @param ResultSet<mixed>         $resultSet
      */
     protected function assertIdsEquals(array $expected, ResultSet $resultSet): void
     {
@@ -47,5 +50,28 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
         }
 
         static::assertSame($expected, array_keys($resultIds));
+    }
+
+    /**
+     * @param array<int, object>          $expectedIds
+     * @param iterable<array-key, object> $result
+     */
+    protected function assertEntitiesEquals(array $expectedIds, iterable $result): void
+    {
+        $found = [];
+        $expected = [];
+
+        foreach ($result as $entity) {
+            $found[$entity->id->toString()] = $entity;
+        }
+
+        foreach ($expectedIds as $id) {
+            $expected[$id->toString()] = $this->repository->get($id);
+        }
+
+        ksort($expected, \SORT_STRING);
+        ksort($found, \SORT_STRING);
+
+        static::assertSame($expected, $found);
     }
 }

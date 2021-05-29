@@ -36,6 +36,9 @@ final class EntityRenderer
         $this->localeAware = $localeAware;
     }
 
+    /**
+     * @param class-string $entityName
+     */
     public function getEntityLabel(string $entityName): string
     {
         if (! str_starts_with($entityName, 'ParkManager\\Domain\\')) {
@@ -45,6 +48,7 @@ final class EntityRenderer
         $class = mb_substr(ltrim($entityName, '\\'), 19); // Strips `ParkManager\Domain\`
         $parts = explode('\\', $class);
 
+        // Normalize 'Space\Space' to 'Space'.
         if (\count($parts) > 1 && $parts[\count($parts) - 1] === $parts[\count($parts) - 2]) {
             array_pop($parts);
         }
@@ -56,13 +60,18 @@ final class EntityRenderer
      * Returns the rendered short version of the Entity information,
      * usually for errors messages and generic data-list items.
      *
-     * @param array $extra Pass addition information to the template context
+     * @param array<string, mixed> $extra Pass addition information to the template context
      */
     public function short(object $entity, array $extra = [], ?string $locale = null, string $format = 'html'): string
     {
         return $this->renderTemplate($entity, $extra, $format, 'short', $locale);
     }
 
+    /**
+     * @param array<string, mixed> $extra
+     *
+     * @phpstan-param 'short'|'detailed' $block
+     */
     private function renderTemplate(object $entity, array $extra, string $format, string $block, ?string $locale): string
     {
         $currentLocale = $this->localeAware->getLocale();
@@ -94,7 +103,7 @@ final class EntityRenderer
      * Returns the rendered detailed version of the Entity information,
      * usually when transferring ownership or during confirmation.
      *
-     * @param array $extra Pass addition information to the template context
+     * @param array<string, mixed> $extra Pass addition information to the template context
      */
     public function detailed(object $entity, array $extra = [], ?string $locale = null, string $format = 'html'): string
     {
@@ -102,7 +111,8 @@ final class EntityRenderer
     }
 
     /**
-     * @param array<string, ResultSet<object>> $sets
+     * @param array<class-string, ResultSet<mixed>> $sets
+     * @param array<string, mixed>                  $extra
      */
     public function listedBySet(array $sets, array $extra = [], ?string $locale = null): string
     {
@@ -128,11 +138,9 @@ final class EntityRenderer
                 foreach ($resultSet as $entity) {
                     $resolveTemplate ??= $this->resolveTemplate($entity);
 
-                    $renderedSets[$label][] = $this->twig->load(sprintf('entity_rendering/%s.%s.twig',
-                        $resolveTemplate, 'html'))->renderBlock(
-                        'short',
-                        ['entity' => $entity] + $extra
-                    );
+                    $renderedSets[$label][] = $this->twig->load(sprintf('entity_rendering/%s.%s.twig', $resolveTemplate, 'html'))
+                        ->renderBlock('short', ['entity' => $entity] + $extra)
+                    ;
                 }
             }
 

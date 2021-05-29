@@ -18,7 +18,7 @@ use Doctrine\DBAL\Types\JsonType;
 final class ArrayCollectionType extends JsonType
 {
     /**
-     * @param Collection|null $value
+     * @param Collection<string, mixed>|null $value
      *
      * @throws \JsonException
      */
@@ -33,6 +33,8 @@ final class ArrayCollectionType extends JsonType
 
     /**
      * @throws \JsonException
+     *
+     * @return ArrayCollection<string, mixed>
      */
     public function convertToPHPValue($value, AbstractPlatform $platform): ArrayCollection
     {

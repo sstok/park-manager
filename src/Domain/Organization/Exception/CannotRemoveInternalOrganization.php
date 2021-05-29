@@ -15,21 +15,20 @@ use ParkManager\Domain\Organization\OrganizationId;
 
 final class CannotRemoveInternalOrganization extends InvalidArgument
 {
-    private array $translationArgs;
+    private OrganizationId $id;
 
-    private function __construct(string $message, array $translationArgs = [])
+    private function __construct(string $message, OrganizationId $id)
     {
         parent::__construct($message, 404);
-        $this->translationArgs = $translationArgs;
+
+        $this->id = $id;
     }
 
     public static function withId(OrganizationId $id): self
     {
         return new self(
             sprintf('Organization with id "%s" is marked as internal and cannot be removed.', $id->toString()),
-            [
-                'organization' => $id,
-            ]
+            $id,
         );
     }
 
@@ -40,6 +39,6 @@ final class CannotRemoveInternalOrganization extends InvalidArgument
 
     public function getTranslationArgs(): array
     {
-        return $this->translationArgs;
+        return ['organization' => $this->id->toString()];
     }
 }

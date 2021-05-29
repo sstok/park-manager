@@ -19,8 +19,13 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 final class ConstraintExceeded extends Exception implements TranslatableException
 {
     private string $transId;
+
+    /** @var array<string, int|string|ByteSize> */
     private array $transArgs;
 
+    /**
+     * @param array<string, int|string|ByteSize> $transArgs
+     */
     private function __construct(string $message, array $transArgs = [])
     {
         $message = 'space_constraint_exceeded.' . $message;

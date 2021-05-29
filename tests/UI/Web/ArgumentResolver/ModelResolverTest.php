@@ -77,7 +77,10 @@ final class ModelResolverTest extends TestCase
         $this->assertResolvedEntityEqualsId(User::class, null, UserRepositoryMock::USER_ID1);
     }
 
-    private function assertResolvedEntityEqualsId(string $class, ?string $id, $default = null): void
+    /**
+     * @param class-string $class
+     */
+    private function assertResolvedEntityEqualsId(string $class, ?string $id, mixed $default = null): void
     {
         $request = new Request();
 
@@ -106,7 +109,7 @@ final class ModelResolverTest extends TestCase
         $this->assertResolvedModelEquals(EmailAddress::class, 'jane@example.con', new EmailAddress('jane@example.con'));
     }
 
-    private function assertResolvedModelEquals(string $class, ?string $id, object $expected, $default = null): void
+    private function assertResolvedModelEquals(string $class, ?string $id, object $expected, mixed $default = null): void
     {
         $request = new Request();
 

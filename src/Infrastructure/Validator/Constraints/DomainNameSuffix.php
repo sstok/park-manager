@@ -25,9 +25,6 @@ final class DomainNameSuffix extends Constraint
     public const RESERVED_TLD_USED = 'a77c7fb3-0c3a-4859-bdc3-233371a1aebe';
     public const ICANN_UNKNOWN = '1d913ca2-029d-4b2b-be25-6ad22a70cee1';
 
-    /**
-     * @var array<string, string>
-     */
     protected static $errorNames = [
         self::INVALID_SYNTAX => 'INVALID_SYNTAX',
         self::UNKNOWN_SUFFIX => 'UNKNOWN_SUFFIX',
@@ -38,10 +35,10 @@ final class DomainNameSuffix extends Constraint
     public bool $requireICANN;
 
     public function __construct(
-        bool $requireICANN = true,
+        array $options = [],
         ?array $groups = null,
         mixed $payload = null,
-        array $options = []
+        bool $requireICANN = true,
     ) {
         parent::__construct($options, $groups, $payload);
 

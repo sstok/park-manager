@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Service\TLS;
 
+use Closure;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Persistence\ObjectManagerDecorator;
 use ParkManager\Tests\Mock\Domain\MockRepository;
@@ -36,6 +37,9 @@ final class TLSPersistenceRepositoryMock extends ObjectManagerDecorator
         $this->mockDoSave($object);
     }
 
+    /**
+     * @return array<string, string|Closure>
+     */
     protected function getFieldsIndexMapping(): array
     {
         return [
@@ -44,7 +48,7 @@ final class TLSPersistenceRepositoryMock extends ObjectManagerDecorator
         ];
     }
 
-    protected function throwOnNotFound($key): void
+    protected function throwOnNotFound(mixed $key): void
     {
         [$class, $id] = explode(':', $key, 2);
 

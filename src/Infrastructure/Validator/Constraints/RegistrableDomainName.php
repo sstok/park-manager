@@ -23,6 +23,9 @@ use Symfony\Component\Validator\Constraints\Sequentially;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class RegistrableDomainName extends Compound
 {
+    /**
+     * @param array<string, mixed> $options
+     */
     protected function getConstraints(array $options): array
     {
         return [

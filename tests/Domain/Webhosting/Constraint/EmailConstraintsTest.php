@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\Webhosting\Constraint;
 
+use Generator;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
 use PHPUnit\Framework\TestCase;
@@ -65,6 +66,7 @@ final class EmailConstraintsTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider provideFields
      */
     public function its_keeps_same_instance_when_unchanged(string $field, mixed $value): void
@@ -79,7 +81,10 @@ final class EmailConstraintsTest extends TestCase
         self::assertSame($constraints->{$field}, $new->{$field});
     }
 
-    public function provideFields(): iterable
+    /**
+     * @return Generator<int, array{0: string, 1: mixed}>
+     */
+    public function provideFields(): Generator
     {
         yield ['maxStorageSize', new ByteSize(22, 'GB')];
 
@@ -96,6 +101,7 @@ final class EmailConstraintsTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider provideFields
      */
     public function its_changeable(string $field, mixed $value): void

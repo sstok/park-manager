@@ -53,7 +53,7 @@ final class SystemRegistration
     public ?string $clusterId = null;
 
     /**
-     * @param array<int> $userGroups
+     * @param array<int, int> $userGroups
      */
     public function __construct(int $userId, array $userGroups, string $homeDir)
     {

@@ -133,6 +133,9 @@ class CAResolver
         return $ca;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     private function validateCA(array $data): void
     {
         if (! isset($data['extensions']['basicConstraints']) || mb_stripos($data['extensions']['basicConstraints'], 'CA:TRUE') === false) {

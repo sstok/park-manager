@@ -10,9 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type;
 
+use Generator;
 use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use ParkManager\UI\Web\Form\Type\ConfirmationForm;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Translation\TranslatableMessage;
 
 /**
@@ -32,6 +34,9 @@ final class ConfirmationFormTest extends MessageFormTestCase
         $this->commandHandler = static fn () => null;
     }
 
+    /**
+     * @return FormTypeInterface[]
+     */
     protected function getTypes(): array
     {
         return [
@@ -160,7 +165,10 @@ final class ConfirmationFormTest extends MessageFormTestCase
         );
     }
 
-    public function provideNonMatchingValues(): iterable
+    /**
+     * @return Generator<int, array{0: string}>
+     */
+    public function provideNonMatchingValues(): Generator
     {
         yield ['oglaZ'];
         yield ['glaZ!'];
@@ -193,7 +201,10 @@ final class ConfirmationFormTest extends MessageFormTestCase
         self::assertFormIsValid($form);
     }
 
-    public function provideMatchingValues(): iterable
+    /**
+     * @return Generator<int, array{0: string}>
+     */
+    public function provideMatchingValues(): Generator
     {
         yield ['<ogl aZ!>'];
         yield [' <ogl aZ!> '];

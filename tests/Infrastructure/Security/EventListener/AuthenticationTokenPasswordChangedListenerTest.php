@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
@@ -50,7 +51,7 @@ final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
         return $userProviderProphecy->reveal();
     }
 
-    private function createProvidingOnlyTokenStorage(?object $token): TokenStorageInterface
+    private function createProvidingOnlyTokenStorage(?TokenInterface $token): TokenStorageInterface
     {
         $tokenStorageProphecy = $this->prophesize(TokenStorageInterface::class);
         $tokenStorageProphecy->getToken()->willReturn($token);
@@ -165,7 +166,7 @@ final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
         self::assertSame($newUser, $token->getUser());
     }
 
-    private function createGetAndStoreTokenStorage($token): TokenStorageInterface
+    private function createGetAndStoreTokenStorage(?TokenInterface $token): TokenStorageInterface
     {
         $tokenStorageProphecy = $this->prophesize(TokenStorageInterface::class);
         $tokenStorageProphecy->getToken()->willReturn($token);

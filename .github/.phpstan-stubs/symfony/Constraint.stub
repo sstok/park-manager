@@ -1,0 +1,29 @@
+<?php
+
+namespace Symfony\Component\Validator;
+
+abstract class Constraint
+{
+    /**
+     * @var array<string, string>
+     */
+    protected static $errorNames = [];
+
+    /**
+     * @param array<string, mixed>|mixed $options The options (as associative array)
+     *                                            or the value for the default
+     *                                            option (any other type)
+     * @param string[]                   $groups  An array of validation groups
+     * @param mixed                      $payload Domain-specific data attached to a constraint
+     */
+    public function __construct($options = null, array $groups = null, $payload = null)
+    {
+    }
+
+    /**
+     * @return string|array<int, string>
+     */
+    public function getTargets(): string|array
+    {
+    }
+}

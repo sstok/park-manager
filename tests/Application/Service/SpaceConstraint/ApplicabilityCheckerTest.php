@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Service\SpaceConstraint;
 
+use Generator;
 use ParkManager\Application\Service\SpaceConstraint\ApplicabilityChecker;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\DomainName\DomainName;
@@ -124,7 +125,10 @@ final class ApplicabilityCheckerTest extends TestCase
         self::assertEquals($expected->database->changes, $applicable->database->changes);
     }
 
-    public function provideNewConstraintsExpectations(): iterable
+    /**
+     * @return Generator<string, array{0: Constraints, 1: Constraints}>
+     */
+    public function provideNewConstraintsExpectations(): Generator
     {
         $current = new Constraints(
             [

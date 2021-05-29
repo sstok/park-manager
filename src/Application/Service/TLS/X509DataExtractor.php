@@ -17,6 +17,8 @@ use ParkManager\Application\Service\TLS\Violation\UnprocessablePEM;
 final class X509DataExtractor
 {
     private ?string $hash = null;
+
+    /** @var array<array-key, mixed>|null */
     private ?array $fields = null;
 
     /**

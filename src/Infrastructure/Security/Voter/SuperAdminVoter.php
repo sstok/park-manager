@@ -16,6 +16,11 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 final class SuperAdminVoter implements VoterInterface
 {
+    /**
+     * @param array<int, mixed> $attributes
+     *
+     * @phpstan-return self::ACCESS_GRANTED|self::ACCESS_ABSTAIN|self::ACCESS_DENIED
+     */
     public function vote(TokenInterface $token, $subject, array $attributes): int
     {
         $user = $token->getUser();

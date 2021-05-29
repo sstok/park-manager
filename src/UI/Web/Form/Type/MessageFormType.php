@@ -132,7 +132,8 @@ final class MessageFormType extends AbstractType
     }
 
     /**
-     * @throws Throwable
+     * @param array<string, string|\Closure>                                 $exceptionMapping
+     * @param callable(Throwable, TranslatorInterface, FormInterface): mixed $exceptionFallback
      */
     private function dispatchCommand(?object $command, FormInterface $form, array $exceptionMapping, ?callable $exceptionFallback): void
     {

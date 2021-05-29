@@ -15,6 +15,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class SpyingMessageBus implements MessageBusInterface
 {
+    /**
+     * @var array<int, object|Envelope>
+     */
     public array $dispatchedMessages = [];
 
     public function dispatch($message, array $stamps = []): Envelope

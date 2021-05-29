@@ -33,6 +33,9 @@ class CA
         $this->construct($contents, $rawFields, $ca);
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getSubject(): array
     {
         return $this->rawFields['subject'];
@@ -48,6 +51,9 @@ class CA
         return $this->ca;
     }
 
+    /**
+     * @return array<int, CA>
+     */
     public function toTree(): array
     {
         if (! isset($this->tree)) {

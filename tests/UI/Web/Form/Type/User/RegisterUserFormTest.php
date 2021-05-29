@@ -19,6 +19,8 @@ use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHasherFactory;
 use ParkManager\UI\Web\Form\Type\EmailTypeDomainValueExtension;
 use ParkManager\UI\Web\Form\Type\Security\SecurityUserHashedPasswordType;
 use ParkManager\UI\Web\Form\Type\User\RegisterUserForm;
+use Symfony\Component\Form\FormTypeExtensionInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * @internal
@@ -30,7 +32,10 @@ final class RegisterUserFormTest extends MessageFormTestCase
         return '*';
     }
 
-    protected function getTypes()
+    /**
+     * @return FormTypeInterface[]
+     */
+    protected function getTypes(): array
     {
         return [
             $this->getMessageType(),
@@ -38,6 +43,9 @@ final class RegisterUserFormTest extends MessageFormTestCase
         ];
     }
 
+    /**
+     * @return FormTypeExtensionInterface[]
+     */
     protected function getTypeExtensions()
     {
         return [

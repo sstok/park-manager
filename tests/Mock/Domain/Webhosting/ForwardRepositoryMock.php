@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
+use Closure;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Email\Exception\EmailForwardNotFound;
@@ -27,6 +28,9 @@ final class ForwardRepositoryMock implements ForwardRepository
 
     public const ID1 = 'c0a358cb-cecb-4faa-b274-9b4f7e8294cc';
 
+    /**
+     * @return array<string, string|Closure>
+     */
     protected function getFieldsIndexMapping(): array
     {
         return [
@@ -34,6 +38,9 @@ final class ForwardRepositoryMock implements ForwardRepository
         ];
     }
 
+    /**
+     * @return array<string, string|Closure>
+     */
     protected function getFieldsIndexMultiMapping(): array
     {
         return [
@@ -71,7 +78,7 @@ final class ForwardRepositoryMock implements ForwardRepository
         $this->mockDoRemove($forward);
     }
 
-    protected function throwOnNotFound($key): void
+    protected function throwOnNotFound(mixed $key): void
     {
         throw new EmailForwardNotFound($key);
     }

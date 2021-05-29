@@ -107,7 +107,7 @@ class Space
      * @ORM\OneToMany(targetEntity=AccessSuspensionLog::class, mappedBy="space", cascade={"PERSIST"})
      * @ORM\OrderBy({"timestamp" = "ASC"})
      *
-     * @var Collection<AccessSuspensionLog>
+     * @var Collection<int, AccessSuspensionLog>
      */
     private Collection $suspensions;
 
@@ -139,11 +139,6 @@ class Space
     public static function registerWithCustomConstraints(SpaceId $id, Owner $owner, Constraints $constraints): self
     {
         return new self($id, $owner, $constraints);
-    }
-
-    public function getAssignedPlan(): ?Plan
-    {
-        return $this->plan;
     }
 
     /**
@@ -302,13 +297,16 @@ class Space
     }
 
     /**
-     * @return Collection<AccessSuspensionLog>
+     * @return Collection<int, AccessSuspensionLog>
      */
     public function getSuspensions(): Collection
     {
         return $this->suspensions;
     }
 
+    /**
+     * @param array<int, int> $userGroups
+     */
     public function setupWith(int $userId, array $userGroups, string $homeDir): void
     {
         if (! $this->setupStatus->equals(SpaceSetupStatus::get('Getting_Initialized'))) {

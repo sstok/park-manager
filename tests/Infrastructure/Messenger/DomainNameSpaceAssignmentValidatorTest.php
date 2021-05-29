@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Messenger;
 
+use Generator;
 use ParkManager\Application\Command\DomainName\AddDomainName;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToOwner;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToSpace;
@@ -74,9 +75,7 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
         $validator->handle(Envelope::wrap(AssignDomainNameToSpace::with($id->toString(), '1438b200-242e-4688-917b-6fb8adf99947')), $stack);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function it_it_passes_through_when_unused(): void
     {
         $messageObj = RemoveDomainName::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494');
@@ -155,7 +154,10 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
         $validator->handle(Envelope::wrap($messageObj), $stack);
     }
 
-    public function provideSupportedClasses(): iterable
+    /**
+     * @return Generator<string, array{0: AssignDomainNameToSpace|AssignDomainNameToOwner}>
+     */
+    public function provideSupportedClasses(): Generator
     {
         yield 'AssignDomainNameToSpace' => [AssignDomainNameToSpace::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', '1438b200-242e-4688-917b-6fb8adf99947')];
 
@@ -164,9 +166,7 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
         yield 'AssignDomainNameToUser (admin)' => [AssignDomainNameToOwner::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', OrganizationId::ADMIN_ORG)];
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function it_executes_validators_for_remove_domain_name(): void
     {
         $messageObj = RemoveDomainName::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494');
@@ -206,6 +206,9 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
         $validator->handle(Envelope::wrap($messageObj), $stack);
     }
 
+    /**
+     * @param class-string $class
+     */
     private function createEntity(string $class, object $value): object
     {
         return EntityHydrator::hydrateEntity($class)->set('id', $value)->getEntity();

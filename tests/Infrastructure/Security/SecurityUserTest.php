@@ -115,11 +115,17 @@ final class SecurityUserTest extends TestCase
     private function createSecurityUserSecond(string $username): UserInterface
     {
         return new class($username, self::PASSWORD, ['ROLE_USER']) implements UserInterface {
+            /**
+             * @param array<int, string> $roles
+             */
             public function __construct(private string $identifier, private string $password, private array $roles)
             {
             }
 
-            public function getRoles()
+            /**
+             * @return array<int, string>
+             */
+            public function getRoles(): array
             {
                 return $this->roles;
             }

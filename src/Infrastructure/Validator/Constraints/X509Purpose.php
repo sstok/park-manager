@@ -42,7 +42,7 @@ final class X509Purpose extends Constraint
         return ['purposes'];
     }
 
-    public function getTargets(): array
+    public function getTargets(): string | array
     {
         return [self::CLASS_CONSTRAINT, self::PROPERTY_CONSTRAINT];
     }

@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\ArgumentResolver;
 
-use Generator;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
@@ -30,7 +29,7 @@ final class FormFactoryResolver implements ArgumentValueResolverInterface
         return ! $argument->isVariadic() && $argument->getType() === FormFactoryInterface::class;
     }
 
-    public function resolve(Request $request, ArgumentMetadata $argument): Generator
+    public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         yield $this->formFactory;
     }

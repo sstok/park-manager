@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\DomainName;
 
+use Closure;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNamePair;
@@ -28,6 +29,9 @@ final class DomainNameRepositoryMock implements DomainNameRepository
     /** @use MockRepository<DomainName> */
     use MockRepository;
 
+    /**
+     * @return array<string, string|Closure>
+     */
     protected function getFieldsIndexMapping(): array
     {
         return [
@@ -44,6 +48,9 @@ final class DomainNameRepositoryMock implements DomainNameRepository
         ];
     }
 
+    /**
+     * @return array<string, string|Closure>
+     */
     protected function getFieldsIndexMultiMapping(): array
     {
         return [
@@ -138,7 +145,7 @@ final class DomainNameRepositoryMock implements DomainNameRepository
         $this->mockDoRemove($domainName);
     }
 
-    protected function throwOnNotFound($key): void
+    protected function throwOnNotFound(mixed $key): void
     {
         if ($key instanceof DomainNameId) {
             throw DomainNameNotFound::withId($key);

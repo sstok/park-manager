@@ -15,10 +15,15 @@ use Symfony\Component\HttpFoundation\Response;
 final class RouteRedirectResponse
 {
     private string $route;
+    /** @var array<string, mixed> */
     private array $parameters;
     private int $status;
+    /** @var array<int, array{0: string, 1: string, 2: array<string, mixed>|null}> */
     private array $flashes = [];
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function __construct(string $route, array $parameters = [], int $status = 302)
     {
         $this->route = $route;
@@ -26,11 +31,17 @@ final class RouteRedirectResponse
         $this->status = $status;
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public static function toRoute(string $route, array $parameters = []): self
     {
         return new self($route, $parameters);
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public static function permanent(string $route, array $parameters = []): self
     {
         return new self($route, $parameters, Response::HTTP_MOVED_PERMANENTLY);
@@ -41,6 +52,9 @@ final class RouteRedirectResponse
         return $this->route;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getParameters(): array
     {
         return $this->parameters;
@@ -51,6 +65,11 @@ final class RouteRedirectResponse
         return $this->status;
     }
 
+    /**
+     * @param array<string, mixed>|null $arguments
+     *
+     * @return $this
+     */
     public function withFlash(string $type, string $message, ?array $arguments = null): self
     {
         $this->flashes[] = [$type, $message, $arguments];
@@ -58,6 +77,9 @@ final class RouteRedirectResponse
         return $this;
     }
 
+    /**
+     * @return array<int, array{0: string, 1: string, 2: array<string, mixed>|null}>
+     */
     public function getFlashes(): array
     {
         return $this->flashes;

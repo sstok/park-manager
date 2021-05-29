@@ -80,6 +80,9 @@ final class EmailConstraints
      */
     public array $changes = [];
 
+    /**
+     * @param array<string, ByteSize|int> $fields
+     */
     public function __construct(array $fields = [])
     {
         $this->maxStorageSize = ByteSize::inf();

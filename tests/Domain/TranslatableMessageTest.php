@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain;
 
+use Generator;
 use ParkManager\Domain\TranslatableMessage;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\Loader\ArrayLoader;
@@ -67,7 +68,10 @@ final class TranslatableMessageTest extends TestCase
         self::assertSame($expected, $translatable->trans($translator, $locale));
     }
 
-    public function getTransTests(): iterable
+    /**
+     * @return Generator<int, array{0: string, 1: TranslatableMessage, 2: string, 3: string}>
+     */
+    public function getTransTests(): Generator
     {
         yield ['Symfony est super !', new TranslatableMessage('Symfony is great!', [], ''), 'Symfony est super !', 'fr'];
         yield ['Symfony est awesome !', new TranslatableMessage('Symfony is %what%!', ['%what%' => 'awesome'], ''), 'Symfony est %what% !', 'fr'];
@@ -79,8 +83,10 @@ final class TranslatableMessageTest extends TestCase
      * @dataProvider getFlattenedTransTests
      *
      * @test
+     *
+     * @param array<string, array<string, mixed>> $messages
      */
-    public function flattened_trans($expected, $messages, $translatable): void
+    public function flattened_trans(string $expected, array $messages, TranslatableMessage $translatable): void
     {
         $translator = new Translator('en');
         $translator->addLoader('array', new ArrayLoader());
@@ -89,15 +95,16 @@ final class TranslatableMessageTest extends TestCase
         self::assertSame($expected, $translatable->trans($translator, 'fr'));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function to_string(): void
     {
         self::assertSame('Symfony is great!', (string) new TranslatableMessage('Symfony is great!'));
     }
 
-    public function getFlattenedTransTests(): iterable
+    /**
+     * @return Generator<int, array{0: string, 1: array<string, mixed>, 2: TranslatableMessage}>
+     */
+    public function getFlattenedTransTests(): Generator
     {
         $messages = [
             'symfony' => [

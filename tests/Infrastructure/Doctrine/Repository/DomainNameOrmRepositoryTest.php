@@ -44,7 +44,7 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
     private const SPACE_ID2 = '47f6db14-a69c-11e7-be13-acbc32b58316';
     private const SPACE_NOOP = '30b26ae0-a6b5-11e7-b978-acbc32b58315';
 
-    private DomainNameOrmRepository $repository;
+    protected DomainNameOrmRepository $repository;
 
     private Space $space1;
     private Space $space2;
@@ -194,28 +194,6 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
         $this->assertEntitiesEquals([$this->id1, $this->id5], $this->repository->allAccessibleBy(OwnerId::fromString(self::OWNER_ID1)));
         $this->assertEntitiesEquals([$this->id2, $this->id3], $this->repository->allAccessibleBy(OwnerId::fromString(self::OWNER_ID2)));
         $this->assertEntitiesEquals([$this->id4, $this->id6], $this->repository->allAccessibleBy(OwnerId::fromString(OrganizationId::ADMIN_ORG)));
-    }
-
-    /**
-     * @param array<int, object> $expectedIds
-     */
-    private function assertEntitiesEquals(array $expectedIds, iterable $result): void
-    {
-        $found = [];
-        $expected = [];
-
-        foreach ($result as $entity) {
-            $found[$entity->id->toString()] = $entity;
-        }
-
-        foreach ($expectedIds as $id) {
-            $expected[$id->toString()] = $this->repository->get($id);
-        }
-
-        ksort($expected, \SORT_STRING);
-        ksort($found, \SORT_STRING);
-
-        self::assertSame($expected, $found);
     }
 
     /** @test */

@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\ArgumentResolver;
 
-use Generator;
 use ParkManager\Infrastructure\Service\EntityRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
@@ -30,7 +29,7 @@ final class EntityRendererResolver implements ArgumentValueResolverInterface
         return ! $argument->isVariadic() && $argument->getType() === EntityRenderer::class;
     }
 
-    public function resolve(Request $request, ArgumentMetadata $argument): Generator
+    public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         yield $this->entityRenderer;
     }

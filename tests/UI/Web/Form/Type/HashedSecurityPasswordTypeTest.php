@@ -23,13 +23,6 @@ final class HashedSecurityPasswordTypeTest extends TypeTestCase
 {
     use ValidatorExtensionTrait;
 
-    protected function getExtensions(): array
-    {
-        return [
-            $this->getValidatorExtension(),
-        ];
-    }
-
     /** @test */
     public function it_hashes_password(): void
     {

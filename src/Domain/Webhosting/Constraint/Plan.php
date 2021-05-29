@@ -41,6 +41,8 @@ class Plan
      * READ-ONLY.
      *
      * @ORM\Column(name="metadata", type="json")
+     *
+     * @var array<string, mixed>
      */
     public array $metadata = [];
 
@@ -67,6 +69,8 @@ class Plan
      *
      * Not something that be used as a Domain policy. either,
      * don't use this for pricing or storing usage limitations.
+     *
+     * @param array<string, mixed> $metadata
      */
     public function withMetadata(array $metadata): void
     {

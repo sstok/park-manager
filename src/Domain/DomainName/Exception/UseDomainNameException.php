@@ -19,11 +19,11 @@ abstract class UseDomainNameException extends DomainException
 {
     public DomainNamePair $domainName;
     public SpaceId $current;
-    /** @var array<class-string, ResultSet> ["EntityName" => {ResultSet<EntityName>}] */
+    /** @var array<class-string, ResultSet<object>> ["EntityName" => {ResultSet<EntityName>}] */
     public array $entities;
 
     /**
-     * @param array<class-string, ResultSet> $entities ["EntityName" => {ResultSet<EntityName>}]
+     * @param array<class-string, ResultSet<object>> $entities ["EntityName" => {ResultSet<EntityName>}]
      */
     public function __construct(DomainNamePair $domainName, SpaceId $current, array $entities)
     {

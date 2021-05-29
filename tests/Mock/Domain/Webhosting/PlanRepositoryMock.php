@@ -45,7 +45,7 @@ final class PlanRepositoryMock implements PlanRepository
         $this->mockDoRemove($plan);
     }
 
-    protected function throwOnNotFound($key): void
+    protected function throwOnNotFound(mixed $key): void
     {
         throw new PlanNotFound($key);
     }

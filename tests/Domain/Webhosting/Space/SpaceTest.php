@@ -60,7 +60,7 @@ final class SpaceTest extends TestCase
 
         self::assertSame($id, $space->id);
         self::assertSame($owner, $space->owner);
-        self::assertSame($plan, $space->getAssignedPlan());
+        self::assertSame($plan, $space->plan);
         self::assertSame($constraints, $space->constraints);
     }
 
@@ -81,7 +81,7 @@ final class SpaceTest extends TestCase
         self::assertSame($id, $space->id);
         self::assertSame($owner, $space->owner);
         self::assertSame($constraints, $space->constraints);
-        self::assertNull($space->getAssignedPlan());
+        self::assertNull($space->plan);
     }
 
     /** @test */
@@ -98,10 +98,10 @@ final class SpaceTest extends TestCase
         $space1->assignPlan($plan1);
         $space2->assignPlan($plan2);
 
-        self::assertSame($plan1, $space1->getAssignedPlan(), 'Plan should not change');
+        self::assertSame($plan1, $space1->plan, 'Plan should not change');
         self::assertSame($plan1->constraints, $space1->constraints, 'Constraints should not change');
 
-        self::assertSame($plan2, $space2->getAssignedPlan());
+        self::assertSame($plan2, $space2->plan);
         self::assertSame($plan1->constraints, $space2->constraints);
     }
 
@@ -119,10 +119,10 @@ final class SpaceTest extends TestCase
         $space1->assignPlanWithConstraints($plan1, $plan1->constraints);
         $space2->assignPlanWithConstraints($plan2, $plan2->constraints);
 
-        self::assertSame($plan1, $space1->getAssignedPlan(), 'Plan should not change');
+        self::assertSame($plan1, $space1->plan, 'Plan should not change');
         self::assertSame($plan1->constraints, $space1->constraints, 'Constraints should not change');
 
-        self::assertSame($plan2, $space2->getAssignedPlan());
+        self::assertSame($plan2, $space2->plan);
         self::assertSame($plan2->constraints, $space2->constraints);
     }
 
@@ -136,10 +136,10 @@ final class SpaceTest extends TestCase
             $plan
         );
 
-        $plan->changeConstraints($newConstraints = (new Constraints())->setMonthlyTraffic(50));
+        $plan->changeConstraints((new Constraints())->setMonthlyTraffic(50));
         $space->assignPlanWithConstraints($plan, $plan->constraints);
 
-        self::assertSame($plan, $space->getAssignedPlan());
+        self::assertSame($plan, $space->plan);
         self::assertSame($plan->constraints, $space->constraints);
     }
 
@@ -155,7 +155,7 @@ final class SpaceTest extends TestCase
 
         $space->assignCustomConstraints($newConstraints = (new Constraints())->setMonthlyTraffic(50));
 
-        self::assertNull($space->getAssignedPlan());
+        self::assertNull($space->plan);
         self::assertSame($newConstraints, $space->constraints);
     }
 
@@ -170,7 +170,7 @@ final class SpaceTest extends TestCase
 
         $space->assignCustomConstraints($newConstraints = (new Constraints())->setMonthlyTraffic(50));
 
-        self::assertNull($space->getAssignedPlan());
+        self::assertNull($space->plan);
         self::assertSame($newConstraints, $space->constraints);
     }
 
@@ -186,7 +186,7 @@ final class SpaceTest extends TestCase
 
         $space->assignCustomConstraints($constraints);
 
-        self::assertNull($space->getAssignedPlan());
+        self::assertNull($space->plan);
         self::assertSame($constraints, $space->constraints);
     }
 

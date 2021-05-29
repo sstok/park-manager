@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\UI\Web\Form\Type;
 
 use Exception;
+use Generator;
 use InvalidArgumentException;
 use ParkManager\Domain\Exception\InvalidSplitTokenProvided;
 use ParkManager\Domain\User\Exception\UserNotFound;
@@ -27,6 +28,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRendererInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\ValidationFailedException;
@@ -49,6 +51,9 @@ final class MessageFormTypeTest extends TypeTestCase
 {
     private ?StubCommand$dispatchedCommand = null;
 
+    /**
+     * @return FormTypeInterface[]
+     */
     protected function getTypes(): array
     {
         $messageBus = $this->createMessageBus([
@@ -148,7 +153,10 @@ final class MessageFormTypeTest extends TypeTestCase
         self::assertNull($this->dispatchedCommand);
     }
 
-    private function createFormForCommand($data = null, bool $withFallback = true): FormInterface
+    /**
+     * @param MessageFormTypeEntity|array<string, mixed>|null $data
+     */
+    private function createFormForCommand(MessageFormTypeEntity | array | null $data = null, bool $withFallback = true): FormInterface
     {
         $profileContactFormType = $this->factory->createNamedBuilder('contact')
             ->add('email', TextType::class, ['required' => false])
@@ -195,12 +203,12 @@ final class MessageFormTypeTest extends TypeTestCase
     }
 
     /**
-     * @param array<FormError[]> $expectedErrors
+     * @param array<string|null, FormError[]> $expectedErrors
      *
      * @test
      * @dataProvider provideExceptions
      */
-    public function it_handles_errors_thrown_during_dispatching($id, array $expectedErrors): void
+    public function it_handles_errors_thrown_during_dispatching(int $id, array $expectedErrors): void
     {
         $form = $this->createFormForCommand(null, $id !== 77 && $id !== 534);
         $form->submit(['id' => $id, 'username' => 'Nero']);
@@ -227,7 +235,10 @@ final class MessageFormTypeTest extends TypeTestCase
         }
     }
 
-    public static function provideExceptions(): iterable
+    /**
+     * @return Generator<string, array{0: int, 1: array<string|null, mixed>}>
+     */
+    public static function provideExceptions(): Generator
     {
         yield 'root form error' => [
             3,
@@ -423,7 +434,7 @@ final class MessageFormTypeTest extends TypeTestCase
  */
 final class MessageFormTypeEntity
 {
-    public $id = 50;
-    public $username = 'Bernard';
-    public $profile;
+    public int $id = 50;
+    public string $username = 'Bernard';
+    public mixed $profile = null;
 }

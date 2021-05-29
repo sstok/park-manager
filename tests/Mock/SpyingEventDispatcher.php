@@ -18,6 +18,9 @@ final class SpyingEventDispatcher implements EventDispatcherInterface
 {
     private EventDispatcher $dispatcher;
 
+    /**
+     * @var array<int, object>
+     */
     public array $dispatchedEvents = [];
 
     public function __construct()
@@ -45,6 +48,9 @@ final class SpyingEventDispatcher implements EventDispatcherInterface
         $this->dispatcher->removeSubscriber($subscriber);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getListeners(?string $eventName = null): array
     {
         return $this->dispatcher->getListeners($eventName);

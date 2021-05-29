@@ -99,6 +99,9 @@ final class TwigResponseListenerTest extends TestCase
         return $containerProphecy->reveal();
     }
 
+    /**
+     * @param array<string, mixed> $variables
+     */
     private function createUsedContainer(string $template, array $variables): ContainerInterface
     {
         $twig = $this->prophesize(Environment::class);

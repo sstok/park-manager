@@ -17,6 +17,9 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 final class ByteSizeToArrayTransformer implements DataTransformerInterface
 {
+    /**
+     * @return array{isInf: bool, value: float|int, unit: string}|null
+     */
     public function transform($value): ?array
     {
         if ($value === null) {

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\UI\Web\Form\Type;
 
 use Closure;
+use Generator;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHasherFactory;
@@ -22,6 +23,7 @@ use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Validator\ValidatorBuilder;
@@ -56,6 +58,9 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         parent::setUp();
     }
 
+    /**
+     * @return FormTypeInterface[]
+     */
     protected function getTypes(): array
     {
         return [
@@ -66,6 +71,9 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         ];
     }
 
+    /**
+     * @return ValidatorExtension[]
+     */
     protected function getExtensions(): array
     {
         return [
@@ -91,6 +99,11 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         $formViewVars = $form->createView()->vars;
         self::assertArrayHasKey('token_invalid', $formViewVars);
         self::assertFalse($formViewVars['token_invalid']);
+    }
+
+    private function getCommandBuilder(): Closure
+    {
+        return static fn (array $data) => new ConfirmUserPasswordReset($data['reset_token'], $data['password']);
     }
 
     /** @test */
@@ -148,8 +161,10 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     /**
      * @test
      * @dataProvider provideErrors
+     *
+     * @param array<string|null, FormError[]> $expectedErrors
      */
-    public function it_handles_errors(Throwable $error, $expectedErrors): void
+    public function it_handles_errors(Throwable $error, array $expectedErrors): void
     {
         $this->commandHandler = static function () use ($error): void {
             throw $error;
@@ -167,7 +182,10 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         $this->assertFormHasErrors($form, $expectedErrors);
     }
 
-    public function provideErrors(): iterable
+    /**
+     * @return Generator<string, array{0: Throwable, 1: FormError[]}>
+     */
+    public function provideErrors(): Generator
     {
         yield 'PasswordResetTokenNotAccepted with token' => [
             new PasswordResetTokenNotAccepted((new FakeSplitTokenFactory())->generate()->toValueHolder()),
@@ -190,22 +208,15 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
             ],
         ];
     }
-
-    private function getCommandBuilder(): Closure
-    {
-        return static fn (array $data) => new ConfirmUserPasswordReset($data['reset_token'], $data['password']);
-    }
 }
 
-class ConfirmUserPasswordReset
+/**
+ * @internal
+ */
+final class ConfirmUserPasswordReset
 {
-    private SplitToken $token;
-    private string $password;
-
-    public function __construct(SplitToken $token, string $password)
+    public function __construct(private SplitToken $token, private string $password)
     {
-        $this->token = $token;
-        $this->password = $password;
     }
 
     public function token(): SplitToken

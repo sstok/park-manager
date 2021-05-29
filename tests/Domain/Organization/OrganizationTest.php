@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\Organization;
 
+use ParkManager\Domain\Organization\AccessLevel;
 use ParkManager\Domain\Organization\Exception\OrganizationMemberNotFound;
 use ParkManager\Domain\Organization\Organization;
 use ParkManager\Domain\Organization\OrganizationId;
@@ -46,18 +47,18 @@ final class OrganizationTest extends TestCase
         $org = new Organization(OrganizationId::create(), 'Test Organization Inc.');
         $org->addMember($user1);
         $org->addMember($user1); // No duplicate
-        $org->addMember($user2, OrganizationMember::LEVEL_COLLABORATOR);
+        $org->addMember($user2, AccessLevel::get('LEVEL_COLLABORATOR'));
 
         self::assertEquals(
             [
-                new OrganizationMember($user1, $org, OrganizationMember::LEVEL_MANAGER),
-                new OrganizationMember($user2, $org, OrganizationMember::LEVEL_COLLABORATOR),
+                new OrganizationMember($user1, $org, AccessLevel::get('LEVEL_MANAGER')),
+                new OrganizationMember($user2, $org, AccessLevel::get('LEVEL_COLLABORATOR')),
             ],
             $org->members->toArray(),
             'Members collection should equal, without duplicates'
         );
 
-        self::assertEquals(new OrganizationMember($user1, $org, OrganizationMember::LEVEL_MANAGER), $org->getMember($user1));
+        self::assertEquals(new OrganizationMember($user1, $org, AccessLevel::get('LEVEL_MANAGER')), $org->getMember($user1));
     }
 
     /** @test */
@@ -68,12 +69,12 @@ final class OrganizationTest extends TestCase
 
         $org = new Organization(OrganizationId::create(), 'Test Organization Inc.');
         $org->addMember($user1);
-        $org->addMember($user2, OrganizationMember::LEVEL_COLLABORATOR);
+        $org->addMember($user2, AccessLevel::get('LEVEL_COLLABORATOR'));
         $org->removeMember($user2);
 
         self::assertEquals(
             [
-                new OrganizationMember($user1, $org, OrganizationMember::LEVEL_MANAGER),
+                new OrganizationMember($user1, $org, AccessLevel::get('LEVEL_MANAGER')),
             ],
             $org->members->toArray(),
             'Members collection should equal'
@@ -88,13 +89,13 @@ final class OrganizationTest extends TestCase
 
         $org = new Organization(OrganizationId::create(), 'Test Organization Inc.');
         $org->addMember($user1);
-        $org->addMember($user2, OrganizationMember::LEVEL_COLLABORATOR);
+        $org->addMember($user2, AccessLevel::get('LEVEL_COLLABORATOR'));
         $org->addMember($user2);
 
         self::assertEquals(
             [
-                new OrganizationMember($user1, $org, OrganizationMember::LEVEL_MANAGER),
-                new OrganizationMember($user2, $org, OrganizationMember::LEVEL_MANAGER),
+                new OrganizationMember($user1, $org, AccessLevel::get('LEVEL_MANAGER')),
+                new OrganizationMember($user2, $org, AccessLevel::get('LEVEL_MANAGER')),
             ],
             $org->members->toArray(),
             'Members collection should equal'

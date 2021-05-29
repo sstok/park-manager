@@ -16,6 +16,7 @@ use ParkManager\UI\Web\Form\Type\PEMCertificateType;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +27,9 @@ use Symfony\Component\Validator\ValidatorBuilder;
  */
 final class PEMCertificateTypeTest extends TypeTestCase
 {
+    /**
+     * @return FormExtensionInterface[]
+     */
     protected function getExtensions(): array
     {
         return [

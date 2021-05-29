@@ -15,6 +15,7 @@ use ParkManager\Application\Service\TLS\Violation;
 final class UnsupportedDomain extends Violation
 {
     private string $requiredPattern;
+    /** @var array<int, string> */
     private array $supported;
 
     public function __construct(string $requiredPattern, string ...$supported)

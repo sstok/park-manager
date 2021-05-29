@@ -46,9 +46,10 @@ trait MockRepository
     /** @var array<string, array<string, array<int, T>>> [mapping-name][index-key] => {entity} */
     protected array $storedMultiByField = [];
 
-    /** @var array<string|int, array> */
+    /** @var array<string, array<int, array{0: int, 1: Closure}>> */
     protected array $watchers = [];
 
+    /** @var array<string, int> */
     protected array $watcherPositions = [];
 
     /**
@@ -189,7 +190,7 @@ trait MockRepository
         return $this->storedById[$idStr];
     }
 
-    protected function guardNotRemoved($id): void
+    protected function guardNotRemoved(mixed $id): void
     {
         $idStr = \is_object($id) ? $id->toString() : (string) $id;
 

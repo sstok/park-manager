@@ -15,13 +15,20 @@ use Symfony\Component\Form\ChoiceList\Loader\AbstractChoiceLoader;
 
 class ResultSetChoiceLoader extends AbstractChoiceLoader
 {
+    /** @var ResultSet<mixed> */
     private ResultSet $resultSet;
 
+    /**
+     * @param ResultSet<mixed> $resultSet
+     */
     public function __construct(ResultSet $resultSet)
     {
         $this->resultSet = $resultSet;
     }
 
+    /**
+     * @return ResultSet<mixed>
+     */
     protected function loadChoices(): iterable
     {
         $resultSet = clone $this->resultSet;
@@ -35,6 +42,11 @@ class ResultSetChoiceLoader extends AbstractChoiceLoader
      *
      * Note that only a sub-selection (with the $values) of
      * the entities is returned to reduce the memory usage.
+     *
+     * @param array<int, array-key>            $values
+     * @param callable(object): array-key|null $value
+     *
+     * @return array<array-key, object>
      */
     protected function doLoadChoicesForValues(array $values, ?callable $value): array
     {

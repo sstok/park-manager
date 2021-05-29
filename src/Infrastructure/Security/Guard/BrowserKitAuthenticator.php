@@ -35,6 +35,9 @@ final class BrowserKitAuthenticator extends AbstractGuardAuthenticator
         $this->userPasswordHasher = $userPasswordHasher;
     }
 
+    /**
+     * @return array{username: string|null, password: string|null, password_new: string|null}
+     */
     public function getCredentials(Request $request): array
     {
         return [

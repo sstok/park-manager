@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
+use Closure;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Email\Exception\MailboxNotFound;
@@ -27,6 +28,9 @@ final class MailboxRepositoryMock implements MailboxRepository
 
     public const ID1 = '61c957ca-a74f-48ce-843a-a6adc9af2d62';
 
+    /**
+     * @return array<string, string|Closure>
+     */
     protected function getFieldsIndexMapping(): array
     {
         return [
@@ -34,6 +38,9 @@ final class MailboxRepositoryMock implements MailboxRepository
         ];
     }
 
+    /**
+     * @return array<string, string|Closure>
+     */
     protected function getFieldsIndexMultiMapping(): array
     {
         return [
@@ -71,7 +78,7 @@ final class MailboxRepositoryMock implements MailboxRepository
         $this->mockDoRemove($mailbox);
     }
 
-    protected function throwOnNotFound($key): void
+    protected function throwOnNotFound(mixed $key): void
     {
         throw new MailboxNotFound($key);
     }

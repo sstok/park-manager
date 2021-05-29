@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Traversable;
 
 /**
  * A PEM X.509 file-upload for private-key (with optional passphrase).
@@ -50,19 +51,23 @@ final class PEMPrivateKeyType extends AbstractType implements DataMapperInterfac
         $resolver->setDefault('invalid_message', 'tls.invalid_key_file');
     }
 
-    public function mapDataToForms($viewData, iterable $forms): void
+    /**
+     * @param Traversable<FormInterface> $forms
+     */
+    public function mapDataToForms($viewData, Traversable $forms): void
     {
         // No-op. Fields are empty by default.
     }
 
     /**
-     * @param \RecursiveIteratorIterator $forms
+     * @param Traversable<FormInterface> $forms
      */
-    public function mapFormsToData(iterable $forms, &$viewData): void
+    public function mapFormsToData(Traversable $forms, &$viewData): void
     {
-        $forms = iterator_to_array($forms);
-        /** @var FormInterface[] $forms */
-        $file = $forms['file']->getData();
+        /** @var FormInterface[] $fields */
+        $fields = iterator_to_array($forms);
+
+        $file = $fields['file']->getData();
         \assert($file instanceof UploadedFile || $file === null);
 
         // Let the validator handle this case. No more than 1 MiB
@@ -70,7 +75,7 @@ final class PEMPrivateKeyType extends AbstractType implements DataMapperInterfac
             return;
         }
 
-        $passphrase = (string) $forms['passphrase']->getData();
+        $passphrase = (string) $fields['passphrase']->getData();
         $viewData = $this->extractPrivateKey($file, $passphrase);
     }
 

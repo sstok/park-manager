@@ -20,12 +20,16 @@ abstract class SubDomainCommand
     public DomainNameId $domainNameId;
     public string $name;
     public string $homeDir;
+    /** @var array<string, mixed> */
     public array $config;
-
     public ?string $certificate = null;
     public ?HiddenString $privateKey = null;
+    /** @var array<string, string> */
     public array $caList = [];
 
+    /**
+     * @param array<string, mixed> $config
+     */
     final public function __construct(SubDomainNameId $id, DomainNameId $domainNameId, string $name, string $homeDir = '/', array $config = [])
     {
         $this->id = $id;
@@ -35,6 +39,9 @@ abstract class SubDomainCommand
         $this->config = $config;
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public static function with(string $id, string $domainId, string $name, string $homeDir = '/', array $config = []): static
     {
         return new static(SubDomainNameId::fromString($id), DomainNameId::fromString($domainId), $name, $homeDir, $config);
@@ -42,6 +49,8 @@ abstract class SubDomainCommand
 
     /**
      * @param array<string, string> $caList [user-provided CA-name => X509 contents]
+     *
+     * @return $this
      */
     public function andTLSInformation(string $certificate, HiddenString $privateKey, array $caList = []): static
     {

@@ -17,8 +17,12 @@ final class CreatePlan
 {
     public PlanId $id;
     public Constraints $constraints;
+    /** @var array<string, mixed> */
     public array $metadata;
 
+    /**
+     * @param array<string, mixed> $metadata
+     */
     public function __construct(PlanId $id, Constraints $constraints, array $metadata = [])
     {
         $this->id = $id;

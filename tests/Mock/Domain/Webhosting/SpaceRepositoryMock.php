@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
+use Closure;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\OwnerId;
@@ -82,11 +83,14 @@ final class SpaceRepositoryMock implements WebhostingSpaceRepository
         return $space;
     }
 
-    protected function throwOnNotFound($key): void
+    protected function throwOnNotFound(mixed $key): void
     {
         throw WebhostingSpaceNotFound::withId($key);
     }
 
+    /**
+     * @return array<string, string|Closure>
+     */
     protected function getFieldsIndexMultiMapping(): array
     {
         return [

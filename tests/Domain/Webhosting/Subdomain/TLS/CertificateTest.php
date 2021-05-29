@@ -13,6 +13,7 @@ namespace ParkManager\Tests\Domain\Webhosting\Subdomain\TLS;
 use Assert\AssertionFailedException;
 use Carbon\Carbon;
 use DateTime;
+use Generator;
 use ParkManager\Domain\Webhosting\SubDomain\TLS\CA;
 use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
 use ParkManager\Tests\Domain\EntityHydrator;
@@ -193,7 +194,10 @@ final class CertificateTest extends TestCase
         new Certificate('x509-information', 'private-keep-of-the-7-keys', $data);
     }
 
-    public function provideRequiredFields(): iterable
+    /**
+     * @return Generator<int, array{0: string}>
+     */
+    public function provideRequiredFields(): Generator
     {
         yield ['subject'];
 

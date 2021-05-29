@@ -10,6 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Exception;
 
+use DateTimeInterface;
+use ParkManager\Domain\ByteSize;
+use Stringable;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Throwable;
 
@@ -33,7 +36,7 @@ interface TranslatableException extends Throwable
      * prefixing their key with `@`, like `@status`
      * or using a `TranslatableInterface` instance as value.
      *
-     * @return array<string, \DateTimeInterface|float|int|string|TranslatableInterface|null>
+     * @return array<string, DateTimeInterface|float|int|Stringable|ByteSize|string|TranslatableInterface|null>
      */
     public function getTranslationArgs(): array;
 }

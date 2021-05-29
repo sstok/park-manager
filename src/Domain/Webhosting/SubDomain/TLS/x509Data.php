@@ -56,6 +56,9 @@ trait x509Data
     private ?string $publicKeyString = null;
     private ?string $contentsString = null;
 
+    /**
+     * @param array<string, mixed> $rawFields
+     */
     private function __construct(string $contents, array $rawFields, ?CA $ca = null)
     {
         Assertion::keyExists($rawFields, '_pubKey');
@@ -136,6 +139,9 @@ trait x509Data
         return Carbon::rawParse($this->rawFields['_validTo']);
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getIssuer(): array
     {
         return $this->rawFields['issuer'];

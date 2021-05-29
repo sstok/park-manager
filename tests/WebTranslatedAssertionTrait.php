@@ -18,6 +18,9 @@ use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
 
 trait WebTranslatedAssertionTrait
 {
+    /**
+     * @param array<string, mixed> $parameters
+     */
     protected static function assertSelectorTranslatedTextContains(string $selector, string $id, array $parameters = [], ?string $domain = null, string $message = ''): void
     {
         $locale = null;
@@ -68,7 +71,10 @@ trait WebTranslatedAssertionTrait
         }
     }
 
-    private static function executePrivateMethod(string $name, ?array $parameters = null)
+    /**
+     * @param array<int, mixed>|null $parameters
+     */
+    private static function executePrivateMethod(string $name, ?array $parameters = null): mixed
     {
         $method = (new ReflectionClass(static::class))->getMethod($name);
         $method->setAccessible(true);

@@ -17,7 +17,7 @@ use Symfony\Component\Validator\ConstraintViolation;
 
 trait ConstraintViolationComparatorTrait
 {
-    private static $violationComparator;
+    private static ?ConstraintViolationComparator $violationComparator;
 
     /**
      * @beforeClass

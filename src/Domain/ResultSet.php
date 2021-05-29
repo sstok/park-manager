@@ -51,7 +51,7 @@ interface ResultSet extends IteratorAggregate, Countable
      * Pass an array of entity IDs to limit the returned result
      * to only the IDs in the original collection.
      *
-     * @param array<int, string>|null $ids
+     * @param array<int, string|int>|null $ids
      *
      * @return $this
      */

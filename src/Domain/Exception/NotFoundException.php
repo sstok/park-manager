@@ -10,7 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Exception;
 
+use DateTimeInterface;
 use InvalidArgumentException;
+use Stringable;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
  * Extend this class for not-found exception classes,
@@ -18,8 +21,12 @@ use InvalidArgumentException;
  */
 abstract class NotFoundException extends InvalidArgumentException implements TranslatableException
 {
+    /** @var array<string, DateTimeInterface|float|int|string|Stringable|TranslatableInterface|null> */
     protected array $translationArgs = [];
 
+    /**
+     * @param array<string, DateTimeInterface|float|int|string|Stringable|TranslatableInterface|null> $translationArgs
+     */
     public function __construct(string $message = 'Not found', array $translationArgs = [])
     {
         parent::__construct($message, 404);

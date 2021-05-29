@@ -11,13 +11,15 @@ declare(strict_types=1);
 namespace ParkManager\Domain;
 
 use ParkManager\Domain\Exception\InvalidByteSize;
+use Stringable;
 
-final class ByteSize
+final class ByteSize implements Stringable
 {
     public int $value;
 
-    public function __construct($size, string $unit)
+    public function __construct(mixed $size, string $unit)
     {
+        // While the type is mixed, this is only for user input, we only accept integer and float.
         if (! \is_int($size) && ! \is_float($size)) {
             throw new InvalidByteSize('Expected the size to be an integer or float.');
         }
@@ -120,7 +122,10 @@ final class ByteSize
         return sprintf('%d B', $this->value);
     }
 
-    public function __debugInfo()
+    /**
+     * @return array{value: int, _formatted: string}
+     */
+    public function __debugInfo(): array
     {
         return [
             'value' => $this->value,
@@ -270,5 +275,10 @@ final class ByteSize
         $diff = abs($current->value - $original);
 
         return ($diff / $original) * 100;
+    }
+
+    public function __toString(): string
+    {
+        return $this->format();
     }
 }

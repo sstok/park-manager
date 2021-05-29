@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Service\SpaceConstraint;
 
+use Generator;
 use ParkManager\Application\Service\SpaceConstraint\ConstraintsChecker;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\DomainName\DomainName;
@@ -229,6 +230,9 @@ final class ConstraintsCheckerTest extends TestCase
         );
     }
 
+    /**
+     * @param array<string, ByteSize|int> $emailConstraints
+     */
     private function setEmailConstraintsForSpace2(array $emailConstraints): void
     {
         $space = $this->spaceRepository->get(SpaceId::fromString(self::SPACE_ID2));
@@ -287,6 +291,9 @@ final class ConstraintsCheckerTest extends TestCase
     /**
      * @test
      * @dataProvider provideEmailConstraintRestrictions
+     *
+     * @param array<string, ByteSize>   $mailboxes
+     * @param array<int|string, string> $forwards
      */
     public function restricts_new_addresses_constraints_are_reached(array $mailboxes, array $forwards, ?EmailConstraints $emailConstraints, ConstraintExceeded $exception): void
     {
@@ -311,7 +318,10 @@ final class ConstraintsCheckerTest extends TestCase
         }
     }
 
-    public function provideEmailConstraintRestrictions(): iterable
+    /**
+     * @return Generator<string, array<int, mixed>>
+     */
+    public function provideEmailConstraintRestrictions(): Generator
     {
         yield 'mailbox amount exceeded with no forwards' => [
             [
@@ -437,6 +447,8 @@ final class ConstraintsCheckerTest extends TestCase
     /**
      * @test
      * @dataProvider provideEmailWebQuotaConstraintRestrictions
+     *
+     * @param array<string, ByteSize> $mailboxes
      */
     public function restricts_new_addresses_size_constraints_with_web_quota(array $mailboxes, ByteSize $quota, ?EmailConstraints $emailConstraints, ConstraintExceeded $exception): void
     {
@@ -456,7 +468,10 @@ final class ConstraintsCheckerTest extends TestCase
         }
     }
 
-    public function provideEmailWebQuotaConstraintRestrictions(): iterable
+    /**
+     * @return Generator<string, array<int, mixed>>
+     */
+    public function provideEmailWebQuotaConstraintRestrictions(): Generator
     {
         // Total limit: 100 GB
         // Mailbox current storage 11 GB (10 + 1)
@@ -532,7 +547,10 @@ final class ConstraintsCheckerTest extends TestCase
         }
     }
 
-    public function provideEmailResizeConstraintRestrictions(): iterable
+    /**
+     * @return Generator<string, array{0: ByteSize, 1: ByteSize|null, 2: ConstraintExceeded|null}>
+     */
+    public function provideEmailResizeConstraintRestrictions(): Generator
     {
         yield 'total space is used' => [
             new ByteSize(90, 'GiB'),
@@ -590,7 +608,10 @@ final class ConstraintsCheckerTest extends TestCase
         }
     }
 
-    public function provideDiskResizeConstraintRestrictions(): iterable
+    /**
+     * @return Generator<string, array{0: ByteSize, 1: ConstraintExceeded|null}>
+     */
+    public function provideDiskResizeConstraintRestrictions(): Generator
     {
         yield 'requested size is less than current usage' => [
             new ByteSize(8, 'GiB'),

@@ -46,6 +46,11 @@ class KeyValidator
         }
 
         $pupKey = openssl_pkey_get_public($certR);
+
+        if (! $pupKey) {
+            throw new UnprocessableKey('Unable to encrypt data, invalid key provided?');
+        }
+
         $key = $privateKey->getString();
 
         try {

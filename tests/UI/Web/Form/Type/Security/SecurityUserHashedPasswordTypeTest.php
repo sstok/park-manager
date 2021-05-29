@@ -13,6 +13,7 @@ namespace ParkManager\Tests\UI\Web\Form\Type\Security;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\UI\Web\Form\Type\Security\SecurityUserHashedPasswordType;
 use RuntimeException;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
@@ -25,7 +26,7 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
 {
     use ValidatorExtensionTrait;
 
-    private object $hasherFactory;
+    private PasswordHasherFactoryInterface $hasherFactory;
 
     protected function setUp(): void
     {
@@ -47,11 +48,8 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
         };
 
         $this->hasherFactory = new class($passwordHasher) implements PasswordHasherFactoryInterface {
-            private $encoder;
-
-            public function __construct($encoder)
+            public function __construct(private PasswordHasherInterface $encoder)
             {
-                $this->encoder = $encoder;
             }
 
             public function getPasswordHasher($user): PasswordHasherInterface
@@ -67,6 +65,9 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
         parent::setUp();
     }
 
+    /**
+     * @return FormTypeInterface[]
+     */
     protected function getTypes(): array
     {
         return [

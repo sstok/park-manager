@@ -54,6 +54,9 @@ abstract class TLSCertificateValidator extends ConstraintValidator
 
     abstract protected function validateTLS(X509CertificateBundle $value, Constraint $constraint): void;
 
+    /**
+     * @return array<string, mixed>
+     */
     private function getTranslationArguments(TranslatableException $violation): array
     {
         $arguments = $violation->getTranslationArgs();

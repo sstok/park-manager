@@ -13,6 +13,7 @@ namespace ParkManager\UI\Web\Form\DataMapper;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormInterface;
+use Traversable;
 
 final class WebhostingConstraintDataMapper implements DataMapperInterface
 {
@@ -24,32 +25,28 @@ final class WebhostingConstraintDataMapper implements DataMapperInterface
     }
 
     /**
-     * @param \RecursiveIteratorIterator $forms
+     * @param Traversable<FormInterface> $forms
      */
-    public function mapDataToForms($viewData, iterable $forms): void
+    public function mapDataToForms($viewData, Traversable $forms): void
     {
         if (! $viewData instanceof $this->constraintClass) {
             throw new UnexpectedTypeException($viewData, $this->constraintClass);
         }
 
-        $forms = iterator_to_array($forms);
-        /** @var FormInterface[] $forms */
         foreach ($forms as $name => $form) {
             $form->setData($viewData->{$name});
         }
     }
 
     /**
-     * @param \RecursiveIteratorIterator $forms
+     * @param Traversable<FormInterface> $forms
      */
-    public function mapFormsToData(iterable $forms, &$viewData): void
+    public function mapFormsToData(Traversable $forms, &$viewData): void
     {
         if (! $viewData instanceof $this->constraintClass) {
             throw new UnexpectedTypeException($viewData, $this->constraintClass);
         }
 
-        $forms = iterator_to_array($forms);
-        /** @var FormInterface[] $forms */
         $fields = [];
 
         foreach ($forms as $name => $form) {

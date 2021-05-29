@@ -43,13 +43,13 @@ final class RouteRedirectResponseListener implements EventSubscriberInterface
             $flashBag = $this->session->getFlashBag();
 
             foreach ($flashes as $flash) {
-                $flashBag->add(
-                    $flash[0],
-                    $flash[2] === null ? $flash[1] : [
-                        'message' => $flash[1],
-                        'parameters' => $flash[2],
-                    ]
-                );
+                if ($flash[2] === null) {
+                    $message = $flash[1];
+                } else {
+                    $message = ['message' => $flash[1], 'parameters' => $flash[2]];
+                }
+
+                $flashBag->add($flash[0], $message);
             }
         }
 

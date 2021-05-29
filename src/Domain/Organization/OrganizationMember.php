@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Organization;
 
-use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
 use ParkManager\Domain\User\User;
 
@@ -20,16 +19,6 @@ use ParkManager\Domain\User\User;
  */
 class OrganizationMember
 {
-    /**
-     * Has access to manage the organization details and members.
-     */
-    public const LEVEL_MANAGER = 1;
-
-    /**
-     * Has only (restricted) access to organization owned Spaces.
-     */
-    public const LEVEL_COLLABORATOR = 2;
-
     /**
      * @ORM\Id
      *
@@ -47,22 +36,22 @@ class OrganizationMember
     public User $user;
 
     /**
-     * @ORM\Column(name="access_level", type="integer")
+     * @ORM\Column(name="access_level", type="park_manager_organization_access_level")
      */
-    public int $accessLevel;
+    public AccessLevel $accessLevel;
 
-    public function __construct(User $user, Organization $organization, int $level = self::LEVEL_MANAGER)
+    public function __construct(User $user, Organization $organization, AccessLevel $level = null)
     {
+        $level ??= AccessLevel::get('LEVEL_MANAGER');
+
         $this->organization = $organization;
         $this->user = $user;
 
         $this->changeAccessLevel($level);
     }
 
-    public function changeAccessLevel(int $accessLevel): void
+    public function changeAccessLevel(AccessLevel $accessLevel): void
     {
-        Assertion::between($accessLevel, 1, 2, 'Access-level must be either LEVEL_MANAGER or LEVEL_COLLABORATOR', 'level');
-
         $this->accessLevel = $accessLevel;
     }
 }

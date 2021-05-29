@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain;
 
+use Closure;
 use InvalidArgumentException;
 use JsonSerializable;
 use ParkManager\Domain\ResultSet;
@@ -27,10 +28,10 @@ final class MockRepositoryTest extends TestCase
     public function it_has_no_entities_saved_or_removed(): void
     {
         $repository = new class() {
-            /** @use <MockEntity> */
+            /** @use MockRepository<MockEntity> */
             use MockRepository;
 
-            protected function throwOnNotFound($key): void
+            protected function throwOnNotFound(mixed $key): void
             {
                 throw new InvalidArgumentException('No, I has not have that key: ' . $key);
             }
@@ -47,9 +48,10 @@ final class MockRepositoryTest extends TestCase
         $entity2 = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315');
 
         $repository = new class([$entity1, $entity2]) {
+            /** @use MockRepository<MockEntity> */
             use MockRepository;
 
-            protected function throwOnNotFound($key): void
+            protected function throwOnNotFound(mixed $key): void
             {
                 throw new InvalidArgumentException('No, I has not have that key: ' . $key);
             }
@@ -78,9 +80,10 @@ final class MockRepositoryTest extends TestCase
         $entity5 = new MockEntity('f1acc3fb-de6a-4fc4-af6e-dde2327b4425', 'foobar', 'example2.com');
 
         $repository = new class([$entity1, $entity2, $entity3, $entity4, $entity5]) {
+            /** @use MockRepository<MockEntity> */
             use MockRepository;
 
-            protected function throwOnNotFound($key): void
+            protected function throwOnNotFound(mixed $key): void
             {
                 throw new InvalidArgumentException('No, I has not have that key: ' . $key);
             }
@@ -90,11 +93,17 @@ final class MockRepositoryTest extends TestCase
                 return $this->mockDoGetById($id);
             }
 
+            /**
+             * @return ResultSet<MockEntity>
+             */
             public function allByDomain(string $key): ResultSet
             {
                 return $this->mockDoGetMultiByField('domain', $key);
             }
 
+            /**
+             * @return ResultSet<MockEntity>
+             */
             public function all(): ResultSet
             {
                 return $this->mockDoGetAll();
@@ -105,6 +114,9 @@ final class MockRepositoryTest extends TestCase
                 $this->mockDoRemove($entity);
             }
 
+            /**
+             * @return array<string, string|Closure>
+             */
             protected function getFieldsIndexMultiMapping(): array
             {
                 return [
@@ -140,13 +152,17 @@ final class MockRepositoryTest extends TestCase
         $entity2 = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315', 'Jane');
 
         $repository = new class([$entity1, $entity2]) {
+            /** @use MockRepository<MockEntity> */
             use MockRepository;
 
-            protected function throwOnNotFound($key): void
+            protected function throwOnNotFound(mixed $key): void
             {
                 throw new InvalidArgumentException('No, I has not have that key: ' . $key);
             }
 
+            /**
+             * @return array<string, string>
+             */
             protected function getFieldsIndexMapping(): array
             {
                 return ['last_name' => 'lastName'];
@@ -172,13 +188,17 @@ final class MockRepositoryTest extends TestCase
         $entity2->name = 'Jane';
 
         $repository = new class([$entity1, $entity2]) {
+            /** @use MockRepository<MockEntity> */
             use MockRepository;
 
-            protected function throwOnNotFound($key): void
+            protected function throwOnNotFound(mixed $key): void
             {
                 throw new InvalidArgumentException('No, I has not have that key: ' . $key);
             }
 
+            /**
+             * @return array<string, string>
+             */
             protected function getFieldsIndexMapping(): array
             {
                 return ['Name' => '#name'];
@@ -201,13 +221,17 @@ final class MockRepositoryTest extends TestCase
         $entity2 = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315', 'Jane');
 
         $repository = new class([$entity1, $entity2]) {
+            /** @use MockRepository<MockEntity> */
             use MockRepository;
 
-            protected function throwOnNotFound($key): void
+            protected function throwOnNotFound(mixed $key): void
             {
                 throw new InvalidArgumentException('No, I has not have that key: ' . $key);
             }
 
+            /**
+             * @return array<string, string|Closure>
+             */
             protected function getFieldsIndexMapping(): array
             {
                 return ['last_name' => static fn (MockEntity $entity): string => mb_strtolower($entity->lastName())];
@@ -233,13 +257,17 @@ final class MockRepositoryTest extends TestCase
         $entity2->name = 'Jane';
 
         $repository = new class([$entity1, $entity2]) {
+            /** @use MockRepository<MockEntity> */
             use MockRepository;
 
-            protected function throwOnNotFound($key): void
+            protected function throwOnNotFound(mixed $key): void
             {
                 throw new InvalidArgumentException('No, I has not have that key: ' . $key);
             }
 
+            /**
+             * @return array<string, string|Closure>
+             */
             protected function getFieldsIndexMapping(): array
             {
                 return ['Name' => '#name'];
@@ -276,9 +304,10 @@ final class MockRepositoryTest extends TestCase
         $entity2 = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315');
 
         $repository = new class([$entity1, $entity2]) {
+            /** @use MockRepository<MockEntity> */
             use MockRepository;
 
-            protected function throwOnNotFound($key): void
+            protected function throwOnNotFound(mixed $key): void
             {
                 throw new InvalidArgumentException('No, I has not have that key: ' . $key);
             }
@@ -314,9 +343,10 @@ final class MockRepositoryTest extends TestCase
         $entity2 = new MockEntity('9dab0b6a-0876-11e9-bfd1-acbc32b58315', 'Jane');
 
         $repository = new class([$entity1, $entity2]) {
+            /** @use MockRepository<MockEntity> */
             use MockRepository;
 
-            protected function throwOnNotFound($key): void
+            protected function throwOnNotFound(mixed $key): void
             {
                 throw new InvalidArgumentException('No, I has not have that key: ' . $key);
             }

@@ -58,6 +58,9 @@ class Constraints
      */
     public array $changes = [];
 
+    /**
+     * @param array<string, mixed> $fields
+     */
     public function __construct(array $fields = [])
     {
         $this->storageSize = ByteSize::inf();
@@ -71,7 +74,7 @@ class Constraints
         }
     }
 
-    public function __clone()
+    public function __clone(): void
     {
         $this->email = clone $this->email;
         $this->database = clone $this->database;

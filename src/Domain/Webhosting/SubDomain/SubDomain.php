@@ -69,6 +69,8 @@ class SubDomain
      * Configuration for the web server, normalized.
      *
      * @ORM\Column(type="json")
+     *
+     * @var array<string, string|int|array>
      */
     public array $config = [];
 
@@ -78,6 +80,9 @@ class SubDomain
      */
     public ?Certificate $tlsCert = null;
 
+    /**
+     * @param array<string, string|int|array> $config
+     */
     public function __construct(SubDomainNameId $id, DomainName $host, string $name, string $homeDir, array $config = [])
     {
         Assertion::notNull($host->space, 'DomainName must be assigned to a Space for usage with a SubDomain.', 'host');
@@ -120,6 +125,9 @@ class SubDomain
         $this->active = false;
     }
 
+    /**
+     * @param array<string, string|int|array> $config
+     */
     public function setConfig(array $config): void
     {
         $this->config = $config;

@@ -15,6 +15,9 @@ use ParkManager\Tests\Form\TransformationFailureExtension;
 use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHasherFactory;
 use ParkManager\UI\Web\Form\Type\Security\ChangePasswordType;
+use Symfony\Component\Form\FormExtensionInterface;
+use Symfony\Component\Form\FormTypeExtensionInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 
 /**
@@ -26,6 +29,9 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
 
     private FakePasswordHasherFactory $hasherFactory;
 
+    /**
+     * @return FormExtensionInterface[]
+     */
     protected function getExtensions(): array
     {
         return [
@@ -33,6 +39,9 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
         ];
     }
 
+    /**
+     * @return FormTypeExtensionInterface[]
+     */
     protected function getTypeExtensions(): array
     {
         return [
@@ -53,6 +62,9 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
         parent::setUp();
     }
 
+    /**
+     * @return FormTypeInterface[]
+     */
     protected function getTypes(): array
     {
         return [
@@ -118,14 +130,10 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
     }
 }
 
-class ChangeUserPassword
+/** @internal */
+final class ChangeUserPassword
 {
-    public string $id;
-    public string $password;
-
-    public function __construct(string $id, string $password)
+    public function __construct(public string $id, public string $password)
     {
-        $this->id = $id;
-        $this->password = $password;
     }
 }

@@ -89,6 +89,9 @@ final class ViolationMapper
         return $scope;
     }
 
+    /**
+     * @return array{0: string, 1: string}
+     */
     private function resolveMessageLabel(string $message, string $messageTemplate, FormInterface $form): array
     {
         if (! str_contains($message, '{{ label }}') && ! str_contains($messageTemplate, '{{ label }}')) {

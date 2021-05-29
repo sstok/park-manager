@@ -2,7 +2,11 @@
 
 namespace Symfony\Component\Form;
 
-interface FormInterface
+/**
+ * @extends \Traversable<string|int, FormInterface>
+ * @extends \ArrayAccess<string|int, FormInterface>
+ */
+interface FormInterface extends \ArrayAccess, \Traversable
 {
      /**
       * Returns the model data in the format needed for the underlying object.

@@ -12,13 +12,20 @@ namespace ParkManager\Application\Service\SystemGateway;
 
 abstract class SystemQuery
 {
+    /** @var array<string, mixed> */
     private array $arguments;
 
+    /**
+     * @param array<string, mixed> $arguments
+     */
     protected function __construct(array $arguments)
     {
         $this->arguments = $arguments;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getArguments(): array
     {
         return $this->arguments;

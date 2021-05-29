@@ -53,6 +53,9 @@ final class ParkManagerExtension extends AbstractExtension
                 $this->env = $env;
             }
 
+            /**
+             * @param array<string, mixed> $parameters
+             */
             public function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
             {
                 foreach ($parameters as $name => $value) {
@@ -88,7 +91,7 @@ final class ParkManagerExtension extends AbstractExtension
     }
 
     /**
-     * @param array|string $arguments Can be the locale as a string when $message is a TranslatableInterface
+     * @param array<string, mixed>|string $arguments Can be the locale as a string when $message is a TranslatableInterface
      */
     public function trans(Environment $env, TranslatableInterface | Stringable | string | null $message, array | string $arguments = [], ?string $domain = null, ?string $locale = null, ?int $count = null): string
     {
@@ -123,6 +126,11 @@ final class ParkManagerExtension extends AbstractExtension
         return $this->translator->trans($message, $arguments, $domain, $locale);
     }
 
+    /**
+     * @param array<string, mixed> $attributes
+     *
+     * @return array<string, mixed>
+     */
     public function mergeAttrClass(array $attributes, string $class, bool $append = false): array
     {
         if (! isset($attributes['class'])) {

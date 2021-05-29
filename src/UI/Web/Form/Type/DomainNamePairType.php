@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints\Length;
+use Traversable;
 
 final class DomainNamePairType extends AbstractType implements DataMapperInterface
 {
@@ -50,9 +51,9 @@ final class DomainNamePairType extends AbstractType implements DataMapperInterfa
     }
 
     /**
-     * @param \RecursiveIteratorIterator $forms
+     * @param Traversable<FormInterface> $forms
      */
-    public function mapDataToForms($viewData, iterable $forms): void
+    public function mapDataToForms($viewData, Traversable $forms): void
     {
         if ($viewData === null) {
             return;
@@ -62,21 +63,23 @@ final class DomainNamePairType extends AbstractType implements DataMapperInterfa
             throw new UnexpectedTypeException($viewData, DomainNamePair::class);
         }
 
-        $forms = iterator_to_array($forms);
-        /** @var FormInterface[] $forms */
-        $forms['name']->setData($viewData->name);
-        $forms['suffix']->setData($viewData->tld);
+        /** @var FormInterface[] $fields */
+        $fields = iterator_to_array($forms);
+
+        $fields['name']->setData($viewData->name);
+        $fields['suffix']->setData($viewData->tld);
     }
 
     /**
-     * @param \RecursiveIteratorIterator $forms
+     * @param Traversable<FormInterface> $forms
      */
-    public function mapFormsToData(iterable $forms, &$viewData): void
+    public function mapFormsToData(Traversable $forms, &$viewData): void
     {
-        $forms = iterator_to_array($forms);
-        /** @var FormInterface[] $forms */
-        $name = $forms['name']->getData();
-        $suffix = $forms['suffix']->getData();
+        /** @var FormInterface[] $fields */
+        $fields = iterator_to_array($forms);
+
+        $name = $fields['name']->getData();
+        $suffix = $fields['suffix']->getData();
 
         if ($name === null || $suffix === null) {
             $viewData = null;

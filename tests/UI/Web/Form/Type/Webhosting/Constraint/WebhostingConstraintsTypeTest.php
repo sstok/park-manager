@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type\Webhosting\Constraint;
 
+use Generator;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\DBConstraints;
@@ -65,6 +66,8 @@ final class WebhostingConstraintsTypeTest extends TypeTestCase
     /**
      * @test
      * @dataProvider provideNewConfigs
+     *
+     * @param array<string, mixed> $submit
      */
     public function it_produces_new_config_when_changed(array $submit, Constraints $expectedConstraints): void
     {
@@ -107,12 +110,15 @@ final class WebhostingConstraintsTypeTest extends TypeTestCase
         self::assertThat($form->getData(), new SpaceConstraintsEquals($expectedConstraints));
     }
 
-    public function provideNewConfigs(): iterable
+    /**
+     * @return Generator<string, array{0: array<string, mixed>, 1: Constraints}>
+     */
+    public function provideNewConfigs(): Generator
     {
         $defaultConstraint = new Constraints();
 
-        yield [
-            'storageSize' => [
+        yield 'storageSize' => [
+            [
                 'storageSize' => [
                     'value' => '10.00',
                     'unit' => 'gib',

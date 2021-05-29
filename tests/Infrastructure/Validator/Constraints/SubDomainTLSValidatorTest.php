@@ -172,7 +172,7 @@ final class SubDomainTLSValidatorTest extends ConstraintValidatorTestCase
     {
         $value = AddSubDomain::with('48312d9a-3973-4667-a36d-ffdcebe83526', 'fc280ba8-2474-4112-91f1-f17b111ee945', '@')
             ->andTLSInformation(
-                $cert = <<<'CERT'
+                <<<'CERT'
                     -----BEGIN CERTIFICATE-----
                     MIIDKzCCAhMCCQDZHE66hI+pmjANBgkqhkiG9w0BAQUFADBUMRowGAYDVQQDDBFS
                     b2xsZXJzY2FwZXMgQ0F2MzEVMBMGA1UECgwMUm9sbGVyc2NhcGVzMRIwEAYDVQQH
@@ -194,7 +194,7 @@ final class SubDomainTLSValidatorTest extends ConstraintValidatorTestCase
                     -----END CERTIFICATE-----
                     CERT,
                 new HiddenString(
-                    $privateKey = <<<'PRIV_KEY'
+                    <<<'PRIV_KEY'
                         -----BEGIN RSA PRIVATE KEY-----
                         MIIEogIBAAKCAQEAxTe++fCJwTyCBEP1aGK4/6aEdWxhHLqQAfkOvEdguWnORBkD
                         MGjgwqYT9UXrSxhyRPuIbLPRsyW+ei3y0isudNGZOkedM1FzQicL5DLzgx0zA8tM
@@ -225,7 +225,7 @@ final class SubDomainTLSValidatorTest extends ConstraintValidatorTestCase
                         PRIV_KEY
                 ),
                 [
-                    'root' => $ca = <<<'CA'
+                    'root' => <<<'CA'
                         -----BEGIN CERTIFICATE-----
                         MIIDezCCAmOgAwIBAgIJAJn2g4MHmUlvMA0GCSqGSIb3DQEBBQUAMFQxGjAYBgNV
                         BAMMEVJvbGxlcnNjYXBlcyBDQXYzMRUwEwYDVQQKDAxSb2xsZXJzY2FwZXMxEjAQ

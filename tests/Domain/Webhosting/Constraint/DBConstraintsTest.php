@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\Webhosting\Constraint;
 
+use Generator;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\DBConstraints;
@@ -62,7 +63,7 @@ final class DBConstraintsTest extends TestCase
      * @test
      * @dataProvider provideFields
      */
-    public function its_changeable(string $field, $value): void
+    public function its_changeable(string $field, mixed $value): void
     {
         $constraints = new DBConstraints();
 
@@ -84,7 +85,10 @@ final class DBConstraintsTest extends TestCase
         self::assertNotSame($constraints->{$field}, $new->{$field});
     }
 
-    public function provideFields(): iterable
+    /**
+     * @return Generator<int, array{0: string, 1: mixed}>
+     */
+    public function provideFields(): Generator
     {
         yield ['providedStorageSize', new ByteSize(22, 'GB')];
 

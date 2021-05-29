@@ -14,6 +14,7 @@ use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\ViolationMapper;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRendererInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -31,6 +32,9 @@ abstract class MessageFormTestCase extends TypeTestCase
     /** @var callable|null */
     protected $commandHandler;
 
+    /**
+     * @return FormExtensionInterface[]
+     */
     protected function getExtensions(): array
     {
         return [

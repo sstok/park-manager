@@ -25,6 +25,8 @@ use ParkManager\UI\Web\Form\Type\Webhosting\Subdomain\EditSubDomainType;
 use ParkManager\UI\Web\Form\Type\Webhosting\WebhostingDomainNameSelector;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
+use Symfony\Component\Form\FormExtensionInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ValidatorBuilder;
@@ -44,7 +46,10 @@ final class EditSubDomainTypeTest extends MessageFormTestCase
         return EditSubDomain::class;
     }
 
-    protected function getTypes()
+    /**
+     * @return FormTypeInterface[]
+     */
+    protected function getTypes(): array
     {
         return [
             $this->getMessageType(),
@@ -62,6 +67,9 @@ final class EditSubDomainTypeTest extends MessageFormTestCase
         ), $space, new DomainNamePair('example', 'com'));
     }
 
+    /**
+     * @return FormExtensionInterface[]
+     */
     protected function getExtensions(): array
     {
         return [

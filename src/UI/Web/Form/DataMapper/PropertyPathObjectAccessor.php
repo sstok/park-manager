@@ -37,7 +37,10 @@ final class PropertyPathObjectAccessor implements DataAccessorInterface
         $this->propertyAccessor = $propertyAccessor ?? PropertyAccess::createPropertyAccessor();
     }
 
-    public function getValue($viewData, FormInterface $form)
+    /**
+     * @param array<string, mixed>|object $viewData
+     */
+    public function getValue($viewData, FormInterface $form): mixed
     {
         $propertyPath = $form->getPropertyPath();
 
@@ -54,12 +57,18 @@ final class PropertyPathObjectAccessor implements DataAccessorInterface
         return $this->getPropertyValue($viewData, $propertyPath);
     }
 
+    /**
+     * @param array<string, mixed>|object $viewData
+     */
     public function setValue(&$viewData, $value, FormInterface $form): void
     {
         // No-op. The CommandDataMapper maps to fields directly.
     }
 
-    private function getPropertyValue(mixed $data, string | PropertyPathInterface $propertyPath)
+    /**
+     * @param array<string, mixed>|object $data
+     */
+    private function getPropertyValue(array | object $data, string | PropertyPathInterface $propertyPath): mixed
     {
         try {
             return $this->propertyAccessor->getValue($data, $propertyPath);
@@ -70,11 +79,17 @@ final class PropertyPathObjectAccessor implements DataAccessorInterface
         }
     }
 
+    /**
+     * @param array<string, mixed>|object $viewData
+     */
     public function isReadable($viewData, FormInterface $form): bool
     {
         return $form->getPropertyPath() !== null;
     }
 
+    /**
+     * @param array<string, mixed>|object $viewData
+     */
     public function isWritable($viewData, FormInterface $form): bool
     {
         return $form->getPropertyPath() !== null;

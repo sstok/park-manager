@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Security\Permission;
 
+use ParkManager\Domain\Organization\AccessLevel;
 use ParkManager\Domain\Organization\OrganizationId;
-use ParkManager\Domain\Organization\OrganizationMember;
 use ParkManager\Domain\Organization\OrganizationRepository;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
@@ -60,7 +60,7 @@ final class IsFullOwnerDecider implements PermissionDecider
 
             $org = $this->organizationRepository->get($owner->getId());
 
-            if ($org->hasMember($this->userRepository->get($userId), accessLevel: OrganizationMember::LEVEL_MANAGER)) {
+            if ($org->hasMember($this->userRepository->get($userId), accessLevel: AccessLevel::get('LEVEL_MANAGER'))) {
                 return PermissionDecider::DECIDE_ALLOW;
             }
         }

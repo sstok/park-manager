@@ -19,21 +19,28 @@ use Traversable;
  */
 final class CombinedResultSet implements ResultSet
 {
+    /** @var array<int, ResultSet<mixed>> */
     private array $resultSets;
     private ?int $limit = null;
     private ?int $offset = null;
+    /** @var array<int, string>|null */
     private ?array $ordering = null;
     public ?Expression $expression = null;
+    /** @var array<int, string|int>|null */
     private ?array $limitedToIds = null;
+    /** @var array<int, Traversable>|null */
     private ?array $iterators = null;
     private ?int $nbResults = null;
 
+    /**
+     * @param ResultSet<mixed> ...$resultSets
+     */
     public function __construct(ResultSet ...$resultSets)
     {
         $this->resultSets = $resultSets;
     }
 
-    public function setLimit(?int $limit, ?int $offset = null): self
+    public function setLimit(?int $limit, ?int $offset = null): static
     {
         $this->limit = $limit;
         $this->offset = $offset;
@@ -42,15 +49,20 @@ final class CombinedResultSet implements ResultSet
         return $this;
     }
 
-    public function setOrdering(?string $field, ?string $order): self
+    public function setOrdering(?string $field, ?string $order): static
     {
-        $this->ordering = $field === null ? null : [$field, $order];
+        if ($field === null || $order === null) {
+            $this->ordering = null;
+        } else {
+            $this->ordering = [$field, $order];
+        }
+
         $this->iterators = null;
 
         return $this;
     }
 
-    public function limitToIds(?array $ids): self
+    public function limitToIds(?array $ids): static
     {
         $this->limitedToIds = $ids;
         $this->iterators = null;
@@ -106,7 +118,7 @@ final class CombinedResultSet implements ResultSet
         }
     }
 
-    public function filter(?Expression $expression): ResultSet
+    public function filter(?Expression $expression): static
     {
         $this->expression = $expression;
         $this->iterators = null;

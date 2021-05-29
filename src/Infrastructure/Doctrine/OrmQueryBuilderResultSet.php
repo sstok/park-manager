@@ -29,9 +29,12 @@ final class OrmQueryBuilderResultSet implements ResultSet
     private bool $fetchJoinCollection;
     private ?int $length = null;
     private ?int $offset = null;
+    /** @var array<int, string>|null */
     private ?array $ordering = null;
     private ?Expression $expression = null;
+    /** @var array<int, string|int>|null */
     private ?array $limitedToIds = null;
+    /** @var Paginator<T>|null */
     private ?Paginator $paginator = null;
 
     /**
@@ -45,7 +48,7 @@ final class OrmQueryBuilderResultSet implements ResultSet
         $this->fetchJoinCollection = $fetchJoinCollection;
     }
 
-    public function setLimit(?int $limit, ?int $offset = null): self
+    public function setLimit(?int $limit, ?int $offset = null): static
     {
         $this->length = $limit;
         $this->offset = $offset;
@@ -53,22 +56,27 @@ final class OrmQueryBuilderResultSet implements ResultSet
         return $this;
     }
 
-    public function setOrdering(?string $field, ?string $order): self
+    public function setOrdering(?string $field, ?string $order): static
     {
-        $this->ordering = $field === null ? null : [$field, $order];
+        if ($field === null || $order === null) {
+            $this->ordering = null;
+        } else {
+            $this->ordering = [$field, $order];
+        }
+
         $this->paginator = null;
 
         return $this;
     }
 
-    public function filter(?Expression $expression): self
+    public function filter(?Expression $expression): static
     {
         $this->expression = $expression;
 
         return $this;
     }
 
-    public function limitToIds(?array $ids): self
+    public function limitToIds(?array $ids): static
     {
         $this->limitedToIds = $ids;
         $this->paginator = null;
@@ -103,6 +111,9 @@ final class OrmQueryBuilderResultSet implements ResultSet
         return $this->getNbResults();
     }
 
+    /**
+     * @return Paginator<T>
+     */
     private function getPaginator(): Paginator
     {
         if (isset($this->paginator)) {
