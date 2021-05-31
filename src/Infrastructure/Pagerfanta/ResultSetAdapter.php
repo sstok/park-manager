@@ -32,12 +32,9 @@ final class ResultSetAdapter implements AdapterInterface
     }
 
     /**
-     * @param int $offset
-     * @param int $length
-     *
      * @return \Traversable<array-key, mixed>
      */
-    public function getSlice($offset, $length): \Traversable
+    public function getSlice(int $offset, int $length): \Traversable
     {
         $result = clone $this->resultSet;
         $result->setLimit($length, $offset);
