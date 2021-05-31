@@ -1,0 +1,747 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$password of method ParkManager\\\\Domain\\\\User\\\\User\\:\\:changePassword\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/Application/Command/User/ChangePasswordHandler.php
+
+		-
+			message: "#^Parameter \\#3 \\$constraints of static method ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\:\\:registerWithCustomConstraints\\(\\) expects ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Constraints, ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Constraints\\|null given\\.$#"
+			count: 1
+			path: src/Application/Command/Webhosting/Space/RegisterWebhostingSpaceHandler.php
+
+		-
+			message: "#^Parameter \\#2 \\$level of class ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Exception\\\\WebhostingSpaceIsSuspended constructor expects ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel\\|null given\\.$#"
+			count: 1
+			path: src/Application/Command/Webhosting/Space/RemoveSpaceExpirationDateHandler.php
+
+		-
+			message: "#^Parameter \\#2 \\$level of class ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Exception\\\\WebhostingSpaceIsSuspended constructor expects ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel\\|null given\\.$#"
+			count: 1
+			path: src/Application/Command/Webhosting/Space/TransferSpaceToOwnerHandler.php
+
+		-
+			message: "#^Parameter \\#2 \\$level of class ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Exception\\\\WebhostingSpaceIsSuspended constructor expects ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel\\|null given\\.$#"
+			count: 1
+			path: src/Application/Command/Webhosting/SubDomain/ActivateSubDomainHandler.php
+
+		-
+			message: "#^Parameter \\#2 \\$level of class ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Exception\\\\WebhostingSpaceIsSuspended constructor expects ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel\\|null given\\.$#"
+			count: 1
+			path: src/Application/Command/Webhosting/SubDomain/AddSubDomainHandler.php
+
+		-
+			message: "#^Parameter \\#2 \\$privateKey of method ParkManager\\\\Application\\\\Service\\\\TLS\\\\CertificateFactory\\:\\:createCertificate\\(\\) expects ParagonIE\\\\HiddenString\\\\HiddenString, ParagonIE\\\\HiddenString\\\\HiddenString\\|null given\\.$#"
+			count: 1
+			path: src/Application/Command/Webhosting/SubDomain/AddSubDomainHandler.php
+
+		-
+			message: "#^Parameter \\#2 \\$level of class ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Exception\\\\WebhostingSpaceIsSuspended constructor expects ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel\\|null given\\.$#"
+			count: 1
+			path: src/Application/Command/Webhosting/SubDomain/DeactivateSubDomainHandler.php
+
+		-
+			message: "#^Parameter \\#2 \\$level of class ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Exception\\\\WebhostingSpaceIsSuspended constructor expects ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel\\|null given\\.$#"
+			count: 1
+			path: src/Application/Command/Webhosting/SubDomain/RemoveSubDomainHandler.php
+
+		-
+			message: "#^Argument of an invalid type array\\<int, Traversable\\>\\|null supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: src/Application/Service/CombinedResultSet.php
+
+		-
+			message: "#^Method ParkManager\\\\Application\\\\Service\\\\CombinedResultSet\\:\\:getNbResults\\(\\) should return int but returns int\\|null\\.$#"
+			count: 1
+			path: src/Application/Service/CombinedResultSet.php
+
+		-
+			message: "#^Parameter \\#1 \\$value of static method Assert\\\\Assertion\\:\\:allIsInstanceOf\\(\\) expects array, iterable\\<class\\-string, ParkManager\\\\Domain\\\\OwnerControlledRepository\\<mixed\\>\\> given\\.$#"
+			count: 1
+			path: src/Application/Service/OwnershipUsageList.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function mb_strtolower expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/Application/Service/TLS/CertificateValidator.php
+
+		-
+			message: "#^Cannot access offset 'key' on array\\|false\\|null\\.$#"
+			count: 1
+			path: src/Application/Service/TLS/X509DataExtractor.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\DomainName\\\\DomainName\\:\\:\\$registeredAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
+			count: 1
+			path: src/Domain/DomainName/DomainName.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\DomainName\\\\DomainName\\:\\:\\$updatedAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
+			count: 1
+			path: src/Domain/DomainName/DomainName.php
+
+		-
+			message: "#^Parameter \\#1 \\$start of method Symfony\\\\Component\\\\String\\\\UnicodeString\\:\\:slice\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Domain/DomainName/DomainNamePair.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
+			count: 1
+			path: src/Domain/DomainName/Exception/UseDomainNameException.php
+
+		-
+			message: "#^Parameter \\#1 \\$start of method Symfony\\\\Component\\\\String\\\\UnicodeString\\:\\:slice\\(\\) expects int, int\\|null given\\.$#"
+			count: 1
+			path: src/Domain/EmailAddress.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Organization\\\\Organization\\:\\:findMembership\\(\\) should return array\\(ParkManager\\\\Domain\\\\Organization\\\\OrganizationMember\\|null, int\\) but returns array\\(ParkManager\\\\Domain\\\\Organization\\\\OrganizationMember, int\\|null\\)\\.$#"
+			count: 1
+			path: src/Domain/Organization/Organization.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Organization\\\\Organization\\:\\:\\$registeredAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
+			count: 1
+			path: src/Domain/Organization/Organization.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Organization\\\\Organization\\:\\:\\$updatedAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
+			count: 1
+			path: src/Domain/Organization/Organization.php
+
+		-
+			message: "#^Cannot access property \\$id on ParkManager\\\\Domain\\\\Organization\\\\Organization\\|null\\.$#"
+			count: 1
+			path: src/Domain/Owner.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Owner\\:\\:getLinkedEntity\\(\\) should return ParkManager\\\\Domain\\\\Organization\\\\Organization\\|ParkManager\\\\Domain\\\\User\\\\User but returns ParkManager\\\\Domain\\\\Organization\\\\Organization\\|ParkManager\\\\Domain\\\\User\\\\User\\|null\\.$#"
+			count: 1
+			path: src/Domain/Owner.php
+
+		-
+			message: "#^Cannot call method metadata\\(\\) on Rollerworks\\\\Component\\\\SplitToken\\\\SplitTokenValueHolder\\|null\\.$#"
+			count: 1
+			path: src/Domain/User/User.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\User\\\\User\\:\\:\\$registeredAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
+			count: 1
+			path: src/Domain/User/User.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\User\\\\User\\:\\:\\$updatedAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
+			count: 1
+			path: src/Domain/User/User.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Plan\\:\\:\\$registeredAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/Constraint/Plan.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Plan\\:\\:\\$updatedAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/Constraint/Plan.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\Mailbox\\:\\:\\$registeredAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/Email/Mailbox.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\Mailbox\\:\\:\\$updatedAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/Email/Mailbox.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\:\\:\\$registeredAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/Space/Space.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\:\\:\\$updatedAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/Space/Space.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\SubDomain\\:\\:\\$space \\(ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\) does not accept ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\|null\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/SubDomain.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\CA\\:\\:getContents\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/TLS/CA.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\CA\\:\\:getPublicKey\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/TLS/CA.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\CA\\:\\:\\$contentsString \\(string\\|null\\) does not accept string\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/TLS/CA.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\CA\\:\\:\\$publicKeyString \\(string\\|null\\) does not accept string\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/TLS/CA.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\Certificate\\:\\:getContents\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/TLS/Certificate.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\Certificate\\:\\:getPrivateKey\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/TLS/Certificate.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\Certificate\\:\\:getPublicKey\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/TLS/Certificate.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\Certificate\\:\\:\\$contentsString \\(string\\|null\\) does not accept string\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/TLS/Certificate.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\Certificate\\:\\:\\$privateKeyString \\(string\\|null\\) does not accept string\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/TLS/Certificate.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\Certificate\\:\\:\\$publicKeyString \\(string\\|null\\) does not accept string\\|false\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/TLS/Certificate.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function mb_strtolower expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/Infrastructure/DependencyInjection/Compiler/PermissionShortAliasPass.php
+
+		-
+			message: "#^Cannot call method getIterator\\(\\) on Doctrine\\\\ORM\\\\Tools\\\\Pagination\\\\Paginator\\<T\\>\\|null\\.$#"
+			count: 1
+			path: src/Infrastructure/Doctrine/OrmQueryBuilderResultSet.php
+
+		-
+			message: "#^Call to an undefined method T of object\\:\\:__updateTimestamp\\(\\)\\.$#"
+			count: 1
+			path: src/Infrastructure/Doctrine/Repository/EntityRepository.php
+
+		-
+			message: "#^Parameter \\#1 \\$id of method ParkManager\\\\Domain\\\\Organization\\\\OrganizationRepository\\:\\:get\\(\\) expects ParkManager\\\\Domain\\\\Organization\\\\OrganizationId, ParkManager\\\\Domain\\\\Organization\\\\OrganizationId\\|ParkManager\\\\Domain\\\\User\\\\UserId given\\.$#"
+			count: 1
+			path: src/Infrastructure/Security/Permission/IsFullOwnerDecider.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:setEnv\\(\\)\\.$#"
+			count: 1
+			path: src/Infrastructure/Twig/ParkManagerExtension.php
+
+		-
+			message: "#^Parameter \\#1 \\$translator of method Symfony\\\\Contracts\\\\Translation\\\\TranslatableInterface\\:\\:trans\\(\\) expects Symfony\\\\Contracts\\\\Translation\\\\TranslatorInterface, object given\\.$#"
+			count: 1
+			path: src/Infrastructure/Twig/ParkManagerExtension.php
+
+		-
+			message: "#^Property ParkManager\\\\Infrastructure\\\\Validator\\\\Constraints\\\\DomainNameRegistrable\\:\\:\\$lengthMessage \\(string\\) does not accept string\\|null\\.$#"
+			count: 1
+			path: src/Infrastructure/Validator/Constraints/DomainNameRegistrable.php
+
+		-
+			message: "#^Property ParkManager\\\\Infrastructure\\\\Validator\\\\Constraints\\\\DomainNameRegistrable\\:\\:\\$message \\(string\\) does not accept string\\|null\\.$#"
+			count: 1
+			path: src/Infrastructure/Validator/Constraints/DomainNameRegistrable.php
+
+		-
+			message: "#^Property ParkManager\\\\Infrastructure\\\\Validator\\\\Constraints\\\\DomainNameRegistrable\\:\\:\\$privateMessage \\(string\\) does not accept string\\|null\\.$#"
+			count: 1
+			path: src/Infrastructure/Validator/Constraints/DomainNameRegistrable.php
+
+		-
+			message: "#^Cannot call method toString\\(\\) on Pdp\\\\Domain\\|string\\|Stringable\\.$#"
+			count: 1
+			path: src/Infrastructure/Validator/Constraints/DomainNameRegistrableValidator.php
+
+		-
+			message: "#^Cannot cast Pdp\\\\Domain\\|string\\|Stringable to string\\.$#"
+			count: 4
+			path: src/Infrastructure/Validator/Constraints/DomainNameRegistrableValidator.php
+
+		-
+			message: "#^Parameter \\#1 \\$sets of method ParkManager\\\\Infrastructure\\\\Service\\\\EntityRenderer\\:\\:listedBySet\\(\\) expects array\\<class\\-string, ParkManager\\\\Domain\\\\ResultSet\\<mixed\\>\\>, array\\<string, ParkManager\\\\Domain\\\\ResultSet\\<object\\>\\> given\\.$#"
+			count: 1
+			path: src/UI/Web/Action/Admin/User/RemoveUserAction.php
+
+		-
+			message: "#^Parameter \\#2 \\$token of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:isCsrfTokenValid\\(\\) expects string\\|null, bool\\|float\\|int\\|string\\|null given\\.$#"
+			count: 1
+			path: src/UI/Web/Action/Admin/Webhosting/Plan/SyncWebhostingPlanConstraintsAction.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
+			count: 1
+			path: src/UI/Web/Form/ChoiceList/ResultSetChoiceLoader.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:mergeFrom\\(\\)\\.$#"
+			count: 1
+			path: src/UI/Web/Form/DataMapper/WebhostingConstraintDataMapper.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
+			count: 2
+			path: src/UI/Web/Form/Type/EntityType.php
+
+		-
+			message: "#^Parameter \\#1 \\$certificate of function openssl_x509_read expects OpenSSLCertificate\\|string, string\\|false given\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/PEMCertificateType.php
+
+		-
+			message: "#^Parameter \\#1 \\$haystack of function str_contains expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/PEMCertificateType.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function sodium_memzero expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/PEMCertificateType.php
+
+		-
+			message: "#^Parameter \\#3 \\$caList of class ParkManager\\\\Infrastructure\\\\Validator\\\\Constraints\\\\X509CertificateBundle constructor expects array\\<string, string\\>, array\\<int\\|string, string\\> given\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/PEMCertificateType.php
+
+		-
+			message: "#^Cannot call method getPathname\\(\\) on Symfony\\\\Component\\\\HttpFoundation\\\\File\\\\UploadedFile\\|null\\.$#"
+			count: 3
+			path: src/UI/Web/Form/Type/PEMPrivateKeyType.php
+
+		-
+			message: "#^Parameter \\#1 \\$haystack of function str_contains expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/PEMPrivateKeyType.php
+
+		-
+			message: "#^Parameter \\#1 \\$private_key of function openssl_pkey_get_private expects array\\|OpenSSLAsymmetricKey\\|OpenSSLCertificate\\|string, string\\|false given\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/PEMPrivateKeyType.php
+
+		-
+			message: "#^Parameter \\#2 \\$privateKey of method ParkManager\\\\Application\\\\Command\\\\Webhosting\\\\SubDomain\\\\SubDomainCommand\\:\\:andTLSInformation\\(\\) expects ParagonIE\\\\HiddenString\\\\HiddenString, ParagonIE\\\\HiddenString\\\\HiddenString\\|null given\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Subdomain/AddSubDomainType.php
+
+		-
+			message: "#^Parameter \\#2 \\$privateKey of method ParkManager\\\\Application\\\\Command\\\\Webhosting\\\\SubDomain\\\\SubDomainCommand\\:\\:andTLSInformation\\(\\) expects ParagonIE\\\\HiddenString\\\\HiddenString, ParagonIE\\\\HiddenString\\\\HiddenString\\|null given\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Subdomain/EditSubDomainType.php
+
+		-
+			message: "#^Cannot access property \\$id on ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\|null\\.$#"
+			count: 3
+			path: tests/Application/Command/DomainName/AddDomainNameToSpaceHandlerTest.php
+
+		-
+			message: "#^Cannot access property \\$id on ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\|null\\.$#"
+			count: 3
+			path: tests/Application/Command/DomainName/AssignDomainNameToSpaceHandlerTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$repositories of class ParkManager\\\\Application\\\\Service\\\\OwnershipUsageList constructor expects iterable\\<class\\-string, ParkManager\\\\Domain\\\\OwnerControlledRepository\\<mixed\\>\\>, array\\('space' \\=\\> ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\SpaceRepositoryMock\\) given\\.$#"
+			count: 1
+			path: tests/Application/Command/User/DeleteRegistrationHandlerTest.php
+
+		-
+			message: "#^Cannot call method isExpired\\(\\) on Rollerworks\\\\Component\\\\SplitToken\\\\SplitTokenValueHolder\\|null\\.$#"
+			count: 4
+			path: tests/Application/Command/User/RequestEmailAddressChangeTest.php
+
+		-
+			message: "#^Cannot call method metadata\\(\\) on Rollerworks\\\\Component\\\\SplitToken\\\\SplitTokenValueHolder\\|null\\.$#"
+			count: 2
+			path: tests/Application/Command/User/RequestEmailAddressChangeTest.php
+
+		-
+			message: "#^Cannot call method isExpired\\(\\) on Rollerworks\\\\Component\\\\SplitToken\\\\SplitTokenValueHolder\\|null\\.$#"
+			count: 2
+			path: tests/Application/Command/User/RequestPasswordResetHandlerTest.php
+
+		-
+			message: "#^Cannot access property \\$id on ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\|null\\.$#"
+			count: 3
+			path: tests/Application/Command/Webhosting/Space/RegisterWebhostingSpaceHandlerTest.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Application\\\\Service\\\\OwnershipUsageListTest\\:\\:getEntities\\(\\) should return array\\<int\\|string, array\\<int, object\\>\\|object\\> but returns array\\<string, array\\<int\\|string, array\\<int, object\\>\\|object\\>\\>\\.$#"
+			count: 1
+			path: tests/Application/Service/OwnershipUsageListTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$repositories of class ParkManager\\\\Application\\\\Service\\\\OwnershipUsageList constructor expects iterable\\<class\\-string, ParkManager\\\\Domain\\\\OwnerControlledRepository\\<mixed\\>\\>, array\\('space' \\=\\> ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\SpaceRepositoryMock, 'domainName' \\=\\> ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\DomainName\\\\DomainNameRepositoryMock\\) given\\.$#"
+			count: 2
+			path: tests/Application/Service/OwnershipUsageListTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$email of method ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Constraints\\:\\:setEmail\\(\\) expects ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\EmailConstraints, ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\EmailConstraints\\|null given\\.$#"
+			count: 1
+			path: tests/Application/Service/SpaceConstraint/ConstraintsCheckerTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$excepted of method ParkManager\\\\Tests\\\\Application\\\\Service\\\\TLS\\\\TLSPersistenceRepositoryMock\\:\\:assertEntitiesWereSavedThat\\(\\) expects Closure\\(object\\)\\: bool, Closure\\(ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\CA\\)\\: bool given\\.$#"
+			count: 1
+			path: tests/Application/Service/TLS/CAResolverTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$excepted of method ParkManager\\\\Tests\\\\Application\\\\Service\\\\TLS\\\\TLSPersistenceRepositoryMock\\:\\:assertHasEntityThat\\(\\) expects Closure\\(object\\)\\: bool, Closure\\(ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\CA\\)\\: bool given\\.$#"
+			count: 2
+			path: tests/Application/Service/TLS/CAResolverTest.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:getContents\\(\\)\\.$#"
+			count: 2
+			path: tests/Application/Service/TLS/CertificateFactoryImplTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$excepted of method ParkManager\\\\Tests\\\\Application\\\\Service\\\\TLS\\\\TLSPersistenceRepositoryMock\\:\\:assertEntitiesWereSavedThat\\(\\) expects Closure\\(object\\)\\: bool, Closure\\(ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\Certificate\\)\\: bool given\\.$#"
+			count: 2
+			path: tests/Application/Service/TLS/CertificateFactoryImplTest.php
+
+		-
+			message: "#^Cannot call method getMessage\\(\\) on Throwable\\|null\\.$#"
+			count: 2
+			path: tests/Application/Service/TLS/CertificateValidatorTest.php
+
+		-
+			message: "#^Cannot call method getPrevious\\(\\) on Throwable\\|null\\.$#"
+			count: 2
+			path: tests/Application/Service/TLS/CertificateValidatorTest.php
+
+		-
+			message: "#^Cannot call method validateCertificate\\(\\) on ParkManager\\\\Application\\\\Service\\\\TLS\\\\CertificateValidator\\|null\\.$#"
+			count: 4
+			path: tests/Application/Service/TLS/CertificateValidatorTest.php
+
+		-
+			message: "#^Cannot call method validateCertificateHost\\(\\) on ParkManager\\\\Application\\\\Service\\\\TLS\\\\CertificateValidator\\|null\\.$#"
+			count: 4
+			path: tests/Application/Service/TLS/CertificateValidatorTest.php
+
+		-
+			message: "#^Cannot call method validateCertificatePurpose\\(\\) on ParkManager\\\\Application\\\\Service\\\\TLS\\\\CertificateValidator\\|null\\.$#"
+			count: 2
+			path: tests/Application/Service/TLS/CertificateValidatorTest.php
+
+		-
+			message: "#^Cannot call method validateCertificateSupport\\(\\) on ParkManager\\\\Application\\\\Service\\\\TLS\\\\CertificateValidator\\|null\\.$#"
+			count: 1
+			path: tests/Application/Service/TLS/CertificateValidatorTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$suffixManager of class ParkManager\\\\Application\\\\Service\\\\TLS\\\\CertificateValidator constructor expects ParkManager\\\\Application\\\\Service\\\\PdpManager, ParkManager\\\\Application\\\\Service\\\\PdpManager\\|null given\\.$#"
+			count: 3
+			path: tests/Application/Service/TLS/CertificateValidatorTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$suffixManager of class ParkManager\\\\Tests\\\\Application\\\\Service\\\\TLS\\\\FakedCertificateValidator constructor expects ParkManager\\\\Application\\\\Service\\\\PdpManager, ParkManager\\\\Application\\\\Service\\\\PdpManager\\|null given\\.$#"
+			count: 2
+			path: tests/Application/Service/TLS/CertificateValidatorTest.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:getContents\\(\\)\\.$#"
+			count: 1
+			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:getId\\(\\)\\.$#"
+			count: 1
+			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
+			count: 3
+			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
+
+		-
+			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
+			count: 6
+			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
+			count: 27
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
+			count: 54
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:getContents\\(\\)\\.$#"
+			count: 1
+			path: tests/Domain/Webhosting/Subdomain/TLS/CertificateTest.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:getPrivateKey\\(\\)\\.$#"
+			count: 1
+			path: tests/Domain/Webhosting/Subdomain/TLS/CertificateTest.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:getPublicKey\\(\\)\\.$#"
+			count: 1
+			path: tests/Domain/Webhosting/Subdomain/TLS/CertificateTest.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
+			count: 1
+			path: tests/Infrastructure/Doctrine/EntityRepositoryTestCase.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:get\\(\\)\\.$#"
+			count: 1
+			path: tests/Infrastructure/Doctrine/EntityRepositoryTestCase.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
+			count: 1
+			path: tests/Infrastructure/Doctrine/EntityRepositoryTestCase.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Infrastructure\\\\Doctrine\\\\EntityRepositoryTestCase\\:\\:getEntityManager\\(\\) should return Doctrine\\\\ORM\\\\EntityManagerInterface but returns object\\|null\\.$#"
+			count: 1
+			path: tests/Infrastructure/Doctrine/EntityRepositoryTestCase.php
+
+		-
+			message: "#^Cannot access property \\$id on ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\|null\\.$#"
+			count: 1
+			path: tests/Infrastructure/Doctrine/Repository/DomainNameOrmRepositoryTest.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
+			count: 1
+			path: tests/Infrastructure/Messenger/DomainNameSpaceAssignmentValidatorTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$comparator of method SebastianBergmann\\\\Comparator\\\\Factory\\:\\:unregister\\(\\) expects SebastianBergmann\\\\Comparator\\\\Comparator, ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\ConstraintViolationComparator\\|null given\\.$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/DomainNameRegistrableValidatorTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$comparator of method SebastianBergmann\\\\Comparator\\\\Factory\\:\\:unregister\\(\\) expects SebastianBergmann\\\\Comparator\\\\Comparator, ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\ConstraintViolationComparator\\|null given\\.$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/DomainNameSuffixValidatorTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$certificate of class ParkManager\\\\Infrastructure\\\\Validator\\\\Constraints\\\\X509CertificateBundle constructor expects string, string\\|null given\\.$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/SubDomainTLSValidatorTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$comparator of method SebastianBergmann\\\\Comparator\\\\Factory\\:\\:unregister\\(\\) expects SebastianBergmann\\\\Comparator\\\\Comparator, ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\ConstraintViolationComparator\\|null given\\.$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/X509ValidatorTestCase.php
+
+		-
+			message: "#^Cannot call method getTotalUsage\\(\\) on ParkManager\\\\Application\\\\Service\\\\Webhosting\\\\TrafficStats\\\\TrafficReport\\|null\\.$#"
+			count: 1
+			path: tests/Mock/Application/Service/Webhosting/TrafficStats/TrafficStatisticsProviderMock.php
+
+		-
+			message: "#^Cannot call method startOfDay\\(\\) on Carbon\\\\CarbonImmutable\\|false\\.$#"
+			count: 1
+			path: tests/Mock/Application/Service/Webhosting/TrafficStats/TrafficStatisticsProviderMock.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
+			count: 3
+			path: tests/Mock/Domain/DomainName/DomainNameRepositoryMock.php
+
+		-
+			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
+			count: 6
+			path: tests/Mock/Domain/DomainName/DomainNameRepositoryMock.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
+			count: 3
+			path: tests/Mock/Domain/DomainName/SubDomainRepositoryMock.php
+
+		-
+			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
+			count: 6
+			path: tests/Mock/Domain/DomainName/SubDomainRepositoryMock.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
+			count: 1
+			path: tests/Mock/Domain/MockRepoResultSet.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
+			count: 3
+			path: tests/Mock/Domain/Organization/OrganizationRepositoryMock.php
+
+		-
+			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
+			count: 6
+			path: tests/Mock/Domain/Organization/OrganizationRepositoryMock.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
+			count: 3
+			path: tests/Mock/Domain/OwnerRepositoryMock.php
+
+		-
+			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
+			count: 6
+			path: tests/Mock/Domain/OwnerRepositoryMock.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
+			count: 3
+			path: tests/Mock/Domain/UserRepositoryMock.php
+
+		-
+			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
+			count: 6
+			path: tests/Mock/Domain/UserRepositoryMock.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
+			count: 3
+			path: tests/Mock/Domain/Webhosting/ForwardRepositoryMock.php
+
+		-
+			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
+			count: 6
+			path: tests/Mock/Domain/Webhosting/ForwardRepositoryMock.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
+			count: 3
+			path: tests/Mock/Domain/Webhosting/MailboxRepositoryMock.php
+
+		-
+			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
+			count: 6
+			path: tests/Mock/Domain/Webhosting/MailboxRepositoryMock.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
+			count: 3
+			path: tests/Mock/Domain/Webhosting/PlanRepositoryMock.php
+
+		-
+			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
+			count: 6
+			path: tests/Mock/Domain/Webhosting/PlanRepositoryMock.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
+			count: 3
+			path: tests/Mock/Domain/Webhosting/SpaceRepositoryMock.php
+
+		-
+			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
+			count: 6
+			path: tests/Mock/Domain/Webhosting/SpaceRepositoryMock.php
+
+		-
+			message: "#^Parameter \\#1 \\$body of class Symfony\\\\Component\\\\HttpClient\\\\Response\\\\MockResponse constructor expects iterable\\<string\\>\\|string, string\\|false given\\.$#"
+			count: 2
+			path: tests/Mock/PdpMockProvider.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function rawurldecode expects string, string\\|false given\\.$#"
+			count: 1
+			path: tests/UI/Web/Action/Security/ConfirmPasswordResetActionTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function trim expects string, string\\|null given\\.$#"
+			count: 1
+			path: tests/UI/Web/Action/Security/ConfirmPasswordResetActionTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$email of static method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Test\\\\KernelTestCase\\:\\:assertEmailHeaderSame\\(\\) expects Symfony\\\\Component\\\\Mime\\\\RawMessage, Symfony\\\\Component\\\\Mime\\\\RawMessage\\|null given\\.$#"
+			count: 1
+			path: tests/UI/Web/Action/Security/RequestPasswordResetActionTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$email of static method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Test\\\\KernelTestCase\\:\\:assertEmailTextBodyContains\\(\\) expects Symfony\\\\Component\\\\Mime\\\\RawMessage, Symfony\\\\Component\\\\Mime\\\\RawMessage\\|null given\\.$#"
+			count: 1
+			path: tests/UI/Web/Action/Security/RequestPasswordResetActionTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function rawurldecode expects string, string\\|false given\\.$#"
+			count: 1
+			path: tests/UI/Web/Action/Security/RequestPasswordResetActionTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function trim expects string, string\\|null given\\.$#"
+			count: 1
+			path: tests/UI/Web/Action/Security/RequestPasswordResetActionTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<object\\>, string given\\.$#"
+			count: 1
+			path: tests/UI/Web/ArgumentResolver/ModelResolverTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$response of method ParkManager\\\\Tests\\\\UI\\\\Web\\\\EventListener\\\\RouteRedirectResponseListenerTest\\:\\:assertResponseIsRedirect\\(\\) expects object, Symfony\\\\Component\\\\HttpFoundation\\\\Response\\|null given\\.$#"
+			count: 3
+			path: tests/UI/Web/EventListener/RouteRedirectResponseListenerTest.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Form\\\\FormError\\|Symfony\\\\Component\\\\Form\\\\FormErrorIterator\\:\\:getCause\\(\\)\\.$#"
+			count: 1
+			path: tests/UI/Web/Form/MessageFormTestCase.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Form\\\\FormError\\|Symfony\\\\Component\\\\Form\\\\FormErrorIterator\\:\\:getMessage\\(\\)\\.$#"
+			count: 1
+			path: tests/UI/Web/Form/MessageFormTestCase.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Form\\\\FormError\\|Symfony\\\\Component\\\\Form\\\\FormErrorIterator\\:\\:getOrigin\\(\\)\\.$#"
+			count: 2
+			path: tests/UI/Web/Form/MessageFormTestCase.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function trim expects string, string\\|null given\\.$#"
+			count: 1
+			path: tests/UI/Web/Form/MessageFormTestCase.php
+
+		-
+			message: "#^Cannot call method getMessage\\(\\) on Symfony\\\\Component\\\\Form\\\\Exception\\\\TransformationFailedException\\|null\\.$#"
+			count: 1
+			path: tests/UI/Web/Form/Type/ByteSizeTypeTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$label of class Symfony\\\\Component\\\\Form\\\\ChoiceList\\\\View\\\\ChoiceView constructor expects string\\|Symfony\\\\Component\\\\Translation\\\\TranslatableMessage\\|false, string\\|null given\\.$#"
+			count: 4
+			path: tests/UI/Web/Form/Type/EntityTypeTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function trim expects string, string\\|null given\\.$#"
+			count: 1
+			path: tests/UI/Web/Form/Type/MessageFormTypeTest.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\UI\\\\Web\\\\Form\\\\Type\\\\Mocks\\\\FakePasswordHasherFactory\\:\\:getPasswordHasher\\(\\) should return Symfony\\\\Component\\\\PasswordHasher\\\\PasswordHasherInterface but returns object\\.$#"
+			count: 1
+			path: tests/UI/Web/Form/Type/Mocks/FakePasswordHasherFactory.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Form\\\\FormError\\|Symfony\\\\Component\\\\Form\\\\FormErrorIterator\\:\\:getMessage\\(\\)\\.$#"
+			count: 1
+			path: tests/UI/Web/Form/Type/Security/SplitTokenTypeTest.php
+
