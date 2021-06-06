@@ -13,7 +13,9 @@ namespace ParkManager\Infrastructure\Security\EventListener;
 use ParkManager\Application\Event\UserPasswordWasChanged;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
 /**
  * Updates the current AuthenticationToken when the *current* user changes
@@ -38,6 +40,11 @@ final class AuthenticationTokenPasswordChangedListener
             return;
         }
 
+        // Don't update when the token is actually an impersonation.
+        if ($token instanceof SwitchUserToken) {
+            return;
+        }
+
         $user = $token->getUser();
 
         if (! $user instanceof SecurityUser) {
@@ -55,9 +62,7 @@ final class AuthenticationTokenPasswordChangedListener
             return;
         }
 
-        $token->setUser($user);
-        $token->setAuthenticated(true); // User was changed, so re-mark authenticated.
-
+        $token = new PostAuthenticationToken($user, $token->getFirewallName(), $token->getRoleNames());
         $this->tokenStorage->setToken($token);
     }
 }

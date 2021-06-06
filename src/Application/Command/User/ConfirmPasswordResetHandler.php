@@ -24,14 +24,14 @@ final class ConfirmPasswordResetHandler
 
     public function __invoke(ConfirmPasswordReset $command): void
     {
-        $token = $command->token();
+        $token = $command->token;
         $user = $this->repository->getByPasswordResetToken($token->selector());
 
         // Cannot use finally here as the exception triggers the global exception handler
         // making the overall process unpredictable.
 
         try {
-            $user->confirmPasswordReset($token, $command->password());
+            $user->confirmPasswordReset($token, $command->password);
             $this->repository->save($user);
         } catch (PasswordResetTokenNotAccepted $e) {
             $this->repository->save($user);

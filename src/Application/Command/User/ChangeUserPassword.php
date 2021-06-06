@@ -20,18 +20,17 @@ final class ChangeUserPassword
     public UserId $id;
 
     /**
-     * READ-ONLY: The password in hash-encoded format or null
-     * to disable password based authentication.
+     * READ-ONLY: The password in hash-encoded format.
      */
-    public ?string $password;
+    public string $password;
 
     public bool $temporary = false;
 
     /**
-     * @param string|null $password The password in hash-encoded format or null
-     *                              to disable password based authentication
+     * @param string $password The password in hash-encoded format or null
+     *                         to disable password based authentication
      */
-    public function __construct(string | UserId $id, ?string $password, bool $temporary = false)
+    public function __construct(string | UserId $id, string $password, bool $temporary = false)
     {
         if (\is_string($id)) {
             $id = UserId::fromString($id);

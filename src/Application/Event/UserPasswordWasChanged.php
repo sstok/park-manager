@@ -15,21 +15,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 final class UserPasswordWasChanged extends Event
 {
     public string $id;
-    public ?string $password;
+    public string $password;
 
-    public function __construct(string $id, ?string $newPassword = null)
+    public function __construct(string $id, string $newPassword)
     {
         $this->id = $id;
         $this->password = $newPassword;
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function getNewPassword(): ?string
-    {
-        return $this->password;
     }
 }

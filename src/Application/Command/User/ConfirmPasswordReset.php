@@ -25,14 +25,4 @@ final class ConfirmPasswordReset
         $this->token = $token;
         $this->password = $password;
     }
-
-    public function token(): SplitToken
-    {
-        return $this->token;
-    }
-
-    public function password(): string
-    {
-        return $this->password;
-    }
 }
