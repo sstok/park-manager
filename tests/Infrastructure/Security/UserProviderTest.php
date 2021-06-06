@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Security;
 
+use Carbon\CarbonImmutable;
+use ParkManager\Application\Command\User\ChangeUserPassword;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\MalformedEmailAddress;
 use ParkManager\Domain\Exception\NotFoundException;
@@ -17,8 +19,12 @@ use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\Infrastructure\Security\UserProvider;
+use ParkManager\Tests\Mock\Application\Service\SpyingMessageBus;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Messenger\Handler\HandlersLocator;
+use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -36,7 +42,7 @@ final class UserProviderTest extends TestCase
     /** @test */
     public function it_only_supports_security_user(): void
     {
-        $provider = new UserProvider(new UserRepositoryMock());
+        $provider = new UserProvider(new UserRepositoryMock(), new SpyingMessageBus());
 
         self::assertTrue($provider->supportsClass(SecurityUser::class));
         self::assertFalse($provider->supportsClass('SecurityUser'));
@@ -46,7 +52,7 @@ final class UserProviderTest extends TestCase
     /** @test */
     public function it_fails_when_no_result_was_found(): void
     {
-        $provider = new UserProvider(new UserRepositoryMock());
+        $provider = new UserProvider(new UserRepositoryMock(), new SpyingMessageBus());
 
         try {
             $provider->loadUserByIdentifier('foobar@example.com');
@@ -62,7 +68,7 @@ final class UserProviderTest extends TestCase
     /** @test */
     public function it_fails_when_email_address_is_invalid(): void
     {
-        $provider = new UserProvider(new UserRepositoryMock());
+        $provider = new UserProvider(new UserRepositoryMock(), new SpyingMessageBus());
 
         try {
             $provider->loadUserByIdentifier('foobar@');
@@ -78,7 +84,7 @@ final class UserProviderTest extends TestCase
     /** @test */
     public function it_throws_fails_when_no_result_was_found_for_refreshing(): void
     {
-        $provider = new UserProvider(new UserRepositoryMock());
+        $provider = new UserProvider(new UserRepositoryMock(), new SpyingMessageBus());
 
         try {
             $provider->refreshUser(new SecurityUser(self::USER_ID1, 'nope', true, ['ROLE_USER']));
@@ -94,7 +100,7 @@ final class UserProviderTest extends TestCase
     /** @test */
     public function it_throws_fails_when_unsupported_user_was_provided_for_refreshing(): void
     {
-        $provider = new UserProvider(new UserRepositoryMock());
+        $provider = new UserProvider(new UserRepositoryMock(), new SpyingMessageBus());
 
         $this->expectException(UnsupportedUserException::class);
         $this->expectExceptionMessage(sprintf('Expected an instance of %s, but got ', SecurityUser::class));
@@ -105,7 +111,7 @@ final class UserProviderTest extends TestCase
     /** @test */
     public function it_provides_a_security_user(): void
     {
-        $provider = new UserProvider($this->createUserRepositoryStub());
+        $provider = new UserProvider($this->createUserRepositoryStub(), new SpyingMessageBus());
 
         self::assertEquals(new SecurityUser(self::USER_ID1, 'maybe', true, ['ROLE_USER']), $provider->loadUserByIdentifier('foobar@example.com'));
         self::assertEquals(new SecurityUser(self::USER_ID2, 'maybe', true, ['ROLE_USER']), $provider->loadUserByIdentifier('bar@example.com'));
@@ -125,7 +131,7 @@ final class UserProviderTest extends TestCase
     /** @test */
     public function it_refreshes_a_security_user(): void
     {
-        $provider = new UserProvider($userRepo = $this->createUserRepositoryStub());
+        $provider = new UserProvider($userRepo = $this->createUserRepositoryStub(), new SpyingMessageBus());
         $securityUser = $provider->loadUserByIdentifier('foobar@example.com');
 
         $user = $userRepo->get(UserId::fromString(self::USER_ID1));
@@ -133,5 +139,50 @@ final class UserProviderTest extends TestCase
         $userRepo->save($user);
 
         self::assertEquals(new SecurityUser(self::USER_ID1, 'new-password-is-here', true, ['ROLE_USER']), $provider->refreshUser($securityUser));
+    }
+
+    /** @test */
+    public function it_upgrades_password(): void
+    {
+        $messageBus = new SpyingMessageBus();
+
+        $provider = new UserProvider($this->createUserRepositoryStub(), $messageBus);
+        $securityUser = $provider->loadUserByIdentifier('foobar@example.com');
+
+        $provider->upgradePassword($securityUser, $newHashedPassword = 'look-@-me.I am the new password now');
+
+        self::assertEquals([new ChangeUserPassword($securityUser->getId(), $newHashedPassword)], $messageBus->dispatchedMessages);
+    }
+
+    /** @test */
+    public function it_rejects_password_upgrade_when_password_is_expired(): void
+    {
+        $userRepository = $this->createUserRepositoryStub();
+        $user = $userRepository->get(UserId::fromString(self::USER_ID1));
+        $user->expirePasswordOn(new CarbonImmutable('2 days ago'));
+        $userRepository->save($user);
+
+        $messageBus = new SpyingMessageBus();
+        $provider = new UserProvider($userRepository, $messageBus);
+        $securityUser = $provider->loadUserByIdentifier('foobar@example.com');
+
+        $provider->upgradePassword($securityUser, 'look-@-me.I am the new password now');
+
+        self::assertEquals([], $messageBus->dispatchedMessages);
+    }
+
+    /**
+     * @test
+     * @doesNotPerformAssertions
+     */
+    public function it_continues_gracefully_when_upgrade_fails(): void
+    {
+        // No handler registered.
+        $messageBus = new MessageBus([new HandleMessageMiddleware(new HandlersLocator([]))]);
+
+        $provider = new UserProvider($this->createUserRepositoryStub(), $messageBus);
+        $securityUser = $provider->loadUserByIdentifier('foobar@example.com');
+
+        $provider->upgradePassword($securityUser, 'look-@-me.I am the new password now');
     }
 }

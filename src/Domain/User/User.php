@@ -290,4 +290,9 @@ class User
 
         return $this->passwordExpiresOn->isPast();
     }
+
+    public function hasPasswordResetPending(): bool
+    {
+        return $this->passwordResetToken !== null && ! $this->passwordResetToken->isExpired(CarbonImmutable::now());
+    }
 }
