@@ -86,4 +86,9 @@ final class UserProvider implements UserProviderInterface, PasswordUpgraderInter
     {
         return $class === SecurityUser::class;
     }
+
+    public function loadUserByUsername(string $username)
+    {
+        return $this->loadUserByIdentifier($username);
+    }
 }
