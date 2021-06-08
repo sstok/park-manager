@@ -9,7 +9,6 @@
         "hosting"
     ],
     "homepage": "http://www.park-manager.com/",
-    "version": "0.3-dev",
     "license": "MPL-2.0",
     "authors": [
         {
@@ -49,11 +48,11 @@
         "symfony/flex": "^1.3.0",
         "symfony/form": "*",
         "symfony/framework-bundle": "*",
-        "symfony/lock": "^5.1",
+        "symfony/lock": "*",
         "symfony/mailer": "*",
         "symfony/messenger": "*",
         "symfony/monolog-bundle": "^3.1",
-        "symfony/runtime": "^5.3",
+        "symfony/runtime": "*",
         "symfony/security-bundle": "*",
         "symfony/translation": "*",
         "symfony/twig-bundle": "*",
@@ -118,9 +117,9 @@
     },
     "extra": {
         "symfony": {
+            "allow-contrib": true,
             "id": "01BF6RBYGY5V4S3FDMBNKXVVNS",
-            "require": "^5.3",
-            "allow-contrib": true
+            "require": "^5.3"
         }
     },
     "autoload": {
