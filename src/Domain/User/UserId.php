@@ -12,8 +12,9 @@ namespace ParkManager\Domain\User;
 
 use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\UuidTrait;
+use Stringable;
 
-final class UserId implements \Stringable
+final class UserId implements Stringable
 {
     use UuidTrait;
 

@@ -19,16 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class RequestPasswordResetAction
 {
-    /**
-     * @Route(
-     *     path="/password-reset",
-     *     name="park_manager.security_request_password_reset",
-     *     methods={"GET", "POST"}
-     * )
-     *
-     * @return RouteRedirectResponse|TwigResponse
-     */
-    public function __invoke(Request $request, FormFactoryInterface $formFactory): object
+    #[Route(path: '/password-reset', name: 'park_manager.security_request_password_reset', methods: ['GET', 'POST'])]
+    public function __invoke(Request $request, FormFactoryInterface $formFactory): RouteRedirectResponse | TwigResponse
     {
         $form = $formFactory->create(RequestPasswordResetType::class);
         $form->handleRequest($request);

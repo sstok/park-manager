@@ -15,15 +15,11 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class AssignPlanToSpace
 {
-    public PlanId $plan;
-    public SpaceId $space;
-    public bool $withConstraints;
-
-    private function __construct(PlanId $plan, SpaceId $space, bool $withConstraints = true)
-    {
-        $this->plan = $plan;
-        $this->space = $space;
-        $this->withConstraints = $withConstraints;
+    private function __construct(
+        public PlanId $plan,
+        public SpaceId $space,
+        public bool $withConstraints = true
+    ) {
     }
 
     public static function withConstraints(PlanId $plan, SpaceId $space): self

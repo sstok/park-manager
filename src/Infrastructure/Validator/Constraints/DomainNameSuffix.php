@@ -32,16 +32,12 @@ final class DomainNameSuffix extends Constraint
         self::ICANN_UNKNOWN => 'ICANN_UNKNOWN',
     ];
 
-    public bool $requireICANN;
-
     public function __construct(
         array $options = [],
         ?array $groups = null,
         mixed $payload = null,
-        bool $requireICANN = true,
+        public bool $requireICANN = true,
     ) {
         parent::__construct($options, $groups, $payload);
-
-        $this->requireICANN = $requireICANN;
     }
 }

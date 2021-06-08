@@ -11,8 +11,9 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\Email;
 
 use ParkManager\Domain\UuidTrait;
+use Stringable;
 
-final class ForwardId implements \Stringable
+final class ForwardId implements Stringable
 {
     use UuidTrait;
 }

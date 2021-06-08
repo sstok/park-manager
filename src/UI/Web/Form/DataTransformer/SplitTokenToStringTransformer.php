@@ -14,14 +14,12 @@ use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenFactory;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
+use Throwable;
 
 final class SplitTokenToStringTransformer implements DataTransformerInterface
 {
-    private SplitTokenFactory $splitTokenFactory;
-
-    public function __construct(SplitTokenFactory $splitTokenFactory)
+    public function __construct(private SplitTokenFactory $splitTokenFactory)
     {
-        $this->splitTokenFactory = $splitTokenFactory;
     }
 
     public function transform($value): string
@@ -50,7 +48,7 @@ final class SplitTokenToStringTransformer implements DataTransformerInterface
 
         try {
             return $this->splitTokenFactory->fromString($value);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new TransformationFailedException('Invalid SplitToken provided.', 0, $e);
         }
     }

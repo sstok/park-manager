@@ -16,13 +16,10 @@ use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class AssignConstraintsToSpaceHandler
 {
-    private WebhostingSpaceRepository $spaceRepository;
-    private ApplicabilityChecker $applicabilityChecker;
-
-    public function __construct(WebhostingSpaceRepository $spaceRepository, ApplicabilityChecker $applicabilityChecker)
-    {
-        $this->spaceRepository = $spaceRepository;
-        $this->applicabilityChecker = $applicabilityChecker;
+    public function __construct(
+        private WebhostingSpaceRepository $spaceRepository,
+        private ApplicabilityChecker $applicabilityChecker
+    ) {
     }
 
     public function __invoke(AssignConstraintsToSpace $command): void

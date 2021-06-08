@@ -19,13 +19,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ViolationMapper
 {
-    private TranslatorInterface $translator;
-    private FormRendererInterface $formRenderer;
-
-    public function __construct(TranslatorInterface $translator, FormRendererInterface $formRenderer)
+    public function __construct(private TranslatorInterface $translator, private FormRendererInterface $formRenderer)
     {
-        $this->translator = $translator;
-        $this->formRenderer = $formRenderer;
     }
 
     public function mapViolation(ConstraintViolationInterface $violation, FormInterface $form): void

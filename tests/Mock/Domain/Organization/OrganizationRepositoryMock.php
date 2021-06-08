@@ -26,18 +26,14 @@ final class OrganizationRepositoryMock implements OrganizationRepository
         __construct as mockConstructor;
     }
 
-    private UserRepository $userRepository;
-
     /**
      * @param array<int, Organization> $initialEntities
      */
-    public function __construct(UserRepository $userRepository, array $initialEntities = [])
+    public function __construct(private UserRepository $userRepository, array $initialEntities = [])
     {
         $initialEntities[] = new Organization(OrganizationId::fromString(OrganizationId::ADMIN_ORG), 'Administrators');
 
         $this->mockConstructor($initialEntities);
-
-        $this->userRepository = $userRepository;
     }
 
     protected function throwOnNotFound(mixed $key): void

@@ -17,17 +17,12 @@ use ParkManager\Infrastructure\Validator\Constraints\RegistrableDomainName;
 
 final class AddDomainName
 {
-    public DomainNameId $id;
-    public OwnerId $owner;
-
-    #[RegistrableDomainName]
-    public DomainNamePair $name;
-
-    public function __construct(DomainNameId $id, OwnerId $owner, DomainNamePair $name)
-    {
-        $this->id = $id;
-        $this->owner = $owner;
-        $this->name = $name;
+    public function __construct(
+        public DomainNameId $id,
+        public OwnerId $owner,
+        #[RegistrableDomainName]
+        public DomainNamePair $name
+    ) {
     }
 
     public static function with(string $id, string $ownerId, string $name, string $tld): self

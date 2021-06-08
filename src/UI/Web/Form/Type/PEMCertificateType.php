@@ -96,7 +96,7 @@ final class PEMCertificateType extends AbstractType implements DataMapperInterfa
             return;
         }
 
-        $certificate = $this->extractCertData($certificate, true);
+        $certificate = $this->extractCertData($certificate);
         $privateKey = isset($fields['privateKey']) ? $fields['privateKey']->getData() : null;
         $caList = [];
 
@@ -109,7 +109,7 @@ final class PEMCertificateType extends AbstractType implements DataMapperInterfa
         $viewData = new X509CertificateBundle($certificate, $privateKey, $caList);
     }
 
-    private function extractCertData(UploadedFile $certificate, bool $checkForPrivate = false): string
+    private function extractCertData(UploadedFile $certificate): string
     {
         $x509Read = @openssl_x509_read($fileContents = file_get_contents($certificate->getPathname()));
 

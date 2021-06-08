@@ -15,13 +15,8 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class TransferSpaceToOwner
 {
-    public SpaceId $space;
-    public OwnerId $newOwner;
-
-    public function __construct(SpaceId $space, OwnerId $newOwner)
+    public function __construct(public SpaceId $space, public OwnerId $newOwner)
     {
-        $this->space = $space;
-        $this->newOwner = $newOwner;
     }
 
     public static function with(string $id, string $newOwner): self

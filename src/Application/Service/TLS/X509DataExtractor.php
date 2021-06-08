@@ -13,6 +13,8 @@ namespace ParkManager\Application\Service\TLS;
 use Carbon\Carbon;
 use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Application\Service\TLS\Violation\UnprocessablePEM;
+use RuntimeException;
+use Throwable;
 
 final class X509DataExtractor
 {
@@ -50,7 +52,7 @@ final class X509DataExtractor
 
         try {
             $fingerprint = openssl_x509_fingerprint($x509Read, $rawData['signatureTypeSN']) ?: '';
-        } catch (\Throwable) {
+        } catch (Throwable) {
             $fingerprint = '';
         }
 
@@ -127,14 +129,14 @@ final class X509DataExtractor
             // Note that the KeyValidator will already check if the key is in-fact valid.
             // This failure will only happen in exceptional situations.
             if ($r === false) {
-                throw new \RuntimeException('Unable to read private key-data, invalid key provided?');
+                throw new RuntimeException('Unable to read private key-data, invalid key provided?');
             }
 
             // @codeCoverageIgnoreStart
             $details = openssl_pkey_get_details($r);
 
             if ($details === false) {
-                throw new \RuntimeException('Unable to read private key-data. Unknown error.');
+                throw new RuntimeException('Unable to read private key-data. Unknown error.');
             }
         } finally {
             unset($r);

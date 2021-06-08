@@ -18,13 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ShowUserAction
 {
-    /**
-     * @Route(
-     *     path="/user/{user}/show",
-     *     methods={"GET", "HEAD"},
-     *     name="park_manager.admin.show_user"
-     * )
-     */
+    #[Route(path: '/user/{user}/show', methods: ['GET', 'HEAD'], name: 'park_manager.admin.show_user')]
     public function __invoke(Request $request, User $user): Response
     {
         return new TwigResponse('admin/user/show.html.twig', ['user' => $user]);

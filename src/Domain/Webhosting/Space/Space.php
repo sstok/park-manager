@@ -17,7 +17,17 @@ use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Embedded;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OrderBy;
+use Doctrine\ORM\Mapping\Table;
+use DomainException;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Owner;
@@ -26,48 +36,16 @@ use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Space\Exception\InvalidStatus;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="space")
- */
+#[Entity]
+#[Table(name: 'space')]
 class Space
 {
     use TimestampableTrait;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="park_manager_webhosting_space_id")
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    public SpaceId $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Plan::class)
-     * @ORM\JoinColumn(nullable=true, name="plan_id", referencedColumnName="id", onDelete="RESTRICT")
-     */
-    public ?Plan $plan = null;
-
-    /**
-     * READ-ONLY.
-     *
-     * @ORM\Embedded(class=Constraints::class, columnPrefix="constraint_")
-     */
-    public Constraints $constraints;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Owner::class)
-     * @ORM\JoinColumn(name="owner", referencedColumnName="owner_id", onDelete="RESTRICT")
-     */
-    public Owner $owner;
-
-    /**
-     * @ORM\Column(name="expires_on", type="datetime_immutable", nullable=true)
-     */
+    #[Column(name: 'expires_on', type: 'datetime_immutable', nullable: true)]
     public ?DateTimeImmutable $expirationDate = null;
 
-    /**
-     * @ORM\Column(name="marked_for_removal", type="boolean", nullable=true)
-     */
+    #[Column(name: 'marked_for_removal', type: 'boolean', nullable: true)]
     public bool $markedForRemoval = false;
 
     /**
@@ -78,67 +56,62 @@ class Space
      *
      * If this value is NULL the size is not allocated yet, and must be ignored
      * for any calculations.
-     *
-     * @ORM\Column(type="byte_size", nullable=true)
      */
+    #[Column(type: 'byte_size', nullable: true)]
     public ?ByteSize $webQuota = null;
 
     /**
-     * READ-ONLY.
-     *
      * This is a static value updated by `DomainName::transferToSpace(primary: true)`
      * meant for display purposes only.
-     *
-     * @ORM\Embedded(class=DomainNamePair::class, columnPrefix="primary_domain_")
      */
+    #[Embedded(class: DomainNamePair::class, columnPrefix: 'primary_domain_')]
     public DomainNamePair $primaryDomainLabel;
 
-    /**
-     * @ORM\Column(name="setup_status", type="park_manager_webhosting_space_setup_status")
-     */
+    #[Column(name: 'setup_status', type: 'park_manager_webhosting_space_setup_status')]
     public SpaceSetupStatus $setupStatus;
 
-    /**
-     * @ORM\Column(name="access_suspended", type="park_manager_webhosting_suspension_level", nullable=true)
-     */
+    #[Column(name: 'access_suspended', type: 'park_manager_webhosting_suspension_level', nullable: true)]
     public ?SuspensionLevel $accessSuspended = null;
 
     /**
-     * @ORM\OneToMany(targetEntity=AccessSuspensionLog::class, mappedBy="space", cascade={"PERSIST"})
-     * @ORM\OrderBy({"timestamp" = "ASC"})
-     *
      * @var Collection<int, AccessSuspensionLog>
      */
+    #[OneToMany(targetEntity: AccessSuspensionLog::class, mappedBy: 'space', cascade: ['PERSIST'])]
+    #[OrderBy(['timestamp' => 'ASC'])]
     private Collection $suspensions;
 
-    /**
-     * @ORM\Embedded(class=SystemRegistration::class, columnPrefix="system_registration_")
-     */
+    #[Embedded(class: SystemRegistration::class, columnPrefix: 'system_registration_')]
     public ?SystemRegistration $systemRegistration = null;
 
-    private function __construct(SpaceId $id, Owner $owner, Constraints $constraints)
-    {
-        $this->id = $id;
-        $this->owner = $owner;
+    private function __construct(
+        #[Id]
+        #[Column(type: 'park_manager_webhosting_space_id')]
+        #[GeneratedValue(strategy: 'NONE')]
+        public SpaceId $id,
+
+        #[ManyToOne(targetEntity: Owner::class)]
+        #[JoinColumn(name: 'owner', referencedColumnName: 'owner_id', onDelete: 'RESTRICT')]
+        public Owner $owner,
+
+        #[Embedded(class: Constraints::class, columnPrefix: 'constraint_')]
+        public Constraints $constraints,
+
+        #[ManyToOne(targetEntity: Plan::class)]
+        #[JoinColumn(name: 'plan_id', referencedColumnName: 'id', nullable: true, onDelete: 'RESTRICT')]
+        public ?Plan $plan = null
+    ) {
         $this->setupStatus = SpaceSetupStatus::get('Registered');
         $this->suspensions = new ArrayCollection();
-
-        // Store the constraints as part of the webhosting Space
-        // the assigned constraints are immutable.
-        $this->constraints = $constraints;
     }
 
     public static function register(SpaceId $id, Owner $owner, Plan $plan): self
     {
-        $space = new self($id, $owner, $plan->constraints);
-        $space->plan = $plan;
-
-        return $space;
+        return new self($id, $owner, $plan->constraints, $plan);
     }
 
     public static function registerWithCustomConstraints(SpaceId $id, Owner $owner, Constraints $constraints): self
     {
-        return new self($id, $owner, $constraints);
+        return new self($id, $owner, constraints: $constraints);
     }
 
     /**
@@ -275,7 +248,7 @@ class Space
     public function suspendAccess(SuspensionLevel $level): void
     {
         if (! $this->setupStatus->equals(SpaceSetupStatus::get('ready'))) {
-            throw new \DomainException('Cannot set suspension level when Space has not completed initialization yet.');
+            throw new DomainException('Cannot set suspension level when Space has not completed initialization yet.');
         }
 
         if (SuspensionLevel::equalsTo($this->accessSuspended, $level)) {

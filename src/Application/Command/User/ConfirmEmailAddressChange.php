@@ -14,11 +14,8 @@ use Rollerworks\Component\SplitToken\SplitToken;
 
 final class ConfirmEmailAddressChange
 {
-    public SplitToken $token;
-
-    public function __construct(SplitToken $token)
+    public function __construct(public SplitToken $token)
     {
-        $this->token = $token;
     }
 
     public function token(): SplitToken

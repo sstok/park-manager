@@ -10,9 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\DataMapper;
 
+use DateTimeInterface;
 use Symfony\Component\Form\DataAccessorInterface;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Traversable;
 
 /**
  * Handles the mapping of a MessageFormType modelData to forms
@@ -30,16 +32,13 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  */
 final class CommandDataMapper implements DataMapperInterface
 {
-    private DataMapperInterface $wrappedDataMapper;
-    private DataAccessorInterface $dataAccessor;
-
-    public function __construct(DataMapperInterface $wrappedDataMapper, DataAccessorInterface $dataAccessor)
-    {
-        $this->wrappedDataMapper = $wrappedDataMapper;
-        $this->dataAccessor = $dataAccessor;
+    public function __construct(
+        private DataMapperInterface $wrappedDataMapper,
+        private DataAccessorInterface $dataAccessor
+    ) {
     }
 
-    public function mapDataToForms($viewData, \Traversable $forms): void
+    public function mapDataToForms($viewData, Traversable $forms): void
     {
         if (! \is_array($viewData) || ! \array_key_exists('model', $viewData) || ! \array_key_exists('fields', $viewData)) {
             throw new UnexpectedTypeException($viewData, 'array with keys "model" and "fields"');
@@ -48,7 +47,7 @@ final class CommandDataMapper implements DataMapperInterface
         $this->wrappedDataMapper->mapDataToForms($viewData['model'], $forms);
     }
 
-    public function mapFormsToData(\Traversable $forms, &$viewData): void
+    public function mapFormsToData(Traversable $forms, &$viewData): void
     {
         if (! \is_array($viewData) || ! \array_key_exists('model', $viewData) || ! \array_key_exists('fields', $viewData)) {
             throw new UnexpectedTypeException($viewData, 'array with keys "model" and "fields"');
@@ -73,7 +72,7 @@ final class CommandDataMapper implements DataMapperInterface
 
                 // If the field is of type DateTimeInterface and the data is the same skip the update to
                 // keep the original object hash
-                if ($propertyValue instanceof \DateTimeInterface && $propertyValue == $modelValue) {
+                if ($propertyValue instanceof DateTimeInterface && $propertyValue == $modelValue) {
                     continue;
                 }
 

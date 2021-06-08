@@ -15,18 +15,12 @@ use ParkManager\Domain\User\UserId;
 final class GrantUserRole
 {
     /**
-     * READ-ONLY.
-     */
-    public UserId $id;
-
-    /**
      * @var array<int, string>
      */
     public array $roles;
 
-    public function __construct(UserId $id, string ...$roles)
+    public function __construct(public UserId $id, string ...$roles)
     {
-        $this->id = $id;
         $this->roles = $roles;
     }
 

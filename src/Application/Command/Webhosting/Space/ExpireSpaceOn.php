@@ -15,12 +15,7 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class ExpireSpaceOn
 {
-    public SpaceId $id;
-    public DateTimeImmutable $expirationDate;
-
-    public function __construct(SpaceId $id, DateTimeImmutable $expirationDate)
+    public function __construct(public SpaceId $id, public DateTimeImmutable $expirationDate)
     {
-        $this->id = $id;
-        $this->expirationDate = $expirationDate;
     }
 }

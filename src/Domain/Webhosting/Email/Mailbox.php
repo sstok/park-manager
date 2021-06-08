@@ -11,72 +11,60 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\Email;
 
 use Assert\Assertion;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\TimestampableTrait;
 use ParkManager\Domain\Webhosting\Space\Space;
+use Stringable;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="mailbox", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="uk_mailbox_address_name", columns={"address", "domain_name"})
- * })
- */
-class Mailbox implements \Stringable
+#[Entity]
+#[Table(name: 'mailbox')]
+#[UniqueConstraint(name: 'uk_mailbox_address_name', columns: ['address', 'domain_name'])]
+class Mailbox implements Stringable
 {
     use TimestampableTrait;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="park_manager_webhosting_mailbox_id")
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    public MailboxId $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Space::class)
-     * @ORM\JoinColumn(name="space_id", onDelete="RESTRICT")
-     */
-    public Space $space;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=DomainName::class)
-     * @ORM\JoinColumn(name="domain_name", onDelete="RESTRICT")
-     */
-    public DomainName $domainName;
-
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[Column(type: 'string')]
     public string $address;
 
-    /**
-     * @ORM\Column(type="byte_size")
-     */
-    public ByteSize $size;
-
-    /**
-     * Password (in hashed format).
-     *
-     * @ORM\Column(type="text", name="auth_password")
-     */
-    public string $password;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[Column(type: 'boolean')]
     public bool $active = true;
 
-    public function __construct(MailboxId $id, Space $space, string $address, DomainName $domainName, ByteSize $size, string $password)
-    {
-        $this->id = $id;
-        $this->space = $space;
-        $this->size = $size;
-        $this->password = $password;
+    /**
+     * @param string $password password (in hashed format)
+     */
+    public function __construct(
+        #[Id]
+        #[Column(type: 'park_manager_webhosting_mailbox_id')]
+        #[GeneratedValue(strategy: 'NONE')]
+        public MailboxId $id,
 
-        $this->setAddress($address, $domainName);
+        #[ManyToOne(targetEntity: Space::class)]
+        #[JoinColumn(name: 'space_id', onDelete: 'RESTRICT')]
+        public Space $space,
+
+        string $address,
+
+        #[ManyToOne(targetEntity: DomainName::class)]
+        #[JoinColumn(name: 'domain_name', onDelete: 'RESTRICT')]
+        public DomainName $domainName,
+
+        #[Column(type: 'byte_size')]
+        public ByteSize $size,
+
+        #[Column(name: 'auth_password', type: 'text')]
+        public string $password
+    ) {
+        $this->setAddress($address);
     }
 
     public function setAddress(string $address, ?DomainName $domainName = null): void

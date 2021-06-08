@@ -12,45 +12,44 @@ namespace ParkManager\Domain\Webhosting\SubDomain\TLS;
 
 use Assert\Assertion;
 use Carbon\Carbon;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use InvalidArgumentException;
 
 /** @internal */
 trait x509Data
 {
-    /**
-     * @ORM\ManyToOne(targetEntity=CA::class)
-     * @ORM\JoinColumn(name="ca", nullable=true, referencedColumnName="hash", onDelete="RESTRICT")
-     */
+    #[ManyToOne(targetEntity: CA::class)]
+    #[JoinColumn(name: 'ca', referencedColumnName: 'hash', nullable: true, onDelete: 'RESTRICT')]
     public ?CA $ca = null;
 
     /**
      * SHA-256 locator id.
-     *
-     * @ORM\Id
-     * @ORM\Column(type="string", length=65)
-     * @ORM\GeneratedValue(strategy="NONE")
      */
+    #[Id]
+    #[Column(type: 'string', length: 65)]
+    #[GeneratedValue(strategy: 'NONE')]
     private string $hash;
 
     /**
-     * @ORM\Column(type="binary")
-     *
      * @var resource|string
      */
+    #[Column(type: 'binary')]
     private $contents;
 
     /**
-     * @ORM\Column(type="binary")
-     *
      * @var resource|string
      */
+    #[Column(type: 'binary')]
     private $publicKey;
 
     /**
-     * @ORM\Column(type="json")
-     *
      * @var array<string, mixed>
      */
+    #[Column(type: 'json')]
     private array $rawFields = [];
 
     private ?string $publicKeyString = null;
@@ -92,7 +91,7 @@ trait x509Data
     {
         if (! isset($this->publicKeyString)) {
             if (! \is_resource($this->publicKey)) {
-                throw new \InvalidArgumentException('PublicKey resource was not initialized.');
+                throw new InvalidArgumentException('PublicKey resource was not initialized.');
             }
 
             $this->publicKeyString = stream_get_contents($this->publicKey);
@@ -105,7 +104,7 @@ trait x509Data
     {
         if (! isset($this->contentsString)) {
             if (! \is_resource($this->contents)) {
-                throw new \InvalidArgumentException('Contents resource was not initialized.');
+                throw new InvalidArgumentException('Contents resource was not initialized.');
             }
 
             $this->contentsString = stream_get_contents($this->contents);

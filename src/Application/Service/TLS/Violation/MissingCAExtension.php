@@ -14,13 +14,9 @@ use ParkManager\Application\Service\TLS\Violation;
 
 final class MissingCAExtension extends Violation
 {
-    private string $name;
-
-    public function __construct(string $commonName)
+    public function __construct(private string $name)
     {
         parent::__construct('Certificate does not contain required "CA:true" in "extensions.basicExtension".');
-
-        $this->name = $commonName;
     }
 
     public function getTranslatorId(): string

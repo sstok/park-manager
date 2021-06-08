@@ -20,14 +20,12 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Throwable;
 
 final class SplitTokenType extends AbstractType
 {
-    private SplitTokenFactory $splitTokenFactory;
-
-    public function __construct(SplitTokenFactory $splitTokenFactory)
+    public function __construct(private SplitTokenFactory $splitTokenFactory)
     {
-        $this->splitTokenFactory = $splitTokenFactory;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -48,11 +46,17 @@ final class SplitTokenType extends AbstractType
 
             try {
                 $event->setData($this->splitTokenFactory->fromString($data));
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $form = $event->getForm();
                 $config = $form->getConfig();
 
-                $form->addError(new FormError($config->getOption('invalid_message'), null, $config->getOption('invalid_message_parameters'), null, $e));
+                $form->addError(
+                    new FormError(
+                        message: $config->getOption('invalid_message'),
+                        messageParameters: $config->getOption('invalid_message_parameters'),
+                        cause: $e
+                    )
+                );
             }
         });
 

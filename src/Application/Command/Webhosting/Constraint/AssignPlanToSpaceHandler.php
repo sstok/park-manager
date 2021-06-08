@@ -18,15 +18,11 @@ use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class AssignPlanToSpaceHandler
 {
-    private PlanRepository $planRepository;
-    private WebhostingSpaceRepository $spaceRepository;
-    private ApplicabilityChecker $applicabilityChecker;
-
-    public function __construct(PlanRepository $planRepository, WebhostingSpaceRepository $spaceRepository, ApplicabilityChecker $applicabilityChecker)
-    {
-        $this->planRepository = $planRepository;
-        $this->spaceRepository = $spaceRepository;
-        $this->applicabilityChecker = $applicabilityChecker;
+    public function __construct(
+        private PlanRepository $planRepository,
+        private WebhostingSpaceRepository $spaceRepository,
+        private ApplicabilityChecker $applicabilityChecker
+    ) {
     }
 
     public function __invoke(AssignPlanToSpace $command): void

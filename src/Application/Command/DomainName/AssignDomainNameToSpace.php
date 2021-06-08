@@ -15,15 +15,11 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class AssignDomainNameToSpace
 {
-    public DomainNameId $id;
-    public SpaceId $space;
-    public bool $primary;
-
-    public function __construct(DomainNameId $id, SpaceId $space, bool $primary = false)
-    {
-        $this->id = $id;
-        $this->space = $space;
-        $this->primary = $primary;
+    public function __construct(
+        public DomainNameId $id,
+        public SpaceId $space,
+        public bool $primary = false
+    ) {
     }
 
     public static function with(string $id, string $spaceId, bool $primary = false): self

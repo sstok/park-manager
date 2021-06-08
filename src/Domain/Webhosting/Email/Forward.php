@@ -12,59 +12,47 @@ namespace ParkManager\Domain\Webhosting\Email;
 
 use Assert\Assertion;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Webhosting\Space\Space;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="mail_forward", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="uk_mail_forward_address_name", columns={"address", "domain_name"})
- * })
- */
+#[Entity]
+#[Table(name: 'mail_forward')]
+#[UniqueConstraint(name: 'uk_mail_forward_address_name', fields: ['address', 'domainName'])]
 class Forward
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="park_manager_webhosting_mail_forward_id")
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    public ForwardId $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Space::class)
-     * @ORM\JoinColumn(name="space_id", onDelete="RESTRICT")
-     */
-    public Space $space;
-
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[Column(type: 'text')]
     public string $address;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=DomainName::class)
-     * @ORM\JoinColumn(name="domain_name", onDelete="RESTRICT")
-     */
-    public DomainName $domainName;
-
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[Column(type: 'text')]
     public string $destination;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[Column(type: 'boolean')]
     public bool $active = true;
 
-    private function __construct(ForwardId $id, Space $space, string $address, DomainName $domainName)
-    {
-        $this->id = $id;
-        $this->space = $space;
+    private function __construct(
+        #[Id]
+        #[Column(type: 'park_manager_webhosting_mail_forward_id')]
+        #[GeneratedValue(strategy: 'NONE')]
+        public ForwardId $id,
 
-        $this->domainName = $domainName;
-        $this->setAddress($address, $domainName);
+        #[ORM\ManyToOne(targetEntity: Space::class)]
+        #[ORM\JoinColumn(name: 'space_id', onDelete: 'RESTRICT')]
+        public Space $space,
+
+        string $address,
+
+        #[ORM\ManyToOne(targetEntity: DomainName::class)]
+        #[ORM\JoinColumn(name: 'domain_name', onDelete: 'RESTRICT')]
+        public DomainName $domainName
+    ) {
+        $this->setAddress($address);
     }
 
     public function setAddress(string $address, ?DomainName $domainName = null): void

@@ -10,19 +10,18 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Constraint;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Embeddable;
+use Doctrine\ORM\Mapping\Embedded;
 use ParkManager\Domain\ByteSize;
 
-/**
- * @ORM\Embeddable
- */
+#[Embeddable]
 class Constraints
 {
     /**
      * READ-ONLY: Traffic in GB.
-     *
-     * @ORM\Column(type="integer")
      */
+    #[Column(type: 'integer')]
     public int $monthlyTraffic = -1;
 
     /**
@@ -30,23 +29,20 @@ class Constraints
      *
      * Note: This effects all storage related constraints, if `mailboxStorageSize`
      * is set to 'Inf' the actual limit is *this* value.
-     *
-     * @ORM\Column(type="byte_size")
      */
+    #[Column(type: 'byte_size')]
     public ByteSize $storageSize;
 
     /**
      * READ-ONLY: Email constraints.
-     *
-     * @ORM\Embedded(class=EmailConstraints::class, columnPrefix="email_")
      */
+    #[Embedded(class: EmailConstraints::class, columnPrefix: 'email_')]
     public EmailConstraints $email;
 
     /**
      * READ-ONLY: Database constraints.
-     *
-     * @ORM\Embedded(class=DBConstraints::class, columnPrefix="database_")
      */
+    #[Embedded(class: DBConstraints::class, columnPrefix: 'database_')]
     public DBConstraints $database;
 
     /**

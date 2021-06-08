@@ -22,18 +22,13 @@ use Symfony\Component\Messenger\Middleware\StackInterface;
 
 final class DomainNameSpaceAssignmentValidator implements MiddlewareInterface
 {
-    private DomainNameRepository $domainNameRepository;
-
-    /** @var iterable<DomainNameSpaceUsageValidator> */
-    private iterable $validators;
-
     /**
      * @param iterable<DomainNameSpaceUsageValidator> $validators
      */
-    public function __construct(DomainNameRepository $domainNameRepository, iterable $validators)
-    {
-        $this->domainNameRepository = $domainNameRepository;
-        $this->validators = $validators;
+    public function __construct(
+        private DomainNameRepository $domainNameRepository,
+        private iterable $validators
+    ) {
     }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope

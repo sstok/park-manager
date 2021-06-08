@@ -16,13 +16,10 @@ use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class RemovePlanHandler
 {
-    private PlanRepository $planRepository;
-    private WebhostingSpaceRepository $spaceRepository;
-
-    public function __construct(PlanRepository $planRepository, WebhostingSpaceRepository $spaceRepository)
-    {
-        $this->planRepository = $planRepository;
-        $this->spaceRepository = $spaceRepository;
+    public function __construct(
+        private PlanRepository $planRepository,
+        private WebhostingSpaceRepository $spaceRepository
+    ) {
     }
 
     public function __invoke(RemovePlan $command): void

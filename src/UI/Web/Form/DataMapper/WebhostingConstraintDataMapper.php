@@ -17,11 +17,8 @@ use Traversable;
 
 final class WebhostingConstraintDataMapper implements DataMapperInterface
 {
-    private string $constraintClass;
-
-    public function __construct(string $constraintClass)
+    public function __construct(private string $constraintClass)
     {
-        $this->constraintClass = $constraintClass;
     }
 
     /**

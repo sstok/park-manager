@@ -27,20 +27,14 @@ use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
  * All other constraints are set as-is. If current usage is higher than the new value,
  * the current items are preserved. Effectively meaning that when they are removed
  * the constraints restrict creation of new items.
- *
- * @final
  */
 class ApplicabilityChecker
 {
-    private WebhostingSpaceRepository $spaceRepository;
-    private MailboxRepository $mailboxRepository;
-    private StorageUsage $storageUsageRetriever;
-
-    public function __construct(WebhostingSpaceRepository $spaceRepository, MailboxRepository $mailboxRepository, StorageUsage $storageUsageRetriever)
-    {
-        $this->spaceRepository = $spaceRepository;
-        $this->mailboxRepository = $mailboxRepository;
-        $this->storageUsageRetriever = $storageUsageRetriever;
+    public function __construct(
+        private WebhostingSpaceRepository $spaceRepository,
+        private MailboxRepository $mailboxRepository,
+        private StorageUsage $storageUsageRetriever
+    ) {
     }
 
     public function getApplicable(SpaceId $id, Constraints $constraints): Constraints

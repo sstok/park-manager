@@ -19,11 +19,8 @@ use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 
 final class SpaceConstraintsEquals extends Constraint
 {
-    private Constraints $expected;
-
-    public function __construct(Constraints $expected)
+    public function __construct(private Constraints $expected)
     {
-        $this->expected = $expected;
     }
 
     public function toString(): string

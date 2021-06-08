@@ -19,19 +19,14 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 final class ModelResolver implements ArgumentValueResolverInterface
 {
-    private ContainerInterface $entitiesRepositories;
-
-    /** @var array<class-string, string> */
-    private array $valueObjects;
-
     /**
      * @param ContainerInterface          $entitiesRepositories [entity-name] => IdClassName
      * @param array<class-string, string> $valueObjectsMapping  [class-name] => factoryMethodName
      */
-    public function __construct(ContainerInterface $entitiesRepositories, array $valueObjectsMapping)
-    {
-        $this->entitiesRepositories = $entitiesRepositories;
-        $this->valueObjects = $valueObjectsMapping;
+    public function __construct(
+        private ContainerInterface $entitiesRepositories,
+        private array $valueObjectsMapping
+    ) {
     }
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
@@ -46,7 +41,7 @@ final class ModelResolver implements ArgumentValueResolverInterface
             return true;
         }
 
-        if (isset($this->valueObjects[$type])) {
+        if (isset($this->valueObjectsMapping[$type])) {
             return true;
         }
 
@@ -65,8 +60,8 @@ final class ModelResolver implements ArgumentValueResolverInterface
 
         if ($type === EmailAddress::class) {
             yield new EmailAddress($value);
-        } elseif (isset($this->valueObjects[$type])) {
-            yield $type::{$this->valueObjects[$type]}($value);
+        } elseif (isset($this->valueObjectsMapping[$type])) {
+            yield $type::{$this->valueObjectsMapping[$type]}($value);
         } else {
             // EntityName + Id = {Space}Id
             yield $this->entitiesRepositories->get($type)->get(($type . 'Id')::fromString($value));

@@ -19,19 +19,15 @@ use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 final class UserFixtures extends Fixture
 {
-    private MessageBusInterface $commandBus;
-    private EncoderFactoryInterface $encoderFactory;
-    private FakerGenerator $faker;
-
-    public function __construct(MessageBusInterface $commandBus, EncoderFactoryInterface $encoderFactory, FakerGenerator $faker)
-    {
-        $this->commandBus = $commandBus;
-        $this->encoderFactory = $encoderFactory;
-        $this->faker = $faker;
+    public function __construct(
+        private MessageBusInterface $commandBus,
+        private PasswordHasherFactoryInterface $hasherFactory,
+        private FakerGenerator $faker
+    ) {
     }
 
     public function load(ObjectManager $manager): void
@@ -43,7 +39,7 @@ final class UserFixtures extends Fixture
                 UserId::create(),
                 new EmailAddress($this->faker->unique()->email()),
                 $this->faker->unique()->name(),
-                $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword($this->faker->password(8), null)
+                $this->hasherFactory->getPasswordHasher(SecurityUser::class)->hash($this->faker->password(8))
             );
 
             if ($this->faker->randomDigit() % 2 === 0) {
@@ -57,7 +53,7 @@ final class UserFixtures extends Fixture
                     UserId::create(),
                     new EmailAddress('jane@example.com'),
                     'Jane, Doe',
-                    $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword('&ltr@Sec3re!+', null)
+                    $this->hasherFactory->getPasswordHasher(SecurityUser::class)->hash('&ltr@Sec3re!+')
                 ),
                 ...$users
             )

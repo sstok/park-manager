@@ -15,43 +15,21 @@ use ParkManager\Domain\User\UserId;
 
 final class RegisterUser
 {
-    /**
-     * READ-ONLY.
-     */
-    public UserId $id;
-
-    /**
-     * READ-ONLY.
-     */
-    public EmailAddress $email;
-
-    /**
-     * READ-ONLY.
-     */
-    public string $displayName;
-
-    /**
-     * The authentication password-hash.
-     *
-     * READ-ONLY.
-     */
-    public string $password;
-
     public bool $requireNewPassword = false;
 
     /**
-     * @param string $password An encoded password string (not plain)
+     * @param string $password A password hash (the password in plain-text)
      */
-    public function __construct(UserId $id, EmailAddress $email, string $displayName, string $password)
-    {
-        $this->id = $id;
-        $this->email = $email;
-        $this->displayName = $displayName;
-        $this->password = $password;
+    public function __construct(
+        public UserId $id,
+        public EmailAddress $email,
+        public string $displayName,
+        public string $password
+    ) {
     }
 
     /**
-     * @param string $password An encoded password string (not plain)
+     * @param string $password A password hash (the password in plain-text)
      */
     public static function with(string $id, string $email, string $displayName, string $password): self
     {

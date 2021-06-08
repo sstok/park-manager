@@ -123,7 +123,7 @@ final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInte
             return false;
         }
 
-        return ! ($user->isEnabled() !== $this->isEnabled());
+        return $user->isEnabled() === $this->isEnabled();
     }
 
     public function isAdmin(): bool

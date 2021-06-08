@@ -10,13 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Response;
 
-use InvalidArgumentException;
 use Symfony\Component\Form\FormInterface as Form;
 use Symfony\Component\HttpFoundation\Response;
 
 class TwigResponse extends Response
 {
-    private string $template;
     /** @var array<string, mixed> */
     private array $variables;
 
@@ -24,13 +22,15 @@ class TwigResponse extends Response
      * @param array<string, mixed>|Form                $variables A Form object is passed as [form => createView()]
      * @param array<string, string|array<int, string>> $headers
      */
-    public function __construct(string $template, array | Form $variables = [], int $status = 200, array $headers = [])
-    {
+    public function __construct(
+        private string $template,
+        array | Form $variables = [],
+        int $status = 200,
+        array $headers = []
+    ) {
         parent::__construct('', $status, $headers);
 
         $this->setTemplateVariables($variables);
-
-        $this->template = $template;
     }
 
     public function getTemplate(): string
@@ -44,10 +44,6 @@ class TwigResponse extends Response
     public function setTemplateVariables(array | Form $variables): void
     {
         if (! \is_array($variables)) {
-            if (! $variables instanceof Form) {
-                throw new InvalidArgumentException(sprintf('TwigResponse $variables expects an array or %s object.', Form::class));
-            }
-
             $variables = ['form' => $variables->createView()];
         }
 

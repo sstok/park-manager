@@ -27,11 +27,8 @@ use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
 final class ConfirmPasswordResetType extends AbstractType
 {
-    private UrlGeneratorInterface $urlGenerator;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

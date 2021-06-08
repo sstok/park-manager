@@ -148,6 +148,11 @@ final class SecurityUserTest extends TestCase
             {
                 return $this->identifier;
             }
+
+            public function getUsername(): string
+            {
+                return $this->getUserIdentifier();
+            }
         };
     }
 }

@@ -10,40 +10,35 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Constraint;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Embeddable;
 use ParkManager\Domain\ByteSize;
 
-/**
- * @ORM\Embeddable
- */
+#[Embeddable]
 final class DBConstraints
 {
     /**
      * READ-ONLY.
-     *
-     * @ORM\Column(type="byte_size")
      */
+    #[Column(type: 'byte_size')]
     public ByteSize $providedStorageSize;
 
     /**
      * READ-ONLY.
-     *
-     * @ORM\Column(type="integer")
      */
+    #[Column(type: 'integer')]
     public int $maximumAmountPerType = -1;
 
     /**
      * READ-ONLY.
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[Column(type: 'boolean')]
     public bool $enabledPgsql = true;
 
     /**
      * READ-ONLY.
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[Column(type: 'boolean')]
     public bool $enabledMysql = true;
 
     /**

@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface as MessageBus;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -28,17 +28,12 @@ final class RegisterAdministratorCommand extends Command
 {
     protected static $defaultName = 'park-manager:administrator:register';
 
-    private ValidatorInterface $validator;
-    private EncoderFactoryInterface $passwordEncoder;
-    private MessageBus $commandBus;
-
-    public function __construct(ValidatorInterface $validator, EncoderFactoryInterface $passwordEncoder, MessageBus $commandBus)
-    {
+    public function __construct(
+        private ValidatorInterface $validator,
+        private PasswordHasherFactoryInterface $passwordHasher,
+        private MessageBus $commandBus
+    ) {
         parent::__construct();
-
-        $this->validator = $validator;
-        $this->passwordEncoder = $passwordEncoder;
-        $this->commandBus = $commandBus;
     }
 
     protected function configure(): void
@@ -68,9 +63,7 @@ final class RegisterAdministratorCommand extends Command
             return $value;
         });
 
-        $password = $this->passwordEncoder->getEncoder(SecurityUser::class)
-            ->encodePassword($io->askHidden('Password'), '')
-        ;
+        $password = $this->passwordHasher->getPasswordHasher(SecurityUser::class)->hash($io->askHidden('Password'));
 
         $this->commandBus->dispatch(
             new RegisterAdministrator(UserId::create(), $email, $displayName, $password)

@@ -22,15 +22,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ListUsersAction extends AbstractController
 {
-    /**
-     * @Security("is_granted('ROLE_SUPER_ADMIN')")
-     *
-     * @Route(
-     *     path="/users",
-     *     methods={"GET", "HEAD"},
-     *     name="park_manager.admin.list_users"
-     * )
-     */
+    #[Security("is_granted('ROLE_SUPER_ADMIN')")]
+    #[Route(path: '/users', methods: ['GET', 'HEAD'], name: 'park_manager.admin.list_users')]
     public function __invoke(Request $request): Response
     {
         $pagerfanta = new Pagerfanta(new ResultSetAdapter($this->get(UserRepository::class)->all()));

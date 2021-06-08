@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain;
 
+use JsonException;
 use JsonSerializable;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\UuidTrait;
@@ -104,7 +105,7 @@ final class UuidTraitTest extends TestCase
     /**
      * @test
      *
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function its_json_serializable(): void
     {
@@ -130,12 +131,7 @@ final class MockUuidIdentity2 implements Serializable, JsonSerializable
 /** @internal */
 final class MockIdentityEntity
 {
-    public MockUuidIdentity $id;
-    public ?MockUuidIdentity2 $child;
-
-    public function __construct(MockUuidIdentity $id, ?MockUuidIdentity2 $childId = null)
+    public function __construct(public MockUuidIdentity $id, public ?MockUuidIdentity2 $child = null)
     {
-        $this->id = $id;
-        $this->child = $childId;
     }
 }

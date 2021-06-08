@@ -25,6 +25,7 @@ use ParkManager\Infrastructure\Validator\Constraints\X509KeyPair;
 use ParkManager\Infrastructure\Validator\Constraints\X509Purpose;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
+use stdClass;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Sequentially;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
@@ -60,7 +61,7 @@ final class SubDomainTLSValidatorTest extends ConstraintValidatorTestCase
 
         $this->validator->validate(null, $constraint);
 
-        $value = new \stdClass();
+        $value = new stdClass();
         $this->expectExceptionObject(new UnexpectedValueException($value, SubDomainCommand::class));
 
         $this->validator->validate($value, $constraint);

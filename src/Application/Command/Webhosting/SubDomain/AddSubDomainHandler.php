@@ -19,15 +19,11 @@ use ParkManager\Domain\Webhosting\SubDomain\SubDomainRepository;
 
 final class AddSubDomainHandler
 {
-    private DomainNameRepository $domainNameRepository;
-    private SubDomainRepository $subDomainRepository;
-    private CertificateFactory $certificateFactory;
-
-    public function __construct(DomainNameRepository $domainNameRepository, SubDomainRepository $subDomainRepository, CertificateFactory $certificateFactory)
-    {
-        $this->domainNameRepository = $domainNameRepository;
-        $this->subDomainRepository = $subDomainRepository;
-        $this->certificateFactory = $certificateFactory;
+    public function __construct(
+        private DomainNameRepository $domainNameRepository,
+        private SubDomainRepository $subDomainRepository,
+        private CertificateFactory $certificateFactory
+    ) {
     }
 
     public function __invoke(AddSubDomain $command): void

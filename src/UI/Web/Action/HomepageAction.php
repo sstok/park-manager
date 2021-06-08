@@ -15,13 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class HomepageAction
 {
-    /**
-     * @Route(
-     *     path="/",
-     *     name="park_manager.user.home",
-     *     methods={"GET"}
-     * )
-     */
+    #[Route(path: '/', name: 'park_manager.user.home', methods: ['GET'])]
     public function __invoke(): TwigResponse
     {
         return new TwigResponse('index.html.twig');

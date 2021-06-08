@@ -14,10 +14,7 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class InitializeWebhostingSpace
 {
-    public SpaceId $space;
-
-    public function __construct(SpaceId $space)
+    public function __construct(public SpaceId $space)
     {
-        $this->space = $space;
     }
 }

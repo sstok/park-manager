@@ -19,11 +19,8 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 final class SecurityUserHashedPasswordType extends AbstractType
 {
-    private PasswordHasherFactoryInterface $hasherFactory;
-
-    public function __construct(PasswordHasherFactoryInterface $hasherFactory)
+    public function __construct(private PasswordHasherFactoryInterface $hasherFactory)
     {
-        $this->hasherFactory = $hasherFactory;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

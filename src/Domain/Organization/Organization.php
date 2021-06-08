@@ -14,6 +14,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 use ParkManager\Domain\Organization\Exception\OrganizationMemberNotFound;
 use ParkManager\Domain\TimestampableTrait;
 use ParkManager\Domain\User\User;
@@ -21,37 +27,28 @@ use ParkManager\Domain\User\User;
 /**
  * An Organization is a shared "identity" of users that may be assigned
  * as owner instead of a single user.
- *
- * @ORM\Entity
- * @ORM\Table(name="organization")
  */
+#[Entity]
+#[Table(name: 'organization')]
 class Organization
 {
     use TimestampableTrait;
 
     /**
-     * @ORM\Id
-     * @ORM\Column(type="park_manager_organization_id")
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    public OrganizationId $id;
-
-    /**
-     * @ORM\Column(name="name", type="string")
-     */
-    public string $name;
-
-    /**
-     * @ORM\OneToMany(targetEntity=OrganizationMember::class, cascade={"ALL"}, mappedBy="organization")
-     *
      * @var Collection<int, OrganizationMember>
      */
+    #[OneToMany(mappedBy: 'organization', targetEntity: OrganizationMember::class, cascade: ['ALL'])]
     public Collection $members;
 
-    public function __construct(OrganizationId $id, string $name)
-    {
-        $this->id = $id;
-        $this->name = $name;
+    public function __construct(
+        #[Id]
+        #[Column(type: 'park_manager_organization_id')]
+        #[GeneratedValue(strategy: 'NONE')]
+        public OrganizationId $id,
+
+        #[ORM\Column(name: 'name', type: 'string')]
+        public string $name
+    ) {
         $this->members = new ArrayCollection();
     }
 

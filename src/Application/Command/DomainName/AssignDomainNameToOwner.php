@@ -15,13 +15,8 @@ use ParkManager\Domain\OwnerId;
 
 final class AssignDomainNameToOwner
 {
-    public DomainNameId $id;
-    public OwnerId $owner;
-
-    public function __construct(DomainNameId $id, OwnerId $owner)
+    public function __construct(public DomainNameId $id, public OwnerId $owner)
     {
-        $this->id = $id;
-        $this->owner = $owner;
     }
 
     public static function with(string $id, string $ownerId): self

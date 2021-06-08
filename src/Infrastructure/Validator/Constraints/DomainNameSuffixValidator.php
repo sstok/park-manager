@@ -31,11 +31,8 @@ final class DomainNameSuffixValidator extends ConstraintValidator
         'test',
     ];
 
-    private PdpManager $pdpManager;
-
-    public function __construct(PdpManager $pdpManager)
+    public function __construct(private PdpManager $pdpManager)
     {
-        $this->pdpManager = $pdpManager;
     }
 
     /**

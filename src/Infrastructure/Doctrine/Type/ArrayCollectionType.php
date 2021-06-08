@@ -14,13 +14,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
+use JsonException;
 
 final class ArrayCollectionType extends JsonType
 {
     /**
      * @param Collection<string, mixed>|null $value
      *
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
@@ -32,7 +33,7 @@ final class ArrayCollectionType extends JsonType
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      *
      * @return ArrayCollection<string, mixed>
      */

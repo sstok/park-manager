@@ -21,13 +21,8 @@ use Twig\Environment as TwigEnvironment;
 
 final class TranslatableExceptionListener implements EventSubscriberInterface
 {
-    private TranslatorInterface $translator;
-    private TwigEnvironment $twig;
-
-    public function __construct(TranslatorInterface $translator, TwigEnvironment $twig)
+    public function __construct(private TranslatorInterface $translator, private TwigEnvironment $twig)
     {
-        $this->translator = $translator;
-        $this->twig = $twig;
     }
 
     public function onKernelException(ExceptionEvent $event): void

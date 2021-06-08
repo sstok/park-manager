@@ -18,13 +18,10 @@ use ParkManager\Domain\OwnerId;
 
 final class RemoveOrganizationHandler
 {
-    private OrganizationRepository $organizationRepository;
-    private OwnershipUsageList $ownershipUsageList;
-
-    public function __construct(OrganizationRepository $organizationRepository, OwnershipUsageList $ownershipUsageList)
-    {
-        $this->organizationRepository = $organizationRepository;
-        $this->ownershipUsageList = $ownershipUsageList;
+    public function __construct(
+        private OrganizationRepository $organizationRepository,
+        private OwnershipUsageList $ownershipUsageList
+    ) {
     }
 
     public function __invoke(RemoveOrganization $command): void

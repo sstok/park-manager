@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Validator\Constraints;
 
+use InvalidArgumentException;
 use ParkManager\Application\Service\TLS\KeyValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -17,12 +18,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class X509KeyPairValidator extends TLSCertificateValidator
 {
-    private KeyValidator $keyValidator;
-
-    public function __construct(TranslatorInterface $translator, KeyValidator $keyValidator)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        private KeyValidator $keyValidator
+    ) {
         parent::__construct($translator);
-        $this->keyValidator = $keyValidator;
     }
 
     protected function checkConstraintType(Constraint $constraint): void
@@ -38,7 +38,7 @@ final class X509KeyPairValidator extends TLSCertificateValidator
     protected function validateTLS(X509CertificateBundle $value, Constraint $constraint): void
     {
         if (! isset($value->privateKey)) {
-            throw new \InvalidArgumentException('No PrivateKey provided with X509CertificateBundle.');
+            throw new InvalidArgumentException('No PrivateKey provided with X509CertificateBundle.');
         }
 
         $this->keyValidator->validate($value->privateKey, $value->certificate);

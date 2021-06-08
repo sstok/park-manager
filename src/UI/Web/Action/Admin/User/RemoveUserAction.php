@@ -26,15 +26,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RemoveUserAction
 {
-    /**
-     * @Security("is_granted('ROLE_SUPER_ADMIN')")
-     *
-     * @Route(
-     *     path="/user/{id}/remove",
-     *     methods={"GET", "POST", "HEAD"},
-     *     name="park_manager.admin.remove_user"
-     * )
-     */
+    #[Security("is_granted('ROLE_SUPER_ADMIN')")]
+    #[Route(path: '/user/{id}/remove', methods: ['GET', 'POST', 'HEAD'], name: 'park_manager.admin.remove_user')]
     public function __invoke(Request $request, User $id, FormFactoryInterface $formFactory, EntityRenderer $entityRenderer): TwigResponse | RouteRedirectResponse
     {
         $form = $formFactory->create(ConfirmationForm::class, null, [

@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Expr\Expression;
 use ParkManager\Domain\ResultSet;
+use Traversable;
 
 /**
  * @template T
@@ -92,7 +93,7 @@ final class MockRepoResultSet implements ResultSet
     /**
      * @return ArrayCollection<array-key, T>
      */
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
         reset($this->result);
         $result = $this->result;

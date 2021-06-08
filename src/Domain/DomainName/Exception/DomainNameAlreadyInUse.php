@@ -10,18 +10,21 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\DomainName\Exception;
 
+use DomainException;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Exception\TranslatableException;
 
-final class DomainNameAlreadyInUse extends \DomainException implements TranslatableException
+final class DomainNameAlreadyInUse extends DomainException implements TranslatableException
 {
-    private DomainNamePair $domainName;
-
-    public function __construct(DomainNamePair $domainName)
+    public function __construct(private DomainNamePair $domainName)
     {
-        parent::__construct(sprintf('DomainName "%s.%s" is already in use.', $domainName->name, $domainName->tld));
-
-        $this->domainName = $domainName;
+        parent::__construct(
+            sprintf(
+                'DomainName "%s.%s" is already in use.',
+                $this->domainName->name,
+                $this->domainName->tld
+            )
+        );
     }
 
     public function getTranslatorId(): string

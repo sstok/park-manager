@@ -23,24 +23,13 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class RegisterWebhostingSpaceHandler
 {
-    private WebhostingSpaceRepository $spaceRepository;
-    private PlanRepository $planRepository;
-    private DomainNameRepository $domainNameRepository;
-    private OwnerRepository $ownerRepository;
-    private MessageBusInterface $commandBus;
-
     public function __construct(
-        WebhostingSpaceRepository $spaceRepository,
-        PlanRepository $planRepository,
-        DomainNameRepository $domainNameRepository,
-        OwnerRepository $ownerRepository,
-        MessageBusInterface $commandBus
+        private WebhostingSpaceRepository $spaceRepository,
+        private PlanRepository $planRepository,
+        private DomainNameRepository $domainNameRepository,
+        private OwnerRepository $ownerRepository,
+        private MessageBusInterface $commandBus
     ) {
-        $this->spaceRepository = $spaceRepository;
-        $this->planRepository = $planRepository;
-        $this->domainNameRepository = $domainNameRepository;
-        $this->ownerRepository = $ownerRepository;
-        $this->commandBus = $commandBus;
     }
 
     public function __invoke(RegisterWebhostingSpace $command): void

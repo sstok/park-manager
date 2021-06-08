@@ -21,11 +21,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 final class SubDomainTLSValidator extends ConstraintValidator
 {
-    private DomainNameRepository $domainNameRepository;
-
-    public function __construct(DomainNameRepository $domainNameRepository)
+    public function __construct(private DomainNameRepository $domainNameRepository)
     {
-        $this->domainNameRepository = $domainNameRepository;
     }
 
     public function validate($value, Constraint $constraint): void

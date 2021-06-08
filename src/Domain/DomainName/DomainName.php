@@ -11,6 +11,14 @@ declare(strict_types=1);
 namespace ParkManager\Domain\DomainName;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Index;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 use ParkManager\Domain\DomainName\Exception\CannotAssignDomainNameWithDifferentOwner;
 use ParkManager\Domain\DomainName\Exception\CannotTransferPrimaryDomainName;
 use ParkManager\Domain\Owner;
@@ -18,59 +26,33 @@ use ParkManager\Domain\TimestampableTrait;
 use ParkManager\Domain\Webhosting\Space\Space;
 use Stringable;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="domain_name", indexes={
- *     @ORM\Index(name="domain_name_primary_marking_idx", columns={"space", "is_primary"}),
- * })
- */
+#[Entity]
+#[Table(name: 'domain_name')]
+#[Index(fields: ['space', 'primary'], name: 'domain_name_primary_marking_idx')]
 class DomainName implements Stringable
 {
     use TimestampableTrait;
 
-    /**
-     * READ-ONLY.
-     *
-     * @ORM\Id
-     * @ORM\Column(type="park_manager_domain_name_id")
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    public DomainNameId $id;
-
-    /**
-     * READ-ONLY.
-     *
-     * @ORM\ManyToOne(targetEntity=Owner::class)
-     * @ORM\JoinColumn(name="owner", nullable=true, referencedColumnName="owner_id")
-     */
+    #[ManyToOne(targetEntity: Owner::class)]
+    #[JoinColumn(name: 'owner', referencedColumnName: 'owner_id', nullable: true)]
     public Owner | null $owner = null;
 
-    /**
-     * READ-ONLY.
-     *
-     * @ORM\ManyToOne(targetEntity=Space::class)
-     * @ORM\JoinColumn(onDelete="CASCADE", name="space", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: Space::class)]
+    #[JoinColumn(name: 'space', referencedColumnName: 'id', onDelete: 'CASCADE')]
     public Space | null $space = null;
 
-    /**
-     * READ-ONLY.
-     *
-     * @ORM\Embedded(class=DomainNamePair::class, columnPrefix="domain_")
-     */
-    public DomainNamePair $namePair;
-
-    /**
-     * READ-ONLY.
-     *
-     * @ORM\Column(name="is_primary", type="boolean")
-     */
+    #[Column(name: 'is_primary', type: 'boolean')]
     public bool $primary = false;
 
-    private function __construct(DomainNameId $id, DomainNamePair $domainName)
-    {
-        $this->namePair = $domainName;
-        $this->id = $id;
+    private function __construct(
+        #[Id]
+        #[Column(type: 'park_manager_domain_name_id')]
+        #[GeneratedValue(strategy: 'NONE')]
+        public DomainNameId $id,
+
+        #[ORM\Embedded(class: DomainNamePair::class, columnPrefix: 'domain_')]
+        public DomainNamePair $namePair
+    ) {
     }
 
     public static function register(DomainNameId $id, DomainNamePair $domainName, Owner $owner): self

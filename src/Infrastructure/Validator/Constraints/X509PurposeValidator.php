@@ -17,13 +17,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class X509PurposeValidator extends TLSCertificateValidator
 {
-    private CertificateValidator $certificateValidator;
-
-    public function __construct(TranslatorInterface $translator, CertificateValidator $certificateValidator)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        private CertificateValidator $certificateValidator
+    ) {
         parent::__construct($translator);
-
-        $this->certificateValidator = $certificateValidator;
     }
 
     protected function checkConstraintType(Constraint $constraint): void

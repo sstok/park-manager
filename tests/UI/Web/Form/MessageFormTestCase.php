@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form;
 
+use Exception;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\ViolationMapper;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
@@ -113,7 +114,7 @@ abstract class MessageFormTestCase extends TypeTestCase
                     $cause = method_exists($cause, 'getCause') ? $cause->getCause() : null;
                 }
 
-                if ($cause instanceof \Exception) {
+                if ($cause instanceof Exception) {
                     $causeStr .= $cause->getMessage() . "\n" . $cause->getTraceAsString();
                 }
 

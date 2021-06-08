@@ -19,11 +19,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class WebhostingPlanSelector extends AbstractType
 {
-    private PlanRepository $planRepository;
-
-    public function __construct(PlanRepository $planRepository)
+    public function __construct(private PlanRepository $planRepository)
     {
-        $this->planRepository = $planRepository;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -32,7 +29,7 @@ final class WebhostingPlanSelector extends AbstractType
             'label' => 'label.plan',
             'resultset' => $this->planRepository->all(),
             'choice_label' => static fn (Plan $plan): string => $plan->getLabel(Locale::getDefault()),
-            'choice_vary' => [\get_class($this->planRepository), Locale::getDefault()],
+            'choice_vary' => [$this->planRepository::class, Locale::getDefault()],
         ]);
     }
 

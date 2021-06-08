@@ -17,11 +17,8 @@ use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class RemoveSpaceExpirationDateHandler
 {
-    private WebhostingSpaceRepository $spaceRepository;
-
-    public function __construct(WebhostingSpaceRepository $spaceRepository)
+    public function __construct(private WebhostingSpaceRepository $spaceRepository)
     {
-        $this->spaceRepository = $spaceRepository;
     }
 
     public function __invoke(RemoveSpaceExpirationDate $command): void

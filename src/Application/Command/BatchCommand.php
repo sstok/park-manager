@@ -16,8 +16,6 @@ namespace ParkManager\Application\Command;
 final class BatchCommand
 {
     /**
-     * READ-ONLY.
-     *
      * @var object[]
      */
     public array $commands;

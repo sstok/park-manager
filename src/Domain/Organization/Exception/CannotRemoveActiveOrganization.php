@@ -10,28 +10,19 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Organization\Exception;
 
+use DomainException;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\ResultSet;
 
-final class CannotRemoveActiveOrganization extends \DomainException
+final class CannotRemoveActiveOrganization extends DomainException
 {
-    public OrganizationId $id;
-
     /**
-     * The entities organization per ["EntityName" => {ResultSet<EntityName>}].
-     *
-     * @var array<class-string, ResultSet<object>>
+     * @param array<class-string, ResultSet<object>> $activeEntities organized as ["EntityName" => {ResultSet<EntityName>}]
      */
-    public array $activeEntities;
-
-    /**
-     * @param array<class-string, ResultSet<object>> $activeEntities
-     */
-    public function __construct(OrganizationId $id, array $activeEntities)
-    {
+    public function __construct(
+        public OrganizationId $id,
+        public array $activeEntities
+    ) {
         parent::__construct('Organization with id "%s" is still assigned as Owner to 1 or more entities. Change their Owner assignment first.');
-
-        $this->id = $id;
-        $this->activeEntities = $activeEntities;
     }
 }

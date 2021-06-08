@@ -14,10 +14,7 @@ use ParkManager\Domain\Organization\OrganizationId;
 
 final class RemoveOrganization
 {
-    public OrganizationId $id;
-
-    public function __construct(OrganizationId $id)
+    public function __construct(public OrganizationId $id)
     {
-        $this->id = $id;
     }
 }

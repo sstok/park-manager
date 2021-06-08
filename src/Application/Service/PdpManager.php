@@ -18,13 +18,10 @@ use Pdp\TopLevelDomainList;
 
 final class PdpManager
 {
-    private PublicSuffixListStorage $rulesStorage;
-    private TopLevelDomainListStorage $topLevelDomainsStorage;
-
-    public function __construct(PublicSuffixListStorage $rulesStorage, TopLevelDomainListStorage $topLevelDomainsStorage)
-    {
-        $this->rulesStorage = $rulesStorage;
-        $this->topLevelDomainsStorage = $topLevelDomainsStorage;
+    public function __construct(
+        private PublicSuffixListStorage $rulesStorage,
+        private TopLevelDomainListStorage $topLevelDomainsStorage
+    ) {
     }
 
     public function getPublicSuffixList(): PublicSuffixList

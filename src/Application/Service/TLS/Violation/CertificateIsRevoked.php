@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Service\TLS\Violation;
 
+use DateTimeInterface;
 use Ocsp\Response;
 use ParkManager\Application\Service\TLS\Violation;
 
@@ -39,11 +40,11 @@ final class CertificateIsRevoked extends Violation
         Response::REVOCATIONREASON_AACOMPROMISE => 'AA compromise',
     ];
 
-    private ?\DateTimeInterface $revokedOn;
+    private ?DateTimeInterface $revokedOn;
     private ?int $reason;
     private string $serial;
 
-    public function __construct(?\DateTimeInterface $revokedOn, ?int $reason, string $serialNumber)
+    public function __construct(?DateTimeInterface $revokedOn, ?int $reason, string $serialNumber)
     {
         parent::__construct(
             sprintf(

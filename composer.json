@@ -30,7 +30,7 @@
         "doctrine/dbal": "^2.10",
         "doctrine/doctrine-bundle": "^2.2.3",
         "doctrine/doctrine-migrations-bundle": "^3.0",
-        "doctrine/orm": "^2.7",
+        "doctrine/orm": "^2.9",
         "egulias/email-validator": "^2.1",
         "jeremykendall/php-domain-parser": "^6.0",
         "mlocati/ocsp": "^1.0",

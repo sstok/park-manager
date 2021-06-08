@@ -22,15 +22,11 @@ use ParkManager\Domain\User\UserRepository;
 
 final class RegisterAdministratorHandler
 {
-    private UserRepository $repository;
-    private OwnerRepository $ownerRepository;
-    private OrganizationRepository $organizationRepository;
-
-    public function __construct(UserRepository $repository, OwnerRepository $ownerRepository, OrganizationRepository $organizationRepository)
-    {
-        $this->repository = $repository;
-        $this->ownerRepository = $ownerRepository;
-        $this->organizationRepository = $organizationRepository;
+    public function __construct(
+        private UserRepository $repository,
+        private OwnerRepository $ownerRepository,
+        private OrganizationRepository $organizationRepository
+    ) {
     }
 
     public function __invoke(RegisterAdministrator $command): void

@@ -24,11 +24,8 @@ use Symfony\Component\Validator\Constraint;
 
 final class ChangePasswordType extends AbstractType
 {
-    private PasswordHasherFactoryInterface $encoderFactory;
-
-    public function __construct(PasswordHasherFactoryInterface $hasherFactory)
+    public function __construct(private PasswordHasherFactoryInterface $encoderFactory)
     {
-        $this->encoderFactory = $hasherFactory;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

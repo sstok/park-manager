@@ -14,7 +14,13 @@ use Assert\Assertion;
 use Carbon\CarbonImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Embedded;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Domain\TimestampableTrait;
@@ -24,84 +30,56 @@ use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
+use Stringable;
 
-/**
- * @ORM\Entity
- * @ORM\Table(
- *     name="app_user",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="user_email_address_uniq", columns={"email_address"}),
- *         @ORM\UniqueConstraint(name="user_email_canonical_uniq", columns={"email_canonical"}),
- *     }
- * )
- */
-class User
+#[Entity]
+#[Table(name: 'app_user')]
+#[UniqueConstraint(name: 'user_email_address_uniq', columns: ['email_address'])]
+#[UniqueConstraint(name: 'user_email_canonical_uniq', columns: ['email_canonical'])]
+
+class User implements Stringable
 {
     use TimestampableTrait;
 
     public const DEFAULT_ROLES = ['ROLE_USER'];
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="park_manager_user_id")
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    public UserId $id;
-
-    /**
-     * @ORM\Embedded(class=EmailAddress::class, columnPrefix="email_")
-     */
-    public EmailAddress $email;
-
-    /**
-     * @ORM\Column(name="display_name", type="string")
-     */
-    public string $displayName;
-
-    /**
-     * @ORM\Column(name="login_enabled", type="boolean")
-     */
+    #[Column(name: 'login_enabled', type: 'boolean')]
     public bool $loginEnabled = true;
 
     /**
-     * @ORM\Column(type="array_collection")
-     *
      * @var Collection<int, string>
      */
+    #[Column(type: 'array_collection')]
     public Collection $roles;
 
-    /**
-     * @ORM\Embedded(class=SplitTokenValueHolder::class, columnPrefix="email_change_")
-     */
+    #[Embedded(class: SplitTokenValueHolder::class, columnPrefix: 'email_change_')]
     public ?SplitTokenValueHolder $emailAddressChangeToken = null;
 
-    /**
-     * @ORM\Column(name="auth_password", type="text")
-     */
-    public string $password;
-
-    /**
-     * @ORM\Column(name="password_reset_enabled", type="boolean")
-     */
+    #[Column(name: 'password_reset_enabled', type: 'boolean')]
     public bool $passwordResetEnabled = true;
 
-    /**
-     * @ORM\Column(name="password_expiration", type="carbon_immutable", nullable=true)
-     */
+    #[Column(name: 'password_expiration', type: 'carbon_immutable', nullable: true)]
     public ?CarbonImmutable $passwordExpiresOn = null;
 
-    /**
-     * @ORM\Embedded(class=SplitTokenValueHolder::class, columnPrefix="password_reset_")
-     */
+    #[Embedded(class: SplitTokenValueHolder::class, columnPrefix: 'password_reset_')]
     public ?SplitTokenValueHolder $passwordResetToken = null;
 
-    private function __construct(UserId $id, EmailAddress $email, string $displayName, string $password)
-    {
-        $this->id = $id;
-        $this->email = $email;
-        $this->displayName = $displayName;
+    private function __construct(
+        #[Id]
+        #[Column(type: 'park_manager_user_id')]
+        #[GeneratedValue(strategy: 'NONE')]
+        public UserId $id,
+
+        #[Embedded(class: EmailAddress::class, columnPrefix: 'email_')]
+        public EmailAddress $email,
+
+        #[Column(name: 'display_name', type: 'string')]
+        public string $displayName,
+
+        #[Column(name: 'auth_password', type: 'text')]
+        public string $password
+    ) {
         $this->roles = new ArrayCollection(static::DEFAULT_ROLES);
-        $this->password = $password;
     }
 
     public static function register(UserId $id, EmailAddress $email, string $displayName, string $password): self

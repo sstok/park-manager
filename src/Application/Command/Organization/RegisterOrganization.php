@@ -15,17 +15,13 @@ use ParkManager\Domain\User\UserId;
 
 final class RegisterOrganization
 {
-    public OrganizationId $id;
-    public string $name;
-    public UserId $creator;
-
     /**
      * @param UserId $creator Main creator user-id (or owner of the organization)
      */
-    public function __construct(OrganizationId $id, string $name, UserId $creator)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->creator = $creator;
+    public function __construct(
+        public OrganizationId $id,
+        public string $name,
+        public UserId $creator
+    ) {
     }
 }

@@ -10,73 +10,50 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Embeddable;
 use const IDNA_DEFAULT;
 use const INTL_IDNA_VARIANT_UTS46;
 use const MB_CASE_LOWER;
 use ParkManager\Domain\Exception\MalformedEmailAddress;
+use Stringable;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\String\UnicodeString;
 
-/**
- * @ORM\Embeddable
- */
-final class EmailAddress implements \Stringable
+#[Embeddable]
+final class EmailAddress implements Stringable
 {
-    /**
-     * READ-ONLY.
-     *
-     * Length by official standard.
-     *
-     * @ORM\Column(type="string", length=254, nullable=false)
-     */
-    public string $address;
-
-    /**
-     * READ-ONLY.
-     *
-     * @ORM\Column(type="string", length=254, nullable=false)
-     */
+    #[Column(type: 'string', length: 254, nullable: false)]
     public string $canonical;
 
     /**
-     * READ-ONLY.
-     *
-     * @ORM\Column(type="string", length=254, nullable=true)
-     */
-    public ?string $name = null;
-
-    /**
-     * READ-ONLY.
-     *
      * Unmapped. Label is already part of the original value and unimportant.
      */
     public string $label = '';
 
-    /**
-     * READ-ONLY.
-     */
     public bool $isPattern = false;
 
     /**
-     * READ-ONLY.
-     *
      * Unmapped. Already part of the original value.
      */
     public string $local = '';
 
     /**
-     * READ-ONLY.
-     *
      * Unmapped. Already part of the original value.
      */
     public string $domain = '';
 
-    public function __construct(string $address, ?string $name = null)
-    {
-        $this->address = $address;
+    public function __construct(
+        /**
+         * Length by official standard.
+         */
+        #[Column(type: 'string', length: 254, nullable: false)]
+        public string $address,
+
+        #[Column(type: 'string', length: 254, nullable: true)]
+        public ?string $name = null
+    ) {
         $this->canonical = $this->canonicalize($address, $this->local, $this->domain, $this->label);
-        $this->name = $name;
 
         if (str_contains($address, '*')) {
             $this->validatePattern();

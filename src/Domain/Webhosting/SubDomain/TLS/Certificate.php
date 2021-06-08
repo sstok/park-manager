@@ -11,7 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\SubDomain\TLS;
 
 use Assert\Assertion;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Table;
+use InvalidArgumentException;
 
 /**
  * Holds a TLS Certificate (immutable).
@@ -21,22 +24,14 @@ use Doctrine\ORM\Mapping as ORM;
  * store each key/cert only once (for storage sufficiency).
  *
  * The SubDomain references these values using their unique hashes.
- *
- * @ORM\Entity
- * @ORM\Table(name="host_tls_cert")
  */
+#[Entity]
+#[Table(name: 'host_tls_cert')]
 class Certificate
 {
     use x509Data {
         __construct as construct;
     }
-
-    /**
-     * @ORM\Column(type="binary")
-     *
-     * @var resource|string
-     */
-    private $privateKey;
 
     /**
      * Memory cached string-version of the private-key.
@@ -46,11 +41,16 @@ class Certificate
     /**
      * @param array<string, array<int|string, string>|string> $rawFields
      */
-    public function __construct(string $contents, string $privateKey, array $rawFields, ?CA $ca = null)
-    {
-        $this->construct($contents, $rawFields, $ca);
+    public function __construct(
+        string $contents,
 
-        $this->privateKey = $privateKey;
+        #[Column(type: 'binary')]
+        private mixed $privateKey,
+
+        array $rawFields,
+        ?CA $ca = null
+    ) {
+        $this->construct($contents, $rawFields, $ca);
         $this->privateKeyString = $privateKey;
 
         Assertion::false($ca === null && ! $this->isSelfSigned(), 'A CA must be provided when the Certificate is not self-signed.', 'ca');
@@ -100,7 +100,7 @@ class Certificate
     {
         if (! isset($this->privateKeyString)) {
             if (! \is_resource($this->privateKey)) {
-                throw new \InvalidArgumentException('PrivateKey resource was not initialized.');
+                throw new InvalidArgumentException('PrivateKey resource was not initialized.');
             }
 
             $this->privateKeyString = stream_get_contents($this->privateKey);

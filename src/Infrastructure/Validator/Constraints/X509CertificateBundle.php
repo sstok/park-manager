@@ -18,25 +18,14 @@ use ParagonIE\HiddenString\HiddenString;
  */
 final class X509CertificateBundle
 {
-    public string $certificate;
-
     /**
-     * Private key provided as memory-protected string.
+     * @param HiddenString|null     $privateKey private key provided as memory-protected string
+     * @param array<string, string> $caList     [user-provided CA-name => X509 contents]
      */
-    public ?HiddenString $privateKey;
-
-    /**
-     * @var array<string, string> [user-provided CA-name => X509 contents]
-     */
-    public array $caList;
-
-    /**
-     * @param array<string, string> $caList [user-provided CA-name => X509 contents]
-     */
-    public function __construct(string $certificate, ?HiddenString $privateKey = null, array $caList = [])
-    {
-        $this->certificate = $certificate;
-        $this->privateKey = $privateKey;
-        $this->caList = $caList;
+    public function __construct(
+        public string $certificate,
+        public ?HiddenString $privateKey = null,
+        public array $caList = []
+    ) {
     }
 }

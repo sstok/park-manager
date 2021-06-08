@@ -20,9 +20,4 @@ final class RequestPasswordReset
     {
         $this->email = new EmailAddress($email);
     }
-
-    public function email(): EmailAddress
-    {
-        return $this->email;
-    }
 }

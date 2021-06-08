@@ -10,46 +10,42 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Space;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Embeddable;
 
 /**
  * A SystemRegistration keeps all information related to registration of a Webhosting Space or
  * or Virtualized Subdomain (subdomain with it's own server configuration instance).
- *
- * @ORM\Embeddable
  */
+#[Embeddable]
 final class SystemRegistration
 {
     /**
      * READ-ONLY. The system assigned user-id.
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[Column(type: 'integer', nullable: true)]
     public ?int $userId = null;
 
     /**
      * READ-ONLY. The user-groups that the system belongs to.
      *
-     * @ORM\Column(type="simple_array", nullable=true)
-     *
      * @var array<int>
      */
+    #[Column(type: 'simple_array', nullable: true)]
     public ?array $userGroups = null;
 
     /**
      * READ-ONLY. The homedir that was assigned by the server.
-     *
-     * @ORM\Column(type="string", nullable=true)
      */
+    #[Column(type: 'string', nullable: true)]
     public ?string $homeDir = null;
 
     /**
      * READ-ONLY. The system-cluster ID this entity is assigned to.
      *
      * Note. This is future planned for future and currently has no purpose.
-     *
-     * @ORM\Column(type="string", nullable=true)
      */
+    #[Column(type: 'string', nullable: true)]
     public ?string $clusterId = null;
 
     /**

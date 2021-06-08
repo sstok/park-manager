@@ -21,15 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class RegisterUserAction
 {
-    /**
-     * @Security("is_granted('ROLE_SUPER_ADMIN')")
-     *
-     * @Route(
-     *     path="/user/register",
-     *     methods={"GET", "POST", "HEAD"},
-     *     name="park_manager.admin.register_user"
-     * )
-     */
+    #[Security("is_granted('ROLE_SUPER_ADMIN')")]
+    #[Route(path: '/user/register', methods: ['GET', 'POST', 'HEAD'], name: 'park_manager.admin.register_user')]
     public function __invoke(Request $request, FormFactoryInterface $formFactory): TwigResponse | RouteRedirectResponse
     {
         $userId = UserId::create();

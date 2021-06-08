@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Application\Service;
 
 use Doctrine\Common\Collections\Expr\Expression;
+use Generator;
 use ParkManager\Domain\ResultSet;
 use Traversable;
 
@@ -78,7 +79,7 @@ final class CombinedResultSet implements ResultSet
     }
 
     /**
-     * @return \Generator<int, mixed, mixed, void>
+     * @return Generator<int, mixed, mixed, void>
      */
     public function getIterator(): Traversable
     {

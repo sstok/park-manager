@@ -23,13 +23,10 @@ use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
  */
 final class AuthenticationTokenPasswordChangedListener
 {
-    private UserProviderInterface $userProvider;
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(UserProviderInterface $userProvider, TokenStorageInterface $tokenStorage)
-    {
-        $this->userProvider = $userProvider;
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(
+        private UserProviderInterface $userProvider,
+        private TokenStorageInterface $tokenStorage
+    ) {
     }
 
     public function onUserPasswordWasChanged(UserPasswordWasChanged $event): void

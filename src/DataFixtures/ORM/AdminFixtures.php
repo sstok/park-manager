@@ -28,24 +28,13 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 final class AdminFixtures extends Fixture
 {
-    private MessageBusInterface $commandBus;
-    private EncoderFactoryInterface $encoderFactory;
-    private FakerGenerator $faker;
-    private OrganizationRepository $organizationRepository;
-    private OwnerRepository $ownerRepository;
-
     public function __construct(
-        MessageBusInterface $commandBus,
-        EncoderFactoryInterface $encoderFactory,
-        FakerGenerator $faker,
-        OrganizationRepository $organizationRepository,
-        OwnerRepository $ownerRepository
+        private MessageBusInterface $commandBus,
+        private EncoderFactoryInterface $encoderFactory,
+        private FakerGenerator $faker,
+        private OrganizationRepository $organizationRepository,
+        private OwnerRepository $ownerRepository
     ) {
-        $this->commandBus = $commandBus;
-        $this->encoderFactory = $encoderFactory;
-        $this->faker = $faker;
-        $this->organizationRepository = $organizationRepository;
-        $this->ownerRepository = $ownerRepository;
     }
 
     public function load(ObjectManager $manager): void

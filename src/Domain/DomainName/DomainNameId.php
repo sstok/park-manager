@@ -11,8 +11,9 @@ declare(strict_types=1);
 namespace ParkManager\Domain\DomainName;
 
 use ParkManager\Domain\UuidTrait;
+use Stringable;
 
-final class DomainNameId implements \Stringable
+final class DomainNameId implements Stringable
 {
     use UuidTrait;
 }

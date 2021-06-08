@@ -15,14 +15,10 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class AddDomainNameToSpace
 {
-    public DomainNamePair $name;
-    public SpaceId $space;
-    public bool $primary;
-
-    public function __construct(DomainNamePair $name, SpaceId $space, bool $primary = false)
-    {
-        $this->name = $name;
-        $this->space = $space;
-        $this->primary = $primary;
+    public function __construct(
+        public DomainNamePair $name,
+        public SpaceId $space,
+        public bool $primary = false
+    ) {
     }
 }

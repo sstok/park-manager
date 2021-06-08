@@ -14,30 +14,20 @@ use ParkManager\Domain\User\UserId;
 
 final class ChangeUserPassword
 {
-    /**
-     * READ-ONLY.
-     */
     public UserId $id;
 
     /**
-     * READ-ONLY: The password in hash-encoded format.
+     * @param string $password The password in hashed format
      */
-    public string $password;
-
-    public bool $temporary = false;
-
-    /**
-     * @param string $password The password in hash-encoded format or null
-     *                         to disable password based authentication
-     */
-    public function __construct(string | UserId $id, string $password, bool $temporary = false)
-    {
+    public function __construct(
+        string | UserId $id,
+        public string $password,
+        public bool $temporary = false
+    ) {
         if (\is_string($id)) {
             $id = UserId::fromString($id);
         }
 
         $this->id = $id;
-        $this->password = $password;
-        $this->temporary = $temporary;
     }
 }

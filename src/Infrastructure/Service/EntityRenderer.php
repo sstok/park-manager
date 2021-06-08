@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Service;
 
+use InvalidArgumentException;
 use ParkManager\Domain\ResultSet;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Twig\Environment as TwigEnvironment;
@@ -27,13 +28,8 @@ use Twig\Environment as TwigEnvironment;
  */
 final class EntityRenderer
 {
-    private TwigEnvironment $twig;
-    private LocaleAwareInterface $localeAware;
-
-    public function __construct(TwigEnvironment $twig, LocaleAwareInterface $localeAware)
+    public function __construct(private TwigEnvironment $twig, private LocaleAwareInterface $localeAware)
     {
-        $this->twig = $twig;
-        $this->localeAware = $localeAware;
     }
 
     /**
@@ -42,7 +38,7 @@ final class EntityRenderer
     public function getEntityLabel(string $entityName): string
     {
         if (! str_starts_with($entityName, 'ParkManager\\Domain\\')) {
-            throw new \InvalidArgumentException(sprintf('Expected %s to begin with "ParkManager\\Domain\\"', $entityName));
+            throw new InvalidArgumentException(sprintf('Expected %s to begin with "ParkManager\\Domain\\"', $entityName));
         }
 
         $class = mb_substr(ltrim($entityName, '\\'), 19); // Strips `ParkManager\Domain\`
@@ -94,7 +90,7 @@ final class EntityRenderer
 
     private function resolveTemplate(object $entity): string
     {
-        $class = mb_substr(\get_class($entity), 19); // Strips `ParkManager\Domain\`
+        $class = mb_substr($entity::class, 19); // Strips `ParkManager\Domain\`
 
         return mb_strtolower(str_replace('\\', '/', $class));
     }

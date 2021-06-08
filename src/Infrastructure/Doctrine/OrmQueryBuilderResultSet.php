@@ -24,9 +24,6 @@ use ParkManager\Domain\ResultSet;
  */
 final class OrmQueryBuilderResultSet implements ResultSet
 {
-    private QueryBuilder $queryBuilder;
-    private string $rootAlias;
-    private bool $fetchJoinCollection;
     private ?int $length = null;
     private ?int $offset = null;
     /** @var array<int, string>|null */
@@ -41,11 +38,11 @@ final class OrmQueryBuilderResultSet implements ResultSet
      * @param bool $fetchJoinCollection whether the query joins a collection (true by default), set
      *                                  to false when not used to speed-up pagination
      */
-    public function __construct(QueryBuilder $queryBuilder, string $rootAlias, bool $fetchJoinCollection = true)
-    {
-        $this->queryBuilder = $queryBuilder;
-        $this->rootAlias = $rootAlias;
-        $this->fetchJoinCollection = $fetchJoinCollection;
+    public function __construct(
+        private QueryBuilder $queryBuilder,
+        private string $rootAlias,
+        private bool $fetchJoinCollection = true
+    ) {
     }
 
     public function setLimit(?int $limit, ?int $offset = null): static

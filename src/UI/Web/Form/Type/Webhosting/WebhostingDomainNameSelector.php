@@ -21,11 +21,8 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 final class WebhostingDomainNameSelector extends AbstractType
 {
-    private DomainNameRepository $domainNameRepository;
-
-    public function __construct(DomainNameRepository $domainNameRepository)
+    public function __construct(private DomainNameRepository $domainNameRepository)
     {
-        $this->domainNameRepository = $domainNameRepository;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

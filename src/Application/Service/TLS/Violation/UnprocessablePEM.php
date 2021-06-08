@@ -19,14 +19,10 @@ use ParkManager\Application\Service\TLS\Violation;
  */
 final class UnprocessablePEM extends Violation
 {
-    private string $certName;
-
-    public function __construct(string $certName, string $contents = '')
+    public function __construct(private string $certName, string $contents = '')
     {
         $previous = $contents !== '' ? new InvalidArgumentException($contents) : null;
         parent::__construct('', 0, new Error((string) openssl_error_string(), 1, $previous));
-
-        $this->certName = $certName;
     }
 
     public function getTranslatorId(): string

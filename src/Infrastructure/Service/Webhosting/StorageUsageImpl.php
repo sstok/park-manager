@@ -18,11 +18,8 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class StorageUsageImpl implements StorageUsage
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function getDiskUsageOf(SpaceId $id): ByteSize

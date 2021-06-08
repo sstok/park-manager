@@ -17,13 +17,10 @@ use ParkManager\Domain\User\UserRepository;
 
 final class DeleteRegistrationHandler
 {
-    private UserRepository $repository;
-    private OwnershipUsageList $ownershipUsageList;
-
-    public function __construct(UserRepository $repository, OwnershipUsageList $ownershipUsageList)
-    {
-        $this->repository = $repository;
-        $this->ownershipUsageList = $ownershipUsageList;
+    public function __construct(
+        private UserRepository $repository,
+        private OwnershipUsageList $ownershipUsageList
+    ) {
     }
 
     public function __invoke(DeleteRegistration $command): void

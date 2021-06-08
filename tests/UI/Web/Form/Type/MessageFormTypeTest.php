@@ -21,6 +21,7 @@ use ParkManager\Tests\UI\Web\Form\Type\Mocks\StubCommand;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\ViolationMapper;
 use RuntimeException;
+use stdClass;
 use Symfony\Component\Form\Exception\InvalidArgumentException as FormInvalidArgumentException;
 use Symfony\Component\Form\Exception\RuntimeException as FormRuntimeException;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -342,7 +343,7 @@ final class MessageFormTypeTest extends TypeTestCase
     {
         $options = [
             'command_factory' => static fn (array $data): StubCommand => new StubCommand($data['id'], $data['username'], $data['profile'] ?? null),
-            'model_class' => \stdClass::class,
+            'model_class' => stdClass::class,
         ];
 
         $this->expectException(FormInvalidArgumentException::class);
@@ -360,7 +361,7 @@ final class MessageFormTypeTest extends TypeTestCase
     {
         $options = [
             'command_factory' => static fn (array $data): StubCommand => new StubCommand($data['id'], $data['username'], $data['profile'] ?? null),
-            'model_class' => [\stdClass::class, StubCommand::class],
+            'model_class' => [stdClass::class, StubCommand::class],
         ];
 
         $this->expectException(FormInvalidArgumentException::class);

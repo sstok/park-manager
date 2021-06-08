@@ -18,13 +18,10 @@ use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class TransferSpaceToOwnerHandler
 {
-    private WebhostingSpaceRepository $spaceRepository;
-    private OwnerRepository $ownerRepository;
-
-    public function __construct(WebhostingSpaceRepository $spaceRepository, OwnerRepository $ownerRepository)
-    {
-        $this->spaceRepository = $spaceRepository;
-        $this->ownerRepository = $ownerRepository;
+    public function __construct(
+        private WebhostingSpaceRepository $spaceRepository,
+        private OwnerRepository $ownerRepository
+    ) {
     }
 
     public function __invoke(TransferSpaceToOwner $command): void

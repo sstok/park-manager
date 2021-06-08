@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock;
 
+use InvalidArgumentException;
 use ParkManager\Application\Service\PdpManager;
 use ParkManager\Infrastructure\Pdp\PsrStorageFactory;
 use Pdp\ResourceUri;
@@ -38,7 +39,7 @@ final class PdpMockProvider
                     return new MockResponse(file_get_contents(__DIR__ . '/../Fixtures/tlds-alpha-by-domain.txt'));
                 }
 
-                throw new \InvalidArgumentException(sprintf('Unknown url %s requested.', $url));
+                throw new InvalidArgumentException(sprintf('Unknown url %s requested.', $url));
             }
         );
         $factory = new PsrStorageFactory(

@@ -15,11 +15,8 @@ use ParkManager\Domain\User\UserRepository;
 
 final class ConfirmEmailAddressChangeHandler
 {
-    private UserRepository $repository;
-
-    public function __construct(UserRepository $repository)
+    public function __construct(private UserRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function __invoke(ConfirmEmailAddressChange $command): void

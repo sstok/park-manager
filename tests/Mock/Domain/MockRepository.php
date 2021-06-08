@@ -11,7 +11,9 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Mock\Domain;
 
 use Closure;
+use InvalidArgumentException;
 use PHPUnit\Framework\Assert;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -78,7 +80,7 @@ trait MockRepository
 
         foreach ($this->getFieldsIndexMultiMapping() as $mapping => $getter) {
             if (isset($indexMapping[$mapping])) {
-                throw new \RuntimeException(sprintf('Multi-mapping name "%s" already exists in single mapping.', $mapping));
+                throw new RuntimeException(sprintf('Multi-mapping name "%s" already exists in single mapping.', $mapping));
             }
 
             $withGetter = $this->getValueWithGetter($entity, $getter);
@@ -114,10 +116,10 @@ trait MockRepository
             method_exists($object, $getter) => $object->{$getter}(),
             method_exists($object, 'get' . ucfirst($getter)) => $object->{'get' . ucfirst($getter)}(),
             property_exists($object, $getter) => $object->{$getter},
-            default => throw new \InvalidArgumentException(
+            default => throw new InvalidArgumentException(
                 sprintf(
                     'Unable to get field value for "%s" with getter "%s", neither "%2$s()", "get%3$s()" or property "%2$s" exists.',
-                    \get_class($object),
+                    $object::class,
                     $getter,
                     ucfirst($getter)
                 )

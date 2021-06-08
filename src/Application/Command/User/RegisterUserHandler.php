@@ -20,13 +20,10 @@ use ParkManager\Domain\User\UserRepository;
 
 final class RegisterUserHandler
 {
-    private UserRepository $repository;
-    private OwnerRepository $ownerRepository;
-
-    public function __construct(UserRepository $repository, OwnerRepository $ownerRepository)
-    {
-        $this->repository = $repository;
-        $this->ownerRepository = $ownerRepository;
+    public function __construct(
+        private UserRepository $repository,
+        private OwnerRepository $ownerRepository
+    ) {
     }
 
     public function __invoke(RegisterUser $command): void

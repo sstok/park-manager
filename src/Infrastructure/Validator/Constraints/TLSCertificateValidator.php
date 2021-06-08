@@ -19,11 +19,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class TLSCertificateValidator extends ConstraintValidator
 {
-    private TranslatorInterface $translator;
-
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(private TranslatorInterface $translator)
     {
-        $this->translator = $translator;
     }
 
     public function validate($value, Constraint $constraint): void

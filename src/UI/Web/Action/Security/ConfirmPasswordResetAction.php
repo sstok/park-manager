@@ -20,14 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ConfirmPasswordResetAction
 {
-    /**
-     * @Route(
-     *     path="/password-reset/confirm/{token}",
-     *     name="park_manager.security_confirm_password_reset",
-     *     requirements={"token" = ".+"},
-     *     methods={"GET", "POST"}
-     * )
-     */
+    #[Route(path: '/password-reset/confirm/{token}', name: 'park_manager.security_confirm_password_reset', requirements: ['token' => '.+'], methods: ['GET', 'POST'])]
     public function __invoke(Request $request, SplitToken $token, FormFactoryInterface $formFactory): TwigResponse | RouteRedirectResponse
     {
         $form = $formFactory->create(ConfirmPasswordResetType::class, ['reset_token' => $token]);

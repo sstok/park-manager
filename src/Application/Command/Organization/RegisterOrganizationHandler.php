@@ -16,13 +16,10 @@ use ParkManager\Domain\User\UserRepository;
 
 final class RegisterOrganizationHandler
 {
-    private OrganizationRepository $organizationRepository;
-    private UserRepository $userRepository;
-
-    public function __construct(OrganizationRepository $organizationRepository, UserRepository $userRepository)
-    {
-        $this->organizationRepository = $organizationRepository;
-        $this->userRepository = $userRepository;
+    public function __construct(
+        private OrganizationRepository $organizationRepository,
+        private UserRepository $userRepository
+    ) {
     }
 
     public function __invoke(RegisterOrganization $command): void

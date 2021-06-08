@@ -14,21 +14,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class RouteRedirectResponse
 {
-    private string $route;
     /** @var array<string, mixed> */
     private array $parameters;
-    private int $status;
     /** @var array<int, array{0: string, 1: string, 2: array<string, mixed>|null}> */
     private array $flashes = [];
 
     /**
      * @param array<string, mixed> $parameters
      */
-    public function __construct(string $route, array $parameters = [], int $status = 302)
+    public function __construct(private string $route, array $parameters = [], private int $status = 302)
     {
-        $this->route = $route;
         $this->parameters = $parameters;
-        $this->status = $status;
     }
 
     /**

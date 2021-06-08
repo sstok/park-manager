@@ -10,22 +10,21 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\SubDomain\Exception;
 
+use DomainException;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Exception\TranslatableException;
 
-final class SubDomainAlreadyExists extends \DomainException implements TranslatableException
+final class SubDomainAlreadyExists extends DomainException implements TranslatableException
 {
     private DomainNamePair $domainName;
     private string $name;
-    private string $id;
 
-    public function __construct(DomainNamePair $domainName, string $name, string $id)
+    public function __construct(DomainNamePair $domainName, string $name, private string $id)
     {
         parent::__construct(sprintf('SubDomain "%s.%s" already exists.', $name, $domainName->toString()));
 
         $this->domainName = $domainName;
         $this->name = $name;
-        $this->id = $id;
     }
 
     public function getTranslatorId(): string

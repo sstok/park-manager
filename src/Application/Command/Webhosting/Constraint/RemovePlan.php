@@ -14,11 +14,8 @@ use ParkManager\Domain\Webhosting\Constraint\PlanId;
 
 final class RemovePlan
 {
-    public PlanId $id;
-
-    public function __construct(PlanId $id)
+    public function __construct(public PlanId $id)
     {
-        $this->id = $id;
     }
 
     public static function with(string $id): self

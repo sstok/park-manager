@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Validator\Constraints;
 
+use Attribute;
 use ParkManager\Application\Service\TLS\CertificateValidator;
 use Symfony\Component\Validator\Constraint;
 
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraint;
  * @Annotation
  * @Target({"ANNOTATION"})
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class X509Support extends Constraint
 {
     /**
@@ -35,7 +36,7 @@ final class X509Support extends Constraint
      * @param callable(array<string, mixed>, string, CertificateValidator): void $callback The callback or a set of options
      * @param mixed|null                                                         $payload
      */
-    public function __construct(?callable $callback = null, array $groups = null, $payload = null, array $options = [])
+    public function __construct(?callable $callback = null, ?array $groups = null, $payload = null, array $options = [])
     {
         // Invocation through annotations with an array parameter only
         if (\is_array($callback) && \count($callback) === 1 && isset($callback['value'])) {

@@ -18,12 +18,7 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
  */
 final class AssignConstraintsToSpace
 {
-    public SpaceId $space;
-    public Constraints $constraints;
-
-    public function __construct(SpaceId $space, Constraints $constraints)
+    public function __construct(public SpaceId $space, public Constraints $constraints)
     {
-        $this->space = $space;
-        $this->constraints = $constraints;
     }
 }

@@ -19,11 +19,8 @@ use ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
 
 final class SubDomainUsageValidator implements DomainNameSpaceUsageValidator
 {
-    private SubDomainRepository $subDomainRepository;
-
-    public function __construct(SubDomainRepository $subDomainRepository)
+    public function __construct(private SubDomainRepository $subDomainRepository)
     {
-        $this->subDomainRepository = $subDomainRepository;
     }
 
     public function __invoke(DomainName $domainName, Space $space): array

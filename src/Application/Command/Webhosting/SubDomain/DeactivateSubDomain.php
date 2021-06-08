@@ -14,11 +14,8 @@ use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 
 final class DeactivateSubDomain
 {
-    public SubDomainNameId $id;
-
-    public function __construct(SubDomainNameId $id)
+    public function __construct(public SubDomainNameId $id)
     {
-        $this->id = $id;
     }
 
     public static function with(string $id): self

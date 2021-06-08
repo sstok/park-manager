@@ -15,10 +15,7 @@ use ParkManager\Infrastructure\Security\Permission;
 
 final class IsFullOwner implements Permission
 {
-    public Owner $owner;
-
-    public function __construct(Owner $owner)
+    public function __construct(public Owner $owner)
     {
-        $this->owner = $owner;
     }
 }

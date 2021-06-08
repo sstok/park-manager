@@ -26,14 +26,11 @@ use Twig\Environment;
  */
 final class TwigResponseListener implements EventSubscriberInterface, ServiceSubscriberInterface
 {
-    private Container $container;
-
     /**
      * @param Container $container Service container for loading *only* the Twig service (lazy)
      */
-    public function __construct(Container $container)
+    public function __construct(private Container $container)
     {
-        $this->container = $container;
     }
 
     public function onKernelResponse(ResponseEvent $event): void

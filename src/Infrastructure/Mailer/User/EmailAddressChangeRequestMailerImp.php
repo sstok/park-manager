@@ -19,14 +19,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface as UrlGenerator;
 
 final class EmailAddressChangeRequestMailerImp implements EmailAddressChangeRequestMailer
 {
-    private MailerInterface $mailer;
-
-    private UrlGenerator $urlGenerator;
-
-    public function __construct(MailerInterface $mailer, UrlGenerator $urlGenerator)
-    {
-        $this->mailer = $mailer;
-        $this->urlGenerator = $urlGenerator;
+    public function __construct(
+        private MailerInterface $mailer,
+        private UrlGenerator $urlGenerator
+    ) {
     }
 
     public function send(EmailAddress $newAddress, SplitToken $splitToken): void

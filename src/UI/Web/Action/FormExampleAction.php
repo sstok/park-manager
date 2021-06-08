@@ -31,13 +31,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class FormExampleAction
 {
-    /**
-     * @Route(
-     *     path="/form-example",
-     *     name="park_manager.form_example",
-     *     methods={"GET", "POST"}
-     * )
-     */
+    #[Route(path: '/form-example', name: 'park_manager.form_example', methods: ['GET', 'POST'])]
     public function __invoke(FormFactoryInterface $formFactory): TwigResponse
     {
         $form = $formFactory->createBuilder()

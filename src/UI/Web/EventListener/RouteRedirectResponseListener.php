@@ -20,13 +20,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class RouteRedirectResponseListener implements EventSubscriberInterface
 {
-    private UrlGeneratorInterface $urlGenerator;
-    private Session $session;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator, Session $session)
-    {
-        $this->urlGenerator = $urlGenerator;
-        $this->session = $session;
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator,
+        private Session $session
+    ) {
     }
 
     public function onKernelView(ViewEvent $event): void

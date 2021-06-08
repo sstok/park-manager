@@ -19,10 +19,7 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
  */
 final class MarkSpaceForRemoval
 {
-    public SpaceId $id;
-
-    public function __construct(SpaceId $id)
+    public function __construct(public SpaceId $id)
     {
-        $this->id = $id;
     }
 }

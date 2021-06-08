@@ -18,13 +18,10 @@ use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class AddDomainNameToSpaceHandler
 {
-    private DomainNameRepository $domainNameRepository;
-    private WebhostingSpaceRepository $spaceRepository;
-
-    public function __construct(DomainNameRepository $domainNameRepository, WebhostingSpaceRepository $spaceRepository)
-    {
-        $this->domainNameRepository = $domainNameRepository;
-        $this->spaceRepository = $spaceRepository;
+    public function __construct(
+        private DomainNameRepository $domainNameRepository,
+        private WebhostingSpaceRepository $spaceRepository
+    ) {
     }
 
     public function __invoke(AddDomainNameToSpace $command): void

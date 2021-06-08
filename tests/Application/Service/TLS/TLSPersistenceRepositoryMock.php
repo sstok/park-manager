@@ -43,8 +43,8 @@ final class TLSPersistenceRepositoryMock extends ObjectManagerDecorator
     protected function getFieldsIndexMapping(): array
     {
         return [
-            'hash' => static fn (object $entity) => \get_class($entity) . ':' . $entity->getId(),
-            'contents' => static fn (object $entity) => \get_class($entity) . ':' . $entity->getContents(),
+            'hash' => static fn (object $entity) => $entity::class . ':' . $entity->getId(),
+            'contents' => static fn (object $entity) => $entity::class . ':' . $entity->getContents(),
         ];
     }
 

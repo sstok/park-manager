@@ -11,11 +11,12 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\Space;
 
 use ParkManager\Domain\UuidTrait;
+use Stringable;
 
 /**
  * @codeCoverageIgnore
  */
-final class SpaceId implements \Stringable
+final class SpaceId implements Stringable
 {
     use UuidTrait;
 }

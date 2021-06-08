@@ -11,8 +11,9 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\Email;
 
 use ParkManager\Domain\UuidTrait;
+use Stringable;
 
-final class MailboxId implements \Stringable
+final class MailboxId implements Stringable
 {
     use UuidTrait;
 }

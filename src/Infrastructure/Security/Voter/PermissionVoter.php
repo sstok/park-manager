@@ -17,11 +17,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 final class PermissionVoter implements VoterInterface
 {
-    private PermissionAccessManager $permissionAccessManager;
-
-    public function __construct(PermissionAccessManager $permissionAccessManager)
+    public function __construct(private PermissionAccessManager $permissionAccessManager)
     {
-        $this->permissionAccessManager = $permissionAccessManager;
     }
 
     /**

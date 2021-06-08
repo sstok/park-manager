@@ -21,11 +21,8 @@ use Throwable;
 
 final class SplitTokenResolver implements ArgumentValueResolverInterface
 {
-    private SplitTokenFactory $splitTokenFactory;
-
-    public function __construct(SplitTokenFactory $splitTokenFactory)
+    public function __construct(private SplitTokenFactory $splitTokenFactory)
     {
-        $this->splitTokenFactory = $splitTokenFactory;
     }
 
     public function supports(Request $request, ArgumentMetadata $argument): bool

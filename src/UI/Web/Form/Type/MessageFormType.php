@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type;
 
+use Closure;
 use ParkManager\Domain\Exception\TranslatableException;
 use ParkManager\UI\Web\Form\DataMapper\CommandDataMapper;
 use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectAccessor;
@@ -36,26 +37,22 @@ use Throwable;
 
 final class MessageFormType extends AbstractType
 {
-    private MessageBusInterface $messageBus;
-    private TranslatorInterface $translator;
     private DataAccessorInterface $dataAccessor;
     private DataMapper $dataMapper;
-    private ViolationMapper $violationMapper;
 
-    public function __construct(MessageBusInterface $messageBus, TranslatorInterface $translator, ViolationMapper $violationMapper, ?PropertyAccessorInterface $propertyAccessor = null)
-    {
+    public function __construct(
+        private MessageBusInterface $messageBus,
+        private TranslatorInterface $translator,
+        private ViolationMapper $violationMapper,
+        ?PropertyAccessorInterface $propertyAccessor = null
+    ) {
         $propertyAccessor ??= PropertyAccess::createPropertyAccessor();
 
-        $this->messageBus = $messageBus;
-        $this->translator = $translator;
-        $this->dataAccessor = new ChainAccessor(
-            [
-                new CallbackAccessor(),
-                new PropertyPathObjectAccessor($propertyAccessor),
-            ]
-        );
+        $this->dataAccessor = new ChainAccessor([
+            new CallbackAccessor(),
+            new PropertyPathObjectAccessor($propertyAccessor),
+        ]);
         $this->dataMapper = new DataMapper($this->dataAccessor);
-        $this->violationMapper = $violationMapper;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -87,7 +84,7 @@ final class MessageFormType extends AbstractType
             $builder->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event): void {
                 $acceptedModelClass = $event->getForm()->getConfig()->getOption('model_class');
 
-                if ($acceptedModelClass !== null && ! \in_array(\get_class($event->getData()), $acceptedModelClass, true)) {
+                if ($acceptedModelClass !== null && ! \in_array($event->getData()::class, $acceptedModelClass, true)) {
                     throw new InvalidArgumentException(
                         sprintf(
                             'Expected model class of type "%s". But "%s" was given for "%s".',
@@ -132,7 +129,7 @@ final class MessageFormType extends AbstractType
     }
 
     /**
-     * @param array<string, string|\Closure>                                 $exceptionMapping
+     * @param array<string, string|Closure>                                  $exceptionMapping
      * @param callable(Throwable, TranslatorInterface, FormInterface): mixed $exceptionFallback
      */
     private function dispatchCommand(?object $command, FormInterface $form, array $exceptionMapping, ?callable $exceptionFallback): void
@@ -157,7 +154,7 @@ final class MessageFormType extends AbstractType
                 }
             }
 
-            $exceptionName = \get_class($e);
+            $exceptionName = $e::class;
 
             if (isset($exceptionMapping[$exceptionName])) {
                 $handlerOrPath = $exceptionMapping[$exceptionName];

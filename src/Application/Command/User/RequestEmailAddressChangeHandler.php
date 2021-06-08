@@ -19,20 +19,15 @@ use Rollerworks\Component\SplitToken\SplitTokenFactory;
 
 final class RequestEmailAddressChangeHandler
 {
-    private UserRepository $repository;
-    private ConfirmationMailer $confirmationMailer;
-    private SplitTokenFactory $splitTokenFactory;
-    private int $tokenTTL;
-
     /**
      * @param int $tokenTTL Maximum life-time in seconds (default is 'one hour')
      */
-    public function __construct(UserRepository $repository, ConfirmationMailer $mailer, SplitTokenFactory $tokenFactory, int $tokenTTL = 3600)
-    {
-        $this->tokenTTL = $tokenTTL;
-        $this->repository = $repository;
-        $this->splitTokenFactory = $tokenFactory;
-        $this->confirmationMailer = $mailer;
+    public function __construct(
+        private UserRepository $repository,
+        private ConfirmationMailer $confirmationMailer,
+        private SplitTokenFactory $splitTokenFactory,
+        private int $tokenTTL = 3600
+    ) {
     }
 
     public function __invoke(RequestEmailAddressChange $command): void

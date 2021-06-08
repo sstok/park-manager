@@ -18,20 +18,15 @@ use Rollerworks\Component\SplitToken\SplitTokenFactory;
 
 final class RequestPasswordResetHandler
 {
-    private UserRepository $repository;
-
-    private SplitTokenFactory $tokenFactory;
-
-    private PasswordResetMailer $mailer;
-
-    private int $tokenTTL;
-
-    public function __construct(UserRepository $repository, SplitTokenFactory $tokenFactory, PasswordResetMailer $mailer, int $tokenTTL = 3600)
-    {
-        $this->repository = $repository;
-        $this->tokenFactory = $tokenFactory;
-        $this->tokenTTL = $tokenTTL;
-        $this->mailer = $mailer;
+    /**
+     * @param int $tokenTTL Maximum life-time in seconds (default is 'one hour')
+     */
+    public function __construct(
+        private UserRepository $repository,
+        private SplitTokenFactory $tokenFactory,
+        private PasswordResetMailer $mailer,
+        private int $tokenTTL = 3600
+    ) {
     }
 
     public function __invoke(RequestPasswordReset $command): void
@@ -47,7 +42,7 @@ final class RequestPasswordResetHandler
         );
 
         try {
-            $user = $this->repository->getByEmail($command->email());
+            $user = $this->repository->getByEmail($command->email);
         } catch (UserNotFound) {
             // No user with this email address. To prevent exposing existence simply do nothing.
             return;

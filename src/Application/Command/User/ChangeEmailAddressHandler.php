@@ -16,11 +16,8 @@ use ParkManager\Domain\User\UserRepository;
 
 final class ChangeEmailAddressHandler
 {
-    private UserRepository $userRepository;
-
-    public function __construct(UserRepository $userRepository)
+    public function __construct(private UserRepository $userRepository)
     {
-        $this->userRepository = $userRepository;
     }
 
     public function __invoke(ChangeEmailAddress $command): void

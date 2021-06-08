@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Space\Exception;
 
-final class InvalidStatus extends \DomainException
+use DomainException;
+
+final class InvalidStatus extends DomainException
 {
 }

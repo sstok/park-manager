@@ -14,11 +14,8 @@ use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class MarkSpaceForRemovalHandler
 {
-    private WebhostingSpaceRepository $spaceRepository;
-
-    public function __construct(WebhostingSpaceRepository $spaceRepository)
+    public function __construct(private WebhostingSpaceRepository $spaceRepository)
     {
-        $this->spaceRepository = $spaceRepository;
     }
 
     public function __invoke(MarkSpaceForRemoval $command): void

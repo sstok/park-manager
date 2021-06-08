@@ -20,20 +20,14 @@ use Symfony\Component\Security\Core\Exception\RuntimeException;
  */
 class PermissionAccessManager
 {
-    private TokenStorageInterface $tokenStorage;
-    private ContainerInterface $deciders;
-
-    /** @var array<string, class-string> */
-    private array $permissionsShortNames;
-
     /**
      * @param array<string, class-string> $permissionsShortNames
      */
-    public function __construct(TokenStorageInterface $tokenStorage, ContainerInterface $deciders, array $permissionsShortNames)
-    {
-        $this->tokenStorage = $tokenStorage;
-        $this->deciders = $deciders;
-        $this->permissionsShortNames = $permissionsShortNames;
+    public function __construct(
+        private TokenStorageInterface $tokenStorage,
+        private ContainerInterface $deciders,
+        private array $permissionsShortNames
+    ) {
     }
 
     public function decide(Permission $permission, ?TokenInterface $token = null): int
@@ -71,7 +65,7 @@ class PermissionAccessManager
 
     private function resolvePermissionName(Permission $permission): string
     {
-        $class = \get_class($permission);
+        $class = $permission::class;
 
         if ($permission instanceof AliasedPermission) {
             $class = $permission->getAlias();

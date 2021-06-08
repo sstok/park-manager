@@ -24,17 +24,12 @@ use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 class ConstraintsChecker
 {
-    private WebhostingSpaceRepository $spaceRepository;
-    private MailboxRepository $mailboxRepository;
-    private EmailForwardRepository $emailForwardRepository;
-    private StorageUsage $storageUsageRetriever;
-
-    public function __construct(WebhostingSpaceRepository $spaceRepository, MailboxRepository $mailboxRepository, EmailForwardRepository $emailForwardRepository, StorageUsage $storageUsageRetriever)
-    {
-        $this->spaceRepository = $spaceRepository;
-        $this->mailboxRepository = $mailboxRepository;
-        $this->emailForwardRepository = $emailForwardRepository;
-        $this->storageUsageRetriever = $storageUsageRetriever;
+    public function __construct(
+        private WebhostingSpaceRepository $spaceRepository,
+        private MailboxRepository $mailboxRepository,
+        private EmailForwardRepository $emailForwardRepository,
+        private StorageUsage $storageUsageRetriever
+    ) {
     }
 
     public function isStorageSizeReached(SpaceId $id): bool

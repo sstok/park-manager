@@ -15,11 +15,8 @@ use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
 
 final class CreatePlanHandler
 {
-    private PlanRepository $planRepository;
-
-    public function __construct(PlanRepository $planRepository)
+    public function __construct(private PlanRepository $planRepository)
     {
-        $this->planRepository = $planRepository;
     }
 
     public function __invoke(CreatePlan $command): void

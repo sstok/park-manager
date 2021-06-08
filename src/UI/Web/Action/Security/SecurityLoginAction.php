@@ -18,13 +18,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final class SecurityLoginAction extends AbstractController
 {
-    /**
-     * @Route(
-     *     path="/login",
-     *     name="park_manager.security_login",
-     *     methods={"GET", "POST"}
-     * )
-     */
+    #[Route(path: '/login', name: 'park_manager.security_login', methods: ['GET'])]
     public function __invoke(Request $request): TwigResponse
     {
         $authenticationUtils = $this->get('security.authentication_utils');

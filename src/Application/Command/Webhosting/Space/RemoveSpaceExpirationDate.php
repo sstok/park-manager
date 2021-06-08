@@ -14,10 +14,7 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class RemoveSpaceExpirationDate
 {
-    public SpaceId $id;
-
-    public function __construct(SpaceId $id)
+    public function __construct(public SpaceId $id)
     {
-        $this->id = $id;
     }
 }

@@ -28,17 +28,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class OwnerSelector extends AbstractType
 {
-    private UserRepository $userRepository;
-    private OrganizationRepository $organizationRepository;
-    private OwnerRepository $ownerRepository;
-    private TranslatorInterface $translator;
-
-    public function __construct(UserRepository $userRepository, OrganizationRepository $organizationRepository, OwnerRepository $ownerRepository, TranslatorInterface $translator)
-    {
-        $this->userRepository = $userRepository;
-        $this->organizationRepository = $organizationRepository;
-        $this->ownerRepository = $ownerRepository;
-        $this->translator = $translator;
+    public function __construct(
+        private UserRepository $userRepository,
+        private OrganizationRepository $organizationRepository,
+        private OwnerRepository $ownerRepository,
+        private TranslatorInterface $translator
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -86,7 +81,7 @@ final class OwnerSelector extends AbstractType
 
                 return new CombinedResultSet(...$resultSets);
             },
-            'choice_vary' => [\get_class($this->ownerRepository)],
+            'choice_vary' => [$this->ownerRepository::class],
             'choice_translation_domain' => false,
         ]);
     }

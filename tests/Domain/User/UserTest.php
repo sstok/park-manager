@@ -328,7 +328,7 @@ final class UserTest extends TestCase
             $user->confirmPasswordReset($token, 'new-password');
 
             self::fail('PasswordResetConfirmationRejected was expected');
-        } catch (PasswordResetTokenNotAccepted $e) {
+        } catch (PasswordResetTokenNotAccepted) {
             $this->addToAssertionCount(1);
         }
     }

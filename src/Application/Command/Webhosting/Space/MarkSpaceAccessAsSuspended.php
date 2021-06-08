@@ -15,12 +15,7 @@ use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 
 final class MarkSpaceAccessAsSuspended
 {
-    public SpaceId $id;
-    public SuspensionLevel $level;
-
-    public function __construct(SpaceId $id, SuspensionLevel $level)
+    public function __construct(public SpaceId $id, public SuspensionLevel $level)
     {
-        $this->id = $id;
-        $this->level = $level;
     }
 }

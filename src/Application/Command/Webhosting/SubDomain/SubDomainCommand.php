@@ -16,12 +16,6 @@ use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 
 abstract class SubDomainCommand
 {
-    public SubDomainNameId $id;
-    public DomainNameId $domainNameId;
-    public string $name;
-    public string $homeDir;
-    /** @var array<string, mixed> */
-    public array $config;
     public ?string $certificate = null;
     public ?HiddenString $privateKey = null;
     /** @var array<string, string> */
@@ -30,13 +24,13 @@ abstract class SubDomainCommand
     /**
      * @param array<string, mixed> $config
      */
-    final public function __construct(SubDomainNameId $id, DomainNameId $domainNameId, string $name, string $homeDir = '/', array $config = [])
-    {
-        $this->id = $id;
-        $this->domainNameId = $domainNameId;
-        $this->name = $name;
-        $this->homeDir = $homeDir;
-        $this->config = $config;
+    final public function __construct(
+        public SubDomainNameId $id,
+        public DomainNameId $domainNameId,
+        public string $name,
+        public string $homeDir = '/',
+        public array $config = []
+    ) {
     }
 
     /**

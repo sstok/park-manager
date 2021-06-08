@@ -92,13 +92,8 @@ final class X509SupportValidatorTest extends X509ValidatorTestCase
  */
 final class X509SupportStubViolation extends InvalidArgument
 {
-    private string $expected;
-    private string $provided;
-
-    public function __construct(string $expected, string $provided)
+    public function __construct(private string $expected, private string $provided)
     {
-        $this->expected = $expected;
-        $this->provided = $provided;
     }
 
     public function getTranslatorId(): string

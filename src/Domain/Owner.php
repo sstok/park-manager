@@ -11,10 +11,16 @@ declare(strict_types=1);
 namespace ParkManager\Domain;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Table;
 use ParkManager\Domain\Organization\Organization;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
+use Stringable;
 
 /**
  * An Owner is either a `User` or `Organization` relationship-entity
@@ -23,36 +29,25 @@ use ParkManager\Domain\User\UserId;
  * The same ID as the linked entity is used as Owner-id.
  * Unlike a discriminator-mapping this doesn't produce any
  * overhead for the ORM process.
- *
- * @ORM\Entity
- * @ORM\Table(name="entity_owner")
  */
-class Owner implements \Stringable
+#[Entity]
+#[Table(name: 'entity_owner')]
+class Owner implements Stringable
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="park_manager_owner_id", name="owner_id")
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
+    #[Id]
+    #[Column(name: 'owner_id', type: 'park_manager_owner_id')]
+    #[GeneratedValue(strategy: 'NONE')]
     public OwnerId $id;
 
-    /**
-     * @ORM\OneToOne(targetEntity=User::class, fetch="EAGER")
-     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", name="user_id", onDelete="CASCADE", unique=true)
-     */
-    private ?User $user;
+    private function __construct(
+        #[ORM\OneToOne(targetEntity: User::class, fetch: 'EAGER')]
+        #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', unique: true, nullable: true, onDelete: 'CASCADE')]
+        private ?User $user = null,
 
-    /**
-     * @ORM\OneToOne(targetEntity=Organization::class, fetch="EAGER")
-     * @ORM\JoinColumn(nullable=true, referencedColumnName="id", name="organization_id", onDelete="CASCADE", unique=true)
-     */
-    private ?Organization $organization;
-
-    private function __construct(?User $user = null, ?Organization $organization = null)
-    {
-        $this->user = $user;
-        $this->organization = $organization;
-
+        #[ORM\OneToOne(targetEntity: Organization::class, fetch: 'EAGER')]
+        #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id', unique: true, nullable: true, onDelete: 'CASCADE')]
+        private ?Organization $organization = null
+    ) {
         // Internally the integrity is guarded by the relationship to Users and Organizations.
         // But we still need an ID for storage.
         $this->id = OwnerId::fromString($this->getId()->toString());

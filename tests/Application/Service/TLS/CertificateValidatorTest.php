@@ -33,6 +33,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Psr\Log\Test\TestLogger;
+use RuntimeException;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 use Symfony\Component\ErrorHandler\BufferingLogger;
@@ -1069,10 +1070,10 @@ final class CertificateValidatorTest extends TestCase
             self::assertArrayHasKey('subject', $fields);
             self::assertArrayHasKey('_domains', $fields);
 
-            throw new \RuntimeException('No, this is not valid. Or is it?');
+            throw new RuntimeException('No, this is not valid. Or is it?');
         };
 
-        $this->expectExceptionObject(new \RuntimeException('No, this is not valid. Or is it?'));
+        $this->expectExceptionObject(new RuntimeException('No, this is not valid. Or is it?'));
 
         $this->certificateValidator->validateCertificateSupport($cert, $callback);
     }

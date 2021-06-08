@@ -15,38 +15,18 @@ use ParkManager\Domain\User\UserId;
 
 final class RegisterAdministrator
 {
-    /**
-     * READ-ONLY.
-     */
-    public UserId $id;
-
-    /**
-     * READ-ONLY.
-     */
-    public EmailAddress $email;
-
-    /**
-     * READ-ONLY.
-     */
-    public string $displayName;
-
-    /**
-     * READ-ONLY.
-     */
-    public string $password;
-
     public bool $requireNewPassword = false;
     public bool $superAdmin = false;
 
     /**
      * @param string $password An encoded password string (not plain)
      */
-    public function __construct(UserId $id, EmailAddress $email, string $displayName, string $password)
-    {
-        $this->id = $id;
-        $this->email = $email;
-        $this->displayName = $displayName;
-        $this->password = $password;
+    public function __construct(
+        public UserId $id,
+        public EmailAddress $email,
+        public string $displayName,
+        public string $password
+    ) {
     }
 
     /**

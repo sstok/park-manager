@@ -12,8 +12,9 @@ namespace ParkManager\Domain\Webhosting\Space\Exception;
 
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Exception\TranslatableException;
+use RuntimeException;
 
-final class WebhostingSpaceBeingRemoved extends \RuntimeException implements TranslatableException
+final class WebhostingSpaceBeingRemoved extends RuntimeException implements TranslatableException
 {
     public DomainNamePair $name;
 

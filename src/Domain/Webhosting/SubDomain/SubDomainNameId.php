@@ -11,8 +11,9 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\SubDomain;
 
 use ParkManager\Domain\UuidTrait;
+use Stringable;
 
-final class SubDomainNameId implements \Stringable
+final class SubDomainNameId implements Stringable
 {
     use UuidTrait;
 }

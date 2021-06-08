@@ -64,7 +64,7 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
             $handler(new ConfirmPasswordReset($invalidToken, 'my-password'));
 
             self::fail('Exception was expected.');
-        } catch (PasswordResetTokenNotAccepted $e) {
+        } catch (PasswordResetTokenNotAccepted) {
             $repository->assertEntitiesCountWasSaved(1);
             $repository->assertHasEntity($user->id->toString(), static function (User $user): void {
                 self::assertNull($user->passwordResetToken);
@@ -82,7 +82,7 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
 
         try {
             $handler(new ConfirmPasswordReset($this->token, 'my-password'));
-        } catch (PasswordResetTokenNotAccepted $e) {
+        } catch (PasswordResetTokenNotAccepted) {
             $repository->assertNoEntitiesWereSaved();
         }
     }

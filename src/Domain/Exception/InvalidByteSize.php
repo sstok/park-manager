@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Exception;
 
-final class InvalidByteSize extends \InvalidArgumentException
+use InvalidArgumentException;
+
+final class InvalidByteSize extends InvalidArgumentException
 {
 }

@@ -15,13 +15,9 @@ use ParkManager\Domain\Organization\OrganizationId;
 
 final class CannotRemoveInternalOrganization extends InvalidArgument
 {
-    private OrganizationId $id;
-
-    private function __construct(string $message, OrganizationId $id)
+    private function __construct(string $message, private OrganizationId $id)
     {
         parent::__construct($message, 404);
-
-        $this->id = $id;
     }
 
     public static function withId(OrganizationId $id): self

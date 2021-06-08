@@ -25,6 +25,7 @@ use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use RuntimeException;
 
 /**
  * @internal
@@ -537,7 +538,7 @@ final class CertificateFactoryImplTest extends TestCase
 
         $factory = new CertificateFactoryImpl(Base64::decode(self::PUB_KEY), $objectManager, $caResolver, $keyValidator);
 
-        $this->expectExceptionObject(new \RuntimeException('Unable to read private key-data, invalid key provided?'));
+        $this->expectExceptionObject(new RuntimeException('Unable to read private key-data, invalid key provided?'));
 
         $factory->createCertificate(
             $certContents,

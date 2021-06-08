@@ -21,16 +21,17 @@ use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
 final class CertificateFactoryImpl implements CertificateFactory
 {
     private EncryptionPublicKey $encryptionKey;
-    private ObjectManager $objectManager;
-    private CAResolver $caResolver;
     private KeyValidator $keyValidator;
     private X509DataExtractor $extractor;
 
-    public function __construct(string $encryptionKey, ObjectManager $objectManager, CAResolver $caResolver, ?KeyValidator $keyValidator = null, ?X509DataExtractor $dataExtractor = null)
-    {
+    public function __construct(
+        string $encryptionKey,
+        private ObjectManager $objectManager,
+        private CAResolver $caResolver,
+        ?KeyValidator $keyValidator = null,
+        ?X509DataExtractor $dataExtractor = null
+    ) {
         $this->encryptionKey = new EncryptionPublicKey(new HiddenString($encryptionKey));
-        $this->objectManager = $objectManager;
-        $this->caResolver = $caResolver;
         $this->keyValidator = $keyValidator ?? new KeyValidator();
         $this->extractor = $dataExtractor ?? new X509DataExtractor();
     }

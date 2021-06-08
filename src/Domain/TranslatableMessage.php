@@ -10,24 +10,20 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain;
 
+use Stringable;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class TranslatableMessage implements TranslatableInterface, \Stringable
+final class TranslatableMessage implements TranslatableInterface, Stringable
 {
-    private string $message;
-    /** @var array<string, mixed> */
-    private array $parameters;
-    private ?string $domain;
-
     /**
      * @param array<string, mixed> $parameters
      */
-    public function __construct(string $message, array $parameters = [], ?string $domain = null)
-    {
-        $this->message = $message;
-        $this->parameters = $parameters;
-        $this->domain = $domain;
+    public function __construct(
+        private string $message,
+        private array $parameters = [],
+        private ?string $domain = null
+    ) {
     }
 
     public function __toString(): string

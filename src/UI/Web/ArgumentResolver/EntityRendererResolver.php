@@ -17,11 +17,8 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 final class EntityRendererResolver implements ArgumentValueResolverInterface
 {
-    private EntityRenderer $entityRenderer;
-
-    public function __construct(EntityRenderer $entityRenderer)
+    public function __construct(private EntityRenderer $entityRenderer)
     {
-        $this->entityRenderer = $entityRenderer;
     }
 
     public function supports(Request $request, ArgumentMetadata $argument): bool

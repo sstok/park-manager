@@ -15,18 +15,13 @@ use ParkManager\Domain\Webhosting\Constraint\PlanId;
 
 final class CreatePlan
 {
-    public PlanId $id;
-    public Constraints $constraints;
-    /** @var array<string, mixed> */
-    public array $metadata;
-
     /**
      * @param array<string, mixed> $metadata
      */
-    public function __construct(PlanId $id, Constraints $constraints, array $metadata = [])
-    {
-        $this->id = $id;
-        $this->constraints = $constraints;
-        $this->metadata = $metadata;
+    public function __construct(
+        public PlanId $id,
+        public Constraints $constraints,
+        public array $metadata = []
+    ) {
     }
 }

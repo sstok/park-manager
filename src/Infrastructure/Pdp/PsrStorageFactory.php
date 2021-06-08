@@ -24,13 +24,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class PsrStorageFactory implements ResourceUri, PublicSuffixListStorageFactory, TopLevelDomainListStorageFactory
 {
-    private CacheInterface $cache;
-    private HttpClientInterface $client;
-
-    public function __construct(CacheInterface $cache, HttpClientInterface $client)
-    {
-        $this->cache = $cache;
-        $this->client = $client;
+    public function __construct(
+        private CacheInterface $cache,
+        private HttpClientInterface $client
+    ) {
     }
 
     /**

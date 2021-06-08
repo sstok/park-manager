@@ -10,13 +10,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Service\TLS\Violation;
 
+use DateTimeInterface;
 use ParkManager\Application\Service\TLS\Violation;
 
 final class CertificateIsExpired extends Violation
 {
-    private \DateTimeInterface $expiredOn;
+    private DateTimeInterface $expiredOn;
 
-    public function __construct(\DateTimeInterface $expiredOn)
+    public function __construct(DateTimeInterface $expiredOn)
     {
         parent::__construct(sprintf('The certificate has expired on "%s"', $expiredOn->format(\DATE_RFC3339)));
 

@@ -27,9 +27,6 @@ use Pdp\Domain;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-/**
- * @final
- */
 class CertificateValidator
 {
     public const PURPOSE_SMIME = 'S/MIME';
@@ -39,21 +36,18 @@ class CertificateValidator
     public const PURPOSE_SSL_CLIENT = 'SSL client';
     public const PURPOSE_SSL_SERVER = 'SSL server';
 
-    private CAResolver $caResolver;
-    private PublicSuffixManager $suffixManager;
-    private HttpClientInterface $httpClient;
-    private LoggerInterface $logger;
     private Ocsp $ocsp;
     private X509DataExtractor $extractor;
 
-    public function __construct(CAResolver $CAResolver, PublicSuffixManager $suffixManager, HttpClientInterface $httpClient, LoggerInterface $logger, ?Ocsp $ocsp = null, ?X509DataExtractor $dataExtractor = null)
-    {
-        $this->caResolver = $CAResolver;
-        $this->suffixManager = $suffixManager;
-        $this->httpClient = $httpClient;
-        $this->logger = $logger;
+    public function __construct(
+        private CAResolver $caResolver,
+        private PublicSuffixManager $suffixManager,
+        private HttpClientInterface $httpClient,
+        private LoggerInterface $logger,
+        ?Ocsp $ocsp = null,
+        ?X509DataExtractor $dataExtractor = null
+    ) {
         $this->ocsp = $ocsp ?? new Ocsp();
-
         $this->extractor = $dataExtractor ?? new X509DataExtractor();
     }
 

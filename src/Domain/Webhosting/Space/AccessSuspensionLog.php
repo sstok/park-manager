@@ -11,43 +11,36 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\Space;
 
 use DateTimeImmutable;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="space_suspensions_log")
- */
+#[Entity]
+#[Table(name: 'space_suspensions_log')]
 class AccessSuspensionLog
 {
     /**
      * Pseudo ID column for Doctrine.
-     *
-     * @ORM\Id
-     * @ORM\Column(name="log_id")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[Id]
+    #[Column(name: 'log_id')]
+    #[GeneratedValue(strategy: 'AUTO')]
     protected int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Space::class, inversedBy="suspensions")
-     * @ORM\JoinColumn(name="space_id", onDelete="CASCADE")
-     */
-    public Space $space;
+    public function __construct(
+        #[ManyToOne(targetEntity: Space::class, inversedBy: 'suspensions')]
+        #[JoinColumn(name: 'space_id', onDelete: 'CASCADE')]
+        public Space $space,
 
-    /**
-     * @ORM\Column(name="log_suspension_level", type="park_manager_webhosting_suspension_level", nullable=true)
-     */
-    public ?SuspensionLevel $level;
+        #[Column(name: 'log_suspension_level', type: 'park_manager_webhosting_suspension_level', nullable: true)]
+        public SuspensionLevel | null $level,
 
-    /**
-     * @ORM\Column(name="log_timestamp", type="datetime_immutable")
-     */
-    public DateTimeImmutable $timestamp;
-
-    public function __construct(Space $space, ?SuspensionLevel $level, DateTimeImmutable $timestamp)
-    {
-        $this->space = $space;
-        $this->level = $level;
-        $this->timestamp = $timestamp;
+        #[Column(name: 'log_timestamp', type: 'datetime_immutable')]
+        public DateTimeImmutable $timestamp
+    ) {
     }
 }

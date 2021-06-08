@@ -10,12 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Space\Exception;
 
+use DomainException;
 use ParkManager\Domain\Exception\TranslatableException;
 use ParkManager\Domain\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 
-final class WebhostingSpaceIsSuspended extends \DomainException implements TranslatableException
+final class WebhostingSpaceIsSuspended extends DomainException implements TranslatableException
 {
     private SpaceId $id;
     private SuspensionLevel $level;

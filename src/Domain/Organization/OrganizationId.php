@@ -11,8 +11,9 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Organization;
 
 use ParkManager\Domain\UuidTrait;
+use Stringable;
 
-final class OrganizationId implements \Stringable
+final class OrganizationId implements Stringable
 {
     /**
      * Administrator Organization (internal).

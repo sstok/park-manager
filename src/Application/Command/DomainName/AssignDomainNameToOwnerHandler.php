@@ -15,13 +15,10 @@ use ParkManager\Domain\OwnerRepository;
 
 final class AssignDomainNameToOwnerHandler
 {
-    private DomainNameRepository $domainNameRepository;
-    private OwnerRepository $ownerRepository;
-
-    public function __construct(DomainNameRepository $domainNameRepository, OwnerRepository $ownerRepository)
-    {
-        $this->domainNameRepository = $domainNameRepository;
-        $this->ownerRepository = $ownerRepository;
+    public function __construct(
+        private DomainNameRepository $domainNameRepository,
+        private OwnerRepository $ownerRepository
+    ) {
     }
 
     public function __invoke(AssignDomainNameToOwner $command): void

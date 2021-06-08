@@ -21,13 +21,10 @@ use ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
 
 final class EmailAddressDomainNameUsageValidator implements DomainNameSpaceUsageValidator
 {
-    private MailboxRepository $mailboxRepository;
-    private ForwardRepository $forwardRepository;
-
-    public function __construct(MailboxRepository $mailboxRepository, ForwardRepository $forwardRepository)
-    {
-        $this->mailboxRepository = $mailboxRepository;
-        $this->forwardRepository = $forwardRepository;
+    public function __construct(
+        private MailboxRepository $mailboxRepository,
+        private ForwardRepository $forwardRepository
+    ) {
     }
 
     public function __invoke(DomainName $domainName, Space $space): array

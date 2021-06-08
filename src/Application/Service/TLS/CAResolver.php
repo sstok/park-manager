@@ -21,12 +21,10 @@ use ParkManager\Domain\Webhosting\SubDomain\TLS\CA;
  */
 class CAResolver
 {
-    private ObjectManager $objectManager;
     private X509DataExtractor $extractor;
 
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(private ObjectManager $objectManager)
     {
-        $this->objectManager = $objectManager;
         $this->extractor = new X509DataExtractor();
     }
 

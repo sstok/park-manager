@@ -12,6 +12,7 @@ namespace ParkManager\Infrastructure\Pagerfanta;
 
 use Pagerfanta\Adapter\AdapterInterface;
 use ParkManager\Domain\ResultSet;
+use Traversable;
 
 final class ResultSetAdapter implements AdapterInterface
 {
@@ -32,9 +33,9 @@ final class ResultSetAdapter implements AdapterInterface
     }
 
     /**
-     * @return \Traversable<array-key, mixed>
+     * @return Traversable<array-key, mixed>
      */
-    public function getSlice(int $offset, int $length): \Traversable
+    public function getSlice(int $offset, int $length): Traversable
     {
         $result = clone $this->resultSet;
         $result->setLimit($length, $offset);

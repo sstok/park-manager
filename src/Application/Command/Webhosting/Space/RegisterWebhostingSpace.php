@@ -18,50 +18,22 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class RegisterWebhostingSpace
 {
-    /**
-     * READ-ONLY.
-     */
-    public SpaceId $id;
-
-    /**
-     * READ-ONLY.
-     */
-    public DomainNamePair $domainName;
-
-    /**
-     * READ-ONLY.
-     */
-    public OwnerId $owner;
-
-    /**
-     * READ-ONLY.
-     */
-    public ?PlanId $planId = null;
-
-    /**
-     * READ-ONLY.
-     */
-    public ?Constraints $customConstraints = null;
-
-    private function __construct(string $id, string $owner, DomainNamePair $domainName, ?string $planId, ?Constraints $constraints)
-    {
-        $this->id = SpaceId::fromString($id);
-        $this->domainName = $domainName;
-        $this->customConstraints = $constraints;
-        $this->owner = OwnerId::fromString($owner);
-
-        if ($planId !== null) {
-            $this->planId = PlanId::fromString($planId);
-        }
+    private function __construct(
+        public SpaceId $id,
+        public OwnerId $owner,
+        public DomainNamePair $domainName,
+        public ?PlanId $planId = null,
+        public ?Constraints $customConstraints = null
+    ) {
     }
 
     public static function withPlan(string $id, DomainNamePair $domainName, string $owner, string $planId): self
     {
-        return new self($id, $owner, $domainName, $planId, null);
+        return new self(SpaceId::fromString($id), OwnerId::fromString($owner), $domainName, PlanId::fromString($planId));
     }
 
     public static function withCustomConstraints(string $id, DomainNamePair $domainName, string $owner, Constraints $constraints): self
     {
-        return new self($id, $owner, $domainName, null, $constraints);
+        return new self(SpaceId::fromString($id), OwnerId::fromString($owner), $domainName, customConstraints: $constraints);
     }
 }

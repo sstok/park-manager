@@ -10,12 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\SubDomain\TLS;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Table;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="host_tls_ca")
- */
+#[Entity]
+#[Table(name: 'host_tls_ca')]
 class CA
 {
     use x509Data {

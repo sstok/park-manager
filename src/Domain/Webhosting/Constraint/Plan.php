@@ -11,45 +11,34 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\Constraint;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Table;
 use ParkManager\Domain\TimestampableTrait;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="plan")
- */
+#[Entity]
+#[Table(name: 'plan')]
 class Plan
 {
     use TimestampableTrait;
 
     /**
-     * READ-ONLY.
-     *
-     * @ORM\Id
-     * @ORM\Column(type="park_manager_webhosting_plan_id")
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @param array<string, mixed> $metadata
      */
-    public PlanId $id;
+    public function __construct(
+        #[Id]
+        #[Column(type: 'park_manager_webhosting_plan_id')]
+        #[GeneratedValue(strategy: 'NONE')]
+        public PlanId $id,
 
-    /**
-     * READ-ONLY.
-     *
-     * @ORM\Embedded(class=Constraints::class, columnPrefix="constraint_")
-     */
-    public Constraints $constraints;
+        #[ORM\Embedded(class: Constraints::class, columnPrefix: 'constraint_')]
+        public Constraints $constraints,
 
-    /**
-     * READ-ONLY.
-     *
-     * @ORM\Column(name="metadata", type="json")
-     *
-     * @var array<string, mixed>
-     */
-    public array $metadata = [];
-
-    public function __construct(PlanId $id, Constraints $constraints)
-    {
-        $this->id = $id;
-        $this->constraints = $constraints;
+        #[Column(name: 'metadata', type: 'json')]
+        public array $metadata = []
+    ) {
     }
 
     public function changeConstraints(Constraints $constraints): void

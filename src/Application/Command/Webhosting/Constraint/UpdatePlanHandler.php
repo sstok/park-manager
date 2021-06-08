@@ -16,15 +16,11 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class UpdatePlanHandler
 {
-    private PlanRepository $planRepository;
-    private WebhostingSpaceRepository $spaceRepository;
-    private MessageBusInterface $messageBus;
-
-    public function __construct(PlanRepository $planRepository, WebhostingSpaceRepository $spaceRepository, MessageBusInterface $messageBus)
-    {
-        $this->planRepository = $planRepository;
-        $this->spaceRepository = $spaceRepository;
-        $this->messageBus = $messageBus;
+    public function __construct(
+        private PlanRepository $planRepository,
+        private WebhostingSpaceRepository $spaceRepository,
+        private MessageBusInterface $messageBus
+    ) {
     }
 
     public function __invoke(UpdatePlan $command): void

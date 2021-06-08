@@ -10,34 +10,23 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\DomainName;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Embeddable;
+use Stringable;
 use Symfony\Component\String\UnicodeString;
 
-/**
- * @ORM\Embeddable
- */
-final class DomainNamePair implements \Stringable
+#[Embeddable]
+final class DomainNamePair implements Stringable
 {
-    /**
-     * READ-ONLY.
-     *
-     * @ORM\Column(type="string")
-     */
-    public string $name;
-
-    /**
-     * READ-ONLY.
-     *
-     * @ORM\Column(type="string")
-     */
-    public string $tld;
-
     private string $idnValue;
 
-    public function __construct(string $name, string $tld)
-    {
-        $this->name = $name;
-        $this->tld = $tld;
+    public function __construct(
+        #[Column(type: 'string')]
+        public string $name,
+
+        #[Column(type: 'string')]
+        public string $tld
+    ) {
     }
 
     public function toString(): string

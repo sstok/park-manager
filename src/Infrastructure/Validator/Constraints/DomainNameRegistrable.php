@@ -32,7 +32,6 @@ final class DomainNameRegistrable extends Constraint
         self::PRIVATE_SUFFIX => 'PRIVATE_SUFFIX',
     ];
 
-    public bool $allowPrivate;
     public string $message = 'This value is not a registrable domain name.';
     public string $lengthMessage = 'This value exceeds the "{registrable}" part of the domain-name.';
     public string $privateMessage = 'This value contains a domain-name suffix that is not publicly registrable.';
@@ -41,14 +40,12 @@ final class DomainNameRegistrable extends Constraint
         array $options = [],
         ?array $groups = null,
         mixed $payload = null,
-        bool $allowPrivate = false,
+        public bool $allowPrivate = false,
         ?string $message = null,
         ?string $lengthMessage = null,
         ?string $privateMessage = null,
     ) {
         parent::__construct($options, $groups, $payload);
-
-        $this->allowPrivate = $allowPrivate;
 
         $this->message ??= $message;
         $this->lengthMessage ??= $lengthMessage;

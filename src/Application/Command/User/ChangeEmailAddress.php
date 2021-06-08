@@ -15,12 +15,9 @@ use ParkManager\Domain\User\UserId;
 
 final class ChangeEmailAddress
 {
-    public UserId $id;
-    public EmailAddress $emailAddress;
-
-    public function __construct(UserId $id, EmailAddress $emailAddress)
-    {
-        $this->id = $id;
-        $this->emailAddress = $emailAddress;
+    public function __construct(
+        public UserId $id,
+        public EmailAddress $emailAddress
+    ) {
     }
 }

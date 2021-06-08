@@ -10,33 +10,29 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Constraint;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Embeddable;
 use ParkManager\Domain\ByteSize;
 
-/**
- * @ORM\Embeddable
- */
+#[Embeddable]
 final class EmailConstraints
 {
     /**
      * READ-ONLY.
-     *
-     * @ORM\Column(type="byte_size")
      */
+    #[Column(type: 'byte_size')]
     public ByteSize $maxStorageSize;
 
     /**
      * READ-ONLY.
-     *
-     * @ORM\Column(type="integer")
      */
+    #[Column(type: 'integer')]
     public int $maximumMailboxCount = -1;
 
     /**
      * READ-ONLY.
-     *
-     * @ORM\Column(type="integer")
      */
+    #[Column(type: 'integer')]
     public int $maximumForwardCount = -1;
 
     /**
@@ -49,26 +45,23 @@ final class EmailConstraints
      * and forwards is seen as a whole, controlled by this value.
      *
      * If this value is -1, there is no limit on mailboxes and forwards.
-     *
-     * @ORM\Column(type="integer")
      */
+    #[Column(type: 'integer')]
     public int $maximumAddressCount = 0;
 
     /**
      * READ-ONLY.
      *
-     * Allow to limit how many mailboxes are covered by an active spam filter,
+     * Limits how many mailboxes are covered by an active spam filter,
      * this is mainly usable for integration with 3rd party filters.
-     *
-     * @ORM\Column(type="integer")
      */
+    #[Column(type: 'integer')]
     public int $spamFilterCount = -1;
 
     /**
      * READ-ONLY.
-     *
-     * @ORM\Column(type="integer")
      */
+    #[Column(type: 'integer')]
     public int $mailListCount = 0;
 
     /**
