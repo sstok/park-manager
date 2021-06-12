@@ -13,6 +13,7 @@ namespace ParkManager\Domain\DomainName\Exception;
 use DomainException;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class CannotTransferPrimaryDomainName extends DomainException implements TranslatableException
@@ -37,18 +38,17 @@ final class CannotTransferPrimaryDomainName extends DomainException implements T
         $this->new = $new;
     }
 
-    public function getTranslatorId(): string
+    public function getTranslatorId(): TranslatableMessage
     {
-        return 'domain_name.cannot_transfer_space_primary_domain_name';
-    }
-
-    public function getTranslationArgs(): array
-    {
-        return [
-            'domain_name' => $this->domainName->name,
-            'domain_tld' => $this->domainName->tld,
-            'current_space' => $this->current->toString(),
-            'new_space' => $this->new ? $this->new->toString() : '',
-        ];
+        return new TranslatableMessage(
+            'domain_name.cannot_transfer_space_primary_domain_name',
+            [
+                'domain_name' => $this->domainName->name,
+                'domain_tld' => $this->domainName->tld,
+                'current_space' => $this->current->toString(),
+                'new_space' => $this->new ? $this->new->toString() : '',
+            ],
+            'validators'
+        );
     }
 }

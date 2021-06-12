@@ -29,16 +29,15 @@ final class WebhostingSpaceIsSuspended extends DomainException implements Transl
         $this->level = $level;
     }
 
-    public function getTranslatorId(): string
+    public function getTranslatorId(): TranslatableMessage
     {
-        return 'webhosting.space_is_suspended';
-    }
-
-    public function getTranslationArgs(): array
-    {
-        return [
-            'id' => $this->id->toString(),
-            'level' => new TranslatableMessage('webhosting_suspension_level' . mb_strtolower($this->level->name)),
-        ];
+        return new TranslatableMessage(
+            'webhosting.space_is_suspended',
+            [
+                'id' => $this->id->toString(),
+                'level' => new TranslatableMessage('webhosting_suspension_level' . mb_strtolower($this->level->name)),
+            ],
+            'validators'
+        );
     }
 }

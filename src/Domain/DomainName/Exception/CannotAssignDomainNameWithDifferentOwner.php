@@ -13,6 +13,7 @@ namespace ParkManager\Domain\DomainName\Exception;
 use DomainException;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class CannotAssignDomainNameWithDifferentOwner extends DomainException implements TranslatableException
@@ -55,13 +56,21 @@ final class CannotAssignDomainNameWithDifferentOwner extends DomainException imp
         return $instance;
     }
 
-    public function getTranslatorId(): string
+    public function getTranslatorId(): TranslatableMessage
     {
         if ($this->current) {
-            return 'domain_name.cannot_assign_domain_name_with_different_space_owner';
+            return new TranslatableMessage(
+                'domain_name.cannot_assign_domain_name_with_different_space_owner',
+                $this->getTranslationArgs(),
+                'validators'
+            );
         }
 
-        return 'domain_name.cannot_assign_domain_name_with_different_owner';
+        return new TranslatableMessage(
+            'domain_name.cannot_assign_domain_name_with_different_owner',
+            $this->getTranslationArgs(),
+            'validators'
+        );
     }
 
     public function getTranslationArgs(): array

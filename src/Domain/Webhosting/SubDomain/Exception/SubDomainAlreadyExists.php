@@ -13,6 +13,7 @@ namespace ParkManager\Domain\Webhosting\SubDomain\Exception;
 use DomainException;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\TranslatableMessage;
 
 final class SubDomainAlreadyExists extends DomainException implements TranslatableException
 {
@@ -27,18 +28,13 @@ final class SubDomainAlreadyExists extends DomainException implements Translatab
         $this->name = $name;
     }
 
-    public function getTranslatorId(): string
+    public function getTranslatorId(): TranslatableMessage
     {
-        return 'subdomain.already_exists';
-    }
-
-    public function getTranslationArgs(): array
-    {
-        return [
+        return new TranslatableMessage('subdomain.already_exists', [
             'domain_name' => $this->domainName->name,
             'domain_tld' => $this->domainName->tld,
             'name' => $this->name,
             'id' => $this->id,
-        ];
+        ], 'validators');
     }
 }

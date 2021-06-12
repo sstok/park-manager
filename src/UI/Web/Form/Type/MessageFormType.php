@@ -160,34 +160,43 @@ final class MessageFormType extends AbstractType
                 $handlerOrPath = $exceptionMapping[$exceptionName];
 
                 if (\is_string($handlerOrPath)) {
-                    \assert($e instanceof TranslatableException);
-
-                    $errors = [$handlerOrPath => new FormError(
-                        $this->translator->trans($e->getTranslatorId(), $e->getTranslationArgs(), 'validators'),
-                        $e->getTranslatorId(),
-                        $e->getTranslationArgs(),
-                        null,
-                        $e
-                    )];
+                    $errors = [$handlerOrPath => $this->translatableExceptionToFormError($e)];
                 } else {
                     $errors = $handlerOrPath($e, $this->translator, $form);
                 }
             } elseif ($exceptionFallback !== null) {
                 $errors = $exceptionFallback($e, $this->translator, $form);
             } elseif ($e instanceof TranslatableException) {
-                $errors = [null => new FormError(
-                    $this->translator->trans($e->getTranslatorId(), $e->getTranslationArgs(), 'validators'),
-                    $e->getTranslatorId(),
-                    $e->getTranslationArgs(),
-                    null,
-                    $e
-                )];
+                $errors = [null => $this->translatableExceptionToFormError($e)];
             } else {
                 throw $e;
             }
 
             $this->mapErrors($errors, $form);
         }
+    }
+
+    private function translatableExceptionToFormError(TranslatableException $e): FormError
+    {
+        $message = $e->getTranslatorId();
+
+        if (\is_string($message)) {
+            return new FormError(
+                $this->translator->trans($message, [], 'validators'),
+                $message,
+                cause: $e
+            );
+        }
+
+        $parameters = method_exists($message, 'getParameters') ? $message->getParameters() : [];
+        \assert(method_exists($message, '__toString'));
+
+        return new FormError(
+            $message->trans($this->translator),
+            (string) $message,
+            $parameters,
+            cause: $e
+        );
     }
 
     /**

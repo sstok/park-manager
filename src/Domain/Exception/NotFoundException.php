@@ -12,6 +12,7 @@ namespace ParkManager\Domain\Exception;
 
 use DateTimeInterface;
 use InvalidArgumentException;
+use ParkManager\Domain\TranslatableMessage;
 use Stringable;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
@@ -33,13 +34,8 @@ abstract class NotFoundException extends InvalidArgumentException implements Tra
         $this->translationArgs = $translationArgs;
     }
 
-    public function getTranslatorId(): string
+    public function getTranslatorId(): string | TranslatableMessage
     {
-        return 'Not found';
-    }
-
-    public function getTranslationArgs(): array
-    {
-        return $this->translationArgs;
+        return new TranslatableMessage('Not found', $this->translationArgs, 'validators');
     }
 }

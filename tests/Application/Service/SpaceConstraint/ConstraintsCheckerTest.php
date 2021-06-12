@@ -313,8 +313,8 @@ final class ConstraintsCheckerTest extends TestCase
         } catch (ConstraintExceeded $e) {
             self::assertEquals($exception, $e);
             self::assertStringStartsWith('space_constraint_exceeded.', $exception->getMessage());
-            self::assertStringStartsWith('space_constraint_exceeded.', $exception->getTranslatorId());
-            self::assertNotEmpty($exception->getTranslationArgs());
+            self::assertStringStartsWith('space_constraint_exceeded.', (string) $exception->getTranslatorId());
+            self::assertNotEmpty($exception->getTranslatorId()->getParameters());
         }
     }
 

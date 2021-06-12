@@ -10,9 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Exception;
 
-use DateTimeInterface;
-use ParkManager\Domain\ByteSize;
-use Stringable;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Throwable;
 
@@ -24,19 +21,7 @@ use Throwable;
 interface TranslatableException extends Throwable
 {
     /**
-     * Returns the Translation-id in the messages+intl-icu domain.
+     * Returns the Translation-id in the validators+intl-icu domain.
      */
-    public function getTranslatorId(): string;
-
-    /**
-     * Returns the arguments for the translator-id (if any).
-     *
-     * The values of arguments can be translated separately
-     * (passing the value of an argument to translator) by
-     * prefixing their key with `@`, like `@status`
-     * or using a `TranslatableInterface` instance as value.
-     *
-     * @return array<string, DateTimeInterface|float|int|Stringable|ByteSize|string|TranslatableInterface|null>
-     */
-    public function getTranslationArgs(): array;
+    public function getTranslatorId(): string | TranslatableInterface;
 }

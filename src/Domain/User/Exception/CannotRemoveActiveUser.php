@@ -13,6 +13,7 @@ namespace ParkManager\Domain\User\Exception;
 use InvalidArgumentException;
 use ParkManager\Domain\Exception\TranslatableException;
 use ParkManager\Domain\ResultSet;
+use ParkManager\Domain\TranslatableMessage;
 use ParkManager\Domain\User\UserId;
 
 final class CannotRemoveActiveUser extends InvalidArgumentException implements TranslatableException
@@ -37,13 +38,8 @@ final class CannotRemoveActiveUser extends InvalidArgumentException implements T
         $this->entities = $result;
     }
 
-    public function getTranslatorId(): string
+    public function getTranslatorId(): TranslatableMessage
     {
-        return 'cannot_remove_active_user';
-    }
-
-    public function getTranslationArgs(): array
-    {
-        return [];
+        return new TranslatableMessage('cannot_remove_active_user', ['id', $this->id], 'validators');
     }
 }

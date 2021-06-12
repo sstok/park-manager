@@ -12,6 +12,7 @@ namespace ParkManager\Domain\User\Exception;
 
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\NotFoundException;
+use ParkManager\Domain\TranslatableMessage;
 use ParkManager\Domain\User\UserId;
 
 final class UserNotFound extends NotFoundException
@@ -26,12 +27,12 @@ final class UserNotFound extends NotFoundException
         return new self(sprintf('User with email address "%s" does not exist.', $address->toString()), ['{email}' => $address->toString()]);
     }
 
-    public function getTranslatorId(): string
+    public function getTranslatorId(): TranslatableMessage
     {
         if (isset($this->translationArgs['{id}'])) {
-            return 'User with id "{id}" does not exist.';
+            return new TranslatableMessage('User with id "{id}" does not exist.', $this->translationArgs);
         }
 
-        return 'User with email address "{email}" does not exist.';
+        return new TranslatableMessage('User with email address "{email}" does not exist.', $this->translationArgs);
     }
 }

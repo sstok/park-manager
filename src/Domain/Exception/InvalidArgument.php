@@ -11,10 +11,11 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Exception;
 
 use InvalidArgumentException;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 class InvalidArgument extends InvalidArgumentException implements TranslatableException
 {
-    public function getTranslatorId(): string
+    public function getTranslatorId(): string | TranslatableInterface
     {
         return 'Invalid Argument provided.';
     }

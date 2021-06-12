@@ -12,6 +12,7 @@ namespace ParkManager\Domain\Webhosting\Space\Exception;
 
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\TranslatableMessage;
 use RuntimeException;
 
 final class WebhostingSpaceBeingRemoved extends RuntimeException implements TranslatableException
@@ -30,15 +31,14 @@ final class WebhostingSpaceBeingRemoved extends RuntimeException implements Tran
         $this->name = $name;
     }
 
-    public function getTranslatorId(): string
+    public function getTranslatorId(): TranslatableMessage
     {
-        return 'webhosting_space.is_being_removed';
-    }
-
-    public function getTranslationArgs(): array
-    {
-        return [
-            'domain_name' => $this->name->toString(),
-        ];
+        return new TranslatableMessage(
+            'webhosting_space.is_being_removed',
+            [
+                'domain_name' => $this->name->toString(),
+            ],
+            'validators'
+        );
     }
 }

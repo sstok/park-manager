@@ -13,6 +13,7 @@ namespace ParkManager\Domain\User\Exception;
 use InvalidArgumentException;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\TranslatableMessage;
 use ParkManager\Domain\User\UserId;
 
 final class EmailAddressAlreadyInUse extends InvalidArgumentException implements TranslatableException
@@ -34,16 +35,11 @@ final class EmailAddressAlreadyInUse extends InvalidArgumentException implements
         $this->address = $address;
     }
 
-    public function getTranslatorId(): string
+    public function getTranslatorId(): TranslatableMessage
     {
-        return 'email_address_already_in_use';
-    }
-
-    public function getTranslationArgs(): array
-    {
-        return [
+        return new TranslatableMessage('email_address_already_in_use', [
             'id' => $this->id->toString(),
             'email' => $this->address->toString(),
-        ];
+        ], 'validators');
     }
 }

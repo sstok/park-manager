@@ -12,6 +12,7 @@ namespace ParkManager\Domain\User\Exception;
 
 use InvalidArgumentException;
 use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\TranslatableMessage;
 use ParkManager\Domain\User\UserId;
 
 final class CannotRemoveSuperAdministrator extends InvalidArgumentException implements TranslatableException
@@ -25,13 +26,8 @@ final class CannotRemoveSuperAdministrator extends InvalidArgumentException impl
         $this->id = $id;
     }
 
-    public function getTranslatorId(): string
+    public function getTranslatorId(): TranslatableMessage
     {
-        return 'cannot_remove_super_administrator';
-    }
-
-    public function getTranslationArgs(): array
-    {
-        return [];
+        return new TranslatableMessage('cannot_remove_super_administrator', [], 'validators');
     }
 }

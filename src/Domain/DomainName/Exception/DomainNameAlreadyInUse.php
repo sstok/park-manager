@@ -13,6 +13,7 @@ namespace ParkManager\Domain\DomainName\Exception;
 use DomainException;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\TranslatableMessage;
 
 final class DomainNameAlreadyInUse extends DomainException implements TranslatableException
 {
@@ -27,16 +28,11 @@ final class DomainNameAlreadyInUse extends DomainException implements Translatab
         );
     }
 
-    public function getTranslatorId(): string
+    public function getTranslatorId(): TranslatableMessage
     {
-        return 'domain_name.already_in_use';
-    }
-
-    public function getTranslationArgs(): array
-    {
-        return [
+        return new TranslatableMessage('domain_name.already_in_use', [
             'name' => $this->domainName->name,
             'tld' => $this->domainName->tld,
-        ];
+        ], 'validators');
     }
 }
