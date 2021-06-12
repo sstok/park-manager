@@ -78,8 +78,6 @@ final class TranslatableMessageTest extends TestCase
     {
         yield ['Symfony est super !', new TranslatableMessage('Symfony is great!', [], ''), 'Symfony est super !', 'fr'];
         yield ['Symfony est awesome !', new TranslatableMessage('Symfony is %what%!', ['%what%' => 'awesome'], ''), 'Symfony est %what% !', 'fr'];
-        yield ['Symfony ist super !', new TranslatableMessage('Symfony is %what%!', ['%what%' => new TranslatableMessage('what')]), 'Symfony ist %what% !', 'de'];
-        yield ['Symfony ist super toll !', new TranslatableMessage('Symfony is %what%!', ['%what%' => new TranslatableMessage('what', [], 'questions')]), 'Symfony ist %what% !', 'de'];
     }
 
     /**

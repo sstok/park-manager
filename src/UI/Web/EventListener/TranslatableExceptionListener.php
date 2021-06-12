@@ -37,18 +37,13 @@ final class TranslatableExceptionListener implements EventSubscriberInterface
 
     private function translateMessage(TranslatableException $exception): string
     {
-        $arguments = $exception->getTranslationArgs();
+        $translatorId = $exception->getTranslatorId();
 
-        foreach ($arguments as $key => $value) {
-            if ($value instanceof TranslatableInterface) {
-                $arguments[$key] = $value->trans($this->translator);
-            } elseif (\is_string($value) && strncmp($key, '@', 1) === 0) {
-                unset($arguments[$key]);
-                $arguments[mb_substr($key, 1)] = $this->translator->trans($value);
-            }
+        if ($translatorId instanceof TranslatableInterface) {
+            return $translatorId->trans($this->translator);
         }
 
-        return $this->translator->trans($exception->getTranslatorId(), $arguments, 'validators');
+        return $this->translator->trans($translatorId, [], 'validators');
     }
 
     public static function getSubscribedEvents(): array

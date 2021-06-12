@@ -34,6 +34,7 @@ use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
+use ParkManager\Infrastructure\ObjectTranslatableTranslator;
 use ParkManager\Infrastructure\Pdp\PsrStorageFactory;
 use ParkManager\Infrastructure\Security\Guard\FormAuthenticator;
 use ParkManager\Infrastructure\Security\PermissionExpressionProvider;
@@ -103,6 +104,12 @@ return static function (ContainerConfigurator $c): void {
             __DIR__ . '/../src/UI/Web/Form/{ConfirmationHandler,DataTransformer,DataMapper}',
             __DIR__ . '/../src/UI/Web/Response',
         ]);
+
+    $di->set(ObjectTranslatableTranslator::class)
+        ->autowire(false)
+        ->decorate('translator', null, -100)
+        ->args([service('.inner')])
+    ;
 
     $di->get(EntityRenderer::class)->args([
         service('twig'),

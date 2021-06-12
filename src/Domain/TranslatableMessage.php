@@ -51,16 +51,6 @@ final class TranslatableMessage implements TranslatableInterface, Stringable
 
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        $parameters = $this->getParameters();
-
-        foreach ($parameters as $key => $value) {
-            if ($value instanceof TranslatableInterface) {
-                $parameters[$key] = $value->trans($translator, $locale);
-            } elseif (\is_object($value) && method_exists($value, '__toString')) {
-                $parameters[$key] = $value->__toString();
-            }
-        }
-
-        return $translator->trans($this->getMessage(), $parameters, $this->getDomain(), $locale);
+        return $translator->trans($this->getMessage(), $this->getParameters(), $this->getDomain(), $locale);
     }
 }
