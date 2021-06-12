@@ -45,8 +45,8 @@ final class CannotTransferPrimaryDomainName extends DomainException implements T
             [
                 'domain_name' => $this->domainName->name,
                 'domain_tld' => $this->domainName->tld,
-                'current_space' => $this->current->toString(),
-                'new_space' => $this->new ? $this->new->toString() : '',
+                'current_space' => $this->current,
+                'new_space' => $this->new,
             ],
             'validators'
         );

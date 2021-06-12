@@ -33,14 +33,24 @@ final class FormErrorComparator extends Comparator
     {
         $expectedOrigin = $expected->getOrigin();
 
-        // Ignore the cause as this is to difficult to reproduce
-        if (($expectedOrigin === null || $expectedOrigin === $actual->getOrigin())
-            && $expected->getMessage() === $actual->getMessage()
-            && $expected->getMessageTemplate() === $actual->getMessageTemplate()
-            && $expected->getMessageParameters() === $actual->getMessageParameters()
-            && $expected->getMessagePluralization() === $actual->getMessagePluralization()
-        ) {
+        try {
+            // Check this first as the values can be objects. That wouldn't equal strict.
+            $this->factory->getComparatorFor($expected->getMessageParameters(), $actual->getMessageParameters())
+                ->assertEquals($expected->getMessageParameters(), $actual->getMessageParameters())
+            ;
+
+            // Ignore the cause as this is to difficult to reproduce
+            if (($expectedOrigin === null || $expectedOrigin === $actual->getOrigin())
+                && $expected->getMessage() === $actual->getMessage()
+                && $expected->getMessageTemplate() === $actual->getMessageTemplate()
+                && $expected->getMessagePluralization() === $actual->getMessagePluralization()
+            ) {
+                return;
+            }
+
             return;
+        } catch (ComparisonFailure) {
+            // No-op. Let the comparison failure below handle this.
         }
 
         throw new ComparisonFailure(

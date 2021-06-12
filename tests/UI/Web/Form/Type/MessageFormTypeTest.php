@@ -273,7 +273,7 @@ final class MessageFormTypeTest extends TypeTestCase
         yield 'TranslatableException' => [
             77,
             [
-                '' => [new FormError('User with id "f2df40e4-2f27-47e8-b03f-27d1456eed7a" does not exist.', 'User with id "{id}" does not exist.', ['{id}' => 'f2df40e4-2f27-47e8-b03f-27d1456eed7a'], null, UserNotFound::withId(UserId::fromString('f2df40e4-2f27-47e8-b03f-27d1456eed7a')))],
+                '' => [new FormError('User with id "f2df40e4-2f27-47e8-b03f-27d1456eed7a" does not exist.', 'User with id "{id}" does not exist.', ['{id}' => $userId = UserId::fromString('f2df40e4-2f27-47e8-b03f-27d1456eed7a')], null, UserNotFound::withId($userId))],
             ],
         ];
 

@@ -34,7 +34,7 @@ final class WebhostingSpaceIsSuspended extends DomainException implements Transl
         return new TranslatableMessage(
             'webhosting.space_is_suspended',
             [
-                'id' => $this->id->toString(),
+                'id' => $this->id,
                 'level' => new TranslatableMessage('webhosting_suspension_level' . mb_strtolower($this->level->name)),
             ],
             'validators'

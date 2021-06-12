@@ -19,9 +19,4 @@ class InvalidArgument extends InvalidArgumentException implements TranslatableEx
     {
         return 'Invalid Argument provided.';
     }
-
-    public function getTranslationArgs(): array
-    {
-        return [];
-    }
 }

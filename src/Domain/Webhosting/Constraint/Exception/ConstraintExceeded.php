@@ -51,16 +51,16 @@ final class ConstraintExceeded extends Exception implements TranslatableExceptio
     {
         if ($maximum->value === 0) {
             return new self('mailbox_storage_no_space_left', [
-                'address' => $address->toString(),
-                'requested' => $requested->format(),
+                'address' => $address,
+                'requested' => $requested,
             ]);
         }
 
         return new self('mailbox_storage_size_range', [
-            'address' => $address->toString(),
-            'requested' => $requested->format(),
-            'minimum' => $minimum->format(),
-            'maximum' => $maximum->format(),
+            'address' => $address,
+            'requested' => $requested,
+            'minimum' => $minimum,
+            'maximum' => $maximum,
         ]);
     }
 
@@ -68,26 +68,26 @@ final class ConstraintExceeded extends Exception implements TranslatableExceptio
     {
         if ($maximum->value === 0) {
             return new self('mailbox_storage_resize_no_space_left', [
-                'address' => $address->toString(),
-                'requested' => $requested->format(),
+                'address' => $address,
+                'requested' => $requested,
             ]);
         }
 
         return new self('mailbox_storage_resize_range', [
-            'address' => $address->toString(),
-            'requested' => $requested->format(),
-            'minimum' => $minimum->format(),
-            'maximum' => $maximum->format(),
+            'address' => $address,
+            'requested' => $requested,
+            'minimum' => $minimum,
+            'maximum' => $maximum,
         ]);
     }
 
     public static function diskStorageSizeRange(SpaceId $id, ByteSize $requested, ByteSize $minimum, ByteSize $maximum): self
     {
         return new self('disk_storage_size_range', [
-            'id' => $id->toString(),
-            'requested' => $requested->format(),
-            'minimum' => $minimum->format(),
-            'maximum' => $maximum->format(),
+            'id' => $id,
+            'requested' => $requested,
+            'minimum' => $minimum,
+            'maximum' => $maximum,
         ]);
     }
 

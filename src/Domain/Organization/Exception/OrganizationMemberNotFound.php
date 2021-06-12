@@ -25,8 +25,8 @@ final class OrganizationMemberNotFound extends NotFoundException
                 $organization->toString()
             ),
             [
-                'user' => $user->toString(),
-                'organization' => $organization->toString(),
+                'user' => $user,
+                'organization' => $organization,
             ]
         );
     }

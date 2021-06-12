@@ -78,8 +78,8 @@ final class CannotAssignDomainNameWithDifferentOwner extends DomainException imp
         return [
             'domain_name' => $this->domainName->name,
             'domain_tld' => $this->domainName->tld,
-            'current_space' => $this->current ? $this->current->toString() : '',
-            'new_space' => $this->new->toString(),
+            'current_space' => $this->current,
+            'new_space' => $this->new,
         ];
     }
 }

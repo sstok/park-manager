@@ -38,8 +38,8 @@ final class EmailAddressAlreadyInUse extends InvalidArgumentException implements
     public function getTranslatorId(): TranslatableMessage
     {
         return new TranslatableMessage('email_address_already_in_use', [
-            'id' => $this->id->toString(),
-            'email' => $this->address->toString(),
+            'id' => $this->id,
+            'email' => $this->address,
         ], 'validators');
     }
 }

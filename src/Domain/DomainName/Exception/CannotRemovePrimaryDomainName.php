@@ -38,8 +38,8 @@ final class CannotRemovePrimaryDomainName extends DomainException implements Tra
     public function getTranslatorId(): TranslatableMessage
     {
         return new TranslatableMessage('cannot_remove_space_primary_domain_name', [
-            'domain_name' => $this->domainName->toString(),
-            'space_id' => $this->spaceId->toString(),
+            'domain_name' => $this->domainName,
+            'space_id' => $this->spaceId,
         ], 'validators');
     }
 }
