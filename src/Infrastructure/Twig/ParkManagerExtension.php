@@ -145,23 +145,7 @@ final class ParkManagerExtension extends AbstractExtension
 
     public function renderByteSize(ByteSize $value): string
     {
-        if ($value->isInf()) {
-            return $this->translator->trans('byte_size.inf');
-        }
-
-        $unit = mb_strtolower($value->getUnit());
-
-        if ($unit === 'b') {
-            $unit = 'byte';
-        }
-
-        return $this->translator->trans(
-            'byte_size.format',
-            [
-                'value' => $value->getNormSize(),
-                'unit' => $this->translator->trans('byte_size.' . $unit),
-            ]
-        );
+        return $value->trans($this->translator);
     }
 
     public function getCurrentUser(): User

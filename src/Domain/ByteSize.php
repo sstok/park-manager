@@ -12,8 +12,10 @@ namespace ParkManager\Domain;
 
 use ParkManager\Domain\Exception\InvalidByteSize;
 use Stringable;
+use Symfony\Contracts\Translation\TranslatableInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class ByteSize implements Stringable
+final class ByteSize implements Stringable, TranslatableInterface
 {
     public int $value;
 
@@ -280,5 +282,28 @@ final class ByteSize implements Stringable
     public function __toString(): string
     {
         return $this->format();
+    }
+
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
+    {
+        if ($this->isInf()) {
+            return $translator->trans('byte_size.inf', domain: 'messages', locale: $locale);
+        }
+
+        $unit = mb_strtolower($this->getUnit());
+
+        if ($unit === 'b') {
+            $unit = 'byte';
+        }
+
+        return $translator->trans(
+            'byte_size.format',
+            [
+                'value' => $this->getNormSize(),
+                'unit' => $translator->trans('byte_size.' . $unit, domain: 'messages', locale: $locale),
+            ],
+            'messages',
+            $locale
+        );
     }
 }
