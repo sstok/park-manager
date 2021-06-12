@@ -40,7 +40,7 @@ final class GlobalWildcard extends Violation
         return 'tls.violation.public_suffix_wildcard';
     }
 
-    public function getTranslationArgs(): array
+    public function getParameters(): array
     {
         return [
             'provided' => $this->provided,

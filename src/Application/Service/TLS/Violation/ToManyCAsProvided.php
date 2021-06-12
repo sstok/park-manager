@@ -23,9 +23,4 @@ final class ToManyCAsProvided extends Violation
     {
         return 'tls.violation.to_many_ca_provided';
     }
-
-    public function getTranslationArgs(): array
-    {
-        return [];
-    }
 }

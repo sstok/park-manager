@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Application\Service\TLS\Violation;
 
 use ParkManager\Application\Service\TLS\Violation;
+use ParkManager\Domain\TranslatableMessage;
 
 final class UnsupportedPurpose extends Violation
 {
@@ -28,10 +29,10 @@ final class UnsupportedPurpose extends Violation
         return 'tls.violation.unsupported_purpose';
     }
 
-    public function getTranslationArgs(): array
+    public function getParameters(): array
     {
         return [
-            '@required_purpose' => $this->requiredPurpose,
+            'required_purpose' => new TranslatableMessage($this->requiredPurpose, domain: 'messages'),
         ];
     }
 }

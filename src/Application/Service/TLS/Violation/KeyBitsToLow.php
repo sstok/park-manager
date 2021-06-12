@@ -30,7 +30,7 @@ final class KeyBitsToLow extends Violation
         return 'tls.violation.key_bits_to_low';
     }
 
-    public function getTranslationArgs(): array
+    public function getParameters(): array
     {
         return [
             'expected' => $this->expected,

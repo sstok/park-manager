@@ -29,7 +29,7 @@ final class CertificateIsExpired extends Violation
         return 'tls.violation.certificate_is_expired';
     }
 
-    public function getTranslationArgs(): array
+    public function getParameters(): array
     {
         return [
             'expired_on' => $this->expiredOn,

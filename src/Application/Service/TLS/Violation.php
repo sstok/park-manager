@@ -11,8 +11,19 @@ declare(strict_types=1);
 namespace ParkManager\Application\Service\TLS;
 
 use InvalidArgumentException;
-use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\TranslatableMessage;
 
-abstract class Violation extends InvalidArgumentException implements TranslatableException
+abstract class Violation extends InvalidArgumentException
 {
+    abstract public function getTranslatorId(): string;
+
+    public function getParameters(): array
+    {
+        return [];
+    }
+
+    public function toTranslatableMessage(): TranslatableMessage
+    {
+        return new TranslatableMessage($this->getTranslatorId(), $this->getParameters(), 'validators');
+    }
 }

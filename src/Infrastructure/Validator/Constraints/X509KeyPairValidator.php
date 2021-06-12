@@ -14,15 +14,11 @@ use InvalidArgumentException;
 use ParkManager\Application\Service\TLS\KeyValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class X509KeyPairValidator extends TLSCertificateValidator
 {
-    public function __construct(
-        TranslatorInterface $translator,
-        private KeyValidator $keyValidator
-    ) {
-        parent::__construct($translator);
+    public function __construct(private KeyValidator $keyValidator)
+    {
     }
 
     protected function checkConstraintType(Constraint $constraint): void

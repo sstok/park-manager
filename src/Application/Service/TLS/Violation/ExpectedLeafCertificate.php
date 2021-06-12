@@ -23,9 +23,4 @@ final class ExpectedLeafCertificate extends Violation
     {
         return 'tls.violation.expected_leaf_certificate';
     }
-
-    public function getTranslationArgs(): array
-    {
-        return [];
-    }
 }

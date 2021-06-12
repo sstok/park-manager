@@ -24,9 +24,4 @@ final class UnprocessableKey extends Violation
     {
         return 'tls.violation.unprocessable_key';
     }
-
-    public function getTranslationArgs(): array
-    {
-        return [];
-    }
 }

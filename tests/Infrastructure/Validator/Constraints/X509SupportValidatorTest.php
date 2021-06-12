@@ -10,11 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Validator\Constraints;
 
-use ParkManager\Domain\Exception\InvalidArgument;
+use ParkManager\Application\Service\TLS\Violation;
 use ParkManager\Infrastructure\Validator\Constraints\X509CertificateBundle;
 use ParkManager\Infrastructure\Validator\Constraints\X509Support;
 use ParkManager\Infrastructure\Validator\Constraints\X509SupportValidator;
-use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 /**
@@ -83,14 +82,14 @@ final class X509SupportValidatorTest extends X509ValidatorTestCase
 
     protected function createValidator(): ConstraintValidatorInterface
     {
-        return new X509SupportValidator(new Translator('en'), $this->getCertificateValidator());
+        return new X509SupportValidator($this->getCertificateValidator());
     }
 }
 
 /**
  * @internal
  */
-final class X509SupportStubViolation extends InvalidArgument
+final class X509SupportStubViolation extends Violation
 {
     public function __construct(private string $expected, private string $provided)
     {
@@ -101,7 +100,7 @@ final class X509SupportStubViolation extends InvalidArgument
         return 'tls.violation.weak_signature_algorithm';
     }
 
-    public function getTranslationArgs(): array
+    public function getParameters(): array
     {
         return [
             'expected' => $this->expected,

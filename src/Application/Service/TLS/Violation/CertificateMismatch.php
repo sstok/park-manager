@@ -23,9 +23,4 @@ final class CertificateMismatch extends Violation
     {
         return 'tls.violation.certificate_mismatch';
     }
-
-    public function getTranslationArgs(): array
-    {
-        return [];
-    }
 }

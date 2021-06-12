@@ -23,9 +23,4 @@ final class PublicKeyMismatch extends Violation
     {
         return 'tls.violation.public_key_mismatch';
     }
-
-    public function getTranslationArgs(): array
-    {
-        return [];
-    }
 }

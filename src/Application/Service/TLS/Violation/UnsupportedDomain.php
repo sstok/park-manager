@@ -31,7 +31,7 @@ final class UnsupportedDomain extends Violation
         return 'tls.violation.unsupported_domain';
     }
 
-    public function getTranslationArgs(): array
+    public function getParameters(): array
     {
         return [
             'required_pattern' => $this->requiredPattern,

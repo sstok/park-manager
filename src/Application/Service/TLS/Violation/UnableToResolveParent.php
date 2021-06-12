@@ -28,7 +28,7 @@ final class UnableToResolveParent extends Violation
         return 'tls.violation.unable_to_resolve_parent';
     }
 
-    public function getTranslationArgs(): array
+    public function getParameters(): array
     {
         return ['name' => $this->name];
     }

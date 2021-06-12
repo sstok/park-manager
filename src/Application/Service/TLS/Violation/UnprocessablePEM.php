@@ -30,7 +30,7 @@ final class UnprocessablePEM extends Violation
         return 'tls.violation.unprocessable_pem';
     }
 
-    public function getTranslationArgs(): array
+    public function getParameters(): array
     {
         return ['name' => $this->certName];
     }

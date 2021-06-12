@@ -13,7 +13,6 @@ namespace ParkManager\Tests\Infrastructure\Validator\Constraints;
 use ParkManager\Infrastructure\Validator\Constraints\X509CertificateBundle;
 use ParkManager\Infrastructure\Validator\Constraints\X509HostnamePattern;
 use ParkManager\Infrastructure\Validator\Constraints\X509HostnamePatternValidator;
-use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 /**
@@ -70,6 +69,6 @@ final class X509HostnamePatternValidatorTest extends X509ValidatorTestCase
 
     protected function createValidator(): ConstraintValidatorInterface
     {
-        return new X509HostnamePatternValidator(new Translator('en'), $this->getCertificateValidator());
+        return new X509HostnamePatternValidator($this->getCertificateValidator());
     }
 }

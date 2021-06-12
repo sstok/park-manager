@@ -11,18 +11,12 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Validator\Constraints;
 
 use ParkManager\Application\Service\TLS\Violation;
-use ParkManager\Domain\Exception\TranslatableException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class TLSCertificateValidator extends ConstraintValidator
 {
-    public function __construct(private TranslatorInterface $translator)
-    {
-    }
-
     public function validate($value, Constraint $constraint): void
     {
         $this->checkConstraintType($constraint);
@@ -37,7 +31,7 @@ abstract class TLSCertificateValidator extends ConstraintValidator
 
         try {
             $this->validateTLS($value, $constraint);
-        } catch (Violation | TranslatableException $violation) {
+        } catch (Violation $violation) {
             $this->context->buildViolation($violation->getTranslatorId())
                 ->setParameters($this->getTranslationArguments($violation))
                 ->setInvalidValue($value->certificate)
@@ -54,18 +48,12 @@ abstract class TLSCertificateValidator extends ConstraintValidator
     /**
      * @return array<string, mixed>
      */
-    private function getTranslationArguments(TranslatableException $violation): array
+    private function getTranslationArguments(Violation $violation): array
     {
-        $arguments = $violation->getTranslationArgs();
+        $arguments = $violation->getParameters();
 
         foreach ($arguments as $key => $v) {
             unset($arguments[$key]);
-
-            if (\is_string($v) && strncmp($key, '@', 1) === 0) {
-                $key = mb_substr($key, 1);
-                $v = $this->translator->trans($v);
-            }
-
             $arguments[sprintf('{%s}', $key)] = $v;
         }
 

@@ -15,7 +15,6 @@ use ParkManager\Application\Service\TLS\KeyValidator;
 use ParkManager\Infrastructure\Validator\Constraints\X509CertificateBundle;
 use ParkManager\Infrastructure\Validator\Constraints\X509KeyPair;
 use ParkManager\Infrastructure\Validator\Constraints\X509KeyPairValidator;
-use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 /**
@@ -181,6 +180,6 @@ final class X509KeyPairValidatorTest extends X509ValidatorTestCase
 
     protected function createValidator(): ConstraintValidatorInterface
     {
-        return new X509KeyPairValidator(new Translator('en'), new KeyValidator());
+        return new X509KeyPairValidator(new KeyValidator());
     }
 }

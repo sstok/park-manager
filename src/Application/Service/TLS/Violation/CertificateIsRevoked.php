@@ -13,6 +13,7 @@ namespace ParkManager\Application\Service\TLS\Violation;
 use DateTimeInterface;
 use Ocsp\Response;
 use ParkManager\Application\Service\TLS\Violation;
+use ParkManager\Domain\TranslatableMessage;
 
 final class CertificateIsRevoked extends Violation
 {
@@ -65,12 +66,12 @@ final class CertificateIsRevoked extends Violation
         return 'tls.violation.certificate_is_revoked';
     }
 
-    public function getTranslationArgs(): array
+    public function getParameters(): array
     {
         return [
             'revoked_on' => $this->revokedOn,
             'reason_code' => (self::REVOCATION_REASON[$this->reason] ?? 'unspecified'),
-            '@reason' => 'tls.revocation_reason.' . (self::REVOCATION_REASON[$this->reason] ?? 'unspecified'),
+            'reason' => new TranslatableMessage('tls.revocation_reason.' . (self::REVOCATION_REASON[$this->reason] ?? 'unspecified'), domain: 'messages'),
             'serial' => $this->serial,
         ];
     }

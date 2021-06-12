@@ -14,7 +14,6 @@ use Carbon\Carbon;
 use ParkManager\Infrastructure\Validator\Constraints\X509Certificate;
 use ParkManager\Infrastructure\Validator\Constraints\X509CertificateBundle;
 use ParkManager\Infrastructure\Validator\Constraints\X509CertificateValidator;
-use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 /**
@@ -86,6 +85,6 @@ final class X509CertificateValidatorTest extends X509ValidatorTestCase
 
     protected function createValidator(): ConstraintValidatorInterface
     {
-        return new X509CertificateValidator(new Translator('en'), $this->getCertificateValidator());
+        return new X509CertificateValidator($this->getCertificateValidator());
     }
 }

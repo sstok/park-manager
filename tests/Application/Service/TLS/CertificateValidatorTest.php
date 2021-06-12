@@ -25,6 +25,7 @@ use ParkManager\Application\Service\TLS\Violation\UnprocessablePEM;
 use ParkManager\Application\Service\TLS\Violation\UnsupportedDomain;
 use ParkManager\Application\Service\TLS\Violation\UnsupportedPurpose;
 use ParkManager\Application\Service\TLS\Violation\WeakSignatureAlgorithm;
+use ParkManager\Domain\TranslatableMessage;
 use ParkManager\Tests\Mock\PdpMockProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -104,7 +105,7 @@ final class CertificateValidatorTest extends TestCase
 
             self::fail('Exception was expected.');
         } catch (UnprocessablePEM $e) {
-            self::assertSame(['name' => ''], $e->getTranslationArgs());
+            self::assertSame(['name' => ''], $e->getParameters());
             self::assertSame($certContents, $e->getPrevious()->getPrevious()->getMessage());
         }
     }
@@ -165,7 +166,7 @@ final class CertificateValidatorTest extends TestCase
 
             self::fail('Exception was expected.');
         } catch (CertificateIsExpired $e) {
-            self::assertEquals(['expired_on' => Carbon::rawParse('2018-07-26T13:02:33.000000+0000')], $e->getTranslationArgs());
+            self::assertEquals(['expired_on' => Carbon::rawParse('2018-07-26T13:02:33.000000+0000')], $e->getParameters());
         }
     }
 
@@ -201,7 +202,7 @@ final class CertificateValidatorTest extends TestCase
             self::assertSame([
                 'provided' => $provided,
                 'suffix_pattern' => $suffixPattern,
-            ], $e->getTranslationArgs());
+            ], $e->getParameters());
         }
     }
 
@@ -346,7 +347,7 @@ final class CertificateValidatorTest extends TestCase
             self::assertSame([
                 'expected' => 'SHA256',
                 'provided' => 'sha1WithRSAEncryption',
-            ], $e->getTranslationArgs());
+            ], $e->getParameters());
         }
     }
 
@@ -372,7 +373,7 @@ final class CertificateValidatorTest extends TestCase
             self::assertSame($certContents, $e->getPrevious()->getPrevious()->getMessage());
             self::assertSame([
                 'name' => '',
-            ], $e->getTranslationArgs());
+            ], $e->getParameters());
         }
     }
 
@@ -520,12 +521,12 @@ final class CertificateValidatorTest extends TestCase
 
             self::fail('Exception was expected.');
         } catch (CertificateIsRevoked $e) {
-            self::assertSame([
+            self::assertEquals([
                 'revoked_on' => $revokedOn,
                 'reason_code' => 'privilege_withdrawn',
-                '@reason' => 'tls.revocation_reason.privilege_withdrawn',
+                'reason' => new TranslatableMessage('tls.revocation_reason.privilege_withdrawn', domain: 'messages'),
                 'serial' => '8130451905380357229031687250908825482',
-            ], $e->getTranslationArgs());
+            ], $e->getParameters());
         }
     }
 
@@ -856,7 +857,7 @@ final class CertificateValidatorTest extends TestCase
 
             self::fail('Exception was expected.');
         } catch (UnsupportedPurpose $e) {
-            self::assertSame(['@required_purpose' => 'S/MIME signing'], $e->getTranslationArgs());
+            self::assertEquals(['required_purpose' => new TranslatableMessage('S/MIME signing', domain: 'messages')], $e->getParameters());
         }
     }
 
@@ -901,7 +902,7 @@ final class CertificateValidatorTest extends TestCase
 
             self::fail('Exception was expected.');
         } catch (UnsupportedDomain $e) {
-            self::assertSame(['required_pattern' => $hostPattern, 'supported' => $supported], $e->getTranslationArgs());
+            self::assertSame(['required_pattern' => $hostPattern, 'supported' => $supported], $e->getParameters());
         }
     }
 

@@ -30,7 +30,7 @@ final class WeakSignatureAlgorithm extends Violation
         return 'tls.violation.weak_signature_algorithm';
     }
 
-    public function getTranslationArgs(): array
+    public function getParameters(): array
     {
         return [
             'expected' => $this->expected,

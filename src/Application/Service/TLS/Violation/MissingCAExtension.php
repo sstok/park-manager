@@ -24,7 +24,7 @@ final class MissingCAExtension extends Violation
         return 'tls.violation.certificate_is_ca';
     }
 
-    public function getTranslationArgs(): array
+    public function getParameters(): array
     {
         return ['common_name' => $this->name];
     }

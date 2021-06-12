@@ -13,15 +13,11 @@ namespace ParkManager\Infrastructure\Validator\Constraints;
 use ParkManager\Application\Service\TLS\CertificateValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class X509CertificateValidator extends TLSCertificateValidator
 {
-    public function __construct(
-        TranslatorInterface $translator,
-        private CertificateValidator $certificateValidator
-    ) {
-        parent::__construct($translator);
+    public function __construct(private CertificateValidator $certificateValidator)
+    {
     }
 
     protected function checkConstraintType(Constraint $constraint): void
