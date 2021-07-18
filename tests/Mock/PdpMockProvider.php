@@ -43,7 +43,8 @@ final class PdpMockProvider
             }
         );
         $factory = new PsrStorageFactory(
-            new Psr16Cache(new PhpFilesAdapter('pdp-parkmanager-test', 0, null, true)), $httpClient
+            new Psr16Cache(new PhpFilesAdapter('pdp-parkmanager-test', 0, null, true)),
+            $httpClient
         );
 
         return self::$pdpManager = new PdpManager(

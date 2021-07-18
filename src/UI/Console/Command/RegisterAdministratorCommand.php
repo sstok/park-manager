@@ -40,10 +40,11 @@ final class RegisterAdministratorCommand extends Command
     {
         $this
             ->setDescription('Registers a new Administrator user')
-            ->setHelp(<<<'EOT'
-                The <info>%command.name%</info> command registers a new Administrator user.
-                EOT
-        )
+            ->setHelp(
+                <<<'EOT'
+                    The <info>%command.name%</info> command registers a new Administrator user.
+                    EOT
+            )
         ;
     }
 

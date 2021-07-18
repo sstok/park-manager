@@ -35,7 +35,8 @@ trait WebTranslatedAssertionTrait
 
         try {
             self::assertSelectorExists($selector);
-            self::assertThat(self::executePrivateMethod('getCrawler'),
+            self::assertThat(
+                self::executePrivateMethod('getCrawler'),
                 new CrawlerSelectorTextContains($selector, $translated),
                 $message
             );

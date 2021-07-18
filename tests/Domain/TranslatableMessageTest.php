@@ -49,17 +49,20 @@ final class TranslatableMessageTest extends TestCase
     {
         $translator = new Translator('en');
         $translator->addLoader('array', new ArrayLoader());
-        $translator->addResource('array',
+        $translator->addResource(
+            'array',
             [$translatable->getMessage() => $translation],
             $locale,
             $translatable->getDomain()
         );
-        $translator->addResource('array',
+        $translator->addResource(
+            'array',
             ['what' => 'super'],
             'de',
             $translatable->getDomain()
         );
-        $translator->addResource('array',
+        $translator->addResource(
+            'array',
             ['what' => 'super toll'],
             'de',
             'questions'

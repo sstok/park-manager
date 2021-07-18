@@ -154,7 +154,8 @@ final class ConfirmationFormTest extends MessageFormTestCase
             [
                 'required_value' => [
                     new FormError(
-                        'value_does_not_match_expected_value', 'value_does_not_match_expected_value',
+                        'value_does_not_match_expected_value',
+                        'value_does_not_match_expected_value',
                         [
                             '{{ value }}' => $value,
                             '{{ required_value }}' => 'oglaZ!',

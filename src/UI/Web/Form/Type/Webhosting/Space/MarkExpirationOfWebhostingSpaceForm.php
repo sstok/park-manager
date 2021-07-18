@@ -45,7 +45,7 @@ final class MarkExpirationOfWebhostingSpaceForm extends AbstractType
             ->setDefault(
                 'command_factory',
                 static fn (array $fields, Space $model): object => CarbonImmutable::instance($fields['expirationDate'])->isCurrentDay() ? new MarkSpaceForRemoval($model->id) : new ExpireSpaceOn($model->id, $fields['expirationDate']),
-        )
+            )
         ;
     }
 

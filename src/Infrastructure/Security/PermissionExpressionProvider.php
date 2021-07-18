@@ -18,7 +18,8 @@ final class PermissionExpressionProvider implements ExpressionFunctionProviderIn
     public function getFunctions(): array
     {
         return [
-            new ExpressionFunction('permission',
+            new ExpressionFunction(
+                'permission',
                 static fn ($arg): string => sprintf('new \ParkManager\Infrastructure\Security\PermissionExpression(%s)', implode(', ', \func_get_args())),
                 static fn (array $variables, string $name, ...$arguments): PermissionExpression => new PermissionExpression($name, ...$arguments)
             ),

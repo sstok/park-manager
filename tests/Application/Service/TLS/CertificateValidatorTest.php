@@ -493,11 +493,13 @@ final class CertificateValidatorTest extends TestCase
         $ocspProphecy = $this->prophesize(Ocsp::class);
         $ocspProphecy->buildOcspRequestBodySingle(Argument::any())->willReturn('Revoked');
         $ocspProphecy->decodeOcspResponseSingle(Argument::any())
-            ->willReturn(OcspResponse::revoked(
-                new DateTimeImmutable('now'),
-                '8130451905380357229031687250908825482',
-                $revokedOn = new DateTimeImmutable('2020-01-29T14:12:14.000000+0000'),
-                OcspResponse::REVOCATIONREASON_PRIVILEGEWITHDRAWN)
+            ->willReturn(
+                OcspResponse::revoked(
+                    new DateTimeImmutable('now'),
+                    '8130451905380357229031687250908825482',
+                    $revokedOn = new DateTimeImmutable('2020-01-29T14:12:14.000000+0000'),
+                    OcspResponse::REVOCATIONREASON_PRIVILEGEWITHDRAWN
+                )
             )
         ;
         $ocsp = $ocspProphecy->reveal();
