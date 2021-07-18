@@ -79,6 +79,8 @@ class User implements Stringable
         #[Column(name: 'auth_password', type: 'text')]
         public string $password
     ) {
+        Assertion::false($email->isPattern, 'Email cannot be a pattern.', 'email');
+
         $this->roles = new ArrayCollection(static::DEFAULT_ROLES);
     }
 
@@ -97,6 +99,8 @@ class User implements Stringable
 
     public function changeEmail(EmailAddress $email): void
     {
+        Assertion::false($email->isPattern, 'Email cannot be a pattern.', 'email');
+
         $this->email = $email;
         $this->emailAddressChangeToken = null;
     }

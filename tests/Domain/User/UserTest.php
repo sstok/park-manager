@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\User;
 
+use Assert\Assertion;
 use Assert\AssertionFailedException;
+use Assert\InvalidArgumentException;
 use DateTimeImmutable;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
@@ -52,12 +54,35 @@ final class UserTest extends TestCase
     }
 
     /** @test */
+    public function registration_email_cannot_be_pattern(): void
+    {
+        $this->expectExceptionObject(new InvalidArgumentException('Email cannot be a pattern.', Assertion::INVALID_FALSE, 'email'));
+
+        User::register(
+            UserId::fromString(self::ID1),
+            new EmailAddress('*@example.com'),
+            'Jane Doe',
+            'Tucker@5423'
+        );
+    }
+
+    /** @test */
     public function change_email(): void
     {
         $user = $this->registerUser();
         $user->changeEmail($email = new EmailAddress('Doh@example.com'));
 
         self::assertSame($email, $user->email);
+    }
+
+    /** @test */
+    public function change_email_cannot_be_pattern(): void
+    {
+        $user = $this->registerUser();
+
+        $this->expectExceptionObject(new InvalidArgumentException('Email cannot be a pattern.', Assertion::INVALID_FALSE, 'email'));
+
+        $user->changeEmail(new EmailAddress('*@example.com'));
     }
 
     private function registerUser(string $password = 'Tucker@5423'): User
