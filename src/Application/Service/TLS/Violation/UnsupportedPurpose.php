@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Application\Service\TLS\Violation;
 
 use ParkManager\Application\Service\TLS\Violation;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 
 final class UnsupportedPurpose extends Violation
 {

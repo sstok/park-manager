@@ -48,6 +48,7 @@ parameters:
         ## False positive
         - '#Call to an undefined method Faker\\Generator\:\:#'
         - '#Method ([^:]+)\:\:unserialize\(\) has parameter \$serialized with no typehint specified#'
+        - '#Cannot call method forHumans\(\) on Carbon\\CarbonInterval\|string#'
 
         # Unum
         -

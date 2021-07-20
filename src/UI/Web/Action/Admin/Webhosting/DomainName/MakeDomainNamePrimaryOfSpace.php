@@ -12,7 +12,7 @@ namespace ParkManager\UI\Web\Action\Admin\Webhosting\DomainName;
 
 use ParkManager\Application\Command\DomainName\AssignDomainNameToSpace;
 use ParkManager\Domain\DomainName\DomainName;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\UI\Web\Form\Type\ConfirmationForm;

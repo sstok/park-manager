@@ -42,6 +42,7 @@ use ParkManager\Infrastructure\Security\UserProvider;
 use ParkManager\Infrastructure\Security\Voter\SuperAdminVoter;
 use ParkManager\Infrastructure\Security\Voter\SwitchUserVoter;
 use ParkManager\Infrastructure\Service\EntityRenderer;
+use ParkManager\Infrastructure\Translation\Translator;
 use ParkManager\UI\Web\ArgumentResolver\ModelResolver;
 use ParkManager\UI\Web\ArgumentResolver\SplitTokenResolver;
 use Psr\Container\ContainerInterface;
@@ -105,9 +106,9 @@ return static function (ContainerConfigurator $c): void {
             __DIR__ . '/../src/UI/Web/Response',
         ]);
 
-    $di->set(ObjectTranslatableTranslator::class)
+    $di->set(Translator::class)
         ->autowire(false)
-        ->decorate('translator', null, -100)
+        ->decorate('translator')
         ->args([service('.inner')])
     ;
 

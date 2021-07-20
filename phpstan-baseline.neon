@@ -241,16 +241,6 @@ parameters:
 			path: src/Infrastructure/Security/Permission/IsFullOwnerDecider.php
 
 		-
-			message: "#^Call to an undefined method object\\:\\:setEnv\\(\\)\\.$#"
-			count: 1
-			path: src/Infrastructure/Twig/ParkManagerExtension.php
-
-		-
-			message: "#^Parameter \\#1 \\$translator of method Symfony\\\\Contracts\\\\Translation\\\\TranslatableInterface\\:\\:trans\\(\\) expects Symfony\\\\Contracts\\\\Translation\\\\TranslatorInterface, object given\\.$#"
-			count: 1
-			path: src/Infrastructure/Twig/ParkManagerExtension.php
-
-		-
 			message: "#^Property ParkManager\\\\Infrastructure\\\\Validator\\\\Constraints\\\\DomainNameRegistrable\\:\\:\\$lengthMessage \\(string\\) does not accept string\\|null\\.$#"
 			count: 1
 			path: src/Infrastructure/Validator/Constraints/DomainNameRegistrable.php

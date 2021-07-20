@@ -12,7 +12,7 @@ namespace ParkManager\Domain\Webhosting\Space\Exception;
 
 use DomainException;
 use ParkManager\Domain\Exception\TranslatableException;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 

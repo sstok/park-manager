@@ -13,7 +13,7 @@ namespace ParkManager\Application\Service\TLS\Violation;
 use DateTimeInterface;
 use Ocsp\Response;
 use ParkManager\Application\Service\TLS\Violation;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 
 final class CertificateIsRevoked extends Violation
 {

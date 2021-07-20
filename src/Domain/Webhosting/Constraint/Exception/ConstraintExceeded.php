@@ -14,7 +14,7 @@ use Exception;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\TranslatableException;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class ConstraintExceeded extends Exception implements TranslatableException

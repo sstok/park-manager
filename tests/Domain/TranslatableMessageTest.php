@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Domain;
 
 use Generator;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Component\Translation\Translator;

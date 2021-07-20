@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Domain;
+namespace ParkManager\Domain\Translation;
 
 use Stringable;
 use Symfony\Contracts\Translation\TranslatableInterface;

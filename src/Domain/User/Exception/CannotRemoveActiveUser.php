@@ -13,7 +13,7 @@ namespace ParkManager\Domain\User\Exception;
 use InvalidArgumentException;
 use ParkManager\Domain\Exception\TranslatableException;
 use ParkManager\Domain\ResultSet;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\User\UserId;
 
 final class CannotRemoveActiveUser extends InvalidArgumentException implements TranslatableException

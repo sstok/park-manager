@@ -12,7 +12,7 @@ namespace ParkManager\Domain\Organization\Exception;
 
 use ParkManager\Domain\Exception\InvalidArgument;
 use ParkManager\Domain\Organization\OrganizationId;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 
 final class CannotRemoveInternalOrganization extends InvalidArgument
 {

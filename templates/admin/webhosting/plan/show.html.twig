@@ -8,10 +8,6 @@
     {%- endif -%}
 {% endmacro %}
 
-{% macro render_byte_size(size) %}
-{{- size.isInf() ? ('byte_size.inf'|trans) : size.format() -}}
-{% endmacro %}
-
 {% macro render_bool(value) %}
     {{ (value ? 'yes' : 'no' )|trans }}
 {% endmacro %}
@@ -100,7 +96,7 @@
                                 <div class="sm:col-span-1">
                                     <dt class="text-sm font-medium text-gray-500">{{ 'label.storage_size'|trans }}</dt>
                                     <dd class="flex mt-1 text-sm text-gray-900">
-                                        {{ _self.render_byte_size(plan.constraints.storageSize) }}
+                                        {{ plan.constraints.storageSize|render_byte_size() }}
                                     </dd>
                                 </div>
                             </dl>
@@ -123,7 +119,7 @@
                                 <div class="sm:col-span-1">
                                     <dt class="text-sm font-medium text-gray-500">{{ 'label.webhosting_plan.email_max_storage_size'|trans }}</dt>
                                     <dd class="flex mt-1 text-sm text-gray-900">
-                                        {{ _self.render_byte_size(plan.constraints.email.maxStorageSize) }}
+                                        {{ plan.constraints.email.maxStorageSize|render_byte_size() }}
                                     </dd>
                                 </div>
                                 <div class="sm:col-span-1">
@@ -165,7 +161,7 @@
                                 <div class="sm:col-span-1">
                                     <dt class="text-sm font-medium text-gray-500">{{ 'label.webhosting_plan.database_provided_storage_size'|trans }}</dt>
                                     <dd class="flex mt-1 text-sm text-gray-900">
-                                        {{ _self.render_byte_size(plan.constraints.database.providedStorageSize) }}
+                                        {{ plan.constraints.database.providedStorageSize|render_byte_size() }}
                                     </dd>
                                 </div>
                                 <div class="sm:col-span-1">

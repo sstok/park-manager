@@ -13,7 +13,7 @@ namespace ParkManager\Domain\DomainName\Exception;
 use DomainException;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Exception\TranslatableException;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class CannotTransferPrimaryDomainName extends DomainException implements TranslatableException

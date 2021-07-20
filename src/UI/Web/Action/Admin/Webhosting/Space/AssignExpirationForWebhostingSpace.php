@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Space;
 
 use Carbon\CarbonImmutable;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\UI\Web\Form\Type\Webhosting\Space\MarkExpirationOfWebhostingSpaceForm;

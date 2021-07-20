@@ -12,7 +12,7 @@ namespace ParkManager\Domain\Exception;
 
 use DateTimeInterface;
 use InvalidArgumentException;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use Stringable;
 use Symfony\Contracts\Translation\TranslatableInterface;
 

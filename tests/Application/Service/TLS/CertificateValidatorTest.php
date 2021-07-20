@@ -25,7 +25,7 @@ use ParkManager\Application\Service\TLS\Violation\UnprocessablePEM;
 use ParkManager\Application\Service\TLS\Violation\UnsupportedDomain;
 use ParkManager\Application\Service\TLS\Violation\UnsupportedPurpose;
 use ParkManager\Application\Service\TLS\Violation\WeakSignatureAlgorithm;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Tests\Mock\PdpMockProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;

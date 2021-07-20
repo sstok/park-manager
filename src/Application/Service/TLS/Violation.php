@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Application\Service\TLS;
 
 use InvalidArgumentException;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 
 abstract class Violation extends InvalidArgumentException
 {

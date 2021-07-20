@@ -12,7 +12,7 @@ namespace ParkManager\Domain\User\Exception;
 
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\NotFoundException;
-use ParkManager\Domain\TranslatableMessage;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\User\UserId;
 
 final class UserNotFound extends NotFoundException
