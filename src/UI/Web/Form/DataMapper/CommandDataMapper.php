@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Form\DataMapper;
 
 use DateTimeInterface;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use Symfony\Component\Form\DataAccessorInterface;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -40,24 +41,18 @@ final class CommandDataMapper implements DataMapperInterface
 
     public function mapDataToForms($viewData, Traversable $forms): void
     {
-        if (! \is_array($viewData) || ! \array_key_exists('model', $viewData) || ! \array_key_exists('fields', $viewData)) {
-            throw new UnexpectedTypeException($viewData, 'array with keys "model" and "fields"');
+        if (! $viewData instanceof CommandDto) {
+            throw new UnexpectedTypeException($viewData, CommandDto::class);
         }
 
-        $this->wrappedDataMapper->mapDataToForms($viewData['model'], $forms);
+        $this->wrappedDataMapper->mapDataToForms($viewData->model, $forms);
     }
 
     public function mapFormsToData(Traversable $forms, &$viewData): void
     {
-        if (! \is_array($viewData) || ! \array_key_exists('model', $viewData) || ! \array_key_exists('fields', $viewData)) {
-            throw new UnexpectedTypeException($viewData, 'array with keys "model" and "fields"');
+        if (! $viewData instanceof CommandDto) {
+            throw new UnexpectedTypeException($viewData, CommandDto::class);
         }
-
-        if ($viewData['model'] === null) {
-            return;
-        }
-
-        // Data from the forms is mapped directly as the form children names are expected (*NOT* the property-name).
 
         foreach ($forms as $form) {
             $config = $form->getConfig();
@@ -65,19 +60,22 @@ final class CommandDataMapper implements DataMapperInterface
             // Write-back is disabled if the form is not synchronized (transformation failed),
             // if the form was not submitted and if the form is disabled (modification not allowed)
             if ($config->getMapped() && $form->isSubmitted() && $form->isSynchronized() && ! $form->isDisabled()) {
-                $propertyValue = $form->getData();
-                $modelValue = $this->dataAccessor->getValue($viewData['model'], $form);
+                $fieldValue = $form->getData();
 
-                $viewData['fields'][$form->getName()] = $propertyValue;
+                $viewData->fields[$form->getName()] = $fieldValue;
 
-                // If the field is of type DateTimeInterface and the data is the same skip the update to
-                // keep the original object hash
-                if ($propertyValue instanceof DateTimeInterface && $propertyValue == $modelValue) {
+                if ($viewData->model === null) {
                     continue;
                 }
 
-                if ($propertyValue !== $modelValue) {
-                    $viewData['changed'][$form->getName()] = $propertyValue;
+                $modelValue = $this->dataAccessor->getValue($viewData->model, $form);
+
+                if ($fieldValue instanceof DateTimeInterface && $fieldValue == $modelValue) {
+                    continue;
+                }
+
+                if ($fieldValue !== $modelValue) {
+                    $viewData->changes[$form->getName()] = $fieldValue;
                 }
             }
         }

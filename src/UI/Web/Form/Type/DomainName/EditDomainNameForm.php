@@ -12,6 +12,7 @@ namespace ParkManager\UI\Web\Form\Type\DomainName;
 
 use ParkManager\Application\Command\DomainName\AssignDomainNameToOwner;
 use ParkManager\Domain\DomainName\DomainName;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\OwnerSelector;
 use Symfony\Component\Form\AbstractType;
@@ -37,7 +38,7 @@ final class EditDomainNameForm extends AbstractType
         $resolver
             ->setDefault(
                 'command_factory',
-                static fn (array $fields, DomainName $model) => new AssignDomainNameToOwner($model->id, $fields['owner']->id)
+                static fn (CommandDto $data, DomainName $model) => new AssignDomainNameToOwner($model->id, $data->fields['owner']->id)
             )
         ;
     }

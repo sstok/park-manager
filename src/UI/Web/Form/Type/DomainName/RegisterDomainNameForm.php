@@ -12,6 +12,7 @@ namespace ParkManager\UI\Web\Form\Type\DomainName;
 
 use ParkManager\Application\Command\DomainName\AddDomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\DomainNamePairType;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\OwnerSelector;
@@ -43,7 +44,7 @@ final class RegisterDomainNameForm extends AbstractType
             ->setDefault('disable_entity_mapping', true)
             ->setDefault(
                 'command_factory',
-                static fn ($fields) => new AddDomainName(DomainNameId::create(), $fields['owner']->id, $fields['name'])
+                static fn (CommandDto $data) => new AddDomainName(DomainNameId::create(), $data->fields['owner']->id, $data->fields['name'])
             )
         ;
     }

@@ -14,6 +14,7 @@ use ArrayIterator;
 use Generator;
 use ParkManager\UI\Web\Form\DataMapper\CommandDataMapper;
 use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectAccessor;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -31,11 +32,11 @@ final class CommandDataMapperTest extends FormIntegrationTestCase
      * @test
      * @dataProvider provide_invalid_input
      */
-    public function it_only_accepts_array_as_data_to_form(mixed $input): void
+    public function it_only_accepts_command_dto_as_data_to_form(mixed $input): void
     {
         $dataMapper = new CommandDataMapper($this->createMock(DataMapperInterface::class), new PropertyPathObjectAccessor());
 
-        $this->expectExceptionObject(new UnexpectedTypeException($input, 'array with keys "model" and "fields"'));
+        $this->expectExceptionObject(new UnexpectedTypeException($input, CommandDto::class));
 
         $dataMapper->mapDataToForms($input, new ArrayIterator([]));
     }
@@ -58,11 +59,11 @@ final class CommandDataMapperTest extends FormIntegrationTestCase
      * @test
      * @dataProvider provide_invalid_input
      */
-    public function it_only_accepts_array_as_forms_to_data(mixed $input): void
+    public function it_only_accepts_command_dto_as_forms_to_data(mixed $input): void
     {
         $dataMapper = new CommandDataMapper($this->createMock(DataMapperInterface::class), new PropertyPathObjectAccessor());
 
-        $this->expectExceptionObject(new UnexpectedTypeException($input, 'array with keys "model" and "fields"'));
+        $this->expectExceptionObject(new UnexpectedTypeException($input, CommandDto::class));
 
         $dataMapper->mapFormsToData(new ArrayIterator([]), $input);
     }
@@ -85,9 +86,9 @@ final class CommandDataMapperTest extends FormIntegrationTestCase
 
         $dataMapper = new CommandDataMapper($wrappedDataMapperProphecy->reveal(), new PropertyPathObjectAccessor());
 
-        $dataMapper->mapDataToForms(['model' => $data, 'fields' => $fields], new ArrayIterator($forms));
+        $viewData = new CommandDto(model: $data, fields: $fields);
 
-        $viewData = ['model' => $data, 'fields' => $fields];
+        $dataMapper->mapDataToForms($viewData, new ArrayIterator($forms));
         $dataMapper->mapFormsToData(new ArrayIterator([$form]), $viewData);
     }
 }

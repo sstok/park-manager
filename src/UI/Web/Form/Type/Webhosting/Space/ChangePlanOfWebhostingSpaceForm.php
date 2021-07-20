@@ -15,6 +15,7 @@ use ParkManager\Application\Command\Webhosting\Constraint\AssignPlanToSpace;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Space\Space;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\Webhosting\Constraint\WebhostingConstraintsType;
 use ParkManager\UI\Web\Form\Type\Webhosting\Plan\WebhostingPlanSelector;
@@ -54,12 +55,12 @@ final class ChangePlanOfWebhostingSpaceForm extends AbstractType
         ;
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (PostSubmitEvent $event): void {
-            $data = $event->getData()['fields'];
+            $fields = $event->getData()->fields;
 
-            if ($data['plan'] !== null && ! $data['no_link_plan']) {
-                $plan = $data['plan'];
+            if ($fields['plan'] !== null && ! $fields['no_link_plan']) {
+                $plan = $fields['plan'];
                 \assert($plan instanceof Plan);
-                $constraints = $data['constraints'];
+                $constraints = $fields['constraints'];
                 \assert($constraints instanceof Constraints);
 
                 if (! $constraints->equals($plan->constraints)) {
@@ -77,9 +78,9 @@ final class ChangePlanOfWebhostingSpaceForm extends AbstractType
             ->setDefaults([
                 'help' => 'webhosting.space.change_plan.help',
                 'help_html' => true,
-                'command_factory' => static fn (array $fields, Space $space): object => $fields['no_link_plan'] || $fields['plan'] === null ?
-                    new AssignConstraintsToSpace($space->id, $fields['constraints']) :
-                    AssignPlanToSpace::withConstraints($fields['plan']->id, $space->id),
+                'command_factory' => static fn (CommandDto $data, Space $space): object => $data->fields['no_link_plan'] || $data->fields['plan'] === null ?
+                    new AssignConstraintsToSpace($space->id, $data->fields['constraints']) :
+                    AssignPlanToSpace::withConstraints($data->fields['plan']->id, $space->id),
             ])
         ;
     }

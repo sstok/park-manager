@@ -12,6 +12,7 @@ namespace ParkManager\UI\Web\Form\Type\Webhosting\Space;
 
 use ParkManager\Application\Command\Webhosting\Space\TransferSpaceToOwner;
 use ParkManager\Domain\Webhosting\Space\Space;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\OwnerSelector;
 use Symfony\Component\Form\AbstractType;
@@ -29,7 +30,7 @@ final class TransferWebhostingSpaceForm extends AbstractType
     {
         $resolver->setDefault(
             'command_factory',
-            static fn (array $fields, Space $model): object => new TransferSpaceToOwner($model->id, $fields['owner']->id),
+            static fn (CommandDto $data, Space $model): object => new TransferSpaceToOwner($model->id, $data->fields['owner']->id),
         );
     }
 

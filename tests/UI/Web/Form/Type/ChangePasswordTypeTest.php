@@ -14,6 +14,7 @@ use Closure;
 use ParkManager\Tests\Form\TransformationFailureExtension;
 use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHasherFactory;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\Security\ChangePasswordType;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeExtensionInterface;
@@ -126,7 +127,7 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
 
     private function getCommandBuilder(): Closure
     {
-        return static fn (array $fields, array $model) => new ChangeUserPassword($model['id'], $fields['password']);
+        return static fn (CommandDto $data, array $model) => new ChangeUserPassword($model['id'], $data->fields['password']);
     }
 }
 

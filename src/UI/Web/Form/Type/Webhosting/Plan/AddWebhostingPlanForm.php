@@ -29,11 +29,17 @@ final class AddWebhostingPlanForm extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('command_factory', static fn (array $fields) => new CreatePlan(
-            PlanId::create(),
-            $fields['constraints'],
-            []
-        ));
+        $resolver
+            ->setDefault('disable_entity_mapping', true)
+            ->setDefault(
+                'command_factory',
+                static fn (array $fields) => new CreatePlan(
+                    PlanId::create(),
+                    $fields['constraints'],
+                    []
+                )
+            )
+        ;
     }
 
     public function getParent(): string

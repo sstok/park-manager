@@ -13,6 +13,7 @@ namespace ParkManager\UI\Web\Form\Type\Webhosting\Space;
 use ParkManager\Application\Command\Webhosting\Space\MarkSpaceAccessAsSuspended;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -38,7 +39,7 @@ final class SuspendWebhostingSpaceForm extends AbstractType
     {
         $resolver->setDefault(
             'command_factory',
-            static fn (array $fields, Space $model): object => new MarkSpaceAccessAsSuspended($model->id, $fields['level']),
+            static fn (CommandDto $data, Space $model): object => new MarkSpaceAccessAsSuspended($model->id, $data->fields['level']),
         );
     }
 

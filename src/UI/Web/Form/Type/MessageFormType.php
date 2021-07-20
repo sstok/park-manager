@@ -14,6 +14,7 @@ use Closure;
 use ParkManager\Domain\Exception\TranslatableException;
 use ParkManager\UI\Web\Form\DataMapper\CommandDataMapper;
 use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectAccessor;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataAccessorInterface;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
@@ -95,7 +96,7 @@ final class MessageFormType extends AbstractType
                     );
                 }
 
-                $event->setData(['model' => $event->getData() ?? [], 'fields' => [], 'changed' => []]);
+                $event->setData(new CommandDto(model: $event->getData()));
             }, -1024);
 
             // Set a DataMapper to read from the 'model' key and write to the 'fields' key.
@@ -120,7 +121,7 @@ final class MessageFormType extends AbstractType
                 if ($options['disable_entity_mapping']) {
                     $command = $options['command_factory']($data, $form);
                 } else {
-                    $command = $options['command_factory']($data['fields'], $data['model'], $form);
+                    $command = $options['command_factory']($data, $data->model, $form);
                 }
 
                 $this->dispatchCommand($command, $form, $options['exception_mapping'], $options['exception_fallback']);

@@ -13,6 +13,7 @@ namespace ParkManager\UI\Web\Form\Type\User\Admin;
 use ParkManager\Application\Command\User\ChangeEmailAddress;
 use ParkManager\Application\Command\User\RequestEmailAddressChange;
 use ParkManager\Domain\User\User;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -37,12 +38,12 @@ final class ChangeUserEmailAddressForm extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('command_factory', static function (array $fields, User $model): object {
-            if ($fields['require_confirm']) {
-                return new RequestEmailAddressChange($model->id, $fields['email']);
+        $resolver->setDefault('command_factory', static function (CommandDto $data, User $model): object {
+            if ($data->fields['require_confirm']) {
+                return new RequestEmailAddressChange($model->id, $data->fields['email']);
             }
 
-            return new ChangeEmailAddress($model->id, $fields['email']);
+            return new ChangeEmailAddress($model->id, $data->fields['email']);
         });
     }
 

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Form\Type\User\Admin;
 
 use ParkManager\Application\Command\User\ChangeUserPassword;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\Security\ChangePasswordType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -26,7 +27,14 @@ final class ChangeUserPasswordForm extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('command_factory', static fn (array $fields, array $model) => new ChangeUserPassword($model['id'], $fields['password'], $fields['temporary']));
+        $resolver->setDefault(
+            'command_factory',
+            static fn (CommandDto $data, array $model) => new ChangeUserPassword(
+                $model['id'],
+                $data->fields['password'],
+                $data->fields['temporary']
+            )
+        );
     }
 
     public function getParent(): string

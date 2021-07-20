@@ -18,6 +18,7 @@ use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Tests\UI\Web\Form\IsFormErrorsEqual;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\StubCommand;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\ViolationMapper;
 use RuntimeException;
@@ -171,7 +172,7 @@ final class MessageFormTypeTest extends TypeTestCase
         ;
 
         $options = [
-            'command_factory' => static fn (array $data): StubCommand => new StubCommand($data['id'], $data['username'], $data['profile'] ?? null),
+            'command_factory' => static fn (CommandDto $data): StubCommand => new StubCommand($data->fields['id'], $data->fields['username'], $data->fields['profile'] ?? null),
             'exception_mapping' => [
                 FormRuntimeException::class => static fn (Throwable $e) => new FormError('Root problem is here', null, [], null, $e),
                 InvalidArgumentException::class => static fn (Throwable $e, TranslatorInterface $translator) => ['id' => new FormError($translator->trans($e->getMessage()), null, [], null, $e)],
@@ -312,7 +313,7 @@ final class MessageFormTypeTest extends TypeTestCase
     public function it_ignores_unmapped_exceptions_thrown_during_dispatching(): void
     {
         $form = $this->factory->createNamedBuilder('register_user', MessageFormType::class, null, [
-            'command_factory' => static fn (array $data): StubCommand => new StubCommand($data['id'], $data['username'], $data['profile'] ?? null),
+            'command_factory' => static fn (CommandDto $data): StubCommand => new StubCommand($data->fields['id'], $data->fields['username'], $data->fields['profile'] ?? null),
             'exception_mapping' => [
                 FormRuntimeException::class => static fn (Throwable $e) => new FormError('Root problem is here', null, [], null, $e),
             ],

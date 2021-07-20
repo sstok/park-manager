@@ -12,6 +12,7 @@ namespace ParkManager\UI\Web\Form\Type\Webhosting\Plan;
 
 use ParkManager\Application\Command\Webhosting\Constraint\UpdatePlan;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\Webhosting\Constraint\WebhostingConstraintsType;
 use Symfony\Component\Form\AbstractType;
@@ -35,12 +36,15 @@ final class EditWebhostingPlanForm extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('command_factory', static fn (array $fields, Plan $plan) => new UpdatePlan(
-            $plan->id,
-            $fields['constraints'],
-            metadata: [],
-            updateLinkedSpaces: $fields['updateLinked'],
-        ));
+        $resolver->setDefault(
+            'command_factory',
+            static fn (CommandDto $data, Plan $plan) => new UpdatePlan(
+                $plan->id,
+                $data->fields['constraints'],
+                metadata: [],
+                updateLinkedSpaces: $data->fields['updateLinked'],
+            )
+        );
     }
 
     public function getParent(): string

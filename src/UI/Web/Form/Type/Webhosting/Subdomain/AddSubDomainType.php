@@ -13,6 +13,7 @@ namespace ParkManager\UI\Web\Form\Type\Webhosting\Subdomain;
 use ParkManager\Application\Command\Webhosting\SubDomain\AddSubDomain;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 use ParkManager\Infrastructure\Validator\Constraints\X509CertificateBundle;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class AddSubDomainType extends SubDomainType
@@ -21,18 +22,19 @@ final class AddSubDomainType extends SubDomainType
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefault('command_factory', static function (array $form) {
+        $resolver->setDefault('command_factory', static function (CommandDto $data) {
             $command = new AddSubDomain(
                 SubDomainNameId::create(),
-                $form['root_domain']->id,
-                $form['name'],
-                $form['homedir'],
-                $form['config'] ?? [] // To be done in the future
+                $data->fields['root_domain']->id,
+                $data->fields['name'],
+                $data->fields['homedir'],
+                $data->fields['config'] ?? [] // To be done in the future
             );
 
-            if ($form['tlsInfo'] !== null) {
-                $tlsInformation = $form['tlsInfo'];
+            if ($data->fields['tlsInfo'] !== null) {
+                $tlsInformation = $data->fields['tlsInfo'];
                 \assert($tlsInformation instanceof X509CertificateBundle);
+
                 $command->andTLSInformation($tlsInformation->certificate, $tlsInformation->privateKey, $tlsInformation->caList);
             }
 

@@ -91,15 +91,19 @@ final class RegisterUserForm extends AbstractType
                     return $user;
                 },
                 'exception_mapping' => [
-                    EmailAddressAlreadyInUse::class => static fn (EmailAddressAlreadyInUse $e, TranslatorInterface $translator): array => [
-                        'email' => new FormError(
-                            $translator->trans($e->getTranslatorId(), $e->getTranslationArgs(), 'validators'),
-                            $e->getTranslatorId(),
-                            $e->getTranslationArgs(),
-                            null,
-                            $e
-                        ),
-                    ],
+                    EmailAddressAlreadyInUse::class => static function (EmailAddressAlreadyInUse $e, TranslatorInterface $translator): array {
+                        $translatorId = $e->getTranslatorId();
+
+                        return [
+                            'email' => new FormError(
+                                $translatorId->trans($translator),
+                                $translatorId->getMessage(),
+                                $translatorId->getParameters(),
+                                null,
+                                $e
+                            ),
+                        ];
+                    },
                 ],
             ])
         ;

@@ -13,6 +13,7 @@ namespace ParkManager\UI\Web\Form\Type\Webhosting\Subdomain;
 use ParkManager\Application\Command\Webhosting\SubDomain\EditSubDomain;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
 use ParkManager\Infrastructure\Validator\Constraints\X509CertificateBundle;
+use ParkManager\UI\Web\Form\Model\CommandDto;
 use Symfony\Component\Form\Event\PostSetDataEvent;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,7 +27,7 @@ final class EditSubDomainType extends SubDomainType
         parent::buildForm($builder, $options);
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, static function (PostSetDataEvent $event): void {
-            $model = $event->getData()['model'];
+            $model = $event->getData()->model;
             \assert($model instanceof SubDomain);
 
             if ($model->tlsCert) {
@@ -40,20 +41,21 @@ final class EditSubDomainType extends SubDomainType
         parent::configureOptions($resolver);
 
         $resolver->setDefault('model_class', SubDomain::class);
-        $resolver->setDefault('command_factory', static function (array $form, SubDomain $model) {
+        $resolver->setDefault('command_factory', static function (CommandDto $data, SubDomain $model) {
             $command = new EditSubDomain(
                 $model->id,
-                $form['root_domain']->id,
-                $form['name'],
-                $form['homeDir'],
-                $form['config'] ?? [] // To be done in the future
+                $data->fields['root_domain']->id,
+                $data->fields['name'],
+                $data->fields['homeDir'],
+                $data->fields['config'] ?? [] // To be done in the future
             );
 
-            if ($form['tlsInfo'] !== null) {
-                $tlsInformation = $form['tlsInfo'];
+            if ($data->fields['tlsInfo'] !== null) {
+                $tlsInformation = $data->fields['tlsInfo'];
                 \assert($tlsInformation instanceof X509CertificateBundle);
+
                 $command->andTLSInformation($tlsInformation->certificate, $tlsInformation->privateKey, $tlsInformation->caList);
-            } elseif ($form['removeTLS'] ?? false) {
+            } elseif ($data->fields['removeTLS'] ?? false) {
                 $command->removeTLSInformation();
             }
 
