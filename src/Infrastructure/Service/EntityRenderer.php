@@ -24,12 +24,15 @@ use Twig\Environment as TwigEnvironment;
  * Automatically tries to find the template by `[domain-layer][subDomain/]/[entityName].{html}.twig`
  * all in lowercase. Either `webhosting/ftp/user.html.twig`.
  *
- * The templates should contain two blocks ('short', 'detailed'), which are rendered separately.
+ * The templates should contain three blocks ('short', 'detailed', 'link'),
+ * which are rendered separately. Link block is optional as not all entities has a link.
  */
 final class EntityRenderer
 {
-    public function __construct(private TwigEnvironment $twig, private LocaleAwareInterface $localeAware)
-    {
+    public function __construct(
+        private TwigEnvironment $twig,
+        private LocaleAwareInterface $localeAware
+    ) {
     }
 
     /**
@@ -64,9 +67,20 @@ final class EntityRenderer
     }
 
     /**
+     * Returns the rendered link version (HTML only) of the Entity information,
+     * usually for translation and auto references.
+     *
+     * @param array<string, mixed> $extra Pass addition information to the template context
+     */
+    public function link(object $entity, array $extra = [], ?string $locale = null, string $format = 'html'): string
+    {
+        return $this->renderTemplate($entity, $extra, $format, 'link', $locale);
+    }
+
+    /**
      * @param array<string, mixed> $extra
      *
-     * @phpstan-param 'short'|'detailed' $block
+     * @phpstan-param 'short'|'detailed'|'link' $block
      */
     private function renderTemplate(object $entity, array $extra, string $format, string $block, ?string $locale): string
     {

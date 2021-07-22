@@ -42,10 +42,12 @@ final class EntityRendererTest extends TestCase
         );
 
         self::assertSame('short: Freddy Mc. Fee', $renderer->short($entity, ['expiration' => 'nope']));
+        self::assertSame('<a href="#">Freddy Mc. Fee</a>', $renderer->link($entity));
         self::assertSame('detailed: Freddy Mc. Fee.', $renderer->detailed($entity));
         self::assertSame('detailed: Freddy Mc. Fee.expiration: nope', $renderer->detailed($entity, ['expiration' => 'nope']));
 
         self::assertSame('short: Freddy Mc. Fee===============================', $renderer->short($entity, format: 'md'));
+        self::assertSame('link: [Freddy Mc. Fee](url)', $renderer->link($entity, format: 'md'));
         self::assertSame('detailed: Freddy Mc. Fee===============================', $renderer->detailed($entity, format: 'md'));
     }
 
@@ -63,6 +65,10 @@ final class EntityRendererTest extends TestCase
                 {%- block short -%}
                     short: {{ entity.displayName }}
                 {%- endblock -%}
+
+                {%- block link -%}
+                    <a href="#">{{ entity.displayName }}</a>
+                {%- endblock -%}
                 TEMPLATE,
             'entity_rendering/user/user.md.twig' => <<<'TEMPLATE'
                 {%- block detailed -%}
@@ -73,6 +79,10 @@ final class EntityRendererTest extends TestCase
                 {%- block short -%}
                     short: {{ entity.displayName -}}
                     ===============================
+                {%- endblock -%}
+
+                {%- block link -%}
+                    link: [{{ entity.displayName -}}](url)
                 {%- endblock -%}
                 TEMPLATE,
         ]);
