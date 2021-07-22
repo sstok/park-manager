@@ -59,6 +59,8 @@ final class AuthenticationTokenPasswordChangedListener
             return;
         }
 
+        \assert(method_exists($token, 'getFirewallName'));
+
         $token = new PostAuthenticationToken($user, $token->getFirewallName(), $token->getRoleNames());
         $this->tokenStorage->setToken($token);
     }

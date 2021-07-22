@@ -29,10 +29,11 @@ parameters:
         - src/UI/Web/Action/FormExampleAction.php # No functional purpose
 
     stubFiles:
-        - .github/.phpstan-stubs/symfony/Form.stub
         - .github/.phpstan-stubs/symfony/Constraint.stub
         - .github/.phpstan-stubs/symfony/Request.stub
         - .github/.phpstan-stubs/symfony/ArgumentValueResolverInterface.stub
+        - .github/.phpstan-stubs/symfony/Form/FormBuilderInterface.stub
+        - .github/.phpstan-stubs/symfony/Form/Form.stub
 
     symfony:
         container_xml_path: %currentWorkingDirectory%/var/cache/dev/ParkManager_KernelDevDebugContainer.xml
@@ -50,7 +51,19 @@ parameters:
         - '#Method ([^:]+)\:\:unserialize\(\) has parameter \$serialized with no typehint specified#'
         - '#Cannot call method forHumans\(\) on Carbon\\CarbonInterval\|string#'
 
+        -
+            # This can never happen. A name always has a dot.
+            message: "#^Parameter \\#1 \\$start of method Symfony\\\\Component\\\\String\\\\UnicodeString\\:\\:slice\\(\\) expects int, int\\|null given\\.$#"
+            path: src/Domain/DomainName/DomainNamePair.php
+
+        -
+            # This can never happen. An Email address always has an @-sign.
+            message: "#^Parameter \\#1 \\$start of method Symfony\\\\Component\\\\String\\\\UnicodeString\\:\\:slice\\(\\) expects int, int\\|null given\\.$#"
+            path: src/Domain/EmailAddress.php
+
         # Unum
         -
             message: '#Match expression does not handle remaining values: int<min, -2>|int<4, max>|string#'
             path: src/Domain/Webhosting/Space/SpaceSetupStatus.php
+
+        - '#Parameter \#2 \$level of class ParkManager\\Domain\\Webhosting\\Space\\Exception\\WebhostingSpaceIsSuspended constructor expects ParkManager\\Domain\\Webhosting\\Space\\SuspensionLevel, ParkManager\\Domain\\Webhosting\\Space\\SuspensionLevel\|null given#'

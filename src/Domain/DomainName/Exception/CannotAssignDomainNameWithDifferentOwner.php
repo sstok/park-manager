@@ -73,7 +73,10 @@ final class CannotAssignDomainNameWithDifferentOwner extends DomainException imp
         );
     }
 
-    public function getTranslationArgs(): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getTranslationArgs(): array
     {
         return [
             'domain_name' => $this->domainName->name,

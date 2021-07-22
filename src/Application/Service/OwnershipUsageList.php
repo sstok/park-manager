@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Service;
 
-use Assert\Assertion;
 use ParkManager\Domain\OwnerControlledRepository;
 use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\ResultSet;
@@ -25,8 +24,6 @@ final class OwnershipUsageList
      */
     public function __construct(iterable $repositories)
     {
-        Assertion::allIsInstanceOf($repositories, OwnerControlledRepository::class);
-
         $this->repositories = $repositories;
     }
 

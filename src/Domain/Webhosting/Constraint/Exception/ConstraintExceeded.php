@@ -21,11 +21,11 @@ final class ConstraintExceeded extends Exception implements TranslatableExceptio
 {
     private string $transId;
 
-    /** @var array<string, int|string|ByteSize> */
+    /** @var array<string, mixed> */
     private array $transArgs;
 
     /**
-     * @param array<string, int|string|ByteSize> $transArgs
+     * @param array<string, mixed> $transArgs
      */
     private function __construct(string $message, array $transArgs = [])
     {
@@ -101,6 +101,9 @@ final class ConstraintExceeded extends Exception implements TranslatableExceptio
         return new TranslatableMessage($this->transId, $this->transArgs, 'validators');
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getTranslationArgs(): array
     {
         return $this->transArgs;

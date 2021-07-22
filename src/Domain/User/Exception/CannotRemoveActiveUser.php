@@ -18,28 +18,27 @@ use ParkManager\Domain\User\UserId;
 
 final class CannotRemoveActiveUser extends InvalidArgumentException implements TranslatableException
 {
-    public UserId $id;
-
     /**
-     * @var array<string, ResultSet<object>>
+     * @var array<class-string, ResultSet<object>>
      *
      * @see \ParkManager\Application\Service\OwnershipUsageList::getByProvider
      */
     public array $entities;
 
     /**
-     * @param array<string, ResultSet<object>> $result
+     * @param array<class-string, ResultSet<object>> $result
      */
-    public function __construct(UserId $id, array $result)
-    {
+    public function __construct(
+        public UserId $id,
+        array $result
+    ) {
         parent::__construct(sprintf('User with id "%s" cannot be removed as they are still assigned as owner to one or more entities.', $id->toString()));
 
-        $this->id = $id;
         $this->entities = $result;
     }
 
     public function getTranslatorId(): TranslatableMessage
     {
-        return new TranslatableMessage('cannot_remove_active_user', ['id', $this->id], 'validators');
+        return new TranslatableMessage('cannot_remove_active_user', ['id' => $this->id], 'validators');
     }
 }

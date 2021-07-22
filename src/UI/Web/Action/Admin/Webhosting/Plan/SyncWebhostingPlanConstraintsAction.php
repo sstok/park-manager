@@ -25,7 +25,7 @@ final class SyncWebhostingPlanConstraintsAction extends AbstractController
     public function __invoke(Request $request, FormFactoryInterface $formFactory, Plan $plan): RouteRedirectResponse
     {
         $tokenId = 'sync-plan' . $plan->id->toString();
-        $token = $request->query->get('token');
+        $token = (string) $request->query->get('token', '');
 
         if (! $this->isCsrfTokenValid($tokenId, $token)) {
             return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.plan.show', ['plan' => $plan->id->toString()])

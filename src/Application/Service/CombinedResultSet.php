@@ -73,7 +73,9 @@ final class CombinedResultSet implements ResultSet
 
     public function getNbResults(): int
     {
-        $this->init();
+        if ($this->iterators === null) {
+            $this->init();
+        }
 
         return $this->nbResults;
     }
@@ -83,7 +85,9 @@ final class CombinedResultSet implements ResultSet
      */
     public function getIterator(): Traversable
     {
-        $this->init();
+        if ($this->iterators === null) {
+            $this->init();
+        }
 
         foreach ($this->iterators as $iterator) {
             foreach ($iterator as $row) {
@@ -99,10 +103,6 @@ final class CombinedResultSet implements ResultSet
 
     private function init(): void
     {
-        if ($this->iterators !== null) {
-            return;
-        }
-
         $this->nbResults = 0;
         $this->iterators = [];
 

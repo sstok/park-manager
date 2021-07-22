@@ -91,10 +91,10 @@ class CertificateValidator
 
     private function validateSignatureAlgorithm(string $signatureType): void
     {
-        $normSignatureType = mb_strtolower(preg_replace('/(WithRSAEncryption$)|(^ecdsa-with-)/i', '', $signatureType));
+        $normSignatureType = mb_strtolower((string) preg_replace('/(WithRSAEncryption$)|(^ecdsa-with-)/i', '', $signatureType));
 
         // While sha224 is considered the same as sha256 it's no longer part of TLS 1.3
-        if (\in_array($normSignatureType, ['none', 'md2', 'md5', 'sha1', 'sha224'], true)) {
+        if (\in_array($normSignatureType, ['none', 'md2', 'md5', 'sha1', 'sha224', ''], true)) {
             throw new WeakSignatureAlgorithm('SHA256', $signatureType);
         }
     }

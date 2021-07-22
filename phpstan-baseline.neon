@@ -1,49 +1,14 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$password of method ParkManager\\\\Domain\\\\User\\\\User\\:\\:changePassword\\(\\) expects string, string\\|null given\\.$#"
-			count: 1
-			path: src/Application/Command/User/ChangePasswordHandler.php
-
-		-
 			message: "#^Parameter \\#3 \\$constraints of static method ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\:\\:registerWithCustomConstraints\\(\\) expects ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Constraints, ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Constraints\\|null given\\.$#"
 			count: 1
 			path: src/Application/Command/Webhosting/Space/RegisterWebhostingSpaceHandler.php
 
 		-
-			message: "#^Parameter \\#2 \\$level of class ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Exception\\\\WebhostingSpaceIsSuspended constructor expects ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel\\|null given\\.$#"
-			count: 1
-			path: src/Application/Command/Webhosting/Space/RemoveSpaceExpirationDateHandler.php
-
-		-
-			message: "#^Parameter \\#2 \\$level of class ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Exception\\\\WebhostingSpaceIsSuspended constructor expects ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel\\|null given\\.$#"
-			count: 1
-			path: src/Application/Command/Webhosting/Space/TransferSpaceToOwnerHandler.php
-
-		-
-			message: "#^Parameter \\#2 \\$level of class ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Exception\\\\WebhostingSpaceIsSuspended constructor expects ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel\\|null given\\.$#"
-			count: 1
-			path: src/Application/Command/Webhosting/SubDomain/ActivateSubDomainHandler.php
-
-		-
-			message: "#^Parameter \\#2 \\$level of class ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Exception\\\\WebhostingSpaceIsSuspended constructor expects ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel\\|null given\\.$#"
-			count: 1
-			path: src/Application/Command/Webhosting/SubDomain/AddSubDomainHandler.php
-
-		-
 			message: "#^Parameter \\#2 \\$privateKey of method ParkManager\\\\Application\\\\Service\\\\TLS\\\\CertificateFactory\\:\\:createCertificate\\(\\) expects ParagonIE\\\\HiddenString\\\\HiddenString, ParagonIE\\\\HiddenString\\\\HiddenString\\|null given\\.$#"
 			count: 1
 			path: src/Application/Command/Webhosting/SubDomain/AddSubDomainHandler.php
-
-		-
-			message: "#^Parameter \\#2 \\$level of class ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Exception\\\\WebhostingSpaceIsSuspended constructor expects ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel\\|null given\\.$#"
-			count: 1
-			path: src/Application/Command/Webhosting/SubDomain/DeactivateSubDomainHandler.php
-
-		-
-			message: "#^Parameter \\#2 \\$level of class ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Exception\\\\WebhostingSpaceIsSuspended constructor expects ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SuspensionLevel\\|null given\\.$#"
-			count: 1
-			path: src/Application/Command/Webhosting/SubDomain/RemoveSubDomainHandler.php
 
 		-
 			message: "#^Argument of an invalid type array\\<int, Traversable\\>\\|null supplied for foreach, only iterables are supported\\.$#"
@@ -56,21 +21,6 @@ parameters:
 			path: src/Application/Service/CombinedResultSet.php
 
 		-
-			message: "#^Parameter \\#1 \\$value of static method Assert\\\\Assertion\\:\\:allIsInstanceOf\\(\\) expects array, iterable\\<class\\-string, ParkManager\\\\Domain\\\\OwnerControlledRepository\\<mixed\\>\\> given\\.$#"
-			count: 1
-			path: src/Application/Service/OwnershipUsageList.php
-
-		-
-			message: "#^Parameter \\#1 \\$string of function mb_strtolower expects string, string\\|null given\\.$#"
-			count: 1
-			path: src/Application/Service/TLS/CertificateValidator.php
-
-		-
-			message: "#^Cannot access offset 'key' on array\\|false\\|null\\.$#"
-			count: 1
-			path: src/Application/Service/TLS/X509DataExtractor.php
-
-		-
 			message: "#^Property ParkManager\\\\Domain\\\\DomainName\\\\DomainName\\:\\:\\$registeredAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
 			count: 1
 			path: src/Domain/DomainName/DomainName.php
@@ -81,24 +31,9 @@ parameters:
 			path: src/Domain/DomainName/DomainName.php
 
 		-
-			message: "#^Parameter \\#1 \\$start of method Symfony\\\\Component\\\\String\\\\UnicodeString\\:\\:slice\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Domain/DomainName/DomainNamePair.php
-
-		-
 			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
 			count: 1
 			path: src/Domain/DomainName/Exception/UseDomainNameException.php
-
-		-
-			message: "#^Parameter \\#1 \\$start of method Symfony\\\\Component\\\\String\\\\UnicodeString\\:\\:slice\\(\\) expects int, int\\|null given\\.$#"
-			count: 1
-			path: src/Domain/EmailAddress.php
-
-		-
-			message: "#^Method ParkManager\\\\Domain\\\\Organization\\\\Organization\\:\\:findMembership\\(\\) should return array\\(ParkManager\\\\Domain\\\\Organization\\\\OrganizationMember\\|null, int\\) but returns array\\(ParkManager\\\\Domain\\\\Organization\\\\OrganizationMember, int\\|null\\)\\.$#"
-			count: 1
-			path: src/Domain/Organization/Organization.php
 
 		-
 			message: "#^Property ParkManager\\\\Domain\\\\Organization\\\\Organization\\:\\:\\$registeredAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
@@ -256,24 +191,9 @@ parameters:
 			path: src/Infrastructure/Validator/Constraints/DomainNameRegistrable.php
 
 		-
-			message: "#^Cannot call method toString\\(\\) on Pdp\\\\Domain\\|string\\|Stringable\\.$#"
-			count: 1
-			path: src/Infrastructure/Validator/Constraints/DomainNameRegistrableValidator.php
-
-		-
-			message: "#^Cannot cast Pdp\\\\Domain\\|string\\|Stringable to string\\.$#"
+			message: "#^Cannot cast Pdp\\\\Domain\\|non\\-empty\\-string\\|Stringable to string\\.$#"
 			count: 4
 			path: src/Infrastructure/Validator/Constraints/DomainNameRegistrableValidator.php
-
-		-
-			message: "#^Parameter \\#1 \\$sets of method ParkManager\\\\Infrastructure\\\\Service\\\\EntityRenderer\\:\\:listedBySet\\(\\) expects array\\<class\\-string, ParkManager\\\\Domain\\\\ResultSet\\<mixed\\>\\>, array\\<string, ParkManager\\\\Domain\\\\ResultSet\\<object\\>\\> given\\.$#"
-			count: 1
-			path: src/UI/Web/Action/Admin/User/RemoveUserAction.php
-
-		-
-			message: "#^Parameter \\#2 \\$token of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:isCsrfTokenValid\\(\\) expects string\\|null, bool\\|float\\|int\\|string\\|null given\\.$#"
-			count: 1
-			path: src/UI/Web/Action/Admin/Webhosting/Plan/SyncWebhostingPlanConstraintsAction.php
 
 		-
 			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
@@ -281,9 +201,29 @@ parameters:
 			path: src/UI/Web/Form/ChoiceList/ResultSetChoiceLoader.php
 
 		-
+			message: "#^Array \\(array\\<int, mixed\\>\\) does not accept key string\\.$#"
+			count: 2
+			path: src/UI/Web/Form/DataMapper/CommandDataMapper.php
+
+		-
 			message: "#^Call to an undefined method object\\:\\:mergeFrom\\(\\)\\.$#"
 			count: 1
 			path: src/UI/Web/Form/DataMapper/WebhostingConstraintDataMapper.php
+
+		-
+			message: "#^Offset 'owner' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/DomainName/EditDomainNameForm.php
+
+		-
+			message: "#^Offset 'name' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/DomainName/RegisterDomainNameForm.php
+
+		-
+			message: "#^Offset 'owner' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/DomainName/RegisterDomainNameForm.php
 
 		-
 			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
@@ -326,9 +266,114 @@ parameters:
 			path: src/UI/Web/Form/Type/PEMPrivateKeyType.php
 
 		-
+			message: "#^Offset 'password' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Security/ChangePasswordType.php
+
+		-
+			message: "#^Offset 'email' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 2
+			path: src/UI/Web/Form/Type/User/Admin/ChangeUserEmailAddressForm.php
+
+		-
+			message: "#^Offset 'require_confirm' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/User/Admin/ChangeUserEmailAddressForm.php
+
+		-
+			message: "#^Offset 'password' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/User/Admin/ChangeUserPasswordForm.php
+
+		-
+			message: "#^Offset 'temporary' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/User/Admin/ChangeUserPasswordForm.php
+
+		-
+			message: "#^Offset 'constraints' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Plan/EditWebhostingPlanForm.php
+
+		-
+			message: "#^Offset 'updateLinked' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Plan/EditWebhostingPlanForm.php
+
+		-
+			message: "#^Offset 'constraints' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Space/ChangePlanOfWebhostingSpaceForm.php
+
+		-
+			message: "#^Offset 'no_link_plan' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Space/ChangePlanOfWebhostingSpaceForm.php
+
+		-
+			message: "#^Offset 'plan' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 2
+			path: src/UI/Web/Form/Type/Webhosting/Space/ChangePlanOfWebhostingSpaceForm.php
+
+		-
+			message: "#^Offset 'level' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Space/SuspendWebhostingSpaceForm.php
+
+		-
+			message: "#^Offset 'owner' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Space/TransferWebhostingSpaceForm.php
+
+		-
+			message: "#^Offset 'homedir' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Subdomain/AddSubDomainType.php
+
+		-
+			message: "#^Offset 'name' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Subdomain/AddSubDomainType.php
+
+		-
+			message: "#^Offset 'root_domain' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Subdomain/AddSubDomainType.php
+
+		-
+			message: "#^Offset 'tlsInfo' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 2
+			path: src/UI/Web/Form/Type/Webhosting/Subdomain/AddSubDomainType.php
+
+		-
 			message: "#^Parameter \\#2 \\$privateKey of method ParkManager\\\\Application\\\\Command\\\\Webhosting\\\\SubDomain\\\\SubDomainCommand\\:\\:andTLSInformation\\(\\) expects ParagonIE\\\\HiddenString\\\\HiddenString, ParagonIE\\\\HiddenString\\\\HiddenString\\|null given\\.$#"
 			count: 1
 			path: src/UI/Web/Form/Type/Webhosting/Subdomain/AddSubDomainType.php
+
+		-
+			message: "#^Elseif condition is always false\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Subdomain/EditSubDomainType.php
+
+		-
+			message: "#^Offset 'homeDir' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Subdomain/EditSubDomainType.php
+
+		-
+			message: "#^Offset 'name' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Subdomain/EditSubDomainType.php
+
+		-
+			message: "#^Offset 'root_domain' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Subdomain/EditSubDomainType.php
+
+		-
+			message: "#^Offset 'tlsInfo' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 2
+			path: src/UI/Web/Form/Type/Webhosting/Subdomain/EditSubDomainType.php
 
 		-
 			message: "#^Parameter \\#2 \\$privateKey of method ParkManager\\\\Application\\\\Command\\\\Webhosting\\\\SubDomain\\\\SubDomainCommand\\:\\:andTLSInformation\\(\\) expects ParagonIE\\\\HiddenString\\\\HiddenString, ParagonIE\\\\HiddenString\\\\HiddenString\\|null given\\.$#"
@@ -471,6 +516,11 @@ parameters:
 			path: tests/Domain/MockRepositoryTest.php
 
 		-
+			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\(\\) and array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>&nonEmpty will always evaluate to false\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
 			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
 			count: 54
 			path: tests/Domain/MockRepositoryTest.php
@@ -519,6 +569,16 @@ parameters:
 			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
 			count: 1
 			path: tests/Infrastructure/Messenger/DomainNameSpaceAssignmentValidatorTest.php
+
+		-
+			message: "#^Cannot call method getUser\\(\\) on Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\TokenInterface\\|null\\.$#"
+			count: 1
+			path: tests/Infrastructure/Security/EventListener/AuthenticationTokenPasswordChangedListenerTest.php
+
+		-
+			message: "#^Cannot call method isAuthenticated\\(\\) on Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\TokenInterface\\|null\\.$#"
+			count: 1
+			path: tests/Infrastructure/Security/EventListener/AuthenticationTokenPasswordChangedListenerTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$comparator of method SebastianBergmann\\\\Comparator\\\\Factory\\:\\:unregister\\(\\) expects SebastianBergmann\\\\Comparator\\\\Comparator, ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\ConstraintViolationComparator\\|null given\\.$#"
@@ -691,6 +751,11 @@ parameters:
 			path: tests/UI/Web/EventListener/RouteRedirectResponseListenerTest.php
 
 		-
+			message: "#^Parameter \\$fields of class ParkManager\\\\UI\\\\Web\\\\Form\\\\Model\\\\CommandDto constructor expects array\\<int, mixed\\>, array\\<string, true\\> given\\.$#"
+			count: 1
+			path: tests/UI/Web/Form/DataMapper/CommandDataMapperTest.php
+
+		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Form\\\\FormError\\|Symfony\\\\Component\\\\Form\\\\FormErrorIterator\\:\\:getCause\\(\\)\\.$#"
 			count: 1
 			path: tests/UI/Web/Form/MessageFormTestCase.php
@@ -716,9 +781,24 @@ parameters:
 			path: tests/UI/Web/Form/Type/ByteSizeTypeTest.php
 
 		-
+			message: "#^Offset 'password' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 1
+			path: tests/UI/Web/Form/Type/ChangePasswordTypeTest.php
+
+		-
 			message: "#^Parameter \\#3 \\$label of class Symfony\\\\Component\\\\Form\\\\ChoiceList\\\\View\\\\ChoiceView constructor expects string\\|Symfony\\\\Component\\\\Translation\\\\TranslatableMessage\\|false, string\\|null given\\.$#"
 			count: 4
 			path: tests/UI/Web/Form/Type/EntityTypeTest.php
+
+		-
+			message: "#^Offset 'id' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 2
+			path: tests/UI/Web/Form/Type/MessageFormTypeTest.php
+
+		-
+			message: "#^Offset 'username' does not exist on array\\<int, mixed\\>\\.$#"
+			count: 2
+			path: tests/UI/Web/Form/Type/MessageFormTypeTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$string of function trim expects string, string\\|null given\\.$#"

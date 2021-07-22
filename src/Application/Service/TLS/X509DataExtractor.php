@@ -63,11 +63,11 @@ final class X509DataExtractor
                 throw new UnprocessablePEM($name, $contents);
             }
 
-            $pubKey = openssl_pkey_get_details($pubKeyRead);
+            $pubKey = openssl_pkey_get_details($pubKeyRead) ?: [];
 
             unset($pubKeyRead, $x509Read);
         } else {
-            $pubKey = null;
+            $pubKey = [];
         }
 
         $altNames = $this->getAltNames($rawData);

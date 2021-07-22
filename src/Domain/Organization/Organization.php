@@ -93,7 +93,7 @@ class Organization
         $member = $members->first();
         $memberId = $members->key();
 
-        \assert($memberId !== false);
+        \assert($memberId !== false && $memberId !== null);
 
         return [$member, $memberId];
     }

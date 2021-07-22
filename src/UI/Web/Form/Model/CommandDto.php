@@ -21,14 +21,14 @@ final class CommandDto
         /**
          * All forms fields (root level).
          *
-         * @var list<string, mixed>
+         * @var array<string, mixed>
          */
         public array $fields = [],
 
         /**
          * Forms fields that have changed (root level), with their new value.
          *
-         * @var list<string, mixed>
+         * @var array<string, mixed>
          */
         public array $changes = []
     ) {

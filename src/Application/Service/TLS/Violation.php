@@ -17,6 +17,9 @@ abstract class Violation extends InvalidArgumentException
 {
     abstract public function getTranslatorId(): string;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getParameters(): array
     {
         return [];
