@@ -48,6 +48,7 @@
         "symfony/flex": "^1.3.0",
         "symfony/form": "*",
         "symfony/framework-bundle": "*",
+        "symfony/http-client": "^5.3",
         "symfony/lock": "*",
         "symfony/mailer": "*",
         "symfony/messenger": "*",
