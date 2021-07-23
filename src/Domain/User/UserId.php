@@ -11,10 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\Domain\User;
 
 use ParkManager\Domain\OwnerId;
+use ParkManager\Domain\UniqueIdentity;
 use ParkManager\Domain\UuidTrait;
-use Stringable;
 
-final class UserId implements Stringable
+final class UserId implements UniqueIdentity
 {
     use UuidTrait;
 

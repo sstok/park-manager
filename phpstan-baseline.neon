@@ -376,33 +376,13 @@ parameters:
 			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
 
 		-
-			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
-			count: 3
-			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
-
-		-
 			message: "#^Method ParkManager\\\\Tests\\\\Application\\\\Service\\\\TLS\\\\TLSPersistenceRepositoryMock\\:\\:find\\(\\) should return T of object\\|null but returns object\\.$#"
 			count: 1
 			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
 
 		-
-			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
-			count: 6
-			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
-			count: 27
-			path: tests/Domain/MockRepositoryTest.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\(\\) and array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>&nonEmpty will always evaluate to false\\.$#"
 			count: 1
-			path: tests/Domain/MockRepositoryTest.php
-
-		-
-			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
-			count: 54
 			path: tests/Domain/MockRepositoryTest.php
 
 		-
@@ -427,11 +407,6 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method object\\:\\:get\\(\\)\\.$#"
-			count: 1
-			path: tests/Infrastructure/Doctrine/EntityRepositoryTestCase.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
 			count: 1
 			path: tests/Infrastructure/Doctrine/EntityRepositoryTestCase.php
 
@@ -491,99 +466,9 @@ parameters:
 			path: tests/Mock/Application/Service/Webhosting/TrafficStats/TrafficStatisticsProviderMock.php
 
 		-
-			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
-			count: 3
-			path: tests/Mock/Domain/DomainName/DomainNameRepositoryMock.php
-
-		-
-			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
-			count: 6
-			path: tests/Mock/Domain/DomainName/DomainNameRepositoryMock.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
-			count: 3
-			path: tests/Mock/Domain/DomainName/SubDomainRepositoryMock.php
-
-		-
-			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
-			count: 6
-			path: tests/Mock/Domain/DomainName/SubDomainRepositoryMock.php
-
-		-
 			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
 			count: 1
 			path: tests/Mock/Domain/MockRepoResultSet.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
-			count: 3
-			path: tests/Mock/Domain/Organization/OrganizationRepositoryMock.php
-
-		-
-			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
-			count: 6
-			path: tests/Mock/Domain/Organization/OrganizationRepositoryMock.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
-			count: 3
-			path: tests/Mock/Domain/OwnerRepositoryMock.php
-
-		-
-			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
-			count: 6
-			path: tests/Mock/Domain/OwnerRepositoryMock.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
-			count: 3
-			path: tests/Mock/Domain/UserRepositoryMock.php
-
-		-
-			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
-			count: 6
-			path: tests/Mock/Domain/UserRepositoryMock.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
-			count: 3
-			path: tests/Mock/Domain/Webhosting/ForwardRepositoryMock.php
-
-		-
-			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
-			count: 6
-			path: tests/Mock/Domain/Webhosting/ForwardRepositoryMock.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
-			count: 3
-			path: tests/Mock/Domain/Webhosting/MailboxRepositoryMock.php
-
-		-
-			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
-			count: 6
-			path: tests/Mock/Domain/Webhosting/MailboxRepositoryMock.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
-			count: 3
-			path: tests/Mock/Domain/Webhosting/PlanRepositoryMock.php
-
-		-
-			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
-			count: 6
-			path: tests/Mock/Domain/Webhosting/PlanRepositoryMock.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:toString\\(\\)\\.$#"
-			count: 3
-			path: tests/Mock/Domain/Webhosting/SpaceRepositoryMock.php
-
-		-
-			message: "#^Possibly invalid array key type int\\|object\\|string\\.$#"
-			count: 6
-			path: tests/Mock/Domain/Webhosting/SpaceRepositoryMock.php
 
 		-
 			message: "#^Parameter \\#1 \\$body of class Symfony\\\\Component\\\\HttpClient\\\\Response\\\\MockResponse constructor expects iterable\\<string\\>\\|string, string\\|false given\\.$#"

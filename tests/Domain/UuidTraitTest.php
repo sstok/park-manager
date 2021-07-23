@@ -11,11 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Domain;
 
 use JsonException;
-use JsonSerializable;
+use ParkManager\Domain\UniqueIdentity;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\UuidTrait;
 use PHPUnit\Framework\TestCase;
-use Serializable;
 use stdClass;
 
 /**
@@ -117,13 +116,13 @@ final class UuidTraitTest extends TestCase
 }
 
 /** @internal */
-final class MockUuidIdentity implements Serializable, JsonSerializable
+final class MockUuidIdentity implements UniqueIdentity
 {
     use UuidTrait;
 }
 
 /** @internal */
-final class MockUuidIdentity2 implements Serializable, JsonSerializable
+final class MockUuidIdentity2 implements UniqueIdentity
 {
     use UuidTrait;
 }

@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\SubDomain;
 
+use ParkManager\Domain\UniqueIdentity;
 use ParkManager\Domain\UuidTrait;
-use Stringable;
 
-final class SubDomainNameId implements Stringable
+final class SubDomainNameId implements UniqueIdentity
 {
     use UuidTrait;
 }

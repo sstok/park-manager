@@ -10,9 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Constraint;
 
+use ParkManager\Domain\UniqueIdentity;
 use ParkManager\Domain\UuidTrait;
 
-final class PlanId
+final class PlanId implements UniqueIdentity
 {
     use UuidTrait;
 }

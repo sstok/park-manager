@@ -10,9 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain;
 
-use Stringable;
-
-final class OwnerId implements Stringable
+final class OwnerId implements UniqueIdentity
 {
     use UuidTrait;
 }

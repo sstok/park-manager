@@ -10,12 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type;
 
-use JsonSerializable;
+use ParkManager\Domain\UniqueIdentity;
 use ParkManager\Domain\UuidTrait;
 use ParkManager\Tests\Mock\Domain\MockRepoResultSet;
 use ParkManager\UI\Web\Form\ChoiceList\ResultSetChoiceLoader;
 use ParkManager\UI\Web\Form\Type\EntityType;
-use Serializable;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Test\TypeTestCase;
 
@@ -63,7 +62,7 @@ final class EntityTypeTest extends TypeTestCase
 }
 
 /** @internal */
-final class MockIdentity implements Serializable, JsonSerializable
+final class MockIdentity implements UniqueIdentity
 {
     use UuidTrait;
 }

@@ -12,6 +12,7 @@ namespace ParkManager\Tests\Infrastructure\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ParkManager\Domain\ResultSet;
+use ParkManager\Domain\UniqueIdentity;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -46,15 +47,15 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
         $resultIds = [];
 
         foreach ($resultSet as $entity) {
-            $resultIds[$entity->id->toString()] = $entity;
+            $resultIds[(string) $entity->id] = $entity;
         }
 
         static::assertSame($expected, array_keys($resultIds));
     }
 
     /**
-     * @param array<int, object>          $expectedIds
-     * @param iterable<array-key, object> $result
+     * @param array<int, UniqueIdentity|string> $expectedIds
+     * @param iterable<array-key, object>       $result
      */
     protected function assertEntitiesEquals(array $expectedIds, iterable $result): void
     {
@@ -62,11 +63,11 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
         $expected = [];
 
         foreach ($result as $entity) {
-            $found[$entity->id->toString()] = $entity;
+            $found[(string) $entity->id] = $entity;
         }
 
         foreach ($expectedIds as $id) {
-            $expected[$id->toString()] = $this->repository->get($id);
+            $expected[(string) $id] = $this->repository->get($id);
         }
 
         ksort($expected, \SORT_STRING);

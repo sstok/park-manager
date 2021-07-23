@@ -93,13 +93,7 @@ trait MockRepository
      */
     private function getIdValue(object $entity): string
     {
-        $id = $this->getValueWithGetter($entity, 'id');
-
-        if (\is_object($id)) {
-            $id = $id->toString();
-        }
-
-        return (string) $id;
+        return (string) ($this->getValueWithGetter($entity, 'id'));
     }
 
     private function getValueWithGetter(object $object, string | Closure $getter): mixed
@@ -181,7 +175,7 @@ trait MockRepository
      */
     protected function mockDoGetById(string | object | int $id): object
     {
-        $idStr = \is_object($id) ? $id->toString() : (string) $id;
+        $idStr = (string) $id;
 
         if (! isset($this->storedById[$idStr])) {
             $this->throwOnNotFound($id);
@@ -194,7 +188,7 @@ trait MockRepository
 
     protected function guardNotRemoved(mixed $id): void
     {
-        $idStr = \is_object($id) ? $id->toString() : (string) $id;
+        $idStr = (string) $id;
 
         if (isset($this->removedById[$idStr])) {
             $this->throwOnNotFound($id);
@@ -230,9 +224,7 @@ trait MockRepository
             $entities = [];
 
             foreach ($this->storedMultiByField[$key][$value] as $entity) {
-                $id = $this->getValueWithGetter($entity, 'id');
-
-                if (isset($this->removedById[$id->toString()])) {
+                if (isset($this->removedById[$this->getIdValue($entity)])) {
                     continue;
                 }
 
@@ -258,9 +250,7 @@ trait MockRepository
             $entities = [];
 
             foreach ($this->storedById as $entity) {
-                $id = $this->getValueWithGetter($entity, 'id');
-
-                if (isset($this->removedById[$id->toString()])) {
+                if (isset($this->removedById[$this->getIdValue($entity)])) {
                     continue;
                 }
 
@@ -287,9 +277,7 @@ trait MockRepository
         $entities = [];
 
         foreach ($this->storedById as $entity) {
-            $id = $this->getValueWithGetter($entity, 'id');
-
-            if (isset($this->removedById[$id->toString()])) {
+            if (isset($this->removedById[$this->getIdValue($entity)])) {
                 continue;
             }
 
@@ -368,6 +356,8 @@ trait MockRepository
      */
     public function whenEntityIsSavedAt(string | int | object $id, Closure $excepted, ?int $position = null): void
     {
+        $id = (string) $id;
+
         if (! isset($this->watchers[$id])) {
             $this->watchers[$id] = [];
             $this->watcherPositions[$id] = -1;

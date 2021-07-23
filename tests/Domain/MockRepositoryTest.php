@@ -12,12 +12,11 @@ namespace ParkManager\Tests\Domain;
 
 use Closure;
 use InvalidArgumentException;
-use JsonSerializable;
 use ParkManager\Domain\ResultSet;
+use ParkManager\Domain\UniqueIdentity;
 use ParkManager\Domain\UuidTrait;
 use ParkManager\Tests\Mock\Domain\MockRepository;
 use PHPUnit\Framework\TestCase;
-use Serializable;
 
 /**
  * @internal
@@ -410,7 +409,7 @@ final class MockRepositoryTest extends TestCase
 }
 
 /** @internal */
-final class MockIdentity implements Serializable, JsonSerializable
+final class MockIdentity implements UniqueIdentity
 {
     use UuidTrait;
 }
