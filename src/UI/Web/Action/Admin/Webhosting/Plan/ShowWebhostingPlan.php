@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Plan;
 
 use ParkManager\Domain\Webhosting\Constraint\Plan;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\UI\Web\Response\TwigResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ final class ShowWebhostingPlan extends AbstractController
     #[Route(path: 'webhosting/plan/{plan}/', name: 'park_manager.admin.webhosting.plan.show', methods: ['GET', 'HEAD'])]
     public function __invoke(Request $request, Plan $plan): TwigResponse
     {
-        $usedBySpacesNb = $this->get(WebhostingSpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
+        $usedBySpacesNb = $this->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
 
         return new TwigResponse('admin/webhosting/plan/show.html.twig', [
             'plan' => $plan,
@@ -32,6 +32,6 @@ final class ShowWebhostingPlan extends AbstractController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [WebhostingSpaceRepository::class];
+        return parent::getSubscribedServices() + [SpaceRepository::class];
     }
 }

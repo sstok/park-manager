@@ -12,7 +12,7 @@ namespace ParkManager\UI\Web\Action\Admin\Webhosting\Plan;
 
 use ParkManager\Application\Command\Webhosting\Constraint\SyncPlanConstraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\UI\Web\Response\RouteRedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -36,7 +36,7 @@ final class SyncWebhostingPlanConstraintsAction extends AbstractController
         $this->container->get('security.csrf.token_manager')->removeToken($tokenId);
         $this->dispatchMessage(new SyncPlanConstraints($plan->id));
 
-        $usedBySpacesNb = $this->get(WebhostingSpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
+        $usedBySpacesNb = $this->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
 
         return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.plan.show', ['plan' => $plan->id->toString()])
             ->withFlash(type: 'success', message: 'flash.webhosting_plan.assignment_update_dispatched', arguments: ['spaces_count' => $usedBySpacesNb])
@@ -45,6 +45,6 @@ final class SyncWebhostingPlanConstraintsAction extends AbstractController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [WebhostingSpaceRepository::class];
+        return parent::getSubscribedServices() + [SpaceRepository::class];
     }
 }

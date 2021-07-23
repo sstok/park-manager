@@ -15,8 +15,8 @@ use ParkManager\Application\Event\WebhostingSpaceWasInitialized;
 use ParkManager\Application\Service\SystemGateway;
 use ParkManager\Application\Service\SystemGateway\Webhosting\RegisterSystemUser;
 use ParkManager\Application\Service\SystemGateway\Webhosting\RegisterSystemUserResult;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\Domain\Webhosting\Space\SpaceSetupStatus;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -24,7 +24,7 @@ use Throwable;
 final class InitializeWebhostingSpaceHandler
 {
     public function __construct(
-        private WebhostingSpaceRepository $spaceRepository,
+        private SpaceRepository $spaceRepository,
         private EventDispatcherInterface $eventDispatcher,
         private SystemGateway $systemGateway,
         private LoggerInterface $logger

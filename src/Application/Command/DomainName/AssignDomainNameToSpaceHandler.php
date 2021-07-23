@@ -11,13 +11,13 @@ declare(strict_types=1);
 namespace ParkManager\Application\Command\DomainName;
 
 use ParkManager\Domain\DomainName\DomainNameRepository;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 
 final class AssignDomainNameToSpaceHandler
 {
     public function __construct(
         private DomainNameRepository $domainNameRepository,
-        private WebhostingSpaceRepository $spaceRepository
+        private SpaceRepository $spaceRepository
     ) {
     }
 

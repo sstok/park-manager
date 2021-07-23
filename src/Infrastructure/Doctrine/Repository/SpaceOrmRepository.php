@@ -18,13 +18,13 @@ use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSp
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @extends EntityRepository<Space>
  */
-class WebhostingSpaceOrmRepository extends EntityRepository implements WebhostingSpaceRepository
+class SpaceOrmRepository extends EntityRepository implements SpaceRepository
 {
     public function __construct(EntityManagerInterface $entityManager, string $className = Space::class)
     {

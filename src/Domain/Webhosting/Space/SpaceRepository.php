@@ -19,7 +19,7 @@ use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 /**
  * @extends OwnerControlledRepository<Space>
  */
-interface WebhostingSpaceRepository extends OwnerControlledRepository
+interface SpaceRepository extends OwnerControlledRepository
 {
     /**
      * @throws WebhostingSpaceNotFound

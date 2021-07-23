@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager;
 
+use ParkManager\Infrastructure\DependencyInjection\Compiler\DomainModelsResolverPass;
 use ParkManager\Infrastructure\DependencyInjection\Compiler\PermissionDeciderPass;
 use ParkManager\Infrastructure\DependencyInjection\Compiler\PermissionShortAliasPass;
 use ParkManager\Infrastructure\Security\PermissionDecider;
@@ -42,9 +43,11 @@ class Kernel extends BaseKernel
     protected function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new PermissionDeciderPass());
-        $container->addCompilerPass(new PermissionShortAliasPass());
+        $container->addCompilerPass(new PermissionShortAliasPass(__DIR__ . '/Infrastructure/Security/Permission'));
+        $container->addCompilerPass(new DomainModelsResolverPass(__DIR__ . '/Domain'));
+
         $container->registerForAutoconfiguration(PermissionDecider::class)
-            ->addTag('park_manager.security.permission_decider') // Needs CompilerPass
+            ->addTag('park_manager.security.permission_decider')
         ;
     }
 }

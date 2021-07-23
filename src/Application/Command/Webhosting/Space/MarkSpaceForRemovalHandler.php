@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Space;
 
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 
 final class MarkSpaceForRemovalHandler
 {
-    public function __construct(private WebhostingSpaceRepository $spaceRepository)
+    public function __construct(private SpaceRepository $spaceRepository)
     {
     }
 

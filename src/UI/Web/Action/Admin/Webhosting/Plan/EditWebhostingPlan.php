@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Plan;
 
 use ParkManager\Domain\Webhosting\Constraint\Plan;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\UI\Web\Form\Type\Webhosting\Plan\EditWebhostingPlanForm;
 use ParkManager\UI\Web\Response\RouteRedirectResponse;
 use ParkManager\UI\Web\Response\TwigResponse;
@@ -25,7 +25,7 @@ final class EditWebhostingPlan extends AbstractController
     #[Route(path: 'webhosting/plan/{plan}/edit', name: 'park_manager.admin.webhosting.plan.edit', methods: ['GET', 'POST'])]
     public function __invoke(Request $request, FormFactoryInterface $formFactory, Plan $plan): RouteRedirectResponse | TwigResponse
     {
-        $usedBySpacesNb = $this->get(WebhostingSpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
+        $usedBySpacesNb = $this->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
 
         $form = $formFactory->create(EditWebhostingPlanForm::class, $plan);
         $form->handleRequest($request);
@@ -50,6 +50,6 @@ final class EditWebhostingPlan extends AbstractController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [WebhostingSpaceRepository::class];
+        return parent::getSubscribedServices() + [SpaceRepository::class];
     }
 }

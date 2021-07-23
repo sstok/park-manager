@@ -18,13 +18,13 @@ use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
 use ParkManager\Domain\OwnerRepository;
 use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class RegisterWebhostingSpaceHandler
 {
     public function __construct(
-        private WebhostingSpaceRepository $spaceRepository,
+        private SpaceRepository $spaceRepository,
         private PlanRepository $planRepository,
         private DomainNameRepository $domainNameRepository,
         private OwnerRepository $ownerRepository,

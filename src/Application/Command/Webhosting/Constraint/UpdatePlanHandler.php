@@ -11,14 +11,14 @@ declare(strict_types=1);
 namespace ParkManager\Application\Command\Webhosting\Constraint;
 
 use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class UpdatePlanHandler
 {
     public function __construct(
         private PlanRepository $planRepository,
-        private WebhostingSpaceRepository $spaceRepository,
+        private SpaceRepository $spaceRepository,
         private MessageBusInterface $messageBus
     ) {
     }

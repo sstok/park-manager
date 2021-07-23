@@ -12,12 +12,12 @@ namespace ParkManager\Application\Command\Webhosting\Space;
 
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceIsSuspended;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class RemoveSpaceExpirationDateHandler
 {
-    public function __construct(private WebhostingSpaceRepository $spaceRepository)
+    public function __construct(private SpaceRepository $spaceRepository)
     {
     }
 

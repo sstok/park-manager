@@ -16,7 +16,7 @@ use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Email\MailboxRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 
 /**
  * Gets an applicable Constraints configuration for a space.
@@ -31,7 +31,7 @@ use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 class ApplicabilityChecker
 {
     public function __construct(
-        private WebhostingSpaceRepository $spaceRepository,
+        private SpaceRepository $spaceRepository,
         private MailboxRepository $mailboxRepository,
         private StorageUsage $storageUsageRetriever
     ) {

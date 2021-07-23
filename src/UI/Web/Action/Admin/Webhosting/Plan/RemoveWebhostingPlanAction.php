@@ -12,7 +12,7 @@ namespace ParkManager\UI\Web\Action\Admin\Webhosting\Plan;
 
 use ParkManager\Application\Command\Webhosting\Constraint\RemovePlan;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\UI\Web\Form\Type\ConfirmationForm;
 use ParkManager\UI\Web\Response\RouteRedirectResponse;
 use ParkManager\UI\Web\Response\TwigResponse;
@@ -27,7 +27,7 @@ final class RemoveWebhostingPlanAction extends AbstractController
     #[Route(path: 'webhosting/plan/{plan}/remove', name: 'park_manager.admin.webhosting.plan.remove', methods: ['GET', 'POST'])]
     public function __invoke(Request $request, FormFactoryInterface $formFactory, Plan $plan): RouteRedirectResponse | TwigResponse
     {
-        $usedBySpacesNb = $this->get(WebhostingSpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
+        $usedBySpacesNb = $this->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
 
         $form = $formFactory->create(ConfirmationForm::class, null, [
             'confirmation_title' => new TranslatableMessage('webhosting.plan.remove.heading', ['id' => $plan->id->toString()]),
@@ -50,6 +50,6 @@ final class RemoveWebhostingPlanAction extends AbstractController
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [WebhostingSpaceRepository::class];
+        return parent::getSubscribedServices() + [SpaceRepository::class];
     }
 }

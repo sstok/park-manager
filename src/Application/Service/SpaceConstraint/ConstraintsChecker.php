@@ -20,12 +20,12 @@ use ParkManager\Domain\Webhosting\Email\MailboxId;
 use ParkManager\Domain\Webhosting\Email\MailboxRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 
 class ConstraintsChecker
 {
     public function __construct(
-        private WebhostingSpaceRepository $spaceRepository,
+        private SpaceRepository $spaceRepository,
         private MailboxRepository $mailboxRepository,
         private EmailForwardRepository $emailForwardRepository,
         private StorageUsage $storageUsageRetriever

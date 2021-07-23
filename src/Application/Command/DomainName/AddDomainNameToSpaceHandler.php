@@ -14,13 +14,13 @@ use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 
 final class AddDomainNameToSpaceHandler
 {
     public function __construct(
         private DomainNameRepository $domainNameRepository,
-        private WebhostingSpaceRepository $spaceRepository
+        private SpaceRepository $spaceRepository
     ) {
     }
 

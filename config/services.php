@@ -13,28 +13,15 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Doctrine\Persistence\ObjectManager;
 use ParkManager\Application\Service\OwnershipUsageList;
 use ParkManager\Application\Service\PdpManager;
+use ParkManager\Application\Service\RepositoryLocator;
 use ParkManager\Application\Service\TLS\CertificateFactoryImpl;
 use ParkManager\Domain\DomainName\DomainName;
-use ParkManager\Domain\DomainName\DomainNameId;
 use ParkManager\Domain\DomainName\DomainNameRepository;
-use ParkManager\Domain\Organization\Organization;
-use ParkManager\Domain\Organization\OrganizationId;
-use ParkManager\Domain\Organization\OrganizationRepository;
-use ParkManager\Domain\Owner;
 use ParkManager\Domain\OwnerControlledRepository;
-use ParkManager\Domain\OwnerId;
-use ParkManager\Domain\OwnerRepository;
-use ParkManager\Domain\User\User;
-use ParkManager\Domain\User\UserId;
-use ParkManager\Domain\User\UserRepository;
-use ParkManager\Domain\Webhosting\Constraint\Plan;
-use ParkManager\Domain\Webhosting\Constraint\PlanId;
-use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
-use ParkManager\Infrastructure\ObjectTranslatableTranslator;
 use ParkManager\Infrastructure\Pdp\PsrStorageFactory;
 use ParkManager\Infrastructure\Security\Guard\FormAuthenticator;
 use ParkManager\Infrastructure\Security\PermissionExpressionProvider;
@@ -115,6 +102,7 @@ return static function (ContainerConfigurator $c): void {
     $di->get(EntityRenderer::class)->args([
         service('twig'),
         service('translator'),
+        abstract_arg('Entity full name to label mapping')
     ]);
 
     $di->get(CertificateFactoryImpl::class)
@@ -123,32 +111,22 @@ return static function (ContainerConfigurator $c): void {
     $di->load('ParkManager\\Infrastructure\\Security\\Permission\\', __DIR__ . '/../src/Infrastructure/Security/Permission/**/*Decider.php')
         ->tag('park_manager.security.permission_decider');
 
+    $di->set(RepositoryLocator::class)->args([
+        abstract_arg('Entity repository service-locator'),
+        abstract_arg('Entity short-aliases, either "user" or "webhosting.space"')
+    ]);
+
+
     $di->get(SplitTokenResolver::class)
         ->tag('controller.argument_value_resolver', ['priority' => 255])
         ->autoconfigure(false);
-
-
 
     $di->get(ModelResolver::class)
         ->tag('controller.argument_value_resolver', ['priority' => 255])
         ->autoconfigure(false)
         ->args([
-            service_locator([
-                User::class => service(UserRepository::class),
-                Owner::class => service(OwnerRepository::class),
-                Organization::class => service(OrganizationRepository::class),
-                Space::class => service(WebhostingSpaceRepository::class),
-                Plan::class => service(PlanRepository::class),
-                DomainName::class => service(DomainNameRepository::class),
-                DomainNameId::class => service(DomainNameRepository::class),
-            ]),
-            [
-                UserId::class => 'fromString',
-                OwnerId::class => 'fromString',
-                OrganizationId::class => 'fromString',
-                DomainNameId::class => 'fromString',
-                PlanId::class => 'fromString',
-            ],
+            abstract_arg('Entity repository service-locator'),
+            abstract_arg('Model VO reconstruction methods'),
         ]);
 
     $di->get(DomainNameSpaceAssignmentValidator::class)
@@ -156,7 +134,7 @@ return static function (ContainerConfigurator $c): void {
 
     $di->get(OwnershipUsageList::class)
         ->arg(0, iterator([
-            Space::class => service(WebhostingSpaceRepository::class),
+            Space::class => service(SpaceRepository::class),
             DomainName::class => service(DomainNameRepository::class),
         ]));
 

@@ -13,14 +13,14 @@ namespace ParkManager\Application\Command\Webhosting\Constraint;
 use ParkManager\Application\Service\SpaceConstraint\ApplicabilityChecker;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
+use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
-use ParkManager\Domain\Webhosting\Space\WebhostingSpaceRepository;
 
 final class AssignPlanToSpaceHandler
 {
     public function __construct(
         private PlanRepository $planRepository,
-        private WebhostingSpaceRepository $spaceRepository,
+        private SpaceRepository $spaceRepository,
         private ApplicabilityChecker $applicabilityChecker
     ) {
     }

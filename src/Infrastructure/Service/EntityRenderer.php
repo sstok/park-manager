@@ -31,7 +31,8 @@ final class EntityRenderer
 {
     public function __construct(
         private TwigEnvironment $twig,
-        private LocaleAwareInterface $localeAware
+        private LocaleAwareInterface $localeAware,
+        private array $entityLabels = [],
     ) {
     }
 
@@ -44,15 +45,7 @@ final class EntityRenderer
             throw new InvalidArgumentException(sprintf('Expected %s to begin with "ParkManager\\Domain\\"', $entityName));
         }
 
-        $class = mb_substr(ltrim($entityName, '\\'), 19); // Strips `ParkManager\Domain\`
-        $parts = explode('\\', $class);
-
-        // Normalize 'Space\Space' to 'Space'.
-        if (\count($parts) > 1 && $parts[\count($parts) - 1] === $parts[\count($parts) - 2]) {
-            array_pop($parts);
-        }
-
-        return mb_strtolower(implode('.', $parts));
+        return $this->entityLabels[$entityName] ?? '[Unknown Entity class]';
     }
 
     /**

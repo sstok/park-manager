@@ -26,7 +26,7 @@ use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Infrastructure\Doctrine\Repository\DomainNameOrmRepository;
-use ParkManager\Infrastructure\Doctrine\Repository\WebhostingSpaceOrmRepository;
+use ParkManager\Infrastructure\Doctrine\Repository\SpaceOrmRepository;
 use ParkManager\Tests\Infrastructure\Doctrine\EntityRepositoryTestCase;
 
 /**
@@ -86,7 +86,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     /** @test */
     public function it_gets_existing_spaces(): void
     {
-        $repository = new WebhostingSpaceOrmRepository($this->getEntityManager());
+        $repository = new SpaceOrmRepository($this->getEntityManager());
         $this->setUpSpace1($repository);
         $this->setUpSpace2($repository);
 
@@ -109,7 +109,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     /** @test */
     public function it_gets_all_with_assigned_plan(): void
     {
-        $repository = new WebhostingSpaceOrmRepository($this->getEntityManager());
+        $repository = new SpaceOrmRepository($this->getEntityManager());
         $this->setUpSpace1($repository);
         $this->setUpSpace2($repository);
 
@@ -123,7 +123,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     /** @test */
     public function it_removes_an_existing_model(): void
     {
-        $repository = new WebhostingSpaceOrmRepository($this->getEntityManager());
+        $repository = new SpaceOrmRepository($this->getEntityManager());
         $this->setUpSpace1($repository);
         $this->setUpSpace2($repository);
 
@@ -146,7 +146,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
     /** @test */
     public function it_checks_space_is_marked_for_removal(): void
     {
-        $repository = new WebhostingSpaceOrmRepository($this->getEntityManager());
+        $repository = new SpaceOrmRepository($this->getEntityManager());
         $this->setUpSpace1($repository);
 
         $id = SpaceId::fromString(self::SPACE_ID1);
@@ -158,7 +158,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         $repository->remove($space);
     }
 
-    private function setUpSpace1(WebhostingSpaceOrmRepository $repository): void
+    private function setUpSpace1(SpaceOrmRepository $repository): void
     {
         $repository->save(
             $space = Space::registerWithCustomConstraints(
@@ -175,7 +175,7 @@ final class WebhostingSpaceOrmRepositoryTest extends EntityRepositoryTestCase
         $repository->save($space);
     }
 
-    private function setUpSpace2(WebhostingSpaceOrmRepository $repository): void
+    private function setUpSpace2(SpaceOrmRepository $repository): void
     {
         $repository->save(
             $space = Space::register(

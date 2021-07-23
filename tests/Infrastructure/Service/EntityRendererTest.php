@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Service;
 
+use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
@@ -126,9 +127,17 @@ final class EntityRendererTest extends TestCase
     /** @test */
     public function it_gets_entity_label(): void
     {
-        $renderer = new EntityRenderer($this->createTwigEnv(), $this->expectLocaleIsNotChanged());
+        $renderer = new EntityRenderer(
+            $this->createTwigEnv(),
+            $this->expectLocaleIsNotChanged(),
+            [
+                User::class => 'user',
+                Space::class => 'webhosting.space',
+            ]
+        );
 
         self::assertSame('user', $renderer->getEntityLabel(User::class));
         self::assertSame('webhosting.space', $renderer->getEntityLabel(Space::class));
+        self::assertSame('[Unknown Entity class]', $renderer->getEntityLabel(DomainName::class));
     }
 }
