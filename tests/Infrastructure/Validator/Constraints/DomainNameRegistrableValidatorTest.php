@@ -154,7 +154,7 @@ final class DomainNameRegistrableValidatorTest extends ConstraintValidatorTestCa
      */
     public function it_rejects_domain_name_when_failed_to_parse(string $name): void
     {
-        $this->validator->validate($name, $constraint = new DomainNameRegistrable());
+        $this->validator->validate($name, new DomainNameRegistrable());
         $this->buildViolation('This value is not a valid domain-name.')
             ->setCode(DomainNameRegistrable::INVALID_SYNTAX)
             ->setInvalidValue($name)

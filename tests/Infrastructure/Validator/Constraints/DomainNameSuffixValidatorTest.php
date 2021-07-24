@@ -165,7 +165,7 @@ final class DomainNameSuffixValidatorTest extends ConstraintValidatorTestCase
      */
     public function it_rejects_domain_name_when_failed_to_parse(string $name): void
     {
-        $this->validator->validate($name, $constraint = new DomainNameSuffix());
+        $this->validator->validate($name, new DomainNameSuffix());
         $this->buildViolation('This value is not a valid domain-name.')
             ->setCode(DomainNameSuffix::INVALID_SYNTAX)
             ->setInvalidValue($name)

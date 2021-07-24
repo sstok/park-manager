@@ -12,6 +12,8 @@ namespace ParkManager\Infrastructure\Validator\Constraints;
 
 use ParkManager\Application\Service\PdpManager;
 use Pdp\Domain;
+use Pdp\Idna;
+use Pdp\IdnaInfo;
 use Pdp\SyntaxError;
 use Stringable;
 use Symfony\Component\Validator\Constraint;
@@ -58,10 +60,13 @@ final class DomainNameSuffixValidator extends ConstraintValidator
 
         try {
             $domainName = Domain::fromIDNA2008($value);
+            $valueStr = $domainName->toString();
 
-            if (str_ends_with($domainName->toString(), '.')) {
-                throw SyntaxError::dueToMalformedValue($domainName->toString());
+            if (str_ends_with($valueStr, '.')) {
+                throw SyntaxError::dueToMalformedValue($valueStr);
             }
+
+            $this->validateIdn($valueStr);
 
             $resolvedDomainName = $this->pdpManager->getPublicSuffixList()->resolve($domainName)->toUnicode();
         } catch (SyntaxError $e) {
@@ -93,6 +98,21 @@ final class DomainNameSuffixValidator extends ConstraintValidator
                 ->setInvalidValue($value)
                 ->addViolation()
             ;
+        }
+    }
+
+    private function validateIdn(string $valueStr): void
+    {
+        if (! str_contains($valueStr, 'xn--')) {
+            return;
+        }
+
+        /** @param-out array{errors: int, isTransitionalDifferent: bool, result: string} $idnaInfo */
+        idn_to_utf8($valueStr, Idna::IDNA2008_UNICODE, \INTL_IDNA_VARIANT_UTS46, $idnaInfo);
+        $info = IdnaInfo::fromIntl($idnaInfo);
+
+        if ($info->errors() > 0) {
+            throw SyntaxError::dueToIDNAError($valueStr, $info);
         }
     }
 }
