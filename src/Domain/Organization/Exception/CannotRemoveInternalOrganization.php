@@ -12,6 +12,7 @@ namespace ParkManager\Domain\Organization\Exception;
 
 use ParkManager\Domain\Exception\InvalidArgument;
 use ParkManager\Domain\Organization\OrganizationId;
+use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\Translation\TranslatableMessage;
 
 final class CannotRemoveInternalOrganization extends InvalidArgument
@@ -31,6 +32,6 @@ final class CannotRemoveInternalOrganization extends InvalidArgument
 
     public function getTranslatorId(): TranslatableMessage
     {
-        return new TranslatableMessage('cannot_remove_internal_organization', ['organization' => $this->id], 'validators');
+        return new TranslatableMessage('cannot_remove_internal_organization', ['organization' => new EntityLink($this->id)], 'validators');
     }
 }

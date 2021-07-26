@@ -12,6 +12,7 @@ namespace ParkManager\Domain\Organization\Exception;
 
 use ParkManager\Domain\Exception\NotFoundException;
 use ParkManager\Domain\Organization\OrganizationId;
+use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\User\UserId;
 
 final class OrganizationMemberNotFound extends NotFoundException
@@ -25,8 +26,8 @@ final class OrganizationMemberNotFound extends NotFoundException
                 $organization->toString()
             ),
             [
-                'user' => $user,
-                'organization' => $organization,
+                'user' => new EntityLink($user),
+                'organization' => new EntityLink($organization),
             ]
         );
     }

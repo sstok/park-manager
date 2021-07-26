@@ -13,7 +13,9 @@ namespace ParkManager\Domain\Webhosting\SubDomain\Exception;
 use DomainException;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\Translation\TranslatableMessage;
+use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 
 final class SubDomainAlreadyExists extends DomainException implements TranslatableException
 {
@@ -34,7 +36,7 @@ final class SubDomainAlreadyExists extends DomainException implements Translatab
             'domain_name' => $this->domainName->name,
             'domain_tld' => $this->domainName->tld,
             'name' => $this->name,
-            'id' => $this->id,
+            'id' => new EntityLink(SubDomainNameId::fromString($this->id)),
         ], 'validators');
     }
 }

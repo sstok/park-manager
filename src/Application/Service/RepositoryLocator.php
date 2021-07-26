@@ -37,7 +37,7 @@ final class RepositoryLocator
     }
 
     /**
-     * @param class-string|string|object $id the EntityId class-name or an EntityId object
+     * @param class-string|object $id the EntityId class-name or an EntityId object
      */
     public function getById(string | object $id): object
     {

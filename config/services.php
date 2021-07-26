@@ -18,6 +18,7 @@ use ParkManager\Application\Service\TLS\CertificateFactoryImpl;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\OwnerControlledRepository;
+use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator;
@@ -29,6 +30,7 @@ use ParkManager\Infrastructure\Security\UserProvider;
 use ParkManager\Infrastructure\Security\Voter\SuperAdminVoter;
 use ParkManager\Infrastructure\Security\Voter\SwitchUserVoter;
 use ParkManager\Infrastructure\Service\EntityRenderer;
+use ParkManager\Infrastructure\Translation\Formatter\EntityLinkFormatter;
 use ParkManager\Infrastructure\Translation\Translator;
 use ParkManager\UI\Web\ArgumentResolver\ModelResolver;
 use ParkManager\UI\Web\ArgumentResolver\SplitTokenResolver;
@@ -96,7 +98,12 @@ return static function (ContainerConfigurator $c): void {
     $di->set(Translator::class)
         ->autowire(false)
         ->decorate('translator')
-        ->args([service('.inner')])
+        ->args([
+            service('.inner'),
+            service_locator([
+                EntityLink::class => service(EntityLinkFormatter::class),
+            ])
+        ])
     ;
 
     $di->get(EntityRenderer::class)->args([

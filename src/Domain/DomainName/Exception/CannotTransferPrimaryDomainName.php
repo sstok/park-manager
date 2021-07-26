@@ -13,6 +13,7 @@ namespace ParkManager\Domain\DomainName\Exception;
 use DomainException;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
@@ -45,8 +46,8 @@ final class CannotTransferPrimaryDomainName extends DomainException implements T
             [
                 'domain_name' => $this->domainName->name,
                 'domain_tld' => $this->domainName->tld,
-                'current_space' => $this->current,
-                'new_space' => $this->new,
+                'current_space' => new EntityLink($this->current),
+                'new_space' => new EntityLink($this->new),
             ],
             'validators'
         );

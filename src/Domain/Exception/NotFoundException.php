@@ -26,7 +26,7 @@ abstract class NotFoundException extends InvalidArgumentException implements Tra
     protected array $translationArgs = [];
 
     /**
-     * @param array<string, DateTimeInterface|float|int|string|Stringable|TranslatableInterface|null> $translationArgs
+     * @param array<string, mixed> $translationArgs
      */
     public function __construct(string $message = 'Not found', array $translationArgs = [])
     {

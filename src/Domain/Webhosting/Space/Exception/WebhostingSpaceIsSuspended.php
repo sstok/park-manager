@@ -12,6 +12,7 @@ namespace ParkManager\Domain\Webhosting\Space\Exception;
 
 use DomainException;
 use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
@@ -34,7 +35,7 @@ final class WebhostingSpaceIsSuspended extends DomainException implements Transl
         return new TranslatableMessage(
             'webhosting.space_is_suspended',
             [
-                'id' => $this->id,
+                'id' => new EntityLink($this->id),
                 'level' => new TranslatableMessage('webhosting_suspension_level' . mb_strtolower($this->level->name)),
             ],
             'validators'
