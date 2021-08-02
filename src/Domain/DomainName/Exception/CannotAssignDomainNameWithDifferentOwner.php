@@ -12,12 +12,12 @@ namespace ParkManager\Domain\DomainName\Exception;
 
 use DomainException;
 use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\Exception\DomainError;
 use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
-final class CannotAssignDomainNameWithDifferentOwner extends DomainException implements TranslatableException
+final class CannotAssignDomainNameWithDifferentOwner extends DomainException implements DomainError
 {
     private DomainNamePair $domainName;
     private ?SpaceId $current = null;
@@ -57,7 +57,7 @@ final class CannotAssignDomainNameWithDifferentOwner extends DomainException imp
         return $instance;
     }
 
-    public function getTranslatorId(): TranslatableMessage
+    public function getTranslatorMsg(): TranslatableMessage
     {
         if ($this->current) {
             return new TranslatableMessage(

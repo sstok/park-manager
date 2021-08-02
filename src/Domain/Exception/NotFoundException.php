@@ -20,7 +20,7 @@ use Symfony\Contracts\Translation\TranslatableInterface;
  * Extend this class for not-found exception classes,
  * making the exception automatically translatable.
  */
-abstract class NotFoundException extends InvalidArgumentException implements TranslatableException
+abstract class NotFoundException extends InvalidArgumentException implements DomainError
 {
     /** @var array<string, DateTimeInterface|float|int|string|Stringable|TranslatableInterface|null> */
     protected array $translationArgs = [];
@@ -34,7 +34,7 @@ abstract class NotFoundException extends InvalidArgumentException implements Tra
         $this->translationArgs = $translationArgs;
     }
 
-    public function getTranslatorId(): string | TranslatableMessage
+    public function getTranslatorMsg(): string | TranslatableMessage
     {
         return new TranslatableMessage('Not found', $this->translationArgs, 'validators');
     }

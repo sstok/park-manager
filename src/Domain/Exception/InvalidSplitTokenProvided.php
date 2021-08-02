@@ -12,7 +12,7 @@ namespace ParkManager\Domain\Exception;
 
 final class InvalidSplitTokenProvided extends InvalidArgument
 {
-    public function getTranslatorId(): string
+    public function getTranslatorMsg(): string
     {
         return 'invalid_split_token';
     }

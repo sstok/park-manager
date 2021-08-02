@@ -13,11 +13,11 @@ namespace ParkManager\Domain\Webhosting\Constraint\Exception;
 use Exception;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\EmailAddress;
-use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\Exception\DomainError;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
-final class ConstraintExceeded extends Exception implements TranslatableException
+final class ConstraintExceeded extends Exception implements DomainError
 {
     private string $transId;
 
@@ -96,7 +96,7 @@ final class ConstraintExceeded extends Exception implements TranslatableExceptio
         return new self('email_forward', ['maximum' => $maximum, 'new_amount' => $newAmount]);
     }
 
-    public function getTranslatorId(): TranslatableMessage
+    public function getTranslatorMsg(): TranslatableMessage
     {
         return new TranslatableMessage($this->transId, $this->transArgs, 'validators');
     }

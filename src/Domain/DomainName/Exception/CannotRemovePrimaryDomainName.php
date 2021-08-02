@@ -12,11 +12,11 @@ namespace ParkManager\Domain\DomainName\Exception;
 
 use DomainException;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\Exception\DomainError;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
-final class CannotRemovePrimaryDomainName extends DomainException implements TranslatableException
+final class CannotRemovePrimaryDomainName extends DomainException implements DomainError
 {
     private DomainNameId $domainName;
     private SpaceId $spaceId;
@@ -35,7 +35,7 @@ final class CannotRemovePrimaryDomainName extends DomainException implements Tra
         $this->spaceId = $spaceId;
     }
 
-    public function getTranslatorId(): TranslatableMessage
+    public function getTranslatorMsg(): TranslatableMessage
     {
         return new TranslatableMessage('cannot_remove_space_primary_domain_name', [
             'domain_name' => $this->domainName,

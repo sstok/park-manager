@@ -18,10 +18,10 @@ use Throwable;
  *
  * Use the exception code as HTTP status code.
  */
-interface TranslatableException extends Throwable
+interface DomainError extends Throwable
 {
     /**
      * Returns the Translation-id in the validators+intl-icu domain.
      */
-    public function getTranslatorId(): string | TranslatableInterface;
+    public function getTranslatorMsg(): string | TranslatableInterface;
 }

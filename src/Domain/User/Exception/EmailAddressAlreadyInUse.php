@@ -12,12 +12,12 @@ namespace ParkManager\Domain\User\Exception;
 
 use InvalidArgumentException;
 use ParkManager\Domain\EmailAddress;
-use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\Exception\DomainError;
 use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\User\UserId;
 
-final class EmailAddressAlreadyInUse extends InvalidArgumentException implements TranslatableException
+final class EmailAddressAlreadyInUse extends InvalidArgumentException implements DomainError
 {
     public UserId $id;
     public EmailAddress $address;
@@ -36,7 +36,7 @@ final class EmailAddressAlreadyInUse extends InvalidArgumentException implements
         $this->address = $address;
     }
 
-    public function getTranslatorId(): TranslatableMessage
+    public function getTranslatorMsg(): TranslatableMessage
     {
         return new TranslatableMessage('email_address_already_in_use', [
             'id' => new EntityLink($this->id),

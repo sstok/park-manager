@@ -32,7 +32,7 @@ final class ConstrainedFormType extends AbstractType
             try {
                 $options['constraints_validator']($event->getData());
             } catch (ConstraintExceeded $e) {
-                $message = $e->getTranslatorId();
+                $message = $e->getTranslatorMsg();
 
                 $event->getForm()->addError(
                     new FormError(

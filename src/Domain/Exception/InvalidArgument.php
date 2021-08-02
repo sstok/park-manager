@@ -13,9 +13,9 @@ namespace ParkManager\Domain\Exception;
 use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-class InvalidArgument extends InvalidArgumentException implements TranslatableException
+class InvalidArgument extends InvalidArgumentException implements DomainError
 {
-    public function getTranslatorId(): string | TranslatableInterface
+    public function getTranslatorMsg(): string | TranslatableInterface
     {
         return 'Invalid Argument provided.';
     }

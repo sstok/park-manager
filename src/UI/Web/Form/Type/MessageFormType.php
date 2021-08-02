@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Form\Type;
 
 use Closure;
-use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\Exception\DomainError;
 use ParkManager\UI\Web\Form\DataMapper\CommandDataMapper;
 use ParkManager\UI\Web\Form\DataMapper\PropertyPathObjectAccessor;
 use ParkManager\UI\Web\Form\Model\CommandDto;
@@ -161,7 +161,7 @@ final class MessageFormType extends AbstractType
                 $handlerOrPath = $exceptionMapping[$exceptionName];
 
                 if (\is_string($handlerOrPath)) {
-                    \assert($e instanceof TranslatableException);
+                    \assert($e instanceof DomainError);
 
                     $errors = [$handlerOrPath => $this->translatableExceptionToFormError($e)];
                 } else {
@@ -169,7 +169,7 @@ final class MessageFormType extends AbstractType
                 }
             } elseif ($exceptionFallback !== null) {
                 $errors = $exceptionFallback($e, $this->translator, $form);
-            } elseif ($e instanceof TranslatableException) {
+            } elseif ($e instanceof DomainError) {
                 $errors = [null => $this->translatableExceptionToFormError($e)];
             } else {
                 throw $e;
@@ -179,9 +179,9 @@ final class MessageFormType extends AbstractType
         }
     }
 
-    private function translatableExceptionToFormError(TranslatableException $e): FormError
+    private function translatableExceptionToFormError(DomainError $e): FormError
     {
-        $message = $e->getTranslatorId();
+        $message = $e->getTranslatorMsg();
 
         if (\is_string($message)) {
             return new FormError(

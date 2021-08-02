@@ -92,7 +92,7 @@ final class RegisterUserForm extends AbstractType
                 },
                 'exception_mapping' => [
                     EmailAddressAlreadyInUse::class => static function (EmailAddressAlreadyInUse $e, TranslatorInterface $translator): array {
-                        $translatorId = $e->getTranslatorId();
+                        $translatorId = $e->getTranslatorMsg();
 
                         return [
                             'email' => new FormError(

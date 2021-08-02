@@ -11,11 +11,11 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\Space\Exception;
 
 use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\Exception\DomainError;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use RuntimeException;
 
-final class WebhostingSpaceBeingRemoved extends RuntimeException implements TranslatableException
+final class WebhostingSpaceBeingRemoved extends RuntimeException implements DomainError
 {
     public DomainNamePair $name;
 
@@ -31,7 +31,7 @@ final class WebhostingSpaceBeingRemoved extends RuntimeException implements Tran
         $this->name = $name;
     }
 
-    public function getTranslatorId(): TranslatableMessage
+    public function getTranslatorMsg(): TranslatableMessage
     {
         return new TranslatableMessage(
             'webhosting_space.is_being_removed',

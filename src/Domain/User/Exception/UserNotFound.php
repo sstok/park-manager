@@ -27,7 +27,7 @@ final class UserNotFound extends NotFoundException
         return new self(sprintf('User with email address "%s" does not exist.', $address->toString()), ['{email}' => $address]);
     }
 
-    public function getTranslatorId(): TranslatableMessage
+    public function getTranslatorMsg(): TranslatableMessage
     {
         if (isset($this->translationArgs['{id}'])) {
             return new TranslatableMessage('User with id "{id}" does not exist.', $this->translationArgs);

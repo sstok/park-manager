@@ -11,13 +11,13 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Webhosting\Space\Exception;
 
 use DomainException;
-use ParkManager\Domain\Exception\TranslatableException;
+use ParkManager\Domain\Exception\DomainError;
 use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 
-final class WebhostingSpaceIsSuspended extends DomainException implements TranslatableException
+final class WebhostingSpaceIsSuspended extends DomainException implements DomainError
 {
     private SpaceId $id;
     private SuspensionLevel $level;
@@ -30,7 +30,7 @@ final class WebhostingSpaceIsSuspended extends DomainException implements Transl
         $this->level = $level;
     }
 
-    public function getTranslatorId(): TranslatableMessage
+    public function getTranslatorMsg(): TranslatableMessage
     {
         return new TranslatableMessage(
             'webhosting.space_is_suspended',

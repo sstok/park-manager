@@ -32,7 +32,7 @@ final class OrganizationMemberNotFound extends NotFoundException
         );
     }
 
-    public function getTranslatorId(): string
+    public function getTranslatorMsg(): string
     {
         return 'organization_member_not_found';
     }

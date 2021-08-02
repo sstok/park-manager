@@ -30,7 +30,7 @@ final class CannotRemoveInternalOrganization extends InvalidArgument
         );
     }
 
-    public function getTranslatorId(): TranslatableMessage
+    public function getTranslatorMsg(): TranslatableMessage
     {
         return new TranslatableMessage('cannot_remove_internal_organization', ['organization' => new EntityLink($this->id)], 'validators');
     }
