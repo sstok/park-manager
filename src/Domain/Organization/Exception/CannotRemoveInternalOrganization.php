@@ -17,7 +17,7 @@ use ParkManager\Domain\Translation\TranslatableMessage;
 
 final class CannotRemoveInternalOrganization extends InvalidArgument
 {
-    private function __construct(string $message, private OrganizationId $id)
+    private function __construct(string $message, public OrganizationId $id)
     {
         parent::__construct($message, 404);
     }
@@ -33,5 +33,10 @@ final class CannotRemoveInternalOrganization extends InvalidArgument
     public function getTranslatorMsg(): TranslatableMessage
     {
         return new TranslatableMessage('cannot_remove_internal_organization', ['organization' => new EntityLink($this->id)], 'validators');
+    }
+
+    public function getPublicMessage(): string
+    {
+        return 'Organization with id "{id}" is marked as internal and cannot be removed.';
     }
 }

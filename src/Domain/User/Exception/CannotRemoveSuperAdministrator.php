@@ -18,17 +18,18 @@ use ParkManager\Domain\User\UserId;
 
 final class CannotRemoveSuperAdministrator extends InvalidArgumentException implements DomainError
 {
-    public UserId $id;
-
-    public function __construct(UserId $id)
+    public function __construct(public UserId $id)
     {
         parent::__construct(sprintf('User with id "%s" is a SuperAdmin and cannot be removed.', $id->toString()));
-
-        $this->id = $id;
     }
 
     public function getTranslatorMsg(): TranslatableMessage
     {
         return new TranslatableMessage('cannot_remove_super_administrator', ['id' => new EntityLink($this->id)], 'validators');
+    }
+
+    public function getPublicMessage(): string
+    {
+        return 'User "{id}" is a SuperAdmin and cannot be removed.';
     }
 }

@@ -17,7 +17,7 @@ use ParkManager\Domain\Translation\TranslatableMessage;
 
 final class DomainNameAlreadyInUse extends DomainException implements DomainError
 {
-    public function __construct(private DomainNamePair $domainName)
+    public function __construct(public DomainNamePair $domainName)
     {
         parent::__construct(
             sprintf(
@@ -34,5 +34,10 @@ final class DomainNameAlreadyInUse extends DomainException implements DomainErro
             'name' => $this->domainName->name,
             'tld' => $this->domainName->tld,
         ], 'validators');
+    }
+
+    public function getPublicMessage(): string
+    {
+        return 'DomainName "{domainName}" is already in use.';
     }
 }

@@ -19,9 +19,9 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class CannotAssignDomainNameWithDifferentOwner extends DomainException implements DomainError
 {
-    private DomainNamePair $domainName;
-    private ?SpaceId $current = null;
-    private SpaceId $new;
+    public DomainNamePair $domainName;
+    public ?SpaceId $current = null;
+    public SpaceId $new;
 
     public static function toSpace(DomainNamePair $domainName, SpaceId $space): self
     {
@@ -85,5 +85,14 @@ final class CannotAssignDomainNameWithDifferentOwner extends DomainException imp
             'current_space' => new EntityLink($this->current),
             'new_space' => new EntityLink($this->new),
         ];
+    }
+
+    public function getPublicMessage(): string
+    {
+        if ($this->current) {
+            return 'DomainName "{domainName}" of Space {current} does not have the same owner as Space {new}.';
+        }
+
+        return 'DomainName "{domainName}" does not have the same owner as Space "{new}".';
     }
 }

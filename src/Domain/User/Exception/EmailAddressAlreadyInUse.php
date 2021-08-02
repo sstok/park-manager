@@ -26,7 +26,7 @@ final class EmailAddressAlreadyInUse extends InvalidArgumentException implements
     {
         parent::__construct(
             sprintf(
-                'The email address "%s" is already in use by user with id "%s"',
+                'The email address "%s" is already in use by user with id "%s".',
                 $address->toString(),
                 $id->toString()
             )
@@ -42,5 +42,10 @@ final class EmailAddressAlreadyInUse extends InvalidArgumentException implements
             'id' => new EntityLink($this->id),
             'email' => $this->address,
         ], 'validators');
+    }
+
+    public function getPublicMessage(): string
+    {
+        return 'The email address "{address}" is already in use by user "{id}"';
     }
 }

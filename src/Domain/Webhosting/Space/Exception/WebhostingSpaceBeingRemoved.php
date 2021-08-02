@@ -17,9 +17,7 @@ use RuntimeException;
 
 final class WebhostingSpaceBeingRemoved extends RuntimeException implements DomainError
 {
-    public DomainNamePair $name;
-
-    public function __construct(DomainNamePair $name)
+    public function __construct(public DomainNamePair $name)
     {
         parent::__construct(
             sprintf(
@@ -27,8 +25,6 @@ final class WebhostingSpaceBeingRemoved extends RuntimeException implements Doma
                 $name->toString()
             )
         );
-
-        $this->name = $name;
     }
 
     public function getTranslatorMsg(): TranslatableMessage
@@ -40,5 +36,10 @@ final class WebhostingSpaceBeingRemoved extends RuntimeException implements Doma
             ],
             'validators'
         );
+    }
+
+    public function getPublicMessage(): string
+    {
+        return 'Webhosting space {name} is currently being removed (or is marked for removal) and cannot be updated or changed.';
     }
 }

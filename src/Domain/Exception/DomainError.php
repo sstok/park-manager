@@ -17,6 +17,8 @@ use Throwable;
  * Implement this interface to make the exception user translatable.
  *
  * Use the exception code as HTTP status code.
+ *
+ * @method string getPublicMessage() English-only non-system message (with curly-braced placeholders; uses public properties)
  */
 interface DomainError extends Throwable
 {

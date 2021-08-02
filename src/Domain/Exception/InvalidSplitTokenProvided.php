@@ -16,4 +16,9 @@ final class InvalidSplitTokenProvided extends InvalidArgument
     {
         return 'invalid_split_token';
     }
+
+    public function getPublicMessage(): string
+    {
+        return 'Invalid SplitToken provided.';
+    }
 }

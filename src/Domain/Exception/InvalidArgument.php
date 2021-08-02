@@ -19,4 +19,9 @@ class InvalidArgument extends InvalidArgumentException implements DomainError
     {
         return 'Invalid Argument provided.';
     }
+
+    public function getPublicMessage(): string
+    {
+        return 'Invalid Argument provided.';
+    }
 }

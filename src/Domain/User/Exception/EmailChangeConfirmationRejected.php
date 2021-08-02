@@ -17,7 +17,12 @@ final class EmailChangeConfirmationRejected extends NotFoundException
     public function __construct()
     {
         parent::__construct(
-            'Failed to accept email address change confirmation. Token is invalid/expired or no request was registered.'
+            'Failed to accept email address change-confirmation. Token is invalid/expired or no request was registered.'
         );
+    }
+
+    public function getPublicMessage(): string
+    {
+        return 'Failed to accept email address change-confirmation. Token is invalid/expired or no request was registered.';
     }
 }

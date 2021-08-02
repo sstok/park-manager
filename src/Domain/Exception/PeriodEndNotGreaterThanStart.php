@@ -16,4 +16,9 @@ final class PeriodEndNotGreaterThanStart extends InvalidArgument
     {
         parent::__construct('End Period is expected to be greater than Start period.');
     }
+
+    public function getPublicMessage(): string
+    {
+        return 'End Period is expected to be greater than Start period.';
+    }
 }

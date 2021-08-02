@@ -19,15 +19,9 @@ use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 
 final class SubDomainAlreadyExists extends DomainException implements DomainError
 {
-    private DomainNamePair $domainName;
-    private string $name;
-
-    public function __construct(DomainNamePair $domainName, string $name, private string $id)
+    public function __construct(public DomainNamePair $domainName, public string $name, private string $id)
     {
         parent::__construct(sprintf('SubDomain "%s.%s" already exists.', $name, $domainName->toString()));
-
-        $this->domainName = $domainName;
-        $this->name = $name;
     }
 
     public function getTranslatorMsg(): TranslatableMessage
@@ -38,5 +32,10 @@ final class SubDomainAlreadyExists extends DomainException implements DomainErro
             'name' => $this->name,
             'id' => new EntityLink(SubDomainNameId::fromString($this->id)),
         ], 'validators');
+    }
+
+    public function getPublicMessage(): string
+    {
+        return 'Sub-domain "{name}.{domainName}" already exists.';
     }
 }

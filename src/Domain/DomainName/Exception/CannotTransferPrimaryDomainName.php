@@ -19,11 +19,7 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class CannotTransferPrimaryDomainName extends DomainException implements DomainError
 {
-    private DomainNamePair $domainName;
-    private SpaceId $current;
-    private ?SpaceId $new;
-
-    public function __construct(DomainNamePair $domainName, SpaceId $current, ?SpaceId $new)
+    public function __construct(public DomainNamePair $domainName, public SpaceId $current, public ?SpaceId $new)
     {
         parent::__construct(
             sprintf(
@@ -33,10 +29,6 @@ final class CannotTransferPrimaryDomainName extends DomainException implements D
                 $new ? $new->toString() : '[owner]'
             )
         );
-
-        $this->domainName = $domainName;
-        $this->current = $current;
-        $this->new = $new;
     }
 
     public function getTranslatorMsg(): TranslatableMessage
@@ -51,5 +43,10 @@ final class CannotTransferPrimaryDomainName extends DomainException implements D
             ],
             'validators'
         );
+    }
+
+    public function getPublicMessage(): string
+    {
+        return 'DomainName "{domainName}" of space "{current}" is marked as primary and cannot be transferred to space "{new}".';
     }
 }

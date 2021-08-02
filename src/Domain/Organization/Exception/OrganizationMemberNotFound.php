@@ -13,6 +13,7 @@ namespace ParkManager\Domain\Organization\Exception;
 use ParkManager\Domain\Exception\NotFoundException;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\Translation\EntityLink;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\User\UserId;
 
 final class OrganizationMemberNotFound extends NotFoundException
@@ -32,8 +33,13 @@ final class OrganizationMemberNotFound extends NotFoundException
         );
     }
 
-    public function getTranslatorMsg(): string
+    public function getTranslatorMsg(): TranslatableMessage
     {
-        return 'organization_member_not_found';
+        return new TranslatableMessage('organization_member_not_found', $this->translationArgs, 'validators');
+    }
+
+    public function getPublicMessage(): string
+    {
+        return 'User "{user}" has no existing membership for Organization "{organization}".';
     }
 }

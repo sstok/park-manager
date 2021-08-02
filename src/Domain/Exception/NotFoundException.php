@@ -38,4 +38,9 @@ abstract class NotFoundException extends InvalidArgumentException implements Dom
     {
         return new TranslatableMessage('Not found', $this->translationArgs, 'validators');
     }
+
+    public function getPublicMessage(): string
+    {
+        return 'Not found.';
+    }
 }

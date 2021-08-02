@@ -108,4 +108,9 @@ final class ConstraintExceeded extends Exception implements DomainError
     {
         return $this->transArgs;
     }
+
+    public function getPublicMessage(): string
+    {
+        return $this->transId;
+    }
 }

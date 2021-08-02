@@ -19,15 +19,9 @@ use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 
 final class WebhostingSpaceIsSuspended extends DomainException implements DomainError
 {
-    private SpaceId $id;
-    private SuspensionLevel $level;
-
-    public function __construct(SpaceId $id, SuspensionLevel $level)
+    public function __construct(public SpaceId $id, public SuspensionLevel $level)
     {
         parent::__construct(sprintf('Webhosting Space "%s" is suspended with level %s', $id->toString(), $level->name));
-
-        $this->id = $id;
-        $this->level = $level;
     }
 
     public function getTranslatorMsg(): TranslatableMessage
@@ -40,5 +34,10 @@ final class WebhostingSpaceIsSuspended extends DomainException implements Domain
             ],
             'validators'
         );
+    }
+
+    public function getPublicMessage(): string
+    {
+        return 'Webhosting Space "{id}" is suspended with level {level}.';
     }
 }

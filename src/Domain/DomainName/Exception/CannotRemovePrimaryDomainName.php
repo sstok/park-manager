@@ -18,28 +18,27 @@ use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class CannotRemovePrimaryDomainName extends DomainException implements DomainError
 {
-    private DomainNameId $domainName;
-    private SpaceId $spaceId;
-
-    public function __construct(DomainNameId $domainName, SpaceId $spaceId)
+    public function __construct(public DomainNameId $domainName, public SpaceId $space)
     {
         parent::__construct(
             sprintf(
-                'Domain-name "%s" of space %s is marked as primary and cannot be removed.',
+                'DomainName "%s" of space %s is marked as primary and cannot be removed.',
                 $domainName->toString(),
-                $spaceId->toString()
+                $space->toString()
             )
         );
-
-        $this->domainName = $domainName;
-        $this->spaceId = $spaceId;
     }
 
     public function getTranslatorMsg(): TranslatableMessage
     {
         return new TranslatableMessage('cannot_remove_space_primary_domain_name', [
             'domain_name' => $this->domainName,
-            'space_id' => $this->spaceId,
+            'space_id' => $this->space,
         ], 'validators');
+    }
+
+    public function getPublicMessage(): string
+    {
+        return 'DomainName "{domainName}" of space "{space}" is marked as primary and cannot be removed.';
     }
 }
