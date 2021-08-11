@@ -14,7 +14,6 @@ use Pagerfanta\Pagerfanta;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Infrastructure\Pagerfanta\ResultSetAdapter;
-use ParkManager\UI\Web\Response\TwigResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +30,7 @@ final class ListDomainNamesAction extends AbstractController
 
         $pagerfanta->setCurrentPage($request->query->getInt('page', 1));
 
-        return new TwigResponse('admin/webhosting/domain_name/list.html.twig', ['domain_names' => $pagerfanta, 'space' => $space]);
+        return $this->render('admin/webhosting/domain_name/list.html.twig', ['domain_names' => $pagerfanta, 'space' => $space]);
     }
 
     public static function getSubscribedServices(): array

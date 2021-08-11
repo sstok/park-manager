@@ -11,25 +11,23 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Plan;
 
 use ParkManager\Application\Command\Webhosting\Constraint\RemovePlan;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\UI\Web\Form\Type\ConfirmationForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Translation\TranslatableMessage;
 
 final class RemoveWebhostingPlanAction extends AbstractController
 {
     #[Route(path: 'webhosting/plan/{plan}/remove', name: 'park_manager.admin.webhosting.plan.remove', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory, Plan $plan): RouteRedirectResponse | TwigResponse
+    public function __invoke(Request $request, Plan $plan): Response
     {
         $usedBySpacesNb = $this->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
 
-        $form = $formFactory->create(ConfirmationForm::class, null, [
+        $form = $this->createForm(ConfirmationForm::class, null, [
             'confirmation_title' => new TranslatableMessage('webhosting.plan.remove.heading', ['id' => $plan->id->toString()]),
             'confirmation_message' => new TranslatableMessage('webhosting.plan.remove.confirm_warning', ['assignment_count' => $usedBySpacesNb]),
             'confirmation_label' => 'label.remove',
@@ -40,12 +38,12 @@ final class RemoveWebhostingPlanAction extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.plan.list', ['plan' => $plan->id->toString()])
-                ->withFlash('success', 'flash.webhosting_plan.removed')
-            ;
+            $this->addFlash('success', new TranslatableMessage('flash.webhosting_plan.removed'));
+
+            return $this->redirectToRoute('park_manager.admin.webhosting.plan.list', ['plan' => $plan->id->toString()]);
         }
 
-        return new TwigResponse('admin/webhosting/plan/remove.html.twig', ['form' => $form->createView(), 'plan' => $plan]);
+        return $this->renderForm('admin/webhosting/plan/remove.html.twig', ['form' => $form, 'plan' => $plan]);
     }
 
     public static function getSubscribedServices(): array

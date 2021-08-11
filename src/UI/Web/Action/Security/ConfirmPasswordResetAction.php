@@ -10,29 +10,29 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Security;
 
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\UI\Web\Form\Type\Security\ConfirmPasswordResetType;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
 use Rollerworks\Component\SplitToken\SplitToken;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class ConfirmPasswordResetAction
+final class ConfirmPasswordResetAction extends AbstractController
 {
     #[Route(path: '/password-reset/confirm/{token}', name: 'park_manager.security_confirm_password_reset', requirements: ['token' => '.+'], methods: ['GET', 'POST'])]
-    public function __invoke(Request $request, SplitToken $token, FormFactoryInterface $formFactory): TwigResponse | RouteRedirectResponse
+    public function __invoke(Request $request, SplitToken $token): Response
     {
-        $form = $formFactory->create(ConfirmPasswordResetType::class, ['reset_token' => $token]);
+        $form = $this->createForm(ConfirmPasswordResetType::class, ['reset_token' => $token]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.security_login')
-                ->withFlash('success', 'flash.password_reset_accepted')
-            ;
+            $this->addFlash('success', new TranslatableMessage('flash.password_reset_accepted'));
+
+            return $this->redirectToRoute('park_manager.security_login');
         }
 
-        $response = new TwigResponse('security/password_reset_confirm.html.twig', $form);
+        $response = $this->renderForm('security/password_reset_confirm.html.twig', ['form' => $form]);
         $response->setPrivate();
         $response->setMaxAge(1);
 

@@ -10,33 +10,37 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Space;
 
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\UI\Web\Form\Type\Webhosting\Space\ChangePlanOfWebhostingSpaceForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class ChangePlanOfWebhostingSpace
+final class ChangePlanOfWebhostingSpace extends AbstractController
 {
     #[Route(path: 'webhosting/space/{space}/change-plan', name: 'park_manager.admin.webhosting.space.change_plan', methods: ['POST', 'GET'])]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory, Space $space): RouteRedirectResponse | TwigResponse
+    public function __invoke(Request $request, Space $space): Response
     {
         if ($space->isMarkedForRemoval()) {
             throw new WebhostingSpaceBeingRemoved($space->primaryDomainLabel);
         }
 
-        $form = $formFactory->create(ChangePlanOfWebhostingSpaceForm::class, $space);
+        $form = $this->createForm(ChangePlanOfWebhostingSpaceForm::class, $space);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id])
-                ->withFlash('success', $form->get('no_link_plan')->getData() ? 'flash.webhosting_space.constraints_assigned' : 'flash.webhosting_space.plan_assigned')
-            ;
+            $this->addFlash('success',
+                $form->get('no_link_plan')->getData() ?
+                    new TranslatableMessage('flash.webhosting_space.constraints_assigned') :
+                    new TranslatableMessage('flash.webhosting_space.plan_assigned')
+            );
+
+            return $this->redirectToRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id]);
         }
 
-        return new TwigResponse('admin/webhosting/space/change_plan.html.twig', ['form' => $form->createView(), 'space' => $space]);
+        return $this->renderForm('admin/webhosting/space/change_plan.html.twig', ['form' => $form, 'space' => $space]);
     }
 }

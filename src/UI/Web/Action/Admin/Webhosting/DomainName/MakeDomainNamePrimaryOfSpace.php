@@ -16,23 +16,20 @@ use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\UI\Web\Form\Type\ConfirmationForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class MakeDomainNamePrimaryOfSpace
+final class MakeDomainNamePrimaryOfSpace extends AbstractController
 {
     #[Route(path: 'webhosting/space/{space}/domain-name/{domainName}/make-primary', name: 'park_manager.admin.webhosting.space.domain_name.make_primary', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory, Space $space, DomainName $domainName): RouteRedirectResponse | TwigResponse
+    public function __invoke(Request $request, Space $space, DomainName $domainName): Response
     {
         if ($domainName->space === null) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.list_domain_names')->withFlash(
-                type: 'error',
-                message: 'flash.domain_name_not_space_owned',
-                arguments: ['name' => $domainName->namePair->toString()]
-            );
+            $this->addFlash('error', new TranslatableMessage('flash.domain_name_not_space_owned', ['name' => $domainName->namePair->toString()]));
+
+            return $this->redirectToRoute('park_manager.admin.list_domain_names');
         }
 
         if ($domainName->space->isMarkedForRemoval()) {
@@ -40,10 +37,10 @@ final class MakeDomainNamePrimaryOfSpace
         }
 
         if ($domainName->space !== $space) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.domain_name.set_primary', ['space' => $space->id, 'domainName' => $domainName->id]);
+            return $this->redirectToRoute('park_manager.admin.webhosting.space.domain_name.make_primary', ['space' => $space->id, 'domainName' => $domainName->id]);
         }
 
-        $form = $formFactory->create(ConfirmationForm::class, $domainName, [
+        $form = $this->createForm(ConfirmationForm::class, $domainName, [
             'confirmation_title' => new TranslatableMessage('webhosting.domain_name.make_primary.heading', ['domain_name' => $domainName->toString()]),
             'confirmation_message' => new TranslatableMessage('webhosting.domain_name.make_primary.message', ['current_name' => $space->primaryDomainLabel]),
             'confirmation_label' => 'label.make_primary',
@@ -53,13 +50,13 @@ final class MakeDomainNamePrimaryOfSpace
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id])
-                ->withFlash(type: 'success', message: 'flash.domain_name_marked_as_primary')
-            ;
+            $this->addFlash('success', new TranslatableMessage('flash.domain_name_marked_as_primary'));
+
+            return $this->redirectToRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id]);
         }
 
-        return new TwigResponse('admin/webhosting/domain_name/make_primary.html.twig', [
-            'form' => $form->createView(),
+        return $this->renderForm('admin/webhosting/domain_name/make_primary.html.twig', [
+            'form' => $form,
             'domainName' => $domainName,
             'space' => $space,
         ]);

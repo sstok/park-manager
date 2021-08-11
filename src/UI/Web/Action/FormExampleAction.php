@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action;
 
-use ParkManager\UI\Web\Response\TwigResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -25,16 +25,16 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class FormExampleAction
+final class FormExampleAction extends AbstractController
 {
     #[Route(path: '/form-example', name: 'park_manager.form_example', methods: ['GET', 'POST'])]
-    public function __invoke(FormFactoryInterface $formFactory): TwigResponse
+    public function __invoke(): Response
     {
-        $form = $formFactory->createBuilder()
+        $form = $this->createFormBuilder()
             ->add('username', TextType::class, ['help' => 'Get notified when a candidate applies for a job.'])
             ->add('password', PasswordType::class, ['help' => 'Get notified when a candidate applies for a job.'])
             ->add('price', MoneyType::class, ['help' => 'Get notified when a candidate applies for a job.'])
@@ -66,6 +66,6 @@ final class FormExampleAction
         $form->addError(new FormError('Errors, errors everywhere.'));
         $form->addError(new FormError('Errors, errors everywhere (2).'));
 
-        return new TwigResponse('form_example.html.twig', $form);
+        return $this->render('form_example.html.twig', ['form' => $form]);
     }
 }

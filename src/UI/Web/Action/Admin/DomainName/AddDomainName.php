@@ -10,25 +10,27 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\DomainName;
 
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\UI\Web\Form\Type\DomainName\RegisterDomainNameForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class AddDomainName
+final class AddDomainName extends AbstractController
 {
     #[Route(path: 'domain-name/add', name: 'park_manager.admin.domain_name.add', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory): RouteRedirectResponse | TwigResponse
+    public function __invoke(Request $request): Response
     {
-        $form = $formFactory->create(RegisterDomainNameForm::class);
+        $form = $this->createForm(RegisterDomainNameForm::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.list_domain_names')->withFlash(type: 'success', message: 'flash.domain_name_added');
+            $this->addFlash('success', new TranslatableMessage('flash.domain_name_added'));
+
+            return $this->redirectToRoute('park_manager.admin.list_domain_names');
         }
 
-        return new TwigResponse('admin/domain_name/add.html.twig', $form);
+        return $this->renderForm('admin/domain_name/add.html.twig', ['form' => $form]);
     }
 }

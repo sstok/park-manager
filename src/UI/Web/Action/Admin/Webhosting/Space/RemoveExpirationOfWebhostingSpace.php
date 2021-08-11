@@ -15,29 +15,27 @@ use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\UI\Web\Form\Type\ConfirmationForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class RemoveExpirationOfWebhostingSpace extends AbstractController
 {
     #[Route(path: 'webhosting/space/{space}/remove-expiration', name: 'park_manager.admin.webhosting.space.remove_expiration', methods: ['POST', 'GET'])]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory, Space $space): RouteRedirectResponse | TwigResponse
+    public function __invoke(Request $request, Space $space): Response
     {
         if ($space->isMarkedForRemoval()) {
             throw new WebhostingSpaceBeingRemoved($space->primaryDomainLabel);
         }
 
         if ($space->expirationDate === null) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id])
-                ->withFlash('success', 'flash.webhosting_space.removed_expiration')
-            ;
+            $this->addFlash('success', new TranslatableMessage('flash.webhosting_space.removed_expiration'));
+
+            return $this->redirectToRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id]);
         }
 
-        $form = $formFactory->create(ConfirmationForm::class, $space, [
+        $form = $this->createForm(ConfirmationForm::class, $space, [
             'confirmation_title' => new TranslatableMessage('webhosting.space.remove_expiration.heading', ['domain_name' => $space->primaryDomainLabel->toString()]),
             'confirmation_message' => 'webhosting.space.remove_expiration.message',
             'confirmation_label' => 'label.remove',
@@ -47,11 +45,11 @@ final class RemoveExpirationOfWebhostingSpace extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id])
-                ->withFlash('success', 'flash.webhosting_space.removed_expiration')
-            ;
+            $this->addFlash('success', new TranslatableMessage('flash.webhosting_space.removed_expiration'));
+
+            return $this->redirectToRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id]);
         }
 
-        return new TwigResponse('admin/webhosting/space/remove_expiration.html.twig', ['form' => $form->createView(), 'space' => $space]);
+        return $this->renderForm('admin/webhosting/space/remove_expiration.html.twig', ['form' => $form, 'space' => $space]);
     }
 }

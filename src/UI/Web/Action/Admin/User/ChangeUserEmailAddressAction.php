@@ -10,40 +10,44 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\User;
 
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\UI\Web\Form\Type\User\Admin\ChangeUserEmailAddressForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Translation\TranslatableMessage;
 
-final class ChangeUserEmailAddressAction
+final class ChangeUserEmailAddressAction extends AbstractController
 {
     #[Security("is_granted('ROLE_SUPER_ADMIN')")]
     #[Route(path: '/user/{user}/change-email-address', name: 'park_manager.admin.user_change_email_address', methods: ['GET', 'POST', 'HEAD'])]
-    public function __invoke(Request $request, User $user, UserInterface $securityUser, FormFactoryInterface $formFactory): TwigResponse | RouteRedirectResponse
+    public function __invoke(Request $request, User $user, UserInterface $securityUser): Response
     {
         if (UserId::fromString($securityUser->getId())->equals($user->id)) {
-            return new TwigResponse('error.html.twig', ['message_translate' => new TranslatableMessage('user_management.self_edit_error')], Response::HTTP_FORBIDDEN);
-        }
-
-        $form = $formFactory->create(ChangeUserEmailAddressForm::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.show_user', ['user' => $user->id->toString()])
-                ->withFlash('success', $form->get('require_confirm')->getData() ? 'flash.email_address_change_requested' : 'flash.email_address_changed')
+            return $this->render('error.html.twig', ['message_translate' => new TranslatableMessage('user_management.self_edit_error')])
+                ->setStatusCode(Response::HTTP_FORBIDDEN)
             ;
         }
 
-        return new TwigResponse('admin/user/change_email_address.html.twig', [
-            'form' => $form->createView(),
+        $form = $this->createForm(ChangeUserEmailAddressForm::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->addFlash('success',
+                $form->get('require_confirm')->getData() ?
+                    new TranslatableMessage('flash.email_address_change_requested') :
+                    new TranslatableMessage('flash.email_address_changed')
+            );
+
+            return $this->redirectToRoute('park_manager.admin.show_user', ['user' => $user->id->toString()]);
+        }
+
+        return $this->renderForm('admin/user/change_email_address.html.twig', [
+            'form' => $form,
             'user' => $user,
         ]);
     }

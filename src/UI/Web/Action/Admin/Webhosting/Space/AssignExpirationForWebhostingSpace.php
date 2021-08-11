@@ -15,23 +15,21 @@ use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\UI\Web\Form\Type\Webhosting\Space\MarkExpirationOfWebhostingSpaceForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class AssignExpirationForWebhostingSpace extends AbstractController
 {
     #[Route(path: 'webhosting/space/{space}/assign-expiration', name: 'park_manager.admin.webhosting.space.assign_expiration', methods: ['POST', 'GET'])]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory, Space $space): RouteRedirectResponse | TwigResponse
+    public function __invoke(Request $request, Space $space): Response
     {
         if ($space->isMarkedForRemoval()) {
             throw new WebhostingSpaceBeingRemoved($space->primaryDomainLabel);
         }
 
-        $form = $formFactory->create(MarkExpirationOfWebhostingSpaceForm::class, $space, [
+        $form = $this->createForm(MarkExpirationOfWebhostingSpaceForm::class, $space, [
             'confirmation_title' => new TranslatableMessage('webhosting.space.assign_expiration.heading', ['domain_name' => $space->primaryDomainLabel->toString()]),
             'confirmation_message' => new TranslatableMessage('webhosting.space.assign_expiration.message', ['domain_name' => $space->primaryDomainLabel->toString()]),
             'confirmation_label' => 'label.assign_expiration',
@@ -41,14 +39,17 @@ final class AssignExpirationForWebhostingSpace extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id])
-                ->withFlash('success', 'flash.webhosting_space.marked_for_expiration', [
+            $this->addFlash(
+                'success',
+                new TranslatableMessage('flash.webhosting_space.marked_for_expiration', [
                     'has_date' => CarbonImmutable::instance($form->get('expirationDate')->getData())->isCurrentDay() ? 'false' : 'true',
                     'date' => $form->get('expirationDate')->getData(),
                 ])
-            ;
+            );
+
+            return $this->redirectToRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id]);
         }
 
-        return new TwigResponse('admin/webhosting/space/assign_expiration.html.twig', ['form' => $form->createView(), 'space' => $space]);
+        return $this->renderForm('admin/webhosting/space/assign_expiration.html.twig', ['form' => $form, 'space' => $space]);
     }
 }

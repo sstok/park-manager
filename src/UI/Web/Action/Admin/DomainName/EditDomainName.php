@@ -11,33 +11,33 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\Admin\DomainName;
 
 use ParkManager\Domain\DomainName\DomainName;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\UI\Web\Form\Type\DomainName\EditDomainNameForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class EditDomainName
+final class EditDomainName extends AbstractController
 {
     #[Route(path: 'domain-name/{domainName}/edit/', name: 'park_manager.admin.domain_name.edit', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory, DomainName $domainName): RouteRedirectResponse | TwigResponse
+    public function __invoke(Request $request, DomainName $domainName): Response
     {
         if ($domainName->space !== null) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.list_domain_names')->withFlash(
-                type: 'error',
-                message: 'flash.domain_name_space_owned',
-                arguments: ['name' => $domainName->namePair->toString()]
-            );
+            $this->addFlash('error', new TranslatableMessage('flash.domain_name_space_owned', ['name' => $domainName->namePair]));
+
+            return $this->redirectToRoute('park_manager.admin.list_domain_names');
         }
 
-        $form = $formFactory->create(EditDomainNameForm::class, $domainName);
+        $form = $this->createForm(EditDomainNameForm::class, $domainName);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.list_domain_names')->withFlash(type: 'success', message: 'flash.domain_name_changed');
+            $this->addFlash('success', new TranslatableMessage('flash.domain_name_changed'));
+
+            return $this->redirectToRoute('park_manager.admin.list_domain_names');
         }
 
-        return new TwigResponse('admin/domain_name/edit.html.twig', ['form' => $form->createView(), 'domainName' => $domainName]);
+        return $this->renderForm('admin/domain_name/edit.html.twig', ['form' => $form, 'domainName' => $domainName]);
     }
 }

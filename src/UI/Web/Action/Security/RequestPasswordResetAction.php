@@ -10,28 +10,28 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Security;
 
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\UI\Web\Form\Type\Security\RequestPasswordResetType;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class RequestPasswordResetAction
+final class RequestPasswordResetAction extends AbstractController
 {
     #[Route(path: '/password-reset', name: 'park_manager.security_request_password_reset', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory): RouteRedirectResponse | TwigResponse
+    public function __invoke(Request $request): Response
     {
-        $form = $formFactory->create(RequestPasswordResetType::class);
+        $form = $this->createForm(RequestPasswordResetType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.security_login')
-                ->withFlash('success', 'flash.password_reset_send')
-            ;
+            $this->addFlash('success', new TranslatableMessage('flash.password_reset_send'));
+
+            return $this->redirectToRoute('park_manager.security_login');
         }
 
-        $response = new TwigResponse('security/password_reset.html.twig', $form);
+        $response = $this->renderForm('security/password_reset.html.twig', ['form' => $form]);
         $response->setPrivate();
         $response->setMaxAge(1);
 

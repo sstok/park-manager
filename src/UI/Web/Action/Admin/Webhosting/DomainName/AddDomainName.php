@@ -10,26 +10,28 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\DomainName;
 
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\UI\Web\Form\Type\Webhosting\Space\AddDomainNameToSpaceForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class AddDomainName
+final class AddDomainName extends AbstractController
 {
     #[Route(path: 'webhosting/space/{space}/domain-name/add', name: 'park_manager.admin.webhosting.space.domain_name.add', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory, Space $space): RouteRedirectResponse | TwigResponse
+    public function __invoke(Request $request, Space $space): Response
     {
-        $form = $formFactory->create(AddDomainNameToSpaceForm::class, options: ['space' => $space->id]);
+        $form = $this->createForm(AddDomainNameToSpaceForm::class, options: ['space' => $space->id]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id])->withFlash(type: 'success', message: 'flash.domain_name_added');
+            $this->addFlash('success', new TranslatableMessage('flash.domain_name_added'));
+
+            return $this->redirectToRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id->toString()]);
         }
 
-        return new TwigResponse('admin/webhosting/domain_name/add.html.twig', ['form' => $form->createView(), 'space' => $space]);
+        return $this->renderForm('admin/webhosting/domain_name/add.html.twig', ['form' => $form, 'space' => $space]);
     }
 }

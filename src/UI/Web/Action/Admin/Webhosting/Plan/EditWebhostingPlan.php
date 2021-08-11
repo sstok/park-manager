@@ -10,39 +10,37 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Plan;
 
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\UI\Web\Form\Type\Webhosting\Plan\EditWebhostingPlanForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class EditWebhostingPlan extends AbstractController
 {
     #[Route(path: 'webhosting/plan/{plan}/edit', name: 'park_manager.admin.webhosting.plan.edit', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory, Plan $plan): RouteRedirectResponse | TwigResponse
+    public function __invoke(Request $request, Plan $plan): Response
     {
         $usedBySpacesNb = $this->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
 
-        $form = $formFactory->create(EditWebhostingPlanForm::class, $plan);
+        $form = $this->createForm(EditWebhostingPlanForm::class, $plan);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $response = RouteRedirectResponse::toRoute('park_manager.admin.webhosting.plan.show', ['plan' => $plan->id->toString()]);
-            $response->withFlash(type: 'success', message: 'flash.webhosting_plan.updated');
+            $this->addFlash('success', new TranslatableMessage('flash.webhosting_plan.updated'));
 
             if ($form->get('updateLinked')->getData()) {
-                $response->withFlash(type: 'info', message: 'flash.webhosting_plan.assignment_update_dispatched', arguments: ['spaces_count' => $usedBySpacesNb]);
+                $this->addFlash('info', new TranslatableMessage('flash.webhosting_plan.assignment_update_dispatched', ['spaces_count' => $usedBySpacesNb]));
             }
 
-            return $response;
+            return $this->redirectToRoute('park_manager.admin.webhosting.plan.show', ['plan' => $plan->id->toString()]);
         }
 
-        return new TwigResponse('admin/webhosting/plan/edit.html.twig', [
-            'form' => $form->createView(),
+        return $this->renderForm('admin/webhosting/plan/edit.html.twig', [
+            'form' => $form,
             'plan' => $plan,
             'spaces_count' => $usedBySpacesNb,
         ]);

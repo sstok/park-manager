@@ -18,25 +18,22 @@ use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Infrastructure\Service\EntityRenderer;
 use ParkManager\UI\Web\Form\RawFormError;
 use ParkManager\UI\Web\Form\Type\ConfirmationForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class RemoveDomainNameAction
+final class RemoveDomainNameAction extends AbstractController
 {
     #[Route(path: 'webhosting/space/{space}/domain-name/{domainName}/remove', name: 'park_manager.admin.webhosting.space.domain_name.remove', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request, Space $space, DomainName $domainName, FormFactoryInterface $formFactory, EntityRenderer $entityRenderer): TwigResponse | RouteRedirectResponse
+    public function __invoke(Request $request, Space $space, DomainName $domainName, EntityRenderer $entityRenderer): Response
     {
         if ($domainName->space === null) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.list_domain_names')->withFlash(
-                type: 'error',
-                message: 'flash.domain_name_not_space_owned',
-                arguments: ['name' => $domainName->namePair->toString()]
-            );
+            $this->addFlash('error', new TranslatableMessage('flash.domain_name_not_space_owned', ['name' => $domainName->namePair->toString()]));
+
+            return $this->redirectToRoute('park_manager.admin.list_domain_names');
         }
 
         if ($domainName->space->isMarkedForRemoval()) {
@@ -44,16 +41,16 @@ final class RemoveDomainNameAction
         }
 
         if ($domainName->space !== $space) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.domain_name.remove', ['space' => $space->id, 'domainName' => $domainName->id]);
+            return $this->redirectToRoute('park_manager.admin.webhosting.space.domain_name.remove', ['space' => $space->id, 'domainName' => $domainName->id]);
         }
 
         if ($domainName->isPrimary()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id])
-                ->withFlash('error', 'flash.domain_name_cannot_remove_primary')
-            ;
+            $this->addFlash('error', new TranslatableMessage('flash.domain_name_cannot_remove_primary'));
+
+            return $this->redirectToRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id]);
         }
 
-        $form = $formFactory->create(ConfirmationForm::class, null, [
+        $form = $this->createForm(ConfirmationForm::class, null, [
             'confirmation_title' => new TranslatableMessage('webhosting.domain_name.remove.heading', ['name' => $domainName->toString()]),
             'confirmation_message' => new TranslatableMessage('webhosting.domain_name.remove.confirm_warning', [
                 'domain_name' => $domainName->toString(),
@@ -83,11 +80,15 @@ final class RemoveDomainNameAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id])
-                ->withFlash('success', 'flash.domain_name_removed')
-            ;
+            $this->addFlash('success', new TranslatableMessage('flash.domain_name_removed'));
+
+            return $this->redirectToRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id]);
         }
 
-        return new TwigResponse('admin/webhosting/domain_name/remove.html.twig', ['form' => $form->createView(), 'domain' => $domainName, 'space' => $space]);
+        return $this->renderForm('admin/webhosting/domain_name/remove.html.twig', [
+            'form' => $form,
+            'domain' => $domainName,
+            'space' => $space,
+        ]);
     }
 }

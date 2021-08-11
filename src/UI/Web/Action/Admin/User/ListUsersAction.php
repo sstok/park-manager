@@ -13,7 +13,6 @@ namespace ParkManager\UI\Web\Action\Admin\User;
 use Pagerfanta\Pagerfanta;
 use ParkManager\Domain\User\UserRepository;
 use ParkManager\Infrastructure\Pagerfanta\ResultSetAdapter;
-use ParkManager\UI\Web\Response\TwigResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +31,7 @@ final class ListUsersAction extends AbstractController
 
         $pagerfanta->setCurrentPage($request->query->getInt('page', 1));
 
-        return new TwigResponse('admin/user/list.html.twig', ['users' => $pagerfanta]);
+        return $this->render('admin/user/list.html.twig', ['users' => $pagerfanta]);
     }
 
     public static function getSubscribedServices(): array

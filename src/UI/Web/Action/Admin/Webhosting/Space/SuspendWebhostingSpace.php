@@ -10,33 +10,33 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Space;
 
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\UI\Web\Form\Type\Webhosting\Space\SuspendWebhostingSpaceForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class SuspendWebhostingSpace
+final class SuspendWebhostingSpace extends AbstractController
 {
     #[Route(path: 'webhosting/space/{space}/suspend-access', name: 'park_manager.admin.webhosting.space.suspend_access', methods: ['POST', 'GET'])]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory, Space $space): RouteRedirectResponse | TwigResponse
+    public function __invoke(Request $request, Space $space): Response
     {
         if ($space->isMarkedForRemoval()) {
             throw new WebhostingSpaceBeingRemoved($space->primaryDomainLabel);
         }
 
-        $form = $formFactory->create(SuspendWebhostingSpaceForm::class, $space);
+        $form = $this->createForm(SuspendWebhostingSpaceForm::class, $space);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id])
-                ->withFlash('success', 'flash.webhosting_space.access_suspended')
-            ;
+            $this->addFlash('success', new TranslatableMessage('flash.webhosting_space.access_suspended'));
+
+            return $this->redirectToRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id]);
         }
 
-        return new TwigResponse('admin/webhosting/space/suspend_access.html.twig', ['form' => $form->createView(), 'space' => $space]);
+        return $this->renderForm('admin/webhosting/space/suspend_access.html.twig', ['form' => $form, 'space' => $space]);
     }
 }

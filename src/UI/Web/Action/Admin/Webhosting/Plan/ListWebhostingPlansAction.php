@@ -13,7 +13,6 @@ namespace ParkManager\UI\Web\Action\Admin\Webhosting\Plan;
 use Pagerfanta\Pagerfanta;
 use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
 use ParkManager\Infrastructure\Pagerfanta\ResultSetAdapter;
-use ParkManager\UI\Web\Response\TwigResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +29,7 @@ final class ListWebhostingPlansAction extends AbstractController
 
         $pagerfanta->setCurrentPage($request->query->getInt('page', 1));
 
-        return new TwigResponse('admin/webhosting/plan/list.html.twig', ['plans' => $pagerfanta]);
+        return $this->render('admin/webhosting/plan/list.html.twig', ['plans' => $pagerfanta]);
     }
 
     public static function getSubscribedServices(): array

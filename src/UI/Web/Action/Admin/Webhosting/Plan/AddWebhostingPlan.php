@@ -10,25 +10,27 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Plan;
 
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\UI\Web\Form\Type\Webhosting\Plan\AddWebhostingPlanForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class AddWebhostingPlan
+final class AddWebhostingPlan extends AbstractController
 {
     #[Route(path: 'webhosting/plan/add', name: 'park_manager.admin.webhosting.plan.add', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory): RouteRedirectResponse | TwigResponse
+    public function __invoke(Request $request): Response
     {
-        $form = $formFactory->create(AddWebhostingPlanForm::class);
+        $form = $this->createForm(AddWebhostingPlanForm::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.plan.list')->withFlash(type: 'success', message: 'flash.webhosting_plan.added');
+            $this->addFlash('success', new TranslatableMessage('flash.webhosting_plan.added'));
+
+            return $this->redirectToRoute('park_manager.admin.webhosting.plan.list');
         }
 
-        return new TwigResponse('admin/webhosting/plan/add.html.twig', $form);
+        return $this->renderForm('admin/webhosting/plan/add.html.twig', ['form' => $form]);
     }
 }

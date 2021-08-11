@@ -49,6 +49,22 @@ final class TranslatableMessage implements TranslatableInterface, Stringable
         return $this->domain;
     }
 
+    public function __serialize(): array
+    {
+        return [
+            'message' => $this->message,
+            'parameters' => $this->parameters,
+            'domain' => $this->domain,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->message = $data['message'];
+        $this->parameters = $data['parameters'];
+        $this->domain = $data['domain'];
+    }
+
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
         return $translator->trans($this->getMessage(), $this->getParameters(), $this->getDomain(), $locale);

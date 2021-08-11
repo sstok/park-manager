@@ -12,28 +12,25 @@ namespace ParkManager\UI\Web\Action\Admin\DomainName;
 
 use ParkManager\Application\Command\DomainName\RemoveDomainName;
 use ParkManager\Domain\DomainName\DomainName;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\UI\Web\Form\Type\ConfirmationForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Translation\TranslatableMessage;
 
-final class RemoveDomainNameAction
+final class RemoveDomainNameAction extends AbstractController
 {
     #[Route(path: 'domain-name/{domainName}/remove', name: 'park_manager.admin.domain_name.remove', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request, DomainName $domainName, FormFactoryInterface $formFactory): TwigResponse | RouteRedirectResponse
+    public function __invoke(Request $request, DomainName $domainName): Response
     {
         if ($domainName->space !== null) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.list_domain_names')->withFlash(
-                type: 'error',
-                message: 'flash.domain_name_space_owned',
-                arguments: ['name' => $domainName->namePair->toString()]
-            );
+            $this->addFlash('error', new TranslatableMessage('flash.domain_name_space_owned', ['name' => $domainName->namePair]));
+
+            return $this->redirectToRoute('park_manager.admin.list_domain_names');
         }
 
-        $form = $formFactory->create(ConfirmationForm::class, null, [
+        $form = $this->createForm(ConfirmationForm::class, null, [
             'confirmation_title' => 'user_management.remove.heading',
             'confirmation_message' => new TranslatableMessage('domain_name.remove.confirm_warning', ['domainName' => $domainName->namePair->toString()]),
             'confirmation_label' => 'label.remove',
@@ -44,11 +41,11 @@ final class RemoveDomainNameAction
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.list_domain_names', ['user' => $domainName->id->toString()])
-                ->withFlash('success', 'flash.domain_name_removed')
-            ;
+            $this->addFlash('success', new TranslatableMessage('flash.domain_name_removed'));
+
+            return $this->redirectToRoute('park_manager.admin.list_domain_names', ['user' => $domainName->id->toString()]);
         }
 
-        return new TwigResponse('admin/user/remove.html.twig', ['form' => $form->createView(), 'domainName' => $domainName]);
+        return $this->renderForm('admin/user/remove.html.twig', ['form' => $form, 'domainName' => $domainName]);
     }
 }

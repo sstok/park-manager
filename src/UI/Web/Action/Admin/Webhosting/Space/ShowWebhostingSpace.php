@@ -14,15 +14,15 @@ use ParkManager\Application\Service\StorageUsage;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\UI\Web\Response\TwigResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class ShowWebhostingSpace extends AbstractController
 {
     #[Route(path: 'webhosting/space/{space}/', name: 'park_manager.admin.webhosting.space.show', methods: ['GET', 'HEAD'])]
-    public function __invoke(Request $request, Space $space): TwigResponse
+    public function __invoke(Request $request, Space $space): Response
     {
         $primary = $this->get(DomainNameRepository::class)->getPrimaryOf($space->id);
         $domainCount = $this->get(DomainNameRepository::class)->allFromSpace($space->id)->getNbResults();
@@ -30,7 +30,7 @@ final class ShowWebhostingSpace extends AbstractController
         $diskUsage = $this->get(StorageUsage::class)->getDiskUsageOf($space->id);
         $trafficUsage = new ByteSize(5, 'GiB');
 
-        return new TwigResponse('admin/webhosting/space/show.html.twig', [
+        return $this->render('admin/webhosting/space/show.html.twig', [
             'space' => $space,
             'domain_name' => $primary,
             'domain_names_count' => $domainCount,

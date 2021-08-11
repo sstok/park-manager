@@ -10,20 +10,20 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Security;
 
-use ParkManager\UI\Web\Response\TwigResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final class SecurityLoginAction extends AbstractController
 {
-    #[Route(path: '/login', name: 'park_manager.security_login', methods: ['GET'])]
-    public function __invoke(Request $request): TwigResponse
+    #[Route(path: '/login', name: 'park_manager.security_login', methods: ['GET', 'POST'])]
+    public function __invoke(Request $request): Response
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 
-        return new TwigResponse('security/login.html.twig', [
+        return $this->render('security/login.html.twig', [
             'route' => 'park_manager.security_login',
             'last_username' => $authenticationUtils->getLastUsername(),
             'error' => $authenticationUtils->getLastAuthenticationError(),
@@ -32,7 +32,7 @@ final class SecurityLoginAction extends AbstractController
 
     public static function getSubscribedServices(): array
     {
-        return [
+        return parent::getSubscribedServices() + [
             'security.authentication_utils' => AuthenticationUtils::class,
         ];
     }

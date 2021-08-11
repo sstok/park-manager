@@ -12,19 +12,19 @@ namespace ParkManager\UI\Web\Action\Admin\Webhosting\Plan;
 
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Space\SpaceRepository;
-use ParkManager\UI\Web\Response\TwigResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class ShowWebhostingPlan extends AbstractController
 {
     #[Route(path: 'webhosting/plan/{plan}/', name: 'park_manager.admin.webhosting.plan.show', methods: ['GET', 'HEAD'])]
-    public function __invoke(Request $request, Plan $plan): TwigResponse
+    public function __invoke(Request $request, Plan $plan): Response
     {
         $usedBySpacesNb = $this->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
 
-        return new TwigResponse('admin/webhosting/plan/show.html.twig', [
+        return $this->render('admin/webhosting/plan/show.html.twig', [
             'plan' => $plan,
             'spaces_count' => $usedBySpacesNb,
         ]);

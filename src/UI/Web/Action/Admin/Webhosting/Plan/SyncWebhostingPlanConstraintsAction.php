@@ -11,36 +11,35 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Plan;
 
 use ParkManager\Application\Command\Webhosting\Constraint\SyncPlanConstraints;
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Space\SpaceRepository;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class SyncWebhostingPlanConstraintsAction extends AbstractController
 {
     #[Route(path: 'webhosting/plan/{plan}/sync-constraints', name: 'park_manager.admin.webhosting.plan.sync_plan', methods: ['GET'])]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory, Plan $plan): RouteRedirectResponse
+    public function __invoke(Request $request, Plan $plan): Response
     {
         $tokenId = 'sync-plan' . $plan->id->toString();
         $token = (string) $request->query->get('token', '');
 
         if (! $this->isCsrfTokenValid($tokenId, $token)) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.plan.show', ['plan' => $plan->id->toString()])
-                ->withFlash(type: 'error', message: 'flash.invalid_token_provided')
-            ;
+            $this->addFlash('error', new TranslatableMessage('flash.invalid_token_provided'));
+
+            return $this->redirectToRoute('park_manager.admin.webhosting.plan.show', ['plan' => $plan->id->toString()]);
         }
 
         $this->container->get('security.csrf.token_manager')->removeToken($tokenId);
         $this->dispatchMessage(new SyncPlanConstraints($plan->id));
 
         $usedBySpacesNb = $this->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
+        $this->addFlash('success', new TranslatableMessage('flash.webhosting_plan.assignment_update_dispatched', ['spaces_count' => $usedBySpacesNb]));
 
-        return RouteRedirectResponse::toRoute('park_manager.admin.webhosting.plan.show', ['plan' => $plan->id->toString()])
-            ->withFlash(type: 'success', message: 'flash.webhosting_plan.assignment_update_dispatched', arguments: ['spaces_count' => $usedBySpacesNb])
-        ;
+        return $this->redirectToRoute('park_manager.admin.webhosting.plan.show', ['plan' => $plan->id->toString()]);
     }
 
     public static function getSubscribedServices(): array

@@ -10,32 +10,32 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\User;
 
+use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\User\UserId;
 use ParkManager\UI\Web\Form\Type\User\RegisterUserForm;
-use ParkManager\UI\Web\Response\RouteRedirectResponse;
-use ParkManager\UI\Web\Response\TwigResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class RegisterUserAction
+final class RegisterUserAction extends AbstractController
 {
     #[Security("is_granted('ROLE_SUPER_ADMIN')")]
-    #[Route(path: '/user/register', methods: ['GET', 'POST', 'HEAD'], name: 'park_manager.admin.register_user')]
-    public function __invoke(Request $request, FormFactoryInterface $formFactory): TwigResponse | RouteRedirectResponse
+    #[Route(path: '/user/register', name: 'park_manager.admin.register_user', methods: ['GET', 'POST', 'HEAD'])]
+    public function __invoke(Request $request): Response
     {
         $userId = UserId::create();
 
-        $form = $formFactory->create(RegisterUserForm::class, null, ['user_id' => $userId]);
+        $form = $this->createForm(RegisterUserForm::class, null, ['user_id' => $userId]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return RouteRedirectResponse::toRoute('park_manager.admin.show_user', ['user' => $userId->toString()])
-                ->withFlash('success', 'flash.user_registered')
-            ;
+            $this->addFlash('success', new TranslatableMessage('flash.user_registered'));
+
+            return $this->redirectToRoute('park_manager.admin.show_user', ['user' => $userId->toString()]);
         }
 
-        return new TwigResponse('admin/user/register.html.twig', $form);
+        return $this->renderForm('admin/user/register.html.twig', ['form' => $form]);
     }
 }
