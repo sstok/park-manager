@@ -166,6 +166,15 @@
     "laminas/laminas-code": {
         "version": "4.3.0"
     },
+    "league/flysystem": {
+        "version": "2.2.0"
+    },
+    "league/flysystem-memory": {
+        "version": "2.0.6"
+    },
+    "league/mime-type-detection": {
+        "version": "1.7.0"
+    },
     "matthiasnoback/symfony-config-test": {
         "version": "4.2.1"
     },

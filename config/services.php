@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Doctrine\Persistence\ObjectManager;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use ParkManager\Application\Service\OwnershipUsageList;
 use ParkManager\Application\Service\PdpManager;
 use ParkManager\Application\Service\RepositoryLocator;
@@ -47,6 +49,7 @@ return static function (ContainerConfigurator $c): void {
         ->autowire()
         ->private()
         ->bind('$commandBus', service('park_manager.command_bus'))
+        ->bind('$avatarStorage', service('park_manager.avatar_storage'))
         ->bind(Session::class, service('session'))
         ->bind(FormRendererInterface::class, service('twig.form.renderer'))
         ->bind(ObjectManager::class, service('doctrine.orm.default_entity_manager'))
@@ -67,6 +70,12 @@ return static function (ContainerConfigurator $c): void {
         expr(sprintf("service('%s').createPublicSuffixListStorage()", addslashes(PsrStorageFactory::class))),
         expr(sprintf("service('%s').createTopLevelDomainListStorage()", addslashes(PsrStorageFactory::class))),
     ]);
+
+    $di->set('park_manager.avatar_storage', Filesystem::class)
+        ->args([
+            inline_service(LocalFilesystemAdapter::class)->args(['%kernel.project_dir%/var/avatars'])
+        ])
+    ;
 
     // Note: Repositories are loaded separate as autowiring the entire Domain is not
     // possible. Entities and other models must not be registered as services.
