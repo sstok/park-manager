@@ -50,6 +50,7 @@ return static function (ContainerConfigurator $c): void {
         ->private()
         ->bind('$commandBus', service('park_manager.command_bus'))
         ->bind('$avatarStorage', service('park_manager.avatar_storage'))
+        ->bind('$acceptedLocales', '%accepted_locales%')
         ->bind(Session::class, service('session'))
         ->bind(FormRendererInterface::class, service('twig.form.renderer'))
         ->bind(ObjectManager::class, service('doctrine.orm.default_entity_manager'))
@@ -101,7 +102,6 @@ return static function (ContainerConfigurator $c): void {
             __DIR__ . '/../src/Infrastructure/Security/*User.php',
             __DIR__ . '/../src/Infrastructure/Security/{Permission, Voter}',
             __DIR__ . '/../src/UI/Web/Form/{ConfirmationHandler,DataTransformer,DataMapper}',
-            __DIR__ . '/../src/UI/Web/Response',
         ]);
 
     $di->set(Translator::class)

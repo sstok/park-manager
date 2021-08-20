@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Security;
 
+use ParkManager\Domain\User\User;
 use Serializable;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -39,6 +40,11 @@ final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInte
         $this->password = $password;
         $this->enabled = $enabled;
         $this->roles = $roles;
+    }
+
+    public static function fromEntity(User $user): self
+    {
+        return $user->toSecurityUser();
     }
 
     public function serialize(): string

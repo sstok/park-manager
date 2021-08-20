@@ -364,7 +364,7 @@ final class UserTest extends TestCase
         $correctToken = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
 
         $user = $this->registerUser('pass-my-word');
-        $user->disablePasswordReset();
+        $user->preferences->disablePasswordReset();
 
         self::assertFalse($user->requestPasswordReset($correctToken));
     }

@@ -36,7 +36,6 @@ use Stringable;
 #[Table(name: 'app_user')]
 #[UniqueConstraint(name: 'user_email_address_uniq', columns: ['email_address'])]
 #[UniqueConstraint(name: 'user_email_canonical_uniq', columns: ['email_canonical'])]
-
 class User implements Stringable
 {
     use TimestampableTrait;
@@ -55,14 +54,14 @@ class User implements Stringable
     #[Embedded(class: SplitTokenValueHolder::class, columnPrefix: 'email_change_')]
     public ?SplitTokenValueHolder $emailAddressChangeToken = null;
 
-    #[Column(name: 'password_reset_enabled', type: 'boolean')]
-    public bool $passwordResetEnabled = true;
-
     #[Column(name: 'password_expiration', type: 'carbon_immutable', nullable: true)]
     public ?CarbonImmutable $passwordExpiresOn = null;
 
     #[Embedded(class: SplitTokenValueHolder::class, columnPrefix: 'password_reset_')]
     public ?SplitTokenValueHolder $passwordResetToken = null;
+
+    #[Embedded(class: UserPreferences::class, columnPrefix: 'preference_')]
+    public UserPreferences $preferences;
 
     private function __construct(
         #[Id]
@@ -82,6 +81,7 @@ class User implements Stringable
         Assertion::false($email->isPattern, 'Email cannot be a pattern.', 'email');
 
         $this->roles = new ArrayCollection(static::DEFAULT_ROLES);
+        $this->preferences = new UserPreferences();
     }
 
     public static function register(UserId $id, EmailAddress $email, string $displayName, string $password): self
@@ -208,7 +208,7 @@ class User implements Stringable
      */
     public function requestPasswordReset(SplitToken $token): bool
     {
-        if (! $this->passwordResetEnabled) {
+        if (! $this->preferences->passwordResetEnabled) {
             return false;
         }
 
@@ -223,7 +223,7 @@ class User implements Stringable
 
     public function confirmPasswordReset(SplitToken $token, string $newPassword): void
     {
-        if (! $this->passwordResetEnabled) {
+        if (! $this->preferences->passwordResetEnabled) {
             return;
         }
 
@@ -241,17 +241,6 @@ class User implements Stringable
     public function clearPasswordReset(): void
     {
         $this->passwordResetToken = null;
-    }
-
-    public function disablePasswordReset(): void
-    {
-        $this->passwordResetEnabled = false;
-        $this->passwordResetToken = null;
-    }
-
-    public function enablePasswordReset(): void
-    {
-        $this->passwordResetEnabled = true;
     }
 
     public function toSecurityUser(): SecurityUser
