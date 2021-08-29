@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Locale;
 use ParkManager\Domain\TimestampableTrait;
 
 #[Entity]
@@ -25,7 +26,8 @@ class Plan
     use TimestampableTrait;
 
     /**
-     * @param array<string, mixed> $metadata
+     * @param array<string, string> $labels
+     * @param array<string, mixed>  $metadata
      */
     public function __construct(
         #[Id]
@@ -35,6 +37,9 @@ class Plan
 
         #[ORM\Embedded(class: Constraints::class, columnPrefix: 'constraint_')]
         public Constraints $constraints,
+
+        #[Column(name: 'labels', type: 'json')]
+        public array $labels = [],
 
         #[Column(name: 'metadata', type: 'json')]
         public array $metadata = []
@@ -54,7 +59,7 @@ class Plan
      * Set some (scalar) metadata information.
      *
      * This information should only contain informational values
-     * (eg. the label, description, etc).
+     * (eg. the description, etc).
      *
      * Not something that be used as a Domain policy. either,
      * don't use this for pricing or storing usage limitations.
@@ -66,8 +71,16 @@ class Plan
         $this->metadata = $metadata;
     }
 
+    /**
+     * @param @param array<string, string> $labels
+     */
+    public function withLabels(array $labels): void
+    {
+        $this->labels = $labels;
+    }
+
     public function getLabel(?string $locale = null): string
     {
-        return $this->id->toString();
+        return $this->labels[$locale ?? Locale::getDefault()] ?? $this->labels['_default'] ?? $this->id->toString();
     }
 }

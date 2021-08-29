@@ -32,6 +32,10 @@ final class UpdatePlanHandler
             $plan->withMetadata($command->metadata);
         }
 
+        if ($command->labels !== null && $command->labels !== $plan->labels) {
+            $plan->withLabels($command->labels);
+        }
+
         $this->planRepository->save($plan);
 
         if ($command->updateLinkedSpaces) {

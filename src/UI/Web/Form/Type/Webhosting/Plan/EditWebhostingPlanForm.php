@@ -12,11 +12,14 @@ namespace ParkManager\UI\Web\Form\Type\Webhosting\Plan;
 
 use ParkManager\Application\Command\Webhosting\Constraint\UpdatePlan;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
+use ParkManager\UI\Web\Form\DataTransformer\LocalizedLabelCollectionTransformer;
 use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\Webhosting\Constraint\WebhostingConstraintsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,6 +28,25 @@ final class EditWebhostingPlanForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('default_label', TextType::class, [
+                'label' => 'label.name',
+                'getter' => static fn (Plan $plan): string => $plan->labels['_default'] ?? '',
+            ])
+            ->add('localized_labels', CollectionType::class, [
+                'entry_type' => WebhostingPlanLabel::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'delete_empty' => static fn (array $data) => trim($data['value']) === '',
+                'getter' => static function (Plan $plan): array {
+                    $labels = $plan->labels;
+                    unset($labels['_default']); // Don't include '_default' in initial form collection.
+
+                    return $labels;
+                },
+                'block_prefix' => 'webhosting_localized_labels',
+                'label' => 'label.localized_names',
+                'help' => 'help.localized_names',
+            ])
             ->add('constraints', WebhostingConstraintsType::class)
             ->add('updateLinked', CheckboxType::class, [
                 'required' => false,
@@ -32,6 +54,8 @@ final class EditWebhostingPlanForm extends AbstractType
                 'getter' => static fn (): bool => false, // Unmapped, but we still need the data.
             ])
         ;
+
+        $builder->get('localized_labels')->addModelTransformer(new LocalizedLabelCollectionTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -42,6 +66,7 @@ final class EditWebhostingPlanForm extends AbstractType
                 $plan->id,
                 $data->fields['constraints'],
                 metadata: [],
+                labels: ['_default' => $data->fields['default_label']] + $data->fields['localized_labels'],
                 updateLinkedSpaces: $data->fields['updateLinked'],
             )
         );

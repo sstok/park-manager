@@ -16,13 +16,32 @@ use ParkManager\Domain\Webhosting\Constraint\PlanId;
 final class UpdatePlan
 {
     /**
-     * @param array<string, mixed>|null $metadata metadata is only updated (in full) when this value is non-null
+     * @param array<string, mixed>|null  $metadata metadata is only updated (in full) when this value is non-null
+     * @param array<string, string>|null $labels
      */
     public function __construct(
         public PlanId $id,
         public Constraints $constraints,
-        public ?array $metadata,
+        public ?array $metadata = null,
+        public ?array $labels = null,
         public bool $updateLinkedSpaces = false
     ) {
+        $this->withLabels($labels);
+    }
+
+    /**
+     * @param array<string, string>|null $labels
+     *
+     * @return $this
+     */
+    public function withLabels(?array $labels = null): self
+    {
+        if ($labels !== null) {
+            ksort($labels);
+        }
+
+        $this->labels = $labels;
+
+        return $this;
     }
 }

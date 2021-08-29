@@ -1,0 +1,32 @@
+{% extends 'form/tailwind_horizontal.html.twig' %}
+
+{% block webhosting_localized_labels_row %}
+    {% set row_attr = row_attr|merge_attr_class('sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5 sm:pb-5') %}
+    {%- set widget_attr = {attr: {'aria-describedby': id ~ "_help"}} -%}
+    <div {% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_label(form) -}}
+        <div class="mt-1 sm:mt-0 sm:col-span-2">
+            <div id="{{ id ~ "_help" }}">
+                {{- form_help(form) -}}
+                {{- form_errors(form) -}}
+            </div>
+            {{- form_widget(form, widget_attr) -}}
+        </div>
+    </div>
+{% endblock webhosting_localized_labels_row %}
+
+{% block webhosting_plan_label_widget %}
+    <div class="flex">
+        <div class="min-w-max">
+            {{ form_label(form.locale) }}
+            {{ form_errors(form.locale) }}
+            {{ form_widget(form.locale) }}
+        </div>
+
+        <div class="w-full ml-4">
+            {{ form_label(form.value) }}
+            {{ form_errors(form.value) }}
+            {{ form_widget(form.value) }}
+        </div>
+    </div>
+{% endblock webhosting_plan_label_widget %}

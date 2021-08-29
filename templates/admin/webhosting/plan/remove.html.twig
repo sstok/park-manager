@@ -1,6 +1,6 @@
 {% extends 'admin/layout.html.twig' %}
 
-{% block title %}{{ 'webhosting.plan.remove.heading'|trans({ 'id': plan.id.toString() }) }}{% endblock %}
+{% block title %}{{ 'webhosting.plan.remove.heading'|trans({ 'id': plan.getLabel() }) }}{% endblock %}
 
 {% block breadcrumbs %}
     {{ parent() }}

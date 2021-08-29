@@ -43,8 +43,10 @@ final class UpdatePlanHandlerTest extends TestCase
     {
         $plan1 = new Plan(PlanId::fromString(self::PLAN_ID1), new Constraints(['monthlyTraffic' => 10]));
         $plan1->withMetadata(['price' => 'less']);
+        $plan1->withLabels(['_default' => 'Super Goldfish Plan']);
 
         $plan2 = new Plan(PlanId::fromString(self::PLAN_ID2), new Constraints(['monthlyTraffic' => 50]));
+        $plan2->withLabels(['_default' => 'Super Plantinum Plan']);
 
         $space1 = SpaceRepositoryMock::createSpace(self::SPACE_ID_1);
         $space1->assignPlan($plan2);
@@ -62,12 +64,13 @@ final class UpdatePlanHandlerTest extends TestCase
     }
 
     /** @test */
-    public function handles_updating_plan_without_new_metadata(): void
+    public function handles_updating_plan_without_new_metadata_or_labels(): void
     {
-        $this->handler->__invoke(new UpdatePlan(PlanId::fromString(self::PLAN_ID1), $constraint = new Constraints(['monthlyTraffic' => 70]), null, false));
+        $this->handler->__invoke(new UpdatePlan(PlanId::fromString(self::PLAN_ID1), $constraint = new Constraints(['monthlyTraffic' => 70])));
 
         $plan = new Plan(PlanId::fromString(self::PLAN_ID1), $constraint);
         $plan->withMetadata(['price' => 'less']);
+        $plan->withLabels(['_default' => 'Super Goldfish Plan']);
 
         $this->planRepository->assertEntitiesCountWasSaved(1);
         $this->planRepository->assertEntitiesWereSaved([$plan]);
@@ -76,12 +79,35 @@ final class UpdatePlanHandlerTest extends TestCase
     }
 
     /** @test */
-    public function handles_updating_plan_without_linked_spaces(): void
+    public function handles_updating_plan_metadata(): void
     {
-        $this->handler->__invoke(new UpdatePlan($id = PlanId::fromString(self::PLAN_ID2), $constraint = new Constraints(['monthlyTraffic' => 70]), ['label' => 'I have'], false));
+        $this->handler->__invoke(new UpdatePlan(
+            $id = PlanId::fromString(self::PLAN_ID1),
+            $constraint = new Constraints(['monthlyTraffic' => 70]),
+            metadata: ['description' => 'I have']
+        ));
 
         $plan = new Plan($id, $constraint);
-        $plan->withMetadata(['label' => 'I have']);
+        $plan->withMetadata(['description' => 'I have']);
+        $plan->withLabels(['_default' => 'Super Goldfish Plan']);
+
+        $this->planRepository->assertEntitiesCountWasSaved(1);
+        $this->planRepository->assertEntitiesWereSaved([$plan]);
+
+        self::assertCount(0, $this->messageBus->dispatchedMessages);
+    }
+
+    /** @test */
+    public function handles_updating_plan_labels(): void
+    {
+        $this->handler->__invoke(new UpdatePlan(
+            $id = PlanId::fromString(self::PLAN_ID2),
+            $constraint = new Constraints(['monthlyTraffic' => 70]),
+            labels: ['_default' => 'Super Golddish Plan']
+        ));
+
+        $plan = new Plan($id, $constraint);
+        $plan->withLabels(['_default' => 'Super Golddish Plan']);
 
         $this->planRepository->assertEntitiesCountWasSaved(1);
         $this->planRepository->assertEntitiesWereSaved([$plan]);
@@ -92,10 +118,14 @@ final class UpdatePlanHandlerTest extends TestCase
     /** @test */
     public function handles_updating_plan_with_linked_spaces(): void
     {
-        $this->handler->__invoke(new UpdatePlan($planId = PlanId::fromString(self::PLAN_ID2), $constraint = new Constraints(['monthlyTraffic' => 70]), ['label' => 'I have'], true));
+        $this->handler->__invoke(new UpdatePlan(
+            $planId = PlanId::fromString(self::PLAN_ID2),
+            $constraint = new Constraints(['monthlyTraffic' => 70]),
+            updateLinkedSpaces: true
+        ));
 
         $plan = new Plan($planId, $constraint);
-        $plan->withMetadata(['label' => 'I have']);
+        $plan->withLabels(['_default' => 'Super Plantinum Plan']);
 
         $this->planRepository->assertEntitiesCountWasSaved(1);
         $this->planRepository->assertEntitiesWereSaved([$plan]);

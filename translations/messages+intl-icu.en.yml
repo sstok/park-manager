@@ -37,6 +37,8 @@ label:
     plan: Plan
     id: ID
     name: Name
+    locale: Locale
+    localized_names: Localized names
     description: Description
     display_name: Display name
     registered_on: Registered On
@@ -152,6 +154,7 @@ help:
     byte_size_unit: Byte size unit in powers of 1024.
     domain_name_name: A valid domain-name, without the suffix or TLD.
     domain_name_suffix: A valid domain-name suffix or ICANN supported TLD.
+    localized_names: An additional list of names in their chosen locale. When no value is available for the user's locale this will fall back to the default.
     register_user:
         email: A valid email address, must not be already used by another user.
     user_management:

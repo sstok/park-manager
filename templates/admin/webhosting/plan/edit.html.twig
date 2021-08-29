@@ -2,8 +2,9 @@
 
 {% form_theme form 'form/tailwind_horizontal.html.twig' %}
 {% form_theme form.constraints 'form/webhosting_constraints.html.twig'  %}
+{% form_theme form.localized_labels 'form/webhosting_plan_labels.html.twig' %}
 
-{% block title %}{{ 'webhosting.plan.edit.heading'|trans({'id': plan.id}) }}{% endblock %}
+{% block title %}{{ 'webhosting.plan.edit.heading'|trans({ 'id': plan.getLabel() }) }}{% endblock %}
 
 {% block breadcrumbs %}
     {{ parent() }}
@@ -34,11 +35,14 @@
                         <div>
                             <div>
                                 <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                    {{ 'webhosting.plan.edit.heading'|trans({ 'id': plan.id }) }}
+                                    {{ 'webhosting.plan.edit.heading'|trans({ 'id': plan.getLabel() }) }}
                                 </h3>
                             </div>
+
                             {{ form_errors(form) }}
                             <div class="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
+                                {{ form_row(form.default_label) }}
+                                {{ form_row(form.localized_labels) }}
                                 {{ form_row(form.constraints) }}
 
                                 <div class="rounded-md border-2 bg-yellow-100 p-4">

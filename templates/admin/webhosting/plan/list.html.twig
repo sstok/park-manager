@@ -38,7 +38,7 @@
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            {{ 'label.id'|trans }}
+                                            {{ 'label.name'|trans }}
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             {{ 'label.summary'|trans }}
@@ -55,7 +55,7 @@
                                 {% for plan in plans %}
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ plan.id.toString() }}
+                                            {{ plan.getLabel() }}
                                         </td>
                                         <td class="px-6 py-4 flex flex-col text-xs">
                                             <div><span  class="font-semibold">{{ 'label.monthly_traffic'|trans }}:</span> {{ plan.constraints.monthlyTraffic }} {{ 'byte_size.gib'|trans }}</div>
