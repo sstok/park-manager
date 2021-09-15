@@ -122,7 +122,7 @@
         "symfony": {
             "allow-contrib": true,
             "id": "01BF6RBYGY5V4S3FDMBNKXVVNS",
-            "require": "^5.3"
+            "require": "^5.4"
         }
     },
     "autoload": {

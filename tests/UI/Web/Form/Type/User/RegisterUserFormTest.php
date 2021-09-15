@@ -46,7 +46,7 @@ final class RegisterUserFormTest extends MessageFormTestCase
     /**
      * @return FormTypeExtensionInterface[]
      */
-    protected function getTypeExtensions()
+    protected function getTypeExtensions(): array
     {
         return [
             new EmailTypeDomainValueExtension(),

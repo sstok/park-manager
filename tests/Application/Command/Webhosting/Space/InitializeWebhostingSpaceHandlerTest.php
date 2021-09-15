@@ -28,8 +28,8 @@ use ParkManager\Domain\Webhosting\Space\SpaceSetupStatus;
 use ParkManager\Domain\Webhosting\Space\SystemRegistration;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
 use ParkManager\Tests\Mock\SpyingEventDispatcher;
+use ParkManager\Tests\TestLogger;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\Test\TestLogger;
 
 /**
  * @internal

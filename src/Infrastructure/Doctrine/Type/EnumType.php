@@ -38,7 +38,7 @@ abstract class EnumType extends Type
         return $platform->getIntegerTypeDeclarationSQL($column);
     }
 
-    final public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    final public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
         if ($value === null || is_scalar($value)) {
             return $value;
@@ -47,7 +47,7 @@ abstract class EnumType extends Type
         return $value->value;
     }
 
-    final public function convertToPHPValue($value, AbstractPlatform $platform)
+    final public function convertToPHPValue($value, AbstractPlatform $platform): mixed
     {
         if ($value === null) {
             return null;

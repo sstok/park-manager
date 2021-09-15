@@ -37,7 +37,7 @@ abstract class DomainIdType extends GuidType
         return $value->toString();
     }
 
-    final public function convertToPHPValue($value, AbstractPlatform $platform)
+    final public function convertToPHPValue($value, AbstractPlatform $platform): mixed
     {
         if ($value === null) {
             return null;
