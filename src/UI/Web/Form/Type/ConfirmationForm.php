@@ -111,6 +111,11 @@ final class ConfirmationForm extends AbstractType
                 }
             )
         ;
+
+        $resolver
+            ->setInfo('required_value', 'A value the "user" is required to provide to confirm the operation. Either the main identifier name of the name.')
+            ->setInfo('cancel_route', 'The route name or an array with the "name" and "arguments" used for generated the path to a cancellation.')
+        ;
     }
 
     public function getBlockPrefix(): string

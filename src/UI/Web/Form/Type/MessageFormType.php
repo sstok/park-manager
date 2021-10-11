@@ -72,10 +72,50 @@ final class MessageFormType extends AbstractType
         $resolver->setAllowedTypes('command_factory', ['callable']);
         $resolver->setAllowedTypes('model_class', ['string', 'string[]', 'null']);
         $resolver->setAllowedTypes('disable_entity_mapping', ['bool']);
-        $resolver->setAllowedTypes('exception_mapping', ['array']); // [exceptionName] => {callable | 'string'}
+        $resolver->setAllowedTypes('exception_mapping', ['array']); // [exceptionName] => {callable | 'string | DomainError'}
         $resolver->setAllowedTypes('exception_fallback', ['callable', 'null']);
         $resolver->setAllowedTypes('violation_mapping', ['string[]']);
         $resolver->setNormalizer('model_class', static fn (Options $options, $value): ?array => $value !== null ? (array) $value : null);
+
+        $resolver
+            ->setInfo('model_class', 'The data-class expected to be provided as initial data. Do not set the "data_class" option!')
+            ->setInfo('command_factory',
+                'A callable used to generate a command message for the MessageBus. ' .
+                'Prototype: (formData {CommandDto}, modelData {object|array}, form {FormInterface}) or (formData {array}, form {FormInterface}) when "disable_entity_mapping" option is `true`.'
+            )
+            ->setInfo('disable_entity_mapping', 'Disable mapping of entity-data to the form, either when no Model is provided or when mapping is not possible.')
+            ->setInfo('exception_mapping',
+                <<<'INFO'
+                    Maps exceptions thrown during the message handling to either the root form (default) or the structure of sub-forms.
+
+                    Must be an array with the exception class-name as key, and it's value be either a valid handler as described below, or an array with
+                    one or more form paths and a valid handler.
+
+                    A handler is either a translator message-id string, {\ParkManager\Domain\Exception\DomainError} object
+                    or callable with prototype ({Exception}, TranslatorInterface, {FormInterface}) returning one or more {FormError} objects.
+
+                    Examples handlers:
+
+                      * `'message-id'` maps to the root-form with the FormError being a translated version of the message-id;
+                      * `new DomainError()` maps to the root-form with the FormError being a translated version of the DomainError;
+                      * `[null => 'message-id']` maps to the root-form with the FormError being a translated version of the message-id;
+                      * `[null => new DomainError()]` maps to the root-form with the FormError being a translated version of the DomainError;
+                      * `[null => fn ($e) => new FormError(...)]` maps to the root-form with the produced FormError;
+                      * `[null => fn ($e) => [new FormError(...)]]` maps to the root-form with the produced FormError;
+                      * `['profile.name' => 'message-id']` maps to the profile.name sub-form with the FormError being a translated version of the message-id;
+                      * `['profile.name' => 'message-id', null => 'message-id']` maps the errors to their respective (sub) form;
+
+                    When no mapping for the exception is found (in order):
+
+                      * The "exception_fallback" handler is used.
+                      * When the exception is a {DomainError} object map the error the root form.
+                      * When all failed, the exception bubbles-up to the framework exception handler.
+
+                    INFO
+            )
+            ->setInfo('exception_fallback', 'A callable used when no mapping was found the for exception-class name in "exception_mapping".')
+            ->setInfo('violation_mapping', 'Map the property-path of a validator violation to a form-path (profile.name). Throws configuration error no mapping is found.')
+        ;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
