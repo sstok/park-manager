@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\User;
 
+use ParkManager\Application\Command\User\ChangePassword;
 use ParkManager\Application\Command\User\ChangePasswordHandler;
-use ParkManager\Application\Command\User\ChangeUserPassword;
 use ParkManager\Application\Event\UserPasswordWasChanged;
 use ParkManager\Domain\User\User;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
@@ -35,7 +35,7 @@ final class ChangePasswordHandlerTest extends TestCase
         );
 
         $handler = new ChangePasswordHandler($repository, $eventDispatcher);
-        $handler(new ChangeUserPassword($id = $user->id->toString(), 'new-password'));
+        $handler(new ChangePassword($id = $user->id->toString(), 'new-password'));
 
         $repository->assertEntitiesWereSaved();
         $repository->assertHasEntity($id, static function (User $user): void {

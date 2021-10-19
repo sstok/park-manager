@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\User\Admin;
 
-use ParkManager\Application\Command\User\ChangeUserPassword;
+use ParkManager\Application\Command\User\ChangePassword;
 use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\Security\ChangePasswordType;
 use Symfony\Component\Form\AbstractType;
@@ -29,7 +29,7 @@ final class ChangeUserPasswordForm extends AbstractType
     {
         $resolver->setDefault(
             'command_factory',
-            static fn (CommandDto $data, array $model) => new ChangeUserPassword(
+            static fn (CommandDto $data, array $model) => new ChangePassword(
                 $model['id'],
                 $data->fields['password'],
                 $data->fields['temporary']

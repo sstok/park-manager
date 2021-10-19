@@ -12,7 +12,7 @@ namespace ParkManager\Application\Command\User;
 
 use ParkManager\Domain\User\UserId;
 
-final class ChangeUserPassword
+final class ChangePassword
 {
     public UserId $id;
 

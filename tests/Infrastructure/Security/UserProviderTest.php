@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Security;
 
 use Carbon\CarbonImmutable;
-use ParkManager\Application\Command\User\ChangeUserPassword;
+use ParkManager\Application\Command\User\ChangePassword;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\MalformedEmailAddress;
 use ParkManager\Domain\Exception\NotFoundException;
@@ -151,7 +151,7 @@ final class UserProviderTest extends TestCase
 
         $provider->upgradePassword($securityUser, $newHashedPassword = 'look-@-me.I am the new password now');
 
-        self::assertEquals([new ChangeUserPassword($securityUser->getId(), $newHashedPassword)], $messageBus->dispatchedMessages);
+        self::assertEquals([new ChangePassword($securityUser->getId(), $newHashedPassword)], $messageBus->dispatchedMessages);
     }
 
     /** @test */

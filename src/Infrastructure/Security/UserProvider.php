@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Security;
 
-use ParkManager\Application\Command\User\ChangeUserPassword;
+use ParkManager\Application\Command\User\ChangePassword;
 use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Exception\MalformedEmailAddress;
 use ParkManager\Domain\Exception\NotFoundException;
@@ -76,7 +76,7 @@ final class UserProvider implements UserProviderInterface, PasswordUpgraderInter
                 return;
             }
 
-            $this->commandBus->dispatch(new ChangeUserPassword($id, $newHashedPassword));
+            $this->commandBus->dispatch(new ChangePassword($id, $newHashedPassword));
         } catch (Throwable) {
             // Noop
         }

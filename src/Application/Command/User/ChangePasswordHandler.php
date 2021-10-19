@@ -23,7 +23,7 @@ final class ChangePasswordHandler
     ) {
     }
 
-    public function __invoke(ChangeUserPassword $command): void
+    public function __invoke(ChangePassword $command): void
     {
         $user = $this->repository->get($command->id);
         $user->changePassword($command->password);
