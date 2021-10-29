@@ -27,13 +27,15 @@ final class OrganizationTest extends TestCase
     public function its_constructable(): void
     {
         $org = new Organization(OrganizationId::create(), 'Test Organization Inc.');
-
         self::assertSame('Test Organization Inc.', $org->name);
         self::assertCount(0, $org->members);
         self::assertFalse($org->isInternal());
 
         $org = new Organization(OrganizationId::fromString(OrganizationId::ADMIN_ORG), 'Administrators');
+        self::assertCount(0, $org->members);
+        self::assertTrue($org->isInternal());
 
+        $org = new Organization(OrganizationId::fromString(OrganizationId::SYSTEM_APP), 'SystemApplication');
         self::assertCount(0, $org->members);
         self::assertTrue($org->isInternal());
     }

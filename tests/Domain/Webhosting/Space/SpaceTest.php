@@ -15,15 +15,18 @@ use Assert\InvalidArgumentException;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use ParkManager\Domain\ByteSize;
+use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\AccessSuspensionLog;
+use ParkManager\Domain\Webhosting\Space\Exception\CannotTransferSystemWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\Space\SpaceSetupStatus;
 use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
+use ParkManager\Tests\Mock\Domain\Organization\OrganizationRepositoryMock;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
 
@@ -247,6 +250,26 @@ final class SpaceTest extends TestCase
 
         self::assertSame($owner1, $space1->owner);
         self::assertSame($owner2, $space2->owner);
+    }
+
+    /** @test */
+    public function it_forbids_transferring_from_system_owner(): void
+    {
+        $userRepository = new UserRepositoryMock([UserRepositoryMock::createUser('joHn@example.com', self::OWNER_ID2)]);
+        $organizationRepository = new OrganizationRepositoryMock($userRepository);
+
+        $systemOwner = Owner::byOrganization($organizationRepository->get(OrganizationId::fromString(OrganizationId::SYSTEM_APP)));
+        $userOwner = Owner::byUser($userRepository::createUser('joHn@example.com', self::OWNER_ID2));
+
+        $space = Space::register(
+            $id = SpaceId::fromString(self::SPACE_ID),
+            $systemOwner,
+            $this->createPlan(new Constraints())
+        );
+
+        $this->expectExceptionObject(CannotTransferSystemWebhostingSpace::withId($id));
+
+        $space->transferToOwner($userOwner);
     }
 
     /** @test */

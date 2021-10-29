@@ -153,6 +153,7 @@ class Organization
      */
     public function isInternal(): bool
     {
-        return $this->id->equals(OrganizationId::fromString(OrganizationId::ADMIN_ORG));
+        return $this->id->equals(OrganizationId::fromString(OrganizationId::ADMIN_ORG))
+               || $this->id->equals(OrganizationId::fromString(OrganizationId::SYSTEM_APP));
     }
 }

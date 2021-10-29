@@ -30,10 +30,13 @@ use Doctrine\ORM\Mapping\Table;
 use DomainException;
 use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\DomainName\DomainNamePair;
+use ParkManager\Domain\Organization\Organization;
+use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\TimestampableTrait;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
+use ParkManager\Domain\Webhosting\Space\Exception\CannotTransferSystemWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Exception\InvalidStatus;
 
 #[Entity]
@@ -169,6 +172,15 @@ class Space
 
     public function transferToOwner(Owner $owner): void
     {
+        if ($this->owner->isOrganization()) {
+            /** @var Organization $ownerEntity */
+            $ownerEntity = $this->owner->getLinkedEntity();
+
+            if ($ownerEntity->id->equals(OrganizationId::fromString(OrganizationId::SYSTEM_APP))) {
+                throw CannotTransferSystemWebhostingSpace::withId($this->id);
+            }
+        }
+
         $this->owner = $owner;
     }
 
