@@ -12,9 +12,9 @@ namespace ParkManager\Infrastructure\Security\Voter;
 
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\CacheableVoterInterface;
 
-final class SuperAdminVoter implements VoterInterface
+final class SuperAdminVoter implements CacheableVoterInterface
 {
     /**
      * @param array<int, mixed> $attributes
@@ -26,13 +26,23 @@ final class SuperAdminVoter implements VoterInterface
         $user = $token->getUser();
 
         if (! $user instanceof SecurityUser || ! $user->isEnabled()) {
-            return VoterInterface::ACCESS_ABSTAIN;
+            return self::ACCESS_ABSTAIN;
         }
 
         if ($user->isSuperAdmin()) {
-            return VoterInterface::ACCESS_GRANTED;
+            return self::ACCESS_GRANTED;
         }
 
-        return VoterInterface::ACCESS_ABSTAIN;
+        return self::ACCESS_ABSTAIN;
+    }
+
+    public function supportsAttribute(string $attribute): bool
+    {
+        return true;
+    }
+
+    public function supportsType(string $subjectType): bool
+    {
+        return true;
     }
 }
