@@ -76,6 +76,7 @@ $config
         'single_line_throw' => false,
         'static_lambda' => true,
         'strict_comparison' => false,
+        'types_spaces' => ['space' => 'single'],
         'yoda_style' => ['equal' => false, 'identical' => false],
     ])
     ->setFinder($finder);

@@ -26,7 +26,6 @@ use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
 #[Entity]
 #[Table(name: 'sub_domain')]
 #[UniqueConstraint(name: 'sub_domain_uniq', columns: ['host_id', 'name_part'])]
-
 class SubDomain
 {
     #[ManyToOne(targetEntity: Space::class)]
