@@ -33,6 +33,7 @@
         "egulias/email-validator": "^2.1",
         "jeremykendall/php-domain-parser": "^6.0",
         "league/flysystem": "^2.2",
+        "mlocati/ip-lib": "^1.17",
         "mlocati/ocsp": "^1.0",
         "nesbot/carbon": "^2.32",
         "pagerfanta/twig": "^3.1",

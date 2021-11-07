@@ -181,6 +181,9 @@
     "matthiasnoback/symfony-dependency-injection-test": {
         "version": "4.2.1"
     },
+    "mlocati/ip-lib": {
+        "version": "1.17.0"
+    },
     "mlocati/ocsp": {
         "version": "1.0.2"
     },

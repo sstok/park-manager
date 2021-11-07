@@ -13,6 +13,7 @@ doctrine:
             park_manager_organization_id: 'ParkManager\Infrastructure\Doctrine\Type\OrganizationIdType'
             park_manager_owner_id: 'ParkManager\Infrastructure\Doctrine\Type\OwnerIdType'
             #park_manager_domain_id: 'ParkManager\Infrastructure\Doctrine\Type\DomainIdType' # Don't initiate this
+            cidr: 'ParkManager\Infrastructure\Doctrine\Type\CidrType'
             carbon_immutable: 'Carbon\Doctrine\CarbonImmutableType'
 
             # Webhosting
@@ -23,11 +24,17 @@ doctrine:
             park_manager_sub_domain_id: 'ParkManager\Infrastructure\Doctrine\Type\SubDomainNameIdType'
             park_manager_webhosting_mailbox_id: 'ParkManager\Infrastructure\Doctrine\Type\MailboxIdType'
             park_manager_webhosting_mail_forward_id: 'ParkManager\Infrastructure\Doctrine\Type\MailForwardIdType'
+            park_manager_ftp_user_id: 'ParkManager\Infrastructure\Doctrine\Type\Webhosting\FtpUserIdType'
+            park_manager_ftp_access_rule_id: 'ParkManager\Infrastructure\Doctrine\Type\Webhosting\FtpAccessRuleIdType'
 
             # Enums
             park_manager_webhosting_space_setup_status: 'ParkManager\Infrastructure\Doctrine\Type\SpaceSetupStatusType'
             park_manager_webhosting_suspension_level: 'ParkManager\Infrastructure\Doctrine\Type\SuspensionLevelType'
             park_manager_organization_access_level: 'ParkManager\Infrastructure\Doctrine\Type\OrganizationAccessLevelType'
+            park_manager_ftp_access_rule_strategy: 'ParkManager\Infrastructure\Doctrine\Type\Webhosting\FtpAccessRuleStrategyType'
+
+        mapping_types:
+            cidr: string
 
     orm:
         auto_generate_proxy_classes: true
