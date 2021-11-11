@@ -36,8 +36,12 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
         parent::__construct($entityManager, $className);
     }
 
-    public function get(DomainNameId $id): DomainName
+    public function get(DomainNameId | DomainNamePair $id): DomainName
     {
+        if ($id instanceof DomainNamePair) {
+            return $this->getByName($id);
+        }
+
         $domainName = $this->find($id->toString());
 
         if ($domainName === null) {

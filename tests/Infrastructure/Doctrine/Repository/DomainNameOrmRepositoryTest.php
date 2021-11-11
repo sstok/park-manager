@@ -152,6 +152,12 @@ final class DomainNameOrmRepositoryTest extends EntityRepositoryTestCase
         self::assertSame($this->space2, $webhostingDomainName->space);
         self::assertEquals(new DomainNamePair('example', 'co.uk'), $webhostingDomainName->namePair);
         self::assertFalse($webhostingDomainName->isPrimary());
+
+        $domainName = $this->repository->get($pair = new DomainNamePair('example', 'nl'));
+
+        self::assertTrue($domainName->id->equals($this->id4), 'ID should equal');
+        self::assertNull($domainName->space);
+        self::assertEquals($pair, $domainName->namePair);
     }
 
     /** @test */

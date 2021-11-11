@@ -59,8 +59,12 @@ final class DomainNameRepositoryMock implements DomainNameRepository
         ];
     }
 
-    public function get(DomainNameId $id): DomainName
+    public function get(DomainNameId | DomainNamePair $id): DomainName
     {
+        if ($id instanceof DomainNamePair) {
+            return $this->getByName($id);
+        }
+
         return $this->mockDoGetById($id);
     }
 

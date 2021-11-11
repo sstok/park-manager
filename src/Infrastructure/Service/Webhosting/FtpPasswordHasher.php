@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+namespace ParkManager\Infrastructure\Service\Webhosting;
+
+use ParagonIE\Halite\HiddenString;
+use ParkManager\Application\Service\Webhosting\Ftp\PasswordHasher;
+use function Sodium\memzero;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+
+final class FtpPasswordHasher implements PasswordHasher
+{
+    public function __construct(private PasswordHasherInterface $hasher)
+    {
+    }
+
+    public function hash(HiddenString $password): string
+    {
+        $plainPassword = $password->getString();
+        $hashedPassword = $this->hasher->hash($password->getString());
+
+        memzero($plainPassword);
+
+        return $hashedPassword;
+    }
+}

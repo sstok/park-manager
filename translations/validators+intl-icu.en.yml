@@ -13,6 +13,7 @@ password_reset:
     access_disabled: Cannot reset password because access is disabled for this account.
 
 invalid_split_token: The verification token is invalid or expired.
+invalid_username: This value is not a valid username.
 
 expiration_date_not_in_past: Expiration date cannot be in the past.
 
@@ -52,6 +53,7 @@ domain_name:
     cannot_assign_domain_name_with_different_owner: Cannot assign domain name "{name}.{tld}" to Space. Domain name "{domain_name}.{domain_tld}" does not have same owner.
     cannot_transfer_space_primary_domain_name: Cannot transfer domain name "{domain_name}.{domain_tld}" to space { new_space }. The domain name is marked as primary of { current_space }. Remove the primary marking first.
     cannot_transfer_in_use_by_space: 'Cannot transfer domain name "{domain_name}.{domain_tld}" as it''s still assigned to one or more entities (limited to 20 per type): {entities}'
+    not_owned_by_same_space: DomainName "{ domain_name }" is not assigned to the same space.
 
 webhosting_space:
     plan_constraints_mismatch: The provided Constraints are different than the selected Plan, please check "Do not link to Plan" when the custom constraints should be used.

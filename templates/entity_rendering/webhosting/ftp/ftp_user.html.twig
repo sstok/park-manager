@@ -1,0 +1,7 @@
+{%- block short -%}
+    {{ entity.username -}}.{{ entity.domainName.toTruncatedString(30) -}}
+{%- endblock -%}
+
+{%- block detailed -%}
+    {{ entity.username -}}.{{ entity.domainName -}}
+{%- endblock -%}

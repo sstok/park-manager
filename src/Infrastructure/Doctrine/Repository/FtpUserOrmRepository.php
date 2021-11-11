@@ -54,11 +54,11 @@ final class FtpUserOrmRepository extends EntityRepository implements FtpUserRepo
     public function save(FtpUser $user): void
     {
         /** @var FtpUser|null $existing */
-        $existing = $this->createQueryBuilder('d')
+        $existing = $this->createQueryBuilder('u')
             ->andWhere('u.username = :username AND u.domainName = :domainName')
             ->getQuery()
             ->setParameter('username', $user->username)
-            ->setParameter('domainName', $existing->domainName->id->toString())
+            ->setParameter('domainName', $user->domainName->id->toString())
             ->getOneOrNullResult()
         ;
 

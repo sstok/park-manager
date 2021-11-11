@@ -32,6 +32,7 @@ use ParkManager\Infrastructure\Security\UserProvider;
 use ParkManager\Infrastructure\Security\Voter\SuperAdminVoter;
 use ParkManager\Infrastructure\Security\Voter\SwitchUserVoter;
 use ParkManager\Infrastructure\Service\EntityRenderer;
+use ParkManager\Infrastructure\Service\Webhosting\FtpPasswordHasher;
 use ParkManager\Infrastructure\Translation\Formatter\EntityLinkFormatter;
 use ParkManager\Infrastructure\Translation\Translator;
 use ParkManager\UI\Web\ArgumentResolver\ModelResolver;
@@ -42,6 +43,7 @@ use Rollerworks\Component\SplitToken\SplitTokenFactory;
 use Symfony\Component\Cache\Psr16Cache;
 use Symfony\Component\Form\FormRendererInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
 
 return static function (ContainerConfigurator $c): void {
     $di = $c->services()->defaults()
@@ -131,6 +133,8 @@ return static function (ContainerConfigurator $c): void {
         abstract_arg('Entity repository service-locator'),
         abstract_arg('Entity short-aliases, either "user" or "webhosting.space"')
     ]);
+
+    $di->set(FtpPasswordHasher::class)->args([inline_service(NativePasswordHasher::class)]);
 
 
     $di->get(SplitTokenResolver::class)

@@ -26,7 +26,7 @@ interface DomainNameRepository extends OwnerControlledRepository
     /**
      * @throws DomainNameNotFound When no domain-name was found with the id
      */
-    public function get(DomainNameId $id): DomainName;
+    public function get(DomainNameId | DomainNamePair $id): DomainName;
 
     /**
      * @throws WebhostingSpaceNotFound When no space was found with the id
