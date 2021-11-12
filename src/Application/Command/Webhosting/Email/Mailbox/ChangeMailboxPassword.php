@@ -8,11 +8,14 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Application\Service\Webhosting\Ftp;
+namespace ParkManager\Application\Command\Webhosting\Email\Mailbox;
 
 use ParagonIE\Halite\HiddenString;
+use ParkManager\Domain\Webhosting\Email\MailboxId;
 
-interface PasswordHasher
+final class ChangeMailboxPassword
 {
-    public function hash(HiddenString $password): string;
+    public function __construct(public MailboxId $id, public HiddenString $password)
+    {
+    }
 }

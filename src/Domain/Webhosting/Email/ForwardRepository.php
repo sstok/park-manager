@@ -27,6 +27,8 @@ interface ForwardRepository
      */
     public function getByName(string $address, DomainNamePair $domainNamePair): Forward;
 
+    public function hasName(string $address, DomainNamePair $domainNamePair): bool;
+
     /**
      * @return ResultSet<Forward>
      */

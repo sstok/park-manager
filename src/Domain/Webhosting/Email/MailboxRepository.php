@@ -27,6 +27,8 @@ interface MailboxRepository
      */
     public function getByName(string $address, DomainNamePair $domainNamePair): Mailbox;
 
+    public function hasName(string $address, DomainNamePair $domainNamePair): bool;
+
     /**
      * @return ResultSet<Mailbox>
      */

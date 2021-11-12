@@ -15,6 +15,7 @@ use Doctrine\ORM\NoResultException;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\ResultSet;
+use ParkManager\Domain\Webhosting\Email\Exception\AddressAlreadyExists;
 use ParkManager\Domain\Webhosting\Email\Exception\EmailForwardNotFound;
 use ParkManager\Domain\Webhosting\Email\Forward;
 use ParkManager\Domain\Webhosting\Email\ForwardId;
@@ -60,6 +61,17 @@ final class EmailForwardOrmRepository extends EntityRepository implements Forwar
         }
     }
 
+    public function hasName(string $address, DomainNamePair $domainNamePair): bool
+    {
+        try {
+            $this->getByName($address, $domainNamePair);
+
+            return true;
+        } catch (EmailForwardNotFound) {
+            return false;
+        }
+    }
+
     public function allBySpace(SpaceId $space): ResultSet
     {
         return new OrmQueryBuilderResultSet(
@@ -83,6 +95,16 @@ final class EmailForwardOrmRepository extends EntityRepository implements Forwar
 
     public function save(Forward $forward): void
     {
+        if ($forward->addressChanged) {
+            try {
+                if ($this->getByName($forward->address, $forward->domainName->namePair) !== $forward) {
+                    throw new AddressAlreadyExists($forward->address, $forward->domainName->namePair);
+                }
+            } catch (EmailForwardNotFound) {
+                // No-op.
+            }
+        }
+
         $this->_em->persist($forward);
     }
 

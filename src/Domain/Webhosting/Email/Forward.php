@@ -36,6 +36,8 @@ class Forward
     #[Column(type: 'boolean')]
     public bool $active = true;
 
+    public bool $addressChanged;
+
     private function __construct(
         #[Id]
         #[Column(type: 'park_manager_webhosting_mail_forward_id')]
@@ -53,6 +55,7 @@ class Forward
         public DomainName $domainName
     ) {
         $this->setAddress($address);
+        $this->addressChanged = false;
     }
 
     public function setAddress(string $address, ?DomainName $domainName = null): void
@@ -66,6 +69,7 @@ class Forward
 
         $this->address = $emailAddress->local;
         $this->domainName = $domainName;
+        $this->addressChanged = true;
     }
 
     public static function toAddress(ForwardId $id, Space $space, string $address, DomainName $domainName, EmailAddress $destination): self

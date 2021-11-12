@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Ftp\User;
 
-use ParkManager\Application\Service\Webhosting\Ftp\PasswordHasher;
+use ParkManager\Application\Service\PasswordHasher;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\Webhosting\Ftp\FtpUser;
 use ParkManager\Domain\Webhosting\Ftp\FtpUserRepository;

@@ -39,6 +39,8 @@ class Mailbox implements Stringable
     #[Column(type: 'boolean')]
     public bool $active = true;
 
+    public bool $addressChanged = false;
+
     /**
      * @param string $password password (in hashed format)
      */
@@ -65,6 +67,7 @@ class Mailbox implements Stringable
         public string $password
     ) {
         $this->setAddress($address);
+        $this->addressChanged = false;
     }
 
     public function setAddress(string $address, ?DomainName $domainName = null): void
@@ -79,6 +82,7 @@ class Mailbox implements Stringable
 
         $this->address = $emailAddress->local;
         $this->domainName = $domainName;
+        $this->addressChanged = true;
     }
 
     public function changePassword(string $password): void
@@ -96,7 +100,7 @@ class Mailbox implements Stringable
         $this->active = true;
     }
 
-    public function deActivate(): void
+    public function deactivate(): void
     {
         $this->active = false;
     }

@@ -8,14 +8,14 @@ declare(strict_types=1);
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-namespace ParkManager\Infrastructure\Service\Webhosting;
+namespace ParkManager\Infrastructure\Service;
 
 use ParagonIE\Halite\HiddenString;
-use ParkManager\Application\Service\Webhosting\Ftp\PasswordHasher;
+use ParkManager\Application\Service\PasswordHasher;
 use function Sodium\memzero;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
-final class FtpPasswordHasher implements PasswordHasher
+final class SymfonyPasswordHasher implements PasswordHasher
 {
     public function __construct(private PasswordHasherInterface $hasher)
     {

@@ -14,6 +14,7 @@ password_reset:
 
 invalid_split_token: The verification token is invalid or expired.
 invalid_username: This value is not a valid username.
+invalid_emailbox_name: This value is not a valid address-local name.
 
 expiration_date_not_in_past: Expiration date cannot be in the past.
 
@@ -61,3 +62,6 @@ webhosting_space:
 
 ftp:
     username_already_exists: Username { name }.{ domain_name } is already in use for by user { id }.
+
+email:
+    address_already_exists: Address { name }.{ domain_name } already exists.

@@ -15,6 +15,8 @@ use ParkManager\Application\Service\SystemGateway;
 use ParkManager\Application\Service\SystemGateway\OperationResult;
 use ParkManager\Application\Service\SystemGateway\SystemCommand;
 use ParkManager\Application\Service\SystemGateway\SystemQuery;
+use ParkManager\Application\Service\SystemGateway\Webhosting\CreateMailbox;
+use ParkManager\Application\Service\SystemGateway\Webhosting\CreateMailboxResult;
 use ParkManager\Application\Service\SystemGateway\Webhosting\RegisterSystemUser;
 use ParkManager\Application\Service\SystemGateway\Webhosting\RegisterSystemUserResult;
 
@@ -26,6 +28,7 @@ final class SystemGatewayImpl implements SystemGateway
 
         return match ($command::class) {
             RegisterSystemUser::class => new RegisterSystemUserResult(['id' => $id = mt_rand(), 'groups' => [500], 'homedir' => '/data/site_' . $id]),
+            CreateMailbox::class => new CreateMailboxResult(['storage' => '/data/mail/' . str_replace('-', '', (string) $command->getArguments()['mailbox_id'])]),
             default => throw new InvalidArgumentException(sprintf('Unsupported SystemCommand %s', $command::class)),
         };
     }

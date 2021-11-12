@@ -32,7 +32,7 @@ use ParkManager\Infrastructure\Security\UserProvider;
 use ParkManager\Infrastructure\Security\Voter\SuperAdminVoter;
 use ParkManager\Infrastructure\Security\Voter\SwitchUserVoter;
 use ParkManager\Infrastructure\Service\EntityRenderer;
-use ParkManager\Infrastructure\Service\Webhosting\FtpPasswordHasher;
+use ParkManager\Infrastructure\Service\SymfonyPasswordHasher;
 use ParkManager\Infrastructure\Translation\Formatter\EntityLinkFormatter;
 use ParkManager\Infrastructure\Translation\Translator;
 use ParkManager\UI\Web\ArgumentResolver\ModelResolver;
@@ -134,7 +134,7 @@ return static function (ContainerConfigurator $c): void {
         abstract_arg('Entity short-aliases, either "user" or "webhosting.space"')
     ]);
 
-    $di->set(FtpPasswordHasher::class)->args([inline_service(NativePasswordHasher::class)]);
+    $di->set(SymfonyPasswordHasher::class)->args([inline_service(NativePasswordHasher::class)]);
 
 
     $di->get(SplitTokenResolver::class)

@@ -13,6 +13,7 @@ namespace ParkManager\Tests\Mock\Domain\Webhosting;
 use Closure;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\ResultSet;
+use ParkManager\Domain\Webhosting\Email\Exception\AddressAlreadyExists;
 use ParkManager\Domain\Webhosting\Email\Exception\MailboxNotFound;
 use ParkManager\Domain\Webhosting\Email\Mailbox;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
@@ -34,7 +35,7 @@ final class MailboxRepositoryMock implements MailboxRepository
     protected function getFieldsIndexMapping(): array
     {
         return [
-            'full_address' => static fn (Mailbox $mailbox): string => sprintf('%s@%s', $mailbox->address, $mailbox->domainName->namePair->toString()),
+            'full_address' => static fn (Mailbox $mailbox): string => sprintf('%s@%s', $mailbox->address, $mailbox->domainName->toString()),
         ];
     }
 
@@ -58,6 +59,17 @@ final class MailboxRepositoryMock implements MailboxRepository
         return $this->mockDoGetByField('full_address', $address . '@' . $domainNamePair->toString());
     }
 
+    public function hasName(string $address, DomainNamePair $domainNamePair): bool
+    {
+        try {
+            $this->getByName($address, $domainNamePair);
+
+            return true;
+        } catch (MailboxNotFound) {
+            return false;
+        }
+    }
+
     public function allBySpace(SpaceId $space): ResultSet
     {
         return $this->mockDoGetMultiByField('space_id', $space->toString());
@@ -70,6 +82,20 @@ final class MailboxRepositoryMock implements MailboxRepository
 
     public function save(Mailbox $mailbox): void
     {
+        try {
+            if ($mailbox->addressChanged) {
+                try {
+                    if ($this->getByName($mailbox->address, $mailbox->domainName->namePair) !== $mailbox) {
+                        throw new AddressAlreadyExists($mailbox->address, $mailbox->domainName->namePair);
+                    }
+                } catch (MailboxNotFound) {
+                    // No-op.
+                }
+            }
+        } catch (MailboxNotFound) {
+            // No-op
+        }
+
         $this->mockDoSave($mailbox);
     }
 
@@ -80,6 +106,10 @@ final class MailboxRepositoryMock implements MailboxRepository
 
     protected function throwOnNotFound(mixed $key): void
     {
-        throw new MailboxNotFound($key);
+        if ($key instanceof MailboxId) {
+            throw MailboxNotFound::withId($key);
+        }
+
+        throw MailboxNotFound::withName($key);
     }
 }

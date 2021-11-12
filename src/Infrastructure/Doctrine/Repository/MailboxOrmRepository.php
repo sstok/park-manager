@@ -15,6 +15,7 @@ use Doctrine\ORM\NoResultException;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\ResultSet;
+use ParkManager\Domain\Webhosting\Email\Exception\AddressAlreadyExists;
 use ParkManager\Domain\Webhosting\Email\Exception\MailboxNotFound;
 use ParkManager\Domain\Webhosting\Email\Mailbox;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
@@ -60,6 +61,17 @@ final class MailboxOrmRepository extends EntityRepository implements MailboxRepo
         }
     }
 
+    public function hasName(string $address, DomainNamePair $domainNamePair): bool
+    {
+        try {
+            $this->getByName($address, $domainNamePair);
+
+            return true;
+        } catch (MailboxNotFound) {
+            return false;
+        }
+    }
+
     public function allBySpace(SpaceId $space): ResultSet
     {
         return new OrmQueryBuilderResultSet(
@@ -83,6 +95,16 @@ final class MailboxOrmRepository extends EntityRepository implements MailboxRepo
 
     public function save(Mailbox $mailbox): void
     {
+        if ($mailbox->addressChanged) {
+            try {
+                if ($this->getByName($mailbox->address, $mailbox->domainName->namePair) !== $mailbox) {
+                    throw new AddressAlreadyExists($mailbox->address, $mailbox->domainName->namePair);
+                }
+            } catch (MailboxNotFound) {
+                // No-op.
+            }
+        }
+
         $this->updateTimestamp($mailbox);
         $this->_em->persist($mailbox);
     }

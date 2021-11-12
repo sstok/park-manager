@@ -13,6 +13,7 @@ namespace ParkManager\Tests\Mock\Domain\Webhosting;
 use Closure;
 use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\ResultSet;
+use ParkManager\Domain\Webhosting\Email\Exception\AddressAlreadyExists;
 use ParkManager\Domain\Webhosting\Email\Exception\EmailForwardNotFound;
 use ParkManager\Domain\Webhosting\Email\Forward;
 use ParkManager\Domain\Webhosting\Email\ForwardId;
@@ -58,6 +59,17 @@ final class ForwardRepositoryMock implements ForwardRepository
         return $this->mockDoGetByField('full_address', $address . '@' . $domainNamePair->toString());
     }
 
+    public function hasName(string $address, DomainNamePair $domainNamePair): bool
+    {
+        try {
+            $this->getByName($address, $domainNamePair);
+
+            return true;
+        } catch (EmailForwardNotFound) {
+            return false;
+        }
+    }
+
     public function allBySpace(SpaceId $space): ResultSet
     {
         return $this->mockDoGetMultiByField('space_id', $space->toString());
@@ -70,6 +82,16 @@ final class ForwardRepositoryMock implements ForwardRepository
 
     public function save(Forward $forward): void
     {
+        if ($forward->addressChanged) {
+            try {
+                if ($this->getByName($forward->address, $forward->domainName->namePair) !== $forward) {
+                    throw new AddressAlreadyExists($forward->address, $forward->domainName->namePair);
+                }
+            } catch (EmailForwardNotFound) {
+                // No-op.
+            }
+        }
+
         $this->mockDoSave($forward);
     }
 
