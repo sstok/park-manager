@@ -74,10 +74,12 @@ final class HashedPasswordType extends AbstractType
             'password_options' => [],
             'password_confirm' => false,
             'password_constraints' => [],
-            'constraints' => static function (Options $options, $value): void {
+            'constraints' => static function (Options $options, $value): array {
                 if (! empty($value)) {
                     throw new InvalidOptionsException('Setting the "constraints" option for "' . self::class . '" is not possible. Use the "password_constraints" option instead.');
                 }
+
+                return [];
             },
         ]);
         $resolver->setAllowedTypes('algorithm', 'callable');

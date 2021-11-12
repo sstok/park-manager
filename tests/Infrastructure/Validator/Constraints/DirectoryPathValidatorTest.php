@@ -31,7 +31,7 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
         $this->buildViolation($constraint->pathToLongMessage)
             ->setInvalidValue($v)
             ->setCode(DirectoryPath::PATH_TO_LONG_ERROR)
-            ->setParameter('{{ max }}', 3096)
+            ->setParameter('{{ max }}', '3096')
             ->assertRaised()
         ;
     }

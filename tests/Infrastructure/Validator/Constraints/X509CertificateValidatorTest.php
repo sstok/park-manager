@@ -76,7 +76,7 @@ final class X509CertificateValidatorTest extends X509ValidatorTestCase
 
         $this->buildViolation('tls.violation.certificate_is_expired')
             ->setInvalidValue($cert)
-            ->setParameter('{expired_on}', Carbon::rawParse('2018-07-26T13:02:33.000000+0000'))
+            ->setParameters(['{expired_on}' => Carbon::rawParse('2018-07-26T13:02:33.000000+0000')])
             ->assertRaised()
         ;
     }
