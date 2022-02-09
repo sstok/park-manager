@@ -94,7 +94,7 @@ class Translator implements TranslatorInterface, LocaleAwareInterface, Translato
      */
     private function formatParameterService(ParameterValueService $value, string $locale, callable $escaper): string
     {
-        $service = $this->parameterFormatterServices->get(\get_class($value));
+        $service = $this->parameterFormatterServices->get($value::class);
         \assert($service instanceof TranslationParameterFormatter);
 
         return $service->format($value, $locale, $escaper, $this);

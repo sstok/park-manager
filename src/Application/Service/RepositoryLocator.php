@@ -42,7 +42,7 @@ final class RepositoryLocator
     public function getById(string | object $id): object
     {
         if (\is_object($id)) {
-            $id = \get_class($id);
+            $id = $id::class;
         }
 
         // Remove 'Id' from the entity.

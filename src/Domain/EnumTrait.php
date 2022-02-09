@@ -27,7 +27,7 @@ trait EnumTrait
     private static ?bool $isInt = null;
     /** @var array<string, static>|null */
     private static ?array $casesByName = null;
-    /** @var array<string | int, static>|null */
+    /** @var array<string|int, static>|null */
     private static ?array $casesByValue = null;
 
     public string $name;
