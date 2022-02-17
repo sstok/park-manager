@@ -30,6 +30,7 @@
         "doctrine/doctrine-bundle": "^2.2.3",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.9",
+        "dragonmantank/cron-expression": "^3.3",
         "egulias/email-validator": "^2.1",
         "jeremykendall/php-domain-parser": "^6.0",
         "league/flysystem": "^2.2",
