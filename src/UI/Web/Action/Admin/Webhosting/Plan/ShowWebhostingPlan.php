@@ -22,7 +22,7 @@ final class ShowWebhostingPlan extends AbstractController
     #[Route(path: 'webhosting/plan/{plan}/', name: 'park_manager.admin.webhosting.plan.show', methods: ['GET', 'HEAD'])]
     public function __invoke(Request $request, Plan $plan): Response
     {
-        $usedBySpacesNb = $this->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
+        $usedBySpacesNb = $this->container->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
 
         return $this->render('admin/webhosting/plan/show.html.twig', [
             'plan' => $plan,

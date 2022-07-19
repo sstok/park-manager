@@ -8,6 +8,6 @@
         <field name="selector" type="string" length="32" nullable="true" unique="true" />
         <field name="verifierHash" column="verifier" type="text" nullable="true" />
         <field name="expiresAt" column="expires_at" type="datetime_immutable" nullable="true" />
-        <field name="metadata" column="metadata" type="json_array" nullable="true" />
+        <field name="metadata" column="metadata" type="json" nullable="true" />
     </embeddable>
 </doctrine-mapping>

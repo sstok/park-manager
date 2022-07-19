@@ -16,8 +16,10 @@ use RuntimeException;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\Test\Traits\ValidatorExtensionTrait;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @internal
@@ -52,7 +54,7 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
             {
             }
 
-            public function getPasswordHasher($user): PasswordHasherInterface
+            public function getPasswordHasher(string | PasswordAuthenticatedUserInterface | PasswordHasherAwareInterface $user): PasswordHasherInterface
             {
                 if ($user !== SecurityUser::class) {
                     throw new RuntimeException('Nope, that is not the right user.');

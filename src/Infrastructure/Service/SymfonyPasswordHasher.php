@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Service;
 
-use ParagonIE\Halite\HiddenString;
+use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Application\Service\PasswordHasher;
-use function Sodium\memzero;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use function Sodium\memzero;
 
 final class SymfonyPasswordHasher implements PasswordHasher
 {

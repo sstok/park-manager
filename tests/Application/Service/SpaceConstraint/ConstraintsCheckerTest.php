@@ -132,7 +132,7 @@ final class ConstraintsCheckerTest extends TestCase
         $this->storageUsageRetriever->setDiskUsageOf($spaceId2, (new ByteSize(1000, 'GiB'))->increase(new ByteSize(2, 'MiB')));
         self::assertTrue($this->constraintChecker->isStorageSizeReached($spaceId2));
 
-        $this->storageUsageRetriever->setDiskUsageOf($spaceId2, (new ByteSize(9, 'GiB')));
+        $this->storageUsageRetriever->setDiskUsageOf($spaceId2, new ByteSize(9, 'GiB'));
         self::assertFalse($this->constraintChecker->isStorageSizeReached($spaceId2));
     }
 

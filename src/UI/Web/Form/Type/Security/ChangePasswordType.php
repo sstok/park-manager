@@ -14,7 +14,6 @@ use ParkManager\Application\Command\User\ChangePassword;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\MessageFormType;
-use function Sodium\memzero;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -22,6 +21,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Validator\Constraint;
+use function Sodium\memzero;
 
 final class ChangePasswordType extends AbstractType
 {

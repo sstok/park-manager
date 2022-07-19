@@ -20,7 +20,7 @@ final class ByteSizeToArrayTransformer implements DataTransformerInterface
     /**
      * @return array{isInf: bool, value: float|int, unit: string}|null
      */
-    public function transform($value): ?array
+    public function transform(mixed $value): ?array
     {
         if ($value === null) {
             return null;
@@ -47,7 +47,7 @@ final class ByteSizeToArrayTransformer implements DataTransformerInterface
         ];
     }
 
-    public function reverseTransform($value): ?ByteSize
+    public function reverseTransform(mixed $value): ?ByteSize
     {
         if (! \is_array($value)) {
             throw new UnexpectedTypeException($value, 'array');

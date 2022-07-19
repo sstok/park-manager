@@ -21,7 +21,7 @@ final class SecurityLoginAction extends AbstractController
     #[Route(path: '/login', name: 'park_manager.security_login', methods: ['GET', 'POST'])]
     public function __invoke(Request $request): Response
     {
-        $authenticationUtils = $this->get('security.authentication_utils');
+        $authenticationUtils = $this->container->get('security.authentication_utils');
 
         return $this->render('security/login.html.twig', [
             'route' => 'park_manager.security_login',

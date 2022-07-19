@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\Webhosting\Ftp\User;
 
-use ParagonIE\Halite\HiddenString;
+use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Application\Command\Webhosting\Ftp\User\RegisterFtpUser;
 use ParkManager\Application\Command\Webhosting\Ftp\User\RegisterFtpUserHandler;
 use ParkManager\Application\Service\PasswordHasher;

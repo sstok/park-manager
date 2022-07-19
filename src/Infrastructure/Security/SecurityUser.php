@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Security;
 
 use ParkManager\Domain\User\User;
-use Serializable;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -20,7 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * The SecurityUser wraps around a User-model and keeps only
  * the information related to authentication.
  */
-final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface, Serializable
+final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
     private string $id;
     private string $password;
@@ -45,26 +44,6 @@ final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInte
     public static function fromEntity(User $user): self
     {
         return $user->toSecurityUser();
-    }
-
-    public function serialize(): string
-    {
-        return serialize([
-            'id' => $this->getUserIdentifier(),
-            'password' => $this->getPassword(),
-            'enabled' => $this->isEnabled(),
-            'roles' => $this->getRoles(),
-        ]);
-    }
-
-    public function unserialize($data): void
-    {
-        $info = unserialize($data, ['allowed_classes' => false]);
-
-        $this->id = $info['id'];
-        $this->password = $info['password'];
-        $this->enabled = $info['enabled'];
-        $this->roles = $info['roles'];
     }
 
     /**
@@ -103,6 +82,16 @@ final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInte
     public function isEnabled(): bool
     {
         return $this->enabled;
+    }
+
+    public function isAccountExpired(): bool
+    {
+        return false;
+    }
+
+    public function isCredentialsExpired(): bool
+    {
+        return false;
     }
 
     public function eraseCredentials(): void

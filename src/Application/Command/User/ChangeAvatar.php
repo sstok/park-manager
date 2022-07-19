@@ -19,7 +19,7 @@ final class ChangeAvatar
     public function __construct(
         public UserId $id,
 
-        #[Image(maxSize: '60kib', mimeTypes: 'image/jpeg', maxWidth: 460, maxHeight: 460, detectCorrupted: true)]
+        #[Image(maxSize: '60kib', mimeTypes: ['image/jpeg'], maxWidth: 460, maxHeight: 460, detectCorrupted: true)]
         public SplFileInfo $tempFile
     ) {
     }

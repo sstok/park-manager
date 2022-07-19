@@ -29,7 +29,7 @@ final class ChangeAvatarHandler
         // The Command constraints already ensure the image is at expected ratio and format.
         $this->avatarStorage->write(
             $command->id->toString() . '.jpg',
-            file_get_contents((string) $command->tempFile)
+            file_get_contents((string) $command->tempFile) ?: ''
         );
     }
 }

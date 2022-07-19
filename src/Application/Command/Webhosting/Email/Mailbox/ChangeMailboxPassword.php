@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Email\Mailbox;
 
-use ParagonIE\Halite\HiddenString;
+use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 
 final class ChangeMailboxPassword

@@ -17,12 +17,13 @@ use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class SyncWebhostingPlanConstraintsAction extends AbstractController
 {
     #[Route(path: 'webhosting/plan/{plan}/sync-constraints', name: 'park_manager.admin.webhosting.plan.sync_plan', methods: ['GET'])]
-    public function __invoke(Request $request, Plan $plan): Response
+    public function __invoke(Request $request, Plan $plan, MessageBusInterface $messageBus): Response
     {
         $tokenId = 'sync-plan' . $plan->id->toString();
         $token = (string) $request->query->get('token', '');
@@ -34,9 +35,9 @@ final class SyncWebhostingPlanConstraintsAction extends AbstractController
         }
 
         $this->container->get('security.csrf.token_manager')->removeToken($tokenId);
-        $this->dispatchMessage(new SyncPlanConstraints($plan->id));
+        $messageBus->dispatch(new SyncPlanConstraints($plan->id));
 
-        $usedBySpacesNb = $this->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
+        $usedBySpacesNb = $this->container->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
         $this->addFlash('success', new TranslatableMessage('flash.webhosting_plan.assignment_update_dispatched', ['spaces_count' => $usedBySpacesNb]));
 
         return $this->redirectToRoute('park_manager.admin.webhosting.plan.show', ['plan' => $plan->id->toString()]);

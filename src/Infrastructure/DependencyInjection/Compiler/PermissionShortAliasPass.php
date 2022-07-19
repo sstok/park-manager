@@ -37,7 +37,7 @@ final class PermissionShortAliasPass implements CompilerPassInterface
 
         $typeFilter = static fn (string $class): bool => class_exists($class)
                                                      && is_a($class, Permission::class, true)
-                                                     && ! ((new ReflectionClass($class))->isAbstract());
+                                                     && ! (new ReflectionClass($class))->isAbstract();
 
         $classes = AliasResolver::findFiles($finder, $this->namespacePrefix, $typeFilter);
         $permissionShortNames = [];

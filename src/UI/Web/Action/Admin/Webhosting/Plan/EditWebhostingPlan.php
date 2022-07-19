@@ -24,7 +24,7 @@ final class EditWebhostingPlan extends AbstractController
     #[Route(path: 'webhosting/plan/{plan}/edit', name: 'park_manager.admin.webhosting.plan.edit', methods: ['GET', 'POST'])]
     public function __invoke(Request $request, Plan $plan): Response
     {
-        $usedBySpacesNb = $this->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
+        $usedBySpacesNb = $this->container->get(SpaceRepository::class)->allWithAssignedPlan($plan->id)->getNbResults();
 
         $form = $this->createForm(EditWebhostingPlanForm::class, $plan);
         $form->handleRequest($request);

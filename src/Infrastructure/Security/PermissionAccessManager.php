@@ -36,7 +36,7 @@ class PermissionAccessManager
             $token = $this->tokenStorage->getToken();
         }
 
-        if ($token === null || ! $token->isAuthenticated() || ! $token->getUser() instanceof SecurityUser) {
+        if ($token === null || ! $token->getUser() instanceof SecurityUser) {
             return PermissionDecider::DECIDE_DENY;
         }
 

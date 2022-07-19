@@ -14,6 +14,7 @@ use InvalidArgumentException;
 use ParkManager\Application\Command\Administrator\RegisterAdministrator;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Security\SecurityUser;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,10 +25,9 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+#[AsCommand('park-manager:administrator:register', 'Registers a new Administrator user')]
 final class RegisterAdministratorCommand extends Command
 {
-    protected static $defaultName = 'park-manager:administrator:register';
-
     public function __construct(
         private ValidatorInterface $validator,
         private PasswordHasherFactoryInterface $passwordHasher,
@@ -39,7 +39,6 @@ final class RegisterAdministratorCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Registers a new Administrator user')
             ->setHelp(
                 <<<'EOT'
                     The <info>%command.name%</info> command registers a new Administrator user.

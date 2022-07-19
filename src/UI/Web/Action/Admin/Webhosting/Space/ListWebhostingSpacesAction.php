@@ -23,7 +23,7 @@ final class ListWebhostingSpacesAction extends AbstractController
     #[Route(path: 'webhosting/space/', name: 'park_manager.admin.webhosting.space.list', methods: ['GET', 'HEAD'])]
     public function __invoke(Request $request): Response
     {
-        $pagerfanta = new Pagerfanta(new ResultSetAdapter($this->get(SpaceRepository::class)->all()));
+        $pagerfanta = new Pagerfanta(new ResultSetAdapter($this->container->get(SpaceRepository::class)->all()));
         $pagerfanta->setNormalizeOutOfRangePages(true);
         $pagerfanta->setMaxPerPage(10);
 

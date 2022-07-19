@@ -24,7 +24,7 @@ final class ListDomainNamesAction extends AbstractController
     #[Route(path: 'webhosting/space/{space}/domain-name/', name: 'park_manager.admin.webhosting.space.list_domain_names', methods: ['GET', 'HEAD'])]
     public function __invoke(Request $request, Space $space): Response
     {
-        $pagerfanta = new Pagerfanta(new ResultSetAdapter($this->get(DomainNameRepository::class)->allFromSpace($space->id)->setOrdering('d.primary', 'desc')));
+        $pagerfanta = new Pagerfanta(new ResultSetAdapter($this->container->get(DomainNameRepository::class)->allFromSpace($space->id)->setOrdering('d.primary', 'desc')));
         $pagerfanta->setNormalizeOutOfRangePages(true);
         $pagerfanta->setMaxPerPage(10);
 

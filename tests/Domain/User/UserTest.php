@@ -139,9 +139,9 @@ final class UserTest extends TestCase
         $user->changePassword('');
     }
 
-    ///
-    /// Email change handling
-    ///
+    //
+    // Email change handling
+    //
 
     /** @test */
     public function request_email_change(): void
@@ -231,9 +231,9 @@ final class UserTest extends TestCase
         self::assertEquals(new EmailAddress('john@example.com'), $user->email);
     }
 
-    ///
-    /// Roles
-    ///
+    //
+    // Roles
+    //
 
     /** @test */
     public function add_roles(): void
@@ -296,9 +296,9 @@ final class UserTest extends TestCase
         $user->addRole('ROLE_SUPER_ADMIN');
     }
 
-    ///
-    /// Password Reset logic
-    ///
+    //
+    // Password Reset logic
+    //
 
     /** @test */
     public function request_password_reset_confirmation_token(): void

@@ -36,7 +36,7 @@ class Translator implements TranslatorInterface, LocaleAwareInterface, Translato
     /**
      * @param array<string, mixed> $parameters
      */
-    public function trans(?string $id, array $parameters = [], string $domain = null, string $locale = null, ?callable $escaper = null): string
+    public function trans(?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null, ?callable $escaper = null): string
     {
         if ($id === null || $id === '') {
             return '';
@@ -110,7 +110,7 @@ class Translator implements TranslatorInterface, LocaleAwareInterface, Translato
         $this->wrappedTranslator->setLocale($locale);
     }
 
-    public function getCatalogue(string $locale = null): MessageCatalogueInterface
+    public function getCatalogue(?string $locale = null): MessageCatalogueInterface
     {
         return $this->wrappedTranslator->getCatalogue($locale);
     }

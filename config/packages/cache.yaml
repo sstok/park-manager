@@ -20,5 +20,5 @@ framework:
 
         pools:
             cache.public_prefix_db:
-                adapter: cache.adapter.pdo
+                adapter: cache.adapter.doctrine_dbal
                 default_lifetime: 604800 # one week, the cache should be automatically refreshed

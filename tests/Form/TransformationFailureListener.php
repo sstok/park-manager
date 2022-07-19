@@ -38,7 +38,7 @@ class TransformationFailureListener implements EventSubscriberInterface
             }
         }
 
-        $clientDataAsString = is_scalar($form->getViewData()) ? (string) $form->getViewData() : \gettype($form->getViewData());
+        $clientDataAsString = \is_scalar($form->getViewData()) ? (string) $form->getViewData() : \gettype($form->getViewData());
         $config = $form->getConfig();
 
         $messageTemplate = $config->getOption('invalid_message');

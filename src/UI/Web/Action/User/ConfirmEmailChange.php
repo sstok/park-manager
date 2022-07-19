@@ -15,14 +15,15 @@ use Rollerworks\Component\SplitToken\SplitToken;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class ConfirmEmailChange extends AbstractController
 {
     #[Route(path: '/confirm-email-address-change/{token}', name: 'park_manager.confirm_email_address_change', requirements: ['token' => '.+'], methods: ['GET', 'HEAD'])]
-    public function __invoke(Request $request, SplitToken $token): object
+    public function __invoke(Request $request, SplitToken $token, MessageBusInterface $messageBus): object
     {
-        $this->dispatchMessage(new ConfirmEmailAddressChange($token));
+        $messageBus->dispatch(new ConfirmEmailAddressChange($token));
 
         return new Response('IT IS DONE!');
     }

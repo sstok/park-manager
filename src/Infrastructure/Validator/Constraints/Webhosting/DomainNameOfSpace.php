@@ -20,7 +20,7 @@ final class DomainNameOfSpace extends Constraint
         public string $spaceProperty = 'space',
         public string $domainProperty = 'domainName',
         mixed $options = null,
-        array $groups = null,
+        ?array $groups = null,
         mixed $payload = null
     ) {
         parent::__construct($options, $groups, $payload);

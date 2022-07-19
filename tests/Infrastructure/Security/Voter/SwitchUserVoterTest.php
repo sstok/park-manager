@@ -116,8 +116,8 @@ final class SwitchUserVoterTest extends TestCase
     {
         yield [AuthenticatedVoter::IS_AUTHENTICATED_FULLY];
         yield [AuthenticatedVoter::IS_AUTHENTICATED_REMEMBERED];
-        yield [AuthenticatedVoter::IS_AUTHENTICATED_ANONYMOUSLY];
-        yield [AuthenticatedVoter::IS_ANONYMOUS];
+        yield [AuthenticatedVoter::IS_AUTHENTICATED];
+        yield [AuthenticatedVoter::PUBLIC_ACCESS];
         yield [AuthenticatedVoter::IS_IMPERSONATOR];
         yield [AuthenticatedVoter::IS_REMEMBERED];
     }

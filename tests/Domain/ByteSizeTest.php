@@ -177,13 +177,13 @@ final class ByteSizeTest extends TestCase
         yield '12.00 Gib' => [new ByteSize(12.00, 'gib'), '12.00 GiB'];
         yield '12.00Gib' => [new ByteSize(12.00, 'gib'), '12.00 GiB'];
 
-        yield '12.50 kib' => [(new ByteSize(12.50, 'kib')), '12.50 KiB'];
-        yield '12.50 Mib' => [(new ByteSize(12.50, 'mib')), '12.50 MiB'];
-        yield '12.50 Gib' => [(new ByteSize(12.50, 'gib')), '12.50 GiB'];
-        yield '12.30 kib' => [(new ByteSize(12.30, 'kib')), '12.30 KiB'];
-        yield '12.30 Mib' => [(new ByteSize(12.30, 'mib')), '12.30 MiB'];
-        yield '12.30 Gib' => [(new ByteSize(12.30, 'gib')), '12.30 GiB'];
-        yield '12.60 Gib' => [(new ByteSize(12.60, 'gib')), '12.60 GiB'];
+        yield '12.50 kib' => [new ByteSize(12.50, 'kib'), '12.50 KiB'];
+        yield '12.50 Mib' => [new ByteSize(12.50, 'mib'), '12.50 MiB'];
+        yield '12.50 Gib' => [new ByteSize(12.50, 'gib'), '12.50 GiB'];
+        yield '12.30 kib' => [new ByteSize(12.30, 'kib'), '12.30 KiB'];
+        yield '12.30 Mib' => [new ByteSize(12.30, 'mib'), '12.30 MiB'];
+        yield '12.30 Gib' => [new ByteSize(12.30, 'gib'), '12.30 GiB'];
+        yield '12.60 Gib' => [new ByteSize(12.60, 'gib'), '12.60 GiB'];
     }
 
     /**
@@ -221,43 +221,43 @@ final class ByteSizeTest extends TestCase
         self::assertFalse((new ByteSize(2, 'kib'))->equals(null));
 
         // Less than
-        self::assertTrue((new ByteSize(1, 'Mib'))->lessThan((new ByteSize(2, 'Mib'))));
-        self::assertTrue((new ByteSize(1, 'Mib'))->lessThan((new ByteSize(2, 'Gib'))));
-        self::assertTrue((new ByteSize(1, 'Gib'))->lessThan((new ByteSize(2, 'Gib'))));
+        self::assertTrue((new ByteSize(1, 'Mib'))->lessThan(new ByteSize(2, 'Mib')));
+        self::assertTrue((new ByteSize(1, 'Mib'))->lessThan(new ByteSize(2, 'Gib')));
+        self::assertTrue((new ByteSize(1, 'Gib'))->lessThan(new ByteSize(2, 'Gib')));
         self::assertTrue((new ByteSize(1, 'Gib'))->lessThan(ByteSize::inf()));
 
-        self::assertTrue((new ByteSize(1, 'Mib'))->lessThanOrEqualTo((new ByteSize(2, 'Mib'))));
-        self::assertTrue((new ByteSize(1, 'Mib'))->lessThanOrEqualTo((new ByteSize(2, 'Gib'))));
-        self::assertTrue((new ByteSize(1, 'Gib'))->lessThanOrEqualTo((new ByteSize(2, 'Gib'))));
+        self::assertTrue((new ByteSize(1, 'Mib'))->lessThanOrEqualTo(new ByteSize(2, 'Mib')));
+        self::assertTrue((new ByteSize(1, 'Mib'))->lessThanOrEqualTo(new ByteSize(2, 'Gib')));
+        self::assertTrue((new ByteSize(1, 'Gib'))->lessThanOrEqualTo(new ByteSize(2, 'Gib')));
         self::assertTrue((new ByteSize(1, 'Gib'))->lessThanOrEqualTo(ByteSize::inf()));
 
-        self::assertTrue((new ByteSize(1, 'Mib'))->lessThanOrEqualTo((new ByteSize(1, 'Mib'))));
+        self::assertTrue((new ByteSize(1, 'Mib'))->lessThanOrEqualTo(new ByteSize(1, 'Mib')));
         self::assertTrue(ByteSize::inf()->lessThanOrEqualTo(ByteSize::inf()));
 
-        self::assertFalse((new ByteSize(1, 'Gib'))->lessThan((new ByteSize(2, 'Mib'))));
-        self::assertFalse((new ByteSize(1, 'Gib'))->lessThan((new ByteSize(1, 'Gib'))));
-        self::assertFalse((new ByteSize(1, 'Gib'))->lessThanOrEqualTo((new ByteSize(2, 'Mib'))));
-        self::assertFalse(ByteSize::inf()->lessThan((new ByteSize(2, 'Gib'))));
-        self::assertFalse(ByteSize::inf()->lessThanOrEqualTo((new ByteSize(2, 'Gib'))));
+        self::assertFalse((new ByteSize(1, 'Gib'))->lessThan(new ByteSize(2, 'Mib')));
+        self::assertFalse((new ByteSize(1, 'Gib'))->lessThan(new ByteSize(1, 'Gib')));
+        self::assertFalse((new ByteSize(1, 'Gib'))->lessThanOrEqualTo(new ByteSize(2, 'Mib')));
+        self::assertFalse(ByteSize::inf()->lessThan(new ByteSize(2, 'Gib')));
+        self::assertFalse(ByteSize::inf()->lessThanOrEqualTo(new ByteSize(2, 'Gib')));
 
         // Greater than
-        self::assertTrue((new ByteSize(2, 'Mib'))->greaterThan((new ByteSize(1, 'Mib'))));
-        self::assertTrue((new ByteSize(1, 'Gib'))->greaterThan((new ByteSize(1, 'Mib'))));
-        self::assertTrue(ByteSize::inf()->greaterThan((new ByteSize(1, 'Mib'))));
+        self::assertTrue((new ByteSize(2, 'Mib'))->greaterThan(new ByteSize(1, 'Mib')));
+        self::assertTrue((new ByteSize(1, 'Gib'))->greaterThan(new ByteSize(1, 'Mib')));
+        self::assertTrue(ByteSize::inf()->greaterThan(new ByteSize(1, 'Mib')));
 
-        self::assertTrue((new ByteSize(2, 'Mib'))->greaterThanOrEqualTo((new ByteSize(1, 'Mib'))));
-        self::assertTrue((new ByteSize(1, 'Gib'))->greaterThanOrEqualTo((new ByteSize(1, 'Mib'))));
-        self::assertTrue((new ByteSize(2, 'Mib'))->greaterThanOrEqualTo((new ByteSize(2, 'Mib'))));
-        self::assertTrue(ByteSize::inf()->greaterThanOrEqualTo((new ByteSize(1, 'Mib'))));
+        self::assertTrue((new ByteSize(2, 'Mib'))->greaterThanOrEqualTo(new ByteSize(1, 'Mib')));
+        self::assertTrue((new ByteSize(1, 'Gib'))->greaterThanOrEqualTo(new ByteSize(1, 'Mib')));
+        self::assertTrue((new ByteSize(2, 'Mib'))->greaterThanOrEqualTo(new ByteSize(2, 'Mib')));
+        self::assertTrue(ByteSize::inf()->greaterThanOrEqualTo(new ByteSize(1, 'Mib')));
         self::assertTrue(ByteSize::inf()->greaterThanOrEqualTo(ByteSize::inf()));
 
-        self::assertFalse((new ByteSize(1, 'Mib'))->greaterThan((new ByteSize(2, 'Mib'))));
-        self::assertFalse((new ByteSize(1, 'Mib'))->greaterThan((new ByteSize(1, 'Mib'))));
-        self::assertFalse((new ByteSize(1, 'Mib'))->greaterThan((new ByteSize(1, 'Gib'))));
+        self::assertFalse((new ByteSize(1, 'Mib'))->greaterThan(new ByteSize(2, 'Mib')));
+        self::assertFalse((new ByteSize(1, 'Mib'))->greaterThan(new ByteSize(1, 'Mib')));
+        self::assertFalse((new ByteSize(1, 'Mib'))->greaterThan(new ByteSize(1, 'Gib')));
         self::assertFalse((new ByteSize(1, 'Mib'))->greaterThan(ByteSize::inf()));
 
-        self::assertFalse((new ByteSize(2, 'Mib'))->greaterThanOrEqualTo((new ByteSize(1, 'Gib'))));
-        self::assertFalse((new ByteSize(1, 'Mib'))->greaterThanOrEqualTo((new ByteSize(1, 'Gib'))));
+        self::assertFalse((new ByteSize(2, 'Mib'))->greaterThanOrEqualTo(new ByteSize(1, 'Gib')));
+        self::assertFalse((new ByteSize(1, 'Mib'))->greaterThanOrEqualTo(new ByteSize(1, 'Gib')));
         self::assertFalse((new ByteSize(1, 'Mib'))->greaterThanOrEqualTo(ByteSize::inf()));
     }
 

@@ -24,13 +24,13 @@ use ParkManager\Domain\OwnerRepository;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 final class AdminFixtures extends Fixture
 {
     public function __construct(
         private MessageBusInterface $commandBus,
-        private EncoderFactoryInterface $encoderFactory,
+        private PasswordHasherFactoryInterface $encoderFactory,
         private FakerGenerator $faker,
         private OrganizationRepository $organizationRepository,
         private OwnerRepository $ownerRepository
@@ -50,7 +50,7 @@ final class AdminFixtures extends Fixture
                 UserId::create(),
                 new EmailAddress($this->faker->unique()->email()),
                 $this->faker->unique()->name(),
-                $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword($this->faker->password(8), null)
+                $this->encoderFactory->getPasswordHasher(SecurityUser::class)->hash($this->faker->password(8))
             );
 
             if ($this->faker->randomDigit() % 2 === 0) {
@@ -77,6 +77,6 @@ final class AdminFixtures extends Fixture
 
     private function encodePassword(string $password): string
     {
-        return $this->encoderFactory->getEncoder(SecurityUser::class)->encodePassword($password, null);
+        return $this->encoderFactory->getPasswordHasher(SecurityUser::class)->hash($password);
     }
 }

@@ -20,7 +20,7 @@ final class Permission extends Security
      * @param class-string       $name
      * @param array<int, string> $attrs all request-attribute names to be used (in order)
      */
-    public function __construct(string $name, array $attrs = [], string $message = null, ?int $statusCode = null)
+    public function __construct(string $name, array $attrs = [], ?string $message = null, ?int $statusCode = null)
     {
         parent::__construct(
             [

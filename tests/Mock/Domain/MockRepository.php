@@ -93,7 +93,7 @@ trait MockRepository
      */
     private function getIdValue(object $entity): string
     {
-        return (string) ($this->getValueWithGetter($entity, 'id'));
+        return (string) $this->getValueWithGetter($entity, 'id');
     }
 
     private function getValueWithGetter(object $object, string | Closure $getter): mixed
@@ -407,7 +407,7 @@ trait MockRepository
     {
         Assert::assertGreaterThan(0, $this->mockWasRemoved, 'No entities were removed');
 
-        if (is_scalar(reset($entities))) {
+        if (\is_scalar(reset($entities))) {
             Assert::assertEquals($entities, array_keys($this->removedById));
         } else {
             Assert::assertEquals($entities, array_values($this->removedById));

@@ -41,7 +41,7 @@ final class ParkManagerSecurityExtensionTest extends TestCase
         $securityUser = $user->toSecurityUser();
 
         $tokenStorage = new TokenStorage();
-        $tokenStorage->setToken(new UsernamePasswordToken($securityUser, 'password=is.here', 'main', ['ROLE_USER']));
+        $tokenStorage->setToken(new UsernamePasswordToken($securityUser, 'main', ['ROLE_USER']));
         $extension = new ParkManagerSecurityExtension($tokenStorage, $userRepository);
 
         self::assertSame($user, $extension->getCurrentUser());

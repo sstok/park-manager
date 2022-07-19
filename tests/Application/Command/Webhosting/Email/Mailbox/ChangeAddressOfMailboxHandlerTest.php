@@ -21,7 +21,6 @@ use ParkManager\Domain\Webhosting\Email\Forward;
 use ParkManager\Domain\Webhosting\Email\ForwardId;
 use ParkManager\Domain\Webhosting\Email\Mailbox;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
-use ParkManager\Domain\Webhosting\Email\MailboxRepository;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\ForwardRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\MailboxRepositoryMock;
@@ -39,7 +38,7 @@ final class ChangeAddressOfMailboxHandlerTest extends TestCase
 
     private SpaceRepositoryMock $spaceRepository;
     private DomainNameRepositoryMock $domainNameRepository;
-    private MailboxRepository $mailboxRepository;
+    private MailboxRepositoryMock $mailboxRepository;
     private ChangeAddressOfMailboxHandler $handler;
 
     protected function setUp(): void

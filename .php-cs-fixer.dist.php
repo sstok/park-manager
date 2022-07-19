@@ -53,6 +53,7 @@ $config
                 'while',
             ],
         ],
+        'blank_line_between_import_groups' => false,
         'comment_to_phpdoc' => ['ignored_tags' => ['codeCoverageIgnoreStart', 'codeCoverageIgnoreEnd']],
         'concat_space' => ['spacing' => 'one'],
         'doctrine_annotation_array_assignment' => ['operator' => '='],
@@ -65,7 +66,9 @@ $config
         'no_superfluous_phpdoc_tags' => ['remove_inheritdoc' => true],
         'not_operator_with_successor_space' => true,
         'ordered_class_elements' => false,
-        'ordered_imports' => true,
+        'ordered_imports' => [
+            'imports_order' => ['const', 'class', 'function'],
+        ],
         'php_unit_method_casing' => ['case' => 'snake_case'],
         'php_unit_strict' => false,
         'php_unit_test_annotation' => ['style' => 'annotation'],

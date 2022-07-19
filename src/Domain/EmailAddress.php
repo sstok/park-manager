@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain;
 
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Embeddable;
 use const IDNA_DEFAULT;
 use const INTL_IDNA_VARIANT_UTS46;
 use const MB_CASE_LOWER;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Embeddable;
 use ParkManager\Domain\Exception\MalformedEmailAddress;
 use Stringable;
 use Symfony\Component\Mime\Address;
@@ -147,7 +147,7 @@ final class EmailAddress implements Stringable
             return $this->address;
         }
 
-        $length -= (int) floor((mb_strlen($ellipsis)) / 2);
+        $length -= (int) floor(mb_strlen($ellipsis) / 2);
 
         $text = new UnicodeString($this->address);
         $atSign = $text->indexOfLast('@');

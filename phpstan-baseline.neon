@@ -1,6 +1,26 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Property ParkManager\\\\Application\\\\Command\\\\User\\\\GrantUserRole\\:\\:\\$roles \\(array\\<int, string\\>\\) does not accept array\\<int\\|string, string\\>\\.$#"
+			count: 1
+			path: src/Application/Command/User/GrantUserRole.php
+
+		-
+			message: "#^Property ParkManager\\\\Application\\\\Command\\\\User\\\\RevokeUserRole\\:\\:\\$roles \\(array\\<int, string\\>\\) does not accept array\\<int\\|string, string\\>\\.$#"
+			count: 1
+			path: src/Application/Command/User/RevokeUserRole.php
+
+		-
+			message: "#^Parameter \\#2 \\$mailboxes of method ParkManager\\\\Application\\\\Service\\\\SpaceConstraint\\\\ConstraintsChecker\\:\\:allowNewMailboxes\\(\\) expects array\\<string, ParkManager\\\\Domain\\\\ByteSize\\>, array\\<string, ParkManager\\\\Domain\\\\ByteSize\\|null\\> given\\.$#"
+			count: 1
+			path: src/Application/Command/Webhosting/Email/Mailbox/AddMailboxHandler.php
+
+		-
+			message: "#^Parameter \\#5 \\$size of class ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\Mailbox constructor expects ParkManager\\\\Domain\\\\ByteSize, ParkManager\\\\Domain\\\\ByteSize\\|null given\\.$#"
+			count: 1
+			path: src/Application/Command/Webhosting/Email/Mailbox/AddMailboxHandler.php
+
+		-
 			message: "#^Parameter \\#3 \\$constraints of static method ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\:\\:registerWithCustomConstraints\\(\\) expects ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Constraints, ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Constraints\\|null given\\.$#"
 			count: 1
 			path: src/Application/Command/Webhosting/Space/RegisterWebhostingSpaceHandler.php
@@ -11,7 +31,7 @@ parameters:
 			path: src/Application/Command/Webhosting/SubDomain/AddSubDomainHandler.php
 
 		-
-			message: "#^Argument of an invalid type array\\<int, Traversable\\>\\|null supplied for foreach, only iterables are supported\\.$#"
+			message: "#^Argument of an invalid type array\\<int, Traversable\\<mixed, mixed\\>\\>\\|null supplied for foreach, only iterables are supported\\.$#"
 			count: 1
 			path: src/Application/Service/CombinedResultSet.php
 
@@ -19,6 +39,21 @@ parameters:
 			message: "#^Method ParkManager\\\\Application\\\\Service\\\\CombinedResultSet\\:\\:getNbResults\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
 			path: src/Application/Service/CombinedResultSet.php
+
+		-
+			message: "#^Method ParkManager\\\\Application\\\\Service\\\\RepositoryLocator\\:\\:__construct\\(\\) has parameter \\$entityShortAliases with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Application/Service/RepositoryLocator.php
+
+		-
+			message: "#^Property ParkManager\\\\Application\\\\Service\\\\RepositoryLocator\\:\\:\\$entityShortAliases type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Application/Service/RepositoryLocator.php
+
+		-
+			message: "#^Property ParkManager\\\\Application\\\\Service\\\\TLS\\\\Violation\\\\UnsupportedDomain\\:\\:\\$supported \\(array\\<int, string\\>\\) does not accept array\\<int\\|string, string\\>\\.$#"
+			count: 1
+			path: src/Application/Service/TLS/Violation/UnsupportedDomain.php
 
 		-
 			message: "#^Property ParkManager\\\\Domain\\\\DomainName\\\\DomainName\\:\\:\\$registeredAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
@@ -31,9 +66,29 @@ parameters:
 			path: src/Domain/DomainName/DomainName.php
 
 		-
+			message: "#^Method ParkManager\\\\Domain\\\\DomainName\\\\DomainNameId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: src/Domain/DomainName/DomainNameId.php
+
+		-
+			message: "#^Parameter \\#1 \\$entity of class ParkManager\\\\Domain\\\\Translation\\\\EntityLink constructor expects object, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SpaceId\\|null given\\.$#"
+			count: 1
+			path: src/Domain/DomainName/Exception/CannotAssignDomainNameWithDifferentOwner.php
+
+		-
+			message: "#^Parameter \\#1 \\$entity of class ParkManager\\\\Domain\\\\Translation\\\\EntityLink constructor expects object, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SpaceId\\|null given\\.$#"
+			count: 1
+			path: src/Domain/DomainName/Exception/CannotTransferPrimaryDomainName.php
+
+		-
 			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
 			count: 1
 			path: src/Domain/DomainName/Exception/UseDomainNameException.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Organization\\\\Organization\\:\\:findMembership\\(\\) should return array\\{ParkManager\\\\Domain\\\\Organization\\\\OrganizationMember\\|null, int\\} but returns array\\{ParkManager\\\\Domain\\\\Organization\\\\OrganizationMember, int\\|string\\}\\.$#"
+			count: 1
+			path: src/Domain/Organization/Organization.php
 
 		-
 			message: "#^Property ParkManager\\\\Domain\\\\Organization\\\\Organization\\:\\:\\$registeredAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
@@ -46,6 +101,11 @@ parameters:
 			path: src/Domain/Organization/Organization.php
 
 		-
+			message: "#^Method ParkManager\\\\Domain\\\\Organization\\\\OrganizationId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: src/Domain/Organization/OrganizationId.php
+
+		-
 			message: "#^Cannot access property \\$id on ParkManager\\\\Domain\\\\Organization\\\\Organization\\|null\\.$#"
 			count: 1
 			path: src/Domain/Owner.php
@@ -54,6 +114,11 @@ parameters:
 			message: "#^Method ParkManager\\\\Domain\\\\Owner\\:\\:getLinkedEntity\\(\\) should return ParkManager\\\\Domain\\\\Organization\\\\Organization\\|ParkManager\\\\Domain\\\\User\\\\User but returns ParkManager\\\\Domain\\\\Organization\\\\Organization\\|ParkManager\\\\Domain\\\\User\\\\User\\|null\\.$#"
 			count: 1
 			path: src/Domain/Owner.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\OwnerId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: src/Domain/OwnerId.php
 
 		-
 			message: "#^Cannot call method metadata\\(\\) on Rollerworks\\\\Component\\\\SplitToken\\\\SplitTokenValueHolder\\|null\\.$#"
@@ -71,6 +136,21 @@ parameters:
 			path: src/Domain/User/User.php
 
 		-
+			message: "#^Method ParkManager\\\\Domain\\\\User\\\\UserId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: src/Domain/User/UserId.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Plan\\:\\:withLabels\\(\\) has parameter \\$labels with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/Constraint/Plan.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(@param array\\<string, string\\> \\$labels\\)\\: Unexpected token \"@param\", expected type at offset 18$#"
+			count: 1
+			path: src/Domain/Webhosting/Constraint/Plan.php
+
+		-
 			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Plan\\:\\:\\$registeredAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
 			count: 1
 			path: src/Domain/Webhosting/Constraint/Plan.php
@@ -79,6 +159,16 @@ parameters:
 			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Plan\\:\\:\\$updatedAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
 			count: 1
 			path: src/Domain/Webhosting/Constraint/Plan.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\PlanId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/Constraint/PlanId.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\ForwardId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/Email/ForwardId.php
 
 		-
 			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\Mailbox\\:\\:\\$registeredAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
@@ -91,6 +181,26 @@ parameters:
 			path: src/Domain/Webhosting/Email/Mailbox.php
 
 		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\MailboxId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/Email/MailboxId.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\AccessRuleId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/Ftp/AccessRuleId.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\FtpUserId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/Ftp/FtpUserId.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\ScheduledTask\\\\TaskId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/ScheduledTask/TaskId.php
+
+		-
 			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\:\\:\\$registeredAt \\(Carbon\\\\CarbonImmutable\\) does not accept Carbon\\\\CarbonImmutable\\|false\\.$#"
 			count: 1
 			path: src/Domain/Webhosting/Space/Space.php
@@ -101,9 +211,34 @@ parameters:
 			path: src/Domain/Webhosting/Space/Space.php
 
 		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\SpaceId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/Space/SpaceId.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\SubDomain\\:\\:__construct\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/SubDomain.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\SubDomain\\:\\:setConfig\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/SubDomain.php
+
+		-
+			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\SubDomain\\:\\:\\$config type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/SubDomain.php
+
+		-
 			message: "#^Property ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\SubDomain\\:\\:\\$space \\(ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\) does not accept ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\|null\\.$#"
 			count: 1
 			path: src/Domain/Webhosting/SubDomain/SubDomain.php
+
+		-
+			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\SubDomainNameId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: src/Domain/Webhosting/SubDomain/SubDomainNameId.php
 
 		-
 			message: "#^Method ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\CA\\:\\:getContents\\(\\) should return string but returns string\\|false\\.$#"
@@ -156,9 +291,19 @@ parameters:
 			path: src/Domain/Webhosting/SubDomain/TLS/Certificate.php
 
 		-
+			message: "#^Method ParkManager\\\\Infrastructure\\\\DependencyInjection\\\\Compiler\\\\AliasResolver\\:\\:findFiles\\(\\) should return array\\<int, class\\-string\\> but returns array\\<int, string\\>\\.$#"
+			count: 1
+			path: src/Infrastructure/DependencyInjection/Compiler/AliasResolver.php
+
+		-
 			message: "#^Parameter \\#1 \\$string of function mb_strtolower expects string, string\\|null given\\.$#"
 			count: 1
-			path: src/Infrastructure/DependencyInjection/Compiler/PermissionShortAliasPass.php
+			path: src/Infrastructure/DependencyInjection/Compiler/AliasResolver.php
+
+		-
+			message: "#^Parameter \\#2 \\$haystack of function in_array expects array, array\\<string, string\\>\\|false given\\.$#"
+			count: 1
+			path: src/Infrastructure/DependencyInjection/Compiler/DomainModelsResolverPass.php
 
 		-
 			message: "#^Cannot call method getIterator\\(\\) on Doctrine\\\\ORM\\\\Tools\\\\Pagination\\\\Paginator\\<T\\>\\|null\\.$#"
@@ -171,9 +316,44 @@ parameters:
 			path: src/Infrastructure/Doctrine/Repository/EntityRepository.php
 
 		-
+			message: "#^Method ParkManager\\\\Infrastructure\\\\Pagerfanta\\\\ResultSetAdapter\\:\\:getNbResults\\(\\) should return int\\<0, max\\> but returns int\\.$#"
+			count: 1
+			path: src/Infrastructure/Pagerfanta/ResultSetAdapter.php
+
+		-
 			message: "#^Parameter \\#1 \\$id of method ParkManager\\\\Domain\\\\Organization\\\\OrganizationRepository\\:\\:get\\(\\) expects ParkManager\\\\Domain\\\\Organization\\\\OrganizationId, ParkManager\\\\Domain\\\\Organization\\\\OrganizationId\\|ParkManager\\\\Domain\\\\User\\\\UserId given\\.$#"
 			count: 1
 			path: src/Infrastructure/Security/Permission/IsFullOwnerDecider.php
+
+		-
+			message: "#^Method ParkManager\\\\Infrastructure\\\\Security\\\\PermissionAccessManager\\:\\:resolvePermissionExpression\\(\\) should return ParkManager\\\\Infrastructure\\\\Security\\\\Permission but returns object\\.$#"
+			count: 2
+			path: src/Infrastructure/Security/PermissionAccessManager.php
+
+		-
+			message: "#^Property ParkManager\\\\Infrastructure\\\\Security\\\\PermissionExpression\\:\\:\\$arguments \\(array\\<int, mixed\\>\\) does not accept array\\<int\\|string, mixed\\>\\.$#"
+			count: 1
+			path: src/Infrastructure/Security/PermissionExpression.php
+
+		-
+			message: "#^Method ParkManager\\\\Infrastructure\\\\Service\\\\EntityRenderer\\:\\:__construct\\(\\) has parameter \\$entityLabels with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Infrastructure/Service/EntityRenderer.php
+
+		-
+			message: "#^Property ParkManager\\\\Infrastructure\\\\Service\\\\EntityRenderer\\:\\:\\$entityLabels type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Infrastructure/Service/EntityRenderer.php
+
+		-
+			message: "#^Property ParkManager\\\\Infrastructure\\\\Service\\\\Webhosting\\\\StorageUsageImpl\\:\\:\\$connection is never read, only written\\.$#"
+			count: 1
+			path: src/Infrastructure/Service/Webhosting/StorageUsageImpl.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:get\\(\\)\\.$#"
+			count: 1
+			path: src/Infrastructure/Translation/Formatter/EntityLinkFormatter.php
 
 		-
 			message: "#^Property ParkManager\\\\Infrastructure\\\\Validator\\\\Constraints\\\\DomainNameRegistrable\\:\\:\\$lengthMessage \\(string\\) does not accept string\\|null\\.$#"
@@ -196,14 +376,79 @@ parameters:
 			path: src/Infrastructure/Validator/Constraints/DomainNameRegistrableValidator.php
 
 		-
+			message: "#^Method ParkManager\\\\Infrastructure\\\\Validator\\\\Constraints\\\\SubDomainTLSValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Infrastructure/Validator/Constraints/SubDomainTLSValidator.php
+
+		-
+			message: "#^Method ParkManager\\\\Infrastructure\\\\Validator\\\\Constraints\\\\TLSCertificateValidator\\:\\:validate\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/Infrastructure/Validator/Constraints/TLSCertificateValidator.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:get\\(\\)\\.$#"
+			count: 1
+			path: src/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidator.php
+
+		-
+			message: "#^Method ParkManager\\\\UI\\\\Web\\\\EventListener\\\\LocaleSubscriber\\:\\:__construct\\(\\) has parameter \\$acceptedLocales with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UI/Web/EventListener/LocaleSubscriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$locale of method Symfony\\\\Component\\\\HttpFoundation\\\\Request\\:\\:setLocale\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/UI/Web/EventListener/LocaleSubscriber.php
+
+		-
+			message: "#^Property ParkManager\\\\UI\\\\Web\\\\EventListener\\\\LocaleSubscriber\\:\\:\\$acceptedLocales type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UI/Web/EventListener/LocaleSubscriber.php
+
+		-
 			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
 			count: 1
 			path: src/UI/Web/Form/ChoiceList/ResultSetChoiceLoader.php
 
 		-
+			message: "#^Dead catch \\- Symfony\\\\Component\\\\Form\\\\Exception\\\\AccessException is never thrown in the try block\\.$#"
+			count: 1
+			path: src/UI/Web/Form/DataMapper/PropertyPathObjectAccessor.php
+
+		-
+			message: "#^Method ParkManager\\\\UI\\\\Web\\\\Form\\\\DataMapper\\\\PropertyPathObjectAccessor\\:\\:setValue\\(\\) has parameter \\$value with no type specified\\.$#"
+			count: 1
+			path: src/UI/Web/Form/DataMapper/PropertyPathObjectAccessor.php
+
+		-
 			message: "#^Call to an undefined method object\\:\\:mergeFrom\\(\\)\\.$#"
 			count: 1
 			path: src/UI/Web/Form/DataMapper/WebhostingConstraintDataMapper.php
+
+		-
+			message: "#^Class ParkManager\\\\UI\\\\Web\\\\Form\\\\DataTransformer\\\\ByteSizeToArrayTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
+			count: 1
+			path: src/UI/Web/Form/DataTransformer/ByteSizeToArrayTransformer.php
+
+		-
+			message: "#^Class ParkManager\\\\UI\\\\Web\\\\Form\\\\DataTransformer\\\\LocalizedLabelCollectionTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
+			count: 1
+			path: src/UI/Web/Form/DataTransformer/LocalizedLabelCollectionTransformer.php
+
+		-
+			message: "#^Method ParkManager\\\\UI\\\\Web\\\\Form\\\\DataTransformer\\\\LocalizedLabelCollectionTransformer\\:\\:reverseTransform\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UI/Web/Form/DataTransformer/LocalizedLabelCollectionTransformer.php
+
+		-
+			message: "#^Method ParkManager\\\\UI\\\\Web\\\\Form\\\\DataTransformer\\\\LocalizedLabelCollectionTransformer\\:\\:transform\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UI/Web/Form/DataTransformer/LocalizedLabelCollectionTransformer.php
+
+		-
+			message: "#^Class ParkManager\\\\UI\\\\Web\\\\Form\\\\DataTransformer\\\\SplitTokenToStringTransformer implements generic interface Symfony\\\\Component\\\\Form\\\\DataTransformerInterface but does not specify its types\\: T, R$#"
+			count: 1
+			path: src/UI/Web/Form/DataTransformer/SplitTokenToStringTransformer.php
 
 		-
 			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
@@ -217,11 +462,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$haystack of function str_contains expects string, string\\|false given\\.$#"
-			count: 1
-			path: src/UI/Web/Form/Type/PEMCertificateType.php
-
-		-
-			message: "#^Parameter \\#1 \\$string of function sodium_memzero expects string, string\\|false given\\.$#"
 			count: 1
 			path: src/UI/Web/Form/Type/PEMCertificateType.php
 
@@ -246,6 +486,16 @@ parameters:
 			path: src/UI/Web/Form/Type/PEMPrivateKeyType.php
 
 		-
+			message: "#^Method ParkManager\\\\UI\\\\Web\\\\Form\\\\Type\\\\Webhosting\\\\Plan\\\\WebhostingPlanLabel\\:\\:__construct\\(\\) has parameter \\$acceptedLocales with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Plan/WebhostingPlanLabel.php
+
+		-
+			message: "#^Property ParkManager\\\\UI\\\\Web\\\\Form\\\\Type\\\\Webhosting\\\\Plan\\\\WebhostingPlanLabel\\:\\:\\$acceptedLocales type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/UI/Web/Form/Type/Webhosting/Plan/WebhostingPlanLabel.php
+
+		-
 			message: "#^Parameter \\#2 \\$privateKey of method ParkManager\\\\Application\\\\Command\\\\Webhosting\\\\SubDomain\\\\SubDomainCommand\\:\\:andTLSInformation\\(\\) expects ParagonIE\\\\HiddenString\\\\HiddenString, ParagonIE\\\\HiddenString\\\\HiddenString\\|null given\\.$#"
 			count: 1
 			path: src/UI/Web/Form/Type/Webhosting/Subdomain/AddSubDomainType.php
@@ -266,9 +516,19 @@ parameters:
 			path: tests/Application/Command/DomainName/AssignDomainNameToSpaceHandlerTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$repositories of class ParkManager\\\\Application\\\\Service\\\\OwnershipUsageList constructor expects iterable\\<class\\-string, ParkManager\\\\Domain\\\\OwnerControlledRepository\\<mixed\\>\\>, array\\('space' \\=\\> ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\SpaceRepositoryMock\\) given\\.$#"
+			message: "#^Property ParkManager\\\\Tests\\\\Application\\\\Command\\\\DomainName\\\\AssignDomainNameToSpaceHandlerTest\\:\\:\\$ownerRepository is unused\\.$#"
+			count: 1
+			path: tests/Application/Command/DomainName/AssignDomainNameToSpaceHandlerTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$repositories of class ParkManager\\\\Application\\\\Service\\\\OwnershipUsageList constructor expects iterable\\<class\\-string, ParkManager\\\\Domain\\\\OwnerControlledRepository\\<mixed\\>\\>, array\\{space\\: ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\SpaceRepositoryMock\\} given\\.$#"
 			count: 1
 			path: tests/Application/Command/User/DeleteRegistrationHandlerTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$contents of method League\\\\Flysystem\\\\Filesystem\\:\\:write\\(\\) expects string, string\\|false given\\.$#"
+			count: 1
+			path: tests/Application/Command/User/RemoveAvatarHandlerTest.php
 
 		-
 			message: "#^Cannot call method isExpired\\(\\) on Rollerworks\\\\Component\\\\SplitToken\\\\SplitTokenValueHolder\\|null\\.$#"
@@ -286,6 +546,16 @@ parameters:
 			path: tests/Application/Command/User/RequestPasswordResetHandlerTest.php
 
 		-
+			message: "#^Call to an undefined method ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\MailboxRepository\\:\\:assertEntitiesCountWasSaved\\(\\)\\.$#"
+			count: 1
+			path: tests/Application/Command/Webhosting/Email/Mailbox/AddMailboxHandlerTest.php
+
+		-
+			message: "#^Call to an undefined method ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\MailboxRepository\\:\\:assertEntitiesWereSaved\\(\\)\\.$#"
+			count: 1
+			path: tests/Application/Command/Webhosting/Email/Mailbox/AddMailboxHandlerTest.php
+
+		-
 			message: "#^Cannot access property \\$id on ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\|null\\.$#"
 			count: 3
 			path: tests/Application/Command/Webhosting/Space/RegisterWebhostingSpaceHandlerTest.php
@@ -296,7 +566,7 @@ parameters:
 			path: tests/Application/Service/OwnershipUsageListTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$repositories of class ParkManager\\\\Application\\\\Service\\\\OwnershipUsageList constructor expects iterable\\<class\\-string, ParkManager\\\\Domain\\\\OwnerControlledRepository\\<mixed\\>\\>, array\\('space' \\=\\> ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\SpaceRepositoryMock, 'domainName' \\=\\> ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\DomainName\\\\DomainNameRepositoryMock\\) given\\.$#"
+			message: "#^Parameter \\#1 \\$repositories of class ParkManager\\\\Application\\\\Service\\\\OwnershipUsageList constructor expects iterable\\<class\\-string, ParkManager\\\\Domain\\\\OwnerControlledRepository\\<mixed\\>\\>, array\\{space\\: ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\SpaceRepositoryMock, domainName\\: ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\DomainName\\\\DomainNameRepositoryMock\\} given\\.$#"
 			count: 2
 			path: tests/Application/Service/OwnershipUsageListTest.php
 
@@ -324,6 +594,11 @@ parameters:
 			message: "#^Parameter \\#1 \\$excepted of method ParkManager\\\\Tests\\\\Application\\\\Service\\\\TLS\\\\TLSPersistenceRepositoryMock\\:\\:assertEntitiesWereSavedThat\\(\\) expects Closure\\(object\\)\\: bool, Closure\\(ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\TLS\\\\Certificate\\)\\: bool given\\.$#"
 			count: 2
 			path: tests/Application/Service/TLS/CertificateFactoryImplTest.php
+
+		-
+			message: "#^Anonymous class extends @final class ParkManager\\\\Application\\\\Service\\\\TLS\\\\KeyValidator\\.$#"
+			count: 1
+			path: tests/Application/Service/TLS/CertificateFactoryMock.php
 
 		-
 			message: "#^Cannot call method getMessage\\(\\) on Throwable\\|null\\.$#"
@@ -366,6 +641,11 @@ parameters:
 			path: tests/Application/Service/TLS/CertificateValidatorTest.php
 
 		-
+			message: "#^Static property ParkManager\\\\Tests\\\\Application\\\\Service\\\\TLS\\\\CertificateValidatorTest\\:\\:\\$cache is never read, only written\\.$#"
+			count: 1
+			path: tests/Application/Service/TLS/CertificateValidatorTest.php
+
+		-
 			message: "#^Call to an undefined method object\\:\\:getContents\\(\\)\\.$#"
 			count: 1
 			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
@@ -376,14 +656,149 @@ parameters:
 			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
 
 		-
-			message: "#^Method ParkManager\\\\Tests\\\\Application\\\\Service\\\\TLS\\\\TLSPersistenceRepositoryMock\\:\\:find\\(\\) should return T of object\\|null but returns object\\.$#"
+			message: "#^Class ParkManager\\\\Tests\\\\Application\\\\Service\\\\TLS\\\\TLSPersistenceRepositoryMock extends generic class Doctrine\\\\Persistence\\\\ObjectManagerDecorator but does not specify its types\\: TObjectManager$#"
 			count: 1
 			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
 
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\(\\) and array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>&nonEmpty will always evaluate to false\\.$#"
+			message: "#^Method ParkManager\\\\Tests\\\\Application\\\\Service\\\\TLS\\\\TLSPersistenceRepositoryMock\\:\\:find\\(\\) should return \\(T of object\\)\\|null but returns object\\.$#"
+			count: 1
+			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Application\\\\Service\\\\TLS\\\\TLSPersistenceRepositoryMock\\:\\:\\$storedByField \\(array\\<string, array\\<string, object\\>\\>\\) does not accept array\\<string, array\\<int\\|string, object\\>\\>\\.$#"
+			count: 1
+			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Application\\\\Service\\\\TLS\\\\TLSPersistenceRepositoryMock\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, object\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, object\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Application/Service/TLS/TLSPersistenceRepositoryMock.php
+
+		-
+			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertSame\\(\\) with array\\{\\} and non\\-empty\\-array\\<int\\|string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\> will always evaluate to false\\.$#"
 			count: 1
 			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Domain\\\\MockIdentity\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:153\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:153\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:189\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:189\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:222\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:222\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:258\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:258\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:29\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:29\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:305\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:305\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:344\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:344\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:49\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:49\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:81\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Property class@anonymous/tests/Domain/MockRepositoryTest\\.php\\:81\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Tests\\\\Domain\\\\MockEntity\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Domain/MockRepositoryTest.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Domain\\\\MockUuidIdentity2\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: tests/Domain/UuidTraitTest.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Domain\\\\MockUuidIdentity\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: tests/Domain/UuidTraitTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$address of static method ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\AccessRule\\:\\:createForSpace\\(\\) expects IPLib\\\\Address\\\\AddressInterface\\|IPLib\\\\Range\\\\RangeInterface, IPLib\\\\Address\\\\AddressInterface\\|null given\\.$#"
+			count: 2
+			path: tests/Domain/Webhosting/Ftp/AccessRuleTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$address of static method ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\AccessRule\\:\\:createForUser\\(\\) expects IPLib\\\\Address\\\\AddressInterface\\|IPLib\\\\Range\\\\RangeInterface, IPLib\\\\Address\\\\AddressInterface\\|null given\\.$#"
+			count: 2
+			path: tests/Domain/Webhosting/Ftp/AccessRuleTest.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Domain\\\\Webhosting\\\\ScheduledTask\\\\MomentConditionTest\\:\\:provideInvalidValues\\(\\) return type has no value type specified in iterable type iterable\\.$#"
+			count: 1
+			path: tests/Domain/Webhosting/ScheduledTask/MomentConditionTest.php
 
 		-
 			message: "#^Call to an undefined method object\\:\\:getContents\\(\\)\\.$#"
@@ -421,6 +836,26 @@ parameters:
 			path: tests/Infrastructure/Doctrine/Repository/DomainNameOrmRepositoryTest.php
 
 		-
+			message: "#^Parameter \\#3 \\$address of static method ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\AccessRule\\:\\:createForSpace\\(\\) expects IPLib\\\\Address\\\\AddressInterface\\|IPLib\\\\Range\\\\RangeInterface, IPLib\\\\Address\\\\AddressInterface\\|null given\\.$#"
+			count: 3
+			path: tests/Infrastructure/Doctrine/Repository/FtpAccessRuleOrmRepositoryTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$address of static method ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\AccessRule\\:\\:createForSpace\\(\\) expects IPLib\\\\Address\\\\AddressInterface\\|IPLib\\\\Range\\\\RangeInterface, IPLib\\\\Range\\\\RangeInterface\\|null given\\.$#"
+			count: 1
+			path: tests/Infrastructure/Doctrine/Repository/FtpAccessRuleOrmRepositoryTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$address of static method ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\AccessRule\\:\\:createForUser\\(\\) expects IPLib\\\\Address\\\\AddressInterface\\|IPLib\\\\Range\\\\RangeInterface, IPLib\\\\Address\\\\AddressInterface\\|null given\\.$#"
+			count: 1
+			path: tests/Infrastructure/Doctrine/Repository/FtpAccessRuleOrmRepositoryTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$address of static method ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\AccessRule\\:\\:createForUser\\(\\) expects IPLib\\\\Address\\\\AddressInterface\\|IPLib\\\\Range\\\\RangeInterface, IPLib\\\\Range\\\\RangeInterface\\|null given\\.$#"
+			count: 2
+			path: tests/Infrastructure/Doctrine/Repository/FtpAccessRuleOrmRepositoryTest.php
+
+		-
 			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
 			count: 1
 			path: tests/Infrastructure/Messenger/DomainNameSpaceAssignmentValidatorTest.php
@@ -431,9 +866,14 @@ parameters:
 			path: tests/Infrastructure/Security/EventListener/AuthenticationTokenPasswordChangedListenerTest.php
 
 		-
-			message: "#^Cannot call method isAuthenticated\\(\\) on Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\TokenInterface\\|null\\.$#"
+			message: "#^Class ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\DirectoryPathValidatorTest extends generic class Symfony\\\\Component\\\\Validator\\\\Test\\\\ConstraintValidatorTestCase but does not specify its types\\: T$#"
 			count: 1
-			path: tests/Infrastructure/Security/EventListener/AuthenticationTokenPasswordChangedListenerTest.php
+			path: tests/Infrastructure/Validator/Constraints/DirectoryPathValidatorTest.php
+
+		-
+			message: "#^Class ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\DomainNameRegistrableValidatorTest extends generic class Symfony\\\\Component\\\\Validator\\\\Test\\\\ConstraintValidatorTestCase but does not specify its types\\: T$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/DomainNameRegistrableValidatorTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$comparator of method SebastianBergmann\\\\Comparator\\\\Factory\\:\\:unregister\\(\\) expects SebastianBergmann\\\\Comparator\\\\Comparator, ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\ConstraintViolationComparator\\|null given\\.$#"
@@ -441,14 +881,84 @@ parameters:
 			path: tests/Infrastructure/Validator/Constraints/DomainNameRegistrableValidatorTest.php
 
 		-
+			message: "#^Class ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\DomainNameSuffixValidatorTest extends generic class Symfony\\\\Component\\\\Validator\\\\Test\\\\ConstraintValidatorTestCase but does not specify its types\\: T$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/DomainNameSuffixValidatorTest.php
+
+		-
 			message: "#^Parameter \\#1 \\$comparator of method SebastianBergmann\\\\Comparator\\\\Factory\\:\\:unregister\\(\\) expects SebastianBergmann\\\\Comparator\\\\Comparator, ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\ConstraintViolationComparator\\|null given\\.$#"
 			count: 1
 			path: tests/Infrastructure/Validator/Constraints/DomainNameSuffixValidatorTest.php
 
 		-
+			message: "#^Class ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\EmailboxNameValidatorTest extends generic class Symfony\\\\Component\\\\Validator\\\\Test\\\\ConstraintValidatorTestCase but does not specify its types\\: T$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/EmailboxNameValidatorTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$comparator of method SebastianBergmann\\\\Comparator\\\\Factory\\:\\:unregister\\(\\) expects SebastianBergmann\\\\Comparator\\\\Comparator, ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\ConstraintViolationComparator\\|null given\\.$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/EmailboxNameValidatorTest.php
+
+		-
+			message: "#^Class ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\SubDomainTLSValidatorTest extends generic class Symfony\\\\Component\\\\Validator\\\\Test\\\\ConstraintValidatorTestCase but does not specify its types\\: T$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/SubDomainTLSValidatorTest.php
+
+		-
 			message: "#^Parameter \\#1 \\$certificate of class ParkManager\\\\Infrastructure\\\\Validator\\\\Constraints\\\\X509CertificateBundle constructor expects string, string\\|null given\\.$#"
 			count: 1
 			path: tests/Infrastructure/Validator/Constraints/SubDomainTLSValidatorTest.php
+
+		-
+			message: "#^Class ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\Webhosting\\\\DomainNameOfSpaceValidatorTest extends generic class Symfony\\\\Component\\\\Validator\\\\Test\\\\ConstraintValidatorTestCase but does not specify its types\\: T$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest.php
+
+		-
+			message: "#^Constructor of an anonymous class has an unused parameter \\$domainName\\.$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest\\.php\\:111\\:\\:__construct\\(\\) has parameter \\$domainName with no type specified\\.$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest\\.php\\:111\\:\\:__construct\\(\\) has parameter \\$space with no type specified\\.$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest\\.php\\:132\\:\\:__construct\\(\\) has parameter \\$space with no type specified\\.$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest\\.php\\:151\\:\\:__construct\\(\\) has parameter \\$domainName with no type specified\\.$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest\\.php\\:151\\:\\:__construct\\(\\) has parameter \\$space with no type specified\\.$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest\\.php\\:90\\:\\:__construct\\(\\) has parameter \\$domainName with no type specified\\.$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest.php
+
+		-
+			message: "#^Method class@anonymous/tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest\\.php\\:90\\:\\:__construct\\(\\) has parameter \\$space with no type specified\\.$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/Webhosting/DomainNameOfSpaceValidatorTest.php
+
+		-
+			message: "#^Class ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\X509ValidatorTestCase extends generic class Symfony\\\\Component\\\\Validator\\\\Test\\\\ConstraintValidatorTestCase but does not specify its types\\: T$#"
+			count: 1
+			path: tests/Infrastructure/Validator/Constraints/X509ValidatorTestCase.php
 
 		-
 			message: "#^Parameter \\#1 \\$comparator of method SebastianBergmann\\\\Comparator\\\\Factory\\:\\:unregister\\(\\) expects SebastianBergmann\\\\Comparator\\\\Comparator, ParkManager\\\\Tests\\\\Infrastructure\\\\Validator\\\\Constraints\\\\ConstraintViolationComparator\\|null given\\.$#"
@@ -466,14 +976,259 @@ parameters:
 			path: tests/Mock/Application/Service/Webhosting/TrafficStats/TrafficStatisticsProviderMock.php
 
 		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\DomainName\\\\DomainNameRepositoryMock\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Domain\\\\DomainName\\\\DomainName\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Domain\\\\DomainName\\\\DomainName\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/DomainName/DomainNameRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\DomainName\\\\DomainNameRepositoryMock\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Domain\\\\DomainName\\\\DomainName\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Domain\\\\DomainName\\\\DomainName\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/DomainName/DomainNameRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\DomainName\\\\SubDomainRepositoryMock\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\SubDomain\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\SubDomain\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/DomainName/SubDomainRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\DomainName\\\\SubDomainRepositoryMock\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\SubDomain\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\SubDomain\\\\SubDomain\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/DomainName/SubDomainRepositoryMock.php
+
+		-
 			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
 			count: 1
 			path: tests/Mock/Domain/MockRepoResultSet.php
 
 		-
-			message: "#^Parameter \\#1 \\$body of class Symfony\\\\Component\\\\HttpClient\\\\Response\\\\MockResponse constructor expects iterable\\<string\\>\\|string, string\\|false given\\.$#"
+			message: "#^Cannot use array destructuring on array\\<int, string\\>\\|null\\.$#"
+			count: 1
+			path: tests/Mock/Domain/MockRepoResultSet.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Organization\\\\OrganizationRepositoryMock\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Domain\\\\Organization\\\\Organization\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Domain\\\\Organization\\\\Organization\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Organization/OrganizationRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Organization\\\\OrganizationRepositoryMock\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Domain\\\\Organization\\\\Organization\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Domain\\\\Organization\\\\Organization\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Organization/OrganizationRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\OwnerRepositoryMock\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Domain\\\\Owner\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Domain\\\\Owner\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/OwnerRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\OwnerRepositoryMock\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Domain\\\\Owner\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Domain\\\\Owner\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/OwnerRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\UserRepositoryMock\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Domain\\\\User\\\\User\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Domain\\\\User\\\\User\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/UserRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\UserRepositoryMock\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Domain\\\\User\\\\User\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Domain\\\\User\\\\User\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/UserRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\ForwardRepositoryMock\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\Forward\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\Forward\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/ForwardRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\ForwardRepositoryMock\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\Forward\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\Forward\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/ForwardRepositoryMock.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\FtpAccessRuleRepositoryMock\\:\\:getFieldsIndexMapping\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/FtpAccessRuleRepositoryMock.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\FtpAccessRuleRepositoryMock\\:\\:getFieldsIndexMultiMapping\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/FtpAccessRuleRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\FtpAccessRuleRepositoryMock\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\AccessRule\\>\\>\\) does not accept array\\<array\\<int\\|string, ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\AccessRule\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/FtpAccessRuleRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\FtpAccessRuleRepositoryMock\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\AccessRule\\>\\>\\>\\) does not accept array\\<array\\<int\\|string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\AccessRule\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/FtpAccessRuleRepositoryMock.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\FtpUserRepositoryMock\\:\\:getFieldsIndexMapping\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/FtpUserRepositoryMock.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\FtpUserRepositoryMock\\:\\:getFieldsIndexMultiMapping\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/FtpUserRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\FtpUserRepositoryMock\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\FtpUser\\>\\>\\) does not accept array\\<array\\<int\\|string, ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\FtpUser\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/FtpUserRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\FtpUserRepositoryMock\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\FtpUser\\>\\>\\>\\) does not accept array\\<array\\<int\\|string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\Ftp\\\\FtpUser\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/FtpUserRepositoryMock.php
+
+		-
+			message: "#^Dead catch \\- ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\Exception\\\\MailboxNotFound is never thrown in the try block\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/MailboxRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\MailboxRepositoryMock\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\Mailbox\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\Mailbox\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/MailboxRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\MailboxRepositoryMock\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\Mailbox\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\Email\\\\Mailbox\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/MailboxRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\PlanRepositoryMock\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Plan\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Plan\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/PlanRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\PlanRepositoryMock\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Plan\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\Constraint\\\\Plan\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/PlanRepositoryMock.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\ScheduledTaskRepositoryMock\\:\\:getFieldsIndexMultiMapping\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/ScheduledTaskRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\ScheduledTaskRepositoryMock\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Domain\\\\Webhosting\\\\ScheduledTask\\\\Task\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Domain\\\\Webhosting\\\\ScheduledTask\\\\Task\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/ScheduledTaskRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\ScheduledTaskRepositoryMock\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\ScheduledTask\\\\Task\\>\\>\\>\\) does not accept array\\<array\\<int\\|string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\ScheduledTask\\\\Task\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/ScheduledTaskRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\SpaceRepositoryMock\\:\\:\\$storedByField \\(array\\<string, array\\<string, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\>\\>\\) does not accept array\\<string, array\\<int\\|string, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/SpaceRepositoryMock.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\Mock\\\\Domain\\\\Webhosting\\\\SpaceRepositoryMock\\:\\:\\$storedMultiByField \\(array\\<string, array\\<string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\>\\>\\>\\) does not accept array\\<string, array\\<int\\|string, array\\<int, ParkManager\\\\Domain\\\\Webhosting\\\\Space\\\\Space\\>\\>\\>\\.$#"
+			count: 1
+			path: tests/Mock/Domain/Webhosting/SpaceRepositoryMock.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Mock\\\\DomainModels\\\\OwnerId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: tests/Mock/DomainModels/OwnerId.php
+
+		-
+			message: "#^Constructor of class ParkManager\\\\Tests\\\\Mock\\\\DomainModels\\\\ReportPeriod has an unused parameter \\$end\\.$#"
+			count: 1
+			path: tests/Mock/DomainModels/ReportPeriod.php
+
+		-
+			message: "#^Constructor of class ParkManager\\\\Tests\\\\Mock\\\\DomainModels\\\\ReportPeriod has an unused parameter \\$start\\.$#"
+			count: 1
+			path: tests/Mock/DomainModels/ReportPeriod.php
+
+		-
+			message: "#^Constructor of class ParkManager\\\\Tests\\\\Mock\\\\DomainModels\\\\ReportPeriod has an unused parameter \\$unit\\.$#"
+			count: 1
+			path: tests/Mock/DomainModels/ReportPeriod.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Mock\\\\DomainModels\\\\Webhosting\\\\Ftp\\\\FtpUserId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: tests/Mock/DomainModels/Webhosting/Ftp/FtpUserId.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Mock\\\\DomainModels\\\\Webhosting\\\\Space\\\\SpaceId\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: tests/Mock/DomainModels/Webhosting/Space/SpaceId.php
+
+		-
+			message: "#^Parameter \\#1 \\$body of class Symfony\\\\Component\\\\HttpClient\\\\Response\\\\MockResponse constructor expects iterable\\<string\\|Throwable\\>\\|string, string\\|false given\\.$#"
 			count: 2
 			path: tests/Mock/PdpMockProvider.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Mock\\\\SpyingEventDispatcher\\:\\:addListener\\(\\) has parameter \\$listener with no type specified\\.$#"
+			count: 1
+			path: tests/Mock/SpyingEventDispatcher.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Mock\\\\SpyingEventDispatcher\\:\\:getListenerPriority\\(\\) has parameter \\$listener with no type specified\\.$#"
+			count: 1
+			path: tests/Mock/SpyingEventDispatcher.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\Mock\\\\SpyingEventDispatcher\\:\\:removeListener\\(\\) has parameter \\$listener with no type specified\\.$#"
+			count: 1
+			path: tests/Mock/SpyingEventDispatcher.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\TestLogger\\:\\:formatMessage\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/TestLogger.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\TestLogger\\:\\:interpolateContext\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/TestLogger.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\TestLogger\\:\\:interpolateContext\\(\\) should return string but returns string\\|null\\.$#"
+			count: 1
+			path: tests/TestLogger.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\TestLogger\\:\\:log\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/TestLogger.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of function call_user_func_array expects callable\\(\\)\\: mixed, array\\{\\$this\\(ParkManager\\\\Tests\\\\TestLogger\\), string\\} given\\.$#"
+			count: 1
+			path: tests/TestLogger.php
+
+		-
+			message: "#^Parameter \\#1 \\$key of function array_key_exists expects int\\|string, string\\|null given\\.$#"
+			count: 1
+			path: tests/TestLogger.php
+
+		-
+			message: "#^Parameter \\#2 \\$level of method ParkManager\\\\Tests\\\\TestLogger\\:\\:hasRecordThatPasses\\(\\) expects 'alert'\\|'critical'\\|'debug'\\|'emergency'\\|'error'\\|'info'\\|'notice'\\|'warning', string given\\.$#"
+			count: 3
+			path: tests/TestLogger.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\TestLogger\\:\\:\\$records type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/TestLogger.php
+
+		-
+			message: "#^Property ParkManager\\\\Tests\\\\TestLogger\\:\\:\\$recordsByLevel type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/TestLogger.php
 
 		-
 			message: "#^Parameter \\#1 \\$string of function rawurldecode expects string, string\\|false given\\.$#"
@@ -511,26 +1266,6 @@ parameters:
 			path: tests/UI/Web/ArgumentResolver/ModelResolverTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$response of method ParkManager\\\\Tests\\\\UI\\\\Web\\\\EventListener\\\\RouteRedirectResponseListenerTest\\:\\:assertResponseIsRedirect\\(\\) expects object, Symfony\\\\Component\\\\HttpFoundation\\\\Response\\|null given\\.$#"
-			count: 3
-			path: tests/UI/Web/EventListener/RouteRedirectResponseListenerTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Form\\\\FormError\\|Symfony\\\\Component\\\\Form\\\\FormErrorIterator\\:\\:getCause\\(\\)\\.$#"
-			count: 1
-			path: tests/UI/Web/Form/MessageFormTestCase.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Form\\\\FormError\\|Symfony\\\\Component\\\\Form\\\\FormErrorIterator\\:\\:getMessage\\(\\)\\.$#"
-			count: 1
-			path: tests/UI/Web/Form/MessageFormTestCase.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Form\\\\FormError\\|Symfony\\\\Component\\\\Form\\\\FormErrorIterator\\:\\:getOrigin\\(\\)\\.$#"
-			count: 2
-			path: tests/UI/Web/Form/MessageFormTestCase.php
-
-		-
 			message: "#^Parameter \\#1 \\$string of function trim expects string, string\\|null given\\.$#"
 			count: 1
 			path: tests/UI/Web/Form/MessageFormTestCase.php
@@ -539,6 +1274,11 @@ parameters:
 			message: "#^Cannot call method getMessage\\(\\) on Symfony\\\\Component\\\\Form\\\\Exception\\\\TransformationFailedException\\|null\\.$#"
 			count: 1
 			path: tests/UI/Web/Form/Type/ByteSizeTypeTest.php
+
+		-
+			message: "#^Method ParkManager\\\\Tests\\\\UI\\\\Web\\\\Form\\\\Type\\\\MockIdentity\\:\\:unserialize\\(\\) has parameter \\$serialized with no type specified\\.$#"
+			count: 1
+			path: tests/UI/Web/Form/Type/EntityTypeTest.php
 
 		-
 			message: "#^Parameter \\#3 \\$label of class Symfony\\\\Component\\\\Form\\\\ChoiceList\\\\View\\\\ChoiceView constructor expects string\\|Symfony\\\\Component\\\\Translation\\\\TranslatableMessage\\|false, string\\|null given\\.$#"
@@ -556,7 +1296,7 @@ parameters:
 			path: tests/UI/Web/Form/Type/Mocks/FakePasswordHasherFactory.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Form\\\\FormError\\|Symfony\\\\Component\\\\Form\\\\FormErrorIterator\\:\\:getMessage\\(\\)\\.$#"
+			message: "#^Method ParkManager\\\\Tests\\\\UI\\\\Web\\\\Form\\\\Type\\\\Webhosting\\\\Plan\\\\EditWebhostingPlanFormTest\\:\\:getTypes\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
-			path: tests/UI/Web/Form/Type/Security/SplitTokenTypeTest.php
+			path: tests/UI/Web/Form/Type/Webhosting/Plan/EditWebhostingPlanFormTest.php
 

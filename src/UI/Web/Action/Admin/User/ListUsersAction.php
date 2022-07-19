@@ -25,7 +25,7 @@ final class ListUsersAction extends AbstractController
     #[Route(path: '/users', methods: ['GET', 'HEAD'], name: 'park_manager.admin.list_users')]
     public function __invoke(Request $request): Response
     {
-        $pagerfanta = new Pagerfanta(new ResultSetAdapter($this->get(UserRepository::class)->all()));
+        $pagerfanta = new Pagerfanta(new ResultSetAdapter($this->container->get(UserRepository::class)->all()));
         $pagerfanta->setNormalizeOutOfRangePages(true);
         $pagerfanta->setMaxPerPage(10);
 

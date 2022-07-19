@@ -49,6 +49,9 @@ final class TranslatableMessage implements TranslatableInterface, Stringable
         return $this->domain;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function __serialize(): array
     {
         return [
@@ -58,6 +61,9 @@ final class TranslatableMessage implements TranslatableInterface, Stringable
         ];
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __unserialize(array $data): void
     {
         $this->message = $data['message'];

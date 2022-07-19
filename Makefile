@@ -49,7 +49,6 @@ cs: ensure
 
 cs-check: ensure
 	sh -c "${QA_DOCKER_COMMAND} php-cs-fixer fix -vvv --diff --dry-run"
-	sh -c "docker-compose run --rm php vendor/bin/phpcs"
 
 phpstan: ensure
 	docker-compose run --user "$(shell id -u):$(shell id -g)" php bin/console cache:clear --env=dev

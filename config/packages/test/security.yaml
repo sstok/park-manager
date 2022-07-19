@@ -1,15 +1,8 @@
-services:
-    'ParkManager\Infrastructure\Security\Guard\BrowserKitAuthenticator':
-        autowire: true
-        public: false
-
 # This configuration simplifies testing URLs protected by the security mechanism
 # See https://symfony.com/doc/current/cookbook/testing/http_authentication.html
 security:
     firewalls:
         main:
             entry_point: 'ParkManager\Infrastructure\Security\Guard\BrowserKitAuthenticator'
-
-            guard:
-                authenticators:
-                    - 'ParkManager\Infrastructure\Security\Guard\BrowserKitAuthenticator'
+            custom_authenticators:
+                - 'ParkManager\Infrastructure\Security\Guard\BrowserKitAuthenticator'

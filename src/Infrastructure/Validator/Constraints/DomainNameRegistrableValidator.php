@@ -37,7 +37,7 @@ final class DomainNameRegistrableValidator extends ConstraintValidator
             return;
         }
 
-        if (! is_scalar($value)
+        if (! \is_scalar($value)
             && ! $value instanceof Domain
             && ! (\is_object($value) && method_exists($value, '__toString'))
         ) {

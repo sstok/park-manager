@@ -17,81 +17,67 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CustomCredentials;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
 /**
  * The BrowserKitAuthenticator is only to be used during BrowserKit tests.
  */
-final class BrowserKitAuthenticator extends AbstractGuardAuthenticator
+final class BrowserKitAuthenticator implements AuthenticatorInterface, AuthenticationEntryPointInterface
 {
-    private UserPasswordHasherInterface $userPasswordHasher;
-
-    public function __construct(UserPasswordHasherInterface $userPasswordHasher)
-    {
-        $this->userPasswordHasher = $userPasswordHasher;
-    }
-
-    /**
-     * @return array{username: string|null, password: string|null, password_new: string|null}
-     */
-    public function getCredentials(Request $request): array
-    {
-        return [
-            'username' => $request->server->get('TEST_AUTH_USERNAME'),
-            'password' => $request->server->get('TEST_AUTH_PASSWORD'),
-            'password_new' => $request->server->get('TEST_AUTH_PASSWORD_NEW'),
-        ];
-    }
-
-    public function getUser($credentials, UserProviderInterface $userProvider): ?SecurityUser
-    {
-        \assert(\is_array($credentials));
-        \assert($userProvider instanceof UserProvider);
-
-        $email = $credentials['username'];
-
-        if ($email === null) {
-            return null;
-        }
-
-        return $userProvider->loadUserByIdentifier($email);
-    }
-
-    /**
-     * @param array        $credentials
-     * @param SecurityUser $user
-     */
-    public function checkCredentials($credentials, UserInterface $user): bool
-    {
-        \assert(\is_array($credentials));
-        \assert($user instanceof SecurityUser);
-
-        if (! $user->isEnabled()) {
-            throw new AuthenticationException();
-        }
-
-        if (! $this->userPasswordHasher->isPasswordValid($user, $credentials['password'])
-            && ($credentials['password_new'] !== null
-             && ! $this->userPasswordHasher->isPasswordValid($user, $credentials['password_new']))
-        ) {
-            throw new BadCredentialsException();
-        }
-
-        return true;
-    }
-
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): ?Response
-    {
-        return null;
+    public function __construct(
+        private UserPasswordHasherInterface $userPasswordHasher,
+        private UserProvider $userProvider
+    ) {
     }
 
     public function start(Request $request, ?AuthenticationException $authException = null): Response
     {
         return new Response('Auth header required', 401);
+    }
+
+    public function supports(Request $request): ?bool
+    {
+        return $request->server->has('TEST_AUTH_USERNAME');
+    }
+
+    public function authenticate(Request $request): Passport
+    {
+        $credentials = [
+            'username' => $username = $request->server->get('TEST_AUTH_USERNAME'),
+            'password' => $request->server->get('TEST_AUTH_PASSWORD'),
+            'password_new' => $request->server->get('TEST_AUTH_PASSWORD_NEW'),
+        ];
+
+        return new Passport(
+            new UserBadge($username, [$this->userProvider, 'loadUserByIdentifier']),
+            new CustomCredentials([$this, 'checkCredentials'], $credentials)
+        );
+    }
+
+    public function checkCredentials(array $credentials, SecurityUser $user): bool
+    {
+        if ($this->userPasswordHasher->isPasswordValid($user, $credentials['password'])) {
+            return true;
+        }
+
+        return $credentials['password_new'] !== null
+               && $this->userPasswordHasher->isPasswordValid($user, $credentials['password_new']);
+    }
+
+    public function createToken(Passport $passport, string $firewallName): TokenInterface
+    {
+        return new UsernamePasswordToken($passport->getUser(), $firewallName, $passport->getUser()->getRoles());
+    }
+
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): ?Response
+    {
+        return null;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
@@ -101,15 +87,5 @@ final class BrowserKitAuthenticator extends AbstractGuardAuthenticator
         ];
 
         return new JsonResponse($data, Response::HTTP_FORBIDDEN);
-    }
-
-    public function supportsRememberMe(): bool
-    {
-        return false;
-    }
-
-    public function supports(Request $request): bool
-    {
-        return $request->server->has('TEST_AUTH_USERNAME');
     }
 }

@@ -70,6 +70,8 @@ final class DomainNameOfSpaceValidator extends ConstraintValidator
 
     private function getSpace(object $value, string | PropertyPath $propertyPath): Space
     {
+        $propertyPath = (string) $propertyPath;
+
         // Regular property path. Otherwise we need to locate the repository of the EntityId VO.
         if ($propertyPath[0] !== '@') {
             return $this->spaceRepository->get($this->propertyAccessor->getValue($value, $propertyPath));

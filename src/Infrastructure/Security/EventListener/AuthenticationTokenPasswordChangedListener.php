@@ -15,7 +15,6 @@ use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
 /**
  * Updates the current AuthenticationToken when the *current* user changes
@@ -33,7 +32,7 @@ final class AuthenticationTokenPasswordChangedListener
     {
         $token = $this->tokenStorage->getToken();
 
-        if ($token === null || ! $token->isAuthenticated()) {
+        if ($token === null) {
             return;
         }
 
@@ -59,9 +58,7 @@ final class AuthenticationTokenPasswordChangedListener
             return;
         }
 
-        \assert(method_exists($token, 'getFirewallName'));
-
-        $token = new PostAuthenticationToken($user, $token->getFirewallName(), $token->getRoleNames());
+        $token->setUser($user);
         $this->tokenStorage->setToken($token);
     }
 }

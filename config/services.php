@@ -166,7 +166,6 @@ return static function (ContainerConfigurator $c): void {
 
     // -- Security
     $di->set('park_manager.security.user_provider', UserProvider::class);
-    $di->set('park_manager.security.guard.form', FormAuthenticator::class);
 
     // After AuthenticatedVoter
     $di->set(SwitchUserVoter::class)

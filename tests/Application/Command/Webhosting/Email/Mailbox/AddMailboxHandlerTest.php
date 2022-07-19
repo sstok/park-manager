@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\Webhosting\Email\Mailbox;
 
-use ParagonIE\Halite\HiddenString;
+use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Application\Command\Webhosting\Email\Mailbox\AddMailbox;
 use ParkManager\Application\Command\Webhosting\Email\Mailbox\AddMailboxHandler;
 use ParkManager\Application\Service\PasswordHasher;

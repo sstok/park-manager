@@ -24,10 +24,10 @@ final class ShowWebhostingSpace extends AbstractController
     #[Route(path: 'webhosting/space/{space}/', name: 'park_manager.admin.webhosting.space.show', methods: ['GET', 'HEAD'])]
     public function __invoke(Request $request, Space $space): Response
     {
-        $primary = $this->get(DomainNameRepository::class)->getPrimaryOf($space->id);
-        $domainCount = $this->get(DomainNameRepository::class)->allFromSpace($space->id)->getNbResults();
+        $primary = $this->container->get(DomainNameRepository::class)->getPrimaryOf($space->id);
+        $domainCount = $this->container->get(DomainNameRepository::class)->allFromSpace($space->id)->getNbResults();
 
-        $diskUsage = $this->get(StorageUsage::class)->getDiskUsageOf($space->id);
+        $diskUsage = $this->container->get(StorageUsage::class)->getDiskUsageOf($space->id);
         $trafficUsage = new ByteSize(5, 'GiB');
 
         return $this->render('admin/webhosting/space/show.html.twig', [

@@ -47,8 +47,6 @@ parameters:
         - '#Method ParkManager\\Infrastructure\\Validator\\Constraints\\([^:]+)\:\:getTargets\(\) return type has no value type specified in iterable type array#'
 
         ## False positive
-        - '#Call to an undefined method Faker\\(Unique)?Generator\:\:#'
-        - '#Method ([^:]+)\:\:unserialize\(\) has parameter \$serialized with no typehint specified#'
         - '#Cannot call method forHumans\(\) on Carbon\\CarbonInterval\|string#'
 
         -

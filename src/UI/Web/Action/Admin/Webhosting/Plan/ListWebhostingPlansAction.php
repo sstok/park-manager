@@ -23,7 +23,7 @@ final class ListWebhostingPlansAction extends AbstractController
     #[Route(path: 'webhosting/plan/', name: 'park_manager.admin.webhosting.plan.list', methods: ['GET', 'HEAD'])]
     public function __invoke(Request $request): Response
     {
-        $pagerfanta = new Pagerfanta(new ResultSetAdapter($this->get(PlanRepository::class)->all()));
+        $pagerfanta = new Pagerfanta(new ResultSetAdapter($this->container->get(PlanRepository::class)->all()));
         $pagerfanta->setNormalizeOutOfRangePages(true);
         $pagerfanta->setMaxPerPage(10);
 

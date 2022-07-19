@@ -40,7 +40,7 @@ abstract class EnumType extends Type
 
     final public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
-        if ($value === null || is_scalar($value)) {
+        if ($value === null || \is_scalar($value)) {
             return $value;
         }
 

@@ -20,7 +20,7 @@ use Traversable;
  */
 final class CombinedResultSet implements ResultSet
 {
-    /** @var array<int, ResultSet<mixed>> */
+    /** @var array<array-key, ResultSet<mixed>> */
     private array $resultSets;
     private ?int $limit = null;
     private ?int $offset = null;
@@ -29,7 +29,7 @@ final class CombinedResultSet implements ResultSet
     public ?Expression $expression = null;
     /** @var array<int, string|int>|null */
     private ?array $limitedToIds = null;
-    /** @var array<int, Traversable>|null */
+    /** @var array<int, Traversable<mixed>>|null */
     private ?array $iterators = null;
     private ?int $nbResults = null;
 

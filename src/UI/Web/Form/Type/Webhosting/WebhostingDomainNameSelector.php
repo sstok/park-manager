@@ -35,7 +35,7 @@ final class WebhostingDomainNameSelector extends AbstractType
                 'label' => 'label.domain_name',
                 'choice_vary' => static fn (Options $options) => [$options['space_id']],
                 'choice_label' => static fn (DomainName $domainName): string => $domainName->toString(),
-                'preferred_choices' => static fn (DomainName $domainName) => $domainName->primary,
+                'preferred_choices' => static fn (DomainName $domainName) => [$domainName->primary],
                 'resultset' => fn (Options $options) => $this->domainNameRepository->allFromSpace($options['space_id']),
                 'constraints' => [new NotNull()],
             ])

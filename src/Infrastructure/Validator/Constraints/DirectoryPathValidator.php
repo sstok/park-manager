@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 final class DirectoryPathValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if ($value === null) {
             return;
@@ -27,7 +27,7 @@ final class DirectoryPathValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, DirectoryPath::class);
         }
 
-        if (! is_scalar($value) && ! (\is_object($value) && method_exists($value, '__toString'))) {
+        if (! \is_scalar($value) && ! (\is_object($value) && method_exists($value, '__toString'))) {
             throw new UnexpectedValueException($value, 'string');
         }
 

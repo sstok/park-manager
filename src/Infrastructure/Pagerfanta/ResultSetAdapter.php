@@ -14,6 +14,9 @@ use Pagerfanta\Adapter\AdapterInterface;
 use ParkManager\Domain\ResultSet;
 use Traversable;
 
+/**
+ * @implements AdapterInterface<mixed>
+ */
 final class ResultSetAdapter implements AdapterInterface
 {
     /** @var ResultSet<mixed> */

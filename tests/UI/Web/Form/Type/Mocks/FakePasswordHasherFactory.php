@@ -12,8 +12,10 @@ namespace ParkManager\Tests\UI\Web\Form\Type\Mocks;
 
 use ParkManager\Infrastructure\Security\SecurityUser;
 use RuntimeException;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /** @internal */
 final class FakePasswordHasherFactory implements PasswordHasherFactoryInterface
@@ -42,7 +44,7 @@ final class FakePasswordHasherFactory implements PasswordHasherFactoryInterface
         };
     }
 
-    public function getPasswordHasher($user): PasswordHasherInterface
+    public function getPasswordHasher(string | PasswordAuthenticatedUserInterface | PasswordHasherAwareInterface $user): PasswordHasherInterface
     {
         if ($user !== $this->userClass) {
             throw new RuntimeException('Nope, that is not the right user.');

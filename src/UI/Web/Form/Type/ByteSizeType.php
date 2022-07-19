@@ -35,7 +35,7 @@ final class ByteSizeType extends AbstractType
                     'byte_size.mib' => 'mib',
                     'byte_size.gib' => 'gib',
                 ],
-                'preferred_choices' => 'byte',
+                'preferred_choices' => ['byte'],
                 'label' => 'label.unit',
                 'help' => 'help.byte_size_unit',
             ])
