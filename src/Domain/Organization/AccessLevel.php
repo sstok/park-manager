@@ -10,19 +10,19 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Organization;
 
-use ParkManager\Domain\EnumTrait;
+use ParkManager\Domain\EnumEqualityTrait;
 
-final class AccessLevel
+enum AccessLevel: int
 {
-    use EnumTrait;
+    use EnumEqualityTrait;
 
     /**
      * Has access to manage the organization details and members.
      */
-    public const LEVEL_MANAGER = 1;
+    case LEVEL_MANAGER = 1;
 
     /**
      * Has only (restricted) access to organization owned Spaces.
      */
-    public const LEVEL_COLLABORATOR = 2;
+    case LEVEL_COLLABORATOR = 2;
 }

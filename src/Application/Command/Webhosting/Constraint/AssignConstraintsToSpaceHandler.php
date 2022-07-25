@@ -30,7 +30,7 @@ final class AssignConstraintsToSpaceHandler
             return;
         }
 
-        if (SuspensionLevel::equalsTo($space->accessSuspended, SuspensionLevel::get('LOCKED'))) {
+        if (SuspensionLevel::equalsTo($space->accessSuspended, SuspensionLevel::LOCKED)) {
             return;
         }
 

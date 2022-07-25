@@ -70,10 +70,10 @@ class Space
     #[Embedded(class: DomainNamePair::class, columnPrefix: 'primary_domain_')]
     public DomainNamePair $primaryDomainLabel;
 
-    #[Column(name: 'setup_status', type: 'park_manager_webhosting_space_setup_status')]
-    public SpaceSetupStatus $setupStatus;
+    #[Column(name: 'setup_status', enumType: SpaceSetupStatus::class)]
+    public SpaceSetupStatus $setupStatus = SpaceSetupStatus::REGISTERED;
 
-    #[Column(name: 'access_suspended', type: 'park_manager_webhosting_suspension_level', nullable: true)]
+    #[Column(name: 'access_suspended', nullable: true, enumType: SuspensionLevel::class)]
     public ?SuspensionLevel $accessSuspended = null;
 
     /**
@@ -103,7 +103,6 @@ class Space
         #[JoinColumn(name: 'plan_id', referencedColumnName: 'id', nullable: true, onDelete: 'RESTRICT')]
         public ?Plan $plan = null
     ) {
-        $this->setupStatus = SpaceSetupStatus::get('Registered');
         $this->suspensions = new ArrayCollection();
     }
 
@@ -235,7 +234,7 @@ class Space
 
     public function assignSetupStatus(SpaceSetupStatus $newStatus): void
     {
-        if ($this->setupStatus->equals($newStatus)) {
+        if ($this->setupStatus === $newStatus) {
             return;
         }
 
@@ -259,7 +258,7 @@ class Space
 
     public function suspendAccess(SuspensionLevel $level): void
     {
-        if (! $this->setupStatus->equals(SpaceSetupStatus::get('ready'))) {
+        if ($this->setupStatus !== SpaceSetupStatus::READY) {
             throw new DomainException('Cannot set suspension level when Space has not completed initialization yet.');
         }
 
@@ -294,11 +293,11 @@ class Space
      */
     public function setupWith(int $userId, array $userGroups, string $homeDir): void
     {
-        if (! $this->setupStatus->equals(SpaceSetupStatus::get('Getting_Initialized'))) {
+        if ($this->setupStatus !== SpaceSetupStatus::GETTING_INITIALIZED) {
             throw new InvalidStatus(sprintf('Cannot Setup Space when status is not "Getting_Initialized", current status is "%s".', $this->setupStatus->label()));
         }
 
         $this->systemRegistration = new SystemRegistration($userId, $userGroups, $homeDir);
-        $this->setupStatus = SpaceSetupStatus::get('Ready');
+        $this->setupStatus = SpaceSetupStatus::READY;
     }
 }

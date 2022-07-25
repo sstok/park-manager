@@ -10,12 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Ftp;
 
-use ParkManager\Domain\EnumTrait;
+use ParkManager\Domain\EnumEqualityTrait;
 
-final class AccessRuleStrategy
+enum AccessRuleStrategy: int
 {
-    use EnumTrait;
+    use EnumEqualityTrait;
 
-    public const ALLOW = 1;
-    public const DENY = 2;
+    case ALLOW = 1;
+
+    case DENY = 2;
 }

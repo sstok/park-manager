@@ -25,7 +25,7 @@ final class RemoveSubDomainHandler
         $subDomain = $this->subDomainRepository->get($command->id);
         $space = $subDomain->space;
 
-        if (SuspensionLevel::equalsToAny($space->accessSuspended, SuspensionLevel::get('ACCESS_RESTRICTED'), SuspensionLevel::get('LOCKED'))) {
+        if (SuspensionLevel::equalsToAny($space->accessSuspended, SuspensionLevel::ACCESS_RESTRICTED, SuspensionLevel::LOCKED)) {
             throw new WebhostingSpaceIsSuspended($space->id, $space->accessSuspended);
         }
 

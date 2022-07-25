@@ -56,7 +56,7 @@ final class TrafficStatisticsProviderMock implements TrafficStatisticsProvider
         $end = $start->endOfMonth()->endOfDay();
 
         return $this->getFromPeriod(
-            new ReportPeriod($start, $end, PeriodUnit::get('Month')),
+            new ReportPeriod($start, $end, PeriodUnit::MONTH),
             new TrafficType('ALL')
         )->getTotalUsage();
     }
@@ -68,7 +68,7 @@ final class TrafficStatisticsProviderMock implements TrafficStatisticsProvider
         foreach ($this->reports as $report) {
             if ($report->periodStart->eq($period->start)
                 && $report->periodEnd->eq($period->end)
-                && $report->unit->equals($period->unit)
+                && $report->unit === $period->unit
                 && $report->types->get() === $types->get()
             ) {
                 return $report;

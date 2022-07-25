@@ -63,19 +63,19 @@ class AccessRule
         #[Column(name: 'ip_address', type: 'cidr')]
         public IpRange | IpAddress $address,
 
-        #[Column(name: 'strategy', type: 'park_manager_ftp_access_rule_strategy')]
+        #[Column(name: 'strategy', enumType: AccessRuleStrategy::class)]
         public AccessRuleStrategy $strategy,
     ) {
     }
 
-    public static function createForSpace(AccessRuleId $id, Space $space, IpRange | IpAddress $address, ?AccessRuleStrategy $strategy = null): self
+    public static function createForSpace(AccessRuleId $id, Space $space, IpRange | IpAddress $address, AccessRuleStrategy $strategy = AccessRuleStrategy::DENY): self
     {
-        return new self($id, $space, null, $address, $strategy ?? AccessRuleStrategy::get('DENY'));
+        return new self($id, $space, null, $address, $strategy);
     }
 
-    public static function createForUser(AccessRuleId $id, FtpUser $user, IpRange | IpAddress $address, ?AccessRuleStrategy $strategy = null): self
+    public static function createForUser(AccessRuleId $id, FtpUser $user, IpRange | IpAddress $address, AccessRuleStrategy $strategy = AccessRuleStrategy::DENY): self
     {
-        return new self($id, $user->space, $user, $address, $strategy ?? AccessRuleStrategy::get('DENY'));
+        return new self($id, $user->space, $user, $address, $strategy);
     }
 
     public function isEnabled(): bool

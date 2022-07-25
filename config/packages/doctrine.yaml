@@ -29,13 +29,6 @@ doctrine:
             park_manager_scheduled_task_id: 'ParkManager\Infrastructure\Doctrine\Type\Webhosting\TaskIdType'
             park_manager_scheduled_task_condition: 'ParkManager\Infrastructure\Doctrine\Type\Webhosting\ScheduledTaskConditionType'
 
-            # Enums
-            park_manager_webhosting_space_setup_status: 'ParkManager\Infrastructure\Doctrine\Type\SpaceSetupStatusType'
-            park_manager_webhosting_suspension_level: 'ParkManager\Infrastructure\Doctrine\Type\SuspensionLevelType'
-            park_manager_organization_access_level: 'ParkManager\Infrastructure\Doctrine\Type\OrganizationAccessLevelType'
-            park_manager_ftp_access_rule_strategy: 'ParkManager\Infrastructure\Doctrine\Type\Webhosting\FtpAccessRuleStrategyType'
-            park_manager_task_schedule_type: 'ParkManager\Infrastructure\Doctrine\Type\Webhosting\ScheduleTypeType'
-
         mapping_types:
             cidr: string
 

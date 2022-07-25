@@ -10,38 +10,44 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Space;
 
-use ParkManager\Domain\EnumTrait;
+use ParkManager\Domain\EnumEqualityTrait;
 use ParkManager\Domain\Webhosting\Space\Exception\InvalidStatus;
 
-final class SpaceSetupStatus
+enum SpaceSetupStatus: int
 {
-    use EnumTrait;
+    use EnumEqualityTrait;
 
-    public const ERROR = -1;
-    public const REINITIALIZED = 0;
-    public const REGISTERED = 1;
-    public const GETTING_INITIALIZED = 2;
-    public const READY = 3;
+    case ERROR = -1;
+
+    case REINITIALIZED = 0;
+
+    case REGISTERED = 1;
+
+    case GETTING_INITIALIZED = 2;
+
+    case READY = 3;
 
     public static function validateNewStatus(self $current, self $newStatus): void
     {
-        if ($current->value === self::READY) {
+        if ($current === self::READY) {
             throw new InvalidStatus('Cannot change status when already initialized.');
         }
 
-        if ($newStatus->value !== self::ERROR) {
-            if ($newStatus->value < $current->value) {
-                throw new InvalidStatus('Cannot change status to a lower value unless new status is Error.');
-            }
+        if ($newStatus === self::ERROR) {
+            return;
+        }
 
-            // Special case that is considered valid.
-            if ($current->value === self::REINITIALIZED && $newStatus->value === self::GETTING_INITIALIZED) {
-                return;
-            }
+        if ($newStatus->value < $current->value) {
+            throw new InvalidStatus('Cannot change status to a lower value unless new status is Error.');
+        }
 
-            if ($newStatus->value > ($current->value + 1)) {
-                throw new InvalidStatus('Cannot increase status with more than one greater value.');
-            }
+        // Special case that is considered valid.
+        if ($current === self::REINITIALIZED && $newStatus === self::GETTING_INITIALIZED) {
+            return;
+        }
+
+        if ($newStatus->value > ($current->value + 1)) {
+            throw new InvalidStatus('Cannot increase status with more than one greater value.');
         }
     }
 
@@ -52,7 +58,7 @@ final class SpaceSetupStatus
 
     public static function getLabel(self $value): string
     {
-        return match ($value->value) {
+        return match ($value) {
             self::ERROR => 'error',
             self::REINITIALIZED => 'reinitialized',
             self::REGISTERED => 'registered',

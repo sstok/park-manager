@@ -55,7 +55,7 @@ final class FtpAccessRuleRepositoryMock implements AccessRuleRepository
 
         /** @var AccessRule $rule */
         foreach ($result as $rule) {
-            if ($rule->strategy->equals(AccessRuleStrategy::get('ALLOW'))) {
+            if ($rule->strategy === AccessRuleStrategy::ALLOW) {
                 return true;
             }
         }

@@ -25,10 +25,10 @@ final class ScheduleTest extends TestCase
     public function it_sets_proper_type(): void
     {
         $schedule = new Schedule(new CronCondition('@daily'));
-        self::assertSame(ScheduleType::get('CRON'), $schedule->type);
+        self::assertSame(ScheduleType::CRON, $schedule->type);
 
         $schedule = new Schedule(new MomentCondition('12:24'));
-        self::assertSame(ScheduleType::get('MOMENT'), $schedule->type);
+        self::assertSame(ScheduleType::MOMENT, $schedule->type);
     }
 
     /** @test */

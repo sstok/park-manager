@@ -98,7 +98,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
         $this->spaceRepository->whenEntityIsSavedAt(
             SpaceRepositoryMock::ID1,
             static function (Space $space): void {
-                self::assertTrue($space->setupStatus->equals(SpaceSetupStatus::get('Getting_Initialized')));
+                self::assertSame(SpaceSetupStatus::GETTING_INITIALIZED, $space->setupStatus);
                 self::assertNull($space->systemRegistration);
             },
             position: 1
@@ -106,7 +106,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
         $this->spaceRepository->whenEntityIsSavedAt(
             SpaceRepositoryMock::ID1,
             static function (Space $space): void {
-                self::assertTrue($space->setupStatus->equals(SpaceSetupStatus::get('Ready')));
+                self::assertSame(SpaceSetupStatus::READY, $space->setupStatus);
                 self::assertEquals(new SystemRegistration(363, [500], '/data/site_363'), $space->systemRegistration);
             },
             position: 2
@@ -115,7 +115,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
         ($this->handler)(new InitializeWebhostingSpace($id = SpaceId::fromString(SpaceRepositoryMock::ID1)));
 
         $this->spaceRepository->assertEntitiesCountWasSaved(2);
-        $this->spaceRepository->assertEntityWasSavedThat(SpaceRepositoryMock::ID1, static fn (Space $space): bool => $space->setupStatus->equals(SpaceSetupStatus::get('Ready')));
+        $this->spaceRepository->assertEntityWasSavedThat(SpaceRepositoryMock::ID1, static fn (Space $space): bool => $space->setupStatus === SpaceSetupStatus::READY);
 
         self::assertEquals([new WebhostingSpaceWasInitialized($id)], $this->eventDispatcher->dispatchedEvents);
         self::assertEmpty($this->logger->records);
@@ -127,7 +127,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
         $this->spaceRepository->whenEntityIsSavedAt(
             self::SPACE_ID2,
             static function (Space $space): void {
-                self::assertTrue($space->setupStatus->equals(SpaceSetupStatus::get('Getting_Initialized')));
+                self::assertSame(SpaceSetupStatus::GETTING_INITIALIZED, $space->setupStatus);
                 self::assertNull($space->systemRegistration);
             },
             position: 1
@@ -135,7 +135,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
         $this->spaceRepository->whenEntityIsSavedAt(
             self::SPACE_ID2,
             static function (Space $space): void {
-                self::assertTrue($space->setupStatus->equals(SpaceSetupStatus::get('Error')));
+                self::assertSame(SpaceSetupStatus::ERROR, $space->setupStatus);
                 self::assertNull($space->systemRegistration);
             },
             position: 2
@@ -144,7 +144,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
         ($this->handler)(new InitializeWebhostingSpace($id = SpaceId::fromString(self::SPACE_ID2)));
 
         $this->spaceRepository->assertEntitiesCountWasSaved(2);
-        $this->spaceRepository->assertEntityWasSavedThat(self::SPACE_ID2, static fn (Space $space): bool => $space->setupStatus->equals(SpaceSetupStatus::get('Error')));
+        $this->spaceRepository->assertEntityWasSavedThat(self::SPACE_ID2, static fn (Space $space): bool => $space->setupStatus === SpaceSetupStatus::ERROR);
 
         self::assertTrue(
             $this->logger->hasRecordThatPasses(
@@ -182,7 +182,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
     public function it_ignores_when_already_setup(): void
     {
         $space = $this->spaceRepository->get(SpaceId::fromString(self::SPACE_ID2));
-        $space->assignSetupStatus(SpaceSetupStatus::get('Getting_Initialized'));
+        $space->assignSetupStatus(SpaceSetupStatus::GETTING_INITIALIZED);
         $space->setupWith(543, [500, 600], '/data/site_543');
 
         $this->spaceRepository->save($space);
@@ -199,7 +199,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
     public function it_ignores_when_current_status_is_error(): void
     {
         $space = $this->spaceRepository->get(SpaceId::fromString(self::SPACE_ID2));
-        $space->assignSetupStatus(SpaceSetupStatus::get('Error'));
+        $space->assignSetupStatus(SpaceSetupStatus::ERROR);
 
         $this->spaceRepository->save($space);
         $this->spaceRepository->resetRecordingState();

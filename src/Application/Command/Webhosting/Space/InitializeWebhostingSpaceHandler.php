@@ -36,16 +36,16 @@ final class InitializeWebhostingSpaceHandler
         $space = $this->spaceRepository->get($command->space);
 
         // Ignore when set-up is already completed.
-        if ($space->setupStatus->equals(SpaceSetupStatus::get('Ready'))) {
+        if ($space->setupStatus === SpaceSetupStatus::READY) {
             return;
         }
 
         // Ignore when current status is error. This needs to be redispatched manually.
-        if ($space->setupStatus->equals(SpaceSetupStatus::get('Error'))) {
+        if ($space->setupStatus === SpaceSetupStatus::ERROR) {
             return;
         }
 
-        $space->assignSetupStatus(SpaceSetupStatus::get('Getting_Initialized'));
+        $space->assignSetupStatus(SpaceSetupStatus::GETTING_INITIALIZED);
         $this->spaceRepository->save($space);
 
         try {
@@ -69,7 +69,7 @@ final class InitializeWebhostingSpaceHandler
 
             $this->eventDispatcher->dispatch(new WebhostingSpaceFailedInitialization($space->id));
 
-            $space->assignSetupStatus(SpaceSetupStatus::get('Error'));
+            $space->assignSetupStatus(SpaceSetupStatus::ERROR);
 
             // Due note that there is still a possibility this will fail when the exception relates
             // to the UnitOfWork or when the Connection is closed.

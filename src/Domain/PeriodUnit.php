@@ -19,13 +19,17 @@ namespace ParkManager\Domain;
  * If YEAR is selected the report will provide the aggregated result
  * by each year, within the selected range.
  */
-final class PeriodUnit
+enum PeriodUnit: string
 {
-    use EnumTrait;
+    use EnumEqualityTrait;
 
-    public const HOUR = 'hour';
-    public const DAY = 'day';
-    public const WEEK = 'week';
-    public const MONTH = 'month';
-    public const YEAR = 'year';
+    case HOUR = 'hour';
+
+    case DAY = 'day';
+
+    case WEEK = 'weel';
+
+    case MONTH = 'month';
+
+    case YEAR = 'year';
 }

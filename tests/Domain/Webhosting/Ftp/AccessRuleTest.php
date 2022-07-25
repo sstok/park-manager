@@ -48,20 +48,20 @@ final class AccessRuleTest extends TestCase
         self::assertSame($space, $rule->space);
         self::assertNull($rule->user);
         self::assertSame($ip, $rule->address);
-        self::assertSame(AccessRuleStrategy::get('DENY'), $rule->strategy);
+        self::assertSame(AccessRuleStrategy::DENY, $rule->strategy);
 
         $rule = AccessRule::createForSpace(
             $id = AccessRuleId::fromString('017cff0a-04e4-cbb5-b46e-dab5d1d0b433'),
             $space,
             $ip = IPFactory::parseAddressString('200.100.100.10'),
-            AccessRuleStrategy::get('ALLOW')
+            AccessRuleStrategy::ALLOW
         );
 
         self::assertSame($id, $rule->id);
         self::assertSame($space, $rule->space);
         self::assertNull($rule->user);
         self::assertSame($ip, $rule->address);
-        self::assertSame(AccessRuleStrategy::get('ALLOW'), $rule->strategy);
+        self::assertSame(AccessRuleStrategy::ALLOW, $rule->strategy);
     }
 
     /** @test */
@@ -82,20 +82,20 @@ final class AccessRuleTest extends TestCase
         self::assertSame($space, $rule->space);
         self::assertSame($user, $rule->user);
         self::assertSame($ip, $rule->address);
-        self::assertSame(AccessRuleStrategy::get('DENY'), $rule->strategy);
+        self::assertSame(AccessRuleStrategy::DENY, $rule->strategy);
 
         $rule = AccessRule::createForUser(
             $id = AccessRuleId::fromString('017cff0a-04e4-cbb5-b46e-dab5d1d0b433'),
             $user,
             $ip = IPFactory::parseAddressString('200.100.100.10'),
-            AccessRuleStrategy::get('ALLOW')
+            AccessRuleStrategy::ALLOW
         );
 
         self::assertSame($id, $rule->id);
         self::assertSame($space, $rule->space);
         self::assertSame($user, $rule->user);
         self::assertSame($ip, $rule->address);
-        self::assertSame(AccessRuleStrategy::get('ALLOW'), $rule->strategy);
+        self::assertSame(AccessRuleStrategy::ALLOW, $rule->strategy);
     }
 
     private function getSpace(): Space

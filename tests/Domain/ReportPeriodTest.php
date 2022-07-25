@@ -30,18 +30,18 @@ final class ReportPeriodTest extends TestCase
 
         $this->expectExceptionObject(new PeriodEndNotGreaterThanStart());
 
-        new ReportPeriod($start, $start, PeriodUnit::from('month'));
+        new ReportPeriod($start, $start, PeriodUnit::MONTH);
     }
 
     /**
      * @test
      * @dataProvider provideLesserThanUnitTests
      */
-    public function it_checks_if_period_provides_enough_amount_for_unit(string $unit, CarbonImmutable $start, CarbonImmutable $end): void
+    public function it_checks_if_period_provides_enough_amount_for_unit(PeriodUnit $unit, CarbonImmutable $start, CarbonImmutable $end): void
     {
-        $this->expectExceptionObject(new PeriodAmountLessThanOne($unit));
+        $this->expectExceptionObject(new PeriodAmountLessThanOne($unit->name));
 
-        new ReportPeriod($start, $end, PeriodUnit::from($unit));
+        new ReportPeriod($start, $end, $unit);
     }
 
     /**
@@ -49,20 +49,20 @@ final class ReportPeriodTest extends TestCase
      */
     public function provideLesserThanUnitTests(): Generator
     {
-        yield 'hour' => ['hour', new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-04-20 10:40:00')];
-        yield 'day' => ['day', new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-04-20 15:40:00')];
-        yield 'week' => ['week', new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-04-25 15:40:00')];
-        yield 'month' => ['month', new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-05-10 10:40:00')];
-        yield 'year' => ['year', new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-05-10 10:40:00')];
+        yield 'hour' => [PeriodUnit::HOUR, new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-04-20 10:40:00')];
+        yield 'day' => [PeriodUnit::DAY, new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-04-20 15:40:00')];
+        yield 'week' => [PeriodUnit::WEEK, new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-04-25 15:40:00')];
+        yield 'month' => [PeriodUnit::MONTH, new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-05-10 10:40:00')];
+        yield 'year' => [PeriodUnit::YEAR, new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-05-10 10:40:00')];
     }
 
     /**
      * @test
      * @dataProvider provideEnoughUnitAmount
      */
-    public function it_accepts_periods_with_enough_amount_for_unit(string $unit, CarbonImmutable $start, CarbonImmutable $end): void
+    public function it_accepts_periods_with_enough_amount_for_unit(PeriodUnit $unit, CarbonImmutable $start, CarbonImmutable $end): void
     {
-        $period = new ReportPeriod($start, $end, PeriodUnit::from($unit));
+        $period = new ReportPeriod($start, $end, $unit);
 
         self::assertSame($start, $period->start);
         self::assertSame($end, $period->end);
@@ -73,10 +73,10 @@ final class ReportPeriodTest extends TestCase
      */
     public function provideEnoughUnitAmount(): Generator
     {
-        yield 'hour' => ['hour', new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-04-20 11:33:00')];
-        yield 'day' => ['day', new CarbonImmutable('2021-04-20 10:32:00'), new CarbonImmutable('2021-04-21 15:32:00')];
-        yield 'week' => ['week', new CarbonImmutable('2021-04-20 10:32:00'), new CarbonImmutable('2021-04-27 10:32:00')];
-        yield 'month' => ['month', new CarbonImmutable('2021-04-10 10:32:00'), new CarbonImmutable('2021-05-10 10:32:00')];
-        yield 'year' => ['year', new CarbonImmutable('2021-05-20 10:32:00'), new CarbonImmutable('2022-05-20 10:32:00')];
+        yield 'hour' => [PeriodUnit::HOUR, new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-04-20 11:33:00')];
+        yield 'day' => [PeriodUnit::DAY, new CarbonImmutable('2021-04-20 10:32:00'), new CarbonImmutable('2021-04-21 15:32:00')];
+        yield 'week' => [PeriodUnit::WEEK, new CarbonImmutable('2021-04-20 10:32:00'), new CarbonImmutable('2021-04-27 10:32:00')];
+        yield 'month' => [PeriodUnit::MONTH, new CarbonImmutable('2021-04-10 10:32:00'), new CarbonImmutable('2021-05-10 10:32:00')];
+        yield 'year' => [PeriodUnit::YEAR, new CarbonImmutable('2021-05-20 10:32:00'), new CarbonImmutable('2022-05-20 10:32:00')];
     }
 }

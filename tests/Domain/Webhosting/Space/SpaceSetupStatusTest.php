@@ -37,18 +37,18 @@ final class SpaceSetupStatusTest extends TestCase
      */
     public function provideInvalidTransitions(): Generator
     {
-        yield [SpaceSetupStatus::get('READY'), SpaceSetupStatus::get('ERROR'), 'Cannot change status when already initialized.'];
-        yield [SpaceSetupStatus::get('READY'), SpaceSetupStatus::get('REINITIALIZED'), 'Cannot change status when already initialized.'];
-        yield [SpaceSetupStatus::get('READY'), SpaceSetupStatus::get('REGISTERED'), 'Cannot change status when already initialized.'];
-        yield [SpaceSetupStatus::get('READY'), SpaceSetupStatus::get('REGISTERED'), 'Cannot change status when already initialized.'];
-        yield [SpaceSetupStatus::get('READY'), SpaceSetupStatus::get('GETTING_INITIALIZED'), 'Cannot change status when already initialized.'];
+        yield [SpaceSetupStatus::READY, SpaceSetupStatus::ERROR, 'Cannot change status when already initialized.'];
+        yield [SpaceSetupStatus::READY, SpaceSetupStatus::REINITIALIZED, 'Cannot change status when already initialized.'];
+        yield [SpaceSetupStatus::READY, SpaceSetupStatus::REGISTERED, 'Cannot change status when already initialized.'];
+        yield [SpaceSetupStatus::READY, SpaceSetupStatus::REGISTERED, 'Cannot change status when already initialized.'];
+        yield [SpaceSetupStatus::READY, SpaceSetupStatus::GETTING_INITIALIZED, 'Cannot change status when already initialized.'];
 
-        yield [SpaceSetupStatus::get('REINITIALIZED'), SpaceSetupStatus::get('READY'), 'Cannot increase status with more than one greater value.'];
-        yield [SpaceSetupStatus::get('GETTING_INITIALIZED'), SpaceSetupStatus::get('REGISTERED'), 'Cannot change status to a lower value unless new status is Error.'];
-        yield [SpaceSetupStatus::get('GETTING_INITIALIZED'), SpaceSetupStatus::get('REINITIALIZED'), 'Cannot change status to a lower value unless new status is Error.'];
-        yield [SpaceSetupStatus::get('ERROR'), SpaceSetupStatus::get('GETTING_INITIALIZED'), 'Cannot increase status with more than one greater value.'];
-        yield [SpaceSetupStatus::get('ERROR'), SpaceSetupStatus::get('REGISTERED'), 'Cannot increase status with more than one greater value.'];
-        yield [SpaceSetupStatus::get('ERROR'), SpaceSetupStatus::get('READY'), 'Cannot increase status with more than one greater value.'];
+        yield [SpaceSetupStatus::REINITIALIZED, SpaceSetupStatus::READY, 'Cannot increase status with more than one greater value.'];
+        yield [SpaceSetupStatus::GETTING_INITIALIZED, SpaceSetupStatus::REGISTERED, 'Cannot change status to a lower value unless new status is Error.'];
+        yield [SpaceSetupStatus::GETTING_INITIALIZED, SpaceSetupStatus::REINITIALIZED, 'Cannot change status to a lower value unless new status is Error.'];
+        yield [SpaceSetupStatus::ERROR, SpaceSetupStatus::GETTING_INITIALIZED, 'Cannot increase status with more than one greater value.'];
+        yield [SpaceSetupStatus::ERROR, SpaceSetupStatus::REGISTERED, 'Cannot increase status with more than one greater value.'];
+        yield [SpaceSetupStatus::ERROR, SpaceSetupStatus::READY, 'Cannot increase status with more than one greater value.'];
     }
 
     /**
@@ -68,12 +68,12 @@ final class SpaceSetupStatusTest extends TestCase
      */
     public function provideValidTransitions(): Generator
     {
-        yield [SpaceSetupStatus::get('REINITIALIZED'), SpaceSetupStatus::get('GETTING_INITIALIZED')];
-        yield [SpaceSetupStatus::get('GETTING_INITIALIZED'), SpaceSetupStatus::get('READY')];
+        yield [SpaceSetupStatus::REINITIALIZED, SpaceSetupStatus::GETTING_INITIALIZED];
+        yield [SpaceSetupStatus::GETTING_INITIALIZED, SpaceSetupStatus::READY];
 
-        yield [SpaceSetupStatus::get('REGISTERED'), SpaceSetupStatus::get('ERROR')];
-        yield [SpaceSetupStatus::get('GETTING_INITIALIZED'), SpaceSetupStatus::get('ERROR')];
-        yield [SpaceSetupStatus::get('REINITIALIZED'), SpaceSetupStatus::get('ERROR')];
-        yield [SpaceSetupStatus::get('ERROR'), SpaceSetupStatus::get('REINITIALIZED')];
+        yield [SpaceSetupStatus::REGISTERED, SpaceSetupStatus::ERROR];
+        yield [SpaceSetupStatus::GETTING_INITIALIZED, SpaceSetupStatus::ERROR];
+        yield [SpaceSetupStatus::REINITIALIZED, SpaceSetupStatus::ERROR];
+        yield [SpaceSetupStatus::ERROR, SpaceSetupStatus::REINITIALIZED];
     }
 }

@@ -51,7 +51,7 @@ final class FtpAccessRuleOrmRepository extends EntityRepository implements Acces
                 ->setMaxResults(1)
                 ->getQuery()
                 ->setParameter('space', $id->toString())
-                ->setParameter('strategy', AccessRuleStrategy::get('ALLOW'), 'park_manager_ftp_access_rule_strategy')
+                ->setParameter('strategy', AccessRuleStrategy::ALLOW)
             ;
 
             return ((int) $query->getSingleScalarResult()) > 0;
@@ -63,7 +63,7 @@ final class FtpAccessRuleOrmRepository extends EntityRepository implements Acces
             ->setMaxResults(1)
             ->getQuery()
             ->setParameter('user', $id->toString())
-            ->setParameter('strategy', AccessRuleStrategy::get('ALLOW'), 'park_manager_ftp_access_rule_strategy')
+            ->setParameter('strategy', AccessRuleStrategy::ALLOW)
         ;
 
         return ((int) $query->getSingleScalarResult()) > 0;

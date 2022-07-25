@@ -20,9 +20,6 @@ use ParkManager\Domain\User\User;
 #[Table(name: 'organization_member')]
 class OrganizationMember
 {
-    #[Column(name: 'access_level', type: 'park_manager_organization_access_level')]
-    public AccessLevel $accessLevel;
-
     public function __construct(
         #[ORM\Id]
         #[ORM\ManyToOne(targetEntity: User::class)]
@@ -34,11 +31,9 @@ class OrganizationMember
         #[ORM\JoinColumn(name: 'organization_id', referencedColumnName: 'id', onDelete: 'cascade')]
         public Organization $organization,
 
-        ?AccessLevel $level = null
+        #[Column(name: 'access_level', enumType: AccessLevel::class)]
+        public AccessLevel $accessLevel = AccessLevel::LEVEL_MANAGER
     ) {
-        $level ??= AccessLevel::get('LEVEL_MANAGER');
-
-        $this->changeAccessLevel($level);
     }
 
     public function changeAccessLevel(AccessLevel $accessLevel): void

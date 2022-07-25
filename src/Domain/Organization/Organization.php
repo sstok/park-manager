@@ -58,15 +58,13 @@ class Organization
      * When the User is already a member their access-level
      * is updated instead.
      */
-    public function addMember(User $user, ?AccessLevel $level = null): void
+    public function addMember(User $user, AccessLevel $level = AccessLevel::LEVEL_MANAGER): void
     {
-        $level ??= AccessLevel::get('LEVEL_MANAGER');
-
         /** @var OrganizationMember|null $member */
         [$member, $memberId] = $this->findMembership($user);
 
         if ($member !== null) {
-            if (! $member->accessLevel->equals($level)) {
+            if ($member->accessLevel !== $level) {
                 $member->changeAccessLevel($level);
 
                 $this->members->set($memberId, $member);
@@ -135,11 +133,11 @@ class Organization
             return false;
         }
 
-        if ($accessLevel !== null) {
-            return $member->accessLevel->equals($accessLevel);
+        if ($accessLevel === null) {
+            return true;
         }
 
-        return true;
+        return $member->accessLevel === $accessLevel;
     }
 
     /**

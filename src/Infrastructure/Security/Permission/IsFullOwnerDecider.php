@@ -57,7 +57,7 @@ final class IsFullOwnerDecider implements PermissionDecider
 
             $org = $this->organizationRepository->get($owner->getId());
 
-            if ($org->hasMember($this->userRepository->get($userId), accessLevel: AccessLevel::get('LEVEL_MANAGER'))) {
+            if ($org->hasMember($this->userRepository->get($userId), accessLevel: AccessLevel::LEVEL_MANAGER)) {
                 return PermissionDecider::DECIDE_ALLOW;
             }
         }

@@ -334,28 +334,28 @@ final class SpaceTest extends TestCase
             Owner::byUser(UserRepositoryMock::createUser('janE@example.com', self::OWNER_ID1)),
             $this->createPlan(new Constraints())
         );
-        $space->assignSetupStatus(SpaceSetupStatus::from(SpaceSetupStatus::GETTING_INITIALIZED));
-        $space->assignSetupStatus(SpaceSetupStatus::from(SpaceSetupStatus::READY));
+        $space->assignSetupStatus(SpaceSetupStatus::GETTING_INITIALIZED);
+        $space->assignSetupStatus(SpaceSetupStatus::READY);
 
         self::assertCount(0, $space->getSuspensions());
 
         CarbonImmutable::setTestNow('2021-05-02T14:12:14.000000+0000');
 
-        $space->suspendAccess(SuspensionLevel::get('ACCESS_RESTRICTED'));
-        $space->suspendAccess(SuspensionLevel::get('LOCKED'));
+        $space->suspendAccess(SuspensionLevel::ACCESS_RESTRICTED);
+        $space->suspendAccess(SuspensionLevel::LOCKED);
 
         CarbonImmutable::setTestNow('2021-06-02T14:12:14.000000+0000');
 
-        $space->suspendAccess(SuspensionLevel::get('LOCKED')); // Should not be logged
-        $space->suspendAccess(SuspensionLevel::get('ACCESS_RESTRICTED'));
+        $space->suspendAccess(SuspensionLevel::LOCKED); // Should not be logged (as value is unchanged)
+        $space->suspendAccess(SuspensionLevel::ACCESS_RESTRICTED);
         $space->removeAccessSuspension();
         $space->removeAccessSuspension();
 
         self::assertEquals(
             [
-                new AccessSuspensionLog($space, SuspensionLevel::get('ACCESS_RESTRICTED'), new CarbonImmutable('2021-05-02T14:12:14.000000+0000')),
-                new AccessSuspensionLog($space, SuspensionLevel::get('LOCKED'), new CarbonImmutable('2021-05-02T14:12:14.000000+0000')),
-                new AccessSuspensionLog($space, SuspensionLevel::get('ACCESS_RESTRICTED'), new CarbonImmutable('2021-06-02T14:12:14.000000+0000')),
+                new AccessSuspensionLog($space, SuspensionLevel::ACCESS_RESTRICTED, new CarbonImmutable('2021-05-02T14:12:14.000000+0000')),
+                new AccessSuspensionLog($space, SuspensionLevel::LOCKED, new CarbonImmutable('2021-05-02T14:12:14.000000+0000')),
+                new AccessSuspensionLog($space, SuspensionLevel::ACCESS_RESTRICTED, new CarbonImmutable('2021-06-02T14:12:14.000000+0000')),
                 new AccessSuspensionLog($space, null, new CarbonImmutable('2021-06-02T14:12:14.000000+0000')),
             ],
             $space->getSuspensions()->toArray()

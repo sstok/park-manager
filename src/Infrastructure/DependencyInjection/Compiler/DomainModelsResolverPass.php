@@ -12,7 +12,7 @@ namespace ParkManager\Infrastructure\DependencyInjection\Compiler;
 
 use Doctrine\ORM\Mapping\Embeddable;
 use ParkManager\Application\Service\RepositoryLocator;
-use ParkManager\Domain\EnumTrait;
+use ParkManager\Domain\EnumEqualityTrait;
 use ParkManager\Infrastructure\Service\EntityRenderer;
 use ParkManager\UI\Web\ArgumentResolver\ModelResolver;
 use ReflectionClass;
@@ -68,7 +68,7 @@ final class DomainModelsResolverPass implements CompilerPassInterface
             }
 
             // Don't include traits.
-            return ! \in_array(EnumTrait::class, $r->getTraitNames(), true);
+            return ! \in_array(EnumEqualityTrait::class, $r->getTraitNames(), true);
         };
 
         $classes = AliasResolver::findFiles($finder, $this->namespacePrefix, $typeFilter);

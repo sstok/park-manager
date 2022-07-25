@@ -35,36 +35,36 @@ final class ReportPeriod
 
     private function assertCorrectAmountWithinRange(PeriodUnit $unit, CarbonImmutable $start, CarbonImmutable $end): void
     {
-        switch ($unit->value) {
-            case 'hour':
+        switch ($unit) {
+            case PeriodUnit::HOUR:
                 if ($start->diffInHours($end) < 1) {
                     throw new PeriodAmountLessThanOne('hour');
                 }
 
                 break;
 
-            case 'day':
+            case PeriodUnit::DAY:
                 if ($start->diffInDays($end) < 1) {
                     throw new PeriodAmountLessThanOne('day');
                 }
 
                 break;
 
-            case 'week':
+            case PeriodUnit::WEEK:
                 if ($start->diffInWeeks($end) < 1) {
                     throw new PeriodAmountLessThanOne('week');
                 }
 
                 break;
 
-            case 'month':
+            case PeriodUnit::MONTH:
                 if ($start->diffInMonths($end) < 1) {
                     throw new PeriodAmountLessThanOne('month');
                 }
 
                 break;
 
-            case 'year':
+            case PeriodUnit::YEAR:
                 if ($start->diffInYears($end) < 1) {
                     throw new PeriodAmountLessThanOne('year');
                 }

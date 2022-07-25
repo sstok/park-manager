@@ -10,12 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\ScheduledTask;
 
-use ParkManager\Domain\EnumTrait;
+use ParkManager\Domain\EnumEqualityTrait;
 
-final class ScheduleType
+enum ScheduleType: string
 {
-    use EnumTrait;
+    use EnumEqualityTrait;
 
-    public const CRON = 'cron';
-    public const MOMENT = 'moment';
+    case CRON = 'cron';
+
+    case MOMENT = 'moment';
 }

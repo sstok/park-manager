@@ -29,7 +29,7 @@ final class RemoveSpaceExpirationDateHandler
             throw new WebhostingSpaceBeingRemoved($space->primaryDomainLabel);
         }
 
-        if (SuspensionLevel::equalsTo($space->accessSuspended, SuspensionLevel::get('LOCKED'))) {
+        if (SuspensionLevel::equalsTo($space->accessSuspended, SuspensionLevel::LOCKED)) {
             throw new WebhostingSpaceIsSuspended($space->id, $space->accessSuspended);
         }
 

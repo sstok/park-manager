@@ -36,7 +36,7 @@ class AccessSuspensionLog
         #[JoinColumn(name: 'space_id', onDelete: 'CASCADE')]
         public Space $space,
 
-        #[Column(name: 'log_suspension_level', type: 'park_manager_webhosting_suspension_level', nullable: true)]
+        #[Column(name: 'log_suspension_level', nullable: true, enumType: SuspensionLevel::class)]
         public SuspensionLevel | null $level,
 
         #[Column(name: 'log_timestamp', type: 'datetime_immutable')]

@@ -16,14 +16,14 @@ use Doctrine\ORM\Mapping\Embeddable;
 #[Embeddable]
 final class Schedule
 {
-    #[Column(name: 'type', type: 'park_manager_task_schedule_type')]
+    #[Column(name: 'type', enumType: ScheduleType::class)]
     public ScheduleType $type;
 
     public function __construct(
         #[Column(name: 'condition', type: 'park_manager_scheduled_task_condition')]
         public ScheduleCondition $condition,
     ) {
-        $this->type = $condition instanceof CronCondition ? ScheduleType::get('CRON') : ScheduleType::get('MOMENT');
+        $this->type = $condition instanceof CronCondition ? ScheduleType::CRON : ScheduleType::MOMENT;
     }
 
     public function equals(self $other): bool

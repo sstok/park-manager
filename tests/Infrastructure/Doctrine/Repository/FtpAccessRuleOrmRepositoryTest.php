@@ -95,7 +95,7 @@ final class FtpAccessRuleOrmRepositoryTest extends WebhostingRepositoryTestCase
                 AccessRuleId::fromString(self::RULE3_SPACE2),
                 $space2,
                 IPFactory::parseRangeString('127.0.0.1/24'),
-                AccessRuleStrategy::get('ALLOW')
+                AccessRuleStrategy::ALLOW
             )
         );
 
@@ -114,7 +114,7 @@ final class FtpAccessRuleOrmRepositoryTest extends WebhostingRepositoryTestCase
                 AccessRuleId::fromString(self::RULE5_USER2),
                 $user2,
                 IPFactory::parseAddressString('200.100.100.50'),
-                AccessRuleStrategy::get('ALLOW')
+                AccessRuleStrategy::ALLOW
             )
         );
 

@@ -28,9 +28,9 @@ final class SuspendWebhostingSpaceForm extends AbstractType
             'label' => 'label.level',
             'property_path' => 'accessSuspended',
             'choices' => [
-                'label.webhosting_suspension_level.access_limited' => SuspensionLevel::get('ACCESS_LIMITED'),
-                'label.webhosting_suspension_level.access_restricted' => SuspensionLevel::get('ACCESS_RESTRICTED'),
-                'label.webhosting_suspension_level.locked' => SuspensionLevel::get('LOCKED'),
+                'label.webhosting_suspension_level.access_limited' => SuspensionLevel::ACCESS_LIMITED,
+                'label.webhosting_suspension_level.access_restricted' => SuspensionLevel::ACCESS_RESTRICTED,
+                'label.webhosting_suspension_level.locked' => SuspensionLevel::LOCKED,
             ],
         ]);
     }

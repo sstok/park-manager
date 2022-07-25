@@ -10,18 +10,22 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\DomainModels;
 
-use ParkManager\Domain\EnumTrait;
+use ParkManager\Domain\EnumEqualityTrait;
 
 /**
  * @internal
  */
-final class PeriodUnit
+enum PeriodUnit: string
 {
-    use EnumTrait;
+    use EnumEqualityTrait;
 
-    public const HOUR = 'hour';
-    public const DAY = 'day';
-    public const WEEK = 'week';
-    public const MONTH = 'month';
-    public const YEAR = 'year';
+    case HOUR = 'hour';
+
+    case DAY = 'day';
+
+    case WEEK = 'week';
+
+    case MONTH = 'month';
+
+    case YEAR = 'year';
 }
