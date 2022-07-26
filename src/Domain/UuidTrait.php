@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain;
 
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Stringable;
+use Symfony\Component\Uid\AbstractUid;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * An Identity holds a single UUID value.
@@ -21,18 +21,18 @@ use Stringable;
  */
 trait UuidTrait
 {
-    private UuidInterface $value;
+    private AbstractUid $value;
     private string $stringValue;
 
-    private function __construct(UuidInterface $value)
+    private function __construct(AbstractUid $value)
     {
         $this->value = $value;
-        $this->stringValue = $value->toString();
+        $this->stringValue = $value->toRfc4122();
     }
 
     public static function create(): static
     {
-        return new static(Uuid::uuid4());
+        return new static(Uuid::v4());
     }
 
     public static function fromString(string | Stringable $value): static
@@ -100,15 +100,17 @@ trait UuidTrait
         return $entityId instanceof static && $entityId->equals($identity);
     }
 
-    public function serialize(): string
+    public function __serialize(): array
     {
-        return $this->stringValue;
+        return [$this->stringValue];
     }
 
-    public function unserialize($serialized): void
+    public function __unserialize(array $serialized): void
     {
-        $this->value = Uuid::fromString($serialized);
-        $this->stringValue = $this->value->toString();
+        \assert(isset($serialized[0]));
+
+        $this->value = Uuid::fromString($serialized[0]);
+        $this->stringValue = $this->value->toRfc4122();
     }
 
     public function jsonSerialize(): string

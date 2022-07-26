@@ -12,6 +12,10 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Faker\Factory as Faker;
 use Faker\Generator as FakerGenerator;
+use Symfony\Component\Uid\Command\GenerateUlidCommand;
+use Symfony\Component\Uid\Command\GenerateUuidCommand;
+use Symfony\Component\Uid\Command\InspectUlidCommand;
+use Symfony\Component\Uid\Command\InspectUuidCommand;
 
 return static function (ContainerConfigurator $c): void {
     $di = $c->services()->defaults()
@@ -24,4 +28,10 @@ return static function (ContainerConfigurator $c): void {
 
     $di->set(FakerGenerator::class)
         ->factory([Faker::class, 'create']);
+
+    $di
+        ->set(GenerateUlidCommand::class)
+        ->set(GenerateUuidCommand::class)
+        ->set(InspectUlidCommand::class)
+        ->set(InspectUuidCommand::class);
 };
