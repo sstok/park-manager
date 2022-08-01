@@ -29,6 +29,8 @@ final class CombinedResultSet implements ResultSet
     public ?Expression $expression = null;
     /** @var array<int, string|int>|null */
     private ?array $limitedToIds = null;
+    /** @var array<string, bool> */
+    private array $configChanged = ['filter' => false, 'limit' => false, 'order' => false, 'ids' => false];
     /** @var array<int, Traversable<mixed>>|null */
     private ?array $iterators = null;
     private ?int $nbResults = null;
@@ -47,6 +49,8 @@ final class CombinedResultSet implements ResultSet
         $this->offset = $offset;
         $this->iterators = null;
 
+        $this->configChanged['limit'] = true;
+
         return $this;
     }
 
@@ -58,6 +62,7 @@ final class CombinedResultSet implements ResultSet
             $this->ordering = [$field, $order];
         }
 
+        $this->configChanged['order'] = true;
         $this->iterators = null;
 
         return $this;
@@ -65,6 +70,7 @@ final class CombinedResultSet implements ResultSet
 
     public function limitToIds(?array $ids): static
     {
+        $this->configChanged['ids'] = true;
         $this->limitedToIds = $ids;
         $this->iterators = null;
 
@@ -107,12 +113,21 @@ final class CombinedResultSet implements ResultSet
         $this->iterators = [];
 
         foreach ($this->resultSets as $resultSet) {
-            $resultSet = $resultSet
-                ->setLimit($this->limit, $this->offset)
-                ->filter($this->expression)
-                ->setOrdering($this->ordering[0] ?? null, $this->ordering[1] ?? null)
-                ->limitToIds($this->limitedToIds)
-            ;
+            if ($this->configChanged['limit']) {
+                $resultSet = $resultSet->setLimit($this->limit, $this->offset);
+            }
+
+            if ($this->configChanged['order']) {
+                $resultSet = $resultSet->setOrdering($this->ordering[0] ?? null, $this->ordering[1] ?? null);
+            }
+
+            if ($this->configChanged['ids']) {
+                $resultSet = $resultSet->limitToIds($this->limitedToIds);
+            }
+
+            if ($this->configChanged['filter']) {
+                $resultSet = $resultSet->filter($this->expression);
+            }
 
             $this->nbResults += $resultSet->getNbResults();
             $this->iterators[] = $resultSet->getIterator();
@@ -122,6 +137,7 @@ final class CombinedResultSet implements ResultSet
     public function filter(?Expression $expression): static
     {
         $this->expression = $expression;
+        $this->configChanged['filter'] = true;
         $this->iterators = null;
 
         return $this;

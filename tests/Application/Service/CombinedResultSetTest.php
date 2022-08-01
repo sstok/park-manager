@@ -17,6 +17,7 @@ use Generator;
 use ParkManager\Application\Service\CombinedResultSet;
 use ParkManager\Domain\ResultSet;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
@@ -69,10 +70,10 @@ final class CombinedResultSetTest extends TestCase
     private function getResultSetMock(ArrayIterator $iterator, array $limitAndOffset = [null, null], array $ordering = [null, null], ?array $ids = null, ?Expression $expression = null): ResultSet
     {
         $resultSetProphecy = $this->prophesize(ResultSet::class);
-        $resultSetProphecy->setLimit(...$limitAndOffset)->willReturn($resultSetProphecy)->shouldBeCalled();
-        $resultSetProphecy->setOrdering(...$ordering)->willReturn($resultSetProphecy)->shouldBeCalled();
-        $resultSetProphecy->limitToIds($ids)->willReturn($resultSetProphecy)->shouldBeCalled();
-        $resultSetProphecy->filter($expression)->willReturn($resultSetProphecy)->shouldBeCalled();
+        $resultSetProphecy->setLimit(...$limitAndOffset)->willReturn($resultSetProphecy);
+        $resultSetProphecy->setOrdering(...$ordering)->willReturn($resultSetProphecy);
+        $resultSetProphecy->limitToIds($ids)->willReturn($resultSetProphecy);
+        $resultSetProphecy->filter($expression)->willReturn($resultSetProphecy);
         $resultSetProphecy->getIterator()->willReturn($iterator);
         $resultSetProphecy->getNbResults()->willReturn(\count($iterator));
 
@@ -102,10 +103,10 @@ final class CombinedResultSetTest extends TestCase
     {
         $resultSetProphecy = $this->prophesize(ResultSet::class);
         // Init
-        $resultSetProphecy->setLimit(null, null)->willReturn($resultSetProphecy)->shouldBeCalled();
-        $resultSetProphecy->setOrdering(null, null)->willReturn($resultSetProphecy)->shouldBeCalled();
-        $resultSetProphecy->limitToIds(null)->willReturn($resultSetProphecy)->shouldBeCalled();
-        $resultSetProphecy->filter(null)->willReturn($resultSetProphecy)->shouldBeCalled();
+        $resultSetProphecy->setLimit(null, null)->willReturn($resultSetProphecy);
+        $resultSetProphecy->setOrdering(null, null)->willReturn($resultSetProphecy);
+        $resultSetProphecy->limitToIds(null)->willReturn($resultSetProphecy);
+        $resultSetProphecy->filter(null)->willReturn($resultSetProphecy);
         // Not changing
         $resultSetProphecy->getIterator()->willReturn(new ArrayIterator());
         $resultSetProphecy->getNbResults()->willReturn(0);
@@ -134,5 +135,25 @@ final class CombinedResultSetTest extends TestCase
         yield 'setOrdering' => ['setOrdering', ['id', 'ASC']];
         yield 'limitToIds' => ['limitToIds', [['1', '2', '5']]];
         yield 'filter' => ['filter', [new Comparison('id', Comparison::EQ, '1')]];
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_original_settings_when_not_changed(): void
+    {
+        $resultSetProphecy = $this->prophesize(ResultSet::class);
+        $resultSetProphecy->setLimit(Argument::any(), Argument::any())->willReturn($resultSetProphecy)->shouldNotBeCalled();
+        $resultSetProphecy->setOrdering(Argument::any(), Argument::any())->willReturn($resultSetProphecy)->shouldNotBeCalled();
+        $resultSetProphecy->limitToIds(Argument::any())->willReturn($resultSetProphecy)->shouldNotBeCalled();
+        $resultSetProphecy->filter(Argument::any())->willReturn($resultSetProphecy)->shouldNotBeCalled();
+        $resultSetProphecy->getIterator()->willReturn(new ArrayIterator());
+        $resultSetProphecy->getNbResults()->willReturn(0);
+
+        $resultSetCombination = (new CombinedResultSet(
+            $resultSetProphecy->reveal(),
+        ));
+
+        self::assertSame([], iterator_to_array($resultSetCombination->getIterator()));
     }
 }
