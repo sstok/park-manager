@@ -12,6 +12,7 @@ namespace ParkManager\UI\Console\Command;
 
 use InvalidArgumentException;
 use ParkManager\Application\Command\Administrator\RegisterAdministrator;
+use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -66,7 +67,7 @@ final class RegisterAdministratorCommand extends Command
         $password = $this->passwordHasher->getPasswordHasher(SecurityUser::class)->hash($io->askHidden('Password'));
 
         $this->commandBus->dispatch(
-            new RegisterAdministrator(UserId::create(), $email, $displayName, $password)
+            new RegisterAdministrator(UserId::create(), new EmailAddress($email), $displayName, $password)
         );
 
         $io->success('Administrator was registered.');
