@@ -62,6 +62,7 @@ $config
         'list_syntax' => ['syntax' => 'short'],
         'mb_str_functions' => true,
         'method_argument_space' => ['on_multiline' => 'ignore'],
+        'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
         'no_extra_blank_lines' => ['tokens' => ['extra', 'use_trait']],
         'no_superfluous_phpdoc_tags' => ['remove_inheritdoc' => true],
         'not_operator_with_successor_space' => true,

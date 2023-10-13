@@ -27,7 +27,7 @@ enum PeriodUnit: string
 
     case DAY = 'day';
 
-    case WEEK = 'weel';
+    case WEEK = 'week';
 
     case MONTH = 'month';
 
