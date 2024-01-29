@@ -30,8 +30,8 @@ class Kernel extends BaseKernel
         $container->import('../config/parameter.yaml');
         $container->import('../config/packages/*.yaml');
         $container->import('../config/packages/' . $this->environment . '/*.yaml');
-        $container->import('../config/services.php');
-        $container->import('../config/{services}_' . $this->environment . '.php');
+//        $container->import('../config/services.php');
+//        $container->import('../config/{services}_' . $this->environment . '.php');
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void
@@ -43,12 +43,12 @@ class Kernel extends BaseKernel
 
     protected function build(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new PermissionDeciderPass());
-        $container->addCompilerPass(new PermissionShortAliasPass(__DIR__ . '/Infrastructure/Security/Permission'));
-        $container->addCompilerPass(new DomainModelsResolverPass(__DIR__ . '/Domain'));
-
-        $container->registerForAutoconfiguration(PermissionDecider::class)
-            ->addTag('park_manager.security.permission_decider')
-        ;
+//        $container->addCompilerPass(new PermissionDeciderPass());
+//        $container->addCompilerPass(new PermissionShortAliasPass(__DIR__ . '/Infrastructure/Security/Permission'));
+//        $container->addCompilerPass(new DomainModelsResolverPass(__DIR__ . '/Domain'));
+//
+//        $container->registerForAutoconfiguration(PermissionDecider::class)
+//            ->addTag('park_manager.security.permission_decider')
+//        ;
     }
 }
