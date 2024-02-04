@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Exception;
 
-use DomainException;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
 
@@ -20,7 +19,7 @@ use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
  *
  * Do not disclose specific details as these could be abused!
  */
-final class PasswordResetTokenNotAccepted extends DomainException
+final class PasswordResetTokenNotAccepted extends \DomainException
 {
     public function __construct(
         private ?SplitTokenValueHolder $storedToken = null,

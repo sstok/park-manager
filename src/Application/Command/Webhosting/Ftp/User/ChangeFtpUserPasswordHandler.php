@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Ftp\User;
 
-use ParkManager\Application\Service\PasswordHasher;
+use Lifthill\Component\Common\Application\PasswordHasher;
 use ParkManager\Domain\Webhosting\Ftp\FtpUserRepository;
 
 final class ChangeFtpUserPasswordHandler
@@ -18,8 +18,7 @@ final class ChangeFtpUserPasswordHandler
     public function __construct(
         private FtpUserRepository $userRepository,
         private PasswordHasher $passwordHasher,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ChangeFtpUserPassword $command): void
     {

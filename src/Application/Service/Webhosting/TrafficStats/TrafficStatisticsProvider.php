@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Service\Webhosting\TrafficStats;
 
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Domain\ReportPeriod;
 
 interface TrafficStatisticsProvider
@@ -19,6 +19,6 @@ interface TrafficStatisticsProvider
 
     public function getFromPeriod(
         ReportPeriod $period,
-        ?TrafficType $types = null
+        TrafficType $types = null
     ): ?TrafficReport;
 }

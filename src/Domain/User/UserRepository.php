@@ -10,12 +10,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\User;
 
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Attribute\Repository;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Domain\User\Exception\UserNotFound;
 
+#[Repository]
 interface UserRepository
 {
     /**

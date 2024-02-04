@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Space;
 
-use DateTimeImmutable;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -37,10 +36,9 @@ class AccessSuspensionLog
         public Space $space,
 
         #[Column(name: 'log_suspension_level', nullable: true, enumType: SuspensionLevel::class)]
-        public SuspensionLevel | null $level,
+        public null | SuspensionLevel $level,
 
         #[Column(name: 'log_timestamp', type: 'datetime_immutable')]
-        public DateTimeImmutable $timestamp
-    ) {
-    }
+        public \DateTimeImmutable $timestamp
+    ) {}
 }

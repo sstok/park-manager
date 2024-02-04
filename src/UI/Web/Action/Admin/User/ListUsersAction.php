@@ -10,18 +10,18 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\User;
 
+use Lifthill\Bridge\Web\Pagerfanta\ResultSetAdapter;
 use Pagerfanta\Pagerfanta;
 use ParkManager\Domain\User\UserRepository;
-use ParkManager\Infrastructure\Pagerfanta\ResultSetAdapter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class ListUsersAction extends AbstractController
 {
-    #[Security("is_granted('ROLE_SUPER_ADMIN')")]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
     #[Route(path: '/users', methods: ['GET', 'HEAD'], name: 'park_manager.admin.list_users')]
     public function __invoke(Request $request): Response
     {

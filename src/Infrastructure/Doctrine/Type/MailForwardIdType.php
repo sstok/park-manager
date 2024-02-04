@@ -10,10 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine\Type;
 
+use Lifthill\Bridge\Doctrine\Attribute\DbalType;
+use Lifthill\Bridge\Doctrine\Type\DomainIdType;
 use ParkManager\Domain\Webhosting\Email\ForwardId;
 
+#[DbalType('park_manager_webhosting_mail_forward_id')]
 final class MailForwardIdType extends DomainIdType
 {
-    public const NAME = 'park_manager_webhosting_mail_forward_id';
-    public const OBJECT_CLASS = ForwardId::class;
+    protected static function getIdClass(): string
+    {
+        return ForwardId::class;
+    }
 }

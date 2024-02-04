@@ -10,10 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\User\Exception;
 
-use InvalidArgumentException;
 use ParkManager\Domain\User\UserId;
 
-final class CannotDisableSuperAdministrator extends InvalidArgumentException
+final class CannotDisableSuperAdministrator extends \InvalidArgumentException
 {
     public UserId $id;
 

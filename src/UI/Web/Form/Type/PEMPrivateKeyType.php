@@ -21,7 +21,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
-use Traversable;
 
 /**
  * A PEM X.509 file-upload for private-key (with optional passphrase).
@@ -52,17 +51,17 @@ final class PEMPrivateKeyType extends AbstractType implements DataMapperInterfac
     }
 
     /**
-     * @param Traversable<FormInterface> $forms
+     * @param \Traversable<FormInterface> $forms
      */
-    public function mapDataToForms($viewData, Traversable $forms): void
+    public function mapDataToForms($viewData, \Traversable $forms): void
     {
         // No-op. Fields are empty by default.
     }
 
     /**
-     * @param Traversable<FormInterface> $forms
+     * @param \Traversable<FormInterface> $forms
      */
-    public function mapFormsToData(Traversable $forms, &$viewData): void
+    public function mapFormsToData(\Traversable $forms, &$viewData): void
     {
         /** @var FormInterface[] $fields */
         $fields = iterator_to_array($forms);

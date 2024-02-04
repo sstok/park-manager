@@ -11,14 +11,14 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Domain\ResultSet;
+use Lifthill\Bridge\Doctrine\OrmQueryBuilderResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\SubDomain\Exception\SubDomainAlreadyExists;
 use ParkManager\Domain\Webhosting\SubDomain\Exception\SubDomainNotFound;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainRepository;
-use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @extends EntityRepository<Subdomain>
@@ -57,8 +57,7 @@ final class SubDomainOrmRepository extends EntityRepository implements SubDomain
             ->getQuery()
             ->setParameter('host_id', $subDomain->host->id->toString())
             ->setParameter('name', $subDomain->name)
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
 
         if ($existing !== null && ! $existing->id->equals($subDomain->id)) {
             throw new SubDomainAlreadyExists($subDomain->host->namePair, $subDomain->name, $existing->id->toString());

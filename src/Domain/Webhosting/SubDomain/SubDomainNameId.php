@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\SubDomain;
 
-use ParkManager\Domain\UniqueIdentity;
-use ParkManager\Domain\UuidTrait;
+use Lifthill\Component\Common\Domain\UniqueIdentity;
+use Lifthill\Component\Common\Domain\UuidTrait;
 
 final class SubDomainNameId implements UniqueIdentity
 {

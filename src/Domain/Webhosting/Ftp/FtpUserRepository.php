@@ -10,10 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Ftp;
 
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\Attribute\Repository;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Ftp\Exception\FtpUserNotFound;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
+#[Repository]
 interface FtpUserRepository
 {
     /**

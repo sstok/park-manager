@@ -13,9 +13,9 @@ namespace ParkManager\DataFixtures\ORM;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator as FakerGenerator;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Command\BatchCommand;
 use ParkManager\Application\Command\User\RegisterUser;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -27,8 +27,7 @@ final class UserFixtures extends Fixture
         private MessageBusInterface $commandBus,
         private PasswordHasherFactoryInterface $hasherFactory,
         private FakerGenerator $faker
-    ) {
-    }
+    ) {}
 
     public function load(ObjectManager $manager): void
     {

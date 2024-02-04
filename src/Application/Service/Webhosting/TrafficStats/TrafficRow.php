@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\Application\Service\Webhosting\TrafficStats;
 
 use Carbon\CarbonImmutable;
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 
 final class TrafficRow
 {

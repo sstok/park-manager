@@ -13,7 +13,6 @@ namespace ParkManager\Tests;
 use Psr\Log\AbstractLogger;
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
-use ReflectionClass;
 
 /**
  * Used for testing purposes (copied from PHP-FIG repository).
@@ -115,7 +114,7 @@ final class TestLogger extends AbstractLogger
             return $constants;
         }
 
-        $reflection = new ReflectionClass(LogLevel::class);
+        $reflection = new \ReflectionClass(LogLevel::class);
         $constants = $reflection->getConstants();
 
         return $constants;
@@ -137,7 +136,7 @@ final class TestLogger extends AbstractLogger
     /**
      * @param string|array<string, mixed> $record
      */
-    public function hasRecord(string | array $record, string $level): bool
+    public function hasRecord(array | string $record, string $level): bool
     {
         if (\is_string($record)) {
             $record = ['message' => $record];

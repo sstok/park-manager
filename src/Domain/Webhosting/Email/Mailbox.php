@@ -19,17 +19,18 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Attribute\Entity as DomainEntity;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\DomainName\DomainName;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\TimestampableTrait;
 use ParkManager\Domain\Webhosting\Space\Space;
-use Stringable;
 
 #[Entity]
 #[Table(name: 'mailbox')]
 #[UniqueConstraint(name: 'uk_mailbox_address_name', columns: ['address', 'domain_name'])]
-class Mailbox implements Stringable
+#[DomainEntity]
+class Mailbox implements \Stringable
 {
     use TimestampableTrait;
 
@@ -70,7 +71,7 @@ class Mailbox implements Stringable
         $this->addressChanged = false;
     }
 
-    public function setAddress(string $address, ?DomainName $domainName = null): void
+    public function setAddress(string $address, DomainName $domainName = null): void
     {
         $domainName ??= $this->domainName;
         $emailAddress = new EmailAddress($address . '@' . $domainName->namePair->toString());

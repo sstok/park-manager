@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Security;
 
+use Lifthill\Component\Common\Domain\Exception\MalformedEmailAddress;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Command\User\ChangePassword;
-use ParkManager\Domain\EmailAddress;
-use ParkManager\Domain\Exception\MalformedEmailAddress;
 use ParkManager\Domain\Exception\NotFoundException;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
@@ -23,19 +23,16 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Throwable;
 
 final class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
-    public function __construct(private UserRepository $repository, private MessageBusInterface $commandBus)
-    {
-    }
+    public function __construct(private UserRepository $repository, private MessageBusInterface $commandBus) {}
 
     public function loadUserByIdentifier(string $identifier): SecurityUser
     {
         try {
             $user = $this->repository->getByEmail(new EmailAddress($identifier));
-        } catch (NotFoundException | MalformedEmailAddress $e) {
+        } catch (MalformedEmailAddress | NotFoundException $e) {
             $e = new UserNotFoundException('', 0, $e);
             $e->setUserIdentifier($identifier);
 
@@ -77,7 +74,7 @@ final class UserProvider implements UserProviderInterface, PasswordUpgraderInter
             }
 
             $this->commandBus->dispatch(new ChangePassword($id, $newHashedPassword));
-        } catch (Throwable) {
+        } catch (\Throwable) {
             // Noop
         }
     }

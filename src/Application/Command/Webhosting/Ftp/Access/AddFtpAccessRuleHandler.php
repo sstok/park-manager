@@ -22,8 +22,7 @@ final class AddFtpAccessRuleHandler
         private SpaceRepository $spaceRepository,
         private FtpUserRepository $userRepository,
         private AccessRuleRepository $ruleRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(AddFtpAccessRule $command): void
     {

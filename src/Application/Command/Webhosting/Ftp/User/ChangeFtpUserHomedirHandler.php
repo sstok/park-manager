@@ -14,9 +14,7 @@ use ParkManager\Domain\Webhosting\Ftp\FtpUserRepository;
 
 final class ChangeFtpUserHomedirHandler
 {
-    public function __construct(private FtpUserRepository $userRepository)
-    {
-    }
+    public function __construct(private FtpUserRepository $userRepository) {}
 
     public function __invoke(ChangeFtpUserHomedir $command): void
     {

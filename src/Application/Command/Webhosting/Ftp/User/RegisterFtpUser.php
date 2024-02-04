@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Ftp\User;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Ftp\FtpUserId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Infrastructure\Validator\Constraints\DirectoryPath;
@@ -38,6 +38,5 @@ final class RegisterFtpUser
 
         #[DirectoryPath]
         public ?string $homeDir = null,
-    ) {
-    }
+    ) {}
 }

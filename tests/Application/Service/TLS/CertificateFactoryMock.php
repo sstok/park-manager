@@ -15,8 +15,8 @@ use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Application\Service\TLS\CAResolver;
 use ParkManager\Application\Service\TLS\CertificateFactory;
 use ParkManager\Application\Service\TLS\CertificateFactoryImpl;
-use ParkManager\Application\Service\TLS\KeyValidator;
 use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
+use Rollerworks\Component\X509Validator\KeyValidator;
 
 /**
  * Tries to Mock as much as possible of the CertificateFactory.
@@ -49,7 +49,7 @@ final class CertificateFactoryMock implements CertificateFactory
     private function getKeyValidatorStub(): KeyValidator
     {
         return new class() extends KeyValidator {
-            public function validate(HiddenString $privateKey, string $certificate): void
+            public function validate(HiddenString | string $privateKey, string $certificate, int $minimumBitCount = self::MINIMUM_BIT_COUNT): void
             {
                 // No-op
             }

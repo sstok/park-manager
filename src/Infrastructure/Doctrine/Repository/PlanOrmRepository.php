@@ -11,12 +11,12 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Domain\ResultSet;
+use Lifthill\Bridge\Doctrine\OrmQueryBuilderResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Constraint\Exception\PlanNotFound;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
-use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @extends EntityRepository<Plan>

@@ -12,10 +12,11 @@ namespace ParkManager\Infrastructure\Doctrine\Type\Webhosting;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Lifthill\Bridge\Doctrine\Attribute\DbalType;
 use ParkManager\Domain\Webhosting\ScheduledTask\CronCondition;
 use ParkManager\Domain\Webhosting\ScheduledTask\MomentCondition;
-use Stringable;
 
+#[DbalType('park_manager_scheduled_task_condition')]
 final class ScheduledTaskConditionType extends Type
 {
     public function getName(): string
@@ -39,7 +40,7 @@ final class ScheduledTaskConditionType extends Type
             return null;
         }
 
-        \assert($value instanceof Stringable || \is_string($value));
+        \assert($value instanceof \Stringable || \is_string($value));
 
         return (string) $value;
     }

@@ -14,7 +14,5 @@ use ParkManager\Domain\Webhosting\Ftp\FtpUserId;
 
 final class EnableFtpUser
 {
-    public function __construct(public FtpUserId $id)
-    {
-    }
+    public function __construct(public FtpUserId $id) {}
 }

@@ -10,9 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\User\Exception;
 
-use DomainException;
-
-final class CannotMakeUserSuperAdmin extends DomainException
+final class CannotMakeUserSuperAdmin extends \DomainException
 {
     public function __construct()
     {

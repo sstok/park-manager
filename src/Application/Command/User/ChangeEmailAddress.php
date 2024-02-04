@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\User;
 
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\User\UserId;
 
 final class ChangeEmailAddress
@@ -18,6 +18,5 @@ final class ChangeEmailAddress
     public function __construct(
         public UserId $id,
         public EmailAddress $emailAddress
-    ) {
-    }
+    ) {}
 }

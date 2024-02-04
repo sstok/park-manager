@@ -11,16 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Exception;
 
 use Symfony\Contracts\Translation\TranslatableInterface;
-use Throwable;
 
-/**
- * Implement this interface to make the exception user translatable.
- *
- * Use the exception code as HTTP status code.
- *
- * @method string getPublicMessage() English-only non-system message (with curly-braced placeholders; uses public properties)
- */
-interface DomainError extends Throwable
+interface DomainError extends \Lifthill\Component\Common\Domain\Exception\DomainError
 {
     /**
      * Returns the Translation-id in the validators+intl-icu domain.

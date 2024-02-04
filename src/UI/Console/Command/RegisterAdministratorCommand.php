@@ -10,9 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Console\Command;
 
-use InvalidArgumentException;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Command\Administrator\RegisterAdministrator;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -44,8 +43,7 @@ final class RegisterAdministratorCommand extends Command
                 <<<'EOT'
                     The <info>%command.name%</info> command registers a new Administrator user.
                     EOT
-            )
-        ;
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -58,7 +56,7 @@ final class RegisterAdministratorCommand extends Command
 
             if ($violationList->count() > 0) {
                 /** @psalm-suppress InvalidCast */
-                throw new InvalidArgumentException((string) $violationList);
+                throw new \InvalidArgumentException((string) $violationList);
             }
 
             return $value;

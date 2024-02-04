@@ -10,17 +10,20 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\DomainName;
 
+use Lifthill\Component\Common\Domain\Attribute\Repository;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\DomainName\Exception\CannotRemovePrimaryDomainName;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
 use ParkManager\Domain\OwnerControlledRepository;
 use ParkManager\Domain\OwnerId;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 /**
  * @extends OwnerControlledRepository<DomainName>
  */
+#[Repository]
 interface DomainNameRepository extends OwnerControlledRepository
 {
     /**

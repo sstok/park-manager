@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
+use Lifthill\Component\Common\Domain\Attribute\Entity as DomainEntity;
 use ParkManager\Domain\Organization\Exception\OrganizationMemberNotFound;
 use ParkManager\Domain\TimestampableTrait;
 use ParkManager\Domain\User\User;
@@ -30,6 +31,7 @@ use ParkManager\Domain\User\User;
  */
 #[Entity]
 #[Table(name: 'organization')]
+#[DomainEntity]
 class Organization
 {
     use TimestampableTrait;
@@ -115,7 +117,7 @@ class Organization
      */
     public function getMember(User $user): OrganizationMember
     {
-        [$member,] = $this->findMembership($user);
+        [$member] = $this->findMembership($user);
 
         if ($member === null) {
             throw OrganizationMemberNotFound::with($this->id, $user->id);
@@ -124,10 +126,10 @@ class Organization
         return $member;
     }
 
-    public function hasMember(User $user, ?AccessLevel $accessLevel = null): bool
+    public function hasMember(User $user, AccessLevel $accessLevel = null): bool
     {
         /** @var OrganizationMember|null $member */
-        [$member,] = $this->findMembership($user);
+        [$member] = $this->findMembership($user);
 
         if ($member === null) {
             return false;

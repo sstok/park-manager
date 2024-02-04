@@ -10,12 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Email\Exception;
 
-use DomainException;
-use ParkManager\Domain\DomainName\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\Exception\DomainError;
 use ParkManager\Domain\Translation\TranslatableMessage;
 
-final class AddressAlreadyExists extends DomainException implements DomainError
+final class AddressAlreadyExists extends \DomainException implements DomainError
 {
     public function __construct(public string $name, public DomainNamePair $domainName)
     {

@@ -10,10 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Service\TLS;
 
-use Closure;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Persistence\ObjectManagerDecorator;
-use ParkManager\Tests\Mock\Domain\MockRepository;
+use Lifthill\Component\Common\Test\MockRepository;
 
 /**
  * @internal
@@ -38,7 +37,7 @@ final class TLSPersistenceRepositoryMock extends ObjectManagerDecorator
     }
 
     /**
-     * @return array<string, string|Closure>
+     * @return array<string, string|\Closure>
      */
     protected function getFieldsIndexMapping(): array
     {

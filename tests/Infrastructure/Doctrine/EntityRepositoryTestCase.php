@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Domain\ResultSet;
-use ParkManager\Domain\UniqueIdentity;
+use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\UniqueIdentity;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -50,7 +50,7 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
             $resultIds[(string) $entity->id] = $entity;
         }
 
-        static::assertSame($expected, array_keys($resultIds));
+        self::assertSame($expected, array_keys($resultIds));
     }
 
     /**
@@ -73,6 +73,6 @@ abstract class EntityRepositoryTestCase extends KernelTestCase
         ksort($expected, \SORT_STRING);
         ksort($found, \SORT_STRING);
 
-        static::assertSame($expected, $found);
+        self::assertSame($expected, $found);
     }
 }

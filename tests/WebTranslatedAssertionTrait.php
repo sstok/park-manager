@@ -10,9 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests;
 
-use ErrorException;
 use PHPUnit\Framework\ExpectationFailedException;
-use ReflectionClass;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
 
@@ -21,7 +19,7 @@ trait WebTranslatedAssertionTrait
     /**
      * @param array<string, mixed> $parameters
      */
-    protected static function assertSelectorTranslatedTextContains(string $selector, string $id, array $parameters = [], ?string $domain = null, string $message = ''): void
+    protected static function assertSelectorTranslatedTextContains(string $selector, string $id, array $parameters = [], string $domain = null, string $message = ''): void
     {
         $locale = null;
 
@@ -53,7 +51,7 @@ trait WebTranslatedAssertionTrait
                 throw new ExpectationFailedException(
                     $exception->getMessage(),
                     $exception->getComparisonFailure(),
-                    new ErrorException(
+                    new \ErrorException(
                         rawurldecode($serverExceptionMessage),
                         0,
                         1,
@@ -75,11 +73,8 @@ trait WebTranslatedAssertionTrait
     /**
      * @param array<int, mixed>|null $parameters
      */
-    private static function executePrivateMethod(string $name, ?array $parameters = null): mixed
+    private static function executePrivateMethod(string $name, array $parameters = null): mixed
     {
-        $method = (new ReflectionClass(static::class))->getMethod($name);
-        $method->setAccessible(true);
-
-        return $method->invoke(null, $parameters);
+        return (new \ReflectionClass(static::class))->getMethod($name)->invoke(null, $parameters);
     }
 }

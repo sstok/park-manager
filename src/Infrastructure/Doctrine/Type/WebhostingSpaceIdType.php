@@ -10,10 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine\Type;
 
+use Lifthill\Bridge\Doctrine\Attribute\DbalType;
+use Lifthill\Bridge\Doctrine\Type\DomainIdType;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
+#[DbalType('park_manager_webhosting_space_id')]
 final class WebhostingSpaceIdType extends DomainIdType
 {
-    public const NAME = 'park_manager_webhosting_space_id';
-    public const OBJECT_CLASS = SpaceId::class;
+    protected static function getIdClass(): string
+    {
+        return SpaceId::class;
+    }
 }

@@ -12,7 +12,7 @@ namespace ParkManager\Domain\Webhosting\Constraint;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Embeddable;
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 
 #[Embeddable]
 final class EmailConstraints
@@ -94,8 +94,7 @@ final class EmailConstraints
             ->setMaximumForwardCount($other->maximumForwardCount)
             ->setMaximumAddressCount($other->maximumAddressCount)
             ->setSpamFilterCount($other->spamFilterCount)
-            ->setMailListCount($other->mailListCount)
-        ;
+            ->setMailListCount($other->mailListCount);
     }
 
     public function setMaxStorageSize(ByteSize $value): self

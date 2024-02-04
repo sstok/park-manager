@@ -10,8 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\Webhosting\Constraint;
 
-use Generator;
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\DBConstraints;
 use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
@@ -44,8 +43,7 @@ final class ConstraintsTest extends TestCase
     {
         $constraints = (new Constraints())
             ->setStorageSize(new ByteSize(12, 'GB'))
-            ->setMonthlyTraffic(10)
-        ;
+            ->setMonthlyTraffic(10);
 
         $constraints2 = new Constraints([
             'storageSize' => new ByteSize(12, 'GB'),
@@ -64,7 +62,7 @@ final class ConstraintsTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider provideFields
+     * @dataProvider provideIts_changeableCases
      */
     public function its_changeable(string $field, mixed $value): void
     {
@@ -90,9 +88,9 @@ final class ConstraintsTest extends TestCase
     }
 
     /**
-     * @return Generator<int, array{0: string, 1: mixed}>
+     * @return \Generator<int, array{0: string, 1: mixed}>
      */
-    public function provideFields(): Generator
+    public static function provideIts_changeableCases(): iterable
     {
         yield ['monthlyTraffic', 50];
 

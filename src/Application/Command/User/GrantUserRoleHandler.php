@@ -14,9 +14,7 @@ use ParkManager\Domain\User\UserRepository;
 
 final class GrantUserRoleHandler
 {
-    public function __construct(private UserRepository $userRepository)
-    {
-    }
+    public function __construct(private UserRepository $userRepository) {}
 
     public function __invoke(GrantUserRole $command): void
     {

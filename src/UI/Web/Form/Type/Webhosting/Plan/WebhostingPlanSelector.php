@@ -10,26 +10,23 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Webhosting\Plan;
 
-use Locale;
+use Lifthill\Bridge\Web\Form\Type\EntityType;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
-use ParkManager\UI\Web\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class WebhostingPlanSelector extends AbstractType
 {
-    public function __construct(private PlanRepository $planRepository)
-    {
-    }
+    public function __construct(private PlanRepository $planRepository) {}
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'label' => 'label.plan',
             'resultset' => $this->planRepository->all(),
-            'choice_label' => static fn (Plan $plan): string => $plan->getLabel(Locale::getDefault()),
-            'choice_vary' => [$this->planRepository::class, Locale::getDefault()],
+            'choice_label' => static fn (Plan $plan): string => $plan->getLabel(\Locale::getDefault()),
+            'choice_vary' => [$this->planRepository::class, \Locale::getDefault()],
         ]);
     }
 

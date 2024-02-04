@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\User\Exception;
 
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\Exception\NotFoundException;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\User\UserId;

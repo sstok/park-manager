@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\DomainName;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\DomainName\Exception\CannotAssignDomainNameWithDifferentOwner;
 use ParkManager\Domain\DomainName\Exception\CannotTransferPrimaryDomainName;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
@@ -51,7 +51,7 @@ final class DomainNameTest extends TestCase
         self::assertTrue($webhostingDomainName2->primary);
     }
 
-    private function createSpace(string $id, ?Owner $owner = null): Space
+    private function createSpace(string $id, Owner $owner = null): Space
     {
         return SpaceRepositoryMock::createSpace($id, $owner);
     }

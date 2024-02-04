@@ -29,8 +29,7 @@ final class RegisterWebhostingSpaceHandler
         private DomainNameRepository $domainNameRepository,
         private OwnerRepository $ownerRepository,
         private MessageBusInterface $commandBus
-    ) {
-    }
+    ) {}
 
     public function __invoke(RegisterWebhostingSpace $command): void
     {

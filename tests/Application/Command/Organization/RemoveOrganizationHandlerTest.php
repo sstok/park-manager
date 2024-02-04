@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\Organization;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Application\Command\Organization\RemoveOrganization;
 use ParkManager\Application\Command\Organization\RemoveOrganizationHandler;
 use ParkManager\Application\Service\OwnershipUsageList;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Organization\Exception\CannotRemoveActiveOrganization;
 use ParkManager\Domain\Organization\Exception\CannotRemoveInternalOrganization;
 use ParkManager\Domain\Organization\Organization;

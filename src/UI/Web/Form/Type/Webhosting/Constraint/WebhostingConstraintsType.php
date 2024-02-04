@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Webhosting\Constraint;
 
+use Lifthill\Bridge\Web\Form\Type\ByteSizeType;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\DBConstraints;
 use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
 use ParkManager\UI\Web\Form\DataMapper\WebhostingConstraintDataMapper;
-use ParkManager\UI\Web\Form\Type\ByteSizeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Event\PreSetDataEvent;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -50,8 +50,7 @@ final class WebhostingConstraintsType extends AbstractType
                 'help' => 'help.webhosting.total_space_storage_size',
             ])
             ->add($this->getEmailConstraintsForm($builder))
-            ->add($this->getDBConstraintsForm($builder))
-        ;
+            ->add($this->getDBConstraintsForm($builder));
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -91,8 +90,7 @@ final class WebhostingConstraintsType extends AbstractType
             ->add('mailListCount', IntegerType::class, [
                 'label' => 'label.webhosting_plan.email_list_count',
                 'constraints' => new GreaterThanOrEqual(-1),
-            ])
-        ;
+            ]);
     }
 
     private function getDBConstraintsForm(FormBuilderInterface $builder): FormBuilderInterface
@@ -119,8 +117,7 @@ final class WebhostingConstraintsType extends AbstractType
                 'label' => 'label.webhosting_plan.database_enabled_mysql',
                 'block_prefix' => 'webhosting_constraints_checkbox',
                 'required' => false,
-            ])
-        ;
+            ]);
     }
 
     public function getBlockPrefix(): string

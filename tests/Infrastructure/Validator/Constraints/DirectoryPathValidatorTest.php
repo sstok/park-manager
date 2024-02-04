@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Validator\Constraints;
 
-use Generator;
 use ParkManager\Infrastructure\Validator\Constraints\DirectoryPath;
 use ParkManager\Infrastructure\Validator\Constraints\DirectoryPathValidator;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
@@ -32,8 +31,7 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
             ->setInvalidValue($v)
             ->setCode(DirectoryPath::PATH_TO_LONG_ERROR)
             ->setParameter('{{ max }}', '3096')
-            ->assertRaised()
-        ;
+            ->assertRaised();
     }
 
     /** @test */
@@ -50,15 +48,15 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
             ->setParameter('{{ value }}', '"testing-deep/' . $v . '"')
             ->setParameter('{{ chunk }}', '"' . $v . '"')
             ->setParameter('{{ max }}', '255')
-            ->assertRaised()
-        ;
+            ->assertRaised();
     }
 
     /**
      * @test
-     * @dataProvider provideInvalidValues
+     *
+     * @dataProvider provideIt_fails_with_invalid_pathCases
      */
-    public function it_fails_with_invalid_path(string $value, ?string $chunk = null): void
+    public function it_fails_with_invalid_path(string $value, string $chunk = null): void
     {
         $constraint = new DirectoryPath();
 
@@ -70,14 +68,13 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
             ->setCode(DirectoryPath::INVALID_PATH)
             ->setParameter('{{ value }}', '"' . $value . '"')
             ->setParameter('{{ chunk }}', '"' . $chunk . '"')
-            ->assertRaised()
-        ;
+            ->assertRaised();
     }
 
     /**
-     * @return Generator<int, array<int, string>>
+     * @return \Generator<int, array<int, string>>
      */
-    public function provideInvalidValues(): Generator
+    public static function provideIt_fails_with_invalid_pathCases(): iterable
     {
         yield ['@'];
         yield ['%2ef'];
@@ -130,7 +127,8 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
 
     /**
      * @test
-     * @dataProvider provideValidValues
+     *
+     * @dataProvider provideIt_accepts_valid_pathCases
      */
     public function it_accepts_valid_path(?string $value): void
     {
@@ -142,9 +140,9 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @return Generator<int, array{0: string|null}>
+     * @return \Generator<int, array{0: string|null}>
      */
-    public function provideValidValues(): Generator
+    public static function provideIt_accepts_valid_pathCases(): iterable
     {
         yield [null];
         yield ['l'];

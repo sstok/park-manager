@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Email\Forward;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Webhosting\Email\ForwardId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Infrastructure\Validator\Constraints\EmailboxName;
@@ -33,7 +33,6 @@ final class AddForward
         public string $address,
 
         public DomainNameId | DomainNamePair $domainName,
-        public string | EmailAddress $destination,
-    ) {
-    }
+        public EmailAddress | string $destination,
+    ) {}
 }

@@ -10,37 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Exception;
 
-use DateTimeInterface;
-use InvalidArgumentException;
-use ParkManager\Domain\Translation\TranslatableMessage;
-use Stringable;
-use Symfony\Contracts\Translation\TranslatableInterface;
-
 /**
  * Extend this class for not-found exception classes,
  * making the exception automatically translatable.
  */
-abstract class NotFoundException extends InvalidArgumentException implements DomainError
-{
-    /** @var array<string, DateTimeInterface|float|int|string|Stringable|TranslatableInterface|null> */
-    protected array $translationArgs = [];
-
-    /**
-     * @param array<string, mixed> $translationArgs
-     */
-    public function __construct(string $message = 'Not found', array $translationArgs = [])
-    {
-        parent::__construct($message, 404);
-        $this->translationArgs = $translationArgs;
-    }
-
-    public function getTranslatorMsg(): string | TranslatableMessage
-    {
-        return new TranslatableMessage('Not found', $this->translationArgs, 'validators');
-    }
-
-    public function getPublicMessage(): string
-    {
-        return 'Not found.';
-    }
-}
+abstract class NotFoundException extends \Lifthill\Component\Common\Domain\Exception\NotFoundException {}

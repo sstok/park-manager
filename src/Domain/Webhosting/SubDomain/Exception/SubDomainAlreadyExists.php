@@ -10,14 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\SubDomain\Exception;
 
-use DomainException;
-use ParkManager\Domain\DomainName\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\Exception\DomainError;
 use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 
-final class SubDomainAlreadyExists extends DomainException implements DomainError
+final class SubDomainAlreadyExists extends \DomainException implements DomainError
 {
     public function __construct(public DomainNamePair $domainName, public string $name, private string $id)
     {

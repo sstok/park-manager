@@ -11,15 +11,15 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Lifthill\Bridge\Doctrine\OrmQueryBuilderResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\OwnerId;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\Space\SpaceRepository;
-use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @extends EntityRepository<Space>
@@ -46,8 +46,7 @@ class SpaceOrmRepository extends EntityRepository implements SpaceRepository
     {
         $queryBuilder = $this->createQueryBuilder('s')
             ->select(['s', 'p'])
-            ->leftJoin('s.plan', 'p')
-        ;
+            ->leftJoin('s.plan', 'p');
 
         return new OrmQueryBuilderResultSet($queryBuilder, 's', fetchJoinCollection: true);
     }
@@ -56,8 +55,7 @@ class SpaceOrmRepository extends EntityRepository implements SpaceRepository
     {
         $queryBuilder = $this->createQueryBuilder('s')
             ->andWhere('s.plan = :id')
-            ->setParameter('id', $id->toString())
-        ;
+            ->setParameter('id', $id->toString());
 
         return new OrmQueryBuilderResultSet($queryBuilder, 's');
     }
@@ -66,8 +64,7 @@ class SpaceOrmRepository extends EntityRepository implements SpaceRepository
     {
         $queryBuilder = $this->createQueryBuilder('s');
         $queryBuilder->andWhere('s.owner = :id')
-            ->setParameter('id', $id->toString())
-        ;
+            ->setParameter('id', $id->toString());
 
         return new OrmQueryBuilderResultSet($queryBuilder, 's');
     }

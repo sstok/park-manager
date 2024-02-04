@@ -11,10 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Domain\Webhosting\Email;
 
 use Assert\InvalidArgumentException;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Webhosting\Email\Forward;
 use ParkManager\Domain\Webhosting\Email\ForwardId;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;

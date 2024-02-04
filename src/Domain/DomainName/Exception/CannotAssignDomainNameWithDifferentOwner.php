@@ -10,14 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\DomainName\Exception;
 
-use DomainException;
-use ParkManager\Domain\DomainName\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\Exception\DomainError;
 use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
-final class CannotAssignDomainNameWithDifferentOwner extends DomainException implements DomainError
+final class CannotAssignDomainNameWithDifferentOwner extends \DomainException implements DomainError
 {
     public DomainNamePair $domainName;
     public ?SpaceId $current = null;

@@ -10,7 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type;
 
-use ParkManager\Application\Service\CombinedResultSet;
+use Lifthill\Bridge\Web\Form\Type\EntityType;
+use Lifthill\Component\Common\Application\CombinedResultSet;
 use ParkManager\Domain\Organization\Organization;
 use ParkManager\Domain\Organization\OrganizationRepository;
 use ParkManager\Domain\Owner;
@@ -33,8 +34,7 @@ final class OwnerSelector extends AbstractType
         private OrganizationRepository $organizationRepository,
         private OwnerRepository $ownerRepository,
         private TranslatorInterface $translator
-    ) {
-    }
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -96,7 +96,7 @@ final class OwnerSelector extends AbstractType
         return EntityType::class;
     }
 
-    public function getLabel(User | Organization $owner): string
+    public function getLabel(Organization | User $owner): string
     {
         if ($owner instanceof User) {
             return sprintf(
@@ -113,7 +113,7 @@ final class OwnerSelector extends AbstractType
         return sprintf('%s (%s)', $owner->name, $owner->id->toString());
     }
 
-    public function getGroup(User | Organization $owner): string
+    public function getGroup(Organization | User $owner): string
     {
         // This method is called for every entity, keeping a local cache of the translations
         // provides a better performance.

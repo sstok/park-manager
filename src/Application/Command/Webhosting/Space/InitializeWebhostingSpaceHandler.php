@@ -19,7 +19,6 @@ use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\Domain\Webhosting\Space\SpaceSetupStatus;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
-use Throwable;
 
 final class InitializeWebhostingSpaceHandler
 {
@@ -28,8 +27,7 @@ final class InitializeWebhostingSpaceHandler
         private EventDispatcherInterface $eventDispatcher,
         private SystemGateway $systemGateway,
         private LoggerInterface $logger
-    ) {
-    }
+    ) {}
 
     public function __invoke(InitializeWebhostingSpace $command): void
     {
@@ -57,7 +55,7 @@ final class InitializeWebhostingSpaceHandler
             $this->spaceRepository->save($space);
 
             $this->eventDispatcher->dispatch(new WebhostingSpaceWasInitialized($space->id));
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             $this->logger->error(
                 'Failed to Initialize Webhosting Space "{space}" ({domain_name}).',
                 [

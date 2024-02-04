@@ -1,0 +1,4 @@
+lifthill_permission:
+    paths:
+        '%kernel.project_dir%/src/Infrastructure/Security/Permission': 'ParkManager\Infrastructure\Security\Permission'
+

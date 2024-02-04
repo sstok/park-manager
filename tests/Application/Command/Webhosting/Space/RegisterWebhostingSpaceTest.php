@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\Webhosting\Space;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Application\Command\Webhosting\Space\RegisterWebhostingSpace;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;

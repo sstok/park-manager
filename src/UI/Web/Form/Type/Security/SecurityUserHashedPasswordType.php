@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Security;
 
+use Lifthill\Bridge\Web\Form\Type\HashedPasswordType;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
@@ -19,9 +20,7 @@ use function Sodium\memzero;
 
 final class SecurityUserHashedPasswordType extends AbstractType
 {
-    public function __construct(private PasswordHasherFactoryInterface $hasherFactory)
-    {
-    }
+    public function __construct(private PasswordHasherFactoryInterface $hasherFactory) {}
 
     public function configureOptions(OptionsResolver $resolver): void
     {
@@ -34,8 +33,7 @@ final class SecurityUserHashedPasswordType extends AbstractType
 
                     return $hashed;
                 };
-            })
-        ;
+            });
     }
 
     public function getParent(): ?string

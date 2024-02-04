@@ -10,8 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Space;
 
+use Lifthill\Component\Common\Domain\Attribute\Repository;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\OwnerControlledRepository;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
@@ -19,6 +20,7 @@ use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 /**
  * @extends OwnerControlledRepository<Space>
  */
+#[Repository]
 interface SpaceRepository extends OwnerControlledRepository
 {
     /**

@@ -22,6 +22,5 @@ final class CreatePlan
         public PlanId $id,
         public Constraints $constraints,
         public array $metadata = []
-    ) {
-    }
+    ) {}
 }

@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Space;
 
-use ParkManager\Domain\DomainName\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
@@ -24,8 +24,7 @@ final class RegisterWebhostingSpace
         public DomainNamePair $domainName,
         public ?PlanId $planId = null,
         public ?Constraints $customConstraints = null
-    ) {
-    }
+    ) {}
 
     public static function withPlan(string $id, DomainNamePair $domainName, string $owner, string $planId): self
     {

@@ -10,22 +10,21 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Validator\Constraints;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Application\Command\Webhosting\SubDomain\AddSubDomain;
 use ParkManager\Application\Command\Webhosting\SubDomain\SubDomainCommand;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Infrastructure\Validator\Constraints\SubDomainTLS;
 use ParkManager\Infrastructure\Validator\Constraints\SubDomainTLSValidator;
-use ParkManager\Infrastructure\Validator\Constraints\X509Certificate;
-use ParkManager\Infrastructure\Validator\Constraints\X509CertificateBundle;
-use ParkManager\Infrastructure\Validator\Constraints\X509HostnamePattern;
-use ParkManager\Infrastructure\Validator\Constraints\X509KeyPair;
-use ParkManager\Infrastructure\Validator\Constraints\X509Purpose;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
-use stdClass;
+use Rollerworks\Component\X509Validator\Symfony\Constraint\X509Certificate;
+use Rollerworks\Component\X509Validator\Symfony\Constraint\X509CertificateBundle;
+use Rollerworks\Component\X509Validator\Symfony\Constraint\X509HostnamePattern;
+use Rollerworks\Component\X509Validator\Symfony\Constraint\X509KeyPair;
+use Rollerworks\Component\X509Validator\Symfony\Constraint\X509Purpose;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Sequentially;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
@@ -61,7 +60,7 @@ final class SubDomainTLSValidatorTest extends ConstraintValidatorTestCase
 
         $this->validator->validate(null, $constraint);
 
-        $value = new stdClass();
+        $value = new \stdClass();
         $this->expectExceptionObject(new UnexpectedValueException($value, SubDomainCommand::class));
 
         $this->validator->validate($value, $constraint);
@@ -160,8 +159,7 @@ final class SubDomainTLSValidatorTest extends ConstraintValidatorTestCase
                         -----END CERTIFICATE-----
                         CA,
                 ]
-            )
-        ;
+            );
 
         $this->createSubDomainValidatorContext($value, 'www.example.com');
 
@@ -250,8 +248,7 @@ final class SubDomainTLSValidatorTest extends ConstraintValidatorTestCase
                         -----END CERTIFICATE-----
                         CA,
                 ]
-            )
-        ;
+            );
 
         $this->createSubDomainValidatorContext($value, 'example.com');
 
@@ -283,14 +280,12 @@ final class SubDomainTLSValidatorTest extends ConstraintValidatorTestCase
                         new X509KeyPair(),
                     ]
                 )
-            )
-        ;
+            );
 
         $validator->expects(self::any())
             ->method('inContext')
             ->with($context)
-            ->willReturn($contextualValidator)
-        ;
+            ->willReturn($contextualValidator);
 
         $this->context = $context;
         $this->validator->initialize($this->context);

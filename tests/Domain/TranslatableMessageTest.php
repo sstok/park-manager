@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain;
 
-use Generator;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\Loader\ArrayLoader;
@@ -41,7 +40,7 @@ final class TranslatableMessageTest extends TestCase
     }
 
     /**
-     * @dataProvider getTransTests
+     * @dataProvider provideIt_translatesCases
      *
      * @test
      */
@@ -72,16 +71,16 @@ final class TranslatableMessageTest extends TestCase
     }
 
     /**
-     * @return Generator<int, array{0: string, 1: TranslatableMessage, 2: string, 3: string}>
+     * @return \Generator<int, array{0: string, 1: TranslatableMessage, 2: string, 3: string}>
      */
-    public function getTransTests(): Generator
+    public static function provideIt_translatesCases(): iterable
     {
         yield ['Symfony est super !', new TranslatableMessage('Symfony is great!', [], ''), 'Symfony est super !', 'fr'];
         yield ['Symfony est awesome !', new TranslatableMessage('Symfony is %what%!', ['%what%' => 'awesome'], ''), 'Symfony est %what% !', 'fr'];
     }
 
     /**
-     * @dataProvider getFlattenedTransTests
+     * @dataProvider provideFlattened_transCases
      *
      * @test
      *
@@ -103,9 +102,9 @@ final class TranslatableMessageTest extends TestCase
     }
 
     /**
-     * @return Generator<int, array{0: string, 1: array<string, mixed>, 2: TranslatableMessage}>
+     * @return \Generator<int, array{0: string, 1: array<string, mixed>, 2: TranslatableMessage}>
      */
-    public function getFlattenedTransTests(): Generator
+    public static function provideFlattened_transCases(): iterable
     {
         $messages = [
             'symfony' => [

@@ -14,7 +14,6 @@ use Assert\Assertion;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
-use InvalidArgumentException;
 
 /**
  * Holds a TLS Certificate (immutable).
@@ -48,7 +47,7 @@ class Certificate
         private mixed $privateKey,
 
         array $rawFields,
-        ?CA $ca = null
+        CA $ca = null
     ) {
         $this->construct($contents, $rawFields, $ca);
         $this->privateKeyString = $privateKey;
@@ -100,7 +99,7 @@ class Certificate
     {
         if (! isset($this->privateKeyString)) {
             if (! \is_resource($this->privateKey)) {
-                throw new InvalidArgumentException('PrivateKey resource was not initialized.');
+                throw new \InvalidArgumentException('PrivateKey resource was not initialized.');
             }
 
             $this->privateKeyString = stream_get_contents($this->privateKey);

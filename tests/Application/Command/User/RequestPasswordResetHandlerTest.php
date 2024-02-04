@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\User;
 
-use DateTimeImmutable;
 use ParkManager\Application\Command\User\RequestPasswordReset;
 use ParkManager\Application\Command\User\RequestPasswordResetHandler;
 use ParkManager\Application\Mailer\User\PasswordResetMailer;
@@ -32,7 +31,7 @@ final class RequestPasswordResetHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->tokenFactory = FakeSplitTokenFactory::instance();
+        $this->tokenFactory = new FakeSplitTokenFactory();
     }
 
     /** @test */
@@ -47,8 +46,8 @@ final class RequestPasswordResetHandlerTest extends TestCase
         $repository->assertHasEntity(
             $user->id,
             static function (User $entity): void {
-                self::assertFalse($entity->passwordResetToken->isExpired(new DateTimeImmutable('+ 120 seconds')));
-                self::assertTrue($entity->passwordResetToken->isExpired(new DateTimeImmutable('+ 125 seconds')));
+                self::assertFalse($entity->passwordResetToken->isExpired(new \DateTimeImmutable('+ 120 seconds')));
+                self::assertTrue($entity->passwordResetToken->isExpired(new \DateTimeImmutable('+ 125 seconds')));
             }
         );
     }

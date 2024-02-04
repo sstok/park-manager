@@ -10,9 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Twig;
 
-use Carbon\CarbonImmutable;
-use ParkManager\Domain\ByteSize;
-use ParkManager\Domain\DomainName\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\Translation\ParameterValue;
 use ParkManager\Infrastructure\Translation\Translator;
 use ParkManager\Infrastructure\Twig\ParkManagerTextExtension;
@@ -30,71 +29,7 @@ use Twig\Loader\ArrayLoader as TwigArrayLoader;
  */
 final class ParkManagerTextExtensionTest extends TestCase
 {
-    /** @test */
-    public function it_escapes_array(): void
-    {
-        $extension = $this->createExtension();
-        $env = $this->createTwigEnvironment();
-
-        // This is string castable.
-        $dateTime = new CarbonImmutable();
-
-        self::assertSame([], $extension->escapeArray($env, []));
-        self::assertSame(['k' => []], $extension->escapeArray($env, ['k' => []]));
-
-        self::assertSame(
-            ['date' => $dateTime, 'age' => 523, 'pi' => 3.1415926535898],
-            $extension->escapeArray($env, ['date' => $dateTime, 'age' => 523, 'pi' => 3.1415926535898])
-        );
-
-        self::assertSame(
-            ['name' => '&lt;script&gt;alert(window.cookie);&lt;/script&gt;'],
-            $extension->escapeArray($env, ['name' => '<script>alert(window.cookie);</script>'])
-        );
-
-        self::assertSame(
-            ['name' => ['first' => '&lt;script&gt;alert(window.cookie);&lt;/script&gt;']],
-            $extension->escapeArray($env, ['name' => ['first' => '<script>alert(window.cookie);</script>']])
-        );
-
-        self::assertSame(
-            [
-                'email' => 'Jannet Doh <j.doh@example.com>',
-                'name' => '&lt;script&gt;alert(window.cookie);&lt;/script&gt;',
-                'deeper' => ['email' => 'Jannet Doh &lt;j.doh@example.com&gt;'],
-            ],
-            $extension->escapeArray(
-                $env,
-                [
-                    'email' => 'Jannet Doh <j.doh@example.com>',
-                    'name' => '<script>alert(window.cookie);</script>',
-                    'deeper' => ['email' => 'Jannet Doh <j.doh@example.com>'],
-                ],
-                'html',
-                ['email']
-            )
-        );
-
-        self::assertSame(
-            [
-                'email' => 'Jannet Doh <j.doh@example.com>',
-                'name' => '&lt;script&gt;alert(window.cookie);&lt;/script&gt;',
-                'deeper' => ['email' => 'John <jo.doh@example.com>'],
-            ],
-            $extension->escapeArray(
-                $env,
-                [
-                    'email' => 'Jannet Doh <j.doh@example.com>',
-                    'name' => '<script>alert(window.cookie);</script>',
-                    'deeper' => ['email' => 'John <jo.doh@example.com>'],
-                ],
-                'html',
-                ['email', 'deeper']
-            )
-        );
-    }
-
-    private function createExtension(?SfTranslator $realTranslator = null): ParkManagerTextExtension
+    private function createExtension(SfTranslator $realTranslator = null): ParkManagerTextExtension
     {
         $translator = new Translator($realTranslator ?? new SfTranslator('en'), new Container());
 
@@ -119,14 +54,15 @@ final class ParkManagerTextExtensionTest extends TestCase
             'space.description' => '<p>Webhosting Space provides FTP, Mailboxes, etc.</p>',
             'byte_size' => [
                 'format' => '{ value, number } with { unit }',
-                'byte' => 'Byte',
-                'b' => 'Byte',
-                'kb' => 'KB',
-                'kib' => 'KiB',
-                'mb' => 'MB',
-                'mib' => 'MiB',
-                'gb' => 'GB',
-                'gib' => 'GiB',
+                'byte_size.inf' => 'Unlimited',
+                'unit.byte' => 'Byte',
+                'unit.b' => 'Byte',
+                'unit.kb' => 'KB',
+                'unit.kib' => 'KiB',
+                'unit.mb' => 'MB',
+                'unit.mib' => 'MiB',
+                'unit.gb' => 'GB',
+                'unit.gib' => 'GiB',
             ],
         ], 'en', 'messages+intl-icu');
         $translator->addResource('array', [
@@ -194,9 +130,6 @@ final class ParkManagerTextExtensionTest extends TestCase
             '<b>Opslag:</b> 10 met GiB<br> <b>Dataverkeer:</b> 223 <b>Giga byte</b> (223 &lt;b&gt;Giga byte&lt;/b&gt;).',
             $extension->trans($env, 'space.spec', ['size' => new ByteSize(10, 'gib'), 'traffic' => $traffic], domain: 'info', locale: 'nl')
         );
-
-        self::assertSame('10 with GiB', $extension->renderByteSize(new ByteSize(10, 'gib')));
-        self::assertSame('10 met GiB', $extension->renderByteSize(new ByteSize(10, 'gib'), 'nl'));
     }
 
     /** @test */

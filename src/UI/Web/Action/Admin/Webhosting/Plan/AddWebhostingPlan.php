@@ -31,6 +31,6 @@ final class AddWebhostingPlan extends AbstractController
             return $this->redirectToRoute('park_manager.admin.webhosting.plan.list');
         }
 
-        return $this->renderForm('admin/webhosting/plan/add.html.twig', ['form' => $form]);
+        return $this->render('admin/webhosting/plan/add.html.twig', ['form' => $form]);
     }
 }

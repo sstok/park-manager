@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Webhosting\Space;
 
+use Lifthill\Bridge\Web\Form\Model\CommandDto;
+use Lifthill\Bridge\Web\Form\Type\MessageFormType;
 use ParkManager\Application\Command\Webhosting\Space\MarkSpaceAccessAsSuspended;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
-use ParkManager\UI\Web\Form\Model\CommandDto;
-use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

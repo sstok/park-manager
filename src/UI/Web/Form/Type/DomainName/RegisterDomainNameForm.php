@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\DomainName;
 
+use Lifthill\Bridge\Web\Form\Model\CommandDto;
+use Lifthill\Bridge\Web\Form\Type\DomainNamePairType;
+use Lifthill\Bridge\Web\Form\Type\MessageFormType;
 use ParkManager\Application\Command\DomainName\AddDomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\UI\Web\Form\Model\CommandDto;
-use ParkManager\UI\Web\Form\Type\DomainNamePairType;
-use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\OwnerSelector;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,8 +29,7 @@ final class RegisterDomainNameForm extends AbstractType
                 'label' => 'label.domain_name',
                 'error_bubbling' => false,
             ])
-            ->add('owner', OwnerSelector::class, ['label' => 'label.owner'])
-        ;
+            ->add('owner', OwnerSelector::class, ['label' => 'label.owner']);
     }
 
     public function getParent(): string
@@ -45,7 +44,6 @@ final class RegisterDomainNameForm extends AbstractType
             ->setDefault(
                 'command_factory',
                 static fn (CommandDto $data) => new AddDomainName(DomainNameId::create(), $data->fields['owner']->id, $data->fields['name'])
-            )
-        ;
+            );
     }
 }

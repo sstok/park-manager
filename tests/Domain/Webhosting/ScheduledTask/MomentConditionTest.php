@@ -28,7 +28,8 @@ final class MomentConditionTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideInvalidValues
+     *
+     * @dataProvider provideIt_rejects_invalid_valuesCases
      */
     public function it_rejects_invalid_values(string $value): void
     {
@@ -37,7 +38,7 @@ final class MomentConditionTest extends TestCase
         new MomentCondition($value);
     }
 
-    public function provideInvalidValues(): iterable
+    public static function provideIt_rejects_invalid_valuesCases(): iterable
     {
         yield 'date only' => ['2022-02-10'];
 

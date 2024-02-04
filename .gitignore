@@ -13,12 +13,12 @@ composer.lock
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
+.phpunit.cache/
 ###< phpunit/phpunit ###
 
 ###> symfony/phpunit-bridge ###
 .phpunit
 ###< symfony/phpunit-bridge ###
-.php_cs.cache
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/

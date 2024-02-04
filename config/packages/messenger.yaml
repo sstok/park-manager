@@ -6,7 +6,7 @@ framework:
                 middleware:
                     - validation
                     - doctrine_transaction
-#                    - 'ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator'
+                    - 'ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator'
 
         # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
         # failure_transport: failed

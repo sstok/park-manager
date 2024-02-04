@@ -41,6 +41,6 @@ final class ChangePlanOfWebhostingSpace extends AbstractController
             return $this->redirectToRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id]);
         }
 
-        return $this->renderForm('admin/webhosting/space/change_plan.html.twig', ['form' => $form, 'space' => $space]);
+        return $this->render('admin/webhosting/space/change_plan.html.twig', ['form' => $form, 'space' => $space]);
     }
 }

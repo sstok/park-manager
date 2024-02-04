@@ -14,23 +14,22 @@ use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\UI\Web\Form\Type\User\Admin\ChangeUserEmailAddressForm;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class ChangeUserEmailAddressAction extends AbstractController
 {
-    #[Security("is_granted('ROLE_SUPER_ADMIN')")]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
     #[Route(path: '/user/{user}/change-email-address', name: 'park_manager.admin.user_change_email_address', methods: ['GET', 'POST', 'HEAD'])]
     public function __invoke(Request $request, User $user, UserInterface $securityUser): Response
     {
         if (UserId::fromString($securityUser->getId())->equals($user->id)) {
             return $this->render('error.html.twig', ['message_translate' => new TranslatableMessage('user_management.self_edit_error')])
-                ->setStatusCode(Response::HTTP_FORBIDDEN)
-            ;
+                ->setStatusCode(Response::HTTP_FORBIDDEN);
         }
 
         $form = $this->createForm(ChangeUserEmailAddressForm::class, $user);
@@ -46,7 +45,7 @@ final class ChangeUserEmailAddressAction extends AbstractController
             return $this->redirectToRoute('park_manager.admin.show_user', ['user' => $user->id->toString()]);
         }
 
-        return $this->renderForm('admin/user/change_email_address.html.twig', [
+        return $this->render('admin/user/change_email_address.html.twig', [
             'form' => $form,
             'user' => $user,
         ]);

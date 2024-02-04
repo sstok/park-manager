@@ -16,11 +16,12 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
-use Locale;
+use Lifthill\Component\Common\Domain\Attribute\Entity as DomainEntity;
 use ParkManager\Domain\TimestampableTrait;
 
 #[Entity]
 #[Table(name: 'plan')]
+#[DomainEntity]
 class Plan
 {
     use TimestampableTrait;
@@ -43,8 +44,7 @@ class Plan
 
         #[Column(name: 'metadata', type: 'json')]
         public array $metadata = []
-    ) {
-    }
+    ) {}
 
     public function changeConstraints(Constraints $constraints): void
     {
@@ -79,8 +79,8 @@ class Plan
         $this->labels = $labels;
     }
 
-    public function getLabel(?string $locale = null): string
+    public function getLabel(string $locale = null): string
     {
-        return $this->labels[$locale ?? Locale::getDefault()] ?? $this->labels['_default'] ?? $this->id->toString();
+        return $this->labels[$locale ?? \Locale::getDefault()] ?? $this->labels['_default'] ?? $this->id->toString();
     }
 }

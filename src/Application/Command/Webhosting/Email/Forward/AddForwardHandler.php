@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Email\Forward;
 
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Service\SpaceConstraint\ConstraintsChecker;
 use ParkManager\Domain\DomainName\DomainNameRepository;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Webhosting\Email\Exception\AddressAlreadyExists;
 use ParkManager\Domain\Webhosting\Email\Forward;
 use ParkManager\Domain\Webhosting\Email\ForwardRepository;
@@ -27,8 +27,7 @@ final class AddForwardHandler
         private DomainNameRepository $domainNameRepository,
         private MailboxRepository $mailboxRepository,
         private ConstraintsChecker $constraintsChecker,
-    ) {
-    }
+    ) {}
 
     public function __invoke(AddForward $command): void
     {

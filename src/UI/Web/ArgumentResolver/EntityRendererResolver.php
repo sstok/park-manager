@@ -12,22 +12,19 @@ namespace ParkManager\UI\Web\ArgumentResolver;
 
 use ParkManager\Infrastructure\Service\EntityRenderer;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-final class EntityRendererResolver implements ArgumentValueResolverInterface
+final class EntityRendererResolver implements ValueResolverInterface
 {
-    public function __construct(private EntityRenderer $entityRenderer)
-    {
-    }
-
-    public function supports(Request $request, ArgumentMetadata $argument): bool
-    {
-        return ! $argument->isVariadic() && $argument->getType() === EntityRenderer::class;
-    }
+    public function __construct(private EntityRenderer $entityRenderer) {}
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
+        if (! $argument->isVariadic() && $argument->getType() !== EntityRenderer::class) {
+            return [];
+        }
+
         yield $this->entityRenderer;
     }
 }

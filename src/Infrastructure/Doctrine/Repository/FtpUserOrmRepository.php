@@ -11,14 +11,14 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Domain\ResultSet;
+use Lifthill\Bridge\Doctrine\OrmQueryBuilderResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Ftp\Exception\FtpUsernameAlreadyExists;
 use ParkManager\Domain\Webhosting\Ftp\Exception\FtpUserNotFound;
 use ParkManager\Domain\Webhosting\Ftp\FtpUser;
 use ParkManager\Domain\Webhosting\Ftp\FtpUserId;
 use ParkManager\Domain\Webhosting\Ftp\FtpUserRepository;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @extends EntityRepository<FtpUser>
@@ -59,8 +59,7 @@ final class FtpUserOrmRepository extends EntityRepository implements FtpUserRepo
             ->getQuery()
             ->setParameter('username', $user->username)
             ->setParameter('domainName', $user->domainName->id->toString())
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
 
         if ($existing !== null && ! $existing->id->equals($user->id)) {
             throw new FtpUsernameAlreadyExists($user->username, $existing->domainName->namePair, $existing->id);

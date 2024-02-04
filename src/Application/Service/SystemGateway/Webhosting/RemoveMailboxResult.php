@@ -12,6 +12,4 @@ namespace ParkManager\Application\Service\SystemGateway\Webhosting;
 
 use ParkManager\Application\Service\SystemGateway\OperationResult;
 
-final class RemoveMailboxResult extends OperationResult
-{
-}
+final class RemoveMailboxResult extends OperationResult {}

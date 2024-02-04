@@ -31,6 +31,6 @@ final class RegisterWebhostingSpace extends AbstractController
             return $this->redirectToRoute('park_manager.admin.webhosting.space.list');
         }
 
-        return $this->renderForm('admin/webhosting/space/register.html.twig', ['form' => $form]);
+        return $this->render('admin/webhosting/space/register.html.twig', ['form' => $form]);
     }
 }

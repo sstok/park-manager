@@ -11,10 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Domain\Webhosting\Email;
 
 use Assert\InvalidArgumentException;
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Email\Mailbox;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
@@ -76,7 +76,7 @@ final class MailboxTest extends TestCase
 
         $this->expectException(RfcComplianceException::class);
 
-        new Mailbox(MailboxId::create(), $space, 's@k', $domainName, new ByteSize(10, 'GiB'), 'BoyThatEscalatedBigLy');
+        new Mailbox(MailboxId::create(), $space, 's@k..', $domainName, new ByteSize(10, 'GiB'), 'BoyThatEscalatedBigLy');
     }
 
     /** @test */

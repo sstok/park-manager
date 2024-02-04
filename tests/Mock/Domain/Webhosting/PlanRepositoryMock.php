@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Common\Test\MockRepository;
 use ParkManager\Domain\Webhosting\Constraint\Exception\PlanNotFound;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
-use ParkManager\Tests\Mock\Domain\MockRepository;
 
 /**
  * @internal

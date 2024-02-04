@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Webhosting\Plan;
 
+use Lifthill\Bridge\Web\Form\Type\MessageFormType;
 use ParkManager\Application\Command\Webhosting\Constraint\CreatePlan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
-use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\Webhosting\Constraint\WebhostingConstraintsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,8 +23,7 @@ final class AddWebhostingPlanForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('constraints', WebhostingConstraintsType::class)
-        ;
+            ->add('constraints', WebhostingConstraintsType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -38,8 +37,7 @@ final class AddWebhostingPlanForm extends AbstractType
                     $fields['constraints'],
                     []
                 )
-            )
-        ;
+            );
     }
 
     public function getParent(): string

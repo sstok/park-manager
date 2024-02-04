@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Email\Forward;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Email\ForwardId;
 use ParkManager\Infrastructure\Validator\Constraints\EmailboxName;
 use ParkManager\Infrastructure\Validator\Constraints\Webhosting\DomainNameOfSpace;
@@ -25,7 +25,6 @@ final class ChangeAddressOfForward
         #[EmailboxName()]
         public string $address,
 
-        public DomainNameId | DomainNamePair | null $domainName = null,
-    ) {
-    }
+        public null | DomainNameId | DomainNamePair $domainName = null,
+    ) {}
 }

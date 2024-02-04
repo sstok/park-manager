@@ -19,8 +19,7 @@ final class AssignPlanToSpace
         public PlanId $plan,
         public SpaceId $space,
         public bool $withConstraints = true
-    ) {
-    }
+    ) {}
 
     public static function withConstraints(PlanId $plan, SpaceId $space): self
     {

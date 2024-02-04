@@ -23,8 +23,7 @@ final class SystemFixtures extends Fixture
     public function __construct(
         private OrganizationRepository $organizationRepository,
         private OwnerRepository $ownerRepository
-    ) {
-    }
+    ) {}
 
     public function load(ObjectManager $manager): void
     {

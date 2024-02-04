@@ -10,16 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
-use Closure;
-use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Common\Test\MockRepository;
 use ParkManager\Domain\Webhosting\Email\Exception\AddressAlreadyExists;
 use ParkManager\Domain\Webhosting\Email\Exception\MailboxNotFound;
 use ParkManager\Domain\Webhosting\Email\Mailbox;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 use ParkManager\Domain\Webhosting\Email\MailboxRepository;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Tests\Mock\Domain\MockRepository;
 
 /** @internal */
 final class MailboxRepositoryMock implements MailboxRepository
@@ -30,7 +29,7 @@ final class MailboxRepositoryMock implements MailboxRepository
     public const ID1 = '61c957ca-a74f-48ce-843a-a6adc9af2d62';
 
     /**
-     * @return array<string, string|Closure>
+     * @return array<string, string|\Closure>
      */
     protected function getFieldsIndexMapping(): array
     {
@@ -40,7 +39,7 @@ final class MailboxRepositoryMock implements MailboxRepository
     }
 
     /**
-     * @return array<string, string|Closure>
+     * @return array<string, string|\Closure>
      */
     protected function getFieldsIndexMultiMapping(): array
     {

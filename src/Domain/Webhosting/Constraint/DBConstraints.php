@@ -12,7 +12,7 @@ namespace ParkManager\Domain\Webhosting\Constraint;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Embeddable;
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 
 #[Embeddable]
 final class DBConstraints

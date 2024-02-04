@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Security;
 
-use RuntimeException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -21,6 +20,6 @@ final class SecurityLogoutAction
     #[Route(path: '/logout', name: 'park_manager.security_logout', methods: ['GET'])]
     public function __invoke(): void
     {
-        throw new RuntimeException('You must activate the logout in your security firewall configuration.');
+        throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
     }
 }

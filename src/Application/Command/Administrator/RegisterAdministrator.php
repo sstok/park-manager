@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Administrator;
 
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\User\UserId;
 
 final class RegisterAdministrator
@@ -26,8 +26,7 @@ final class RegisterAdministrator
         public EmailAddress $email,
         public string $displayName,
         public string $password
-    ) {
-    }
+    ) {}
 
     /**
      * @param string $password An encoded password string (not plain)

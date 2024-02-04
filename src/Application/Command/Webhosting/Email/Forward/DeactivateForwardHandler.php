@@ -14,9 +14,7 @@ use ParkManager\Domain\Webhosting\Email\ForwardRepository;
 
 final class DeactivateForwardHandler
 {
-    public function __construct(private ForwardRepository $repository)
-    {
-    }
+    public function __construct(private ForwardRepository $repository) {}
 
     public function __invoke(DeactivateForward $command): void
     {

@@ -32,6 +32,6 @@ final class AddDomainName extends AbstractController
             return $this->redirectToRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id->toString()]);
         }
 
-        return $this->renderForm('admin/webhosting/domain_name/add.html.twig', ['form' => $form, 'space' => $space]);
+        return $this->render('admin/webhosting/domain_name/add.html.twig', ['form' => $form, 'space' => $space]);
     }
 }

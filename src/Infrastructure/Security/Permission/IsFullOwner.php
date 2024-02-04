@@ -10,12 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Security\Permission;
 
+use Lifthill\Component\Permission\Permission;
 use ParkManager\Domain\Owner;
-use ParkManager\Infrastructure\Security\Permission;
 
 final class IsFullOwner implements Permission
 {
-    public function __construct(public Owner $owner)
-    {
-    }
+    public function __construct(public Owner $owner) {}
 }

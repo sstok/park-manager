@@ -10,16 +10,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Service;
 
+use Lifthill\Component\Common\Application\PasswordHasher;
 use ParagonIE\HiddenString\HiddenString;
-use ParkManager\Application\Service\PasswordHasher;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use function Sodium\memzero;
 
 final class SymfonyPasswordHasher implements PasswordHasher
 {
-    public function __construct(private PasswordHasherInterface $hasher)
-    {
-    }
+    public function __construct(private PasswordHasherInterface $hasher) {}
 
     public function hash(HiddenString $password): string
     {

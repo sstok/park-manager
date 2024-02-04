@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Mock\Application\Service;
 
 use Assert\Assertion;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Application\Service\StorageUsage;
-use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Email\Exception\MailboxNotFound;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
@@ -43,7 +43,7 @@ final class StorageUsageMock implements StorageUsage
      * @param array<string, ByteSize>|null $spaces    [$id => {ByteSize}] or null for mock-example
      * @param array<string, ByteSize>|null $mailboxes [$id => {ByteSize}] or null for mock-example
      */
-    public function __construct(?array $spaces = null, ?array $mailboxes = null)
+    public function __construct(array $spaces = null, array $mailboxes = null)
     {
         $spaces ??= [SpaceRepositoryMock::ID1 => new ByteSize(100, 'MiB')];
         $mailboxes ??= [MailboxRepositoryMock::ID1 => new ByteSize(10, 'MiB')];

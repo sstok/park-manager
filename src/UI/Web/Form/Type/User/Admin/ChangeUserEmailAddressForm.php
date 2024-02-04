@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\User\Admin;
 
+use Lifthill\Bridge\Web\Form\Model\CommandDto;
+use Lifthill\Bridge\Web\Form\Type\MessageFormType;
 use ParkManager\Application\Command\User\ChangeEmailAddress;
 use ParkManager\Application\Command\User\RequestEmailAddressChange;
 use ParkManager\Domain\User\User;
-use ParkManager\UI\Web\Form\Model\CommandDto;
-use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -32,8 +32,7 @@ final class ChangeUserEmailAddressForm extends AbstractType
                 'help' => 'help.user_management.email_requires_confirm',
                 'required' => false,
                 'getter' => static fn (): bool => false,
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

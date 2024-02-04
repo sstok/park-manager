@@ -14,7 +14,6 @@ use Assert\Assertion;
 use Assert\InvalidArgumentException as AssertionInvalidArgumentException;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -27,9 +26,9 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OrderBy;
 use Doctrine\ORM\Mapping\Table;
-use DomainException;
-use ParkManager\Domain\ByteSize;
-use ParkManager\Domain\DomainName\DomainNamePair;
+use Lifthill\Component\Common\Domain\Attribute\Entity as DomainEntity;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\Organization\Organization;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\Owner;
@@ -41,12 +40,13 @@ use ParkManager\Domain\Webhosting\Space\Exception\InvalidStatus;
 
 #[Entity]
 #[Table(name: 'space')]
+#[DomainEntity]
 class Space
 {
     use TimestampableTrait;
 
     #[Column(name: 'expires_on', type: 'datetime_immutable', nullable: true)]
-    public ?DateTimeImmutable $expirationDate = null;
+    public ?\DateTimeImmutable $expirationDate = null;
 
     #[Column(name: 'marked_for_removal', type: 'boolean', nullable: true)]
     public bool $markedForRemoval = false;
@@ -190,7 +190,7 @@ class Space
      * Note: There is no promise the webhosting space will in fact
      * be removed on the specified date. This depends on other subsystems.
      */
-    public function markExpirationDate(DateTimeImmutable $data): void
+    public function markExpirationDate(\DateTimeImmutable $data): void
     {
         Assertion::false(Carbon::instance($data)->isPast(), 'Expiration date cannot be in the past.', 'expirationDate');
 
@@ -205,7 +205,7 @@ class Space
         $this->expirationDate = null;
     }
 
-    public function isExpired(?DateTimeImmutable $current = null): bool
+    public function isExpired(\DateTimeImmutable $current = null): bool
     {
         if ($this->expirationDate === null) {
             return false;
@@ -259,7 +259,7 @@ class Space
     public function suspendAccess(SuspensionLevel $level): void
     {
         if ($this->setupStatus !== SpaceSetupStatus::READY) {
-            throw new DomainException('Cannot set suspension level when Space has not completed initialization yet.');
+            throw new \DomainException('Cannot set suspension level when Space has not completed initialization yet.');
         }
 
         if (SuspensionLevel::equalsTo($this->accessSuspended, $level)) {

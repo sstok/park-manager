@@ -10,10 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Space\Exception;
 
-use InvalidArgumentException;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
-final class CannotRemoveActiveWebhostingSpace extends InvalidArgumentException
+final class CannotRemoveActiveWebhostingSpace extends \InvalidArgumentException
 {
     public static function withId(SpaceId $id): self
     {

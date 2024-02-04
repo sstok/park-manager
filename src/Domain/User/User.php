@@ -21,7 +21,8 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Attribute\Entity as DomainEntity;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Domain\TimestampableTrait;
 use ParkManager\Domain\User\Exception\CannotDisableSuperAdministrator;
@@ -30,13 +31,13 @@ use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Rollerworks\Component\SplitToken\SplitToken;
 use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
-use Stringable;
 
 #[Entity]
 #[Table(name: 'app_user')]
 #[UniqueConstraint(name: 'user_email_address_uniq', columns: ['email_address'])]
 #[UniqueConstraint(name: 'user_email_canonical_uniq', columns: ['email_canonical'])]
-class User implements Stringable
+#[DomainEntity]
+class User implements \Stringable
 {
     use TimestampableTrait;
 

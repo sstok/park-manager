@@ -15,9 +15,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 final class CrawlerSelectorTextContains extends Constraint
 {
-    public function __construct(private string $selector, private string $expectedText)
-    {
-    }
+    public function __construct(private string $selector, private string $expectedText) {}
 
     public function toString(): string
     {
@@ -31,8 +29,7 @@ final class CrawlerSelectorTextContains extends Constraint
     {
         $crawler = $crawler
             ->filter($this->selector)
-            ->reduce(fn (Crawler $node, int $i): bool => ! str_contains($node->text(null, false), $this->expectedText))
-        ;
+            ->reduce(fn (Crawler $node, int $i): bool => ! str_contains($node->text(null, false), $this->expectedText));
 
         return \count($crawler) > 0;
     }

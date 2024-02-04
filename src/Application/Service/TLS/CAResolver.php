@@ -11,10 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\Application\Service\TLS;
 
 use Doctrine\Persistence\ObjectManager;
-use ParkManager\Application\Service\TLS\Violation\MissingCAExtension;
-use ParkManager\Application\Service\TLS\Violation\ToManyCAsProvided;
-use ParkManager\Application\Service\TLS\Violation\UnableToResolveParent;
 use ParkManager\Domain\Webhosting\SubDomain\TLS\CA;
+use Rollerworks\Component\X509Validator\CA as CAInfo;
+use Rollerworks\Component\X509Validator\CAResolverImpl;
+use Rollerworks\Component\X509Validator\X509DataExtractor;
 
 /**
  * @final
@@ -22,10 +22,15 @@ use ParkManager\Domain\Webhosting\SubDomain\TLS\CA;
 class CAResolver
 {
     private X509DataExtractor $extractor;
+    private CAResolverImpl $caResolver;
 
+    /**
+     * @param ObjectManager<CA> $objectManager
+     */
     public function __construct(private ObjectManager $objectManager)
     {
         $this->extractor = new X509DataExtractor();
+        $this->caResolver = new CAResolverImpl();
     }
 
     /**
@@ -33,111 +38,39 @@ class CAResolver
      */
     public function resolve(string $certificate, array $caList): ?CA
     {
-        // Sanity check to prevent DoS attacks
-        // Normally only two parents are used, more than three is exceptional
-        if (\count($caList) > 3) {
-            throw new ToManyCAsProvided();
-        }
+        $ca = $this->caResolver->resolve($certificate, $caList);
 
-        $certData = $this->getX509Data($certificate, '');
-
-        if ($this->isSignatureValid($certificate, $certData['_pubKey'])) {
+        if ($ca === null) {
             return null;
         }
 
-        return $this->resolveCA($certificate, $caList);
+        return $this->objectManager->find(CA::class, CA::getHash($ca->contents)) ?? $this->resolveCA($ca);
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    private function getX509Data(string $contents, string $name, bool $withKey = true): array
+    private function resolveCA(?CAInfo $ca): CA
     {
-        return $this->extractor->extractRawData($contents, $name, $withKey);
-    }
+        /** @var array<int, string> $tree */
+        $tree = [];
 
-    private function isSignatureValid(string $contents, string $pupKey): bool
-    {
-        $result = openssl_x509_verify($contents, $pupKey);
-
-        if ($result === 1) {
-            return true;
+        while ($ca !== null) {
+            $tree[] = $ca->contents;
+            $ca = $ca->parent;
         }
 
-        @openssl_error_string();
+        $parent = null;
 
-        return false;
-    }
+        foreach (array_reverse($tree) as $contents) {
+            $caEntity = $this->objectManager->find(CA::class, CA::getHash($contents));
 
-    /**
-     * @param array<string, string> $caList
-     */
-    private function resolveCA(string $certificate, array $caList): CA
-    {
-        $ca = null;
-
-        foreach ($caList as $index => $contents) {
-            /** @var CA|null $ca */
-            $ca = $this->objectManager->find(CA::class, CA::getHash($contents));
-
-            // Already exists, so we only need to check the signature and continue otherwise
-            if ($ca !== null) {
-                if ($this->isSignatureValid($certificate, $ca->getPublicKey())) {
-                    return $ca;
-                }
-
-                continue;
+            if ($caEntity === null) {
+                $x509Info = $this->extractor->extractRawData($contents, '', true);
+                $caEntity = new CA($contents, $x509Info->allFields, $parent);
+                $this->objectManager->persist($caEntity);
             }
 
-            $data = $this->getX509Data($contents, $index);
-            $this->validateCA($data);
-
-            if (! $this->isSignatureValid($certificate, $data['_pubKey'])) {
-                continue;
-            }
-
-            $parent = null;
-            $fields = [
-                'subject' => $data['subject'],
-                '_signatureAlgorithm' => $data['_signatureAlgorithm'],
-                '_fingerprint' => $data['_fingerprint'] ?? '',
-                '_validTo' => $data['_validTo'],
-                '_validFrom' => $data['_validFrom'],
-                'issuer' => $data['issuer'],
-                '_pubKey' => $data['_pubKey'],
-            ];
-
-            // Check if self signed, otherwise resolve it's parent
-            if (! $this->isSignatureValid($contents, $data['_pubKey'])) {
-                // THIS issuer cannot be the parent of another parent, so remove it
-                // from the list. This speeds-up the resolving process.
-                unset($caList[$index]);
-
-                $parent = $this->resolveCA($contents, $caList);
-            }
-
-            $ca = new CA($contents, $fields, $parent);
-            $this->objectManager->persist($ca);
-
-            break;
+            $parent = $caEntity;
         }
 
-        if ($ca === null) {
-            $data = $this->getX509Data($certificate, '', false);
-
-            throw new UnableToResolveParent($data['_commonName']);
-        }
-
-        return $ca;
-    }
-
-    /**
-     * @param array<string, mixed> $data
-     */
-    private function validateCA(array $data): void
-    {
-        if (! isset($data['extensions']['basicConstraints']) || mb_stripos($data['extensions']['basicConstraints'], 'CA:TRUE') === false) {
-            throw new MissingCAExtension($data['subject']['commonName']);
-        }
+        return $caEntity;
     }
 }

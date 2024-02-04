@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Service;
 
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 

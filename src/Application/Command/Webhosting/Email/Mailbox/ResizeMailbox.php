@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Email\Mailbox;
 
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 
 final class ResizeMailbox
@@ -18,6 +18,5 @@ final class ResizeMailbox
     public function __construct(
         public MailboxId $id,
         public ByteSize $size,
-    ) {
-    }
+    ) {}
 }

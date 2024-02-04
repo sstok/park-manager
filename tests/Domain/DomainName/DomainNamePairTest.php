@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\DomainName;
 
-use ParkManager\Domain\DomainName\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use PHPUnit\Framework\TestCase;
 
 /**

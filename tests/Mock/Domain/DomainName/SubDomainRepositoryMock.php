@@ -10,15 +10,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\DomainName;
 
-use Closure;
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Common\Test\MockRepository;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\SubDomain\Exception\SubDomainAlreadyExists;
 use ParkManager\Domain\Webhosting\SubDomain\Exception\SubDomainNotFound;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainRepository;
-use ParkManager\Tests\Mock\Domain\MockRepository;
 
 final class SubDomainRepositoryMock implements SubDomainRepository
 {
@@ -26,7 +25,7 @@ final class SubDomainRepositoryMock implements SubDomainRepository
     use MockRepository;
 
     /**
-     * @return array<string, string|Closure>
+     * @return array<string, string|\Closure>
      */
     protected function getFieldsIndexMapping(): array
     {
@@ -36,7 +35,7 @@ final class SubDomainRepositoryMock implements SubDomainRepository
     }
 
     /**
-     * @return array<string, string|Closure>
+     * @return array<string, string|\Closure>
      */
     protected function getFieldsIndexMultiMapping(): array
     {

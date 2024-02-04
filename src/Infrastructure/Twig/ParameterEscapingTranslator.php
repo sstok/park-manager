@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Twig;
 
-use BadMethodCallException;
 use ParkManager\Infrastructure\Translation\Translator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -20,9 +19,7 @@ final class ParameterEscapingTranslator implements TranslatorInterface
 {
     private ?Environment $env;
 
-    public function __construct(private Translator $wrappedTranslator)
-    {
-    }
+    public function __construct(private Translator $wrappedTranslator) {}
 
     public function setEnv(?Environment $env): void
     {
@@ -32,7 +29,7 @@ final class ParameterEscapingTranslator implements TranslatorInterface
     /**
      * @param array<string, mixed> $parameters
      */
-    public function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
+    public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
     {
         return $this->wrappedTranslator->trans($id, $parameters, $domain, $locale, [$this, 'escape']);
     }
@@ -40,7 +37,7 @@ final class ParameterEscapingTranslator implements TranslatorInterface
     public function escape(mixed $value): mixed
     {
         if ($this->env === null) {
-            throw new BadMethodCallException('setEnv() is expected to be called first.');
+            throw new \BadMethodCallException('setEnv() is expected to be called first.');
         }
 
         return twig_escape_filter($this->env, $value);

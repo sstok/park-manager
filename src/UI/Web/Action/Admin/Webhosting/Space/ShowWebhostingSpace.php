@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Space;
 
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Application\Service\StorageUsage;
-use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

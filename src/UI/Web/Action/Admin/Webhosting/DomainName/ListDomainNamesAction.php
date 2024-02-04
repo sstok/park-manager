@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\DomainName;
 
+use Lifthill\Bridge\Web\Pagerfanta\ResultSetAdapter;
 use Pagerfanta\Pagerfanta;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\Infrastructure\Pagerfanta\ResultSetAdapter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

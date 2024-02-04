@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Security;
 
-use RuntimeException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -21,6 +20,6 @@ final class SecurityCheckLoginAction
     #[Route(path: '/login_check', name: 'park_manager.security_check_login', methods: ['POST'])]
     public function __invoke(): void
     {
-        throw new RuntimeException('Check your security firewall configuration. /login_check should not be accessed directly.');
+        throw new \RuntimeException('Check your security firewall configuration. /login_check should not be accessed directly.');
     }
 }

@@ -18,8 +18,7 @@ final class AssignDomainNameToOwnerHandler
     public function __construct(
         private DomainNameRepository $domainNameRepository,
         private OwnerRepository $ownerRepository
-    ) {
-    }
+    ) {}
 
     public function __invoke(AssignDomainNameToOwner $command): void
     {

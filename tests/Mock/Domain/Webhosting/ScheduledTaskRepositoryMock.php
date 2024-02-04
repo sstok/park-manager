@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Common\Test\MockRepository;
 use ParkManager\Domain\Webhosting\ScheduledTask\Exception\TaskNotFound;
 use ParkManager\Domain\Webhosting\ScheduledTask\ScheduledTaskRepository;
 use ParkManager\Domain\Webhosting\ScheduledTask\Task;
 use ParkManager\Domain\Webhosting\ScheduledTask\TaskId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Tests\Mock\Domain\MockRepository;
 
 /**
  * @internal

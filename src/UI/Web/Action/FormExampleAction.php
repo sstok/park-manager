@@ -51,8 +51,7 @@ final class FormExampleAction extends AbstractController
             ->add('choice', ChoiceType::class, ['choices' => array_flip(range('g', 'n')), 'expanded' => false, 'multiple' => true, 'help' => 'Get notified when a candidate applies for a job.'])
             ->add('yes-no', CheckboxType::class, ['help' => 'Get notified when a candidate applies for a job.'])
             ->add('submit', ButtonType::class)
-            ->getForm()
-        ;
+            ->getForm();
 
         /** @var FormInterface $child */
         foreach ($form as $child) {

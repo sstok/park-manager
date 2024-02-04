@@ -10,14 +10,14 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Webhosting\Space;
 
+use Lifthill\Bridge\Web\Form\Type\DomainNamePairType;
+use Lifthill\Bridge\Web\Form\Type\MessageFormType;
 use ParkManager\Application\Command\Webhosting\Space\RegisterWebhostingSpace;
 use ParkManager\Domain\DomainName\Exception\CannotAssignDomainNameWithDifferentOwner;
 use ParkManager\Domain\DomainName\Exception\DomainNameAlreadyInUse;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\UI\Web\Form\Type\DomainNamePairType;
-use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\OwnerSelector;
 use ParkManager\UI\Web\Form\Type\Webhosting\Constraint\WebhostingConstraintsType;
 use ParkManager\UI\Web\Form\Type\Webhosting\Plan\WebhostingPlanSelector;
@@ -32,9 +32,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RegisterWebhostingSpaceForm extends AbstractType
 {
-    public function __construct(private TranslatorInterface $translator)
-    {
-    }
+    public function __construct(private TranslatorInterface $translator) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -65,8 +63,7 @@ final class RegisterWebhostingSpaceForm extends AbstractType
                 'required' => false,
                 'help_html' => true,
                 'help' => 'help.webhosting.space_constraints',
-            ])
-        ;
+            ]);
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (PostSubmitEvent $event): void {
             $data = $event->getData();
@@ -111,8 +108,7 @@ final class RegisterWebhostingSpaceForm extends AbstractType
                         CannotAssignDomainNameWithDifferentOwner::class => 'domain_name',
                     ],
                 ]
-            )
-        ;
+            );
     }
 
     public function getBlockPrefix(): string

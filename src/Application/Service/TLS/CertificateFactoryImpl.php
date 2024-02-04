@@ -15,8 +15,10 @@ use ParagonIE\Halite\Asymmetric\Crypto;
 use ParagonIE\Halite\Asymmetric\EncryptionPublicKey;
 use ParagonIE\Halite\Halite;
 use ParagonIE\HiddenString\HiddenString;
-use ParkManager\Application\Service\TLS\Violation\ExpectedLeafCertificate;
 use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
+use Rollerworks\Component\X509Validator\KeyValidator;
+use Rollerworks\Component\X509Validator\Violation\ExpectedLeafCertificate;
+use Rollerworks\Component\X509Validator\X509DataExtractor;
 
 final class CertificateFactoryImpl implements CertificateFactory
 {
@@ -28,8 +30,8 @@ final class CertificateFactoryImpl implements CertificateFactory
         string $encryptionKey,
         private ObjectManager $objectManager,
         private CAResolver $caResolver,
-        ?KeyValidator $keyValidator = null,
-        ?X509DataExtractor $dataExtractor = null
+        KeyValidator $keyValidator = null,
+        X509DataExtractor $dataExtractor = null
     ) {
         $this->encryptionKey = new EncryptionPublicKey(new HiddenString($encryptionKey));
         $this->keyValidator = $keyValidator ?? new KeyValidator();
@@ -58,7 +60,7 @@ final class CertificateFactoryImpl implements CertificateFactory
     private function newCertificate(string $contents, HiddenString $privateKey, array $caList = []): Certificate
     {
         $ca = $this->caResolver->resolve($contents, $caList);
-        $fields = $this->extractor->extractRawData($contents, '', true);
+        $fields = $this->extractor->extractRawData($contents, '', true)->allFields;
 
         if (isset($fields['extensions']['basicConstraints']) && mb_stripos($fields['extensions']['basicConstraints'], 'CA:TRUE') !== false) {
             throw new ExpectedLeafCertificate();

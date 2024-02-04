@@ -17,8 +17,3 @@ framework:
         # Namespaced pools use the above "app" backend by default
         #pools:
             #my.dedicated.cache: null
-
-        pools:
-            cache.public_prefix_db:
-                adapter: cache.adapter.doctrine_dbal
-                default_lifetime: 604800 # one week, the cache should be automatically refreshed

@@ -14,7 +14,5 @@ use ParkManager\Domain\Webhosting\Email\MailboxId;
 
 final class RemoveMailbox
 {
-    public function __construct(public MailboxId $id)
-    {
-    }
+    public function __construct(public MailboxId $id) {}
 }

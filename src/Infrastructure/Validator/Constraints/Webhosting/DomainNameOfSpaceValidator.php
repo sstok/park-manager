@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Validator\Constraints\Webhosting;
 
-use ParkManager\Application\Service\RepositoryLocator;
+use Lifthill\Component\ModelMapping\RepositoryLocator;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceRepository;
@@ -30,7 +30,7 @@ final class DomainNameOfSpaceValidator extends ConstraintValidator
         private DomainNameRepository $domainNameRepository,
         private SpaceRepository $spaceRepository,
         private RepositoryLocator $repositoryLocator,
-        ?PropertyAccessorInterface $propertyAccessor = null
+        PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->propertyAccessor = $propertyAccessor ?? new PropertyAccessor();
     }
@@ -63,12 +63,11 @@ final class DomainNameOfSpaceValidator extends ConstraintValidator
                 ->atPath($constraint->domainProperty)
                 ->setParameter('{ domain_name }', $domainName->toString())
                 ->setInvalidValue($value)
-                ->addViolation()
-            ;
+                ->addViolation();
         }
     }
 
-    private function getSpace(object $value, string | PropertyPath $propertyPath): Space
+    private function getSpace(object $value, PropertyPath | string $propertyPath): Space
     {
         $propertyPath = (string) $propertyPath;
 
@@ -82,7 +81,7 @@ final class DomainNameOfSpaceValidator extends ConstraintValidator
         $entityId = $this->propertyAccessor->getValue($value, $propertyPath->getElement(0));
 
         return $this->propertyAccessor->getValue(
-            $this->repositoryLocator->getById($entityId)->get($entityId),
+            $this->repositoryLocator->getRepositoryForId($entityId)->get($entityId),
             $propertyPath->getElement(1),
         );
     }

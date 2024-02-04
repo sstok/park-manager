@@ -10,10 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Exception;
 
-use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-class InvalidArgument extends InvalidArgumentException implements DomainError
+class InvalidArgument extends \Lifthill\Component\Common\Domain\Exception\InvalidArgument
 {
     public function getTranslatorMsg(): string | TranslatableInterface
     {

@@ -14,7 +14,5 @@ use ParkManager\Domain\Webhosting\Ftp\AccessRuleId;
 
 final class RemoveFtpAccessRule
 {
-    public function __construct(public AccessRuleId $id)
-    {
-    }
+    public function __construct(public AccessRuleId $id) {}
 }

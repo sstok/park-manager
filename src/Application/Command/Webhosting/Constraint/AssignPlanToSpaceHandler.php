@@ -22,8 +22,7 @@ final class AssignPlanToSpaceHandler
         private PlanRepository $planRepository,
         private SpaceRepository $spaceRepository,
         private ApplicabilityChecker $applicabilityChecker
-    ) {
-    }
+    ) {}
 
     public function __invoke(AssignPlanToSpace $command): void
     {

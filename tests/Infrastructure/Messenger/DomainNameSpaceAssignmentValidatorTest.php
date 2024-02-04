@@ -10,14 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Messenger;
 
-use Generator;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Test\EntityHydrator;
+use Lifthill\Component\Common\Test\MockRepoResultSet;
 use ParkManager\Application\Command\DomainName\AddDomainName;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToOwner;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToSpace;
 use ParkManager\Application\Command\DomainName\RemoveDomainName;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\DomainName\Exception\CannotRemoveInUseDomainName;
 use ParkManager\Domain\DomainName\Exception\CannotTransferInUseDomainName;
 use ParkManager\Domain\Organization\OrganizationId;
@@ -28,9 +29,7 @@ use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
-use ParkManager\Tests\Domain\EntityHydrator;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
-use ParkManager\Tests\Mock\Domain\MockRepoResultSet;
 use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
 use PHPUnit\Framework\TestCase;
@@ -100,7 +99,8 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideSupportedClasses
+     *
+     * @dataProvider provideIt_executes_validatorsCases
      */
     public function it_executes_validators(object $messageObj): void
     {
@@ -155,9 +155,9 @@ final class DomainNameSpaceAssignmentValidatorTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array{0: AssignDomainNameToSpace|AssignDomainNameToOwner}>
+     * @return \Generator<string, array{0: AssignDomainNameToSpace|AssignDomainNameToOwner}>
      */
-    public function provideSupportedClasses(): Generator
+    public static function provideIt_executes_validatorsCases(): iterable
     {
         yield 'AssignDomainNameToSpace' => [AssignDomainNameToSpace::with('ab53f769-cadc-4e7f-8f6d-e2e5a1ef5494', '1438b200-242e-4688-917b-6fb8adf99947')];
 

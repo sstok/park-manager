@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain;
 
+use Lifthill\Component\Common\Test\MockRepository;
 use ParkManager\Domain\Exception\OwnerNotFound;
 use ParkManager\Domain\Organization\Organization;
 use ParkManager\Domain\Organization\OrganizationId;
@@ -28,7 +29,7 @@ final class OwnerRepositoryMock implements OwnerRepository
     /**
      * @param array<int, Owner> $initialEntities
      */
-    public function __construct(array $initialEntities = [], ?OrganizationRepository $organizationRepository = null)
+    public function __construct(array $initialEntities = [], OrganizationRepository $organizationRepository = null)
     {
         if ($organizationRepository) {
             $adminOrganization = $organizationRepository->get(OrganizationId::fromString(OrganizationId::ADMIN_ORG));

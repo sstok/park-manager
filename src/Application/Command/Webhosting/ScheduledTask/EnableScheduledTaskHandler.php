@@ -14,9 +14,7 @@ use ParkManager\Domain\Webhosting\ScheduledTask\ScheduledTaskRepository;
 
 final class EnableScheduledTaskHandler
 {
-    public function __construct(private ScheduledTaskRepository $repository)
-    {
-    }
+    public function __construct(private ScheduledTaskRepository $repository) {}
 
     public function __invoke(EnableScheduledTask $command): void
     {

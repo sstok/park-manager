@@ -21,6 +21,5 @@ final class AddScheduledTask
         public SpaceId $space,
         public Schedule $schedule,
         public string $command,
-    ) {
-    }
+    ) {}
 }

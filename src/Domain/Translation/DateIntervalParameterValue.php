@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Translation;
 
 use Carbon\CarbonInterval;
-use DateInterval;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class DateIntervalParameterValue implements ParameterValue
@@ -24,8 +23,8 @@ final class DateIntervalParameterValue implements ParameterValue
      * @see \Carbon\CarbonInterval::forHumans for configurations
      */
     public function __construct(
-        DateInterval $value,
-        private array | string | null $syntax = null,
+        \DateInterval $value,
+        private null | array | string $syntax = null,
     ) {
         if (! $value instanceof CarbonInterval) {
             $value = CarbonInterval::instance($value);

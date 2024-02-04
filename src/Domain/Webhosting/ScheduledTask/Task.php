@@ -18,10 +18,12 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Lifthill\Component\Common\Domain\Attribute\Entity as DomainEntity;
 use ParkManager\Domain\Webhosting\Space\Space;
 
 #[Entity]
 #[Table(name: 'scheduled_task')]
+#[DomainEntity]
 class Task
 {
     public function __construct(
@@ -42,8 +44,7 @@ class Task
 
         #[Column(name: 'is_enabled', type: 'boolean')]
         public bool $enabled = true,
-    ) {
-    }
+    ) {}
 
     public function setSchedule(Schedule $schedule): void
     {

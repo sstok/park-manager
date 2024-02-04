@@ -10,8 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\Webhosting\Constraint;
 
-use Generator;
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
 use PHPUnit\Framework\TestCase;
 
@@ -45,8 +44,7 @@ final class EmailConstraintsTest extends TestCase
     public function its_equatable(): void
     {
         $constraints = (new EmailConstraints())
-            ->setMaxStorageSize(new ByteSize(12, 'GB'))
-        ;
+            ->setMaxStorageSize(new ByteSize(12, 'GB'));
 
         $constraints2 = new EmailConstraints([
             'maxStorageSize' => new ByteSize(12, 'GB'),
@@ -82,9 +80,9 @@ final class EmailConstraintsTest extends TestCase
     }
 
     /**
-     * @return Generator<int, array{0: string, 1: mixed}>
+     * @return \Generator<int, array{0: string, 1: mixed}>
      */
-    public function provideFields(): Generator
+    public static function provideFields(): iterable
     {
         yield ['maxStorageSize', new ByteSize(22, 'GB')];
 

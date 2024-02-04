@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Validator\Constraints;
 
-use Egulias\EmailValidator\Exception\ExpectingATEXT;
 use Egulias\EmailValidator\Warning\Comment;
 use ParkManager\Infrastructure\Validator\Constraints\EmailboxName;
 use ParkManager\Infrastructure\Validator\Constraints\EmailboxNameValidator;
@@ -55,8 +54,7 @@ final class EmailboxNameValidatorTest extends ConstraintValidatorTestCase
 
         $this->buildViolation('invalid_emailbox_name')
             ->setInvalidValue($value)
-            ->assertRaised()
-        ;
+            ->assertRaised();
     }
 
     /** @test */
@@ -66,8 +64,7 @@ final class EmailboxNameValidatorTest extends ConstraintValidatorTestCase
 
         $this->buildViolation('invalid_emailbox_name')
             ->setInvalidValue($value)
-            ->assertRaised()
-        ;
+            ->assertRaised();
     }
 
     /** @test */
@@ -77,9 +74,7 @@ final class EmailboxNameValidatorTest extends ConstraintValidatorTestCase
 
         $this->buildViolation('invalid_emailbox_name')
             ->setInvalidValue($value)
-            ->setCause(new ExpectingATEXT())
-            ->assertRaised()
-        ;
+            ->assertRaised();
     }
 
     /** @test */
@@ -90,7 +85,6 @@ final class EmailboxNameValidatorTest extends ConstraintValidatorTestCase
         $this->buildViolation('invalid_emailbox_name')
             ->setInvalidValue($value)
             ->setCause(new Comment())
-            ->assertRaised()
-        ;
+            ->assertRaised();
     }
 }

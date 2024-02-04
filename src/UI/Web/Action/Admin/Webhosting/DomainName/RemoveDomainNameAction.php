@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\DomainName;
 
+use Lifthill\Bridge\Web\Form\Type\ConfirmationForm;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToOwner;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\Exception\CannotTransferInUseDomainName;
@@ -17,7 +18,6 @@ use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Infrastructure\Service\EntityRenderer;
 use ParkManager\UI\Web\Form\RawFormError;
-use ParkManager\UI\Web\Form\Type\ConfirmationForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,7 +85,7 @@ final class RemoveDomainNameAction extends AbstractController
             return $this->redirectToRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id]);
         }
 
-        return $this->renderForm('admin/webhosting/domain_name/remove.html.twig', [
+        return $this->render('admin/webhosting/domain_name/remove.html.twig', [
             'form' => $form,
             'domain' => $domainName,
             'space' => $space,

@@ -17,7 +17,6 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
-use InvalidArgumentException;
 
 /** @internal */
 trait x509Data
@@ -58,7 +57,7 @@ trait x509Data
     /**
      * @param array<string, mixed> $rawFields
      */
-    private function __construct(string $contents, array $rawFields, ?CA $ca = null)
+    private function __construct(string $contents, array $rawFields, CA $ca = null)
     {
         Assertion::keyExists($rawFields, '_pubKey');
         Assertion::keyExists($rawFields, 'subject');
@@ -91,7 +90,7 @@ trait x509Data
     {
         if (! isset($this->publicKeyString)) {
             if (! \is_resource($this->publicKey)) {
-                throw new InvalidArgumentException('PublicKey resource was not initialized.');
+                throw new \InvalidArgumentException('PublicKey resource was not initialized.');
             }
 
             $this->publicKeyString = stream_get_contents($this->publicKey);
@@ -104,7 +103,7 @@ trait x509Data
     {
         if (! isset($this->contentsString)) {
             if (! \is_resource($this->contents)) {
-                throw new InvalidArgumentException('Contents resource was not initialized.');
+                throw new \InvalidArgumentException('Contents resource was not initialized.');
             }
 
             $this->contentsString = stream_get_contents($this->contents);

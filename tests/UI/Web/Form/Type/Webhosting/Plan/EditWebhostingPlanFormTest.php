@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type\Webhosting\Plan;
 
+use Lifthill\Bridge\Web\Test\Form\MessageFormTestCase;
 use ParkManager\Application\Command\Webhosting\Constraint\UpdatePlan;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
-use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use ParkManager\UI\Web\Form\Type\Webhosting\Plan\EditWebhostingPlanForm;
 use ParkManager\UI\Web\Form\Type\Webhosting\Plan\WebhostingPlanLabel;
 

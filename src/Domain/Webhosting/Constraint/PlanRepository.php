@@ -10,9 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Constraint;
 
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\Attribute\Repository;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Constraint\Exception\PlanNotFound;
 
+#[Repository]
 interface PlanRepository
 {
     /**

@@ -33,10 +33,9 @@ final class BrowserKitAuthenticator implements AuthenticatorInterface, Authentic
     public function __construct(
         private UserPasswordHasherInterface $userPasswordHasher,
         private UserProvider $userProvider
-    ) {
-    }
+    ) {}
 
-    public function start(Request $request, ?AuthenticationException $authException = null): Response
+    public function start(Request $request, AuthenticationException $authException = null): Response
     {
         return new Response('Auth header required', 401);
     }

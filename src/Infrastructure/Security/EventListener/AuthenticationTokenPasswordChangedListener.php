@@ -25,8 +25,7 @@ final class AuthenticationTokenPasswordChangedListener
     public function __construct(
         private UserProviderInterface $userProvider,
         private TokenStorageInterface $tokenStorage
-    ) {
-    }
+    ) {}
 
     public function onUserPasswordWasChanged(UserPasswordWasChanged $event): void
     {

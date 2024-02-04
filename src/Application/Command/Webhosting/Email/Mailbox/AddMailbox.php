@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Email\Mailbox;
 
+use Lifthill\Component\Common\Domain\Model\ByteSize;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParagonIE\HiddenString\HiddenString;
-use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Infrastructure\Validator\Constraints\EmailboxName;

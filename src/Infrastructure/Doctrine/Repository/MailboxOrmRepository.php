@@ -12,16 +12,16 @@ namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
+use Lifthill\Bridge\Doctrine\OrmQueryBuilderResultSet;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\DomainName\DomainName;
-use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Email\Exception\AddressAlreadyExists;
 use ParkManager\Domain\Webhosting\Email\Exception\MailboxNotFound;
 use ParkManager\Domain\Webhosting\Email\Mailbox;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 use ParkManager\Domain\Webhosting\Email\MailboxRepository;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @extends EntityRepository<Mailbox>
@@ -54,8 +54,7 @@ final class MailboxOrmRepository extends EntityRepository implements MailboxRepo
                 ->setParameter('address', $address)
                 ->setParameter('domain_name', $domainNamePair->name)
                 ->setParameter('domain_tld', $domainNamePair->tld)
-                ->getSingleResult()
-            ;
+                ->getSingleResult();
         } catch (NoResultException) {
             throw MailboxNotFound::withName($address . '@' . $domainNamePair->toString());
         }
@@ -89,8 +88,7 @@ final class MailboxOrmRepository extends EntityRepository implements MailboxRepo
             ->where('m.space = :space')
             ->getQuery()
             ->setParameter('space', $space->toString())
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     public function save(Mailbox $mailbox): void

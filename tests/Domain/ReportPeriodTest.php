@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Domain;
 
 use Carbon\CarbonImmutable;
-use Generator;
 use ParkManager\Domain\Exception\PeriodAmountLessThanOne;
 use ParkManager\Domain\Exception\PeriodEndNotGreaterThanStart;
 use ParkManager\Domain\PeriodUnit;
@@ -35,7 +34,8 @@ final class ReportPeriodTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideLesserThanUnitTests
+     *
+     * @dataProvider provideIt_checks_if_period_provides_enough_amount_for_unitCases
      */
     public function it_checks_if_period_provides_enough_amount_for_unit(PeriodUnit $unit, CarbonImmutable $start, CarbonImmutable $end): void
     {
@@ -45,9 +45,9 @@ final class ReportPeriodTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array{0: string, 1: CarbonImmutable, 2: CarbonImmutable}>
+     * @return \Generator<string, array{0: string, 1: CarbonImmutable, 2: CarbonImmutable}>
      */
-    public function provideLesserThanUnitTests(): Generator
+    public static function provideIt_checks_if_period_provides_enough_amount_for_unitCases(): iterable
     {
         yield 'hour' => [PeriodUnit::HOUR, new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-04-20 10:40:00')];
         yield 'day' => [PeriodUnit::DAY, new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-04-20 15:40:00')];
@@ -58,7 +58,8 @@ final class ReportPeriodTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideEnoughUnitAmount
+     *
+     * @dataProvider provideIt_accepts_periods_with_enough_amount_for_unitCases
      */
     public function it_accepts_periods_with_enough_amount_for_unit(PeriodUnit $unit, CarbonImmutable $start, CarbonImmutable $end): void
     {
@@ -69,9 +70,9 @@ final class ReportPeriodTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array{0: string, 1: CarbonImmutable, 2: CarbonImmutable}>
+     * @return \Generator<string, array{0: string, 1: CarbonImmutable, 2: CarbonImmutable}>
      */
-    public function provideEnoughUnitAmount(): Generator
+    public static function provideIt_accepts_periods_with_enough_amount_for_unitCases(): iterable
     {
         yield 'hour' => [PeriodUnit::HOUR, new CarbonImmutable('2021-04-20 10:32:45'), new CarbonImmutable('2021-04-20 11:33:00')];
         yield 'day' => [PeriodUnit::DAY, new CarbonImmutable('2021-04-20 10:32:00'), new CarbonImmutable('2021-04-21 15:32:00')];

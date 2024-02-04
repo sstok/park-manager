@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain;
 
+use Lifthill\Component\Common\Domain\ResultSet;
+
 /**
  * A repository implementing this interface indicates that the root entity
  * has an Owner relation.

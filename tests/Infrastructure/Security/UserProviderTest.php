@@ -11,9 +11,9 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Security;
 
 use Carbon\CarbonImmutable;
+use Lifthill\Component\Common\Domain\Exception\MalformedEmailAddress;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Command\User\ChangePassword;
-use ParkManager\Domain\EmailAddress;
-use ParkManager\Domain\Exception\MalformedEmailAddress;
 use ParkManager\Domain\Exception\NotFoundException;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
@@ -173,6 +173,7 @@ final class UserProviderTest extends TestCase
 
     /**
      * @test
+     *
      * @doesNotPerformAssertions
      */
     public function it_continues_gracefully_when_upgrade_fails(): void

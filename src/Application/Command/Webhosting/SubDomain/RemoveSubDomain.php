@@ -14,9 +14,7 @@ use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 
 final class RemoveSubDomain
 {
-    public function __construct(public SubDomainNameId $id)
-    {
-    }
+    public function __construct(public SubDomainNameId $id) {}
 
     public static function with(string $id): self
     {

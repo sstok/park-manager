@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\User;
 
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Command\User\ChangeEmailAddress;
 use ParkManager\Application\Command\User\ChangeEmailAddressHandler;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;

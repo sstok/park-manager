@@ -10,17 +10,16 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Validator\Constraints\Webhosting;
 
-use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-#[Attribute(Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 final class DomainNameOfSpace extends Constraint
 {
     public function __construct(
         public string $spaceProperty = 'space',
         public string $domainProperty = 'domainName',
         mixed $options = null,
-        ?array $groups = null,
+        array $groups = null,
         mixed $payload = null
     ) {
         parent::__construct($options, $groups, $payload);

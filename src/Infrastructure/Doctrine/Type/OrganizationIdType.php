@@ -10,10 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine\Type;
 
+use Lifthill\Bridge\Doctrine\Attribute\DbalType;
+use Lifthill\Bridge\Doctrine\Type\DomainIdType;
 use ParkManager\Domain\Organization\OrganizationId;
 
+#[DbalType('park_manager_organization_id')]
 final class OrganizationIdType extends DomainIdType
 {
-    public const NAME = 'park_manager_organization_id';
-    public const OBJECT_CLASS = OrganizationId::class;
+    protected static function getIdClass(): string
+    {
+        return OrganizationId::class;
+    }
 }

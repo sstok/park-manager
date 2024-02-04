@@ -10,14 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\User\Exception;
 
-use InvalidArgumentException;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Exception\DomainError;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\User\UserId;
 
-final class CannotRemoveActiveUser extends InvalidArgumentException implements DomainError
+final class CannotRemoveActiveUser extends \InvalidArgumentException implements DomainError
 {
     /**
      * @param array<class-string, ResultSet<object>> $entities

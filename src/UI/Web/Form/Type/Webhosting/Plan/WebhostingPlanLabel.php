@@ -18,9 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class WebhostingPlanLabel extends AbstractType
 {
-    public function __construct(private array $acceptedLocales = [])
-    {
-    }
+    public function __construct(private array $acceptedLocales = []) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -29,8 +27,7 @@ final class WebhostingPlanLabel extends AbstractType
             ->add('locale', LocaleType::class, [
                 'label' => 'label.locale',
                 'choice_filter' => fn ($locale) => \in_array($locale, $this->acceptedLocales, true),
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

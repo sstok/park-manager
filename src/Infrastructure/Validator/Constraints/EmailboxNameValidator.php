@@ -12,7 +12,6 @@ namespace ParkManager\Infrastructure\Validator\Constraints;
 
 use Egulias\EmailValidator\EmailLexer;
 use Egulias\EmailValidator\EmailParser;
-use Egulias\EmailValidator\Exception\InvalidEmail;
 use Egulias\EmailValidator\Warning\QuotedString;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -49,38 +48,35 @@ final class EmailboxNameValidator extends ConstraintValidator
         if (str_contains($value, '@') || str_contains($value, '+')) {
             $this->context->buildViolation('invalid_emailbox_name')
                 ->setInvalidValue($value)
-                ->addViolation()
-            ;
+                ->addViolation();
 
             return;
         }
 
         $parser = new EmailParser($this->lexer);
-        $email = $value . '@example.com';
+        $result = $parser->parse($value . '@example.com');
 
-        try {
-            $parser->parse($email);
-
-            foreach ($parser->getWarnings() as $warning) {
-                // Quoted strings are acceptable. Comments and others are not.
-                if ($warning instanceof QuotedString) {
-                    continue;
-                }
-
-                $this->context->buildViolation('invalid_emailbox_name')
-                    ->setInvalidValue($value)
-                    ->setCause($warning)
-                    ->addViolation()
-                ;
-
-                return;
-            }
-        } catch (InvalidEmail $e) {
+        if ($result->isInvalid()) {
             $this->context->buildViolation('invalid_emailbox_name')
                 ->setInvalidValue($value)
-                ->setCause($e)
-                ->addViolation()
-            ;
+                ->setCause($result)
+                ->addViolation();
+
+            return;
+        }
+
+        foreach ($parser->getWarnings() as $warning) {
+            // Quoted strings are acceptable. Comments and others are not.
+            if ($warning instanceof QuotedString) {
+                continue;
+            }
+
+            $this->context->buildViolation('invalid_emailbox_name')
+                ->setInvalidValue($value)
+                ->setCause($warning)
+                ->addViolation();
+
+            return;
         }
     }
 }

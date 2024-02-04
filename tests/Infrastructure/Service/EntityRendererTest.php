@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Service;
 
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\DomainName\DomainName;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\Webhosting\Space\Space;
@@ -119,7 +119,7 @@ final class EntityRendererTest extends TestCase
     {
         $localeAware = $this->createMock(LocaleAwareInterface::class);
         $localeAware->expects(self::once())->method('getLocale')->willReturn('en');
-        $localeAware->expects(self::exactly(2))->method('setLocale')->withConsecutive([$tempLocale], ['en']);
+        $localeAware->expects(self::exactly(2))->method('setLocale')->willReturnOnConsecutiveCalls([$tempLocale], ['en']);
 
         return $localeAware;
     }

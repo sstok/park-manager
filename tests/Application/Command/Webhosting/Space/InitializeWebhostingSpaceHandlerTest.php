@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\Webhosting\Space;
 
-use InvalidArgumentException;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Application\Command\Webhosting\Space\InitializeWebhostingSpace;
 use ParkManager\Application\Command\Webhosting\Space\InitializeWebhostingSpaceHandler;
 use ParkManager\Application\Event\WebhostingSpaceFailedInitialization;
@@ -21,7 +21,6 @@ use ParkManager\Application\Service\SystemGateway\SystemCommand;
 use ParkManager\Application\Service\SystemGateway\SystemQuery;
 use ParkManager\Application\Service\SystemGateway\Webhosting\RegisterSystemUser;
 use ParkManager\Application\Service\SystemGateway\Webhosting\RegisterSystemUserResult;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\Space\SpaceSetupStatus;
@@ -63,7 +62,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
             {
                 if ($command instanceof RegisterSystemUser) {
                     if ($this->idForFailure->equals($command->getArguments()['space_id'])) {
-                        throw new InvalidArgumentException('The system is stretching its legs, I for one suggest you retry later.');
+                        throw new \InvalidArgumentException('The system is stretching its legs, I for one suggest you retry later.');
                     }
 
                     return new RegisterSystemUserResult(
@@ -71,14 +70,14 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
                     );
                 }
 
-                return throw new InvalidArgumentException(
+                return throw new \InvalidArgumentException(
                     sprintf('Unsupported SystemCommand %s', $command::class)
                 );
             }
 
             public function query(SystemQuery $command): OperationResult
             {
-                throw new InvalidArgumentException(sprintf('Unsupported SystemQuery %s', $command::class));
+                throw new \InvalidArgumentException(sprintf('Unsupported SystemQuery %s', $command::class));
             }
         };
 
@@ -165,7 +164,7 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
                         return false;
                     }
 
-                    if (! $record['context']['error'] instanceof InvalidArgumentException) {
+                    if (! $record['context']['error'] instanceof \InvalidArgumentException) {
                         return false;
                     }
 

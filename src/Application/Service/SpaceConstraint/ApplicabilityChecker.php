@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Service\SpaceConstraint;
 
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Application\Service\StorageUsage;
-use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Email\MailboxRepository;
 use ParkManager\Domain\Webhosting\Space\Space;
@@ -34,8 +34,7 @@ class ApplicabilityChecker
         private SpaceRepository $spaceRepository,
         private MailboxRepository $mailboxRepository,
         private StorageUsage $storageUsageRetriever
-    ) {
-    }
+    ) {}
 
     public function getApplicable(SpaceId $id, Constraints $constraints): Constraints
     {

@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Translation\Formatter;
 
-use ParkManager\Application\Service\RepositoryLocator;
+use Lifthill\Component\Common\Domain\UniqueIdentity;
+use Lifthill\Component\ModelMapping\RepositoryLocator;
 use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\Translation\ParameterValueService;
-use ParkManager\Domain\UniqueIdentity;
 use ParkManager\Infrastructure\Service\EntityRenderer;
 use ParkManager\Infrastructure\Translation\TranslationParameterFormatter;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -23,15 +23,14 @@ final class EntityLinkFormatter implements TranslationParameterFormatter
     public function __construct(
         private RepositoryLocator $repositoryLocator,
         private EntityRenderer $entityRenderer
-    ) {
-    }
+    ) {}
 
     public function format(ParameterValueService $value, string $locale, callable $escaper, TranslatorInterface $translator): string
     {
         \assert($value instanceof EntityLink);
 
         if ($value->entity instanceof UniqueIdentity) {
-            $repository = $this->repositoryLocator->getById($value->entity);
+            $repository = $this->repositoryLocator->getRepositoryForId($value->entity);
             $entity = $repository->get($value->entity);
         } else {
             $entity = $value->entity;

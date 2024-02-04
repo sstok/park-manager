@@ -13,7 +13,6 @@ namespace ParkManager\Tests\Domain\Translation;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\CarbonInterval;
-use DateInterval;
 use ParkManager\Domain\Translation\DateIntervalParameterValue;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -42,14 +41,14 @@ final class DateIntervalParameterValueTest extends TestCase
     /** @test */
     public function it_formats_date_interval_period(): void
     {
-        $invertedIntervalPeriod = new DateInterval('P1W2D');
+        $invertedIntervalPeriod = new \DateInterval('P1W2D');
         $invertedIntervalPeriod->invert = 1;
 
         Carbon::setTestNow('2021-07-22T11:01:59 CET');
 
-        $carbonInterval = CarbonInterval::instance(new DateInterval('P1W2D'));
+        $carbonInterval = CarbonInterval::instance(new \DateInterval('P1W2D'));
 
-        $this->assertFormattedEquals('{1 day 12 hours}', new DateIntervalParameterValue(new DateInterval('P1DT12H')));
+        $this->assertFormattedEquals('{1 day 12 hours}', new DateIntervalParameterValue(new \DateInterval('P1DT12H')));
         $this->assertFormattedEquals('{1 week 2 days}', new DateIntervalParameterValue($invertedIntervalPeriod));
         $this->assertFormattedEquals('{1 week 2 days}', new DateIntervalParameterValue($carbonInterval));
         $this->assertFormattedEquals('{1 week 2 days}', new DateIntervalParameterValue($carbonInterval));
@@ -59,12 +58,12 @@ final class DateIntervalParameterValueTest extends TestCase
     /** @test */
     public function it_formats_date_interval_relative_ago(): void
     {
-        $invertedInterval = new DateInterval('P1DT12H');
+        $invertedInterval = new \DateInterval('P1DT12H');
         $invertedInterval->invert = 1;
 
         Carbon::setTestNow('2021-07-22T11:01:59 CET');
 
-        $carbonInterval = CarbonInterval::instance(new DateInterval('P1DT12H'));
+        $carbonInterval = CarbonInterval::instance(new \DateInterval('P1DT12H'));
 
         $this->assertFormattedEquals('{1 day 12 hours ago}', new DateIntervalParameterValue($carbonInterval, ['syntax' => CarbonInterface::DIFF_RELATIVE_TO_NOW]));
         $this->assertFormattedEquals('{1 day 12 hours from now}', new DateIntervalParameterValue($carbonInterval->invert(), ['syntax' => CarbonInterface::DIFF_RELATIVE_TO_NOW]));
@@ -74,7 +73,7 @@ final class DateIntervalParameterValueTest extends TestCase
     /** @test */
     public function it_does_not_change_original_instance(): void
     {
-        $carbonInterval = CarbonInterval::instance(new DateInterval('P1DT12H'));
+        $carbonInterval = CarbonInterval::instance(new \DateInterval('P1DT12H'));
 
         self::assertSame('en', $carbonInterval->locale());
 

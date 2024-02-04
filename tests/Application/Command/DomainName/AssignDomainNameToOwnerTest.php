@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\DomainName;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToOwner;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToOwnerHandler;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\OwnerId;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;

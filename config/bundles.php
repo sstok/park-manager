@@ -13,4 +13,7 @@ return [
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     BabDev\PagerfantaBundle\BabDevPagerfantaBundle::class => ['all' => true],
+    Rollerworks\Component\PdbSfBridge\Bundle\RollerworksPdbBundle::class => ['all' => true],
+    Lifthill\Bundle\CoreBundle\LifthillCoreBundle::class => ['all' => true],
+    Lifthill\Bundle\PermissionBundle\LifthillPermissionBundle::class => ['all' => true],
 ];

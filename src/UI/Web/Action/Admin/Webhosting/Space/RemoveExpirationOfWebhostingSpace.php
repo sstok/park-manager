@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Space;
 
+use Lifthill\Bridge\Web\Form\Type\ConfirmationForm;
 use ParkManager\Application\Command\Webhosting\Space\RemoveSpaceExpirationDate;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\UI\Web\Form\Type\ConfirmationForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,6 +50,6 @@ final class RemoveExpirationOfWebhostingSpace extends AbstractController
             return $this->redirectToRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id]);
         }
 
-        return $this->renderForm('admin/webhosting/space/remove_expiration.html.twig', ['form' => $form, 'space' => $space]);
+        return $this->render('admin/webhosting/space/remove_expiration.html.twig', ['form' => $form, 'space' => $space]);
     }
 }

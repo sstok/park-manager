@@ -10,10 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine\Type;
 
+use Lifthill\Bridge\Doctrine\Attribute\DbalType;
+use Lifthill\Bridge\Doctrine\Type\DomainIdType;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 
+#[DbalType('park_manager_webhosting_mailbox_id')]
 final class MailboxIdType extends DomainIdType
 {
-    public const NAME = 'park_manager_webhosting_mailbox_id';
-    public const OBJECT_CLASS = MailboxId::class;
+    protected static function getIdClass(): string
+    {
+        return MailboxId::class;
+    }
 }

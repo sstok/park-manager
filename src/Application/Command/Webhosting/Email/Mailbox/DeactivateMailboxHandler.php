@@ -14,9 +14,7 @@ use ParkManager\Domain\Webhosting\Email\MailboxRepository;
 
 final class DeactivateMailboxHandler
 {
-    public function __construct(private MailboxRepository $repository)
-    {
-    }
+    public function __construct(private MailboxRepository $repository) {}
 
     public function __invoke(DeactivateMailbox $command): void
     {

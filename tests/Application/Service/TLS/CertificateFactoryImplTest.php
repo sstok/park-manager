@@ -18,14 +18,13 @@ use ParagonIE\Halite\Halite;
 use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Application\Service\TLS\CAResolver;
 use ParkManager\Application\Service\TLS\CertificateFactoryImpl;
-use ParkManager\Application\Service\TLS\KeyValidator;
-use ParkManager\Application\Service\TLS\Violation\ExpectedLeafCertificate;
 use ParkManager\Domain\Webhosting\SubDomain\TLS\CA;
 use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use RuntimeException;
+use Rollerworks\Component\X509Validator\KeyValidator;
+use Rollerworks\Component\X509Validator\Violation\ExpectedLeafCertificate;
 
 /**
  * @internal
@@ -541,7 +540,7 @@ final class CertificateFactoryImplTest extends TestCase
 
         $factory = new CertificateFactoryImpl(Base64::decode(self::PUB_KEY), $objectManager, $caResolver, $keyValidator);
 
-        $this->expectExceptionObject(new RuntimeException('Unable to read private key-data, invalid key provided?'));
+        $this->expectExceptionObject(new \RuntimeException('Unable to read private key-data, invalid key provided?'));
 
         $factory->createCertificate(
             $certContents,

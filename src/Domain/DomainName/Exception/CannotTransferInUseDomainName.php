@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\DomainName\Exception;
 
-use ParkManager\Domain\DomainName\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class CannotTransferInUseDomainName extends UseDomainNameException

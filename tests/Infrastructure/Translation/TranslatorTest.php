@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Infrastructure\Translation;
 
 use Carbon\CarbonImmutable;
-use ParkManager\Domain\ByteSize;
-use ParkManager\Domain\DomainName\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\Translation\ParameterValue;
 use ParkManager\Domain\Translation\ParameterValueService;
 use ParkManager\Infrastructure\Translation\TranslationParameterFormatter;
@@ -43,14 +43,15 @@ final class TranslatorTest extends TestCase
             'date' => '{ value, date, short }',
             'byte_size' => [
                 'format' => '{ value, number } with { unit }',
-                'byte' => 'Byte',
-                'b' => 'Byte',
-                'kb' => 'KB',
-                'kib' => 'KiB',
-                'mb' => 'MB',
-                'mib' => 'MiB',
-                'gb' => 'GB',
-                'gib' => 'GiB',
+                'byte_size.inf' => 'Unlimited',
+                'unit.byte' => 'Byte',
+                'unit.b' => 'Byte',
+                'unit.kb' => 'KB',
+                'unit.kib' => 'KiB',
+                'unit.mb' => 'MB',
+                'unit.mib' => 'MiB',
+                'unit.gb' => 'GB',
+                'unit.gib' => 'GiB',
             ],
         ], 'en', 'messages+intl-icu');
         $translator->addResource('array', [
@@ -225,8 +226,7 @@ final class ParameterValueServiceMock implements ParameterValueService
 {
     public function __construct(
         public mixed $value,
-    ) {
-    }
+    ) {}
 }
 
 class TranslationParameterFormatterMock implements TranslationParameterFormatter

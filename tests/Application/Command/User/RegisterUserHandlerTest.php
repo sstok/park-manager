@@ -11,9 +11,9 @@ declare(strict_types=1);
 namespace ParkManager\Tests\Application\Command\User;
 
 use Carbon\CarbonImmutable;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Command\User\RegisterUser;
 use ParkManager\Application\Command\User\RegisterUserHandler;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
 use ParkManager\Domain\User\User;
@@ -71,8 +71,7 @@ final class RegisterUserHandlerTest extends TestCase
         CarbonImmutable::setTestNow($now);
 
         $command = RegisterUser::with(self::ID_NEW, 'John@example.com', 'My name', 'my-password')
-            ->requireNewPassword()
-        ;
+            ->requireNewPassword();
         $handler($command);
 
         $repo->assertHasEntity(self::ID_NEW, static function (User $user) use ($now): void {

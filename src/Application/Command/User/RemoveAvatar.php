@@ -16,6 +16,5 @@ final class RemoveAvatar
 {
     public function __construct(
         public UserId $id
-    ) {
-    }
+    ) {}
 }

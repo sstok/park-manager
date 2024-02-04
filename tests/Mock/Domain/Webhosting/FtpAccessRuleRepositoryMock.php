@@ -10,7 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Common\Test\MockRepository;
 use ParkManager\Domain\Webhosting\Ftp\AccessRule;
 use ParkManager\Domain\Webhosting\Ftp\AccessRuleId;
 use ParkManager\Domain\Webhosting\Ftp\AccessRuleRepository;
@@ -18,7 +19,6 @@ use ParkManager\Domain\Webhosting\Ftp\AccessRuleStrategy;
 use ParkManager\Domain\Webhosting\Ftp\Exception\AccessRuleNotFound;
 use ParkManager\Domain\Webhosting\Ftp\FtpUserId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Tests\Mock\Domain\MockRepository;
 
 final class FtpAccessRuleRepositoryMock implements AccessRuleRepository
 {
@@ -45,7 +45,7 @@ final class FtpAccessRuleRepositoryMock implements AccessRuleRepository
         ];
     }
 
-    public function hasAnyAllow(SpaceId | FtpUserId $id): bool
+    public function hasAnyAllow(FtpUserId | SpaceId $id): bool
     {
         if ($id instanceof SpaceId) {
             $result = $this->mockDoGetMultiByField('space', $id->toString());

@@ -10,14 +10,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Common\Test\MockRepository;
 use ParkManager\Domain\Webhosting\Ftp\Exception\FtpUsernameAlreadyExists;
 use ParkManager\Domain\Webhosting\Ftp\Exception\FtpUserNotFound;
 use ParkManager\Domain\Webhosting\Ftp\FtpUser;
 use ParkManager\Domain\Webhosting\Ftp\FtpUserId;
 use ParkManager\Domain\Webhosting\Ftp\FtpUserRepository;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Tests\Mock\Domain\MockRepository;
 
 final class FtpUserRepositoryMock implements FtpUserRepository
 {

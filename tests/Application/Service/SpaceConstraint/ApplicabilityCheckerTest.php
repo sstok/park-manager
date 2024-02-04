@@ -10,12 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Service\SpaceConstraint;
 
-use Generator;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Application\Service\SpaceConstraint\ApplicabilityChecker;
-use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\DBConstraints;
 use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
@@ -111,7 +110,8 @@ final class ApplicabilityCheckerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideNewConstraintsExpectations
+     *
+     * @dataProvider provideReturns_new_value_when_higher_or_equals_to_current_usageCases
      */
     public function returns_new_value_when_higher_or_equals_to_current_usage(Constraints $newConstraints, Constraints $expected): void
     {
@@ -126,9 +126,9 @@ final class ApplicabilityCheckerTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array{0: Constraints, 1: Constraints}>
+     * @return \Generator<string, array{0: Constraints, 1: Constraints}>
      */
-    public function provideNewConstraintsExpectations(): Generator
+    public static function provideReturns_new_value_when_higher_or_equals_to_current_usageCases(): iterable
     {
         $current = new Constraints(
             [

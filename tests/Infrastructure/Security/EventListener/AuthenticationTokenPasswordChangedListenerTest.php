@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Security\EventListener;
 
-use AssertionError;
 use ParkManager\Application\Event\UserPasswordWasChanged;
 use ParkManager\Infrastructure\Security\EventListener\AuthenticationTokenPasswordChangedListener;
 use ParkManager\Infrastructure\Security\SecurityUser;
@@ -159,7 +158,7 @@ final class AuthenticationTokenPasswordChangedListenerTest extends TestCase
 
         $listener = new AuthenticationTokenPasswordChangedListener($userProvider, $tokenStorage);
 
-        $this->expectException(AssertionError::class);
+        $this->expectException(\AssertionError::class);
         $this->expectExceptionMessage('assert($user instanceof SecurityUser)');
 
         $listener->onUserPasswordWasChanged(new UserPasswordWasChanged(self::ID1, 'passwd'));

@@ -13,18 +13,18 @@ namespace ParkManager\Infrastructure\Doctrine\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr\Join;
+use Lifthill\Bridge\Doctrine\OrmQueryBuilderResultSet;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\DomainName\Exception\CannotRemovePrimaryDomainName;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
 use ParkManager\Domain\OwnerId;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @extends EntityRepository<DomainName>
@@ -58,8 +58,7 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
                 ->where('d.space = :id AND d.primary = true')
                 ->getQuery()
                 ->setParameter('id', $id->toString())
-                ->getSingleResult()
-            ;
+                ->getSingleResult();
         } catch (NoResultException) {
             throw WebhostingSpaceNotFound::withId($id);
         }
@@ -73,8 +72,7 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
                 ->getQuery()
                 ->setParameter('name', $name->name)
                 ->setParameter('tld', $name->tld)
-                ->getSingleResult()
-            ;
+                ->getSingleResult();
         } catch (NoResultException) {
             throw DomainNameNotFound::withName($name);
         }
@@ -139,8 +137,7 @@ final class DomainNameOrmRepository extends EntityRepository implements DomainNa
                         ->where('d.id = :id')
                         ->getQuery()
                         ->setParameter('id', $primaryDomainName->id)
-                        ->execute()
-                    ;
+                        ->execute();
 
                     $this->_em->refresh($primaryDomainName);
 

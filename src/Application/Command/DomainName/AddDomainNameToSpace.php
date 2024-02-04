@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\DomainName;
 
-use ParkManager\Domain\DomainName\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class AddDomainNameToSpace
@@ -19,6 +19,5 @@ final class AddDomainNameToSpace
         public DomainNamePair $name,
         public SpaceId $space,
         public bool $primary = false
-    ) {
-    }
+    ) {}
 }

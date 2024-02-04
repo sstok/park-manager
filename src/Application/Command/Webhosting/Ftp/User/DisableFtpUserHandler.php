@@ -14,9 +14,7 @@ use ParkManager\Domain\Webhosting\Ftp\FtpUserRepository;
 
 final class DisableFtpUserHandler
 {
-    public function __construct(private FtpUserRepository $repository)
-    {
-    }
+    public function __construct(private FtpUserRepository $repository) {}
 
     public function __invoke(DisableFtpUser $command): void
     {

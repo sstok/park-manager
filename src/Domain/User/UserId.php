@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\User;
 
+use Lifthill\Component\Common\Domain\UniqueIdentity;
+use Lifthill\Component\Common\Domain\UuidTrait;
 use ParkManager\Domain\OwnerId;
-use ParkManager\Domain\UniqueIdentity;
-use ParkManager\Domain\UuidTrait;
 
 final class UserId implements UniqueIdentity
 {

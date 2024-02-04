@@ -11,15 +11,15 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Bridge\Doctrine\OrmQueryBuilderResultSet;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
-use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @extends EntityRepository<User>
@@ -59,8 +59,7 @@ class DoctrineOrmUserRepository extends EntityRepository implements UserReposito
             ->where('u.email.canonical = :email')
             ->getQuery()
             ->setParameter('email', $email->canonical)
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
 
         if ($user === null) {
             throw UserNotFound::withEmail($email);
@@ -80,8 +79,7 @@ class DoctrineOrmUserRepository extends EntityRepository implements UserReposito
             ->where('u.emailAddressChangeToken.selector = :selector')
             ->getQuery()
             ->setParameter('selector', $selector)
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
 
         if ($user === null) {
             throw new EmailChangeConfirmationRejected();
@@ -96,8 +94,7 @@ class DoctrineOrmUserRepository extends EntityRepository implements UserReposito
             ->where('u.passwordResetToken.selector = :selector')
             ->getQuery()
             ->setParameter('selector', $selector)
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
 
         if ($user === null) {
             throw new PasswordResetTokenNotAccepted();

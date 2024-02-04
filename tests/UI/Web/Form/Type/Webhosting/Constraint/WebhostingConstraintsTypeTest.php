@@ -10,8 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type\Webhosting\Constraint;
 
-use Generator;
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\DBConstraints;
 use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
@@ -65,7 +64,8 @@ final class WebhostingConstraintsTypeTest extends TypeTestCase
 
     /**
      * @test
-     * @dataProvider provideNewConfigs
+     *
+     * @dataProvider provideIt_produces_new_config_when_changedCases
      *
      * @param array<string, mixed> $submit
      */
@@ -111,9 +111,9 @@ final class WebhostingConstraintsTypeTest extends TypeTestCase
     }
 
     /**
-     * @return Generator<string, array{0: array<string, mixed>, 1: Constraints}>
+     * @return \Generator<string, array{0: array<string, mixed>, 1: Constraints}>
      */
-    public function provideNewConfigs(): Generator
+    public static function provideIt_produces_new_config_when_changedCases(): iterable
     {
         $defaultConstraint = new Constraints();
 

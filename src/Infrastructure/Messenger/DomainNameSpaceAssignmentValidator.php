@@ -28,8 +28,7 @@ final class DomainNameSpaceAssignmentValidator implements MiddlewareInterface
     public function __construct(
         private DomainNameRepository $domainNameRepository,
         private iterable $validators
-    ) {
-    }
+    ) {}
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {

@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Webhosting;
 
+use Lifthill\Bridge\Web\Form\Type\EntityType;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\UI\Web\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,9 +21,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 final class WebhostingDomainNameSelector extends AbstractType
 {
-    public function __construct(private DomainNameRepository $domainNameRepository)
-    {
-    }
+    public function __construct(private DomainNameRepository $domainNameRepository) {}
 
     public function configureOptions(OptionsResolver $resolver): void
     {
@@ -38,8 +36,7 @@ final class WebhostingDomainNameSelector extends AbstractType
                 'preferred_choices' => static fn (DomainName $domainName) => [$domainName->primary],
                 'resultset' => fn (Options $options) => $this->domainNameRepository->allFromSpace($options['space_id']),
                 'constraints' => [new NotNull()],
-            ])
-        ;
+            ]);
     }
 
     public function getBlockPrefix(): string

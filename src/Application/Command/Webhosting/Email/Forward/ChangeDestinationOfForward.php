@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Email\Forward;
 
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\Webhosting\Email\ForwardId;
 
 final class ChangeDestinationOfForward
@@ -20,7 +20,6 @@ final class ChangeDestinationOfForward
      */
     public function __construct(
         public ForwardId $id,
-        public string | EmailAddress $destination,
-    ) {
-    }
+        public EmailAddress | string $destination,
+    ) {}
 }

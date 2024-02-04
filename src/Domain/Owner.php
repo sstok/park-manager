@@ -16,11 +16,11 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Lifthill\Component\Common\Domain\Attribute\Entity as DomainEntity;
 use ParkManager\Domain\Organization\Organization;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
-use Stringable;
 
 /**
  * An Owner is either a `User` or `Organization` relationship-entity
@@ -32,7 +32,8 @@ use Stringable;
  */
 #[Entity]
 #[Table(name: 'entity_owner')]
-class Owner implements Stringable
+#[DomainEntity]
+class Owner implements \Stringable
 {
     #[Id]
     #[Column(name: 'owner_id', type: 'park_manager_owner_id')]
@@ -63,7 +64,7 @@ class Owner implements Stringable
         return new self(organization: $organization);
     }
 
-    public function getId(): UserId | OrganizationId
+    public function getId(): OrganizationId | UserId
     {
         if (isset($this->user)) {
             return $this->user->id;
@@ -87,7 +88,7 @@ class Owner implements Stringable
         return $this->id->toString();
     }
 
-    public function getLinkedEntity(): User | Organization
+    public function getLinkedEntity(): Organization | User
     {
         return $this->user ?? $this->organization;
     }

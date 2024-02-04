@@ -13,18 +13,15 @@ namespace ParkManager\UI\Web\Form\DataMapper;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormInterface;
-use Traversable;
 
 final class WebhostingConstraintDataMapper implements DataMapperInterface
 {
-    public function __construct(private string $constraintClass)
-    {
-    }
+    public function __construct(private string $constraintClass) {}
 
     /**
-     * @param Traversable<FormInterface> $forms
+     * @param \Traversable<FormInterface> $forms
      */
-    public function mapDataToForms($viewData, Traversable $forms): void
+    public function mapDataToForms($viewData, \Traversable $forms): void
     {
         if (! $viewData instanceof $this->constraintClass) {
             throw new UnexpectedTypeException($viewData, $this->constraintClass);
@@ -36,9 +33,9 @@ final class WebhostingConstraintDataMapper implements DataMapperInterface
     }
 
     /**
-     * @param Traversable<FormInterface> $forms
+     * @param \Traversable<FormInterface> $forms
      */
-    public function mapFormsToData(Traversable $forms, &$viewData): void
+    public function mapFormsToData(\Traversable $forms, &$viewData): void
     {
         if (! $viewData instanceof $this->constraintClass) {
             throw new UnexpectedTypeException($viewData, $this->constraintClass);

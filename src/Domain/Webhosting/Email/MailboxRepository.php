@@ -10,11 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Email;
 
-use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\Attribute\Repository;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Email\Exception\MailboxNotFound;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
+#[Repository]
 interface MailboxRepository
 {
     /**

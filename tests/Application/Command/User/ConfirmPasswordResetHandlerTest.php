@@ -24,13 +24,15 @@ use Rollerworks\Component\SplitToken\SplitToken;
  */
 final class ConfirmPasswordResetHandlerTest extends TestCase
 {
+    private FakeSplitTokenFactory $splitTokenFactory;
     private SplitToken $fullToken;
     private SplitToken $token;
 
     protected function setUp(): void
     {
-        $this->fullToken = FakeSplitTokenFactory::instance()->generate();
-        $this->token = FakeSplitTokenFactory::instance()->fromString($this->fullToken->token()->getString());
+        $this->splitTokenFactory = new FakeSplitTokenFactory();
+        $this->fullToken = $this->splitTokenFactory->generate();
+        $this->token = $this->splitTokenFactory->fromString($this->fullToken->token()->getString());
     }
 
     /** @test */
@@ -60,7 +62,7 @@ final class ConfirmPasswordResetHandlerTest extends TestCase
         $handler = new ConfirmPasswordResetHandler($repository);
 
         try {
-            $invalidToken = FakeSplitTokenFactory::instance()->fromString(FakeSplitTokenFactory::SELECTOR . str_rot13(FakeSplitTokenFactory::VERIFIER));
+            $invalidToken = $this->splitTokenFactory->fromString(FakeSplitTokenFactory::SELECTOR . str_rot13(FakeSplitTokenFactory::VERIFIER));
             $handler(new ConfirmPasswordReset($invalidToken, 'my-password'));
 
             self::fail('Exception was expected.');

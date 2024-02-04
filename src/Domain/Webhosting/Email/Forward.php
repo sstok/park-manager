@@ -18,13 +18,15 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Lifthill\Component\Common\Domain\Attribute\Entity as DomainEntity;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\DomainName\DomainName;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Webhosting\Space\Space;
 
 #[Entity]
 #[Table(name: 'mail_forward')]
 #[UniqueConstraint(name: 'uk_mail_forward_address_name', fields: ['address', 'domainName'])]
+#[DomainEntity]
 class Forward
 {
     #[Column(type: 'text')]
@@ -58,7 +60,7 @@ class Forward
         $this->addressChanged = false;
     }
 
-    public function setAddress(string $address, ?DomainName $domainName = null): void
+    public function setAddress(string $address, DomainName $domainName = null): void
     {
         $domainName ??= $this->domainName;
         $emailAddress = new EmailAddress($address . '@' . $domainName->namePair->toString());

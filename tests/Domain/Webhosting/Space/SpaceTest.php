@@ -13,8 +13,7 @@ namespace ParkManager\Tests\Domain\Webhosting\Space;
 use Assert\Assertion;
 use Assert\InvalidArgumentException;
 use Carbon\CarbonImmutable;
-use DateTimeImmutable;
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
@@ -309,7 +308,7 @@ final class SpaceTest extends TestCase
             $this->createPlan(new Constraints())
         );
 
-        $space2->markExpirationDate($date = new DateTimeImmutable('now +6 days'));
+        $space2->markExpirationDate($date = new \DateTimeImmutable('now +6 days'));
 
         self::assertFalse($space1->isExpired());
         self::assertFalse($space1->isExpired($date->modify('+2 days')));

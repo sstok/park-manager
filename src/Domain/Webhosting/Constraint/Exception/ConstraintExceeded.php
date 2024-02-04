@@ -10,14 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Constraint\Exception;
 
-use Exception;
-use ParkManager\Domain\ByteSize;
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\Exception\DomainError;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
-final class ConstraintExceeded extends Exception implements DomainError
+final class ConstraintExceeded extends \Exception implements DomainError
 {
     private string $transId;
 

@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Translation;
 
-use DateTimeInterface;
 use ParkManager\Domain\Translation\ParameterValue;
 use ParkManager\Domain\Translation\ParameterValueService;
 use Psr\Container\ContainerInterface;
@@ -29,14 +28,12 @@ class Translator implements TranslatorInterface, LocaleAwareInterface, Translato
     /**
      * @param TranslatorInterface&LocaleAwareInterface&TranslatorBagInterface $wrappedTranslator
      */
-    public function __construct(private TranslatorInterface $wrappedTranslator, private ContainerInterface $parameterFormatterServices)
-    {
-    }
+    public function __construct(private TranslatorInterface $wrappedTranslator, private ContainerInterface $parameterFormatterServices) {}
 
     /**
      * @param array<string, mixed> $parameters
      */
-    public function trans(?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null, ?callable $escaper = null): string
+    public function trans(?string $id, array $parameters = [], string $domain = null, string $locale = null, callable $escaper = null): string
     {
         if ($id === null || $id === '') {
             return '';
@@ -47,7 +44,7 @@ class Translator implements TranslatorInterface, LocaleAwareInterface, Translato
 
         foreach ($parameters as $key => $value) {
             // Needs to be kept as-is. The MessageFormatter will handle this.
-            if ($value instanceof DateTimeInterface) {
+            if ($value instanceof \DateTimeInterface) {
                 continue;
             }
 
@@ -80,7 +77,7 @@ class Translator implements TranslatorInterface, LocaleAwareInterface, Translato
      *
      * @internal
      */
-    public static function escape(mixed $value): string | int | float
+    public static function escape(mixed $value): float | int | string
     {
         if (\is_float($value) || \is_int($value)) {
             return $value;
@@ -110,7 +107,7 @@ class Translator implements TranslatorInterface, LocaleAwareInterface, Translato
         $this->wrappedTranslator->setLocale($locale);
     }
 
-    public function getCatalogue(?string $locale = null): MessageCatalogueInterface
+    public function getCatalogue(string $locale = null): MessageCatalogueInterface
     {
         return $this->wrappedTranslator->getCatalogue($locale);
     }

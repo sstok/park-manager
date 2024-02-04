@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\User;
 
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Command\User\ConfirmEmailAddressChange;
 use ParkManager\Application\Command\User\ConfirmEmailAddressChangeHandler;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Domain\User\User;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
@@ -25,13 +25,15 @@ use Rollerworks\Component\SplitToken\SplitToken;
  */
 final class ConfirmEmailAddressChangeHandlerTest extends TestCase
 {
+    private FakeSplitTokenFactory $splitTokenFactory;
     private SplitToken $fullToken;
     private SplitToken $token;
 
     protected function setUp(): void
     {
-        $this->fullToken = FakeSplitTokenFactory::instance()->generate();
-        $this->token = FakeSplitTokenFactory::instance()->fromString($this->fullToken->token()->getString());
+        $this->splitTokenFactory = new FakeSplitTokenFactory();
+        $this->fullToken = $this->splitTokenFactory->generate();
+        $this->token = $this->splitTokenFactory->fromString($this->fullToken->token()->getString());
     }
 
     /** @test */
@@ -63,7 +65,7 @@ final class ConfirmEmailAddressChangeHandlerTest extends TestCase
         $handler = new ConfirmEmailAddressChangeHandler($repository);
 
         try {
-            $invalidToken = FakeSplitTokenFactory::instance()->fromString(FakeSplitTokenFactory::SELECTOR . str_rot13(FakeSplitTokenFactory::VERIFIER));
+            $invalidToken = $this->splitTokenFactory->fromString(FakeSplitTokenFactory::SELECTOR . str_rot13(FakeSplitTokenFactory::VERIFIER));
             $handler(new ConfirmEmailAddressChange($invalidToken));
 
             self::fail('Exception was expected.');
@@ -87,7 +89,7 @@ final class ConfirmEmailAddressChangeHandlerTest extends TestCase
         $handler = new ConfirmEmailAddressChangeHandler($repository);
 
         try {
-            $handler(new ConfirmEmailAddressChange(FakeSplitTokenFactory::instance('nananananananannnannanananannananna-batman')->generate()));
+            $handler(new ConfirmEmailAddressChange((new FakeSplitTokenFactory('nananananananannnannanananannananna-batman'))->generate()));
 
             self::fail('Exception was expected.');
         } catch (EmailChangeConfirmationRejected) {

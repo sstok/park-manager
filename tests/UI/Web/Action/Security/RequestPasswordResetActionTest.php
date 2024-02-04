@@ -28,19 +28,21 @@ final class RequestPasswordResetActionTest extends WebTestCase
         $client = self::createClient([], ['HTTPS' => true]);
 
         $crawler = $client->request('GET', '/password-reset');
+        self::assertResponseIsSuccessful();
+
         $form = $crawler->selectButton('submit')->form();
         $form['request_user_password_reset[email]'] = 'jane@example.com';
 
         $client->submit($form);
 
+        self::assertResponseRedirects();
         self::assertEmailCount(1);
-        $email = self::getMailerMessage(0);
 
+        $email = self::getMailerMessage(0);
         self::assertEmailHeaderSame($email, 'To', 'jane@example.com');
         self::assertEmailTextBodyContains($email, 'To reset your password');
 
         $client->followRedirect();
-
         self::assertResponseIsSuccessful();
         self::assertRouteSame('park_manager.security_login');
         self::assertSelectorTranslatedTextContains('body div', 'flash.password_reset_send');
@@ -52,13 +54,16 @@ final class RequestPasswordResetActionTest extends WebTestCase
         $client = self::createClient([], ['HTTPS' => true]);
 
         $crawler = $client->request('GET', '/password-reset');
+        self::assertResponseIsSuccessful();
+
         $form = $crawler->selectButton('submit')->form();
         $form['request_user_password_reset[email]'] = 'ronet@example.com';
         $client->submit($form);
 
+        self::assertResponseRedirects();
         self::assertEmailCount(0);
-        $client->followRedirect();
 
+        $client->followRedirect();
         self::assertResponseIsSuccessful();
         self::assertRouteSame('park_manager.security_login');
         self::assertSelectorTranslatedTextContains('body div', 'flash.password_reset_send');

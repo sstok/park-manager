@@ -10,9 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Translation\Formatter;
 
-use ParkManager\Application\Service\RepositoryLocator;
+use Lifthill\Component\ModelMapping\Mappings;
+use Lifthill\Component\ModelMapping\RepositoryLocator;
 use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\User\User;
+use ParkManager\Domain\User\UserId;
+use ParkManager\Domain\User\UserRepository;
 use ParkManager\Infrastructure\Service\EntityRenderer;
 use ParkManager\Infrastructure\Translation\Formatter\EntityLinkFormatter;
 use ParkManager\Infrastructure\Translation\Translator;
@@ -29,47 +32,53 @@ use Twig\Loader\ArrayLoader;
 final class EntityLinkFormatterTest extends TestCase
 {
     private Translator $translator;
+    private UserRepositoryMock $repository;
+    private EntityLinkFormatter $formatter;
 
     protected function setUp(): void
     {
         $this->translator = new Translator(new SfTranslator('en'), new Container());
+
+        $user = UserRepositoryMock::createUser();
+
+        $repositoryContainer = new Container();
+        $repositoryContainer->set(UserRepository::class, $this->repository = new UserRepositoryMock([$user]));
+
+        $repositoryLocator = new RepositoryLocator(
+            $repositoryContainer,
+            new Mappings(
+                idToEntity: [
+                    UserId::class => User::class,
+                ],
+                entityToRepository: [
+                    User::class => UserRepository::class,
+                ]
+            )
+        );
+
+        $entityRenderer = $this->getEntityRenderer();
+        $this->formatter = new EntityLinkFormatter($repositoryLocator, $entityRenderer);
     }
 
     /** @test */
     public function it_formats_an_entity_object(): void
     {
-        $user = UserRepositoryMock::createUser();
-
-        $repositoryContainer = new Container();
-        $repositoryContainer->set(User::class, new UserRepositoryMock([$user]));
-        $repositoryLocator = new RepositoryLocator($repositoryContainer, []);
-
-        $entityRenderer = $this->getEntityRenderer();
-
-        $formatter = new EntityLinkFormatter($repositoryLocator, $entityRenderer);
+        $user = $this->repository->get(UserId::fromString(UserRepositoryMock::USER_ID1));
 
         self::assertSame(
             '<a href="#dba1f6a0-3c5e-4cc2-9d10-2b8ddf3ce605">janE@example.com</a>',
-            $formatter->format(new EntityLink($user), 'en', static fn (): string => '', $this->translator)
+            $this->formatter->format(new EntityLink($user), 'en', static fn (): string => '', $this->translator)
         );
     }
 
     /** @test */
     public function it_formats_an_entity_id_object(): void
     {
-        $user = UserRepositoryMock::createUser();
-
-        $repositoryContainer = new Container();
-        $repositoryContainer->set(User::class, new UserRepositoryMock([$user]));
-        $repositoryLocator = new RepositoryLocator($repositoryContainer, []);
-
-        $entityRenderer = $this->getEntityRenderer();
-
-        $formatter = new EntityLinkFormatter($repositoryLocator, $entityRenderer);
+        $user = $this->repository->get(UserId::fromString(UserRepositoryMock::USER_ID1));
 
         self::assertSame(
             '<a href="#dba1f6a0-3c5e-4cc2-9d10-2b8ddf3ce605">janE@example.com</a>',
-            $formatter->format(new EntityLink($user->id), 'en', static fn (): string => '', $this->translator)
+            $this->formatter->format(new EntityLink($user->id), 'en', static fn (): string => '', $this->translator)
         );
     }
 

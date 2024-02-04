@@ -31,7 +31,7 @@ final class RequestPasswordResetAction extends AbstractController
             return $this->redirectToRoute('park_manager.security_login');
         }
 
-        $response = $this->renderForm('security/password_reset.html.twig', ['form' => $form]);
+        $response = $this->render('security/password_reset.html.twig', ['form' => $form]);
         $response->setPrivate();
         $response->setMaxAge(1);
 

@@ -10,7 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Validator\Constraints;
 
-use Attribute;
+use Rollerworks\Component\PdbValidator\Constraint\DomainNameRegistrable;
+use Rollerworks\Component\PdbValidator\Constraint\DomainNameSuffix;
 use Symfony\Component\Validator\Constraints\Compound;
 use Symfony\Component\Validator\Constraints\Hostname;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -20,7 +21,7 @@ use Symfony\Component\Validator\Constraints\Sequentially;
  * @Annotation
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
-#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 final class RegistrableDomainName extends Compound
 {
     /**

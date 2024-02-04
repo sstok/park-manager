@@ -10,10 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Security;
 
+use Lifthill\Bridge\Web\Form\Model\CommandDto;
+use Lifthill\Bridge\Web\Form\Type\HashedPasswordType;
+use Lifthill\Bridge\Web\Form\Type\MessageFormType;
 use ParkManager\Application\Command\User\ChangePassword;
 use ParkManager\Infrastructure\Security\SecurityUser;
-use ParkManager\UI\Web\Form\Model\CommandDto;
-use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -25,9 +26,7 @@ use function Sodium\memzero;
 
 final class ChangePasswordType extends AbstractType
 {
-    public function __construct(private PasswordHasherFactoryInterface $encoderFactory)
-    {
-    }
+    public function __construct(private PasswordHasherFactoryInterface $encoderFactory) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -53,8 +52,7 @@ final class ChangePasswordType extends AbstractType
 
                     return $hashed;
                 },
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -63,8 +61,7 @@ final class ChangePasswordType extends AbstractType
             ->setDefault('password_constraints', [])
             ->setDefault('empty_data', null)
             ->setDefault('command_factory', static fn (CommandDto $data, array $model) => new ChangePassword($model['id'], $data->fields['password']))
-            ->setAllowedTypes('password_constraints', [Constraint::class . '[]', Constraint::class])
-        ;
+            ->setAllowedTypes('password_constraints', [Constraint::class . '[]', Constraint::class]);
     }
 
     public function getBlockPrefix(): string

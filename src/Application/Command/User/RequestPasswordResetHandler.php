@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\User;
 
-use DateTimeImmutable;
 use ParkManager\Application\Mailer\User\PasswordResetMailer;
 use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\UserRepository;
@@ -26,8 +25,7 @@ final class RequestPasswordResetHandler
         private SplitTokenFactory $tokenFactory,
         private PasswordResetMailer $mailer,
         private int $tokenTTL = 3600
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestPasswordReset $command): void
     {
@@ -38,7 +36,7 @@ final class RequestPasswordResetHandler
         // It's still possible persistence may leak timing information
         // but leaking persistence timing is less risky.
         $splitToken = $this->tokenFactory->generate()->expireAt(
-            new DateTimeImmutable('+ ' . $this->tokenTTL . ' seconds')
+            new \DateTimeImmutable('+ ' . $this->tokenTTL . ' seconds')
         );
 
         try {

@@ -13,8 +13,7 @@ namespace ParkManager\Tests\Domain\User;
 use Assert\Assertion;
 use Assert\AssertionFailedException;
 use Assert\InvalidArgumentException;
-use DateTimeImmutable;
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
 use ParkManager\Domain\User\Exception\CannotDisableSuperAdministrator;
 use ParkManager\Domain\User\Exception\CannotMakeUserSuperAdmin;
@@ -36,7 +35,7 @@ final class UserTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->splitTokenFactory = FakeSplitTokenFactory::instance();
+        $this->splitTokenFactory = new FakeSplitTokenFactory();
     }
 
     /** @test */
@@ -146,14 +145,14 @@ final class UserTest extends TestCase
     /** @test */
     public function request_email_change(): void
     {
-        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $token = $this->createTimeLimitedSplitToken(new \DateTimeImmutable('+ 5 minutes UTC'));
         $user = $this->registerUser();
 
         self::assertTrue($user->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token));
         self::assertEquals(new EmailAddress('john@example.com'), $user->email);
     }
 
-    private function createTimeLimitedSplitToken(DateTimeImmutable $expiresAt): SplitToken
+    private function createTimeLimitedSplitToken(\DateTimeImmutable $expiresAt): SplitToken
     {
         return $this->splitTokenFactory->generate()->expireAt($expiresAt);
     }
@@ -161,7 +160,7 @@ final class UserTest extends TestCase
     /** @test */
     public function ignores_email_change_token_when_already_set_with_same_information(): void
     {
-        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $token = $this->createTimeLimitedSplitToken(new \DateTimeImmutable('+ 5 minutes UTC'));
         $user = $this->registerUser();
 
         self::assertTrue($user->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token));
@@ -171,7 +170,7 @@ final class UserTest extends TestCase
     /** @test */
     public function changes_email_when_confirmation_token_is_correct(): void
     {
-        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $token = $this->createTimeLimitedSplitToken(new \DateTimeImmutable('+ 5 minutes UTC'));
         $user = $this->registerUser();
         $user->requestEmailChange($email = new EmailAddress('Doh@example.com'), $token);
 
@@ -202,7 +201,7 @@ final class UserTest extends TestCase
     /** @test */
     public function rejects_email_change_confirmation_when_token_is_invalid(): void
     {
-        $correctToken = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $correctToken = $this->createTimeLimitedSplitToken(new \DateTimeImmutable('+ 5 minutes UTC'));
         $invalidToken = $this->generateSecondToken();
 
         $user = $this->registerUser();
@@ -218,13 +217,13 @@ final class UserTest extends TestCase
 
     private function generateSecondToken(): SplitToken
     {
-        return FakeSplitTokenFactory::instance(str_repeat('na', SplitToken::TOKEN_CHAR_LENGTH))->generate();
+        return (new FakeSplitTokenFactory(str_repeat('na', SplitToken::TOKEN_DATA_LENGTH / 2)))->generate();
     }
 
     /** @test */
     public function rejects_email_change_confirmation_when_token_was_not_set(): void
     {
-        $token = FakeSplitTokenFactory::instance()->generate();
+        $token = $this->splitTokenFactory->generate();
         $user = $this->registerUser();
 
         $this->assertEmailChangeThrowsRejected($user, $token);
@@ -303,7 +302,7 @@ final class UserTest extends TestCase
     /** @test */
     public function request_password_reset_confirmation_token(): void
     {
-        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $token = $this->createTimeLimitedSplitToken(new \DateTimeImmutable('+ 5 minutes UTC'));
         $user = $this->registerUser('pass-my-word');
 
         self::assertTrue($user->requestPasswordReset($token));
@@ -312,7 +311,7 @@ final class UserTest extends TestCase
     /** @test */
     public function reject_password_reset_confirmation_when_token_already_set_with_and_not_expired(): void
     {
-        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $token = $this->createTimeLimitedSplitToken(new \DateTimeImmutable('+ 5 minutes UTC'));
         $user = $this->registerUser('pass-my-word');
 
         self::assertTrue($user->requestPasswordReset($token));
@@ -322,7 +321,7 @@ final class UserTest extends TestCase
     /** @test */
     public function changes_password_when_token_is_correct(): void
     {
-        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $token = $this->createTimeLimitedSplitToken(new \DateTimeImmutable('+ 5 minutes UTC'));
         $user = $this->registerUser('pass-my-word');
         $user->requestPasswordReset($token);
 
@@ -335,7 +334,7 @@ final class UserTest extends TestCase
     /** @test */
     public function password_reset_is_rejected_for_invalid_token(): void
     {
-        $correctToken = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $correctToken = $this->createTimeLimitedSplitToken(new \DateTimeImmutable('+ 5 minutes UTC'));
         $invalidToken = $this->generateSecondToken();
 
         $user = $this->registerUser('pass-my-word');
@@ -361,7 +360,7 @@ final class UserTest extends TestCase
     /** @test */
     public function password_reset_is_rejected_when_password_reset_is_disabled(): void
     {
-        $correctToken = $this->createTimeLimitedSplitToken(new DateTimeImmutable('+ 5 minutes UTC'));
+        $correctToken = $this->createTimeLimitedSplitToken(new \DateTimeImmutable('+ 5 minutes UTC'));
 
         $user = $this->registerUser('pass-my-word');
         $user->preferences->disablePasswordReset();
@@ -380,7 +379,7 @@ final class UserTest extends TestCase
     /** @test */
     public function password_reset_is_rejected_when_token_has_expired(): void
     {
-        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('- 5 minutes UTC'));
+        $token = $this->createTimeLimitedSplitToken(new \DateTimeImmutable('- 5 minutes UTC'));
         $user = $this->registerUser('pass-my-word');
         $user->requestPasswordReset($token);
 
@@ -393,7 +392,7 @@ final class UserTest extends TestCase
     /** @test */
     public function password_reset_can_be_cleared(): void
     {
-        $token = $this->createTimeLimitedSplitToken(new DateTimeImmutable('- 5 minutes UTC'));
+        $token = $this->createTimeLimitedSplitToken(new \DateTimeImmutable('- 5 minutes UTC'));
         $user = $this->registerUser('pass-my-word');
         $user->requestPasswordReset($token);
 

@@ -13,7 +13,7 @@ namespace ParkManager\Domain\Webhosting\Constraint;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Embeddable;
 use Doctrine\ORM\Mapping\Embedded;
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 
 #[Embeddable]
 class Constraints
@@ -98,8 +98,7 @@ class Constraints
         return $this->setMonthlyTraffic($other->monthlyTraffic)
             ->setStorageSize($other->storageSize)
             ->setEmail($other->email)
-            ->setDatabase($other->database)
-        ;
+            ->setDatabase($other->database);
     }
 
     public function setEmail(EmailConstraints $email): self

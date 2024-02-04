@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\DomainName;
 
+use Lifthill\Bridge\Web\Form\Type\ConfirmationForm;
 use ParkManager\Application\Command\DomainName\RemoveDomainName;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\Translation\TranslatableMessage;
-use ParkManager\UI\Web\Form\Type\ConfirmationForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,6 +46,6 @@ final class RemoveDomainNameAction extends AbstractController
             return $this->redirectToRoute('park_manager.admin.list_domain_names', ['user' => $domainName->id->toString()]);
         }
 
-        return $this->renderForm('admin/user/remove.html.twig', ['form' => $form, 'domainName' => $domainName]);
+        return $this->render('admin/user/remove.html.twig', ['form' => $form, 'domainName' => $domainName]);
     }
 }

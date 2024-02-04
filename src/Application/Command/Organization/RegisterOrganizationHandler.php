@@ -19,8 +19,7 @@ final class RegisterOrganizationHandler
     public function __construct(
         private OrganizationRepository $organizationRepository,
         private UserRepository $userRepository
-    ) {
-    }
+    ) {}
 
     public function __invoke(RegisterOrganization $command): void
     {

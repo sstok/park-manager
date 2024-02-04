@@ -37,6 +37,6 @@ final class TransferWebhostingSpace extends AbstractController
             return $this->redirectToRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id]);
         }
 
-        return $this->renderForm('admin/webhosting/space/owner_transfer.html.twig', ['form' => $form, 'space' => $space]);
+        return $this->render('admin/webhosting/space/owner_transfer.html.twig', ['form' => $form, 'space' => $space]);
     }
 }

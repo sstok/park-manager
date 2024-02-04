@@ -10,11 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Organization\Exception;
 
-use DomainException;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Organization\OrganizationId;
-use ParkManager\Domain\ResultSet;
 
-final class CannotRemoveActiveOrganization extends DomainException
+final class CannotRemoveActiveOrganization extends \DomainException
 {
     /**
      * @param array<class-string, ResultSet<object>> $activeEntities organized as ["EntityName" => {ResultSet<EntityName>}]

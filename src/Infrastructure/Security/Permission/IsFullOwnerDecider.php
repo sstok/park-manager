@@ -10,30 +10,32 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Security\Permission;
 
+use Lifthill\Component\Permission\Permission;
+use Lifthill\Component\Permission\PermissionAccessManager;
+use Lifthill\Component\Permission\PermissionDecider;
 use ParkManager\Domain\Organization\AccessLevel;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\Organization\OrganizationRepository;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
-use ParkManager\Infrastructure\Security\Permission;
-use ParkManager\Infrastructure\Security\PermissionAccessManager;
-use ParkManager\Infrastructure\Security\PermissionDecider;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 final class IsFullOwnerDecider implements PermissionDecider
 {
     public function __construct(
         private OrganizationRepository $organizationRepository,
         private UserRepository $userRepository
-    ) {
-    }
+    ) {}
 
     /**
      * @param IsFullOwner $permission
      */
-    public function decide(Permission $permission, TokenInterface $token, SecurityUser $user, PermissionAccessManager $permissionAccess): int
+    public function decide(Permission $permission, TokenInterface $token, UserInterface $user, PermissionAccessManager $permissionAccess): int
     {
+        \assert($user instanceof SecurityUser);
+
         // Administrators have full access to entities that are "owned".
         if ($user->isAdmin()) {
             return PermissionDecider::DECIDE_ALLOW;

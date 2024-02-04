@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\DomainName\Exception;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Exception\NotFoundException;
 
 final class DomainNameNotFound extends NotFoundException

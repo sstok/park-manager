@@ -10,14 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Validator\Constraints;
 
-use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
-#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 final class DirectoryPath extends Constraint
 {
     public const INVALID_PATH = '50ebe2e5-b1c1-4e20-80d2-67003e2ded08';

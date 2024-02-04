@@ -10,23 +10,23 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\User;
 
+use Lifthill\Bridge\Web\Form\Type\ConfirmationForm;
 use ParkManager\Application\Command\User\DeleteRegistration;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\User\Exception\CannotRemoveActiveUser;
 use ParkManager\Domain\User\User;
 use ParkManager\Infrastructure\Service\EntityRenderer;
 use ParkManager\UI\Web\Form\RawFormError;
-use ParkManager\UI\Web\Form\Type\ConfirmationForm;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RemoveUserAction extends AbstractController
 {
-    #[Security("is_granted('ROLE_SUPER_ADMIN')")]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
     #[Route(path: '/user/{id}/remove', methods: ['GET', 'POST', 'HEAD'], name: 'park_manager.admin.remove_user')]
     public function __invoke(Request $request, User $id, EntityRenderer $entityRenderer): Response
     {
@@ -63,6 +63,6 @@ final class RemoveUserAction extends AbstractController
             return $this->redirectToRoute('park_manager.admin.list_users', ['user' => $id->id->toString()]);
         }
 
-        return $this->renderForm('admin/user/remove.html.twig', ['form' => $form, 'user' => $id]);
+        return $this->render('admin/user/remove.html.twig', ['form' => $form, 'user' => $id]);
     }
 }

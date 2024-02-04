@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Webhosting\Subdomain;
 
+use Lifthill\Bridge\Web\Form\Model\CommandDto;
 use ParkManager\Application\Command\Webhosting\SubDomain\EditSubDomain;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
-use ParkManager\Infrastructure\Validator\Constraints\X509CertificateBundle;
-use ParkManager\UI\Web\Form\Model\CommandDto;
+use Rollerworks\Component\X509Validator\Symfony\Constraint\X509CertificateBundle;
 use Symfony\Component\Form\Event\PostSetDataEvent;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;

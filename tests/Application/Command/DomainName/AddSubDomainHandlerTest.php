@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\DomainName;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Application\Command\Webhosting\SubDomain\AddSubDomain;
 use ParkManager\Application\Command\Webhosting\SubDomain\AddSubDomainHandler;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
@@ -167,8 +167,7 @@ final class AddSubDomainHandlerTest extends TestCase
                         -----END CERTIFICATE-----
                         CA,
                 ]
-            )
-        ;
+            );
 
         $this->handler->__invoke($command);
 

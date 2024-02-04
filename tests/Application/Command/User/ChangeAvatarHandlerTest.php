@@ -17,7 +17,6 @@ use ParkManager\Application\Command\User\ChangeAvatarHandler;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use PHPUnit\Framework\TestCase;
-use SplFileInfo;
 
 /**
  * @internal
@@ -32,7 +31,7 @@ final class ChangeAvatarHandlerTest extends TestCase
         $handler = new ChangeAvatarHandler($userRepository, $filesystem);
 
         $file = __DIR__ . '/../../../Fixtures/avatar-test-min.jpg';
-        $handler(new ChangeAvatar(UserId::fromString(UserRepositoryMock::USER_ID1), new SplFileInfo($file)));
+        $handler(new ChangeAvatar(UserId::fromString(UserRepositoryMock::USER_ID1), new \SplFileInfo($file)));
 
         self::assertTrue($filesystem->fileExists(UserRepositoryMock::USER_ID1 . '.jpg'));
         self::assertStringEqualsFile($file, $filesystem->read(UserRepositoryMock::USER_ID1 . '.jpg'));

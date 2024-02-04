@@ -14,9 +14,7 @@ use ParkManager\Domain\Webhosting\Ftp\FtpUserRepository;
 
 final class EnableFtpUserHandler
 {
-    public function __construct(private FtpUserRepository $repository)
-    {
-    }
+    public function __construct(private FtpUserRepository $repository) {}
 
     public function __invoke(EnableFtpUser $command): void
     {

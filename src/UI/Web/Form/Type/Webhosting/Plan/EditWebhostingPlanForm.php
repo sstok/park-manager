@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Webhosting\Plan;
 
+use Lifthill\Bridge\Web\Form\Model\CommandDto;
+use Lifthill\Bridge\Web\Form\Type\MessageFormType;
 use ParkManager\Application\Command\Webhosting\Constraint\UpdatePlan;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\UI\Web\Form\DataTransformer\LocalizedLabelCollectionTransformer;
-use ParkManager\UI\Web\Form\Model\CommandDto;
-use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\Webhosting\Constraint\WebhostingConstraintsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -52,8 +52,7 @@ final class EditWebhostingPlanForm extends AbstractType
                 'required' => false,
                 'label' => 'webhosting.plan.edit.sync_label',
                 'getter' => static fn (): bool => false, // Unmapped, but we still need the data.
-            ])
-        ;
+            ]);
 
         $builder->get('localized_labels')->addModelTransformer(new LocalizedLabelCollectionTransformer());
     }

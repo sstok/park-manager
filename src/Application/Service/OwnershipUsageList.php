@@ -10,9 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Service;
 
+use Lifthill\Component\Common\Application\CombinedResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\OwnerControlledRepository;
 use ParkManager\Domain\OwnerId;
-use ParkManager\Domain\ResultSet;
 
 final class OwnershipUsageList
 {
@@ -37,8 +38,7 @@ final class OwnershipUsageList
         foreach ($this->repositories as $repository) {
             // Ordering doesn't matter, so remove this to provide some Query optimization.
             $iterator = $repository->allFromOwner($id)
-                ->setOrdering(null, null)
-            ;
+                ->setOrdering(null, null);
 
             if ($iterator->getNbResults() > 0) {
                 return true;

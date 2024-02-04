@@ -21,9 +21,8 @@ final class AddFtpAccessRule
 {
     public function __construct(
         public AccessRuleId $id,
-        public SpaceId | FtpUserId $entity,
-        public IpRange | IpAddress $address,
+        public FtpUserId | SpaceId $entity,
+        public IpAddress | IpRange $address,
         public AccessRuleStrategy $strategy = AccessRuleStrategy::DENY,
-    ) {
-    }
+    ) {}
 }

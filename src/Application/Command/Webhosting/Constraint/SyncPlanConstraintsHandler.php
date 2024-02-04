@@ -20,8 +20,7 @@ final class SyncPlanConstraintsHandler
         private PlanRepository $planRepository,
         private SpaceRepository $spaceRepository,
         private MessageBusInterface $messageBus
-    ) {
-    }
+    ) {}
 
     public function __invoke(SyncPlanConstraints $command): void
     {

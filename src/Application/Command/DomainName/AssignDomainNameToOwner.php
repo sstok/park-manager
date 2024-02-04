@@ -15,9 +15,7 @@ use ParkManager\Domain\OwnerId;
 
 final class AssignDomainNameToOwner
 {
-    public function __construct(public DomainNameId $id, public OwnerId $owner)
-    {
-    }
+    public function __construct(public DomainNameId $id, public OwnerId $owner) {}
 
     public static function with(string $id, string $ownerId): self
     {

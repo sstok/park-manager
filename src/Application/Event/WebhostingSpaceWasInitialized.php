@@ -15,7 +15,5 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class WebhostingSpaceWasInitialized extends Event
 {
-    public function __construct(public SpaceId $id)
-    {
-    }
+    public function __construct(public SpaceId $id) {}
 }

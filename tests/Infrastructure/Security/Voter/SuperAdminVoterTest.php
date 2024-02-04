@@ -10,12 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Security\Voter;
 
-use Generator;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\Infrastructure\Security\Voter\SuperAdminVoter;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use stdClass;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\InMemoryUser as User;
@@ -34,11 +32,11 @@ final class SuperAdminVoterTest extends TestCase
         $voter = new SuperAdminVoter();
 
         self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, null, []));
-        self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, new stdClass(), []));
-        self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, new stdClass(), ['ACTION_NEW']));
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, new \stdClass(), []));
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, new \stdClass(), ['ACTION_NEW']));
     }
 
-    private function createToken(?object $user = null): TokenInterface
+    private function createToken(object $user = null): TokenInterface
     {
         $tokenProphecy = $this->prophesize(TokenInterface::class);
         $tokenProphecy->getUser()->willReturn($user);
@@ -48,7 +46,8 @@ final class SuperAdminVoterTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideAbstainedAccessFor
+     *
+     * @dataProvider provideIt_abstains_access_whenCases
      */
     public function it_abstains_access_when(object $user): void
     {
@@ -59,16 +58,13 @@ final class SuperAdminVoterTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array{0: SecurityUser|User}>
+     * @return \Generator<string, array{0: SecurityUser|User}>
      */
-    public function provideAbstainedAccessFor(): Generator
+    public static function provideIt_abstains_access_whenCases(): iterable
     {
         yield 'not a super admin' => [new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_ADMIN'])];
-
         yield 'not an admin' => [new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER'])];
-
         yield 'access not enabled' => [new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', false, ['ROLE_ADMIN', 'ROLE_SUPER_ADMIN'])];
-
         yield 'not of the right type' => [new User('hello', 'nope')];
     }
 }

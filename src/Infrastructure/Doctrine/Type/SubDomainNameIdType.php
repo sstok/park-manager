@@ -10,10 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine\Type;
 
+use Lifthill\Bridge\Doctrine\Attribute\DbalType;
+use Lifthill\Bridge\Doctrine\Type\DomainIdType;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 
+#[DbalType('park_manager_sub_domain_id')]
 final class SubDomainNameIdType extends DomainIdType
 {
-    public const NAME = 'park_manager_sub_domain_id';
-    public const OBJECT_CLASS = SubDomainNameId::class;
+    protected static function getIdClass(): string
+    {
+        return SubDomainNameId::class;
+    }
 }

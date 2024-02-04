@@ -11,13 +11,13 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Domain\ResultSet;
+use Lifthill\Bridge\Doctrine\OrmQueryBuilderResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\ScheduledTask\Exception\TaskNotFound;
 use ParkManager\Domain\Webhosting\ScheduledTask\ScheduledTaskRepository;
 use ParkManager\Domain\Webhosting\ScheduledTask\Task;
 use ParkManager\Domain\Webhosting\ScheduledTask\TaskId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @extends EntityRepository<Task>

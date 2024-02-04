@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type;
 
-use ParkManager\Infrastructure\Validator\Constraints\X509CertificateBundle;
-use ParkManager\Tests\UI\Web\Form\IsFormErrorsEqual;
+use Lifthill\Bridge\Web\Test\Form\IsFormErrorsEqual;
 use ParkManager\UI\Web\Form\Type\PEMCertificateType;
+use Rollerworks\Component\X509Validator\Symfony\Constraint\X509CertificateBundle;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormError;

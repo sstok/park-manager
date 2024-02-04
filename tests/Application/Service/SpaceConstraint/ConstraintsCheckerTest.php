@@ -10,13 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Service\SpaceConstraint;
 
-use Generator;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Service\SpaceConstraint\ConstraintsChecker;
-use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
 use ParkManager\Domain\Webhosting\Constraint\Exception\ConstraintExceeded;
@@ -138,6 +137,7 @@ final class ConstraintsCheckerTest extends TestCase
 
     /**
      * @test
+     *
      * @doesNotPerformAssertions
      */
     public function allows_new_addresses_when_amount_is_unlimited(): void
@@ -243,6 +243,7 @@ final class ConstraintsCheckerTest extends TestCase
 
     /**
      * @test
+     *
      * @doesNotPerformAssertions
      */
     public function allows_new_addresses_when_amount_is_not_reached_yet(): void
@@ -290,7 +291,8 @@ final class ConstraintsCheckerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideEmailConstraintRestrictions
+     *
+     * @dataProvider provideRestricts_new_addresses_constraints_are_reachedCases
      *
      * @param array<string, ByteSize>   $mailboxes
      * @param array<int|string, string> $forwards
@@ -319,9 +321,9 @@ final class ConstraintsCheckerTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array<int, mixed>>
+     * @return \Generator<string, array<int, mixed>>
      */
-    public function provideEmailConstraintRestrictions(): Generator
+    public static function provideRestricts_new_addresses_constraints_are_reachedCases(): iterable
     {
         yield 'mailbox amount exceeded with no forwards' => [
             [
@@ -446,7 +448,8 @@ final class ConstraintsCheckerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideEmailWebQuotaConstraintRestrictions
+     *
+     * @dataProvider provideRestricts_new_addresses_size_constraints_with_web_quotaCases
      *
      * @param array<string, ByteSize> $mailboxes
      */
@@ -469,9 +472,9 @@ final class ConstraintsCheckerTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array<int, mixed>>
+     * @return \Generator<string, array<int, mixed>>
      */
-    public function provideEmailWebQuotaConstraintRestrictions(): Generator
+    public static function provideRestricts_new_addresses_size_constraints_with_web_quotaCases(): iterable
     {
         // Total limit: 100 GB
         // Mailbox current storage 11 GB (10 + 1)
@@ -515,7 +518,8 @@ final class ConstraintsCheckerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideEmailResizeConstraintRestrictions
+     *
+     * @dataProvider provideMailbox_resize_constraintsCases
      */
     public function mailbox_resize_constraints(ByteSize $newSize, ?ByteSize $quota, ?ConstraintExceeded $exception): void
     {
@@ -548,9 +552,9 @@ final class ConstraintsCheckerTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array{0: ByteSize, 1: ByteSize|null, 2: ConstraintExceeded|null}>
+     * @return \Generator<string, array{0: ByteSize, 1: ByteSize|null, 2: ConstraintExceeded|null}>
      */
-    public function provideEmailResizeConstraintRestrictions(): Generator
+    public static function provideMailbox_resize_constraintsCases(): iterable
     {
         yield 'total space is used' => [
             new ByteSize(90, 'GiB'),
@@ -591,7 +595,8 @@ final class ConstraintsCheckerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideDiskResizeConstraintRestrictions
+     *
+     * @dataProvider provideDisk_resize_constraintsCases
      */
     public function disk_resize_constraints(ByteSize $newSize, ?ConstraintExceeded $exception): void
     {
@@ -609,9 +614,9 @@ final class ConstraintsCheckerTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array{0: ByteSize, 1: ConstraintExceeded|null}>
+     * @return \Generator<string, array{0: ByteSize, 1: ConstraintExceeded|null}>
      */
-    public function provideDiskResizeConstraintRestrictions(): Generator
+    public static function provideDisk_resize_constraintsCases(): iterable
     {
         yield 'requested size is less than current usage' => [
             new ByteSize(8, 'GiB'),

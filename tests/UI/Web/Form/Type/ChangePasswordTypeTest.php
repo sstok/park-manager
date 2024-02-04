@@ -10,11 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type;
 
-use Closure;
+use Lifthill\Bridge\Web\Form\Model\CommandDto;
+use Lifthill\Bridge\Web\Test\Form\MessageFormTestCase;
 use ParkManager\Tests\Form\TransformationFailureExtension;
-use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHasherFactory;
-use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\Security\ChangePasswordType;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeExtensionInterface;
@@ -57,7 +56,7 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
 
     protected function setUp(): void
     {
-        $this->commandHandler = static function (ChangeUserPassword $command): void { };
+        $this->commandHandler = static function (ChangeUserPassword $command): void {};
         $this->hasherFactory = new FakePasswordHasherFactory();
 
         parent::setUp();
@@ -125,7 +124,7 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
         self::assertNull($this->dispatchedCommand);
     }
 
-    private function getCommandBuilder(): Closure
+    private function getCommandBuilder(): \Closure
     {
         return static fn (CommandDto $data, array $model) => new ChangeUserPassword($model['id'], $data->fields['password']);
     }
@@ -134,7 +133,5 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
 /** @internal */
 final class ChangeUserPassword
 {
-    public function __construct(public string $id, public string $password)
-    {
-    }
+    public function __construct(public string $id, public string $password) {}
 }

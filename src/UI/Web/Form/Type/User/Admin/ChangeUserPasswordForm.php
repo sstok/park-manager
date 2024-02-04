@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\User\Admin;
 
+use Lifthill\Bridge\Web\Form\Model\CommandDto;
 use ParkManager\Application\Command\User\ChangePassword;
-use ParkManager\UI\Web\Form\Model\CommandDto;
 use ParkManager\UI\Web\Form\Type\Security\ChangePasswordType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\Application\Command\User;
 
 use ParkManager\Domain\User\UserId;
-use SplFileInfo;
 use Symfony\Component\Validator\Constraints\Image;
 
 final class ChangeAvatar
@@ -20,7 +19,6 @@ final class ChangeAvatar
         public UserId $id,
 
         #[Image(maxSize: '60kib', mimeTypes: ['image/jpeg'], maxWidth: 460, maxHeight: 460, detectCorrupted: true)]
-        public SplFileInfo $tempFile
-    ) {
-    }
+        public \SplFileInfo $tempFile
+    ) {}
 }

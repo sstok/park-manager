@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\Webhosting\Space;
 
-use Generator;
 use ParkManager\Domain\Webhosting\Space\Exception\InvalidStatus;
 use ParkManager\Domain\Webhosting\Space\SpaceSetupStatus;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +22,7 @@ final class SpaceSetupStatusTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider provideInvalidTransitions
+     * @dataProvider provideIt_validates_improper_transitionsCases
      */
     public function it_validates_improper_transitions(SpaceSetupStatus $current, SpaceSetupStatus $new, string $message): void
     {
@@ -33,9 +32,9 @@ final class SpaceSetupStatusTest extends TestCase
     }
 
     /**
-     * @return Generator<int, array{0: SpaceSetupStatus, 1: SpaceSetupStatus, 2: string}>
+     * @return \Generator<int, array{0: SpaceSetupStatus, 1: SpaceSetupStatus, 2: string}>
      */
-    public function provideInvalidTransitions(): Generator
+    public static function provideIt_validates_improper_transitionsCases(): iterable
     {
         yield [SpaceSetupStatus::READY, SpaceSetupStatus::ERROR, 'Cannot change status when already initialized.'];
         yield [SpaceSetupStatus::READY, SpaceSetupStatus::REINITIALIZED, 'Cannot change status when already initialized.'];
@@ -54,7 +53,7 @@ final class SpaceSetupStatusTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider provideValidTransitions
+     * @dataProvider provideIt_allows_proper_transitionsCases
      *
      * @doesNotPerformAssertions
      */
@@ -64,9 +63,9 @@ final class SpaceSetupStatusTest extends TestCase
     }
 
     /**
-     * @return Generator<int, array{0: SpaceSetupStatus, 1: SpaceSetupStatus}>
+     * @return \Generator<int, array{0: SpaceSetupStatus, 1: SpaceSetupStatus}>
      */
-    public function provideValidTransitions(): Generator
+    public static function provideIt_allows_proper_transitionsCases(): iterable
     {
         yield [SpaceSetupStatus::REINITIALIZED, SpaceSetupStatus::GETTING_INITIALIZED];
         yield [SpaceSetupStatus::GETTING_INITIALIZED, SpaceSetupStatus::READY];

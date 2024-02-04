@@ -15,9 +15,7 @@ use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 
 final class ExpireSpaceOnHandler
 {
-    public function __construct(private SpaceRepository $spaceRepository)
-    {
-    }
+    public function __construct(private SpaceRepository $spaceRepository) {}
 
     public function __invoke(ExpireSpaceOn $command): void
     {

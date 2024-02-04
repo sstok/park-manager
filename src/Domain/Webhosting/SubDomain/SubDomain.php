@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Lifthill\Component\Common\Domain\Attribute\Entity as DomainEntity;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
@@ -26,6 +27,7 @@ use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
 #[Entity]
 #[Table(name: 'sub_domain')]
 #[UniqueConstraint(name: 'sub_domain_uniq', columns: ['host_id', 'name_part'])]
+#[DomainEntity(idClass: SubDomainNameId::class)]
 class SubDomain
 {
     #[ManyToOne(targetEntity: Space::class)]

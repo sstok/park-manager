@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\Plan;
 
+use Lifthill\Bridge\Web\Form\Type\ConfirmationForm;
 use ParkManager\Application\Command\Webhosting\Constraint\RemovePlan;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Space\SpaceRepository;
-use ParkManager\UI\Web\Form\Type\ConfirmationForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +43,7 @@ final class RemoveWebhostingPlanAction extends AbstractController
             return $this->redirectToRoute('park_manager.admin.webhosting.plan.list', ['plan' => $plan->id->toString()]);
         }
 
-        return $this->renderForm('admin/webhosting/plan/remove.html.twig', ['form' => $form, 'plan' => $plan]);
+        return $this->render('admin/webhosting/plan/remove.html.twig', ['form' => $form, 'plan' => $plan]);
     }
 
     public static function getSubscribedServices(): array

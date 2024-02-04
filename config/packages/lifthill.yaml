@@ -1,0 +1,10 @@
+lifthill:
+    model_mappings:
+        '%kernel.project_dir%/src/Domain': 'ParkManager\Domain'
+
+    doctrine:
+        types_automapping:
+            '%kernel.project_dir%/src/Infrastructure/Doctrine/Type': 'ParkManager\Infrastructure\Doctrine\Type'
+
+    form:
+        default_message_bus: 'park_manager.command_bus'

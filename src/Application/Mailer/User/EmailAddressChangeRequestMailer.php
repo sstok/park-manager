@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Mailer\User;
 
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use Rollerworks\Component\SplitToken\SplitToken;
 
 interface EmailAddressChangeRequestMailer

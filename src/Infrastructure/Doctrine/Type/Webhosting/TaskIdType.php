@@ -10,11 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine\Type\Webhosting;
 
+use Lifthill\Bridge\Doctrine\Attribute\DbalType;
+use Lifthill\Bridge\Doctrine\Type\DomainIdType;
 use ParkManager\Domain\Webhosting\ScheduledTask\TaskId;
-use ParkManager\Infrastructure\Doctrine\Type\DomainIdType;
 
+#[DbalType('park_manager_scheduled_task_id')]
 final class TaskIdType extends DomainIdType
 {
-    public const NAME = 'park_manager_scheduled_task_id';
-    public const OBJECT_CLASS = TaskId::class;
+    protected static function getIdClass(): string
+    {
+        return TaskId::class;
+    }
 }

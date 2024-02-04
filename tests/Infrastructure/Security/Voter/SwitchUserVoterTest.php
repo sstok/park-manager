@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Security\Voter;
 
-use Generator;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\Infrastructure\Security\Voter\SwitchUserVoter;
 use PHPUnit\Framework\TestCase;
@@ -39,7 +38,7 @@ final class SwitchUserVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, $toSwitchUser, [true, SwitchUserVoter::CAN_SWITCH_USER]));
     }
 
-    private function createToken(?object $user = null): TokenInterface
+    private function createToken(object $user = null): TokenInterface
     {
         $tokenProphecy = $this->prophesize(TokenInterface::class);
         $tokenProphecy->getUser()->willReturn($user);
@@ -49,7 +48,8 @@ final class SwitchUserVoterTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideAbstainedAccessFor
+     *
+     * @dataProvider provideIt_abstains_access_whenCases
      */
     public function it_abstains_access_when(object $currentUser, mixed $subject): void
     {
@@ -60,9 +60,9 @@ final class SwitchUserVoterTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array{0: SecurityUser|User, 1: SecurityUser|User|null}>
+     * @return \Generator<string, array{0: SecurityUser|User, 1: SecurityUser|User|null}>
      */
-    public function provideAbstainedAccessFor(): Generator
+    public static function provideIt_abstains_access_whenCases(): iterable
     {
         $toSwitchUser = new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER']);
 
@@ -73,7 +73,8 @@ final class SwitchUserVoterTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideDeniedAccessFor
+     *
+     * @dataProvider provideIt_denies_access_whenCases
      */
     public function it_denies_access_when(object $currentUser, mixed $subject): void
     {
@@ -84,9 +85,9 @@ final class SwitchUserVoterTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array{0: SecurityUser|User, 1: SecurityUser|User}>
+     * @return \Generator<string, array{0: SecurityUser|User, 1: SecurityUser|User}>
      */
-    public function provideDeniedAccessFor(): Generator
+    public static function provideIt_denies_access_whenCases(): iterable
     {
         $toSwitchUser = new SecurityUser('e29e2caf-5fc8-4314-9ecd-fd29708b412b', 'Nope', true, ['ROLE_USER']);
 
@@ -97,7 +98,8 @@ final class SwitchUserVoterTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideIgnoredAttributes
+     *
+     * @dataProvider provideIt_abstains_access_when_different_attribute_is_usedCases
      */
     public function it_abstains_access_when_different_attribute_is_used(string $attribute): void
     {
@@ -110,9 +112,9 @@ final class SwitchUserVoterTest extends TestCase
     }
 
     /**
-     * @return Generator<int, array{0: string}>
+     * @return \Generator<int, array{0: string}>
      */
-    public function provideIgnoredAttributes(): Generator
+    public static function provideIt_abstains_access_when_different_attribute_is_usedCases(): iterable
     {
         yield [AuthenticatedVoter::IS_AUTHENTICATED_FULLY];
         yield [AuthenticatedVoter::IS_AUTHENTICATED_REMEMBERED];

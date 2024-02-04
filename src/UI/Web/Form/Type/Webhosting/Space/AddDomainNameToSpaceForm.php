@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Webhosting\Space;
 
+use Lifthill\Bridge\Web\Form\Type\DomainNamePairType;
+use Lifthill\Bridge\Web\Form\Type\MessageFormType;
 use ParkManager\Application\Command\DomainName\AddDomainNameToSpace;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\UI\Web\Form\Type\DomainNamePairType;
-use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,8 +29,7 @@ final class AddDomainNameToSpaceForm extends AbstractType
                 'label' => 'label.domain_name',
                 'error_bubbling' => false,
             ])
-            ->add('primary', CheckboxType::class, ['label' => 'primary', 'required' => false])
-        ;
+            ->add('primary', CheckboxType::class, ['label' => 'primary', 'required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -42,8 +41,7 @@ final class AddDomainNameToSpaceForm extends AbstractType
             ->setDefault(
                 'command_factory',
                 static fn (array $fields, FormInterface $form) => new AddDomainNameToSpace($fields['name'], $form->getConfig()->getOption('space'), $fields['primary'])
-            )
-        ;
+            );
     }
 
     public function getParent(): string

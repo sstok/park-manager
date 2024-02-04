@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Ftp\User;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Ftp\FtpUserId;
 use ParkManager\Infrastructure\Validator\Constraints\ValidUsername;
 use ParkManager\Infrastructure\Validator\Constraints\Webhosting\DomainNameOfSpace;
@@ -25,7 +25,6 @@ final class ChangeFtpUserUsername
         #[ValidUsername()]
         public string $username,
 
-        public DomainNameId | DomainNamePair | null $domainName = null,
-    ) {
-    }
+        public null | DomainNameId | DomainNamePair $domainName = null,
+    ) {}
 }

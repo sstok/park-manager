@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\User;
 
+use Lifthill\Bridge\Web\Form\Type\MessageFormType;
 use ParkManager\Application\Command\Administrator\RegisterAdministrator;
 use ParkManager\Application\Command\User\RegisterUser;
 use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
 use ParkManager\Domain\User\UserId;
-use ParkManager\UI\Web\Form\Type\MessageFormType;
 use ParkManager\UI\Web\Form\Type\Security\SecurityUserHashedPasswordType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -56,8 +56,7 @@ final class RegisterUserForm extends AbstractType
                     new Length(['min' => 6, 'max' => 20]), // this is a temporary password, but still should be relatively secure
                 ],
             ])
-            ->add('is_admin', CheckboxType::class, ['label' => 'label.is_admin', 'help' => 'help.is_admin', 'required' => false])
-        ;
+            ->add('is_admin', CheckboxType::class, ['label' => 'label.is_admin', 'help' => 'help.is_admin', 'required' => false]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -105,8 +104,7 @@ final class RegisterUserForm extends AbstractType
                         ];
                     },
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function getBlockPrefix(): string

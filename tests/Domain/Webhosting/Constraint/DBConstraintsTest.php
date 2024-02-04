@@ -10,8 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Domain\Webhosting\Constraint;
 
-use Generator;
-use ParkManager\Domain\ByteSize;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\DBConstraints;
 use PHPUnit\Framework\TestCase;
@@ -42,8 +41,7 @@ final class DBConstraintsTest extends TestCase
     public function its_equatable(): void
     {
         $constraints = (new DBConstraints())
-            ->setProvidedStorageSize(new ByteSize(12, 'GB'))
-        ;
+            ->setProvidedStorageSize(new ByteSize(12, 'GB'));
 
         $constraints2 = new DBConstraints([
             'providedStorageSize' => new ByteSize(12, 'GB'),
@@ -61,7 +59,8 @@ final class DBConstraintsTest extends TestCase
 
     /**
      * @test
-     * @dataProvider provideFields
+     *
+     * @dataProvider provideIts_changeableCases
      */
     public function its_changeable(string $field, mixed $value): void
     {
@@ -86,9 +85,9 @@ final class DBConstraintsTest extends TestCase
     }
 
     /**
-     * @return Generator<int, array{0: string, 1: mixed}>
+     * @return \Generator<int, array{0: string, 1: mixed}>
      */
-    public function provideFields(): Generator
+    public static function provideIts_changeableCases(): iterable
     {
         yield ['providedStorageSize', new ByteSize(22, 'GB')];
 

@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Webhosting\Constraint;
 
+use Lifthill\Bridge\Web\Form\Type\MessageFormType;
 use ParkManager\Domain\Webhosting\Constraint\Exception\ConstraintExceeded;
-use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -22,9 +22,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ConstrainedFormType extends AbstractType
 {
-    public function __construct(private TranslatorInterface $translator)
-    {
-    }
+    public function __construct(private TranslatorInterface $translator) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

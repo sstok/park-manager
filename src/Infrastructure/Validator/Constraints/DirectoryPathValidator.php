@@ -39,8 +39,7 @@ final class DirectoryPathValidator extends ConstraintValidator
                 ->setInvalidValue($value)
                 ->setParameter('{{ max }}', $this->formatValue(3096))
                 ->setCode(DirectoryPath::PATH_TO_LONG_ERROR)
-                ->addViolation()
-            ;
+                ->addViolation();
 
             return;
         }
@@ -54,8 +53,7 @@ final class DirectoryPathValidator extends ConstraintValidator
                     ->setParameter('{{ chunk }}', $this->formatValue($chunk))
                     ->setParameter('{{ max }}', $this->formatValue(255))
                     ->setCode(DirectoryPath::NAME_TO_LONG_ERROR)
-                    ->addViolation()
-                ;
+                    ->addViolation();
 
                 return;
             }
@@ -67,8 +65,7 @@ final class DirectoryPathValidator extends ConstraintValidator
                     ->setParameter('{{ value }}', $this->formatValue($value))
                     ->setParameter('{{ chunk }}', $this->formatValue($chunk))
                     ->setCode(DirectoryPath::INVALID_PATH)
-                    ->addViolation()
-                ;
+                    ->addViolation();
 
                 return;
             }

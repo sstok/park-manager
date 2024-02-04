@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
-use Closure;
-use ParkManager\Domain\DomainName\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Common\Test\MockRepository;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\OwnerId;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;
 use ParkManager\Domain\Webhosting\Space\Exception\CannotRemoveActiveWebhostingSpace;
@@ -22,7 +22,6 @@ use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Domain\Webhosting\Space\SpaceRepository;
-use ParkManager\Tests\Mock\Domain\MockRepository;
 use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;
 
 /** @internal */
@@ -69,7 +68,7 @@ final class SpaceRepositoryMock implements SpaceRepository
         $this->mockDoRemove($space);
     }
 
-    public static function createSpace(string $id = self::ID1, ?Owner $owner = null, ?Constraints $constraints = null, ?DomainNamePair $domainName = null): Space
+    public static function createSpace(string $id = self::ID1, Owner $owner = null, Constraints $constraints = null, DomainNamePair $domainName = null): Space
     {
         self::$adminOwner ??= (new OwnerRepositoryMock())->getAdminOrganization();
 
@@ -89,7 +88,7 @@ final class SpaceRepositoryMock implements SpaceRepository
     }
 
     /**
-     * @return array<string, string|Closure>
+     * @return array<string, string|\Closure>
      */
     protected function getFieldsIndexMultiMapping(): array
     {

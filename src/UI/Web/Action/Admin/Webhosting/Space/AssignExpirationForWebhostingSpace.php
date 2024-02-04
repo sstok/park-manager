@@ -50,6 +50,6 @@ final class AssignExpirationForWebhostingSpace extends AbstractController
             return $this->redirectToRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id]);
         }
 
-        return $this->renderForm('admin/webhosting/space/assign_expiration.html.twig', ['form' => $form, 'space' => $space]);
+        return $this->render('admin/webhosting/space/assign_expiration.html.twig', ['form' => $form, 'space' => $space]);
     }
 }

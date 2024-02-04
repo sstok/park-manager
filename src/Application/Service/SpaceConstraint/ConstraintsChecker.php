@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Service\SpaceConstraint;
 
+use Lifthill\Component\Common\Domain\Model\ByteSize;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Service\StorageUsage;
-use ParkManager\Domain\ByteSize;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Webhosting\Constraint\EmailConstraints;
 use ParkManager\Domain\Webhosting\Constraint\Exception\ConstraintExceeded;
 use ParkManager\Domain\Webhosting\Email\ForwardRepository as EmailForwardRepository;
@@ -29,8 +29,7 @@ class ConstraintsChecker
         private MailboxRepository $mailboxRepository,
         private EmailForwardRepository $emailForwardRepository,
         private StorageUsage $storageUsageRetriever
-    ) {
-    }
+    ) {}
 
     public function isStorageSizeReached(SpaceId $id): bool
     {

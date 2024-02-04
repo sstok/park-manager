@@ -10,13 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Validator\Constraints\Webhosting;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\ModelMapping\Mappings;
+use Lifthill\Component\ModelMapping\RepositoryLocator;
 use ParkManager\Application\Command\Webhosting\Ftp\User\ChangeFtpUserUsername;
-use ParkManager\Application\Service\RepositoryLocator;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Ftp\FtpUser;
 use ParkManager\Domain\Webhosting\Ftp\FtpUserId;
+use ParkManager\Domain\Webhosting\Ftp\FtpUserRepository;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Infrastructure\Validator\Constraints\Webhosting\DomainNameOfSpace;
 use ParkManager\Infrastructure\Validator\Constraints\Webhosting\DomainNameOfSpaceValidator;
@@ -64,7 +66,7 @@ final class DomainNameOfSpaceValidatorTest extends ConstraintValidatorTestCase
         $this->spaceRepository->resetRecordingState();
 
         $container = new Container();
-        $container->set(FtpUser::class, new FtpUserRepositoryMock([
+        $container->set(FtpUserRepository::class, new FtpUserRepositoryMock([
             new FtpUser(FtpUserId::fromString(self::USER_ID1), $space1, 'user1', 'do not trust', $domainName1),
             new FtpUser(FtpUserId::fromString(self::USER_ID2), $space2, 'user1', 'do not trust', $domainName2),
         ]));
@@ -72,7 +74,17 @@ final class DomainNameOfSpaceValidatorTest extends ConstraintValidatorTestCase
         return new DomainNameOfSpaceValidator(
             $this->domainNameRepository,
             $this->spaceRepository,
-            new RepositoryLocator($container),
+            new RepositoryLocator(
+                $container,
+                new Mappings(
+                    idToEntity: [
+                        FtpUserId::class => FtpUser::class,
+                    ],
+                    entityToRepository: [
+                        FtpUser::class => FtpUserRepository::class,
+                    ]
+                )
+            ),
         );
     }
 
@@ -167,8 +179,7 @@ final class DomainNameOfSpaceValidatorTest extends ConstraintValidatorTestCase
             ->atPath('property.path.' . $constraint->domainProperty)
             ->setParameter('{ domain_name }', 'example2.net')
             ->setInvalidValue($command)
-            ->assertRaised()
-        ;
+            ->assertRaised();
     }
 
     /** @test */
@@ -186,7 +197,6 @@ final class DomainNameOfSpaceValidatorTest extends ConstraintValidatorTestCase
             ->atPath('property.path.' . $constraint->domainProperty)
             ->setParameter('{ domain_name }', 'example2.net')
             ->setInvalidValue($command)
-            ->assertRaised()
-        ;
+            ->assertRaised();
     }
 }

@@ -10,6 +10,4 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\SubDomain;
 
-final class AddSubDomain extends SubDomainCommand
-{
-}
+final class AddSubDomain extends SubDomainCommand {}

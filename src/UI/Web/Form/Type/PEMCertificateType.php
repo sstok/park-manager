@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type;
 
-use ParkManager\Infrastructure\Validator\Constraints\X509CertificateBundle;
+use Rollerworks\Component\X509Validator\Symfony\Constraint\X509CertificateBundle;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -24,7 +24,6 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Sequentially;
-use Traversable;
 
 /**
  * A PEM X.509 file-upload for a Certificate, with (optional) private-key and CA list.
@@ -75,17 +74,17 @@ final class PEMCertificateType extends AbstractType implements DataMapperInterfa
     }
 
     /**
-     * @param Traversable<FormInterface> $forms
+     * @param \Traversable<FormInterface> $forms
      */
-    public function mapDataToForms($viewData, Traversable $forms): void
+    public function mapDataToForms($viewData, \Traversable $forms): void
     {
         // No-op. Fields are empty by default.
     }
 
     /**
-     * @param Traversable<FormInterface> $forms
+     * @param \Traversable<FormInterface> $forms
      */
-    public function mapFormsToData(Traversable $forms, &$viewData): void
+    public function mapFormsToData(\Traversable $forms, &$viewData): void
     {
         /** @var FormInterface[] $fields */
         $fields = iterator_to_array($forms);

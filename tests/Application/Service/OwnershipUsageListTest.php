@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Service;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Application\Service\OwnershipUsageList;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Owner;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\UserRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
@@ -83,7 +83,7 @@ final class OwnershipUsageListTest extends TestCase
      *
      * @return array<int, object>|array<string, array<int, object>>
      */
-    private static function getEntities(ResultSet | array $resultSet): array
+    private static function getEntities(array | ResultSet $resultSet): array
     {
         if (\is_array($resultSet)) {
             $entities = [];

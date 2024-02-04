@@ -38,6 +38,6 @@ final class EditDomainName extends AbstractController
             return $this->redirectToRoute('park_manager.admin.list_domain_names');
         }
 
-        return $this->renderForm('admin/domain_name/edit.html.twig', ['form' => $form, 'domainName' => $domainName]);
+        return $this->render('admin/domain_name/edit.html.twig', ['form' => $form, 'domainName' => $domainName]);
     }
 }

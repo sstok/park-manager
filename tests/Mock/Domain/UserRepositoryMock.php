@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain;
 
-use Closure;
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
+use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Common\Test\MockRepository;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\User\Exception\EmailChangeConfirmationRejected;
 use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\User;
@@ -28,7 +28,7 @@ final class UserRepositoryMock implements UserRepository
     public const USER_ID1 = 'dba1f6a0-3c5e-4cc2-9d10-2b8ddf3ce605';
 
     /**
-     * @return array<string, string|Closure>
+     * @return array<string, string|\Closure>
      */
     protected function getFieldsIndexMapping(): array
     {

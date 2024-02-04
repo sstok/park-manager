@@ -19,12 +19,14 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Lifthill\Component\Common\Domain\Attribute\Entity as DomainEntity;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\Webhosting\Space\Space;
 
 #[Entity]
 #[Table(name: 'ftp_user')]
 #[UniqueConstraint(name: 'ftp_username', columns: ['space_domain_name_id', 'username'])]
+#[DomainEntity]
 class FtpUser
 {
     #[Column(type: 'boolean')]
@@ -69,7 +71,7 @@ class FtpUser
         );
     }
 
-    public function changeUsername(string $username, ?DomainName $domainName = null): void
+    public function changeUsername(string $username, DomainName $domainName = null): void
     {
         $domainName ??= $this->domainName;
 

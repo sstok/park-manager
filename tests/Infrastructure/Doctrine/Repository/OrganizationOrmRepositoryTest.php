@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Doctrine\Repository;
 
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\Organization\Organization;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\User\User;

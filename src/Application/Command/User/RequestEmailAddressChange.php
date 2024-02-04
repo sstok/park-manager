@@ -10,14 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\User;
 
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\User\UserId;
 
 final class RequestEmailAddressChange
 {
-    public function __construct(public UserId $id, public EmailAddress $email)
-    {
-    }
+    public function __construct(public UserId $id, public EmailAddress $email) {}
 
     public static function with(string $id, string $email): self
     {

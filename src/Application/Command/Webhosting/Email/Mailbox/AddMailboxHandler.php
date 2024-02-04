@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Email\Mailbox;
 
-use ParkManager\Application\Service\PasswordHasher;
+use Lifthill\Component\Common\Application\PasswordHasher;
 use ParkManager\Application\Service\SpaceConstraint\ConstraintsChecker;
 use ParkManager\Application\Service\SystemGateway;
 use ParkManager\Application\Service\SystemGateway\Webhosting\CreateMailbox;
@@ -32,8 +32,7 @@ final class AddMailboxHandler
         private ConstraintsChecker $constraintsChecker,
         private PasswordHasher $passwordHasher,
         private SystemGateway $systemGateway,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws ConstraintExceeded

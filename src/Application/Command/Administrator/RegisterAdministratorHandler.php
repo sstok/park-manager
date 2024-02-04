@@ -26,8 +26,7 @@ final class RegisterAdministratorHandler
         private UserRepository $repository,
         private OwnerRepository $ownerRepository,
         private OrganizationRepository $organizationRepository
-    ) {
-    }
+    ) {}
 
     public function __invoke(RegisterAdministrator $command): void
     {

@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Infrastructure\Security\Permission;
 
+use Lifthill\Component\Permission\PermissionAccessManager;
+use Lifthill\Component\Permission\PermissionDecider;
 use ParkManager\Domain\Organization\Organization;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\Owner;
@@ -17,8 +19,6 @@ use ParkManager\Domain\OwnerId;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Infrastructure\Security\Permission\IsFullOwner;
 use ParkManager\Infrastructure\Security\Permission\IsFullOwnerDecider;
-use ParkManager\Infrastructure\Security\PermissionAccessManager;
-use ParkManager\Infrastructure\Security\PermissionDecider;
 use ParkManager\Infrastructure\Security\SecurityUser;
 use ParkManager\Tests\Mock\Domain\Organization\OrganizationRepositoryMock;
 use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;

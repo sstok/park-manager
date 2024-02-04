@@ -16,9 +16,7 @@ use ParkManager\Domain\Webhosting\SubDomain\SubDomainRepository;
 
 final class DeactivateSubDomainHandler
 {
-    public function __construct(private SubDomainRepository $subDomainRepository)
-    {
-    }
+    public function __construct(private SubDomainRepository $subDomainRepository) {}
 
     public function __invoke(DeactivateSubDomain $command): void
     {

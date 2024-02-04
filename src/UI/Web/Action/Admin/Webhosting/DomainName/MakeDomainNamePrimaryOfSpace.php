@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Admin\Webhosting\DomainName;
 
+use Lifthill\Bridge\Web\Form\Type\ConfirmationForm;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToSpace;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceBeingRemoved;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\UI\Web\Form\Type\ConfirmationForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,7 +55,7 @@ final class MakeDomainNamePrimaryOfSpace extends AbstractController
             return $this->redirectToRoute('park_manager.admin.webhosting.space.list_domain_names', ['space' => $space->id]);
         }
 
-        return $this->renderForm('admin/webhosting/domain_name/make_primary.html.twig', [
+        return $this->render('admin/webhosting/domain_name/make_primary.html.twig', [
             'form' => $form,
             'domainName' => $domainName,
             'space' => $space,

@@ -10,14 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\User\Exception;
 
-use InvalidArgumentException;
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\Exception\DomainError;
 use ParkManager\Domain\Translation\EntityLink;
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\User\UserId;
 
-final class EmailAddressAlreadyInUse extends InvalidArgumentException implements DomainError
+final class EmailAddressAlreadyInUse extends \InvalidArgumentException implements DomainError
 {
     public UserId $id;
     public EmailAddress $address;

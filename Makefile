@@ -74,7 +74,7 @@ db-fixtures:
 	bin/console doctrine:database:drop --force || true
 	bin/console doctrine:database:create
 	bin/console doctrine:schema:validate || true
-	bin/console doctrine:schema:update --force
+	bin/console doctrine:schema:update --force --complete
 	bin/console doctrine:fixtures:load --no-interaction
 
 in-docker-phpunit:

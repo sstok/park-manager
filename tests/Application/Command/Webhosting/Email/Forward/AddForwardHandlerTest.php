@@ -10,14 +10,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\Webhosting\Email\Forward;
 
+use Lifthill\Component\Common\Domain\Model\ByteSize;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Command\Webhosting\Email\Forward\AddForward;
 use ParkManager\Application\Command\Webhosting\Email\Forward\AddForwardHandler;
 use ParkManager\Application\Service\SpaceConstraint\ConstraintsChecker;
-use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Webhosting\Email\Exception\AddressAlreadyExists;
 use ParkManager\Domain\Webhosting\Email\Forward;
 use ParkManager\Domain\Webhosting\Email\ForwardId;

@@ -10,11 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine\Type\Webhosting;
 
+use Lifthill\Bridge\Doctrine\Attribute\DbalType;
+use Lifthill\Bridge\Doctrine\Type\DomainIdType;
 use ParkManager\Domain\Webhosting\Ftp\FtpUserId;
-use ParkManager\Infrastructure\Doctrine\Type\DomainIdType;
 
+#[DbalType('park_manager_ftp_user_id')]
 final class FtpUserIdType extends DomainIdType
 {
-    public const NAME = 'park_manager_ftp_user_id';
-    public const OBJECT_CLASS = FtpUserId::class;
+    protected static function getIdClass(): string
+    {
+        return FtpUserId::class;
+    }
 }

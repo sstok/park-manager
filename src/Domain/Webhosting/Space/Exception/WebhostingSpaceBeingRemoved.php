@@ -10,12 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Space\Exception;
 
-use ParkManager\Domain\DomainName\DomainNamePair;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\Exception\DomainError;
 use ParkManager\Domain\Translation\TranslatableMessage;
-use RuntimeException;
 
-final class WebhostingSpaceBeingRemoved extends RuntimeException implements DomainError
+final class WebhostingSpaceBeingRemoved extends \RuntimeException implements DomainError
 {
     public function __construct(public DomainNamePair $name)
     {

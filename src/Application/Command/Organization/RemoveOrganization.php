@@ -14,7 +14,5 @@ use ParkManager\Domain\Organization\OrganizationId;
 
 final class RemoveOrganization
 {
-    public function __construct(public OrganizationId $id)
-    {
-    }
+    public function __construct(public OrganizationId $id) {}
 }

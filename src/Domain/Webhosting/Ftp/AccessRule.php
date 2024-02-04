@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use IPLib\Address\AddressInterface as IpAddress;
 use IPLib\Range\RangeInterface as IpRange;
+use Lifthill\Component\Common\Domain\Attribute\Entity as DomainEntity;
 use ParkManager\Domain\Webhosting\Space\Space;
 
 /**
@@ -33,6 +34,7 @@ use ParkManager\Domain\Webhosting\Space\Space;
  */
 #[Entity]
 #[Table(name: 'ftp_access_rule')]
+#[DomainEntity]
 class AccessRule
 {
     #[Column(type: 'boolean')]
@@ -61,19 +63,18 @@ class AccessRule
          * Either a single IP(v4 or v6) address or a CIDR subnet range.
          */
         #[Column(name: 'ip_address', type: 'cidr')]
-        public IpRange | IpAddress $address,
+        public IpAddress | IpRange $address,
 
         #[Column(name: 'strategy', enumType: AccessRuleStrategy::class)]
         public AccessRuleStrategy $strategy,
-    ) {
-    }
+    ) {}
 
-    public static function createForSpace(AccessRuleId $id, Space $space, IpRange | IpAddress $address, AccessRuleStrategy $strategy = AccessRuleStrategy::DENY): self
+    public static function createForSpace(AccessRuleId $id, Space $space, IpAddress | IpRange $address, AccessRuleStrategy $strategy = AccessRuleStrategy::DENY): self
     {
         return new self($id, $space, null, $address, $strategy);
     }
 
-    public static function createForUser(AccessRuleId $id, FtpUser $user, IpRange | IpAddress $address, AccessRuleStrategy $strategy = AccessRuleStrategy::DENY): self
+    public static function createForUser(AccessRuleId $id, FtpUser $user, IpAddress | IpRange $address, AccessRuleStrategy $strategy = AccessRuleStrategy::DENY): self
     {
         return new self($id, $user->space, $user, $address, $strategy);
     }

@@ -39,7 +39,7 @@ final class EditWebhostingPlan extends AbstractController
             return $this->redirectToRoute('park_manager.admin.webhosting.plan.show', ['plan' => $plan->id->toString()]);
         }
 
-        return $this->renderForm('admin/webhosting/plan/edit.html.twig', [
+        return $this->render('admin/webhosting/plan/edit.html.twig', [
             'form' => $form,
             'plan' => $plan,
             'spaces_count' => $usedBySpacesNb,

@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Email\Mailbox;
 
-use ParkManager\Application\Service\PasswordHasher;
+use Lifthill\Component\Common\Application\PasswordHasher;
 use ParkManager\Domain\Webhosting\Email\MailboxRepository;
 
 final class ChangeMailboxPasswordHandler
@@ -18,8 +18,7 @@ final class ChangeMailboxPasswordHandler
     public function __construct(
         private MailboxRepository $repository,
         private PasswordHasher $passwordHasher,
-    ) {
-    }
+    ) {}
 
     public function __invoke(ChangeMailboxPassword $command): void
     {

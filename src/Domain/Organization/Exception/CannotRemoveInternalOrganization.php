@@ -19,7 +19,7 @@ final class CannotRemoveInternalOrganization extends InvalidArgument
 {
     private function __construct(string $message, public OrganizationId $id)
     {
-        parent::__construct($message, 404);
+        parent::__construct($message);
     }
 
     public static function withId(OrganizationId $id): self

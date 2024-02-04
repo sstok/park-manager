@@ -14,7 +14,5 @@ use ParkManager\Domain\Webhosting\Email\MailboxId;
 
 final class ActivateMailbox
 {
-    public function __construct(public MailboxId $id)
-    {
-    }
+    public function __construct(public MailboxId $id) {}
 }

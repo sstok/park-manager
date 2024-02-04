@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\DomainName;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToSpace;
 use ParkManager\Application\Command\DomainName\AssignDomainNameToSpaceHandler;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\OwnerRepositoryMock;

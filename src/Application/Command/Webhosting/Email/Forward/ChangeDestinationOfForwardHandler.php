@@ -10,14 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\Webhosting\Email\Forward;
 
-use ParkManager\Domain\EmailAddress;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\Webhosting\Email\ForwardRepository;
 
 final class ChangeDestinationOfForwardHandler
 {
-    public function __construct(private ForwardRepository $forwardRepository)
-    {
-    }
+    public function __construct(private ForwardRepository $forwardRepository) {}
 
     public function __invoke(ChangeDestinationOfForward $command): void
     {

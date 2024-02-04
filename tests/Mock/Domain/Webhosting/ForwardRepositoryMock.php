@@ -10,16 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Webhosting;
 
-use Closure;
-use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Common\Test\MockRepository;
 use ParkManager\Domain\Webhosting\Email\Exception\AddressAlreadyExists;
 use ParkManager\Domain\Webhosting\Email\Exception\EmailForwardNotFound;
 use ParkManager\Domain\Webhosting\Email\Forward;
 use ParkManager\Domain\Webhosting\Email\ForwardId;
 use ParkManager\Domain\Webhosting\Email\ForwardRepository;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Tests\Mock\Domain\MockRepository;
 
 /** @internal */
 final class ForwardRepositoryMock implements ForwardRepository
@@ -30,7 +29,7 @@ final class ForwardRepositoryMock implements ForwardRepository
     public const ID1 = 'c0a358cb-cecb-4faa-b274-9b4f7e8294cc';
 
     /**
-     * @return array<string, string|Closure>
+     * @return array<string, string|\Closure>
      */
     protected function getFieldsIndexMapping(): array
     {
@@ -40,7 +39,7 @@ final class ForwardRepositoryMock implements ForwardRepository
     }
 
     /**
-     * @return array<string, string|Closure>
+     * @return array<string, string|\Closure>
      */
     protected function getFieldsIndexMultiMapping(): array
     {

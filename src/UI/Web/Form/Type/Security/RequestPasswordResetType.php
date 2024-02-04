@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Security;
 
+use Lifthill\Bridge\Web\Form\Type\MessageFormType;
 use ParkManager\Application\Command\User\RequestPasswordReset;
-use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,8 +27,7 @@ class RequestPasswordResetType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'label.email',
                 'constraints' => [new NotBlank(), new Email(['mode' => Email::VALIDATION_MODE_STRICT])],
-            ])
-        ;
+            ]);
     }
 
     public function getBlockPrefix(): string

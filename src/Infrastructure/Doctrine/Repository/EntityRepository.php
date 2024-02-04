@@ -10,26 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository as BaseEntityRepository;
+use Lifthill\Bridge\Doctrine\Repository\EntityRepository as BaseEntityRepository;
 
 /**
  * @template T of object
- * @template-extends BaseEntityRepository<T>
  *
- * @method ?T find($id, $lockMode = null, $lockVersion = null)
- * @method ?T findOneBy(array $criteria, array $orderBy = null)
+ * @template-extends BaseEntityRepository<T>
  */
 abstract class EntityRepository extends BaseEntityRepository
 {
-    /**
-     * @param class-string<T> $className The class name of the entity this repository manages
-     */
-    public function __construct(EntityManagerInterface $entityManager, string $className)
-    {
-        parent::__construct($entityManager, $entityManager->getMetadataFactory()->getMetadataFor($className));
-    }
-
     /**
      * @param T $entity
      */

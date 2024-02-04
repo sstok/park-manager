@@ -11,16 +11,14 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Service\Webhosting;
 
 use Doctrine\DBAL\Connection;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Application\Service\StorageUsage;
-use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Email\MailboxId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
 final class StorageUsageImpl implements StorageUsage
 {
-    public function __construct(private Connection $connection)
-    {
-    }
+    public function __construct(private Connection $connection) {}
 
     public function getDiskUsageOf(SpaceId $id): ByteSize
     {

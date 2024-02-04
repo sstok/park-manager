@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type\User;
 
+use Lifthill\Bridge\Web\Form\Extension\Domain\EmailTypeDomainValueExtension;
+use Lifthill\Bridge\Web\Test\Form\MessageFormTestCase;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Command\Administrator\RegisterAdministrator;
 use ParkManager\Application\Command\User\RegisterUser;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\UserId;
-use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHasherFactory;
-use ParkManager\UI\Web\Form\Type\EmailTypeDomainValueExtension;
 use ParkManager\UI\Web\Form\Type\Security\SecurityUserHashedPasswordType;
 use ParkManager\UI\Web\Form\Type\User\RegisterUserForm;
 use Symfony\Component\Form\FormTypeExtensionInterface;

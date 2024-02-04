@@ -10,9 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Action\Security;
 
+use ParkManager\Infrastructure\Mailer\TemplatedEmail;
 use ParkManager\Tests\WebTranslatedAssertionTrait;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @internal
@@ -33,7 +34,9 @@ final class ConfirmPasswordResetActionTest extends WebTestCase
         $email = self::getMailerMessage(0);
         \assert($email instanceof TemplatedEmail);
 
-        $client->request('GET', $email->getContext()['url']);
+        $client->request('GET', $email->getOriginalContext()['url']);
+        self::assertResponseIsSuccessful();
+
         $client->submitForm('submit', [
             'confirm_user_password_reset[password][password][first]' => 'H@ll0Wrld!ItsMo1#',
             'confirm_user_password_reset[password][password][second]' => 'H@ll0Wrld!ItsMo1#',
@@ -52,6 +55,7 @@ final class ConfirmPasswordResetActionTest extends WebTestCase
 
         $client->request('GET', '/password-reset/confirm/FooBangBar0100010101');
 
+        self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
         self::assertRouteSame('park_manager.security_confirm_password_reset');
         self::assertSelectorTranslatedTextContains('body div', 'password_reset.invalid_token', [], 'validators');
     }

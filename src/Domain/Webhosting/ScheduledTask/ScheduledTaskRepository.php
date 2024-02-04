@@ -10,10 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\ScheduledTask;
 
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\Attribute\Repository;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\ScheduledTask\Exception\TaskNotFound;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
+#[Repository(Task::class)]
 interface ScheduledTaskRepository
 {
     /**

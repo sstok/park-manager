@@ -11,7 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use ParkManager\Domain\ResultSet;
+use Lifthill\Bridge\Doctrine\OrmQueryBuilderResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Ftp\AccessRule;
 use ParkManager\Domain\Webhosting\Ftp\AccessRuleId;
 use ParkManager\Domain\Webhosting\Ftp\AccessRuleRepository;
@@ -19,7 +20,6 @@ use ParkManager\Domain\Webhosting\Ftp\AccessRuleStrategy;
 use ParkManager\Domain\Webhosting\Ftp\Exception\AccessRuleNotFound;
 use ParkManager\Domain\Webhosting\Ftp\FtpUserId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @extends EntityRepository<AccessRule>
@@ -42,7 +42,7 @@ final class FtpAccessRuleOrmRepository extends EntityRepository implements Acces
         return $rule;
     }
 
-    public function hasAnyAllow(SpaceId | FtpUserId $id): bool
+    public function hasAnyAllow(FtpUserId | SpaceId $id): bool
     {
         if ($id instanceof SpaceId) {
             $query = $this->createQueryBuilder('r')
@@ -51,8 +51,7 @@ final class FtpAccessRuleOrmRepository extends EntityRepository implements Acces
                 ->setMaxResults(1)
                 ->getQuery()
                 ->setParameter('space', $id->toString())
-                ->setParameter('strategy', AccessRuleStrategy::ALLOW)
-            ;
+                ->setParameter('strategy', AccessRuleStrategy::ALLOW);
 
             return ((int) $query->getSingleScalarResult()) > 0;
         }
@@ -63,8 +62,7 @@ final class FtpAccessRuleOrmRepository extends EntityRepository implements Acces
             ->setMaxResults(1)
             ->getQuery()
             ->setParameter('user', $id->toString())
-            ->setParameter('strategy', AccessRuleStrategy::ALLOW)
-        ;
+            ->setParameter('strategy', AccessRuleStrategy::ALLOW);
 
         return ((int) $query->getSingleScalarResult()) > 0;
     }

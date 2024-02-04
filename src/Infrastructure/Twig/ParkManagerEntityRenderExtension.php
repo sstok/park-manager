@@ -16,9 +16,7 @@ use Twig\TwigFunction;
 
 final class ParkManagerEntityRenderExtension extends AbstractExtension
 {
-    public function __construct(private EntityRenderer $entityRenderer)
-    {
-    }
+    public function __construct(private EntityRenderer $entityRenderer) {}
 
     public function getFunctions(): array
     {

@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Mailer\User;
 
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Mailer\User\EmailAddressChangeRequestMailer;
-use ParkManager\Domain\EmailAddress;
+use ParkManager\Infrastructure\Mailer\TemplatedEmail;
 use Rollerworks\Component\SplitToken\SplitToken;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as UrlGenerator;
 
@@ -22,8 +22,7 @@ final class EmailAddressChangeRequestMailerImp implements EmailAddressChangeRequ
     public function __construct(
         private MailerInterface $mailer,
         private UrlGenerator $urlGenerator
-    ) {
-    }
+    ) {}
 
     public function send(EmailAddress $newAddress, SplitToken $splitToken): void
     {
@@ -33,8 +32,7 @@ final class EmailAddressChangeRequestMailerImp implements EmailAddressChangeRequ
             ->context([
                 'url' => $this->urlGenerator->generate('park_manager.confirm_email_address_change', ['token' => $splitToken->token()], UrlGenerator::ABSOLUTE_URL),
                 'expiration_date' => $splitToken->getExpirationTime(),
-            ])
-        ;
+            ]);
 
         $this->mailer->send($email);
     }

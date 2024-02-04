@@ -13,9 +13,9 @@ namespace ParkManager\DataFixtures\ORM;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator as FakerGenerator;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Command\Administrator\RegisterAdministrator;
 use ParkManager\Application\Command\BatchCommand;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\Organization\Organization;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\Organization\OrganizationRepository;
@@ -34,8 +34,7 @@ final class AdminFixtures extends Fixture
         private FakerGenerator $faker,
         private OrganizationRepository $organizationRepository,
         private OwnerRepository $ownerRepository
-    ) {
-    }
+    ) {}
 
     public function load(ObjectManager $manager): void
     {

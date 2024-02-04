@@ -10,12 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\DomainName\Exception;
 
-use DomainException;
-use ParkManager\Domain\DomainName\DomainNamePair;
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
-abstract class UseDomainNameException extends DomainException
+abstract class UseDomainNameException extends \DomainException
 {
     public DomainNamePair $domainName;
     public SpaceId $current;

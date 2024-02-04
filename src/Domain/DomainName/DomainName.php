@@ -19,27 +19,29 @@ use Doctrine\ORM\Mapping\Index;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
+use Lifthill\Component\Common\Domain\Attribute\Entity as DomainEntity;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\DomainName\Exception\CannotAssignDomainNameWithDifferentOwner;
 use ParkManager\Domain\DomainName\Exception\CannotTransferPrimaryDomainName;
 use ParkManager\Domain\Owner;
 use ParkManager\Domain\TimestampableTrait;
 use ParkManager\Domain\Webhosting\Space\Space;
-use Stringable;
 
 #[Entity]
 #[Table(name: 'domain_name')]
 #[Index(fields: ['space', 'primary'], name: 'domain_name_primary_marking_idx')]
-class DomainName implements Stringable
+#[DomainEntity]
+class DomainName implements \Stringable
 {
     use TimestampableTrait;
 
     #[ManyToOne(targetEntity: Owner::class)]
     #[JoinColumn(name: 'owner', referencedColumnName: 'owner_id', nullable: true)]
-    public Owner | null $owner = null;
+    public null | Owner $owner = null;
 
     #[ManyToOne(targetEntity: Space::class)]
     #[JoinColumn(name: 'space', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    public Space | null $space = null;
+    public null | Space $space = null;
 
     #[Column(name: 'is_primary', type: 'boolean')]
     public bool $primary = false;
@@ -52,8 +54,7 @@ class DomainName implements Stringable
 
         #[ORM\Embedded(class: DomainNamePair::class, columnPrefix: 'domain_')]
         public DomainNamePair $namePair
-    ) {
-    }
+    ) {}
 
     public static function register(DomainNameId $id, DomainNamePair $domainName, Owner $owner): self
     {

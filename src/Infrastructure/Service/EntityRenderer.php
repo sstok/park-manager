@@ -10,8 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Service;
 
-use InvalidArgumentException;
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Twig\Environment as TwigEnvironment;
 
@@ -33,8 +32,7 @@ final class EntityRenderer
         private TwigEnvironment $twig,
         private LocaleAwareInterface $localeAware,
         private array $entityLabels = [],
-    ) {
-    }
+    ) {}
 
     /**
      * @param class-string $entityName
@@ -42,7 +40,7 @@ final class EntityRenderer
     public function getEntityLabel(string $entityName): string
     {
         if (! str_starts_with($entityName, 'ParkManager\\Domain\\')) {
-            throw new InvalidArgumentException(sprintf('Expected %s to begin with "ParkManager\\Domain\\"', $entityName));
+            throw new \InvalidArgumentException(sprintf('Expected %s to begin with "ParkManager\\Domain\\"', $entityName));
         }
 
         return $this->entityLabels[$entityName] ?? '[Unknown Entity class]';
@@ -54,7 +52,7 @@ final class EntityRenderer
      *
      * @param array<string, mixed> $extra Pass addition information to the template context
      */
-    public function short(object $entity, array $extra = [], ?string $locale = null, string $format = 'html'): string
+    public function short(object $entity, array $extra = [], string $locale = null, string $format = 'html'): string
     {
         return $this->renderTemplate($entity, $extra, $format, 'short', $locale);
     }
@@ -65,7 +63,7 @@ final class EntityRenderer
      *
      * @param array<string, mixed> $extra Pass addition information to the template context
      */
-    public function link(object $entity, array $extra = [], ?string $locale = null, string $format = 'html'): string
+    public function link(object $entity, array $extra = [], string $locale = null, string $format = 'html'): string
     {
         return $this->renderTemplate($entity, $extra, $format, 'link', $locale);
     }
@@ -108,7 +106,7 @@ final class EntityRenderer
      *
      * @param array<string, mixed> $extra Pass addition information to the template context
      */
-    public function detailed(object $entity, array $extra = [], ?string $locale = null, string $format = 'html'): string
+    public function detailed(object $entity, array $extra = [], string $locale = null, string $format = 'html'): string
     {
         return $this->renderTemplate($entity, $extra, $format, 'detailed', $locale);
     }
@@ -117,7 +115,7 @@ final class EntityRenderer
      * @param array<class-string, ResultSet<mixed>> $sets
      * @param array<string, mixed>                  $extra
      */
-    public function listedBySet(array $sets, array $extra = [], ?string $locale = null): string
+    public function listedBySet(array $sets, array $extra = [], string $locale = null): string
     {
         $currentLocale = $this->localeAware->getLocale();
         $renderedSets = [];
@@ -142,8 +140,7 @@ final class EntityRenderer
                     $resolveTemplate ??= $this->resolveTemplate($entity);
 
                     $renderedSets[$label][] = $this->twig->load(sprintf('entity_rendering/%s.%s.twig', $resolveTemplate, 'html'))
-                        ->renderBlock('short', ['entity' => $entity] + $extra)
-                    ;
+                        ->renderBlock('short', ['entity' => $entity] + $extra);
                 }
             }
 

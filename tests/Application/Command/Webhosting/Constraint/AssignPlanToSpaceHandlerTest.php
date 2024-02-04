@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\Webhosting\Constraint;
 
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Application\Command\Webhosting\Constraint\AssignPlanToSpace;
 use ParkManager\Application\Command\Webhosting\Constraint\AssignPlanToSpaceHandler;
-use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\Webhosting\Constraint\Constraints;
 use ParkManager\Domain\Webhosting\Constraint\Plan;
 use ParkManager\Domain\Webhosting\Constraint\PlanId;

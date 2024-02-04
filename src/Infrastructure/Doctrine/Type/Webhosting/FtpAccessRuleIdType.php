@@ -10,11 +10,15 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Doctrine\Type\Webhosting;
 
+use Lifthill\Bridge\Doctrine\Attribute\DbalType;
+use Lifthill\Bridge\Doctrine\Type\DomainIdType;
 use ParkManager\Domain\Webhosting\Ftp\AccessRuleId;
-use ParkManager\Infrastructure\Doctrine\Type\DomainIdType;
 
+#[DbalType('park_manager_ftp_access_rule_id')]
 final class FtpAccessRuleIdType extends DomainIdType
 {
-    public const NAME = 'park_manager_ftp_access_rule_id';
-    public const OBJECT_CLASS = AccessRuleId::class;
+    protected static function getIdClass(): string
+    {
+        return AccessRuleId::class;
+    }
 }

@@ -10,10 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Webhosting\Ftp;
 
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\Attribute\Repository;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Ftp\Exception\AccessRuleNotFound;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
 
+#[Repository]
 interface AccessRuleRepository
 {
     /**
@@ -30,7 +32,7 @@ interface AccessRuleRepository
      * When there is at least one enabled (per level) explicit allow-rule
      * all blocking rules are ignored.
      */
-    public function hasAnyAllow(SpaceId | FtpUserId $id): bool;
+    public function hasAnyAllow(FtpUserId | SpaceId $id): bool;
 
     /**
      * @return ResultSet<AccessRule>

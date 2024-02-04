@@ -10,19 +10,18 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\DomainName;
 
-use Closure;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
+use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Common\Test\MockRepoResultSet;
+use Lifthill\Component\Common\Test\MockRepository;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\DomainName\DomainNameRepository;
 use ParkManager\Domain\DomainName\Exception\CannotRemovePrimaryDomainName;
 use ParkManager\Domain\DomainName\Exception\DomainNameNotFound;
 use ParkManager\Domain\OwnerId;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\Exception\WebhostingSpaceNotFound;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
-use ParkManager\Tests\Mock\Domain\MockRepoResultSet;
-use ParkManager\Tests\Mock\Domain\MockRepository;
 
 final class DomainNameRepositoryMock implements DomainNameRepository
 {
@@ -30,7 +29,7 @@ final class DomainNameRepositoryMock implements DomainNameRepository
     use MockRepository;
 
     /**
-     * @return array<string, string|Closure>
+     * @return array<string, string|\Closure>
      */
     protected function getFieldsIndexMapping(): array
     {
@@ -49,7 +48,7 @@ final class DomainNameRepositoryMock implements DomainNameRepository
     }
 
     /**
-     * @return array<string, string|Closure>
+     * @return array<string, string|\Closure>
      */
     protected function getFieldsIndexMultiMapping(): array
     {

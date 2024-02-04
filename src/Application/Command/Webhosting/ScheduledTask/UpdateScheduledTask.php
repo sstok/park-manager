@@ -19,6 +19,5 @@ final class UpdateScheduledTask
         public TaskId $id,
         public Schedule $schedule,
         public string $command,
-    ) {
-    }
+    ) {}
 }

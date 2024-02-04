@@ -10,9 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\Security;
 
+use Lifthill\Bridge\Web\Form\Type\MessageFormType;
+use Lifthill\Bridge\Web\Form\Type\SplitTokenType;
 use ParkManager\Application\Command\User\ConfirmPasswordReset;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
-use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -27,9 +28,7 @@ use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 
 final class ConfirmPasswordResetType extends AbstractType
 {
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
-    {
-    }
+    public function __construct(private UrlGeneratorInterface $urlGenerator) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -45,8 +44,7 @@ final class ConfirmPasswordResetType extends AbstractType
                 'password_confirm' => true,
                 'label' => false,
                 'password_constraints' => $options['password_constraints'],
-            ])
-        ;
+            ]);
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
@@ -88,8 +86,7 @@ final class ConfirmPasswordResetType extends AbstractType
                 },
                 DisabledException::class => static fn (DisabledException $e, Translator $translator) => new FormError('password_reset.access_disabled', null, [], null, $e),
             ])
-            ->setAllowedTypes('password_constraints', ['array', Constraint::class])
-        ;
+            ->setAllowedTypes('password_constraints', ['array', Constraint::class]);
     }
 
     public function getBlockPrefix(): string

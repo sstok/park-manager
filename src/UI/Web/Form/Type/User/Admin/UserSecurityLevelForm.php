@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Form\Type\User\Admin;
 
+use Lifthill\Bridge\Web\Form\Type\MessageFormType;
 use ParkManager\Application\Command\User\GrantUserRole;
 use ParkManager\Application\Command\User\RevokeUserRole;
 use ParkManager\Domain\User\User;
-use ParkManager\UI\Web\Form\Type\MessageFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,8 +34,7 @@ final class UserSecurityLevelForm extends AbstractType
                     'user_role.user' => 'ROLE_USER',
                 ],
                 'data' => $options['selected_level'],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -89,8 +88,7 @@ final class UserSecurityLevelForm extends AbstractType
 
                     return new RevokeUserRole($id, 'ROLE_SUPER_ADMIN', 'ROLE_ADMIN');
                 },
-            ])
-        ;
+            ]);
     }
 
     public function getBlockPrefix(): string

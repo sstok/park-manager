@@ -12,10 +12,10 @@ namespace ParkManager\Tests\Mock\Application\Service\Webhosting\TrafficStats;
 
 use Assert\Assertion;
 use Carbon\CarbonImmutable;
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Application\Service\Webhosting\TrafficStats\TrafficReport;
 use ParkManager\Application\Service\Webhosting\TrafficStats\TrafficStatisticsProvider;
 use ParkManager\Application\Service\Webhosting\TrafficStats\TrafficType;
-use ParkManager\Domain\ByteSize;
 use ParkManager\Domain\PeriodUnit;
 use ParkManager\Domain\ReportPeriod;
 
@@ -61,7 +61,7 @@ final class TrafficStatisticsProviderMock implements TrafficStatisticsProvider
         )->getTotalUsage();
     }
 
-    public function getFromPeriod(ReportPeriod $period, ?TrafficType $types = null): ?TrafficReport
+    public function getFromPeriod(ReportPeriod $period, TrafficType $types = null): ?TrafficReport
     {
         $types ??= new TrafficType(TrafficType::ALL);
 

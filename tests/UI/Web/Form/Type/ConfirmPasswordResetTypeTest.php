@@ -10,14 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type;
 
-use Closure;
-use Generator;
+use Lifthill\Bridge\Web\Form\Type\SplitTokenType;
+use Lifthill\Bridge\Web\Test\Form\MessageFormTestCase;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
-use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use ParkManager\Tests\UI\Web\Form\Type\Mocks\FakePasswordHasherFactory;
 use ParkManager\UI\Web\Form\Type\Security\ConfirmPasswordResetType;
 use ParkManager\UI\Web\Form\Type\Security\SecurityUserHashedPasswordType;
-use ParkManager\UI\Web\Form\Type\Security\SplitTokenType;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Rollerworks\Component\SplitToken\FakeSplitTokenFactory;
 use Rollerworks\Component\SplitToken\SplitToken;
@@ -27,7 +25,6 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Validator\ValidatorBuilder;
-use Throwable;
 
 /**
  * @internal
@@ -47,7 +44,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
 
     protected function setUp(): void
     {
-        $this->commandHandler = static function (ConfirmUserPasswordReset $command): void { };
+        $this->commandHandler = static function (ConfirmUserPasswordReset $command): void {};
         $this->splitTokenFactory = new FakeSplitTokenFactory();
         $this->hasherFactory = new FakePasswordHasherFactory();
 
@@ -101,7 +98,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
         self::assertFalse($formViewVars['token_invalid']);
     }
 
-    private function getCommandBuilder(): Closure
+    private function getCommandBuilder(): \Closure
     {
         return static fn (array $data) => new ConfirmUserPasswordReset($data['reset_token'], $data['password']);
     }
@@ -160,11 +157,12 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
 
     /**
      * @test
-     * @dataProvider provideErrors
+     *
+     * @dataProvider provideIt_handles_errorsCases
      *
      * @param array<string|null, FormError[]> $expectedErrors
      */
-    public function it_handles_errors(Throwable $error, array $expectedErrors): void
+    public function it_handles_errors(\Throwable $error, array $expectedErrors): void
     {
         $this->commandHandler = static function () use ($error): void {
             throw $error;
@@ -183,9 +181,9 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
     }
 
     /**
-     * @return Generator<string, array{0: Throwable, 1: FormError[]}>
+     * @return \Generator<string, array{0: \Throwable, 1: FormError[]}>
      */
-    public function provideErrors(): Generator
+    public static function provideIt_handles_errorsCases(): iterable
     {
         yield 'PasswordResetTokenNotAccepted with token' => [
             new PasswordResetTokenNotAccepted((new FakeSplitTokenFactory())->generate()->toValueHolder()),
@@ -215,9 +213,7 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
  */
 final class ConfirmUserPasswordReset
 {
-    public function __construct(private SplitToken $token, private string $password)
-    {
-    }
+    public function __construct(private SplitToken $token, private string $password) {}
 
     public function token(): SplitToken
     {

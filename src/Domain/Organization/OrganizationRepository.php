@@ -10,9 +10,11 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Organization;
 
-use ParkManager\Domain\ResultSet;
+use Lifthill\Component\Common\Domain\Attribute\Repository;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\User\UserId;
 
+#[Repository]
 interface OrganizationRepository
 {
     public function get(OrganizationId $id): Organization;

@@ -12,13 +12,13 @@ namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Join;
+use Lifthill\Bridge\Doctrine\OrmQueryBuilderResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Organization\Exception\OrganizationNotFound;
 use ParkManager\Domain\Organization\Organization;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\Organization\OrganizationRepository;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\User\UserId;
-use ParkManager\Infrastructure\Doctrine\OrmQueryBuilderResultSet;
 
 /**
  * @extends EntityRepository<Organization>
@@ -61,8 +61,7 @@ class OrganizationOrmRepository extends EntityRepository implements Organization
     {
         $queryBuilder = $this->createQueryBuilder('o')
             ->join('o.members', 'om', Join::WITH, 'om.user = :user')
-            ->setParameter('user', $userId->toString())
-        ;
+            ->setParameter('user', $userId->toString());
 
         return new OrmQueryBuilderResultSet($queryBuilder, rootAlias: 'o', fetchJoinCollection: true);
     }

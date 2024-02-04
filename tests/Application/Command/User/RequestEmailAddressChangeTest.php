@@ -10,11 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\User;
 
-use DateTimeImmutable;
+use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Application\Command\User\RequestEmailAddressChange;
 use ParkManager\Application\Command\User\RequestEmailAddressChangeHandler;
 use ParkManager\Application\Mailer\User\EmailAddressChangeRequestMailer;
-use ParkManager\Domain\EmailAddress;
 use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
@@ -34,13 +33,20 @@ final class RequestEmailAddressChangeTest extends TestCase
 
     private const USER_ID = '01dd5964-5426-11e7-be03-acbc32b58315';
 
+    private FakeSplitTokenFactory $splitTokenFactory;
+
+    protected function setUp(): void
+    {
+        $this->splitTokenFactory = new FakeSplitTokenFactory();
+    }
+
     /** @test */
     public function it_handles_email_address_change_request(): void
     {
         $handler = new RequestEmailAddressChangeHandler(
             $repository = new UserRepositoryMock([UserRepositoryMock::createUser()]),
             $this->createConfirmationMailer('John2@example.com'),
-            FakeSplitTokenFactory::instance()
+            $this->splitTokenFactory
         );
 
         $handler(RequestEmailAddressChange::with(UserRepositoryMock::USER_ID1, 'John2@example.com'));
@@ -49,8 +55,8 @@ final class RequestEmailAddressChangeTest extends TestCase
             $token = $user->emailAddressChangeToken;
 
             self::assertSame(['email' => 'John2@example.com'], $token->metadata());
-            self::assertFalse($token->isExpired(new DateTimeImmutable('+ 5 seconds')));
-            self::assertTrue($token->isExpired(new DateTimeImmutable('+ 3700 seconds')));
+            self::assertFalse($token->isExpired(new \DateTimeImmutable('+ 5 seconds')));
+            self::assertTrue($token->isExpired(new \DateTimeImmutable('+ 3700 seconds')));
 
             return true;
         });
@@ -62,7 +68,7 @@ final class RequestEmailAddressChangeTest extends TestCase
         $handler = new RequestEmailAddressChangeHandler(
             $repository = new UserRepositoryMock([UserRepositoryMock::createUser()]),
             $this->createConfirmationMailer('John2+spam@example.com'),
-            FakeSplitTokenFactory::instance()
+            $this->splitTokenFactory
         );
 
         $handler(RequestEmailAddressChange::with(UserRepositoryMock::USER_ID1, 'John2+spam@example.com'));
@@ -71,8 +77,8 @@ final class RequestEmailAddressChangeTest extends TestCase
             $token = $user->emailAddressChangeToken;
 
             self::assertSame(['email' => 'John2+spam@example.com'], $token->metadata());
-            self::assertFalse($token->isExpired(new DateTimeImmutable('+ 5 seconds')));
-            self::assertTrue($token->isExpired(new DateTimeImmutable('+ 3700 seconds')));
+            self::assertFalse($token->isExpired(new \DateTimeImmutable('+ 5 seconds')));
+            self::assertTrue($token->isExpired(new \DateTimeImmutable('+ 3700 seconds')));
 
             return true;
         });
@@ -87,7 +93,7 @@ final class RequestEmailAddressChangeTest extends TestCase
                 UserRepositoryMock::createUser('John2@example.com', self::USER_ID),
             ]),
             $this->expectNoConfirmationIsSendMailer(),
-            FakeSplitTokenFactory::instance()
+            $this->splitTokenFactory
         );
 
         $this->expectExceptionObject(

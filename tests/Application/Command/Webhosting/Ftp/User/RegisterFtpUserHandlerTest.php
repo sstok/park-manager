@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Application\Command\Webhosting\Ftp\User;
 
+use Lifthill\Component\Common\Application\PasswordHasher;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Application\Command\Webhosting\Ftp\User\RegisterFtpUser;
 use ParkManager\Application\Command\Webhosting\Ftp\User\RegisterFtpUserHandler;
-use ParkManager\Application\Service\PasswordHasher;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\Ftp\FtpUser;
 use ParkManager\Domain\Webhosting\Ftp\FtpUserId;
 use ParkManager\Domain\Webhosting\Space\SpaceId;

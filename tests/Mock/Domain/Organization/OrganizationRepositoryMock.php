@@ -10,14 +10,14 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\Mock\Domain\Organization;
 
+use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Common\Test\MockRepository;
 use ParkManager\Domain\Organization\Exception\OrganizationNotFound;
 use ParkManager\Domain\Organization\Organization;
 use ParkManager\Domain\Organization\OrganizationId;
 use ParkManager\Domain\Organization\OrganizationRepository;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
-use ParkManager\Tests\Mock\Domain\MockRepository;
 
 final class OrganizationRepositoryMock implements OrganizationRepository
 {

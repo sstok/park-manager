@@ -16,9 +16,7 @@ use ParkManager\Domain\Webhosting\SubDomain\SubDomainRepository;
 
 final class ActivateSubDomainHandler
 {
-    public function __construct(private SubDomainRepository $subDomainRepository)
-    {
-    }
+    public function __construct(private SubDomainRepository $subDomainRepository) {}
 
     public function __invoke(ActivateSubDomain $command): void
     {

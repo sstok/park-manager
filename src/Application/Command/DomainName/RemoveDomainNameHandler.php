@@ -14,9 +14,7 @@ use ParkManager\Domain\DomainName\DomainNameRepository;
 
 final class RemoveDomainNameHandler
 {
-    public function __construct(private DomainNameRepository $domainNameRepository)
-    {
-    }
+    public function __construct(private DomainNameRepository $domainNameRepository) {}
 
     public function __invoke(RemoveDomainName $command): void
     {

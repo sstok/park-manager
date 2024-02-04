@@ -11,10 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Form\Type\Webhosting\Space;
 
 use Carbon\CarbonImmutable;
+use Lifthill\Bridge\Web\Form\Type\ConfirmationForm;
 use ParkManager\Application\Command\Webhosting\Space\ExpireSpaceOn;
 use ParkManager\Application\Command\Webhosting\Space\MarkSpaceForRemoval;
 use ParkManager\Domain\Webhosting\Space\Space;
-use ParkManager\UI\Web\Form\Type\ConfirmationForm;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,8 +34,7 @@ final class MarkExpirationOfWebhostingSpaceForm extends AbstractType
                     'min' => $min->format('Y-m-d'),
                 ],
                 'input' => 'datetime_immutable',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -45,8 +44,7 @@ final class MarkExpirationOfWebhostingSpaceForm extends AbstractType
             ->setDefault(
                 'command_factory',
                 static fn (array $fields, Space $model): object => CarbonImmutable::instance($fields['expirationDate'])->isCurrentDay() ? new MarkSpaceForRemoval($model->id) : new ExpireSpaceOn($model->id, $fields['expirationDate']),
-            )
-        ;
+            );
     }
 
     public function getBlockPrefix(): string

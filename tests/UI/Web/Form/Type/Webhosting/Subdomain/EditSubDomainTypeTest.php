@@ -10,17 +10,17 @@ declare(strict_types=1);
 
 namespace ParkManager\Tests\UI\Web\Form\Type\Webhosting\Subdomain;
 
+use Lifthill\Bridge\Web\Test\Form\MessageFormTestCase;
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParagonIE\HiddenString\HiddenString;
 use ParkManager\Application\Command\Webhosting\SubDomain\EditSubDomain;
 use ParkManager\Domain\DomainName\DomainName;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomain;
 use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 use ParkManager\Domain\Webhosting\SubDomain\TLS\Certificate;
 use ParkManager\Tests\Mock\Domain\DomainName\DomainNameRepositoryMock;
 use ParkManager\Tests\Mock\Domain\Webhosting\SpaceRepositoryMock;
-use ParkManager\Tests\UI\Web\Form\MessageFormTestCase;
 use ParkManager\UI\Web\Form\Type\Webhosting\Subdomain\EditSubDomainType;
 use ParkManager\UI\Web\Form\Type\Webhosting\WebhostingDomainNameSelector;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;

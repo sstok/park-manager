@@ -18,8 +18,7 @@ final class ChangeAvatarHandler
     public function __construct(
         private UserRepository $userRepository,
         private Filesystem $avatarStorage
-    ) {
-    }
+    ) {}
 
     public function __invoke(ChangeAvatar $command): void
     {

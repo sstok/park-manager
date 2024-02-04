@@ -10,13 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager;
 
-use ParkManager\Infrastructure\DependencyInjection\Compiler\DomainModelsResolverPass;
-use ParkManager\Infrastructure\DependencyInjection\Compiler\PermissionDeciderPass;
-use ParkManager\Infrastructure\DependencyInjection\Compiler\PermissionShortAliasPass;
-use ParkManager\Infrastructure\Security\PermissionDecider;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -30,8 +25,8 @@ class Kernel extends BaseKernel
         $container->import('../config/parameter.yaml');
         $container->import('../config/packages/*.yaml');
         $container->import('../config/packages/' . $this->environment . '/*.yaml');
-//        $container->import('../config/services.php');
-//        $container->import('../config/{services}_' . $this->environment . '.php');
+        $container->import('../config/services.php');
+        $container->import('../config/{services}_' . $this->environment . '.php');
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void
@@ -39,16 +34,5 @@ class Kernel extends BaseKernel
         $routes->import('../config/{routes}/' . $this->environment . '/*.yaml');
         $routes->import('../config/{routes}/*.yaml');
         $routes->import('../config/routes.php')->schemes(['https']);
-    }
-
-    protected function build(ContainerBuilder $container): void
-    {
-//        $container->addCompilerPass(new PermissionDeciderPass());
-//        $container->addCompilerPass(new PermissionShortAliasPass(__DIR__ . '/Infrastructure/Security/Permission'));
-//        $container->addCompilerPass(new DomainModelsResolverPass(__DIR__ . '/Domain'));
-//
-//        $container->registerForAutoconfiguration(PermissionDecider::class)
-//            ->addTag('park_manager.security.permission_decider')
-//        ;
     }
 }

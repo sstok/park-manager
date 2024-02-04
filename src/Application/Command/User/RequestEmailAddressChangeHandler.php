@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\User;
 
-use DateTimeImmutable;
 use ParkManager\Application\Mailer\User\EmailAddressChangeRequestMailer as ConfirmationMailer;
 use ParkManager\Domain\User\Exception\EmailAddressAlreadyInUse;
 use ParkManager\Domain\User\Exception\UserNotFound;
@@ -27,8 +26,7 @@ final class RequestEmailAddressChangeHandler
         private ConfirmationMailer $confirmationMailer,
         private SplitTokenFactory $splitTokenFactory,
         private int $tokenTTL = 3600
-    ) {
-    }
+    ) {}
 
     public function __invoke(RequestEmailAddressChange $command): void
     {
@@ -46,7 +44,7 @@ final class RequestEmailAddressChangeHandler
 
         $user = $this->repository->get($command->id);
 
-        $tokenExpiration = new DateTimeImmutable('+ ' . $this->tokenTTL . ' seconds');
+        $tokenExpiration = new \DateTimeImmutable('+ ' . $this->tokenTTL . ' seconds');
         $splitToken = $this->splitTokenFactory->generate()->expireAt($tokenExpiration);
 
         if ($user->requestEmailChange($command->email, $splitToken)) {

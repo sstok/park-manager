@@ -10,8 +10,10 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain;
 
+use Lifthill\Component\Common\Domain\Attribute\Repository;
 use ParkManager\Domain\Exception\OwnerNotFound;
 
+#[Repository]
 interface OwnerRepository
 {
     /**

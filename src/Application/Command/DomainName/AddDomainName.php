@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Application\Command\DomainName;
 
+use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\DomainName\DomainNameId;
-use ParkManager\Domain\DomainName\DomainNamePair;
 use ParkManager\Domain\OwnerId;
 use ParkManager\Infrastructure\Validator\Constraints\RegistrableDomainName;
 
@@ -22,8 +22,7 @@ final class AddDomainName
         public OwnerId $owner,
         #[RegistrableDomainName]
         public DomainNamePair $name
-    ) {
-    }
+    ) {}
 
     public static function with(string $id, string $ownerId, string $name, string $tld): self
     {

@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Messenger;
 
+use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\DomainName\DomainName;
-use ParkManager\Domain\ResultSet;
 use ParkManager\Domain\Webhosting\Space\Space;
 
 interface DomainNameSpaceUsageValidator

@@ -15,23 +15,22 @@ use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\UI\Web\Form\Type\User\Admin\ChangeUserPasswordForm;
 use ParkManager\UI\Web\Form\Type\User\Admin\UserSecurityLevelForm;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class SecuritySettingsAction extends AbstractController
 {
-    #[Security("is_granted('ROLE_SUPER_ADMIN')")]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
     #[Route(path: '/user/{id}/security-settings', name: 'park_manager.admin.user_security_settings', methods: ['GET', 'POST', 'HEAD'])]
     public function __invoke(Request $request, User $id, UserInterface $securityUser): Response
     {
         if (UserId::fromString($securityUser->getId())->equals($id->id)) {
             return $this->render('error.html.twig', ['message_translate' => new TranslatableMessage('user_management.self_edit_error')])
-                ->setStatusCode(Response::HTTP_FORBIDDEN)
-            ;
+                ->setStatusCode(Response::HTTP_FORBIDDEN);
         }
 
         $changeUserLevel = $this->createForm(UserSecurityLevelForm::class, null, ['user' => $id]);
@@ -52,7 +51,7 @@ final class SecuritySettingsAction extends AbstractController
             return $this->redirectToRoute('park_manager.admin.show_user', ['user' => $id->id->toString()]);
         }
 
-        return $this->renderForm('admin/user/security_settings.html.twig', [
+        return $this->render('admin/user/security_settings.html.twig', [
             'change_user_level_form' => $changeUserLevel,
             'change_password_form' => $changePasswordForm,
             'user' => $id,
