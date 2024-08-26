@@ -34,6 +34,7 @@
         "rollerworks/pdb-symfony-bridge": "^1.0",
         "rollerworks/pdb-validator": "^1.0",
         "rollerworks/search-bundle": "^2.0@beta",
+        "rollerworks/search-symfony-validator": "^2.0@beta",
         "rollerworks/split-token": "^1.0",
         "rollerworks/x509-validator-symfony": "^0.1.0",
         "symfony/asset": "^7.0",

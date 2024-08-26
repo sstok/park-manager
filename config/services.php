@@ -32,6 +32,7 @@ use ParkManager\Infrastructure\Service\SymfonyPasswordHasher;
 use ParkManager\Infrastructure\Translation\Formatter\EntityLinkFormatter;
 use ParkManager\Infrastructure\Translation\Translator;
 use Psr\Container\ContainerInterface;
+use Rollerworks\Component\Search\Doctrine\Orm\DoctrineOrmFactory;
 use Symfony\Component\Form\FormRendererInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
@@ -47,7 +48,11 @@ return static function (ContainerConfigurator $c): void {
         ->bind(Session::class, service('session'))
         ->bind(FormRendererInterface::class, service('twig.form.renderer'))
         ->bind(ObjectManager::class, service('doctrine.orm.default_entity_manager'))
-        ->bind(ContainerInterface::class, service('service_container'));
+        ->bind(ContainerInterface::class, service('service_container'))
+
+        // FIXME This should be resolved in RollerworksSearchBundle
+        ->bind(DoctrineOrmFactory::class, service('rollerworks_search.doctrine_orm.factory'))
+    ;
 
     $di->instanceof(DomainNameSpaceUsageValidator::class)
         ->tag('park_manager.command_bus.domain_name_space_usage_validator');

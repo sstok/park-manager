@@ -12,6 +12,7 @@ namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Lifthill\Bridge\Doctrine\OrmQueryBuilderResultSet;
+use Lifthill\Bridge\Doctrine\OrmSearchableResultSet;
 use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use Lifthill\Component\Common\Domain\ResultSet;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
@@ -20,14 +21,18 @@ use ParkManager\Domain\User\Exception\UserNotFound;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
 use ParkManager\Domain\User\UserRepository;
+use Rollerworks\Component\Search\Doctrine\Orm\DoctrineOrmFactory;
 
 /**
  * @extends EntityRepository<User>
  */
 class DoctrineOrmUserRepository extends EntityRepository implements UserRepository
 {
-    public function __construct(EntityManagerInterface $entityManager, string $className = User::class)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        private DoctrineOrmFactory $ormFactory,
+        string $className = User::class
+    ) {
         parent::__construct($entityManager, $className);
     }
 
@@ -70,7 +75,8 @@ class DoctrineOrmUserRepository extends EntityRepository implements UserReposito
 
     public function all(): ResultSet
     {
-        return (new OrmQueryBuilderResultSet($this->createQueryBuilder('u'), 'u', false))->setOrdering('u.registeredAt', 'DESC');
+        return (new OrmSearchableResultSet($this->ormFactory, $this->createQueryBuilder('u'), 'u', false))
+            ->setOrdering('u.registeredAt', 'DESC');
     }
 
     public function getByEmailAddressChangeToken(string $selector): User
