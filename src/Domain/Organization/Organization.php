@@ -44,7 +44,7 @@ class Organization
 
     public function __construct(
         #[Id]
-        #[Column(type: 'park_manager_organization_id')]
+        #[Column(type: OrganizationId::class)]
         #[GeneratedValue(strategy: 'NONE')]
         public OrganizationId $id,
 

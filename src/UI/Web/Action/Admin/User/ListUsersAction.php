@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\Admin\User;
 
 use Lifthill\Bridge\Web\Pagerfanta\ResultSetAdapter;
+use Lifthill\Component\Datagrid\DatagridFactory;
 use Pagerfanta\Pagerfanta;
 use ParkManager\Domain\User\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,17 +26,21 @@ final class ListUsersAction extends AbstractController
     #[Route(path: '/users', methods: ['GET', 'HEAD'], name: 'park_manager.admin.list_users')]
     public function __invoke(Request $request): Response
     {
-        $pagerfanta = new Pagerfanta(new ResultSetAdapter($this->container->get(UserRepository::class)->all()));
-        $pagerfanta->setNormalizeOutOfRangePages(true);
-        $pagerfanta->setMaxPerPage(10);
 
-        $pagerfanta->setCurrentPage($request->query->getInt('page', 1));
 
-        return $this->render('admin/user/list.html.twig', ['users' => $pagerfanta]);
+
+
+//        $pagerfanta = new Pagerfanta(new ResultSetAdapter($this->container->get(UserRepository::class)->all()));
+//        $pagerfanta->setNormalizeOutOfRangePages(true);
+//        $pagerfanta->setMaxPerPage(10);
+//
+//        $pagerfanta->setCurrentPage($request->query->getInt('page', 1));
+//
+//        return $this->render('admin/user/list.html.twig', ['users' => $pagerfanta]);
     }
 
     public static function getSubscribedServices(): array
     {
-        return parent::getSubscribedServices() + [UserRepository::class];
+        return parent::getSubscribedServices() + [UserRepository::class, DatagridFactory::class];
     }
 }

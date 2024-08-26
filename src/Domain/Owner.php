@@ -36,7 +36,7 @@ use ParkManager\Domain\User\UserId;
 class Owner implements \Stringable
 {
     #[Id]
-    #[Column(name: 'owner_id', type: 'park_manager_owner_id')]
+    #[Column(name: 'owner_id', type: OwnerId::class)]
     #[GeneratedValue(strategy: 'NONE')]
     public OwnerId $id;
 

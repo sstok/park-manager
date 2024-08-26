@@ -3,8 +3,8 @@ security:
         'Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface': 'auto'
 
     providers:
-        app: { memory: null } #{ id: 'park_manager.security.user_provider' }
-        api: { memory: null } #{ id: 'park_manager.security.user_provider' }
+        app: { id: 'park_manager.security.user_provider' }
+        api: { id: 'park_manager.security.user_provider' }
 
     firewalls:
         dev:
