@@ -36,7 +36,8 @@
         "rollerworks/search-bundle": "^2.0@beta",
         "rollerworks/split-token": "^1.0",
         "rollerworks/x509-validator-symfony": "^0.1.0",
-        "symfony/asset": "*",
+        "symfony/asset": "^7.0",
+        "symfony/asset-mapper": "^7.0",
         "symfony/console": "*",
         "symfony/dotenv": "*",
         "symfony/expression-language": "*",
@@ -49,9 +50,11 @@
         "symfony/twig-bundle": "*",
         "symfony/webpack-encore-bundle": "*",
         "symfony/yaml": "*",
+        "symfonycasts/tailwind-bundle": "^0.6.0",
         "twig/extra-bundle": "^3.2",
         "twig/intl-extra": "^3.2",
-        "twig/string-extra": "^3.2"
+        "twig/string-extra": "^3.2",
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^8.0",
@@ -135,7 +138,8 @@
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "importmap:install": "symfony-cmd"
         }
     }
 }

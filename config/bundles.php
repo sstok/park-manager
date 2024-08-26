@@ -17,4 +17,5 @@ return [
     Lifthill\Bundle\CoreBundle\LifthillCoreBundle::class => ['all' => true],
     Lifthill\Bundle\PermissionBundle\LifthillPermissionBundle::class => ['all' => true],
     Rollerworks\Bundle\SearchBundle\RollerworksSearchBundle::class => ['all' => true],
+    Symfonycasts\TailwindBundle\SymfonycastsTailwindBundle::class => ['all' => true],
 ];

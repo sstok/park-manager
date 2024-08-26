@@ -4,7 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ page_heading }} | Park-Manager</title>
-    {{ encore_entry_link_tags('app') }}
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+    {% endblock %}
+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+        <!-- non-hericon's provided by https://materialdesignicons.com/tag/community -->
+    {% endblock %}
 </head>
 <body>
 <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
