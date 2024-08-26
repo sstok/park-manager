@@ -16,7 +16,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
-use function Sodium\memzero;
 
 final class SecurityUserHashedPasswordType extends AbstractType
 {
@@ -29,7 +28,7 @@ final class SecurityUserHashedPasswordType extends AbstractType
                 return function (string $value) {
                     $hashed = $this->hasherFactory->getPasswordHasher(SecurityUser::class)->hash($value);
 
-                    memzero($value);
+                    \sodium_memzero($value);
 
                     return $hashed;
                 };

@@ -16,7 +16,7 @@ use ParkManager\Domain\Webhosting\Constraint\PlanRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class ListWebhostingPlansAction extends AbstractController
 {

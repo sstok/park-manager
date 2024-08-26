@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\UI\Web\Action\Security;
 
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * @codeCoverageIgnore
