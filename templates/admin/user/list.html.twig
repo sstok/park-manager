@@ -1,5 +1,7 @@
 {% extends 'admin/layout.html.twig' %}
 
+{% lifthill_datagrid_theme datagrid 'datagrid.html.twig' %}
+
 {% import 'admin/user/_macros.html.twig' as user_macro %}
 
 {% block title %}{{ 'user_management.list.heading'|trans() }}{% endblock %}

@@ -35,6 +35,10 @@ final class ListUsersAction extends AbstractController
         $users->setSearchField('@displayName');
         $users->setSearchField('@email', 'email.address', type: 'text');
 
+        $users->setSearchField('id');
+        $users->setSearchField('displayName');
+        $users->setSearchField('email', 'email.address', type: 'text');
+
         $datagrid = $datagridFactory->createDatagridBuilder(true)
             ->add('id', options: ['sortable' => true, 'default_hidden' => true, 'search_type' => TextType::class])
             ->add('displayName', options: ['sortable' => true, 'search_type' => TextType::class])
