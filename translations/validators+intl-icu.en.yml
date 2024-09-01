@@ -7,6 +7,8 @@ value_does_not_match_expected_value: This value does not match the expected valu
 'This value is not a valid domain name.': This value is not a valid domain name.
 'Fractions are not accepted for Byte unit.':  Fractions are not accepted for Byte unit.
 
+'DomainName "{domainName}" is already in use.': 'DomainName "{ domainName }" is already in use.'
+
 password_reset:
     no_token: Sorry but no results were found with this reset token.<br><a href="{ reset_url }">Please try again</a>..
     invalid_token: Invalid password reset token, please copy the reset URL in the received email (in full) and try again. Or <a href="{reset_url}" class="underline">request a new one</a>.

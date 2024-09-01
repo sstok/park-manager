@@ -77,13 +77,17 @@ class Translator implements TranslatorInterface, LocaleAwareInterface, Translato
      *
      * @internal
      */
-    public static function escape(mixed $value): float | int | string
+    public static function escape(mixed $value): mixed
     {
         if (\is_float($value) || \is_int($value)) {
             return $value;
         }
 
-        return (string) $value;
+        if (is_scalar($value)) {
+            return (string) $value;
+        }
+
+        return $value;
     }
 
     /**

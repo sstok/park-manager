@@ -10,11 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\DomainName\Exception;
 
+use Lifthill\Component\Common\Domain\Exception\DomainError;
 use Lifthill\Component\Common\Domain\Model\DomainNamePair;
-use ParkManager\Domain\Exception\DomainError;
-use ParkManager\Domain\Translation\TranslatableMessage;
+use Symfony\Contracts\Translation\TranslatableInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class DomainNameAlreadyInUse extends \DomainException implements DomainError
+final class DomainNameAlreadyInUse extends \DomainException implements TranslatableInterface, DomainError
 {
     public function __construct(public DomainNamePair $domainName)
     {
@@ -27,12 +28,12 @@ final class DomainNameAlreadyInUse extends \DomainException implements DomainErr
         );
     }
 
-    public function getTranslatorMsg(): TranslatableMessage
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
-        return new TranslatableMessage('domain_name.already_in_use', [
+        return $translator->trans('domain_name.already_in_use', [
             'name' => $this->domainName->name,
             'tld' => $this->domainName->tld,
-        ], 'validators');
+        ], 'validators', $locale);
     }
 
     public function getPublicMessage(): string

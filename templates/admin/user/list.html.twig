@@ -1,6 +1,9 @@
 {% extends 'admin/layout.html.twig' %}
 
-{% lifthill_datagrid_theme datagrid 'datagrid.html.twig' %}
+{% lifthill_datagrid_theme datagrid with [
+    'datagrid.html.twig',
+    _self
+] %}
 
 {% import 'admin/user/_macros.html.twig' as user_macro %}
 
@@ -37,7 +40,8 @@
             <div class="flex flex-col">
                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                        <div{# class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"#}>
+                        <div>
+                            {% dump(datagrid) %}
 
                             {{ lifthill_datagrid(datagrid) }}
 
@@ -110,3 +114,26 @@
         </div>
     </div>
 {% endblock %}
+
+{% block _datagrid_displayName_cell -%}
+    <td class="px-6 py-4 whitespace-nowrap">
+        <div class="flex items-center">
+            <div class="flex-shrink-0 h-10 w-10">
+                <span class="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
+                  <svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                </span>
+                {#<img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=4&amp;w=256&amp;h=256&amp;q=60" alt="">#}
+            </div>
+            <div class="ml-4">
+                <div class="text-sm font-medium text-gray-900 truncate"{% if source.displayName|length > 37 %} title="{{ source.displayName|escape('html_attr') }}"{% endif %}>
+                    {{ source.displayName|u.truncate(35, '...') }}
+                </div>
+                <div class="text-sm text-gray-500"{% if source.email|length > 37 %} title="{{ source.email|escape('html_attr') }}"{% endif %}>
+                    {{ source.email.truncate() }}
+                </div>
+            </div>
+        </div>
+    </td>
+{%- endblock %}

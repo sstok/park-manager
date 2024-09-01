@@ -7,33 +7,32 @@
 
     <form action="{{ app.request.uri }}" method="POST" name="{{ name }}" class="mb-5 py-5 px-5 bg-white rounded-md">
         <label for="{{ name }}_search_field"class="block text-xl font-medium leading-6 text-gray-900">Search</label>
-        {% if search_errors is defined %}
-        <div class="rounded-md bg-red-50 p-4">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <!-- Heroicon name: x-circle -->
-                    <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                    </svg>
-                </div>
-                <div class="ml-3">
-                    <div class="text-sm text-red-700">
-                        <ul class="space-y-1">
-                            {% for error in search_errors|default([]) %}
-                                <li><span class="text-xs mr-1 text-left flex-auto">{{ error.path }}</span><span class="text-red-500 text-xs mr-2 text-left flex-auto">{{ error|trans() }}</span></li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
 
         <div>
             <div class="mt-2">
-                <textarea id="{{ name }}_search_field" name="{{ name }}[_search_query]" rows="4" cols="50" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6{% if search_errors is defined %} border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 {% else%}{% endif%}">
+                <div id="{{ name }}_search_help">
+
+
+                </div>
+
+                <textarea id="{{ name }}_search_field" aria-describedby="{{ name }}_search_help" name="{{ name }}[_search_query]" rows="4" cols="50" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6{% if search_errors is defined %} border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 {% else %}{% endif %}">
                     {{- search_condition|default('') -}}
                 </textarea>
+
+                {% if search_errors is defined %}
+                    <ul id="search_errors" class="pt-1 pb-1">
+                        {% for error in search_errors|default([]) %}
+                            <li class="flex">
+                                <!-- Heroicon name: exclamation-circle -->
+                                <svg class="h-5 w-5 text-red-500 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                </svg>
+                                <span class="sr-only">{{ 'Error'|trans({}, 'validators') }}</span>
+                                <span class="text-red-500 text-xs mr-2 text-left flex-auto">{{ error.path }} {{ error|trans() }}</span>
+                            </li>
+                        {%- endfor -%}
+                    </ul>
+                {% endif %}
             </div>
         </div>
 

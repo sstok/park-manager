@@ -44,6 +44,6 @@ final class RemoveSuspensionOfWebhostingSpace extends AbstractController
             return $this->redirectToRoute('park_manager.admin.webhosting.space.show', ['space' => $space->id]);
         }
 
-        return $this->render('admin/webhosting/space/remove_access_suspension.html.twig', ['form' => $form]);
+        return $this->render('admin/webhosting/space/remove_access_suspension.html.twig', ['form' => $form, 'space' => $space]);
     }
 }

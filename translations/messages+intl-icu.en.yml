@@ -420,7 +420,7 @@ webhosting:
                 Or <a href="{ change_url }" class="underline">change the suspension level</a> instead.
     domain_name:
         list:
-            heading: Assigned Domain Names of { primary_name }
+            heading: Assigned Domain Names of <span title="{ primary_name_full }" aria-hidden="true">{ primary_name }</span>
         add:
             heading: Add domain name to { primary_name }
         make_primary:

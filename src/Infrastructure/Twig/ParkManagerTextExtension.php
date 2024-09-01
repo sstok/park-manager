@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ParkManager\Infrastructure\Twig;
 
+use Lifthill\Component\Common\Domain\Model\ByteSize;
 use ParkManager\Infrastructure\Translation\Translator;
 use Symfony\Component\String\UnicodeString;
 use Symfony\Contracts\Translation\TranslatableInterface;
@@ -64,6 +65,11 @@ final class ParkManagerTextExtension extends AbstractExtension
         $this->argumentsTranslator->setEnv(null);
 
         return $value;
+    }
+
+    public function renderByteSize(ByteSize $value, ?string $locale = null): string
+    {
+        return $value->trans($this->translator, $locale);
     }
 
     public function wordwrap(Environment $env, string | \Stringable $text, int $width = 75, string $break = "\n", bool $cut = false, bool $escape = true): string

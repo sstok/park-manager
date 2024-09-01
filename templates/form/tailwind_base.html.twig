@@ -175,9 +175,9 @@
 
 {% block choice_widget_collapsed -%}
     {% if errors|length > 0 %}
-        {%- set attr = attr|merge_attr_class('border-red-300 focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md ' ~ (field_width|default('w-full sm:max-w-2'))) -%}
+        {%- set attr = attr|merge_attr_class('border-red-300 focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md ' ~ (field_width|default('w-full md:w-auto'))) -%}
     {% else %}
-        {%- set attr = attr|merge_attr_class('border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md ' ~ (field_width|default('w-full sm:max-w-2'))) -%}
+        {%- set attr = attr|merge_attr_class('border-gray-300 focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md ' ~ (field_width|default('w-full md:w-auto'))) -%}
     {% endif %}
     {{- parent() -}}
 {%- endblock choice_widget_collapsed %}

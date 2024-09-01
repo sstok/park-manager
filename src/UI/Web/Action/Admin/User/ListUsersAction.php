@@ -13,11 +13,13 @@ namespace ParkManager\UI\Web\Action\Admin\User;
 use Lifthill\Bridge\Doctrine\OrmSearchableResultSet;
 use Lifthill\Bridge\Web\Pagerfanta\ResultSetAdapter;
 use Lifthill\Component\Datagrid\DatagridFactory;
+use Lifthill\Component\Datagrid\Extension\Core\Type\DateTimeType;
 use Pagerfanta\Pagerfanta;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserRepository;
 use Rollerworks\Component\Search\Extension\Core\Type\IntegerType;
 use Rollerworks\Component\Search\Extension\Core\Type\TextType;
+use Rollerworks\Component\Search\Field\OrderFieldType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,15 +37,16 @@ final class ListUsersAction extends AbstractController
     {
         /** @var OrmSearchableResultSet<User> $users */
         $users = $userRepository->all();
-        $users->setSearchField('@id');
-        $users->setSearchField('@displayName');
-        $users->setSearchField('@email', 'email.address', type: 'text');
-
-        $users->setSearchField('id');
-        $users->setSearchField('displayName');
-        $users->setSearchField('email', 'email.address', type: 'text');
+        $users->setSearchField('id', withOrdering: true);
+        $users->setSearchField('display-name', 'displayName', withOrdering: true);
+        $users->setSearchField('email', 'email.address', type: 'text', withOrdering: true);
 
         $datagrid = $datagridFactory->createDatagridBuilder(true)
+            ->add('displayName', options: ['label' => 'label.display_name'])
+            ->add('registeredAt', DateTimeType::class, options: [
+                'label' => 'label.registered_on',
+                'time_format' => \IntlDateFormatter::SHORT,
+            ])
             ->add('id', options: [
                 'sortable' => [
                     'alias' => ['oplopend' => 'ASC', 'aflopend' => 'DESC'],
@@ -53,14 +56,10 @@ final class ListUsersAction extends AbstractController
                 'search_type' => IntegerType::class,
                 'search_options' => ['constraints' => new Uuid(strict: false)],
             ])
-            ->add('displayName', options: ['sortable' => true, 'search_type' => TextType::class])
-            ->add('email', options: [
-                'sortable' => true,
-                'search_type' => TextType::class,
-                'search_options' => ['constraints' => new Email()],
-            ])
 
             ->searchField('status', IntegerType::class, ['constraints' => new Range(min: 5, max: 10)])
+            ->searchField('email', TextType::class, ['constraints' => new Email()])
+            ->searchField('@email', OrderFieldType::class)
 
             ->searchOptions(maxValues: 1, maxGroups: 1, maxNestingLevel: 1)
             ->limits(default: 10)
