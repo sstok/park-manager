@@ -33,6 +33,7 @@
         "pagerfanta/twig": "^4.3",
         "rollerworks/pdb-symfony-bridge": "^1.0",
         "rollerworks/pdb-validator": "^1.0",
+        "rollerworks/search": ">2.0-BETA4",
         "rollerworks/search-bundle": "^2.0@beta",
         "rollerworks/search-symfony-validator": "^2.0@beta",
         "rollerworks/split-token": "^1.0",
@@ -96,6 +97,10 @@
         {
             "type": "path",
             "url": "../../lifthill/lifthill/"
+        },
+        {
+            "type": "path",
+            "url": "../../rollerworks/search/lib/core"
         }
     ],
     "minimum-stability": "dev",

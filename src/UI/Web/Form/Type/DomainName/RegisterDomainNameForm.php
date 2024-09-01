@@ -40,7 +40,7 @@ final class RegisterDomainNameForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
-            ->setDefault('disable_entity_mapping', true)
+            ->setDefault('disable_entity_mapping', false)
             ->setDefault(
                 'command_factory',
                 static fn (CommandDto $data) => new AddDomainName(DomainNameId::create(), $data->fields['owner']->id, $data->fields['name'])

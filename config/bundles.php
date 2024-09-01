@@ -14,6 +14,7 @@ return [
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     BabDev\PagerfantaBundle\BabDevPagerfantaBundle::class => ['all' => true],
     Rollerworks\Component\PdbSfBridge\Bundle\RollerworksPdbBundle::class => ['all' => true],
+    Rollerworks\Component\PdbValidator\Bundle\RollerworksPdbValidatorBundle::class => ['all' => true],
     Lifthill\Bundle\CoreBundle\LifthillCoreBundle::class => ['all' => true],
     Lifthill\Bundle\PermissionBundle\LifthillPermissionBundle::class => ['all' => true],
     Rollerworks\Bundle\SearchBundle\RollerworksSearchBundle::class => ['all' => true],

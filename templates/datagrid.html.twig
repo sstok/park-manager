@@ -3,10 +3,10 @@
 {# Base blocks #}
 
 {% block datagrid_container -%}
-    {% set attr = attr|merge({'class': 'min-w-full divide-y divide-gray-200' }) %}
+    {% set attr = attr|merge({'class': 'min-w-full divide-y divide-gray-200 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg' }) %}
 
-    <form action="{{ app.request.uri }}" method="POST" name="{{ name }}" class="mb-5 rounded-md">
-        <label for="{{ name }}_search_field" class="block text-sm font-medium text-gray-700">Search</label>
+    <form action="{{ app.request.uri }}" method="POST" name="{{ name }}" class="mb-5 py-5 px-5 bg-white rounded-md">
+        <label for="{{ name }}_search_field"class="block text-xl font-medium leading-6 text-gray-900">Search</label>
         {% if search_errors is defined %}
         <div class="rounded-md bg-red-50 p-4">
             <div class="flex">
@@ -20,26 +20,37 @@
                     <div class="text-sm text-red-700">
                         <ul class="space-y-1">
                             {% for error in search_errors|default([]) %}
-                                <li><span class="text-red-500 text-xs mr-2 text-left flex-auto">{{ error|trans() }}</span></li>
+                                <li><span class="text-xs mr-1 text-left flex-auto">{{ error.path }}</span><span class="text-red-500 text-xs mr-2 text-left flex-auto">{{ error|trans() }}</span></li>
                             {% endfor %}
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-
         {% endif %}
 
-        <div class="bg-gray-50">
-            <textarea id="{{ name }}_search_field" name="{{ name }}[_search_query]" cols="50" class="block{% if search_errors is defined %} border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 {% else%} border-gray-300 focus:ring-blue-500 focus:border-blue-500{% endif%} sm:text-sm rounded-md w-full">
-                {{- search_condition|default('') -}}
-            </textarea>
+        <div>
+            <div class="mt-2">
+                <textarea id="{{ name }}_search_field" name="{{ name }}[_search_query]" rows="4" cols="50" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6{% if search_errors is defined %} border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 {% else%}{% endif%}">
+                    {{- search_condition|default('') -}}
+                </textarea>
+            </div>
         </div>
 
-        <div>
-            <button type="submit" name="{{ name }}[_search]" value="1" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Search
-            </button>
+        <div class="mt-4 sm:flex sm:items-center">
+            <div class="sm:flex-auto">
+
+            </div>
+            <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                <button type="submit" name="{{ name }}[_search]" value="1" class="inline-flex items-center gap-x-1.5 rounded-md px-4 py-2 font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-0.5 h-5 w-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+                    </svg>
+
+
+                    Search
+                </button>
+            </div>
         </div>
     </form>
 

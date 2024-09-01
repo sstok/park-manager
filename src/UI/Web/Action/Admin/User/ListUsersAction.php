@@ -16,12 +16,16 @@ use Lifthill\Component\Datagrid\DatagridFactory;
 use Pagerfanta\Pagerfanta;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserRepository;
+use Rollerworks\Component\Search\Extension\Core\Type\IntegerType;
 use Rollerworks\Component\Search\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\Uuid;
 
 final class ListUsersAction extends AbstractController
 {
@@ -40,10 +44,25 @@ final class ListUsersAction extends AbstractController
         $users->setSearchField('email', 'email.address', type: 'text');
 
         $datagrid = $datagridFactory->createDatagridBuilder(true)
-            ->add('id', options: ['sortable' => true, 'default_hidden' => true, 'search_type' => TextType::class])
+            ->add('id', options: [
+                'sortable' => [
+                    'alias' => ['oplopend' => 'ASC', 'aflopend' => 'DESC'],
+                    'view_label' => ['ASC' => 'oplopend', 'DESC' => 'aflopend'],
+                ],
+                'default_hidden' => true,
+                'search_type' => IntegerType::class,
+                'search_options' => ['constraints' => new Uuid(strict: false)],
+            ])
             ->add('displayName', options: ['sortable' => true, 'search_type' => TextType::class])
-            ->add('email', options: ['sortable' => true, 'search_type' => TextType::class])
+            ->add('email', options: [
+                'sortable' => true,
+                'search_type' => TextType::class,
+                'search_options' => ['constraints' => new Email()],
+            ])
 
+            ->searchField('status', IntegerType::class, ['constraints' => new Range(min: 5, max: 10)])
+
+            ->searchOptions(maxValues: 1, maxGroups: 1, maxNestingLevel: 1)
             ->limits(default: 10)
             ->getDatagrid($users)
         ;
