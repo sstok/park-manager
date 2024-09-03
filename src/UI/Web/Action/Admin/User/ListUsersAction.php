@@ -11,22 +11,18 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\Admin\User;
 
 use Lifthill\Bridge\Doctrine\OrmSearchableResultSet;
-use Lifthill\Bridge\Web\Pagerfanta\ResultSetAdapter;
 use Lifthill\Component\Datagrid\DatagridFactory;
 use Lifthill\Component\Datagrid\Extension\Core\Type\DateTimeType;
-use Pagerfanta\Pagerfanta;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserRepository;
 use Rollerworks\Component\Search\Extension\Core\Type\IntegerType;
 use Rollerworks\Component\Search\Extension\Core\Type\TextType;
-use Rollerworks\Component\Search\Field\OrderFieldType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Uuid;
 
 final class ListUsersAction extends AbstractController
@@ -38,28 +34,45 @@ final class ListUsersAction extends AbstractController
         /** @var OrmSearchableResultSet<User> $users */
         $users = $userRepository->all();
         $users->setSearchField('id', withOrdering: true);
-        $users->setSearchField('display-name', 'displayName', withOrdering: true);
+        $users->setSearchField('displayName', 'displayName', withOrdering: true);
         $users->setSearchField('email', 'email.address', type: 'text', withOrdering: true);
+        $users->setSearchField('registeredAt', withOrdering: true);
 
         $datagrid = $datagridFactory->createDatagridBuilder(true)
-            ->add('displayName', options: ['label' => 'label.display_name'])
+            ->add('displayName', options: [
+                'label' => 'label.display_name',
+                'search_type' => TextType::class,
+                'sortable' => true,
+            ])
             ->add('registeredAt', DateTimeType::class, options: [
                 'label' => 'label.registered_on',
                 'time_format' => \IntlDateFormatter::SHORT,
+
+                'search_type' => \Rollerworks\Component\Search\Extension\Core\Type\DateTimeType::class,
+                'sortable' => true,
             ])
-            ->add('id', options: [
-                'sortable' => [
-                    'alias' => ['oplopend' => 'ASC', 'aflopend' => 'DESC'],
-                    'view_label' => ['ASC' => 'oplopend', 'DESC' => 'aflopend'],
-                ],
-                'default_hidden' => true,
-                'search_type' => IntegerType::class,
-                'search_options' => ['constraints' => new Uuid(strict: false)],
+            ->add('status', options: [
+                'label' => 'label.status',
+                'data_provider' => false,
+                'search_type' => IntegerType::class, // XXX This should be ChoiceType
+                'search_options' => [],
+            ])
+            ->add('role', options: [
+                'label' => 'label.role',
+                'data_provider' => false,
+            ])
+            ->add('show', options: [
+                'label' => 'label.show',
+                'label_attr' => ['class' => 'sr-only'],
+                'data_provider' => 'id',
             ])
 
-            ->searchField('status', IntegerType::class, ['constraints' => new Range(min: 5, max: 10)])
-            ->searchField('email', TextType::class, ['constraints' => new Email()])
-            ->searchField('@email', OrderFieldType::class)
+            ->searchField('id', options: ['constraints' => new Uuid(strict: false)])
+            ->searchField('@id', options: [
+                // FIXME This needs to be done in RollerworksSearch itself
+                'view_label' => ['ASC' => 'oplopend', 'DESC' => 'aflopend'],
+            ])
+            ->searchField('email', options: ['constraints' => new Email()], withOrdering: true)
 
             ->searchOptions(maxValues: 1, maxGroups: 1, maxNestingLevel: 1)
             ->limits(default: 10)
@@ -72,13 +85,7 @@ final class ListUsersAction extends AbstractController
             return $this->redirectToRoute('park_manager.admin.list_users', [$datagrid->getName() => $datagrid->getQueryArguments()]);
         }
 
-//        $pagerfanta = new Pagerfanta(new ResultSetAdapter($users));
-//        $pagerfanta->setNormalizeOutOfRangePages(true);
-//        $pagerfanta->setMaxPerPage(10);
-//
-//        $pagerfanta->setCurrentPage($request->query->getInt('page', 1));
-
-        return $this->render('admin/user/list.html.twig', [/*'users' => $pagerfanta, */'datagrid' => $datagrid->createView()]);
+        return $this->render('admin/user/list.html.twig', ['datagrid' => $datagrid->createView()]);
     }
 
     public static function getSubscribedServices(): array
