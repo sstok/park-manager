@@ -87,9 +87,4 @@ final class ListUsersAction extends AbstractController
 
         return $this->render('admin/user/list.html.twig', ['datagrid' => $datagrid->createView()]);
     }
-
-    public static function getSubscribedServices(): array
-    {
-        return parent::getSubscribedServices() + [UserRepository::class, DatagridFactory::class];
-    }
 }

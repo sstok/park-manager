@@ -1,5 +1,9 @@
 {% extends 'admin/layout.html.twig' %}
 
+{% lifthill_datagrid_theme spaces with [
+    'datagrid.html.twig',
+] %}
+
 {% macro render_unlimited(value, append = '') %}
     {%- if value == -1 -%}
         {{ 'byte_size.inf'|trans }}
@@ -204,6 +208,19 @@
                             </div>
                         </div>
                     </section>
+
+                    <h2 class="px-2 text-2xl text-gray-800">Assigned to Spaces</h2>
+
+                    <div class="flex flex-col">
+                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                <div>
+                                    {{ lifthill_datagrid(spaces) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
