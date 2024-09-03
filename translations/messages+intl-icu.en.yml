@@ -55,6 +55,7 @@ label:
 
     login: Login
     change_password: Change password
+    change_email: Change Email Address
     change_plan: Change Plan
     change: Change
     value: Value
@@ -184,7 +185,7 @@ help:
 success: Success
 error: Error
 info: Information
-warning: Warnning
+warning: Warning
 dashboard: Dashboard
 primary: Primary
 yes: Yes

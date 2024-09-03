@@ -22,7 +22,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Validator\Constraint;
-use function Sodium\memzero;
 
 final class ChangePasswordType extends AbstractType
 {
@@ -48,7 +47,7 @@ final class ChangePasswordType extends AbstractType
                 'algorithm' => function (string $value) {
                     $hashed = $this->encoderFactory->getPasswordHasher(SecurityUser::class)->hash($value);
 
-                    memzero($value);
+                    \sodium_memzero($value);
 
                     return $hashed;
                 },

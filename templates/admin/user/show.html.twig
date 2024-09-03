@@ -66,12 +66,14 @@
                                     </div>
 
                                     <div class="sm:col-span-1">
-                                        <dt class="text-sm font-medium text-gray-500">{{ 'label.email'|trans }}</dt>
+                                        <dt class="text-sm font-medium text-gray-500">{{ 'label.email'|trans }}
+                                            <a href="{{ path('park_manager.admin.user_change_email_address', {'user': user.id}) }}" class="ml-2 text-sm font-medium text-gray-700 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">{{ 'label.change'|trans }}</a>
+                                        </dt>
                                         <dd class="flex mt-1 text-sm text-gray-900">
                                             {{ user.email|wordwrap(45, '<br>', true) }}
                                             {% if user.emailAddressChangeToken is not null and user.emailAddressChangeToken.selector is not null %}
                                                 <div class="ml-1 flex text-xs font-light align-middle text-yellow-600">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6 mr-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6 mr-1" aria-hidden="true">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                                     </svg>
                                                     <span>{{ 'user_management.account_status.new_email_pending_confirm'|trans }}</span>

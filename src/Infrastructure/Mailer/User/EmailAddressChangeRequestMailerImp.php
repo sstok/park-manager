@@ -28,6 +28,8 @@ final class EmailAddressChangeRequestMailerImp implements EmailAddressChangeRequ
     {
         $email = (new TemplatedEmail())
             ->to($newAddress->toMimeAddress())
+            ->subject('Confirm your e-mail address')
+
             ->textTemplate('emails/user/confirm_email_address_change.twig')
             ->context([
                 'url' => $this->urlGenerator->generate('park_manager.confirm_email_address_change', ['token' => $splitToken->token()], UrlGenerator::ABSOLUTE_URL),
