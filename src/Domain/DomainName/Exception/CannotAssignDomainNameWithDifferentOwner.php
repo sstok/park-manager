@@ -13,10 +13,11 @@ namespace ParkManager\Domain\DomainName\Exception;
 use Lifthill\Component\Common\Domain\Model\DomainNamePair;
 use ParkManager\Domain\Exception\DomainError;
 use ParkManager\Domain\Translation\EntityLink;
-use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\Webhosting\Space\SpaceId;
+use Symfony\Contracts\Translation\TranslatableInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-final class CannotAssignDomainNameWithDifferentOwner extends \DomainException implements DomainError
+final class CannotAssignDomainNameWithDifferentOwner extends \DomainException implements DomainError, TranslatableInterface
 {
     public DomainNamePair $domainName;
     public ?SpaceId $current = null;
@@ -56,20 +57,22 @@ final class CannotAssignDomainNameWithDifferentOwner extends \DomainException im
         return $instance;
     }
 
-    public function getTranslatorMsg(): TranslatableMessage
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {
         if ($this->current) {
-            return new TranslatableMessage(
+            return $translator->trans(
                 'domain_name.cannot_assign_domain_name_with_different_space_owner',
                 $this->getTranslationArgs(),
-                'validators'
+                'validators',
+                $locale,
             );
         }
 
-        return new TranslatableMessage(
+        return $translator->trans(
             'domain_name.cannot_assign_domain_name_with_different_owner',
             $this->getTranslationArgs(),
-            'validators'
+            'validators',
+            $locale,
         );
     }
 
@@ -81,7 +84,7 @@ final class CannotAssignDomainNameWithDifferentOwner extends \DomainException im
         return [
             'domain_name' => $this->domainName->name,
             'domain_tld' => $this->domainName->tld,
-            'current_space' => new EntityLink($this->current),
+            'current_space' => $this->current ? new EntityLink($this->current) : null,
             'new_space' => new EntityLink($this->new),
         ];
     }

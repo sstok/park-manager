@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace ParkManager\Domain\Exception;
 
+use Lifthill\Component\Common\Domain\Exception\DomainError as LifthillDomainError;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-interface DomainError extends \Lifthill\Component\Common\Domain\Exception\DomainError
+/**
+ * @deprecated Use the {@see LifthillDomainError} instead.
+ */
+interface DomainError extends LifthillDomainError
 {
-    /**
-     * Returns the Translation-id in the validators+intl-icu domain.
-     */
-    public function getTranslatorMsg(): string | TranslatableInterface;
 }

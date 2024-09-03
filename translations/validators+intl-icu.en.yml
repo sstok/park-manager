@@ -52,11 +52,11 @@ tls:
 
 domain_name:
     already_in_use: DomainName "{name}.{tld}" is already in use.
-    cannot_assign_domain_name_with_different_space_owner: Cannot assign domain name "{name}.{tld}" to Space {new}. Space {current_space} has a different owner than Space {new}.
-    cannot_assign_domain_name_with_different_owner: Cannot assign domain name "{name}.{tld}" to Space. Domain name "{domain_name}.{domain_tld}" does not have same owner.
-    cannot_transfer_space_primary_domain_name: Cannot transfer domain name "{domain_name}.{domain_tld}" to space { new_space }. The domain name is marked as primary of { current_space }. Remove the primary marking first.
-    cannot_transfer_in_use_by_space: 'Cannot transfer domain name "{domain_name}.{domain_tld}" as it''s still assigned to one or more entities (limited to 20 per type): {entities}'
-    not_owned_by_same_space: DomainName "{ domain_name }" is not assigned to the same space.
+    cannot_assign_domain_name_with_different_space_owner: 'Cannot assign domain name "{name}.{tld}" to Space {new}. Space {current_space} has a different owner than Space {new}.'
+    cannot_assign_domain_name_with_different_owner: 'Cannot assign domain name "{domain_name}.{domain_tld}" to Space. Domain name doesn''t have the same owner.'
+    cannot_transfer_space_primary_domain_name: 'Cannot transfer domain name "{domain_name}.{domain_tld}" to space { new_space }. The domain name is marked as primary of { current_space }. Remove the primary marking first.'
+    cannot_transfer_in_use_by_space: 'Cannot transfer domain name "{domain_name}.{domain_tld}" as it''s still assigned to one or more entities (view limited to 20 per type): {entities}'
+    not_owned_by_same_space: 'Domain name "{ domain_name }" is not assigned to the same space.'
 
 webhosting_space:
     plan_constraints_mismatch: The provided Constraints are different than the selected Plan, please check "Do not link to Plan" when the custom constraints should be used.
