@@ -4,6 +4,9 @@
 
 pagination_result_sumary: 'Showing {offset_start} to {offset_end} of {result_total} results'
 
+order_asc: asc
+order_desc: desc
+
 user_role:
     super_admin: Super Administrator
     admin: Administrator

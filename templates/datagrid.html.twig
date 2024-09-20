@@ -12,6 +12,11 @@
             <div>
                 <div class="mt-2">
                     <div id="{{ name }}_search_help">
+                        <ul class="flex flex-wrap text-sm text-gray-400">
+                            {% for field in search_fields %}
+                                <li class="grow p-4 m-2 border rounded-xl border-gray-400 text-center cursor-pointer hover:border-indigo-600 hover:text-indigo-600">{{ field.name }}</li>
+                            {% endfor %}
+                        </ul>
                     </div>
 
                     <textarea id="{{ name }}_search_field" aria-describedby="{{ name }}_search_help" name="{{ name }}[_search_query]" rows="4" cols="50" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6{% if search_errors is defined %} border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 {% else %}{% endif %}">
@@ -19,15 +24,16 @@
                     </textarea>
 
                     {% if search_errors is defined %}
+                        <span class="text-red-500 text-sm">Please fix the following errors:</span>
                         <ul id="search_errors" class="pt-1 pb-1">
                             {% for error in search_errors|default([]) %}
                                 <li class="flex">
                                     <!-- Heroicon name: exclamation-circle -->
-                                    <svg class="h-5 w-5 text-red-500 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
                                     </svg>
                                     <span class="sr-only">{{ 'Error'|trans({}, 'validators') }}</span>
-                                    <span class="text-red-500 text-xs mr-2 text-left flex-auto">{{- lifthill_datagrid_search_error_path(error) }} {{ error|trans() -}}</span>
+                                    <span class="text-red-500 text-xs ml-1 text-left flex-auto">{{- lifthill_datagrid_search_error_path(error) }} {{ error|trans() -}}</span>
                                 </li>
                             {%- endfor -%}
                         </ul>

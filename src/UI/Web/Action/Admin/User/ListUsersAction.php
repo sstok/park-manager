@@ -38,7 +38,7 @@ final class ListUsersAction extends AbstractController
         $users->setSearchField('email', 'email.address', type: 'text', withOrdering: true);
         $users->setSearchField('registeredAt', withOrdering: true);
 
-        $datagrid = $datagridFactory->createDatagridBuilder(true)
+        $datagrid = $datagridFactory->createDatagridBuilder()
             ->add('displayName', options: [
                 'label' => 'label.display_name',
                 'search_type' => TextType::class,
@@ -47,8 +47,6 @@ final class ListUsersAction extends AbstractController
             ->add('registeredAt', DateTimeType::class, options: [
                 'label' => 'label.registered_on',
                 'time_format' => \IntlDateFormatter::SHORT,
-
-                'search_type' => \Rollerworks\Component\Search\Extension\Core\Type\DateTimeType::class,
                 'sortable' => true,
             ])
             ->add('status', options: [
@@ -68,11 +66,9 @@ final class ListUsersAction extends AbstractController
             ])
 
             ->searchField('id', options: ['constraints' => new Uuid(strict: false)])
-            ->searchField('@id', options: [
-                // FIXME This needs to be done in RollerworksSearch itself
-                'view_label' => ['ASC' => 'oplopend', 'DESC' => 'aflopend'],
-            ])
-            ->searchField('email', options: ['constraints' => new Email()], withOrdering: true)
+            ->searchField('email', options: ['constraints' => new Email()])
+            ->searchField('@id')
+            ->searchField('@email')
 
             ->searchOptions(maxValues: 1, maxGroups: 1, maxNestingLevel: 1)
             ->limits(default: 10)

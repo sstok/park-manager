@@ -24,6 +24,7 @@ use ParkManager\Domain\Webhosting\Space\Space;
 use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceAssignmentValidator;
 use ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
+use ParkManager\Infrastructure\Search\OrderDirectionTranslationTypeExtension;
 use ParkManager\Infrastructure\Security\UserProvider;
 use ParkManager\Infrastructure\Security\Voter\SuperAdminVoter;
 use ParkManager\Infrastructure\Security\Voter\SwitchUserVoter;
@@ -33,6 +34,7 @@ use ParkManager\Infrastructure\Translation\Formatter\EntityLinkFormatter;
 use ParkManager\Infrastructure\Translation\Translator;
 use Psr\Container\ContainerInterface;
 use Rollerworks\Component\Search\Doctrine\Orm\DoctrineOrmFactory;
+use Rollerworks\Component\Search\Field\OrderFieldType;
 use Symfony\Component\Form\FormRendererInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
@@ -86,7 +88,7 @@ return static function (ContainerConfigurator $c): void {
             __DIR__ . '/../src/{Domain,DataFixtures}',
             __DIR__ . '/../src/Application/{Command,Event}',
             __DIR__ . '/../src/Application/Service/SystemGateway/**',
-            __DIR__ . '/../src/Infrastructure/{Doctrine}',
+            __DIR__ . '/../src/Infrastructure/{Doctrine,Search}',
             __DIR__ . '/../src/Infrastructure/Security/*User.php',
             __DIR__ . '/../src/Infrastructure/Security/{Permission, Voter}',
             __DIR__ . '/../src/UI/Web/Form/{DataTransformer,DataMapper}',
@@ -139,4 +141,7 @@ return static function (ContainerConfigurator $c): void {
     // After AuthenticatedVoter and SwitchUserVoter. But before Role voters.
     $di->set(SuperAdminVoter::class)
         ->tag('security.voter', ['priority' => 248]);
+
+    $di->set(OrderDirectionTranslationTypeExtension::class)
+        ->tag('rollerworks_search.type_extension', ['extended_type' => OrderFieldType::class]);
 };
