@@ -71,7 +71,7 @@ final class ListUsersAction extends AbstractController
             ->searchField('@email')
 
             ->searchOptions(maxValues: 1, maxGroups: 1, maxNestingLevel: 1)
-            ->limits(default: 10)
+            ->limits([10, 20, 30, 50, 100], default: 20)
             ->getDatagrid($users)
         ;
 

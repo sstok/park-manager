@@ -3,90 +3,121 @@
 {# Base blocks #}
 
 {% block datagrid_container -%}
-    {% set attr = attr|merge({'class': 'min-w-full divide-y divide-gray-200 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg' }) %}
+    {% set attr = attr|merge({'class': 'min-w-full divide-y divide-gray-300' }) %}
 
     {%- if search_config is defined -%}
-        <form action="{{ app.request.uri }}" method="POST" name="{{ name }}" class="mb-5 py-5 px-5 bg-white rounded-md">
-            <label for="{{ name }}_search_field"class="block text-xl font-medium leading-6 text-gray-900">Search</label>
+        <form action="{{ app.request.uri }}" method="POST" name="{{ name }}_search" class="mb-5 py-5 px-5 bg-white rounded-md">
+            <label for="{{ name }}_search_field" class="block text-xl font-medium leading-6 text-gray-900">{{ 'Search'|trans({}, 'Lifthill') }}</label>
 
-            <div>
-                <div class="mt-2">
-                    <div id="{{ name }}_search_help">
-                        <ul class="flex flex-wrap text-sm text-gray-400">
-                            {% for field in search_fields %}
-                                <li class="grow p-4 m-2 border rounded-xl border-gray-400 text-center cursor-pointer hover:border-indigo-600 hover:text-indigo-600">{{ field.name }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-
-                    <textarea id="{{ name }}_search_field" aria-describedby="{{ name }}_search_help" name="{{ name }}[_search_query]" rows="4" cols="50" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6{% if search_errors is defined %} border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 {% else %}{% endif %}">
-                        {{- search_condition|default('') -}}
-                    </textarea>
-
-                    {% if search_errors is defined %}
-                        <span class="text-red-500 text-sm">Please fix the following errors:</span>
-                        <ul id="search_errors" class="pt-1 pb-1">
-                            {% for error in search_errors|default([]) %}
-                                <li class="flex">
-                                    <!-- Heroicon name: exclamation-circle -->
-                                    <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                    </svg>
-                                    <span class="sr-only">{{ 'Error'|trans({}, 'validators') }}</span>
-                                    <span class="text-red-500 text-xs ml-1 text-left flex-auto">{{- lifthill_datagrid_search_error_path(error) }} {{ error|trans() -}}</span>
-                                </li>
-                            {%- endfor -%}
-                        </ul>
-                    {% endif %}
+            <div class="mt-4">
+                <span class="text-sm">{{ 'Available search fields'|trans({}, 'Lifthill') }}</span>
+                <div id="{{ name }}_search_help">
+                    <ul class="flex flex-wrap text-sm text-gray-600">
+                        {% for field in search_fields %}
+                            <li class="grow p-4 m-2 border rounded-xl border-gray-400 text-center font-medium cursor-pointer bg-zinc-50 hover:border-indigo-600 hover:text-indigo-600">{{ field.name }}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
+
+                {% if search_errors is defined %}
+                    <span class="text-red-500 text-sm">{{ 'Please fix the following errors:'|trans({}, 'Lifthill') }}</span>
+                    <ul id="search_errors" class="pt-1 pb-1">
+                        {% for error in search_errors|default([]) %}
+                            <li class="flex">
+                                <!-- Heroicon name: exclamation-circle -->
+                                <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                </svg>
+                                <span class="sr-only">{{ 'Error'|trans({}, 'validators') }}</span>
+                                <span class="text-red-500 text-xs ml-1 text-left flex-auto">{{- lifthill_datagrid_search_error_path(error) }} {{ error|trans() -}}</span>
+                            </li>
+                        {%- endfor -%}
+                    </ul>
+                {% endif %}
+                <textarea id="{{ name }}_search_field" aria-describedby="{{ name }}_search_help" name="{{ name }}[_search_query]" rows="4" cols="50" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6{% if search_errors is defined %} border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 {% else %}{% endif %}">
+                    {{- search_condition|default('') -}}
+                </textarea>
             </div>
 
             <div class="mt-4 sm:flex sm:items-center">
-                <div class="sm:flex-auto">
-
-                </div>
+                <div class="sm:flex-auto"></div> <!-- Spacer -->
                 <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <button type="submit" name="{{ name }}[_search]" value="1" class="inline-flex items-center gap-x-1.5 rounded-md px-4 py-2 font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-0.5 h-5 w-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-ml-0.5 h-5 w-5" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
                         </svg>
-                        <span>Search</span>
+                        <span>{{ 'Search'|trans({}, 'Lifthill') }}</span>
                     </button>
                 </div>
             </div>
         </form>
     {%- endif -%}
 
-    <table{{ block('attributes') }}>
-        <thead class="bg-gray-50">
-        <tr>
-            {% for header in columns -%}
-                {{ lifthill_datagrid_column_header(header, header_attr|default([])) }}
-            {% endfor -%}
-        </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-        {% for index, row in rows -%}
-            {# The row is its own view type (DatagridRowView). This would result in many block renderings #}
-            <tr id="{{ name ~ '_row_' ~ index }}"{% with { attr: row.vars.attr } %}{{ block('attributes') }}{% endwith %}>
-                {% for cell in row -%}
-                    {{ lifthill_datagrid_column_cell(cell) }}
-                {% endfor -%}
-            </tr>
-        {% endfor -%}
-        </tbody>
-    </table>
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+                <table{{ block('attributes') }}>
+                    <thead class="bg-gray-50">
+                    <tr>
+                        {% for header in columns -%}
+                            {{ lifthill_datagrid_column_header(header, header_attr|default([])) }}
+                        {% endfor -%}
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                    {% for index, row in rows -%}
+                        {# The row is its own view type (DatagridRowView). This would result in many block renderings #}
+                        <tr id="{{ name ~ '_row_' ~ index }}"{% with { attr: row.vars.attr } %}{{ block('attributes') }}{% endwith %} class="even:bg-gray-50">
+                            {% for cell in row -%}
+                                {{ lifthill_datagrid_column_cell(cell) }}
+                            {% endfor -%}
+                        </tr>
+                    {% endfor -%}
+                    </tbody>
+                </table>
 
-    {{ lifthill_datagrid_pager(name, pager, 'twig') }}
+                <div class="flex items-center justify-between border-t-2 border-gray-200 bg-white px-4 py-3 sm:px-6">
+                    {{ lifthill_datagrid_pager(name, pager, 'twig', {'template': 'pagerfanta_datagrid.html.twig'}) }}
+
+                    {% if selectable_limits|length > 1 %}
+                        <form action="{{ app.request.uri }}" method="POST" name="{{ name }}_rows_limit">
+                            <div class="m-2 flex w-56 text-sm">
+                                <div class="relative flex flex-grow items-stretch focus-within:z-10">
+                                    <select title="{{ 'Per page'|trans({}, 'Lifthill') }}" name="{{ name }}[_rows_limit]" class="block w-full rounded-none rounded-l-md border-0 bg-transparent py-1 pl-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        {% for limit in selectable_limits %}
+                                            <option value="{{ limit }}"{% if rows_per_page == limit %} selected{% endif %}>
+                                                {{ limit }}{% if default_limit == limit %} ({{ 'Default'|trans({}, 'Lifthill') }}){% endif %}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="submit" name="{{ name }}[_change]" class="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 bg-slate-100 hover:bg-slate-200">{{ 'Change'|trans({}, 'Lifthill') }}</button>
+                            </div>
+                        </form>
+                    {% endif %}
+
+                    <button type="button" class="ml-2 rounded-md bg-slate-200 p-2 text-gray-600 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5"/>
+                        </svg>
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 {%- endblock %}
 
 {% block column_header -%}
+    {% set header_containtainer_attr = {'class': 'flex' } %}
     {% set attr = attr|merge({'class': 'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' }) %}
+    {% set sort_icon_attr = {'class': 'w-3.5' } %}
     {{ parent() }}
 {%- endblock %}
 
 {% block column_cell -%}
-    {% set attr = attr|merge({'class': 'px-6 py-4 whitespace-nowrap' }) %}
+    {% set attr = attr|merge({'class': 'px-6 py-4 whitespace-nowrap text-sm' }) %}
     <td {{ block('attributes') }}>{%- if use_raw -%}{{ value|raw }}{% else -%}{{ value }}{% endif -%}</td>
 {%- endblock %}
 
