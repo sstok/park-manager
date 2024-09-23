@@ -15,7 +15,8 @@ use Lifthill\Component\Datagrid\DatagridFactory;
 use Lifthill\Component\Datagrid\Extension\Core\Type\DateTimeType;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserRepository;
-use Rollerworks\Component\Search\Extension\Core\Type\IntegerType;
+use ParkManager\Infrastructure\Search\Doctrine\UserStatusConversion;
+use Rollerworks\Component\Search\Extension\Core\Type\ChoiceType;
 use Rollerworks\Component\Search\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,6 +38,8 @@ final class ListUsersAction extends AbstractController
         $users->setSearchField('displayName', 'displayName', withOrdering: true);
         $users->setSearchField('email', 'email.address', type: 'text', withOrdering: true);
         $users->setSearchField('registeredAt', withOrdering: true);
+        $users->setSearchField('status', 'id');
+        //$users->setSearchField('role', 'roles');
 
         $datagrid = $datagridFactory->createDatagridBuilder()
             ->add('displayName', options: [
@@ -52,8 +55,15 @@ final class ListUsersAction extends AbstractController
             ->add('status', options: [
                 'label' => 'label.status',
                 'data_provider' => false,
-                'search_type' => IntegerType::class, // XXX This should be ChoiceType
-                'search_options' => [],
+                'search_type' => ChoiceType::class,
+                'search_options' => [
+                    'doctrine_orm_conversion' => new UserStatusConversion(),
+                    'choices' => [
+                        'active' => 'active',
+                        'password-expired' => 'password-expired',
+                        'email-change-pending' => 'email-change-pending',
+                    ],
+                ],
             ])
             ->add('role', options: [
                 'label' => 'label.role',
