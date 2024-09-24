@@ -11,8 +11,10 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\Admin\User;
 
 use Lifthill\Bridge\Doctrine\OrmSearchableResultSet;
+use Lifthill\Component\Datagrid\DatagridAction;
 use Lifthill\Component\Datagrid\DatagridFactory;
 use Lifthill\Component\Datagrid\Extension\Core\Type\DateTimeType;
+use ParkManager\Application\Command\User\RequestPasswordReset;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserRepository;
 use ParkManager\Infrastructure\Search\Doctrine\UserStatusConversion;
@@ -74,7 +76,6 @@ final class ListUsersAction extends AbstractController
                 'label_attr' => ['class' => 'sr-only'],
                 'data_provider' => 'id',
             ])
-
             ->searchField('id', options: ['constraints' => new Uuid(strict: false)])
             ->searchField('email', options: ['constraints' => new Email()])
             ->searchField('@id')
@@ -82,6 +83,15 @@ final class ListUsersAction extends AbstractController
 
             ->searchOptions(maxValues: 1, maxGroups: 1, maxNestingLevel: 1)
             ->limits([10, 20, 30, 50, 100], default: 20)
+
+            ->actions([
+                'RequestNewPassword' => new DatagridAction(
+                    static fn(User $user) => new RequestPasswordReset($user->email->toString()),
+                    'Request new password',
+                    static fn() => 'Password reset requests where send',
+                )
+            ])
+
             ->getDatagrid($users)
         ;
 

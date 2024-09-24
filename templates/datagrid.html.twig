@@ -53,7 +53,7 @@
         </form>
     {%- endif -%}
 
-    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <form action="{{ app.request.uri }}" method="POST" name="{{ name }}_batch" class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
                 <table{{ block('attributes') }}>
@@ -81,12 +81,12 @@
 
                     {% if selectable_limits|length > 1 %}
                         <form action="{{ app.request.uri }}" method="POST" name="{{ name }}_rows_limit">
-                            <div class="m-2 flex w-56 text-sm">
+                            <div class="m-2 flex min-w-40 text-sm">
                                 <div class="relative flex flex-grow items-stretch focus-within:z-10">
                                     <select title="{{ 'Per page'|trans({}, 'Lifthill') }}" name="{{ name }}[_rows_limit]" class="block w-full rounded-none rounded-l-md border-0 bg-transparent py-1 pl-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         {% for limit in selectable_limits %}
-                                            <option value="{{ limit }}"{% if rows_per_page == limit %} selected{% endif %}>
-                                                {{ limit }}{% if default_limit == limit %} ({{ 'Default'|trans({}, 'Lifthill') }}){% endif %}
+                                            <option value="{{ limit }}"{% if rows_per_page == limit %} selected{% endif %}{% if default_limit == limit %} title="{{ 'Default'|trans({}, 'Lifthill') }}"{% endif %}>
+                                                {{ limit }} {% if default_limit == limit %} *{% endif %}
                                             </option>
                                         {% endfor %}
                                     </select>
@@ -106,7 +106,7 @@
 
             </div>
         </div>
-    </div>
+    </form>
 {%- endblock %}
 
 {% block column_header -%}
@@ -132,6 +132,18 @@
 {%- endblock %}
 
 {# Core extension blocks #}
+
+{% block batch_header %}
+    {% set header_containtainer_attr = {'class': 'flex' } %}
+    {% set attr = attr|merge({'class': 'px-4 py-4 whitespace-nowrap' }) %}
+    {{ parent() }}
+{% endblock batch_header %}
+
+
+{% block batch_cell %}
+    {% set attr = attr|merge({'class': 'px-4 py-4 whitespace-nowrap' }) %}
+    {{ parent() }}
+{% endblock batch_cell %}
 
 {% block action_cell -%}
     {% set attr = attr|merge({'class': 'px-6 py-4 whitespace-nowrap' }) %}
