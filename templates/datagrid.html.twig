@@ -53,6 +53,28 @@
         </form>
     {%- endif -%}
 
+    {% if dispatch_errors is defined %}
+        <div class="mb-4 mt-4 border-l-4 border-red-400 bg-red-50 p-4">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800">There was an error with your submission</h3>
+                    <div class="mt-2 text-sm text-red-700">
+                        <ul role="list" class="list-disc space-y-1 pl-5">
+                            {% for error in dispatch_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <form action="{{ app.request.uri }}" method="POST" name="{{ name }}_batch" class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
@@ -77,6 +99,21 @@
                 </table>
 
                 <div class="flex items-center justify-between border-t-2 border-gray-200 bg-white px-4 py-3 sm:px-6">
+                    {% if actions is defined %}
+                        <div class="m-2 flex min-w-60 text-sm">
+                            <select title="Execute action on selected rows" name="{{ name }}[_action]" class="block w-full rounded-none rounded-l-md border-0 bg-transparent py-1 pl-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                {% for action_name, action in actions %}
+                                    <option value="{{ action_name }}">{{ (action.label|default(action_name))|trans() }}</option>
+                                {% endfor %}
+                            </select>
+
+                            <button name="{{ name }}[_run_action]" value="1"  class="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 bg-slate-100 hover:bg-slate-200">
+                                Execute
+                            </button>
+                        </div>
+
+                    {% endif %}
+
                     {{ lifthill_datagrid_pager(name, pager, 'twig', {'template': 'pagerfanta_datagrid.html.twig'}) }}
 
                     {% if selectable_limits|length > 1 %}
@@ -91,7 +128,9 @@
                                         {% endfor %}
                                     </select>
                                 </div>
-                                <button type="submit" name="{{ name }}[_change]" class="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 bg-slate-100 hover:bg-slate-200">{{ 'Change'|trans({}, 'Lifthill') }}</button>
+                                <button type="submit" name="{{ name }}[_change]" class="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 bg-slate-100 hover:bg-slate-200">
+                                    {{ 'Change'|trans({}, 'Lifthill') }}
+                                </button>
                             </div>
                         </form>
                     {% endif %}
@@ -101,12 +140,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5"/>
                         </svg>
                     </button>
-
                 </div>
 
             </div>
         </div>
     </form>
+
 {%- endblock %}
 
 {% block column_header -%}
@@ -136,12 +175,14 @@
 {% block batch_header %}
     {% set header_containtainer_attr = {'class': 'flex' } %}
     {% set attr = attr|merge({'class': 'px-4 py-4 whitespace-nowrap' }) %}
+    {% set value_attr = attr|merge({'class': 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600' }) %}
     {{ parent() }}
 {% endblock batch_header %}
 
 
 {% block batch_cell %}
     {% set attr = attr|merge({'class': 'px-4 py-4 whitespace-nowrap' }) %}
+    {% set value_attr = attr|merge({'class': 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600' }) %}
     {{ parent() }}
 {% endblock batch_cell %}
 

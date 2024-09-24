@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\Admin\User;
 
 use Lifthill\Bridge\Doctrine\OrmSearchableResultSet;
+use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Datagrid\Action\FormAction;
 use Lifthill\Component\Datagrid\DatagridAction;
 use Lifthill\Component\Datagrid\DatagridFactory;
 use Lifthill\Component\Datagrid\Extension\Core\Type\DateTimeType;
@@ -18,6 +20,7 @@ use ParkManager\Application\Command\User\RequestPasswordReset;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserRepository;
 use ParkManager\Infrastructure\Search\Doctrine\UserStatusConversion;
+use ParkManager\UI\Web\Form\Type\User\Admin\DatagridAction\AssignUserSecurityLevelActionForm;
 use Rollerworks\Component\Search\Extension\Core\Type\ChoiceType;
 use Rollerworks\Component\Search\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -87,9 +90,16 @@ final class ListUsersAction extends AbstractController
             ->actions([
                 'RequestNewPassword' => new DatagridAction(
                     static fn(User $user) => new RequestPasswordReset($user->email->toString()),
-                    'Request new password',
-                    static fn() => 'Password reset requests where send',
-                )
+                    'Reset password',
+                    static fn(ResultSet $resultSet) => sprintf('Password reset requests where send for %d users', $resultSet->count()),
+                ),
+
+                'Test form' => new FormAction(
+                    static function (ResultSet $resultSet) {
+                        return null;
+                    },
+                    AssignUserSecurityLevelActionForm::class,
+                ),
             ])
 
             ->getDatagrid($users)
