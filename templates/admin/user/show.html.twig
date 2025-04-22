@@ -81,6 +81,16 @@
                                             {% endif %}
                                         </dd>
                                     </div>
+
+                                    <div class="sm:col-span-1">
+                                        <dt class="text-sm font-medium text-gray-500">
+                                            {{ 'label.postal_code'|trans }}
+                                            <a href="{{ path('park_manager.admin.user_change_postal_code', {'user': user.id}) }}" class="ml-2 text-sm font-medium text-gray-700 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">{{ 'label.change'|trans }}</a>
+                                        </dt>
+                                        <dd class="flex mt-1 text-sm text-gray-900">
+                                            {{ user.postalCode|default('n/a') }}
+                                        </dd>
+                                    </div>
                                 </dl>
                             </div>
                         </div>

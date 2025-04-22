@@ -94,6 +94,8 @@ return static function (ContainerConfigurator $c): void {
             __DIR__ . '/../src/UI/Web/Form/{DataTransformer,DataMapper}',
         ]);
 
+    $di->load('ParkManager\\Infrastructure\\Doctrine\\BlindIndex\\', __DIR__ . '/../src/Infrastructure/Doctrine/BlindIndex/*.php');
+
     $di->set(Translator::class)
         ->autowire(false)
         ->decorate('translator')

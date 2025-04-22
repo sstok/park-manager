@@ -15,6 +15,7 @@ user_role:
 label:
     search: Search
     email: Email address
+    postal_code: Postal Code
     status: Status
     summary: Summary
     current_password: Current Password

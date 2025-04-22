@@ -64,6 +64,9 @@ class User implements \Stringable
     #[Embedded(class: UserPreferences::class, columnPrefix: 'preference_')]
     public UserPreferences $preferences;
 
+    #[Column(name: 'postal_code', type: 'lifthill_encrypted:text;security_level_c2', nullable: true)]
+    public ?string $postalCode = null;
+
     private function __construct(
         #[Id]
         #[Column(type: 'park_manager_user_id')]
@@ -266,5 +269,10 @@ class User implements \Stringable
     public function hasPasswordResetPending(): bool
     {
         return $this->passwordResetToken !== null && ! $this->passwordResetToken->isExpired(CarbonImmutable::now());
+    }
+
+    public function changePostalCode(?string $postalCode): void
+    {
+        $this->postalCode = $postalCode;
     }
 }

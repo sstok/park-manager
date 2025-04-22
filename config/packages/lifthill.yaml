@@ -8,3 +8,9 @@ lifthill:
 
     form:
         default_message_bus: 'park_manager.command_bus'
+
+    encryption:
+        engines:
+            security_level_c2:
+                type: xchacha20poly1305
+                private_key: '3e78d289c1693300c32e54c57cb44740576d87e70a7d84863dc3ca7323bcc3ca'
