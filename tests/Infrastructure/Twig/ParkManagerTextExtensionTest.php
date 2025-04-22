@@ -165,7 +165,7 @@ final class ParkManagerTextExtensionTest extends TestCase
         // Unicode (with cut)
         self::assertSame('さよ<br>なら', $extension->wordwrap($env, 'さよなら', width: 2, break: '<br>', cut: true));
         self::assertSame('नम<br>स्ते<br>दुनि<br>या', $extension->wordwrap($env, 'नमस्ते दुनिया', width: 2, break: '<br>', cut: true));
-        self::assertSame('👁👄👁', $extension->wordwrap($env, '👁👄👁', width: 2, break: '<br>', cut: true));
+        self::assertSame('👁👄<br>👁', $extension->wordwrap($env, '👁👄👁', width: 2, break: '<br>', cut: true));
         self::assertSame('👁<br>👄<br>👁', $extension->wordwrap($env, '👁 👄 👁', width: 2, break: '<br>', cut: true));
 
         // -- No escape

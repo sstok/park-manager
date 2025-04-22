@@ -280,6 +280,11 @@ final class CAResolverTest extends TestCase
                         1 => true,
                         2 => 'Time Stamp signing',
                     ],
+                    10 => [
+                        0 => false,
+                        1 => true,
+                        2 => 'Code signing',
+                    ],
                 ],
                 'extensions' => [
                     'keyUsage' => 'Digital Signature, Certificate Sign, CRL Sign',
@@ -384,6 +389,11 @@ final class CAResolverTest extends TestCase
                         0 => false,
                         1 => true,
                         2 => 'Time Stamp signing',
+                    ],
+                    10 => [
+                        0 => false,
+                        1 => true,
+                        2 => 'Code signing',
                     ],
                 ],
                 'extensions' => [
@@ -797,6 +807,11 @@ final class CAResolverTest extends TestCase
                         1 => true,
                         2 => 'Time Stamp signing',
                     ],
+                    10 => [
+                        0 => false,
+                        1 => true,
+                        2 => 'Code signing',
+                    ],
                 ],
                 'extensions' => [
                     'keyUsage' => 'Digital Signature, Certificate Sign, CRL Sign',
@@ -901,6 +916,11 @@ final class CAResolverTest extends TestCase
                         0 => false,
                         1 => true,
                         2 => 'Time Stamp signing',
+                    ],
+                    10 => [
+                        0 => false,
+                        1 => true,
+                        2 => 'Code signing',
                     ],
                 ],
                 'extensions' => [
