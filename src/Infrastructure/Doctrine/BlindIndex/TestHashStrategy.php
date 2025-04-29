@@ -18,26 +18,21 @@ use Lifthill\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineBlindIndexSt
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-#[AutoconfigureTag(DoctrineBlindIndexStrategyPass::TAG_NAME, ['strategy' => 'hash'])]
-final class HashStrategy implements BlindIndexStrategy
+#[AutoconfigureTag(DoctrineBlindIndexStrategyPass::TAG_NAME, ['strategy' => 'test_hash'])]
+final class TestHashStrategy implements BlindIndexStrategy
 {
     public function configureOptionsResolver(OptionsResolver $resolver): void
     {
-        $resolver
-            ->setDefault('hash_algorithm', 'sha1')
-            ->setAllowedTypes('hash_algorithm', hash_algos())
-        ;
+        // Noop
     }
 
     public function getSchema(BlindIndexMetadata $mapping): Column
     {
-        return (new Column(type: 'string', options: ['length' => mb_strlen(hash('test', $mapping->options['hash_algorithm']), '8bit')]))
-           ->indexed()
-        ;
+        return (new Column(type: 'string', options: ['notNull' => false]));
     }
 
     public function getValue(BlindIndexMetadata $mapping, mixed $value, Connection $connection): mixed
     {
-        return hash($value, $mapping->options['hash_algorithm']);
+        return sprintf('<TEST>%s</TEST>', $value);
     }
 }

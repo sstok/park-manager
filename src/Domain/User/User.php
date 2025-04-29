@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Lifthill\Component\Common\Domain\Attribute\BlindIndex;
 use Lifthill\Component\Common\Domain\Attribute\Entity as DomainEntity;
 use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use ParkManager\Domain\Exception\PasswordResetTokenNotAccepted;
@@ -64,9 +65,6 @@ class User implements \Stringable
     #[Embedded(class: UserPreferences::class, columnPrefix: 'preference_')]
     public UserPreferences $preferences;
 
-    #[Column(name: 'postal_code', type: 'lifthill_encrypted:text;security_level_c2', nullable: true)]
-    public ?string $postalCode = null;
-
     private function __construct(
         #[Id]
         #[Column(type: 'park_manager_user_id')]
@@ -80,7 +78,11 @@ class User implements \Stringable
         public string $displayName,
 
         #[Column(name: 'auth_password', type: 'text')]
-        public string $password
+        public string $password,
+
+        #[Column(name: 'postal_code', type: 'lifthill_encrypted:text;security_level_c2', nullable: true)]
+        #[BlindIndex('postal_code_hash', 'test_hash')]
+        public ?string $postalCode = null,
     ) {
         Assertion::false($email->isPattern, 'Email cannot be a pattern.', 'email');
 
