@@ -25,19 +25,24 @@ final class HashStrategy implements BlindIndexStrategy
     {
         $resolver
             ->setDefault('hash_algorithm', 'sha1')
-            ->setAllowedTypes('hash_algorithm', hash_algos())
+            ->setAllowedValues('hash_algorithm', hash_algos())
         ;
     }
 
     public function getSchema(BlindIndexMetadata $mapping): Column
     {
-        return (new Column(type: 'string', options: ['length' => mb_strlen(hash('test', $mapping->options['hash_algorithm']), '8bit')]))
+        return (new Column(type: 'string', options: ['length' => mb_strlen(hash($mapping->options['hash_algorithm'], 'test'), '8bit')]))
            ->indexed()
         ;
     }
 
     public function getValue(BlindIndexMetadata $mapping, mixed $value, Connection $connection): mixed
     {
-        return hash($value, $mapping->options['hash_algorithm']);
+        return hash($mapping->options['hash_algorithm'], $value);
+    }
+
+    public function getColumnType(array $options): string
+    {
+        return 'string';
     }
 }

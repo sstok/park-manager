@@ -72,6 +72,7 @@ class User implements \Stringable
         public UserId $id,
 
         #[Embedded(class: EmailAddress::class, columnPrefix: 'email_')]
+        #[BlindIndex('email_hash', 'test_hash', path: 'canonical')]
         public EmailAddress $email,
 
         #[Column(name: 'display_name', type: 'string')]
@@ -81,7 +82,8 @@ class User implements \Stringable
         public string $password,
 
         #[Column(name: 'postal_code', type: 'lifthill_encrypted:text;security_level_c2', nullable: true)]
-        #[BlindIndex('postal_code_hash', 'test_hash')]
+        #[BlindIndex('postal_code_hasht', 'test_hash')]
+        #[BlindIndex('postal_code_hash', 'hash')]
         public ?string $postalCode = null,
     ) {
         Assertion::false($email->isPattern, 'Email cannot be a pattern.', 'email');

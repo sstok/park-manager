@@ -101,6 +101,10 @@
         {
             "type": "path",
             "url": "../../rollerworks/search/lib/core"
+        },
+        {
+            "type": "path",
+            "url": "../../rollerworks/search/lib/Doctrine/Orm"
         }
     ],
     "minimum-stability": "dev",

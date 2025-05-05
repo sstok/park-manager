@@ -35,4 +35,9 @@ final class TestHashStrategy implements BlindIndexStrategy
     {
         return sprintf('<TEST>%s</TEST>', $value);
     }
+
+    public function getColumnType(array $options): string
+    {
+        return 'string';
+    }
 }

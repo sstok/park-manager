@@ -42,8 +42,12 @@ final class ListUsersAction extends AbstractController
         $users->setSearchField('id', withOrdering: true);
         $users->setSearchField('displayName', 'displayName', withOrdering: true);
         $users->setSearchField('email', 'email.address', type: 'text', withOrdering: true);
+        $users->setSearchField('emailH', 'email.canonical', type: 'text');
         $users->setSearchField('registeredAt', withOrdering: true);
         $users->setSearchField('status', 'id');
+
+        $users->setSearchField('postalCode');
+
         //$users->setSearchField('role', 'roles');
 
         $datagrid = $datagridFactory->createDatagridBuilder()
@@ -83,6 +87,8 @@ final class ListUsersAction extends AbstractController
             ->searchField('email', options: ['constraints' => new Email()])
             ->searchField('@id')
             ->searchField('@email')
+            ->searchField('postalCode', options: ['blind_index' => 'postal_code_hash'])
+            ->searchField('emailH', options: ['blind_index' => 'email_hash'])
 
             ->searchOptions(maxValues: 1, maxGroups: 1, maxNestingLevel: 1)
             ->limits([10, 20, 30, 50, 100], default: 20)
