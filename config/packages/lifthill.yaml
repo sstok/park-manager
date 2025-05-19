@@ -5,6 +5,7 @@ lifthill:
     doctrine:
         types_automapping:
             '%kernel.project_dir%/src/Infrastructure/Doctrine/Type': 'ParkManager\Infrastructure\Doctrine\Type'
+        blind_index_cache:
 
     form:
         default_message_bus: 'park_manager.command_bus'
@@ -14,3 +15,14 @@ lifthill:
             security_level_c2:
                 type: xchacha20poly1305
                 private_key: '3e78d289c1693300c32e54c57cb44740576d87e70a7d84863dc3ca7323bcc3ca'
+
+when@prod:
+    lifthill:
+        doctrine:
+            blind_index_cache: lifthill.blind_index.metadata_cache
+
+    framework:
+        cache:
+            pools:
+                lifthill.blind_index.metadata_cache:
+                    adapter: cache.system
