@@ -27,7 +27,8 @@ final class AddForwardHandler
         private DomainNameRepository $domainNameRepository,
         private MailboxRepository $mailboxRepository,
         private ConstraintsChecker $constraintsChecker,
-    ) {}
+    ) {
+    }
 
     public function __invoke(AddForward $command): void
     {
@@ -35,7 +36,7 @@ final class AddForwardHandler
 
         $this->constraintsChecker->allowNewEmailForward(
             $command->space,
-            [sprintf('%s@%s', $command->address, $domainName->toString())]
+            [\sprintf('%s@%s', $command->address, $domainName->toString())]
         );
 
         if ($this->mailboxRepository->hasName($command->address, $domainName->namePair)) {

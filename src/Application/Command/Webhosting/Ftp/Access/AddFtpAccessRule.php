@@ -24,5 +24,6 @@ final class AddFtpAccessRule
         public FtpUserId | SpaceId $entity,
         public IpAddress | IpRange $address,
         public AccessRuleStrategy $strategy = AccessRuleStrategy::DENY,
-    ) {}
+    ) {
+    }
 }

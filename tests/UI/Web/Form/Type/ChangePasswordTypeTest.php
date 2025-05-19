@@ -133,5 +133,7 @@ final class ChangePasswordTypeTest extends MessageFormTestCase
 /** @internal */
 final class ChangeUserPassword
 {
-    public function __construct(public string $id, public string $password) {}
+    public function __construct(public string $id, public string $password)
+    {
+    }
 }

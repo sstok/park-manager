@@ -26,9 +26,9 @@ final class UserStatusConversion implements ColumnConversion, ValueConversion
         $value = $hints->originalValue;
 
         return match ($value) {
-            'active' => sprintf('(CASE WHEN %s.passwordExpiresOn IS NULL OR %1$s.passwordExpiresOn > %s THEN 1 ELSE 0 END)', $hints->field->alias, $hints->createParamReferenceFor(new \DateTimeImmutable(), 'datetime_immutable')),
-            'password-expired' => sprintf('(CASE WHEN %s.passwordExpiresOn IS NOT NULL AND %1$s.passwordExpiresOn < %s THEN 1 ELSE 0 END)', $hints->field->alias, $hints->createParamReferenceFor(new \DateTimeImmutable(), 'datetime_immutable')),
-            'email-change-pending' => sprintf('(CASE WHEN %s.emailAddressChangeToken.selector IS NOT NULL THEN 1 ELSE 0 END)', $hints->field->alias),
+            'active' => \sprintf('(CASE WHEN %s.passwordExpiresOn IS NULL OR %1$s.passwordExpiresOn > %s THEN 1 ELSE 0 END)', $hints->field->alias, $hints->createParamReferenceFor(new \DateTimeImmutable(), 'datetime_immutable')),
+            'password-expired' => \sprintf('(CASE WHEN %s.passwordExpiresOn IS NOT NULL AND %1$s.passwordExpiresOn < %s THEN 1 ELSE 0 END)', $hints->field->alias, $hints->createParamReferenceFor(new \DateTimeImmutable(), 'datetime_immutable')),
+            'email-change-pending' => \sprintf('(CASE WHEN %s.emailAddressChangeToken.selector IS NOT NULL THEN 1 ELSE 0 END)', $hints->field->alias),
         };
     }
 }

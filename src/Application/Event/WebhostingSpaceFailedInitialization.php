@@ -15,5 +15,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class WebhostingSpaceFailedInitialization extends Event
 {
-    public function __construct(public SpaceId $id) {}
+    public function __construct(public SpaceId $id)
+    {
+    }
 }

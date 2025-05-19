@@ -14,5 +14,7 @@ use ParkManager\Domain\Webhosting\Email\MailboxId;
 
 final class DeactivateMailbox
 {
-    public function __construct(public MailboxId $id) {}
+    public function __construct(public MailboxId $id)
+    {
+    }
 }

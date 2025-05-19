@@ -20,11 +20,11 @@ final class DateIntervalParameterValue implements ParameterValue
     /**
      * @param array<string, mixed>|string|null $syntax
      *
-     * @see \Carbon\CarbonInterval::forHumans for configurations
+     * @see CarbonInterval::forHumans for configurations
      */
     public function __construct(
         \DateInterval $value,
-        private null | array | string $syntax = null,
+        private array | string | null $syntax = null,
     ) {
         if (! $value instanceof CarbonInterval) {
             $value = CarbonInterval::instance($value);

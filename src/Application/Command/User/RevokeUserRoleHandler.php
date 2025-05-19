@@ -14,7 +14,9 @@ use ParkManager\Domain\User\UserRepository;
 
 final class RevokeUserRoleHandler
 {
-    public function __construct(private UserRepository $userRepository) {}
+    public function __construct(private UserRepository $userRepository)
+    {
+    }
 
     public function __invoke(RevokeUserRole $command): void
     {

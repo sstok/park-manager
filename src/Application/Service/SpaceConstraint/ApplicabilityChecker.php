@@ -34,7 +34,8 @@ class ApplicabilityChecker
         private SpaceRepository $spaceRepository,
         private MailboxRepository $mailboxRepository,
         private StorageUsage $storageUsageRetriever
-    ) {}
+    ) {
+    }
 
     public function getApplicable(SpaceId $id, Constraints $constraints): Constraints
     {

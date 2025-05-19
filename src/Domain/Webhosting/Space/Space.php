@@ -205,7 +205,7 @@ class Space
         $this->expirationDate = null;
     }
 
-    public function isExpired(\DateTimeImmutable $current = null): bool
+    public function isExpired(?\DateTimeImmutable $current = null): bool
     {
         if ($this->expirationDate === null) {
             return false;
@@ -294,7 +294,7 @@ class Space
     public function setupWith(int $userId, array $userGroups, string $homeDir): void
     {
         if ($this->setupStatus !== SpaceSetupStatus::GETTING_INITIALIZED) {
-            throw new InvalidStatus(sprintf('Cannot Setup Space when status is not "Getting_Initialized", current status is "%s".', $this->setupStatus->label()));
+            throw new InvalidStatus(\sprintf('Cannot Setup Space when status is not "Getting_Initialized", current status is "%s".', $this->setupStatus->label()));
         }
 
         $this->systemRegistration = new SystemRegistration($userId, $userGroups, $homeDir);

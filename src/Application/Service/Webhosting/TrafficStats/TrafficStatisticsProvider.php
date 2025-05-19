@@ -19,6 +19,6 @@ interface TrafficStatisticsProvider
 
     public function getFromPeriod(
         ReportPeriod $period,
-        TrafficType $types = null
+        ?TrafficType $types = null
     ): ?TrafficReport;
 }

@@ -14,5 +14,7 @@ use ParkManager\Domain\Webhosting\ScheduledTask\TaskId;
 
 final class RemoveScheduledTask
 {
-    public function __construct(public TaskId $id) {}
+    public function __construct(public TaskId $id)
+    {
+    }
 }

@@ -18,7 +18,8 @@ final class ResizeMailboxHandler
     public function __construct(
         private MailboxRepository $repository,
         private ConstraintsChecker $constraintsChecker
-    ) {}
+    ) {
+    }
 
     public function __invoke(ResizeMailbox $command): void
     {

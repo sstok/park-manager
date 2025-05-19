@@ -118,7 +118,9 @@ final class SecurityUserTest extends TestCase
             /**
              * @param array<int, string> $roles
              */
-            public function __construct(private string $identifier, private string $password, private array $roles) {}
+            public function __construct(private string $identifier, private string $password, private array $roles)
+            {
+            }
 
             /**
              * @return array<int, string>
@@ -138,7 +140,9 @@ final class SecurityUserTest extends TestCase
                 return null;
             }
 
-            public function eraseCredentials(): void {}
+            public function eraseCredentials(): void
+            {
+            }
 
             public function getUserIdentifier(): string
             {

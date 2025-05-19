@@ -18,7 +18,7 @@ final class AddressAlreadyExists extends \DomainException implements DomainError
 {
     public function __construct(public string $name, public DomainNamePair $domainName)
     {
-        parent::__construct(sprintf('Address %s.%s already exists.', $name, $domainName->toString()));
+        parent::__construct(\sprintf('Address %s.%s already exists.', $name, $domainName->toString()));
     }
 
     public function getTranslatorMsg(): TranslatableMessage

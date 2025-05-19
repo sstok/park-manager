@@ -20,5 +20,6 @@ final class ChangeFtpUserHomedir
 
         #[DirectoryPath]
         public string $homedir,
-    ) {}
+    ) {
+    }
 }

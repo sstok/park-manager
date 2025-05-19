@@ -60,7 +60,7 @@ class Forward
         $this->addressChanged = false;
     }
 
-    public function setAddress(string $address, DomainName $domainName = null): void
+    public function setAddress(string $address, ?DomainName $domainName = null): void
     {
         $domainName ??= $this->domainName;
         $emailAddress = new EmailAddress($address . '@' . $domainName->namePair->toString());

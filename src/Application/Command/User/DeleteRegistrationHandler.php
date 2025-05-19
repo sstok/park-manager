@@ -20,7 +20,8 @@ final class DeleteRegistrationHandler
     public function __construct(
         private UserRepository $repository,
         private OwnershipUsageList $ownershipUsageList
-    ) {}
+    ) {
+    }
 
     public function __invoke(DeleteRegistration $command): void
     {

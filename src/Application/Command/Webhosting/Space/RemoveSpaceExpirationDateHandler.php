@@ -17,7 +17,9 @@ use ParkManager\Domain\Webhosting\Space\SuspensionLevel;
 
 final class RemoveSpaceExpirationDateHandler
 {
-    public function __construct(private SpaceRepository $spaceRepository) {}
+    public function __construct(private SpaceRepository $spaceRepository)
+    {
+    }
 
     public function __invoke(RemoveSpaceExpirationDate $command): void
     {

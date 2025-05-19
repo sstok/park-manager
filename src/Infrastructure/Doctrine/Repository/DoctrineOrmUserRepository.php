@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\Infrastructure\Doctrine\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Lifthill\Bridge\Doctrine\OrmQueryBuilderResultSet;
 use Lifthill\Bridge\Doctrine\OrmSearchableResultSet;
 use Lifthill\Component\Common\Domain\Model\EmailAddress;
 use Lifthill\Component\Common\Domain\ResultSet;

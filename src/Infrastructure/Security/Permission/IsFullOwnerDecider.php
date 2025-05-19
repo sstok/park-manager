@@ -27,7 +27,8 @@ final class IsFullOwnerDecider implements PermissionDecider
     public function __construct(
         private OrganizationRepository $organizationRepository,
         private UserRepository $userRepository
-    ) {}
+    ) {
+    }
 
     /**
      * @param IsFullOwner $permission

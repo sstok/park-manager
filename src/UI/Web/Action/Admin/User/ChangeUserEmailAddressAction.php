@@ -12,7 +12,6 @@ namespace ParkManager\UI\Web\Action\Admin\User;
 
 use ParkManager\Domain\Translation\TranslatableMessage;
 use ParkManager\Domain\User\User;
-use ParkManager\Domain\User\UserId;
 use ParkManager\UI\Web\Form\Type\User\Admin\ChangeUserEmailAddressForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

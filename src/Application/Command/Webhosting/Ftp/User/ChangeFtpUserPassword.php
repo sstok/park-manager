@@ -21,5 +21,6 @@ final class ChangeFtpUserPassword
     public function __construct(
         public FtpUserId $id,
         public HiddenString $password,
-    ) {}
+    ) {
+    }
 }

@@ -15,7 +15,9 @@ use ParkManager\Domain\User\UserRepository;
 
 final class ConfirmPasswordResetHandler
 {
-    public function __construct(private UserRepository $repository) {}
+    public function __construct(private UserRepository $repository)
+    {
+    }
 
     public function __invoke(ConfirmPasswordReset $command): void
     {

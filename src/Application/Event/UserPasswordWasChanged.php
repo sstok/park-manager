@@ -14,5 +14,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class UserPasswordWasChanged extends Event
 {
-    public function __construct(public string $id, public string $password) {}
+    public function __construct(public string $id, public string $password)
+    {
+    }
 }

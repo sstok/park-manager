@@ -48,7 +48,7 @@ final class ListUsersAction extends AbstractController
 
         $users->setSearchField('postalCode');
 
-        //$users->setSearchField('role', 'roles');
+        // $users->setSearchField('role', 'roles');
 
         $datagrid = $datagridFactory->createDatagridBuilder()
             ->add('displayName', options: [
@@ -95,21 +95,18 @@ final class ListUsersAction extends AbstractController
 
             ->actions([
                 'RequestNewPassword' => new DatagridAction(
-                    static fn(User $user) => new RequestPasswordReset($user->email->toString()),
+                    static fn (User $user) => new RequestPasswordReset($user->email->toString()),
                     'Reset password',
-                    static fn(ResultSet $resultSet) => sprintf('Password reset requests where send for %d users', $resultSet->count()),
+                    static fn (ResultSet $resultSet) => \sprintf('Password reset requests where send for %d users', $resultSet->count()),
                 ),
 
                 'Test form' => new FormAction(
-                    static function (ResultSet $resultSet) {
-                        return null;
-                    },
+                    static fn (ResultSet $resultSet) => null,
                     AssignUserSecurityLevelActionForm::class,
                 ),
             ])
 
-            ->getDatagrid($users)
-        ;
+            ->getDatagrid($users);
 
         $datagrid->handleRequest($request);
 

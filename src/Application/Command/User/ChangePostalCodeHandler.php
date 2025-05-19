@@ -14,7 +14,9 @@ use ParkManager\Domain\User\UserRepository;
 
 final class ChangePostalCodeHandler
 {
-    public function __construct(private UserRepository $userRepository) {}
+    public function __construct(private UserRepository $userRepository)
+    {
+    }
 
     public function __invoke(ChangePostalCode $command): void
     {

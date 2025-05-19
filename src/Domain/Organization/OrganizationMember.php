@@ -33,7 +33,8 @@ class OrganizationMember
 
         #[Column(name: 'access_level', enumType: AccessLevel::class)]
         public AccessLevel $accessLevel = AccessLevel::LEVEL_MANAGER
-    ) {}
+    ) {
+    }
 
     public function changeAccessLevel(AccessLevel $accessLevel): void
     {

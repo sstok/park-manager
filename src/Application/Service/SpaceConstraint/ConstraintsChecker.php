@@ -29,7 +29,8 @@ class ConstraintsChecker
         private MailboxRepository $mailboxRepository,
         private EmailForwardRepository $emailForwardRepository,
         private StorageUsage $storageUsageRetriever
-    ) {}
+    ) {
+    }
 
     public function isStorageSizeReached(SpaceId $id): bool
     {

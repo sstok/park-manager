@@ -18,11 +18,11 @@ final class DomainNameNotFound extends NotFoundException
 {
     public static function withId(DomainNameId $id): self
     {
-        return new self(sprintf('Domain-name with id "%s" does not exist.', $id->toString()));
+        return new self(\sprintf('Domain-name with id "%s" does not exist.', $id->toString()));
     }
 
     public static function withName(DomainNamePair $fullName): self
     {
-        return new self(sprintf('Domain-name with name "%s" does not exist.', $fullName->toString()));
+        return new self(\sprintf('Domain-name with name "%s" does not exist.', $fullName->toString()));
     }
 }

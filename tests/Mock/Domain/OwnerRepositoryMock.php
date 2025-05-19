@@ -29,7 +29,7 @@ final class OwnerRepositoryMock implements OwnerRepository
     /**
      * @param array<int, Owner> $initialEntities
      */
-    public function __construct(array $initialEntities = [], OrganizationRepository $organizationRepository = null)
+    public function __construct(array $initialEntities = [], ?OrganizationRepository $organizationRepository = null)
     {
         if ($organizationRepository) {
             $adminOrganization = $organizationRepository->get(OrganizationId::fromString(OrganizationId::ADMIN_ORG));

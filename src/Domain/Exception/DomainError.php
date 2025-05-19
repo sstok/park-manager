@@ -11,10 +11,9 @@ declare(strict_types=1);
 namespace ParkManager\Domain\Exception;
 
 use Lifthill\Component\Common\Domain\Exception\DomainError as LifthillDomainError;
-use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
- * @deprecated Use the {@see LifthillDomainError} instead.
+ * @deprecated use the {@see LifthillDomainError} instead
  */
 interface DomainError extends LifthillDomainError
 {

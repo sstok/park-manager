@@ -22,7 +22,8 @@ final class PasswordResetMailerImpl implements PasswordResetMailer
     public function __construct(
         private MailerInterface $mailer,
         private UrlGenerator $urlGenerator
-    ) {}
+    ) {
+    }
 
     public function send(EmailAddress $emailAddress, SplitToken $splitToken): void
     {

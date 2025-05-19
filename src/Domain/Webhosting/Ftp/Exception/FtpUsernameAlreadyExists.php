@@ -20,7 +20,7 @@ final class FtpUsernameAlreadyExists extends \DomainException implements DomainE
 {
     public function __construct(public string $name, public DomainNamePair $domainName, private FtpUserId $id)
     {
-        parent::__construct(sprintf('FTP username "%s.%s" already exists.', $name, $domainName->toString()));
+        parent::__construct(\sprintf('FTP username "%s.%s" already exists.', $name, $domainName->toString()));
     }
 
     public function getTranslatorMsg(): TranslatableMessage

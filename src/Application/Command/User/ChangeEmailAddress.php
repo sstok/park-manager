@@ -18,5 +18,6 @@ final class ChangeEmailAddress
     public function __construct(
         public UserId $id,
         public EmailAddress $emailAddress
-    ) {}
+    ) {
+    }
 }

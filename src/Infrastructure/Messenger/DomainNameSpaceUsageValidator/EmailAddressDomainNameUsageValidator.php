@@ -24,7 +24,8 @@ final class EmailAddressDomainNameUsageValidator implements DomainNameSpaceUsage
     public function __construct(
         private MailboxRepository $mailboxRepository,
         private ForwardRepository $forwardRepository
-    ) {}
+    ) {
+    }
 
     public function __invoke(DomainName $domainName, Space $space): array
     {

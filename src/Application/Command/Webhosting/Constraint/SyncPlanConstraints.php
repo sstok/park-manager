@@ -14,7 +14,9 @@ use ParkManager\Domain\Webhosting\Constraint\PlanId;
 
 final class SyncPlanConstraints
 {
-    public function __construct(public PlanId $id) {}
+    public function __construct(public PlanId $id)
+    {
+    }
 
     public static function with(string $id): self
     {

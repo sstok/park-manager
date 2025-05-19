@@ -19,7 +19,9 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 final class SecurityUserHashedPasswordType extends AbstractType
 {
-    public function __construct(private PasswordHasherFactoryInterface $hasherFactory) {}
+    public function __construct(private PasswordHasherFactoryInterface $hasherFactory)
+    {
+    }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
@@ -28,7 +30,7 @@ final class SecurityUserHashedPasswordType extends AbstractType
                 return function (string $value) {
                     $hashed = $this->hasherFactory->getPasswordHasher(SecurityUser::class)->hash($value);
 
-                    \sodium_memzero($value);
+                    sodium_memzero($value);
 
                     return $hashed;
                 };

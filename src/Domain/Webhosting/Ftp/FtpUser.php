@@ -71,7 +71,7 @@ class FtpUser
         );
     }
 
-    public function changeUsername(string $username, DomainName $domainName = null): void
+    public function changeUsername(string $username, ?DomainName $domainName = null): void
     {
         $domainName ??= $this->domainName;
 

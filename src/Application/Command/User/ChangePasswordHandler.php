@@ -20,7 +20,8 @@ final class ChangePasswordHandler
     public function __construct(
         private UserRepository $repository,
         private EventDispatcherInterface $eventDispatcher
-    ) {}
+    ) {
+    }
 
     public function __invoke(ChangePassword $command): void
     {

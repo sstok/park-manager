@@ -19,11 +19,13 @@ use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 
 final class SpaceConstraintsEquals extends Constraint
 {
-    public function __construct(private Constraints $expected) {}
+    public function __construct(private Constraints $expected)
+    {
+    }
 
     public function toString(): string
     {
-        return sprintf('is equal to %s', $this->exporter()->export($this->expected));
+        return \sprintf('is equal to %s', $this->exporter()->export($this->expected));
     }
 
     /**
@@ -42,7 +44,7 @@ final class SpaceConstraintsEquals extends Constraint
                 return false;
             }
 
-            throw new ExpectationFailedException(trim($description . "\n" . $f->getMessage()), $f);
+            throw new ExpectationFailedException(mb_trim($description . "\n" . $f->getMessage()), $f);
         }
 
         return true;

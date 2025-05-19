@@ -21,7 +21,7 @@ final class OrganizationMemberNotFound extends NotFoundException
     public static function with(OrganizationId $organization, UserId $user): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'User "%s" has no existing membership for Organization "%s".',
                 $user->toString(),
                 $organization->toString()

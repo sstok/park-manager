@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotEqualTo;
 
 /**
- * Must be kept in sync with {@see \ParkManager\Domain\Webhosting\Constraint\Constraints}.
+ * Must be kept in sync with {@see Constraints}.
  */
 final class WebhostingConstraintsType extends AbstractType
 {

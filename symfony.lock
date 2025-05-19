@@ -320,6 +320,9 @@
     "rollerworks/search-bundle": {
         "version": "v2.0.0-BETA4"
     },
+    "rollerworks/search-dev": {
+        "version": "2.1"
+    },
     "rollerworks/split-token": {
         "version": "v0.1.1"
     },

@@ -30,7 +30,7 @@ final class SubDomainRepositoryMock implements SubDomainRepository
     protected function getFieldsIndexMapping(): array
     {
         return [
-            'full_name' => static fn (SubDomain $subDomain): string => sprintf('%s.%s', $subDomain->host->id->toString(), $subDomain->name),
+            'full_name' => static fn (SubDomain $subDomain): string => \sprintf('%s.%s', $subDomain->host->id->toString(), $subDomain->name),
         ];
     }
 
@@ -58,7 +58,7 @@ final class SubDomainRepositoryMock implements SubDomainRepository
     {
         try {
             /** @var SubDomain $entity */
-            $entity = $this->mockDoGetByField('full_name', sprintf('%s.%s', $subDomain->host->id->toString(), $subDomain->name));
+            $entity = $this->mockDoGetByField('full_name', \sprintf('%s.%s', $subDomain->host->id->toString(), $subDomain->name));
 
             if (! $entity->id->equals($subDomain->id)) {
                 throw new SubDomainAlreadyExists($subDomain->host->namePair, $subDomain->name, $entity->id->toString());

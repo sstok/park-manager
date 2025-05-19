@@ -20,7 +20,7 @@ final class DomainNameAlreadyInUse extends \DomainException implements Translata
     public function __construct(public DomainNamePair $domainName)
     {
         parent::__construct(
-            sprintf(
+            \sprintf(
                 'DomainName "%s.%s" is already in use.',
                 $this->domainName->name,
                 $this->domainName->tld

@@ -44,7 +44,8 @@ class Plan
 
         #[Column(name: 'metadata', type: 'json')]
         public array $metadata = []
-    ) {}
+    ) {
+    }
 
     public function changeConstraints(Constraints $constraints): void
     {
@@ -79,7 +80,7 @@ class Plan
         $this->labels = $labels;
     }
 
-    public function getLabel(string $locale = null): string
+    public function getLabel(?string $locale = null): string
     {
         return $this->labels[$locale ?? \Locale::getDefault()] ?? $this->labels['_default'] ?? $this->id->toString();
     }

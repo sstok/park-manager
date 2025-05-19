@@ -17,11 +17,11 @@ final class MailboxNotFound extends NotFoundException
 {
     public static function withId(MailboxId $id): self
     {
-        return new self(sprintf('Webhosting Mailbox with id "%s" does not exist.', $id->toString()));
+        return new self(\sprintf('Webhosting Mailbox with id "%s" does not exist.', $id->toString()));
     }
 
     public static function withName(string $name): self
     {
-        return new self(sprintf('Webhosting Mailbox with address "%s" does not exist.', $name));
+        return new self(\sprintf('Webhosting Mailbox with address "%s" does not exist.', $name));
     }
 }

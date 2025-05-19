@@ -25,7 +25,8 @@ final class RegisterUser
         public EmailAddress $email,
         public string $displayName,
         public string $password
-    ) {}
+    ) {
+    }
 
     /**
      * @param string $password A password hash (the password in plain-text)

@@ -19,7 +19,8 @@ final class RemoveMailboxHandler
     public function __construct(
         private MailboxRepository $repository,
         private SystemGateway $systemGateway,
-    ) {}
+    ) {
+    }
 
     public function __invoke(RemoveMailbox $command): void
     {

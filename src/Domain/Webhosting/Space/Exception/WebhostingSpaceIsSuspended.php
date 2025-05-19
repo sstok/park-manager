@@ -20,7 +20,7 @@ final class WebhostingSpaceIsSuspended extends \DomainException implements Domai
 {
     public function __construct(public SpaceId $id, public SuspensionLevel $level)
     {
-        parent::__construct(sprintf('Webhosting Space "%s" is suspended with level %s', $id->toString(), $level->name));
+        parent::__construct(\sprintf('Webhosting Space "%s" is suspended with level %s', $id->toString(), $level->name));
     }
 
     public function getTranslatorMsg(): TranslatableMessage

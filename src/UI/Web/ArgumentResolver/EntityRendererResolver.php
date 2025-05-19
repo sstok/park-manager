@@ -17,7 +17,9 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 final class EntityRendererResolver implements ValueResolverInterface
 {
-    public function __construct(private EntityRenderer $entityRenderer) {}
+    public function __construct(private EntityRenderer $entityRenderer)
+    {
+    }
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {

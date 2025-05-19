@@ -20,7 +20,7 @@ final class CannotRemovePrimaryDomainName extends \DomainException implements Do
     public function __construct(public DomainNameId $domainName, public SpaceId $space)
     {
         parent::__construct(
-            sprintf(
+            \sprintf(
                 'DomainName "%s" of space %s is marked as primary and cannot be removed.',
                 $domainName->toString(),
                 $space->toString()

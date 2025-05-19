@@ -15,7 +15,9 @@ use ParkManager\Domain\Webhosting\Space\SpaceRepository;
 
 final class MarkSpaceAccessAsSuspendedHandler
 {
-    public function __construct(private SpaceRepository $spaceRepository) {}
+    public function __construct(private SpaceRepository $spaceRepository)
+    {
+    }
 
     public function __invoke(MarkSpaceAccessAsSuspended $command): void
     {

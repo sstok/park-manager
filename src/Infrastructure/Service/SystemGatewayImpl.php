@@ -28,12 +28,12 @@ final class SystemGatewayImpl implements SystemGateway
         return match ($command::class) {
             RegisterSystemUser::class => new RegisterSystemUserResult(['id' => $id = mt_rand(), 'groups' => [500], 'homedir' => '/data/site_' . $id]),
             CreateMailbox::class => new CreateMailboxResult(['storage' => '/data/mail/' . str_replace('-', '', (string) $command->getArguments()['mailbox_id'])]),
-            default => throw new \InvalidArgumentException(sprintf('Unsupported SystemCommand %s', $command::class)),
+            default => throw new \InvalidArgumentException(\sprintf('Unsupported SystemCommand %s', $command::class)),
         };
     }
 
     public function query(SystemQuery $command): OperationResult
     {
-        throw new \InvalidArgumentException(sprintf('Unsupported SystemQuery %s', $command::class));
+        throw new \InvalidArgumentException(\sprintf('Unsupported SystemQuery %s', $command::class));
     }
 }

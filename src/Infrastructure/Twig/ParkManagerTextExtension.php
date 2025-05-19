@@ -41,7 +41,7 @@ final class ParkManagerTextExtension extends AbstractExtension
     /**
      * @param array<string, mixed>|string $arguments Can be the locale as a string when $message is a TranslatableInterface
      */
-    public function trans(Environment $env, null | string | \Stringable | TranslatableInterface $message, array | string $arguments = [], string $domain = null, string $locale = null): string
+    public function trans(Environment $env, string | \Stringable | TranslatableInterface | null $message, array | string $arguments = [], ?string $domain = null, ?string $locale = null): string
     {
         if ($message === null) {
             return '';
@@ -51,14 +51,14 @@ final class ParkManagerTextExtension extends AbstractExtension
 
         if ($message instanceof TranslatableInterface) {
             if ($arguments !== [] && ! \is_string($arguments)) {
-                throw new \TypeError(sprintf('Argument 2 passed to "%s()" must be a locale passed as a string when the message is a "%s", "%s" given.', __METHOD__, TranslatableInterface::class, get_debug_type($arguments)));
+                throw new \TypeError(\sprintf('Argument 2 passed to "%s()" must be a locale passed as a string when the message is a "%s", "%s" given.', __METHOD__, TranslatableInterface::class, get_debug_type($arguments)));
             }
 
             return $message->trans($this->argumentsTranslator, $locale ?? (\is_string($arguments) ? $arguments : null));
         }
 
         if (! \is_array($arguments)) {
-            throw new \TypeError(sprintf('Unless the message is a "%s", argument 2 passed to "%s()" must be an array of parameters, "%s" given.', TranslatableInterface::class, __METHOD__, get_debug_type($arguments)));
+            throw new \TypeError(\sprintf('Unless the message is a "%s", argument 2 passed to "%s()" must be an array of parameters, "%s" given.', TranslatableInterface::class, __METHOD__, get_debug_type($arguments)));
         }
 
         $value = $this->argumentsTranslator->trans((string) $message, $arguments, $domain, $locale);

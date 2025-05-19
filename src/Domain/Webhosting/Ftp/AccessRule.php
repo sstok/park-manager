@@ -67,7 +67,8 @@ class AccessRule
 
         #[Column(name: 'strategy', enumType: AccessRuleStrategy::class)]
         public AccessRuleStrategy $strategy,
-    ) {}
+    ) {
+    }
 
     public static function createForSpace(AccessRuleId $id, Space $space, IpAddress | IpRange $address, AccessRuleStrategy $strategy = AccessRuleStrategy::DENY): self
     {

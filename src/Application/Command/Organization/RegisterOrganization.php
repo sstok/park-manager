@@ -22,5 +22,6 @@ final class RegisterOrganization
         public OrganizationId $id,
         public string $name,
         public UserId $creator
-    ) {}
+    ) {
+    }
 }

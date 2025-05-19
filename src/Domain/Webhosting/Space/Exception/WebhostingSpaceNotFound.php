@@ -17,6 +17,6 @@ final class WebhostingSpaceNotFound extends NotFoundException
 {
     public static function withId(SpaceId $id): self
     {
-        return new self(sprintf('Webhosting Space with id "%s" does not exist.', $id->toString()));
+        return new self(\sprintf('Webhosting Space with id "%s" does not exist.', $id->toString()));
     }
 }

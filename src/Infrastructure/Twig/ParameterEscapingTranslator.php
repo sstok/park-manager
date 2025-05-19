@@ -19,7 +19,9 @@ final class ParameterEscapingTranslator implements TranslatorInterface
 {
     private ?Environment $env;
 
-    public function __construct(private Translator $wrappedTranslator) {}
+    public function __construct(private Translator $wrappedTranslator)
+    {
+    }
 
     public function setEnv(?Environment $env): void
     {
@@ -29,7 +31,7 @@ final class ParameterEscapingTranslator implements TranslatorInterface
     /**
      * @param array<string, mixed> $parameters
      */
-    public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
+    public function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
         return $this->wrappedTranslator->trans($id, $parameters, $domain, $locale, [$this, 'escape']);
     }

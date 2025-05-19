@@ -56,7 +56,7 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
      *
      * @dataProvider provideIt_fails_with_invalid_pathCases
      */
-    public function it_fails_with_invalid_path(string $value, string $chunk = null): void
+    public function it_fails_with_invalid_path(string $value, ?string $chunk = null): void
     {
         $constraint = new DirectoryPath();
 
@@ -105,7 +105,7 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
         yield ['..', '..'];
         yield ['/./', '.'];
         yield ['//', ''];
-        yield ['\\.\\./', '\.\.'];
+        yield ['\.\./', '\.\.'];
         yield ['bar/../', '..'];
         yield ["j\xE2e"]; // "/" (Division Slash)
 
@@ -121,7 +121,7 @@ final class DirectoryPathValidatorTest extends ConstraintValidatorTestCase
         yield ['bar/l..l', 'l..l'];
         yield ['bar/car/<he>/he', '<he>'];
         yield ['bar/car/{nope}', '{nope}'];
-        yield ['bar/car/\\sfs', '\\sfs'];
+        yield ['bar/car/\sfs', '\sfs'];
         yield ["bar/car/he\0he/now", "he\0he"]; // NULL char
     }
 

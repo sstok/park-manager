@@ -17,6 +17,6 @@ final class TaskNotFound extends NotFoundException
 {
     public static function withId(TaskId $id): self
     {
-        return new self(sprintf('ScheduledTask with id "%s" does not exist.', $id->toString()), ['{id}' => $id]);
+        return new self(\sprintf('ScheduledTask with id "%s" does not exist.', $id->toString()), ['{id}' => $id]);
     }
 }

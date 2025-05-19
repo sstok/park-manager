@@ -25,6 +25,7 @@ final class ChangeAddressOfMailbox
         #[EmailboxName()]
         public string $address,
 
-        public null | DomainNameId | DomainNamePair $domainName = null,
-    ) {}
+        public DomainNameId | DomainNamePair | null $domainName = null,
+    ) {
+    }
 }

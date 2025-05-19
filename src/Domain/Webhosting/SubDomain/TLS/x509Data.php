@@ -57,7 +57,7 @@ trait x509Data
     /**
      * @param array<string, mixed> $rawFields
      */
-    private function __construct(string $contents, array $rawFields, CA $ca = null)
+    private function __construct(string $contents, array $rawFields, ?CA $ca = null)
     {
         Assertion::keyExists($rawFields, '_pubKey');
         Assertion::keyExists($rawFields, 'subject');

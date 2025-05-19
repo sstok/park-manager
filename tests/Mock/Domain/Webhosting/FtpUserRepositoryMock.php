@@ -27,7 +27,7 @@ final class FtpUserRepositoryMock implements FtpUserRepository
     protected function getFieldsIndexMapping(): array
     {
         return [
-            'username' => static fn (FtpUser $user) => sprintf('%s.%s', $user->username, $user->domainName->namePair),
+            'username' => static fn (FtpUser $user) => \sprintf('%s.%s', $user->username, $user->domainName->namePair),
         ];
     }
 
@@ -51,7 +51,7 @@ final class FtpUserRepositoryMock implements FtpUserRepository
     public function save(FtpUser $user): void
     {
         try {
-            $existing = $this->mockDoGetByField('username', sprintf('%s.%s', $user->username, $user->domainName->namePair));
+            $existing = $this->mockDoGetByField('username', \sprintf('%s.%s', $user->username, $user->domainName->namePair));
 
             if (! $existing->id->equals($user->id)) {
                 throw new FtpUsernameAlreadyExists($user->username, $existing->domainName->namePair, $existing->id);

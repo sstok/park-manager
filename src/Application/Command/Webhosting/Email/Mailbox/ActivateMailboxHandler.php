@@ -14,7 +14,9 @@ use ParkManager\Domain\Webhosting\Email\MailboxRepository;
 
 final class ActivateMailboxHandler
 {
-    public function __construct(private MailboxRepository $repository) {}
+    public function __construct(private MailboxRepository $repository)
+    {
+    }
 
     public function __invoke(ActivateMailbox $command): void
     {

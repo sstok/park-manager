@@ -17,7 +17,7 @@ final class CannotTransferSystemWebhostingSpace extends \InvalidArgumentExceptio
     public static function withId(SpaceId $id): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'Webhosting space %s is owned by the system and cannot be transferred.',
                 $id->toString()
             )

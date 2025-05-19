@@ -95,12 +95,6 @@ final class TranslatableMessageTest extends TestCase
         self::assertSame($expected, $translatable->trans($translator, 'fr'));
     }
 
-    /** @test */
-    public function to_string(): void
-    {
-        self::assertSame('Symfony is great!', (string) new TranslatableMessage('Symfony is great!'));
-    }
-
     /**
      * @return \Generator<int, array{0: string, 1: array<string, mixed>, 2: TranslatableMessage}>
      */
@@ -123,5 +117,11 @@ final class TranslatableMessageTest extends TestCase
         yield ['Symfony est super!', $messages, new TranslatableMessage('symfony.is.great', [], '')];
         yield ['Foo Bar Baz', $messages, new TranslatableMessage('foo.bar.baz', [], '')];
         yield ['Foo Baz', $messages, new TranslatableMessage('foo.baz', [], '')];
+    }
+
+    /** @test */
+    public function to_string(): void
+    {
+        self::assertSame('Symfony is great!', (string) new TranslatableMessage('Symfony is great!'));
     }
 }

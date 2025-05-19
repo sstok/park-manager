@@ -14,7 +14,9 @@ use ParkManager\Domain\Webhosting\Ftp\AccessRuleRepository;
 
 final class RemoveFtpAccessRuleHandler
 {
-    public function __construct(private AccessRuleRepository $ruleRepository) {}
+    public function __construct(private AccessRuleRepository $ruleRepository)
+    {
+    }
 
     public function __invoke(RemoveFtpAccessRule $command): void
     {

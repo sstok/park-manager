@@ -61,7 +61,7 @@ final class TrafficStatisticsProviderMock implements TrafficStatisticsProvider
         )->getTotalUsage();
     }
 
-    public function getFromPeriod(ReportPeriod $period, TrafficType $types = null): ?TrafficReport
+    public function getFromPeriod(ReportPeriod $period, ?TrafficType $types = null): ?TrafficReport
     {
         $types ??= new TrafficType(TrafficType::ALL);
 

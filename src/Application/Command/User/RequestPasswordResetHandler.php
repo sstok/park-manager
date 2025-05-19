@@ -25,7 +25,8 @@ final class RequestPasswordResetHandler
         private SplitTokenFactory $tokenFactory,
         private PasswordResetMailer $mailer,
         private int $tokenTTL = 3600
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestPasswordReset $command): void
     {

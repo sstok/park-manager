@@ -23,7 +23,8 @@ final class ParkManagerSecurityExtension extends AbstractExtension
     public function __construct(
         private TokenStorageInterface $tokenStorage,
         private UserRepository $userRepository
-    ) {}
+    ) {
+    }
 
     public function getFunctions(): array
     {

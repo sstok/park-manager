@@ -23,7 +23,8 @@ final class RegisterFtpUserHandler
         private FtpUserRepository $userRepository,
         private DomainNameRepository $domainNameOrmRepository,
         private PasswordHasher $passwordHasher,
-    ) {}
+    ) {
+    }
 
     public function __invoke(RegisterFtpUser $command): void
     {

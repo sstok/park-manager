@@ -26,7 +26,8 @@ final class RequestEmailAddressChangeHandler
         private ConfirmationMailer $confirmationMailer,
         private SplitTokenFactory $splitTokenFactory,
         private int $tokenTTL = 3600
-    ) {}
+    ) {
+    }
 
     public function __invoke(RequestEmailAddressChange $command): void
     {

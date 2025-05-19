@@ -14,7 +14,9 @@ use ParkManager\Domain\Webhosting\Email\ForwardRepository;
 
 final class RemoveForwardHandler
 {
-    public function __construct(private ForwardRepository $repository) {}
+    public function __construct(private ForwardRepository $repository)
+    {
+    }
 
     public function __invoke(RemoveForward $command): void
     {

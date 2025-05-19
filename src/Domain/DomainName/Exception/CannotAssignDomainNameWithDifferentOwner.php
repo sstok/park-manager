@@ -26,7 +26,7 @@ final class CannotAssignDomainNameWithDifferentOwner extends \DomainException im
     public static function toSpace(DomainNamePair $domainName, SpaceId $space): self
     {
         $instance = new self(
-            sprintf(
+            \sprintf(
                 'Domain name "%s" does not have the same owner as Space "%s".',
                 $domainName->toString(),
                 $space->toString()
@@ -42,7 +42,7 @@ final class CannotAssignDomainNameWithDifferentOwner extends \DomainException im
     public static function fromSpace(DomainNamePair $domainName, SpaceId $current, SpaceId $new): self
     {
         $instance = new self(
-            sprintf(
+            \sprintf(
                 'Domain name "%s" of Space %s does not have the same owner as Space %s.',
                 $domainName->toString(),
                 $current->toString(),

@@ -27,7 +27,7 @@ final class CannotRemoveActiveUser extends \InvalidArgumentException implements 
         public UserId $id,
         public array $entities
     ) {
-        parent::__construct(sprintf('User with id "%s" cannot be removed as they are still assigned as owner to one or more entities.', $id->toString()));
+        parent::__construct(\sprintf('User with id "%s" cannot be removed as they are still assigned as owner to one or more entities.', $id->toString()));
     }
 
     public function getTranslatorMsg(): TranslatableMessage

@@ -19,7 +19,8 @@ final class AssignDomainNameToSpace
         public DomainNameId $id,
         public SpaceId $space,
         public bool $primary = false
-    ) {}
+    ) {
+    }
 
     public static function with(string $id, string $spaceId, bool $primary = false): self
     {

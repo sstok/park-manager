@@ -22,7 +22,8 @@ final class AddDomainName
         public OwnerId $owner,
         #[RegistrableDomainName]
         public DomainNamePair $name
-    ) {}
+    ) {
+    }
 
     public static function with(string $id, string $ownerId, string $name, string $tld): self
     {

@@ -14,7 +14,9 @@ use ParkManager\Domain\Webhosting\SubDomain\SubDomainNameId;
 
 final class ActivateSubDomain
 {
-    public function __construct(public SubDomainNameId $id) {}
+    public function __construct(public SubDomainNameId $id)
+    {
+    }
 
     public static function with(string $id): self
     {

@@ -17,6 +17,6 @@ final class AccessRuleNotFound extends NotFoundException
 {
     public static function withId(AccessRuleId $id): self
     {
-        return new self(sprintf('FtpAccessRule with id "%s" does not exist.', $id->toString()), ['{id}' => $id]);
+        return new self(\sprintf('FtpAccessRule with id "%s" does not exist.', $id->toString()), ['{id}' => $id]);
     }
 }

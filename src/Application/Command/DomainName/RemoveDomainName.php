@@ -14,7 +14,9 @@ use ParkManager\Domain\DomainName\DomainNameId;
 
 final class RemoveDomainName
 {
-    public function __construct(public DomainNameId $id) {}
+    public function __construct(public DomainNameId $id)
+    {
+    }
 
     public static function with(string $id): self
     {

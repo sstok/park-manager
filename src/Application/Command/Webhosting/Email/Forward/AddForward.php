@@ -34,5 +34,6 @@ final class AddForward
 
         public DomainNameId | DomainNamePair $domainName,
         public EmailAddress | string $destination,
-    ) {}
+    ) {
+    }
 }

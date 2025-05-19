@@ -38,5 +38,6 @@ final class RegisterFtpUser
 
         #[DirectoryPath]
         public ?string $homeDir = null,
-    ) {}
+    ) {
+    }
 }

@@ -20,7 +20,8 @@ final class UpdatePlanHandler
         private PlanRepository $planRepository,
         private SpaceRepository $spaceRepository,
         private MessageBusInterface $messageBus
-    ) {}
+    ) {
+    }
 
     public function __invoke(UpdatePlan $command): void
     {

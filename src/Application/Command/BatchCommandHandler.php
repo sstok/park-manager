@@ -14,7 +14,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class BatchCommandHandler
 {
-    public function __construct(private MessageBusInterface $commandBus) {}
+    public function __construct(private MessageBusInterface $commandBus)
+    {
+    }
 
     public function __invoke(BatchCommand $batch): void
     {

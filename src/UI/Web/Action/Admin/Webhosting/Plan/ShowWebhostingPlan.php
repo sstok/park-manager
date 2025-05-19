@@ -42,8 +42,7 @@ final class ShowWebhostingPlan extends AbstractController
                 'sortable' => true,
             ])
             ->limits(default: 10)
-            ->getDatagrid($spaces)
-        ;
+            ->getDatagrid($spaces);
 
         $datagrid->handleRequest($request);
 

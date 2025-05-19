@@ -16,7 +16,9 @@ use ParkManager\Domain\Webhosting\SubDomain\SubDomainRepository;
 
 final class RemoveSubDomainHandler
 {
-    public function __construct(private SubDomainRepository $subDomainRepository) {}
+    public function __construct(private SubDomainRepository $subDomainRepository)
+    {
+    }
 
     public function __invoke(RemoveSubDomain $command): void
     {

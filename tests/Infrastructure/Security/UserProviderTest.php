@@ -103,7 +103,7 @@ final class UserProviderTest extends TestCase
         $provider = new UserProvider(new UserRepositoryMock(), new SpyingMessageBus());
 
         $this->expectException(UnsupportedUserException::class);
-        $this->expectExceptionMessage(sprintf('Expected an instance of %s, but got ', SecurityUser::class));
+        $this->expectExceptionMessage(\sprintf('Expected an instance of %s, but got ', SecurityUser::class));
 
         $provider->refreshUser($this->createMock(UserInterface::class));
     }

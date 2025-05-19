@@ -14,4 +14,6 @@ namespace ParkManager\Domain\Webhosting\ScheduledTask;
  * A ScheduleCondition specifies how the actual condition
  * must be treated. Either a cron-expression or specific moment.
  */
-interface ScheduleCondition extends \Stringable {}
+interface ScheduleCondition extends \Stringable
+{
+}

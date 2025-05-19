@@ -51,7 +51,7 @@ final class DomainNameTest extends TestCase
         self::assertTrue($webhostingDomainName2->primary);
     }
 
-    private function createSpace(string $id, Owner $owner = null): Space
+    private function createSpace(string $id, ?Owner $owner = null): Space
     {
         return SpaceRepositoryMock::createSpace($id, $owner);
     }

@@ -21,7 +21,8 @@ final class ChangeAddressOfForwardHandler
         private ForwardRepository $forwardRepository,
         private DomainNameRepository $domainNameRepository,
         private MailboxRepository $mailboxRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ChangeAddressOfForward $command): void
     {

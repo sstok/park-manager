@@ -21,7 +21,8 @@ final class TransferSpaceToOwnerHandler
     public function __construct(
         private SpaceRepository $spaceRepository,
         private OwnerRepository $ownerRepository
-    ) {}
+    ) {
+    }
 
     public function __invoke(TransferSpaceToOwner $command): void
     {

@@ -32,7 +32,8 @@ final class AddMailboxHandler
         private ConstraintsChecker $constraintsChecker,
         private PasswordHasher $passwordHasher,
         private SystemGateway $systemGateway,
-    ) {}
+    ) {
+    }
 
     /**
      * @throws ConstraintExceeded
@@ -43,7 +44,7 @@ final class AddMailboxHandler
 
         $this->constraintsChecker->allowNewMailboxes(
             $command->space,
-            [sprintf('%s@%s', $command->address, $domainName->toString()) => $command->size]
+            [\sprintf('%s@%s', $command->address, $domainName->toString()) => $command->size]
         );
 
         if ($this->forwardRepository->hasName($command->address, $domainName->namePair)) {

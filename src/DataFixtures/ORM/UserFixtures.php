@@ -27,7 +27,8 @@ final class UserFixtures extends Fixture
         private MessageBusInterface $commandBus,
         private PasswordHasherFactoryInterface $hasherFactory,
         private FakerGenerator $faker
-    ) {}
+    ) {
+    }
 
     public function load(ObjectManager $manager): void
     {

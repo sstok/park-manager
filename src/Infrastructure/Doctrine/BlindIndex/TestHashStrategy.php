@@ -28,12 +28,12 @@ final class TestHashStrategy implements BlindIndexStrategy
 
     public function getSchema(BlindIndexMetadata $mapping): Column
     {
-        return (new Column(type: 'string', options: ['notNull' => false]));
+        return new Column(type: 'string', options: ['notNull' => false]);
     }
 
     public function getValue(BlindIndexMetadata $mapping, mixed $value, Connection $connection): mixed
     {
-        return sprintf('<TEST>%s</TEST>', $value);
+        return \sprintf('<TEST>%s</TEST>', $value);
     }
 
     public function getColumnType(array $options): string

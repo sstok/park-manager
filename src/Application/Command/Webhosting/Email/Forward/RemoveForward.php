@@ -14,5 +14,7 @@ use ParkManager\Domain\Webhosting\Email\ForwardId;
 
 final class RemoveForward
 {
-    public function __construct(public ForwardId $id) {}
+    public function __construct(public ForwardId $id)
+    {
+    }
 }

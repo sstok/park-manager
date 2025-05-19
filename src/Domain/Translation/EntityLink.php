@@ -15,5 +15,7 @@ final class EntityLink implements ParameterValueService
     /**
      * @param object $entity Entity object or EntityId object
      */
-    public function __construct(public object $entity) {}
+    public function __construct(public object $entity)
+    {
+    }
 }

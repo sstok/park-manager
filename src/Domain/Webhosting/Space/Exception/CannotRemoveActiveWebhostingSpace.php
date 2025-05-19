@@ -17,7 +17,7 @@ final class CannotRemoveActiveWebhostingSpace extends \InvalidArgumentException
     public static function withId(SpaceId $id): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'Webhosting space %s cannot be removed as it\'s still active.' .
                 ' Mark the Webhosting Space for removal first.',
                 $id->toString()

@@ -44,7 +44,8 @@ class Task
 
         #[Column(name: 'is_enabled', type: 'boolean')]
         public bool $enabled = true,
-    ) {}
+    ) {
+    }
 
     public function setSchedule(Schedule $schedule): void
     {

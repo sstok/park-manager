@@ -20,5 +20,6 @@ final class ChangeAvatar
 
         #[Image(maxSize: '60kib', mimeTypes: ['image/jpeg'], maxWidth: 460, maxHeight: 460, detectCorrupted: true)]
         public \SplFileInfo $tempFile
-    ) {}
+    ) {
+    }
 }

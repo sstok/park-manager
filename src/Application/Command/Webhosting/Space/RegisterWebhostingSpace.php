@@ -24,7 +24,8 @@ final class RegisterWebhostingSpace
         public DomainNamePair $domainName,
         public ?PlanId $planId = null,
         public ?Constraints $customConstraints = null
-    ) {}
+    ) {
+    }
 
     public static function withPlan(string $id, DomainNamePair $domainName, string $owner, string $planId): self
     {

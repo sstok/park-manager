@@ -17,7 +17,9 @@ use function Sodium\memzero;
 
 final class SymfonyPasswordHasher implements PasswordHasher
 {
-    public function __construct(private PasswordHasherInterface $hasher) {}
+    public function __construct(private PasswordHasherInterface $hasher)
+    {
+    }
 
     public function hash(HiddenString $password): string
     {

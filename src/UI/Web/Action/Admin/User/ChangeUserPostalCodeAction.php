@@ -31,7 +31,7 @@ final class ChangeUserPostalCodeAction extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->addFlash('success',
-                'Postal code was changed', //new TranslatableMessage('flash.email_address_changed')
+                'Postal code was changed', // new TranslatableMessage('flash.email_address_changed')
             );
 
             return $this->redirectToRoute('park_manager.admin.show_user', ['user' => $user->id->toString()]);

@@ -34,7 +34,8 @@ final class AdminFixtures extends Fixture
         private FakerGenerator $faker,
         private OrganizationRepository $organizationRepository,
         private OwnerRepository $ownerRepository
-    ) {}
+    ) {
+    }
 
     public function load(ObjectManager $manager): void
     {

@@ -19,7 +19,8 @@ final class AddScheduledTaskHandler
     public function __construct(
         private ScheduledTaskRepository $repository,
         private SpaceRepository $spaceRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(AddScheduledTask $command): void
     {

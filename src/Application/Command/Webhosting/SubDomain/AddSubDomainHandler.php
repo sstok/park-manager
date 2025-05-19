@@ -23,7 +23,8 @@ final class AddSubDomainHandler
         private DomainNameRepository $domainNameRepository,
         private SubDomainRepository $subDomainRepository,
         private CertificateFactory $certificateFactory
-    ) {}
+    ) {
+    }
 
     public function __invoke(AddSubDomain $command): void
     {

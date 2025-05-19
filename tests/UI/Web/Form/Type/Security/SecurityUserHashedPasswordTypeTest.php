@@ -31,7 +31,7 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
 
     protected function setUp(): void
     {
-        $passwordHasher = new class() implements PasswordHasherInterface {
+        $passwordHasher = new class implements PasswordHasherInterface {
             public function hash(string $plainPassword): string
             {
                 return 'encoded(' . $plainPassword . ')';
@@ -49,7 +49,9 @@ final class SecurityUserHashedPasswordTypeTest extends TypeTestCase
         };
 
         $this->hasherFactory = new class($passwordHasher) implements PasswordHasherFactoryInterface {
-            public function __construct(private PasswordHasherInterface $encoder) {}
+            public function __construct(private PasswordHasherInterface $encoder)
+            {
+            }
 
             public function getPasswordHasher(PasswordAuthenticatedUserInterface | PasswordHasherAwareInterface | string $user): PasswordHasherInterface
             {

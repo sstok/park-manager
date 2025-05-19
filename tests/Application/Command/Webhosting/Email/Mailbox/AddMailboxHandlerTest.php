@@ -81,10 +81,10 @@ final class AddMailboxHandlerTest extends TestCase
         $systemGatewayProphecy = $this->prophesize(SystemGateway::class);
         $systemGatewayProphecy->execute(Argument::type(CreateMailbox::class))->willReturn(new CreateMailboxResult([]));
 
-        $passwordHasher = new class() implements PasswordHasher {
+        $passwordHasher = new class implements PasswordHasher {
             public function hash(HiddenString $password): string
             {
-                return sprintf('hashed(%s)', $password->getString());
+                return \sprintf('hashed(%s)', $password->getString());
             }
         };
 

@@ -47,7 +47,7 @@ class Certificate
         private mixed $privateKey,
 
         array $rawFields,
-        CA $ca = null
+        ?CA $ca = null
     ) {
         $this->construct($contents, $rawFields, $ca);
         $this->privateKeyString = $privateKey;

@@ -22,7 +22,8 @@ final class EmailAddressChangeRequestMailerImp implements EmailAddressChangeRequ
     public function __construct(
         private MailerInterface $mailer,
         private UrlGenerator $urlGenerator
-    ) {}
+    ) {
+    }
 
     public function send(EmailAddress $newAddress, SplitToken $splitToken): void
     {

@@ -18,13 +18,13 @@ final class FtpUserNotFound extends NotFoundException
 {
     public static function withId(FtpUserId $id): self
     {
-        return new self(sprintf('FtpUser with id "%s" does not exist.', $id->toString()), ['{id}' => $id]);
+        return new self(\sprintf('FtpUser with id "%s" does not exist.', $id->toString()), ['{id}' => $id]);
     }
 
     public static function withUsername(string $username, SpaceId $space): self
     {
         return new self(
-            sprintf('FtpUser with username "%s" does not exist in space %s.', $username, $space),
+            \sprintf('FtpUser with username "%s" does not exist in space %s.', $username, $space),
             ['{username}' => $username, '{space}' => $space]
         );
     }

@@ -25,7 +25,7 @@ final class FakePasswordHasherFactory implements PasswordHasherFactoryInterface
     public function __construct()
     {
         $this->userClass = SecurityUser::class;
-        $this->hasher = new class() implements PasswordHasherInterface {
+        $this->hasher = new class implements PasswordHasherInterface {
             public function hash(string $plainPassword): string
             {
                 return 'encoded(' . $plainPassword . ')';

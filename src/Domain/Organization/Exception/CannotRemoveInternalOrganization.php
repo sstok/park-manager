@@ -25,7 +25,7 @@ final class CannotRemoveInternalOrganization extends InvalidArgument
     public static function withId(OrganizationId $id): self
     {
         return new self(
-            sprintf('Organization with id "%s" is marked as internal and cannot be removed.', $id->toString()),
+            \sprintf('Organization with id "%s" is marked as internal and cannot be removed.', $id->toString()),
             $id,
         );
     }

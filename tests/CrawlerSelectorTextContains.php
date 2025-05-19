@@ -15,11 +15,13 @@ use Symfony\Component\DomCrawler\Crawler;
 
 final class CrawlerSelectorTextContains extends Constraint
 {
-    public function __construct(private string $selector, private string $expectedText) {}
+    public function __construct(private string $selector, private string $expectedText)
+    {
+    }
 
     public function toString(): string
     {
-        return sprintf('has a node matching selector "%s" with content containing "%s"', $this->selector, $this->expectedText);
+        return \sprintf('has a node matching selector "%s" with content containing "%s"', $this->selector, $this->expectedText);
     }
 
     /**

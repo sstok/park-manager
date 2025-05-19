@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Form\Type\User\Admin\DatagridAction;
 
 use Lifthill\Component\Datagrid\Extension\Form\DatagridActionForm;
-use ParkManager\Domain\User\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -30,8 +29,7 @@ final class AssignUserSecurityLevelActionForm extends AbstractType
                     'user_role.user' => 'ROLE_USER',
                 ],
             ])
-            ->add('submit', SubmitType::class)
-        ;
+            ->add('submit', SubmitType::class);
     }
 
     public function getBlockPrefix(): string

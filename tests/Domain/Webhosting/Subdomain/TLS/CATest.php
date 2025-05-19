@@ -103,7 +103,7 @@ final class CATest extends TestCase
         self::assertSame([$rootCA, $ca1, $ca2], $ca2->toTree());
     }
 
-    private static function getCA(string $name, string $issuer, CA $parent = null): CA
+    private static function getCA(string $name, string $issuer, ?CA $parent = null): CA
     {
         return new CA('x509-information', [
             'subject' => ['commonName' => $name],

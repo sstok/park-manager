@@ -54,10 +54,10 @@ final class RegisterFtpUserHandlerTest extends TestCase
         $this->spaceRepository->resetRecordingState();
 
         $this->userRepository = new FtpUserRepositoryMock();
-        $passwordHasher = new class() implements PasswordHasher {
+        $passwordHasher = new class implements PasswordHasher {
             public function hash(HiddenString $password): string
             {
-                return sprintf('hashed(%s)', $password->getString());
+                return \sprintf('hashed(%s)', $password->getString());
             }
         };
 

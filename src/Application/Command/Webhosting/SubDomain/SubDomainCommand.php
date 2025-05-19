@@ -30,7 +30,8 @@ abstract class SubDomainCommand
         public string $name,
         public string $homeDir = '/',
         public array $config = []
-    ) {}
+    ) {
+    }
 
     /**
      * @param array<string, mixed> $config

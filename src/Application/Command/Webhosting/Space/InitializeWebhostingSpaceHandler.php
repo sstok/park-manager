@@ -27,7 +27,8 @@ final class InitializeWebhostingSpaceHandler
         private EventDispatcherInterface $eventDispatcher,
         private SystemGateway $systemGateway,
         private LoggerInterface $logger
-    ) {}
+    ) {
+    }
 
     public function __invoke(InitializeWebhostingSpace $command): void
     {

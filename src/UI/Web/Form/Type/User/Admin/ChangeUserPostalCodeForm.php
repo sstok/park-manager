@@ -24,15 +24,12 @@ final class ChangeUserPostalCodeForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('postalCode', TextType::class, ['label' => 'label.postal_code'])
-        ;
+            ->add('postalCode', TextType::class, ['label' => 'label.postal_code']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('command_factory', static function (CommandDto $data, User $model): object {
-            return new ChangePostalCode($model->id, $data->fields['postalCode']);
-        });
+        $resolver->setDefault('command_factory', static fn (CommandDto $data, User $model): object => new ChangePostalCode($model->id, $data->fields['postalCode']));
     }
 
     public function getParent(): ?string

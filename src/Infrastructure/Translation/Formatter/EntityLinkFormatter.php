@@ -23,7 +23,8 @@ final class EntityLinkFormatter implements TranslationParameterFormatter
     public function __construct(
         private RepositoryLocator $repositoryLocator,
         private EntityRenderer $entityRenderer
-    ) {}
+    ) {
+    }
 
     public function format(ParameterValueService $value, string $locale, callable $escaper, TranslatorInterface $translator): string
     {

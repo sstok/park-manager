@@ -30,8 +30,8 @@ final class CertificateFactoryImpl implements CertificateFactory
         string $encryptionKey,
         private ObjectManager $objectManager,
         private CAResolver $caResolver,
-        KeyValidator $keyValidator = null,
-        X509DataExtractor $dataExtractor = null
+        ?KeyValidator $keyValidator = null,
+        ?X509DataExtractor $dataExtractor = null
     ) {
         $this->encryptionKey = new EncryptionPublicKey(new HiddenString($encryptionKey));
         $this->keyValidator = $keyValidator ?? new KeyValidator();

@@ -71,13 +71,13 @@ final class InitializeWebhostingSpaceHandlerTest extends TestCase
                 }
 
                 return throw new \InvalidArgumentException(
-                    sprintf('Unsupported SystemCommand %s', $command::class)
+                    \sprintf('Unsupported SystemCommand %s', $command::class)
                 );
             }
 
             public function query(SystemQuery $command): OperationResult
             {
-                throw new \InvalidArgumentException(sprintf('Unsupported SystemQuery %s', $command::class));
+                throw new \InvalidArgumentException(\sprintf('Unsupported SystemQuery %s', $command::class));
             }
         };
 

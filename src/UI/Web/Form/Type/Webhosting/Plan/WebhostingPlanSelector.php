@@ -18,7 +18,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class WebhostingPlanSelector extends AbstractType
 {
-    public function __construct(private PlanRepository $planRepository) {}
+    public function __construct(private PlanRepository $planRepository)
+    {
+    }
 
     public function configureOptions(OptionsResolver $resolver): void
     {

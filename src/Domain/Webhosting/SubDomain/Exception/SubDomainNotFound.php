@@ -17,6 +17,6 @@ final class SubDomainNotFound extends NotFoundException
 {
     public static function withId(SubDomainNameId $id): self
     {
-        return new self(sprintf('SubDomain with id "%s" does not exist.', $id->toString()));
+        return new self(\sprintf('SubDomain with id "%s" does not exist.', $id->toString()));
     }
 }

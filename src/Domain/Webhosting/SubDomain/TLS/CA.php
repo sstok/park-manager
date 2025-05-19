@@ -27,7 +27,7 @@ class CA
     /**
      * @param array<string, mixed> $rawFields
      */
-    public function __construct(string $contents, array $rawFields, self $ca = null)
+    public function __construct(string $contents, array $rawFields, ?self $ca = null)
     {
         $this->construct($contents, $rawFields, $ca);
     }

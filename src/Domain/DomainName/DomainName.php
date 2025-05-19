@@ -37,11 +37,11 @@ class DomainName implements \Stringable
 
     #[ManyToOne(targetEntity: Owner::class)]
     #[JoinColumn(name: 'owner', referencedColumnName: 'owner_id', nullable: true)]
-    public null | Owner $owner = null;
+    public ?Owner $owner = null;
 
     #[ManyToOne(targetEntity: Space::class)]
     #[JoinColumn(name: 'space', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    public null | Space $space = null;
+    public ?Space $space = null;
 
     #[Column(name: 'is_primary', type: 'boolean')]
     public bool $primary = false;
@@ -54,7 +54,8 @@ class DomainName implements \Stringable
 
         #[ORM\Embedded(class: DomainNamePair::class, columnPrefix: 'domain_')]
         public DomainNamePair $namePair
-    ) {}
+    ) {
+    }
 
     public static function register(DomainNameId $id, DomainNamePair $domainName, Owner $owner): self
     {

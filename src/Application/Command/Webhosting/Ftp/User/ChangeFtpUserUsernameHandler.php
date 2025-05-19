@@ -18,7 +18,8 @@ final class ChangeFtpUserUsernameHandler
     public function __construct(
         private FtpUserRepository $userRepository,
         private DomainNameRepository $domainNameOrmRepository,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ChangeFtpUserUsername $command): void
     {

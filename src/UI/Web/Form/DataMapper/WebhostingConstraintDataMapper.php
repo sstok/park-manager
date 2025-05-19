@@ -16,7 +16,9 @@ use Symfony\Component\Form\FormInterface;
 
 final class WebhostingConstraintDataMapper implements DataMapperInterface
 {
-    public function __construct(private string $constraintClass) {}
+    public function __construct(private string $constraintClass)
+    {
+    }
 
     /**
      * @param \Traversable<FormInterface> $forms

@@ -21,5 +21,6 @@ final class ChangeDestinationOfForward
     public function __construct(
         public ForwardId $id,
         public EmailAddress | string $destination,
-    ) {}
+    ) {
+    }
 }

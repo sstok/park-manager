@@ -38,7 +38,7 @@ final class SwitchUserVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, $toSwitchUser, [true, SwitchUserVoter::CAN_SWITCH_USER]));
     }
 
-    private function createToken(object $user = null): TokenInterface
+    private function createToken(?object $user = null): TokenInterface
     {
         $tokenProphecy = $this->prophesize(TokenInterface::class);
         $tokenProphecy->getUser()->willReturn($user);

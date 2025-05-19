@@ -34,7 +34,8 @@ final class OwnerSelector extends AbstractType
         private OrganizationRepository $organizationRepository,
         private OwnerRepository $ownerRepository,
         private TranslatorInterface $translator
-    ) {}
+    ) {
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -99,7 +100,7 @@ final class OwnerSelector extends AbstractType
     public function getLabel(Organization | User $owner): string
     {
         if ($owner instanceof User) {
-            return sprintf(
+            return \sprintf(
                 '%s (%s)',
                 $owner->displayName,
                 $owner->email->canonical,
@@ -110,7 +111,7 @@ final class OwnerSelector extends AbstractType
             return $owner->name;
         }
 
-        return sprintf('%s (%s)', $owner->name, $owner->id->toString());
+        return \sprintf('%s (%s)', $owner->name, $owner->id->toString());
     }
 
     public function getGroup(Organization | User $owner): string

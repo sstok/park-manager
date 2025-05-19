@@ -26,7 +26,9 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 final class SubDomainTLSValidator extends ConstraintValidator
 {
-    public function __construct(private DomainNameRepository $domainNameRepository) {}
+    public function __construct(private DomainNameRepository $domainNameRepository)
+    {
+    }
 
     public function validate($value, Constraint $constraint): void
     {
@@ -52,7 +54,7 @@ final class SubDomainTLSValidator extends ConstraintValidator
         if ($value->name === '@') {
             $requiredName = $domainName->toString();
         } else {
-            $requiredName = sprintf('%s.%s', $value->name, $domainName->toString());
+            $requiredName = \sprintf('%s.%s', $value->name, $domainName->toString());
         }
 
         $context = $this->context;

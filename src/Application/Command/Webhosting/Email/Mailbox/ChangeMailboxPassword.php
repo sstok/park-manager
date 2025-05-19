@@ -15,5 +15,7 @@ use ParkManager\Domain\Webhosting\Email\MailboxId;
 
 final class ChangeMailboxPassword
 {
-    public function __construct(public MailboxId $id, public HiddenString $password) {}
+    public function __construct(public MailboxId $id, public HiddenString $password)
+    {
+    }
 }

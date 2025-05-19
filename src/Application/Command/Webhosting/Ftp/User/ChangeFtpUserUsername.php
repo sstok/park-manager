@@ -25,6 +25,7 @@ final class ChangeFtpUserUsername
         #[ValidUsername()]
         public string $username,
 
-        public null | DomainNameId | DomainNamePair $domainName = null,
-    ) {}
+        public DomainNameId | DomainNamePair | null $domainName = null,
+    ) {
+    }
 }

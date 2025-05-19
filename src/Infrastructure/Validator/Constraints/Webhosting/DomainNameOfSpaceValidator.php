@@ -30,7 +30,7 @@ final class DomainNameOfSpaceValidator extends ConstraintValidator
         private DomainNameRepository $domainNameRepository,
         private SpaceRepository $spaceRepository,
         private RepositoryLocator $repositoryLocator,
-        PropertyAccessorInterface $propertyAccessor = null
+        ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->propertyAccessor = $propertyAccessor ?? new PropertyAccessor();
     }

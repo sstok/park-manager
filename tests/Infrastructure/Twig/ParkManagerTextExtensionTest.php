@@ -29,7 +29,7 @@ use Twig\Loader\ArrayLoader as TwigArrayLoader;
  */
 final class ParkManagerTextExtensionTest extends TestCase
 {
-    private function createExtension(SfTranslator $realTranslator = null): ParkManagerTextExtension
+    private function createExtension(?SfTranslator $realTranslator = null): ParkManagerTextExtension
     {
         $translator = new Translator($realTranslator ?? new SfTranslator('en'), new Container());
 
@@ -82,7 +82,7 @@ final class ParkManagerTextExtensionTest extends TestCase
         $extension = $this->createExtension($translator);
         $env = $this->createTwigEnvironment();
 
-        $traffic = new class() implements ParameterValue {
+        $traffic = new class implements ParameterValue {
             public function format(string $locale, callable $escaper, TranslatorInterface $translator): string
             {
                 if ($locale === 'en') {

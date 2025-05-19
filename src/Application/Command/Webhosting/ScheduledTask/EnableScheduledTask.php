@@ -14,5 +14,7 @@ use ParkManager\Domain\Webhosting\ScheduledTask\TaskId;
 
 final class EnableScheduledTask
 {
-    public function __construct(public TaskId $id) {}
+    public function __construct(public TaskId $id)
+    {
+    }
 }

@@ -13,7 +13,6 @@ namespace ParkManager\Domain\Organization;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -48,7 +47,7 @@ class Organization
         #[GeneratedValue(strategy: 'NONE')]
         public OrganizationId $id,
 
-        #[ORM\Column(name: 'name', type: 'string')]
+        #[Column(name: 'name', type: 'string')]
         public string $name
     ) {
         $this->members = new ArrayCollection();
@@ -126,7 +125,7 @@ class Organization
         return $member;
     }
 
-    public function hasMember(User $user, AccessLevel $accessLevel = null): bool
+    public function hasMember(User $user, ?AccessLevel $accessLevel = null): bool
     {
         /** @var OrganizationMember|null $member */
         [$member] = $this->findMembership($user);

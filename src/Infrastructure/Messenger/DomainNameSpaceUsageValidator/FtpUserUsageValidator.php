@@ -19,7 +19,9 @@ use ParkManager\Infrastructure\Messenger\DomainNameSpaceUsageValidator;
 
 final class FtpUserUsageValidator implements DomainNameSpaceUsageValidator
 {
-    public function __construct(private FtpUserRepository $ftpUserRepository) {}
+    public function __construct(private FtpUserRepository $ftpUserRepository)
+    {
+    }
 
     public function __invoke(DomainName $domainName, Space $space): array
     {

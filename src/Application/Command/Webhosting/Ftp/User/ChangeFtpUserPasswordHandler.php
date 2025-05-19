@@ -18,7 +18,8 @@ final class ChangeFtpUserPasswordHandler
     public function __construct(
         private FtpUserRepository $userRepository,
         private PasswordHasher $passwordHasher,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ChangeFtpUserPassword $command): void
     {

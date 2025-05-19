@@ -48,7 +48,7 @@ final class CertificateFactoryMock implements CertificateFactory
 
     private function getKeyValidatorStub(): KeyValidator
     {
-        return new class() extends KeyValidator {
+        return new class extends KeyValidator {
             public function validate(HiddenString | string $privateKey, string $certificate, int $minimumBitCount = self::MINIMUM_BIT_COUNT): void
             {
                 // No-op

@@ -19,7 +19,8 @@ final class AssignConstraintsToSpaceHandler
     public function __construct(
         private SpaceRepository $spaceRepository,
         private ApplicabilityChecker $applicabilityChecker
-    ) {}
+    ) {
+    }
 
     public function __invoke(AssignConstraintsToSpace $command): void
     {

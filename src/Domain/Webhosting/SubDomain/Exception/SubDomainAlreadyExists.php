@@ -20,7 +20,7 @@ final class SubDomainAlreadyExists extends \DomainException implements DomainErr
 {
     public function __construct(public DomainNamePair $domainName, public string $name, private string $id)
     {
-        parent::__construct(sprintf('SubDomain "%s.%s" already exists.', $name, $domainName->toString()));
+        parent::__construct(\sprintf('SubDomain "%s.%s" already exists.', $name, $domainName->toString()));
     }
 
     public function getTranslatorMsg(): TranslatableMessage

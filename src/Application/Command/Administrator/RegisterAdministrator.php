@@ -26,7 +26,8 @@ final class RegisterAdministrator
         public EmailAddress $email,
         public string $displayName,
         public string $password
-    ) {}
+    ) {
+    }
 
     /**
      * @param string $password An encoded password string (not plain)

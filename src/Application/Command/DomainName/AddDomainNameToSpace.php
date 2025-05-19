@@ -19,5 +19,6 @@ final class AddDomainNameToSpace
         public DomainNamePair $name,
         public SpaceId $space,
         public bool $primary = false
-    ) {}
+    ) {
+    }
 }

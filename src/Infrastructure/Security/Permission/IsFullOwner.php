@@ -15,5 +15,7 @@ use ParkManager\Domain\Owner;
 
 final class IsFullOwner implements Permission
 {
-    public function __construct(public Owner $owner) {}
+    public function __construct(public Owner $owner)
+    {
+    }
 }

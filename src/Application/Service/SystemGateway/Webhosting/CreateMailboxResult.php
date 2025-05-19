@@ -12,4 +12,6 @@ namespace ParkManager\Application\Service\SystemGateway\Webhosting;
 
 use ParkManager\Application\Service\SystemGateway\OperationResult;
 
-final class CreateMailboxResult extends OperationResult {}
+final class CreateMailboxResult extends OperationResult
+{
+}

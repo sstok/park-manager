@@ -44,7 +44,7 @@ final class DirectoryPathValidator extends ConstraintValidator
             return;
         }
 
-        foreach (explode('/', trim($value, '/')) as $chunk) {
+        foreach (explode('/', mb_trim($value, '/')) as $chunk) {
             // (File)name length is limited in bytes, not characters.
             if (mb_strlen($chunk, '8bit') > 255) {
                 $this->context->buildViolation($constraint->nameToLongMessage)

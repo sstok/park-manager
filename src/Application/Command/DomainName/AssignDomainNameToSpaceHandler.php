@@ -18,7 +18,8 @@ final class AssignDomainNameToSpaceHandler
     public function __construct(
         private DomainNameRepository $domainNameRepository,
         private SpaceRepository $spaceRepository
-    ) {}
+    ) {
+    }
 
     public function __invoke(AssignDomainNameToSpace $command): void
     {

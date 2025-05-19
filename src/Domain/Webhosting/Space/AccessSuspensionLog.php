@@ -36,9 +36,10 @@ class AccessSuspensionLog
         public Space $space,
 
         #[Column(name: 'log_suspension_level', nullable: true, enumType: SuspensionLevel::class)]
-        public null | SuspensionLevel $level,
+        public ?SuspensionLevel $level,
 
         #[Column(name: 'log_timestamp', type: 'datetime_immutable')]
         public \DateTimeImmutable $timestamp
-    ) {}
+    ) {
+    }
 }

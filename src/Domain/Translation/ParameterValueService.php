@@ -14,4 +14,6 @@ namespace ParkManager\Domain\Translation;
  * Implement this interface if the ParameterValue must
  * be formatted using a special service.
  */
-interface ParameterValueService {}
+interface ParameterValueService
+{
+}

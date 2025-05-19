@@ -25,7 +25,8 @@ final class LocaleSubscriber implements EventSubscriberInterface
     public function __construct(
         private UserRepository $userRepository,
         private array $acceptedLocales = [],
-    ) {}
+    ) {
+    }
 
     public function onInteractiveLogin(InteractiveLoginEvent $event): void
     {

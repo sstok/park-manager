@@ -28,7 +28,7 @@ final class DateIntervalParameterValueTest extends TestCase
     protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
-        $this->escaper = static fn (string $value): string => sprintf('{%s}', $value);
+        $this->escaper = static fn (string $value): string => \sprintf('{%s}', $value);
 
         CarbonInterval::setLocale('en');
     }

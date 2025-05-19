@@ -14,4 +14,6 @@ namespace ParkManager\Domain\Exception;
  * Extend this class for not-found exception classes,
  * making the exception automatically translatable.
  */
-abstract class NotFoundException extends \Lifthill\Component\Common\Domain\Exception\NotFoundException {}
+abstract class NotFoundException extends \Lifthill\Component\Common\Domain\Exception\NotFoundException
+{
+}

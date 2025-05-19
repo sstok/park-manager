@@ -18,7 +18,8 @@ final class ChangeMailboxPasswordHandler
     public function __construct(
         private MailboxRepository $repository,
         private PasswordHasher $passwordHasher,
-    ) {}
+    ) {
+    }
 
     public function __invoke(ChangeMailboxPassword $command): void
     {

@@ -68,7 +68,7 @@ final class SpaceRepositoryMock implements SpaceRepository
         $this->mockDoRemove($space);
     }
 
-    public static function createSpace(string $id = self::ID1, Owner $owner = null, Constraints $constraints = null, DomainNamePair $domainName = null): Space
+    public static function createSpace(string $id = self::ID1, ?Owner $owner = null, ?Constraints $constraints = null, ?DomainNamePair $domainName = null): Space
     {
         self::$adminOwner ??= (new OwnerRepositoryMock())->getAdminOrganization();
 

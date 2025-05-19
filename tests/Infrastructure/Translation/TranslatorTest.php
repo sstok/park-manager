@@ -160,7 +160,7 @@ final class TranslatorTest extends TestCase
         $translator = new Translator($this->translator, $formatterServices);
         $escaper = static fn (mixed $value) => "<{$value}>";
 
-        $traffic = new class() implements ParameterValue {
+        $traffic = new class implements ParameterValue {
             public function format(string $locale, callable $escaper, TranslatorInterface $translator): string
             {
                 if ($locale === 'en') {
@@ -226,7 +226,8 @@ final class ParameterValueServiceMock implements ParameterValueService
 {
     public function __construct(
         public mixed $value,
-    ) {}
+    ) {
+    }
 }
 
 class TranslationParameterFormatterMock implements TranslationParameterFormatter
@@ -239,6 +240,6 @@ class TranslationParameterFormatterMock implements TranslationParameterFormatter
     ): string {
         \assert($value instanceof ParameterValueServiceMock);
 
-        return sprintf('%s ("%s") with %s', $value->value, $escaper($value->value), $locale);
+        return \sprintf('%s ("%s") with %s', $value->value, $escaper($value->value), $locale);
     }
 }

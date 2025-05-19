@@ -36,7 +36,7 @@ final class SuperAdminVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, new \stdClass(), ['ACTION_NEW']));
     }
 
-    private function createToken(object $user = null): TokenInterface
+    private function createToken(?object $user = null): TokenInterface
     {
         $tokenProphecy = $this->prophesize(TokenInterface::class);
         $tokenProphecy->getUser()->willReturn($user);

@@ -213,7 +213,9 @@ final class ConfirmPasswordResetTypeTest extends MessageFormTestCase
  */
 final class ConfirmUserPasswordReset
 {
-    public function __construct(private SplitToken $token, private string $password) {}
+    public function __construct(private SplitToken $token, private string $password)
+    {
+    }
 
     public function token(): SplitToken
     {

@@ -21,7 +21,8 @@ final class RemoveOrganizationHandler
     public function __construct(
         private OrganizationRepository $organizationRepository,
         private OwnershipUsageList $ownershipUsageList
-    ) {}
+    ) {
+    }
 
     public function __invoke(RemoveOrganization $command): void
     {

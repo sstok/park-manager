@@ -15,7 +15,9 @@ use ParkManager\Domain\Webhosting\Email\ForwardRepository;
 
 final class ChangeDestinationOfForwardHandler
 {
-    public function __construct(private ForwardRepository $forwardRepository) {}
+    public function __construct(private ForwardRepository $forwardRepository)
+    {
+    }
 
     public function __invoke(ChangeDestinationOfForward $command): void
     {

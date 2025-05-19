@@ -34,7 +34,7 @@ final class UpdatePlan
      *
      * @return $this
      */
-    public function withLabels(array $labels = null): static
+    public function withLabels(?array $labels = null): static
     {
         if ($labels !== null) {
             ksort($labels);

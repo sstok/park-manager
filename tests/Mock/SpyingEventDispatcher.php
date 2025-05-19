@@ -51,24 +51,24 @@ final class SpyingEventDispatcher implements EventDispatcherInterface
     /**
      * @return array<string, mixed>
      */
-    public function getListeners(string $eventName = null): array
+    public function getListeners(?string $eventName = null): array
     {
         return $this->dispatcher->getListeners($eventName);
     }
 
-    public function dispatch(object $event, string $eventName = null): object
+    public function dispatch(object $event, ?string $eventName = null): object
     {
         $this->dispatchedEvents[] = $event;
 
         return $this->dispatcher->dispatch($event, $eventName);
     }
 
-    public function getListenerPriority(string $eventName, $listener): null | int
+    public function getListenerPriority(string $eventName, $listener): ?int
     {
         return $this->dispatcher->getListenerPriority($eventName, $listener);
     }
 
-    public function hasListeners(string $eventName = null): bool
+    public function hasListeners(?string $eventName = null): bool
     {
         return $this->dispatcher->hasListeners($eventName);
     }

@@ -25,7 +25,9 @@ use Symfony\Component\Validator\Constraint;
 
 final class ChangePasswordType extends AbstractType
 {
-    public function __construct(private PasswordHasherFactoryInterface $encoderFactory) {}
+    public function __construct(private PasswordHasherFactoryInterface $encoderFactory)
+    {
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -47,7 +49,7 @@ final class ChangePasswordType extends AbstractType
                 'algorithm' => function (string $value) {
                     $hashed = $this->encoderFactory->getPasswordHasher(SecurityUser::class)->hash($value);
 
-                    \sodium_memzero($value);
+                    sodium_memzero($value);
 
                     return $hashed;
                 },

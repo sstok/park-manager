@@ -36,7 +36,7 @@ final class EditWebhostingPlanForm extends AbstractType
                 'entry_type' => WebhostingPlanLabel::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'delete_empty' => static fn (array $data) => trim($data['value']) === '',
+                'delete_empty' => static fn (array $data) => mb_trim($data['value']) === '',
                 'getter' => static function (Plan $plan): array {
                     $labels = $plan->labels;
                     unset($labels['_default']); // Don't include '_default' in initial form collection.

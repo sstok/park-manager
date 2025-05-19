@@ -23,7 +23,8 @@ final class RegisterUserHandler
     public function __construct(
         private UserRepository $repository,
         private OwnerRepository $ownerRepository
-    ) {}
+    ) {
+    }
 
     public function __invoke(RegisterUser $command): void
     {

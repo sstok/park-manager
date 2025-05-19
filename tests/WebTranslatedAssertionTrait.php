@@ -19,7 +19,7 @@ trait WebTranslatedAssertionTrait
     /**
      * @param array<string, mixed> $parameters
      */
-    protected static function assertSelectorTranslatedTextContains(string $selector, string $id, array $parameters = [], string $domain = null, string $message = ''): void
+    protected static function assertSelectorTranslatedTextContains(string $selector, string $id, array $parameters = [], ?string $domain = null, string $message = ''): void
     {
         $locale = null;
 
@@ -29,7 +29,7 @@ trait WebTranslatedAssertionTrait
         }
 
         $translated = static::getContainer()->get('translator')->trans($id, $parameters, $domain, $locale);
-        $translated = trim(preg_replace('/(?:\s{2,}+|[^\S ])/', ' ', strip_tags($translated)));
+        $translated = mb_trim(preg_replace('/(?:\s{2,}+|[^\S ])/', ' ', strip_tags($translated)));
 
         try {
             self::assertSelectorExists($selector);
@@ -73,7 +73,7 @@ trait WebTranslatedAssertionTrait
     /**
      * @param array<int, mixed>|null $parameters
      */
-    private static function executePrivateMethod(string $name, array $parameters = null): mixed
+    private static function executePrivateMethod(string $name, ?array $parameters = null): mixed
     {
         return (new \ReflectionClass(static::class))->getMethod($name)->invoke(null, $parameters);
     }

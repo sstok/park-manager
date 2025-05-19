@@ -41,17 +41,15 @@ final class RemoveUserAction extends AbstractController
             'required_value' => $id->displayName,
             'command_factory' => static fn () => new DeleteRegistration($id->id->toString()),
             'exception_mapping' => [
-                CannotRemoveActiveUser::class => static function (CannotRemoveActiveUser $exception, TranslatorInterface $translator) use ($entityRenderer): RawFormError {
-                    return new RawFormError(
-                        $translator->trans(
-                            'cannot_remove_active_user',
-                            ['entities' => $entityRenderer->listedBySet($exception->entities, ['is_admin' => true])],
-                            'validators'
-                        ),
+                CannotRemoveActiveUser::class => static fn (CannotRemoveActiveUser $exception, TranslatorInterface $translator): RawFormError => new RawFormError(
+                    $translator->trans(
                         'cannot_remove_active_user',
-                        cause: $exception
-                    );
-                },
+                        ['entities' => $entityRenderer->listedBySet($exception->entities, ['is_admin' => true])],
+                        'validators'
+                    ),
+                    'cannot_remove_active_user',
+                    cause: $exception
+                ),
             ],
         ]);
 

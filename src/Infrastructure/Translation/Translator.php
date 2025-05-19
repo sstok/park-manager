@@ -28,12 +28,14 @@ class Translator implements TranslatorInterface, LocaleAwareInterface, Translato
     /**
      * @param TranslatorInterface&LocaleAwareInterface&TranslatorBagInterface $wrappedTranslator
      */
-    public function __construct(private TranslatorInterface $wrappedTranslator, private ContainerInterface $parameterFormatterServices) {}
+    public function __construct(private TranslatorInterface $wrappedTranslator, private ContainerInterface $parameterFormatterServices)
+    {
+    }
 
     /**
      * @param array<string, mixed> $parameters
      */
-    public function trans(?string $id, array $parameters = [], string $domain = null, string $locale = null, callable $escaper = null): string
+    public function trans(?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null, ?callable $escaper = null): string
     {
         if ($id === null || $id === '') {
             return '';
@@ -83,7 +85,7 @@ class Translator implements TranslatorInterface, LocaleAwareInterface, Translato
             return $value;
         }
 
-        if (is_scalar($value)) {
+        if (\is_scalar($value)) {
             return (string) $value;
         }
 
@@ -111,7 +113,7 @@ class Translator implements TranslatorInterface, LocaleAwareInterface, Translato
         $this->wrappedTranslator->setLocale($locale);
     }
 
-    public function getCatalogue(string $locale = null): MessageCatalogueInterface
+    public function getCatalogue(?string $locale = null): MessageCatalogueInterface
     {
         return $this->wrappedTranslator->getCatalogue($locale);
     }

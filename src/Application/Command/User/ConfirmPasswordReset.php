@@ -17,5 +17,7 @@ final class ConfirmPasswordReset
     /**
      * @param string $password The password in hashed format
      */
-    public function __construct(public SplitToken $token, public string $password) {}
+    public function __construct(public SplitToken $token, public string $password)
+    {
+    }
 }

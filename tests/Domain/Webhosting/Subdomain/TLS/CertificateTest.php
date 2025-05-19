@@ -187,7 +187,7 @@ final class CertificateTest extends TestCase
         unset($data[$removeKey]);
 
         $this->expectException(AssertionFailedException::class);
-        $this->expectExceptionMessage(sprintf('Array does not contain an element with key "%s"', $removeKey));
+        $this->expectExceptionMessage(\sprintf('Array does not contain an element with key "%s"', $removeKey));
 
         new Certificate('x509-information', 'private-keep-of-the-7-keys', $data);
     }

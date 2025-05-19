@@ -14,7 +14,9 @@ use ParkManager\Domain\Webhosting\ScheduledTask\ScheduledTaskRepository;
 
 final class RemoveScheduledTaskHandler
 {
-    public function __construct(private ScheduledTaskRepository $repository) {}
+    public function __construct(private ScheduledTaskRepository $repository)
+    {
+    }
 
     public function __invoke(RemoveScheduledTask $command): void
     {

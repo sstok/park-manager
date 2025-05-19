@@ -18,5 +18,6 @@ final class ResizeMailbox
     public function __construct(
         public MailboxId $id,
         public ByteSize $size,
-    ) {}
+    ) {
+    }
 }

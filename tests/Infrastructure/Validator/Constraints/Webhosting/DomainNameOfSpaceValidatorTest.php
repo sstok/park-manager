@@ -99,7 +99,7 @@ final class DomainNameOfSpaceValidatorTest extends ConstraintValidatorTestCase
     /** @test */
     public function it_passes_with_domain_belonging_to_same_space(): void
     {
-        $command = new class() {
+        $command = new class {
             public SpaceId $space;
             public DomainNameId $domainName;
 
@@ -120,7 +120,7 @@ final class DomainNameOfSpaceValidatorTest extends ConstraintValidatorTestCase
     /** @test */
     public function it_passes_with_domain_pair_belonging_to_same_space(): void
     {
-        $command = new class() {
+        $command = new class {
             public SpaceId $space;
             public DomainNamePair $domainName;
 
@@ -141,7 +141,7 @@ final class DomainNameOfSpaceValidatorTest extends ConstraintValidatorTestCase
     /** @test */
     public function it_passes_with_domain_being_null(): void
     {
-        $command = new class() {
+        $command = new class {
             public SpaceId $space;
 
             public function __construct(
@@ -160,7 +160,7 @@ final class DomainNameOfSpaceValidatorTest extends ConstraintValidatorTestCase
     /** @test */
     public function it_fails_with_domain_belonging_to_different_space(): void
     {
-        $command = new class() {
+        $command = new class {
             public SpaceId $space;
             public DomainNameId $domainName;
 

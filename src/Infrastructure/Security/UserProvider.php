@@ -26,7 +26,9 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 final class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
-    public function __construct(private UserRepository $repository, private MessageBusInterface $commandBus) {}
+    public function __construct(private UserRepository $repository, private MessageBusInterface $commandBus)
+    {
+    }
 
     public function loadUserByIdentifier(string $identifier): SecurityUser
     {
@@ -45,7 +47,7 @@ final class UserProvider implements UserProviderInterface, PasswordUpgraderInter
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (! $user instanceof SecurityUser) {
-            throw new UnsupportedUserException(sprintf('Expected an instance of %s, but got "%s".', SecurityUser::class, $user::class));
+            throw new UnsupportedUserException(\sprintf('Expected an instance of %s, but got "%s".', SecurityUser::class, $user::class));
         }
 
         try {
@@ -63,7 +65,7 @@ final class UserProvider implements UserProviderInterface, PasswordUpgraderInter
     public function upgradePassword(PasswordAuthenticatedUserInterface | UserInterface $user, string $newHashedPassword): void
     {
         if (! $user instanceof SecurityUser) {
-            throw new UnsupportedUserException(sprintf('Expected an instance of %s, but got "%s".', SecurityUser::class, $user::class));
+            throw new UnsupportedUserException(\sprintf('Expected an instance of %s, but got "%s".', SecurityUser::class, $user::class));
         }
 
         try {

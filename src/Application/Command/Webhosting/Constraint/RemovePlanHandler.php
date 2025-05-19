@@ -19,7 +19,8 @@ final class RemovePlanHandler
     public function __construct(
         private PlanRepository $planRepository,
         private SpaceRepository $spaceRepository
-    ) {}
+    ) {
+    }
 
     public function __invoke(RemovePlan $command): void
     {
