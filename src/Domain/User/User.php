@@ -37,6 +37,9 @@ use Rollerworks\Component\SplitToken\SplitTokenValueHolder;
 #[Table(name: 'app_user')]
 #[UniqueConstraint(name: 'user_email_address_uniq', columns: ['email_address'])]
 #[UniqueConstraint(name: 'user_email_canonical_uniq', columns: ['email_canonical'])]
+#[BlindIndex('email_hash', 'email.canonical', 'test_hash')]
+#[BlindIndex('postal_code_hasht', 'postalCode', 'test_hash')]
+#[BlindIndex('postal_code_hash', 'postalCode', 'hash')]
 #[DomainEntity]
 class User implements \Stringable
 {
@@ -72,7 +75,6 @@ class User implements \Stringable
         public UserId $id,
 
         #[Embedded(class: EmailAddress::class, columnPrefix: 'email_')]
-        #[BlindIndex('email_hash', 'test_hash', path: 'canonical')]
         public EmailAddress $email,
 
         #[Column(name: 'display_name', type: 'string')]
@@ -82,8 +84,6 @@ class User implements \Stringable
         public string $password,
 
         #[Column(name: 'postal_code', type: 'lifthill_encrypted:text;security_level_c2', nullable: true)]
-        #[BlindIndex('postal_code_hasht', 'test_hash')]
-        #[BlindIndex('postal_code_hash', 'hash')]
         public ?string $postalCode = null,
     ) {
         Assertion::false($email->isPattern, 'Email cannot be a pattern.', 'email');

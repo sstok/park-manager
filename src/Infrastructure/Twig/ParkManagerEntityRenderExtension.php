@@ -23,10 +23,10 @@ final class ParkManagerEntityRenderExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('render_entity_short', [$this->entityRenderer, 'short'], ['is_safe' => 'all']),
-            new TwigFunction('render_entity_detailed', [$this->entityRenderer, 'detailed'], ['is_safe' => 'all']),
-            new TwigFunction('render_entity_link', [$this->entityRenderer, 'link'], ['is_safe' => 'all']),
-            new TwigFunction('render_entity_label', [$this->entityRenderer, 'getEntityLabel'], ['is_safe' => 'html']),
+            new TwigFunction('render_entity_short', [$this->entityRenderer, 'short'], ['is_safe' => ['all']]),
+            new TwigFunction('render_entity_detailed', [$this->entityRenderer, 'detailed'], ['is_safe' => ['all']]),
+            new TwigFunction('render_entity_link', [$this->entityRenderer, 'link'], ['is_safe' => ['all']]),
+            new TwigFunction('render_entity_label', [$this->entityRenderer, 'getEntityLabel'], ['is_safe' => ['html']]),
         ];
     }
 }

@@ -53,7 +53,7 @@
         </form>
     {%- endif -%}
 
-    {% if dispatch_errors is defined %}
+    {% if dispatch_errors is defined or dispatch_halted_message is defined %}
         <div class="mb-4 mt-4 border-l-4 border-red-400 bg-red-50 p-4">
             <div class="flex">
                 <div class="flex-shrink-0">
@@ -65,8 +65,12 @@
                     <h3 class="text-sm font-medium text-red-800">There was an error with your submission</h3>
                     <div class="mt-2 text-sm text-red-700">
                         <ul role="list" class="list-disc space-y-1 pl-5">
-                            {% for error in dispatch_errors %}
-                                <li>{{ error }}</li>
+                            {% if dispatch_halted_message is defined %}
+                                <li>{{ dispatch_halted_message|trans }}</li>
+                            {% endif %}
+
+                            {% for error in dispatch_errors|default({}) %}
+                                <li>{{ error|trans }}</li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -205,4 +209,29 @@
     {% set value_attr = {'class': 'flex items-center text-sm text-gray-90' } %}
     {{ parent() }}
 {% endblock %}
+
+{% block datagrid_container_skipped_rendering_form_action -%}
+    {{ dump() }}
+
+    <div class="mb-5 py-5 px-5 bg-white rounded-md">
+        <h2 class="block text-xl font-medium leading-6 text-gray-900 mb-2">{{ action.label }}</h2>
+
+        <ul class="list-disc space-y-1 ml-4 mb-4">
+        {% for row in rows %}
+            <li>{{ render_entity_short(row) }}</li>
+        {% endfor %}
+        </ul>
+
+        {{ form_start(action_form) }}
+        {{ form_errors(action_form) }}
+        {{ form_end(action_form) }}
+
+        {% if cancel_url is defined %}
+            <a href="{{ cancel_url }}" class="inline-flex items-center gap-x-1.5 rounded-md px-4 py-2 font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                {{ 'Cancel'|trans({}, 'Lifthill') }}
+            </a>
+        {% endif %}
+    </div>
+{%- endblock %}
+
 

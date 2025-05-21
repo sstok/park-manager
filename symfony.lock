@@ -45,14 +45,8 @@
         },
         "files": []
     },
-    "doctrine/cache": {
-        "version": "1.11.0"
-    },
     "doctrine/collections": {
         "version": "1.6.7"
-    },
-    "doctrine/common": {
-        "version": "3.1.2"
     },
     "doctrine/data-fixtures": {
         "version": "1.5.0"

@@ -11,10 +11,12 @@ declare(strict_types=1);
 namespace ParkManager\UI\Web\Action\Admin\User;
 
 use Lifthill\Bridge\Doctrine\OrmSearchableResultSet;
+use Lifthill\Component\Common\Domain\Exception\DomainError;
 use Lifthill\Component\Common\Domain\ResultSet;
 use Lifthill\Component\Datagrid\Action\FormAction;
 use Lifthill\Component\Datagrid\DatagridAction;
 use Lifthill\Component\Datagrid\DatagridFactory;
+use Lifthill\Component\Datagrid\Event\BeforeActionDispatchEvent;
 use Lifthill\Component\Datagrid\Extension\Core\Type\DateTimeType;
 use ParkManager\Application\Command\User\RequestPasswordReset;
 use ParkManager\Domain\User\User;
@@ -93,6 +95,19 @@ final class ListUsersAction extends AbstractController
             ->searchOptions(maxValues: 1, maxGroups: 1, maxNestingLevel: 1)
             ->limits([10, 20, 30, 50, 100], default: 20)
 
+            ->addEventListener(BeforeActionDispatchEvent::class, static function (BeforeActionDispatchEvent $event) {
+                if ($event->action->getAttribute('check', false) !== true) {
+                    return;
+                }
+
+                /** @var User $row */
+                foreach ($event->selectedRows as $row) {
+                    if ($row->hasRole('ROLE_SUPER_ADMIN')) {
+                        $event->failRow($row->id, 'You cannot change the security level of a super admin');
+                    }
+                }
+            })
+
             ->actions([
                 'RequestNewPassword' => new DatagridAction(
                     static fn (User $user) => new RequestPasswordReset($user->email->toString()),
@@ -100,10 +115,18 @@ final class ListUsersAction extends AbstractController
                     static fn (ResultSet $resultSet) => \sprintf('Password reset requests where send for %d users', $resultSet->count()),
                 ),
 
-                'Test form' => new FormAction(
-                    static fn (ResultSet $resultSet) => null,
+                'Change Security Level' => (new FormAction(
+                    static function (User $user) {
+                        throw new class extends \Exception implements DomainError {
+                            public function getPublicMessage(): string
+                            {
+                                return 'He, whats this?';
+                            }
+                        };
+                    },
                     AssignUserSecurityLevelActionForm::class,
-                ),
+                    successMessage: static fn (ResultSet $resultSet) => \sprintf('Security level was changed for %d users', $resultSet->count()),
+                ))->setAttribute('check', true),
             ])
 
             ->getDatagrid($users);
