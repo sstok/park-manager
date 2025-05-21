@@ -211,26 +211,25 @@
 {% endblock %}
 
 {% block datagrid_container_skipped_rendering_form_action -%}
-    {{ dump() }}
-
     <div class="mb-5 py-5 px-5 bg-white rounded-md">
         <h2 class="block text-xl font-medium leading-6 text-gray-900 mb-2">{{ action.label }}</h2>
 
-        <ul class="list-disc space-y-1 ml-4 mb-4">
-        {% for row in rows %}
-            <li>{{ render_entity_short(row) }}</li>
+        <h3>Selected rows</h3>
+        <ul role="list" class="list-disc space-y-1 p-5 pt-2">
+         {% for row in rows %}
+            <li class="disc">{{ render_entity_short(row) }}</li>
         {% endfor %}
         </ul>
 
         {{ form_start(action_form) }}
         {{ form_errors(action_form) }}
+        {% set submitBtn = form_widget(action_form.submit, { 'attr': { 'class': 'rounded-md px-4 py-2 font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' } } ) %}
         {{ form_end(action_form) }}
 
-        {% if cancel_url is defined %}
-            <a href="{{ cancel_url }}" class="inline-flex items-center gap-x-1.5 rounded-md px-4 py-2 font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                {{ 'Cancel'|trans({}, 'Lifthill') }}
-            </a>
-        {% endif %}
+        <div class="mt-6 pt-4 flex items-center justify-end gap-x-6 border-t">
+            <a href="{{ cancel_url }}" class="text-sm/6 font-semibold text-gray-900">{{ 'Cancel'|trans({}, 'Lifthill') }}</a>
+            {{ submitBtn|raw }}
+        </div>
     </div>
 {%- endblock %}
 
