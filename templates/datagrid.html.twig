@@ -70,7 +70,7 @@
                             {% endif %}
 
                             {% for error in dispatch_errors|default({}) %}
-                                <li>{{ error|trans }}</li>
+                                <li>{{ error[1]|trans }}</li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -93,7 +93,7 @@
                     <tbody class="bg-white">
                     {% for index, row in rows -%}
                         {# The row is its own view type (DatagridRowView). This would result in many block renderings #}
-                        <tr id="{{ name ~ '_row_' ~ index }}"{% with { attr: row.vars.attr } %}{{ block('attributes') }}{% endwith %} class="even:bg-gray-50">
+                        <tr id="{{ name ~ '_row_' ~ index }}"{% with { attr: row.vars.attr } %}{{ block('attributes') }}{% endwith %} class="{% if row.vars.batch_failed is defined and row.vars.batch_failed is true %}even:bg-red-300 odd:bg-red-200{% elseif row.vars.batch_failed is defined and row.vars.batch_failed == false %}even:bg-green-300 odd:bg-green-200{% else %}even:bg-gray-50{% endif %}">
                             {% for cell in row -%}
                                 {{ lifthill_datagrid_column_cell(cell) }}
                             {% endfor -%}
@@ -183,11 +183,19 @@
     {{ parent() }}
 {% endblock batch_header %}
 
-
 {% block batch_cell %}
     {% set attr = attr|merge({'class': 'px-4 py-4 whitespace-nowrap' }) %}
     {% set value_attr = attr|merge({'class': 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600' }) %}
-    {{ parent() }}
+    <td{{ block('attributes') }}>
+        <input type="checkbox" name="{{ selection_name }}" value="{{ value|escape('html_attr') }}"{% if checked %} checked="checked"{% endif %} {% with {'attr': value_attr|default({}) } %}{{ block('attributes') }}{% endwith %} />
+        {%- if failure_message is defined %}
+            <div style="float: right" title="{{ failure_message|trans }}">⚠</div>
+        {% endif -%}
+
+        {%- if batch_success is defined %}
+            <div style="float: right" title="{{ 'Successfully executed'|trans({}, 'Lifthill') }}">✓</div>
+        {% endif -%}
+    </td>
 {% endblock batch_cell %}
 
 {% block action_cell -%}
@@ -224,12 +232,27 @@
         {{ form_start(action_form) }}
         {{ form_errors(action_form) }}
         {% set submitBtn = form_widget(action_form.submit, { 'attr': { 'class': 'rounded-md px-4 py-2 font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' } } ) %}
-        {{ form_end(action_form) }}
+        {{ form_rest(action_form) }}
 
         <div class="mt-6 pt-4 flex items-center justify-end gap-x-6 border-t">
             <a href="{{ cancel_url }}" class="text-sm/6 font-semibold text-gray-900">{{ 'Cancel'|trans({}, 'Lifthill') }}</a>
             {{ submitBtn|raw }}
         </div>
+        {{ form_end(action_form) }}
+    </div>
+{%- endblock %}
+
+{% block datagrid_container_skipped_rendering_confirm_action -%}
+        <div class="mb-5 py-5 px-5 bg-white rounded-md">
+        <h2 class="block text-xl font-medium leading-6 text-gray-900 mb-2">{{ action.label }}</h2>
+
+        <p>{{ confirmation_message|raw }}</p>
+
+        <form action="" method="POST" class="mt-6 pt-4 flex items-center justify-end gap-x-6 border-t">
+            {{ block('datagrid_confirm_hidden_fields') }}
+            <a href="" class="text-sm/6 font-semibold text-gray-900">{{ 'Cancel'|trans({}, 'Lifthill') }}</a>
+            <button type="submit" name="confirm" class="rounded-md px-4 py-2 font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{{ 'Confirm'|trans({}, 'Lifthill') }}</button>
+        </form>
     </div>
 {%- endblock %}
 
