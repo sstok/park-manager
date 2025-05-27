@@ -13,14 +13,14 @@ namespace ParkManager\UI\Web\Action\Admin\User;
 use Lifthill\Bridge\Doctrine\OrmSearchableResultSet;
 use Lifthill\Component\Common\Application\Exception\BatchFailureReport;
 use Lifthill\Component\Common\Application\Exception\BatchOperationFailed;
-use Lifthill\Component\Common\Domain\Exception\DomainError;
 use Lifthill\Component\Common\Domain\ResultSet;
+use Lifthill\Component\Datagrid\Action\ActionOptions;
 use Lifthill\Component\Datagrid\Action\ConfirmedAction;
 use Lifthill\Component\Datagrid\Action\FormAction;
-use Lifthill\Component\Datagrid\DatagridAction;
 use Lifthill\Component\Datagrid\DatagridFactory;
 use Lifthill\Component\Datagrid\Event\BeforeActionDispatchEvent;
 use Lifthill\Component\Datagrid\Extension\Core\Type\DateTimeType;
+use Lifthill\Component\Datagrid\Extension\Core\Type\UuidType;
 use ParkManager\Application\Command\User\RequestPasswordReset;
 use ParkManager\Domain\User\User;
 use ParkManager\Domain\User\UserId;
@@ -62,6 +62,19 @@ final class ListUsersAction extends AbstractController
                 'search_type' => TextType::class,
                 'sortable' => true,
             ])
+            ->add('email', options: [
+                'label' => 'label.email',
+                'sortable' => true,
+                'default_hidden' => true,
+                'search_type' => TextType::class,
+                'search_options' => ['constraints' => new Email()],
+            ])
+            ->add('id', UuidType::class, options: [
+                'label' => 'label.id',
+                'sortable' => true,
+                'default_hidden' => true,
+                'search_options' => ['constraints' => new Uuid(strict: false)]
+            ])
             ->add('registeredAt', DateTimeType::class, options: [
                 'label' => 'label.registered_on',
                 'time_format' => \IntlDateFormatter::SHORT,
@@ -89,15 +102,13 @@ final class ListUsersAction extends AbstractController
                 'label_attr' => ['class' => 'sr-only'],
                 'data_provider' => 'id',
             ])
-            ->searchField('id', options: ['constraints' => new Uuid(strict: false)])
-            ->searchField('email', options: ['constraints' => new Email()])
-            ->searchField('@id')
-            ->searchField('@email')
             ->searchField('postalCode', options: ['blind_index' => 'postal_code_hash'])
             ->searchField('emailH', options: ['blind_index' => 'email_hash'])
 
             ->searchOptions(maxValues: 1, maxGroups: 1, maxNestingLevel: 1)
             ->limits([10, 20, 30, 50, 100], default: 20)
+
+            ->setAttribute(ActionOptions::MaximumBatchSelection, 10)
             ->actions([
                 'RequestNewPassword' => new ConfirmedAction(
                     command: static fn (User $user) => new RequestPasswordReset($user->email->toString()),
@@ -123,8 +134,16 @@ final class ListUsersAction extends AbstractController
                     formClass: AssignUserSecurityLevelActionForm::class,
                     successMessage: static fn (ResultSet $resultSet) => \sprintf('Security level was changed for %d users', $resultSet->count()),
                     batch: true,
-                )),
-            ])
+                ))
+                    ->setAttribute(ActionOptions::PreValidate, static function (BeforeActionDispatchEvent $event) {
+                    /** @var User $row */
+                    foreach ($event->selectedRows as $row) {
+                        if ($row->hasRole('ROLE_SUPER_ADMIN')) {
+                            $event->failRow($row->id, 'You cannot change the security level of a super admin');
+                        }
+                    }
+                }),
+            ], 'batch')
 
             ->getDatagrid($users);
 

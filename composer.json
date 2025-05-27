@@ -21,7 +21,7 @@
     ],
     "homepage": "http://www.park-manager.com/",
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.3",
         "ext-mbstring": "*",
         "ext-sodium": "*",
         "babdev/pagerfanta-bundle": "^4.4",
@@ -33,7 +33,7 @@
         "pagerfanta/twig": "^4.3",
         "rollerworks/pdb-symfony-bridge": "^1.0",
         "rollerworks/pdb-validator": "^1.0",
-        "rollerworks/search-dev": "^2.1",
+        "rollerworks/search-dev": "^2.0@beta",
         "rollerworks/search-bundle": "^2.0@beta",
         "rollerworks/search-symfony-validator": "^2.0@beta",
         "rollerworks/split-token": "^1.0",

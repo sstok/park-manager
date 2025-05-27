@@ -103,41 +103,11 @@
                 </table>
 
                 <div class="flex items-center justify-between border-t-2 border-gray-200 bg-white px-4 py-3 sm:px-6">
-                    {% if actions is defined %}
-                        <div class="m-2 flex min-w-60 text-sm">
-                            <select title="Execute action on selected rows" name="{{ name }}[_action]" class="block w-full rounded-none rounded-l-md border-0 bg-transparent py-1 pl-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                {% for action_name, action in actions %}
-                                    <option value="{{ action_name }}">{{ (action.label|default(action_name))|trans() }}</option>
-                                {% endfor %}
-                            </select>
-
-                            <button name="{{ name }}[_run_action]" value="1"  class="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 bg-slate-100 hover:bg-slate-200">
-                                Execute
-                            </button>
-                        </div>
-
-                    {% endif %}
+                    {{ block('datagrid_actions_form') }}
 
                     {{ lifthill_datagrid_pager(name, pager, 'twig', {'template': 'pagerfanta_datagrid.html.twig'}) }}
 
-                    {% if selectable_limits|length > 1 %}
-                        <form action="{{ app.request.uri }}" method="POST" name="{{ name }}_rows_limit">
-                            <div class="m-2 flex min-w-40 text-sm">
-                                <div class="relative flex flex-grow items-stretch focus-within:z-10">
-                                    <select title="{{ 'Per page'|trans({}, 'Lifthill') }}" name="{{ name }}[_rows_limit]" class="block w-full rounded-none rounded-l-md border-0 bg-transparent py-1 pl-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                        {% for limit in selectable_limits %}
-                                            <option value="{{ limit }}"{% if rows_per_page == limit %} selected{% endif %}{% if default_limit == limit %} title="{{ 'Default'|trans({}, 'Lifthill') }}"{% endif %}>
-                                                {{ limit }} {% if default_limit == limit %} *{% endif %}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <button type="submit" name="{{ name }}[_change]" class="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 bg-slate-100 hover:bg-slate-200">
-                                    {{ 'Change'|trans({}, 'Lifthill') }}
-                                </button>
-                            </div>
-                        </form>
-                    {% endif %}
+                    {{ block('datagrid_selectable_limits') }}
 
                     <button type="button" class="ml-2 rounded-md bg-slate-200 p-2 text-gray-600 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
@@ -155,7 +125,8 @@
 {% block column_header -%}
     {% set header_containtainer_attr = {'class': 'flex' } %}
     {% set attr = attr|merge({'class': 'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' }) %}
-    {% set sort_icon_attr = {'class': 'w-3.5' } %}
+    {% set sort_icon_attr = {'class': 'w-4' } %}
+    {% set sort_pos_attr = {'style': 'font-size: .5rem; margin-top: -5px' } %}
     {{ parent() }}
 {%- endblock %}
 
@@ -174,7 +145,9 @@
     </td>
 {%- endblock %}
 
-{# Core extension blocks #}
+{#
+    Core extension blocks
+#}
 
 {% block batch_header %}
     {% set header_containtainer_attr = {'class': 'flex' } %}
@@ -218,6 +191,52 @@
     {{ parent() }}
 {% endblock %}
 
+
+{#
+    Datagrid section blocks
+#}
+
+{% block datagrid_actions_form %}
+    {% if actions is defined %}
+        <div class="m-2 flex min-w-60 text-sm">
+            <input type="hidden" name="{{ name }}[_token]" value="{{ csrf_token|default('empty') }}" />
+            <select title="Execute action on selected rows" name="{{ name }}[_action]" class="block w-full rounded-none rounded-l-md border-0 bg-transparent py-1 pl-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                {% for action_name, action in actions %}
+                    <option value="{{ action_name }}" {% if action is defined and action.name == action_name %}selected="selected"{% endif %}>{{ action.label|default(action_name)|trans() }}</option>
+                {% endfor %}
+            </select>
+            <button name="{{ name }}[_run_action]" value="1"  class="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 bg-slate-100 hover:bg-slate-200">
+                Execute
+            </button>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block datagrid_selectable_limits %}
+    {% if selectable_limits|length > 1 %}
+        <form action="{{ app.request.uri }}" method="POST" name="{{ name }}_rows_limit">
+            <div class="m-2 flex min-w-40 text-sm">
+                <div class="relative flex flex-grow items-stretch focus-within:z-10">
+                    <select title="{{ 'Per page'|trans({}, 'Lifthill') }}" name="{{ name }}[_rows_limit]" class="block w-full rounded-none rounded-l-md border-0 bg-transparent py-1 pl-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        {% for limit in selectable_limits %}
+                            <option value="{{ limit }}"{% if rows_per_page == limit %} selected{% endif %}{% if default_limit == limit %} title="{{ 'Default'|trans({}, 'Lifthill') }}"{% endif %}>
+                                {{ limit }} {% if default_limit == limit %} *{% endif %}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" name="{{ name }}[_change]" class="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 bg-slate-100 hover:bg-slate-200">
+                    {{ 'Change'|trans({}, 'Lifthill') }}
+                </button>
+            </div>
+        </form>
+    {% endif %}
+{% endblock %}
+
+{#
+    Skipped rendering blocks
+#}
+
 {% block datagrid_container_skipped_rendering_form_action -%}
     <div class="mb-5 py-5 px-5 bg-white rounded-md">
         <h2 class="block text-xl font-medium leading-6 text-gray-900 mb-2">{{ action.label }}</h2>
@@ -232,6 +251,7 @@
         {{ form_start(action_form) }}
         {{ form_errors(action_form) }}
         {% set submitBtn = form_widget(action_form.submit, { 'attr': { 'class': 'rounded-md px-4 py-2 font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' } } ) %}
+        <input type="hidden" name="{{ name }}[{{ batch_column }}]" value="{{ selected_ids }}" />
         {{ form_rest(action_form) }}
 
         <div class="mt-6 pt-4 flex items-center justify-end gap-x-6 border-t">
@@ -249,7 +269,7 @@
         <p>{{ confirmation_message|raw }}</p>
 
         <form action="" method="POST" class="mt-6 pt-4 flex items-center justify-end gap-x-6 border-t">
-            {{ block('datagrid_confirm_hidden_fields') }}
+            {{ block('datagrid_confirm_action_hidden_fields') }}
             <a href="" class="text-sm/6 font-semibold text-gray-900">{{ 'Cancel'|trans({}, 'Lifthill') }}</a>
             <button type="submit" name="confirm" class="rounded-md px-4 py-2 font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{{ 'Confirm'|trans({}, 'Lifthill') }}</button>
         </form>
