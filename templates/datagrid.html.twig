@@ -109,11 +109,11 @@
 
                     {{ block('datagrid_selectable_limits') }}
 
-                    <button type="button" class="ml-2 rounded-md bg-slate-200 p-2 text-gray-600 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    <a href="{{ (app.request.uri) }}{% if app.request.uri() matches '/\\?/' %}&{% else %}?{% endif %}{{ name }}[configure]=1" class="ml-2 rounded-md bg-slate-200 p-2 text-gray-600 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5"/>
                         </svg>
-                    </button>
+                    </a>
                 </div>
 
             </div>
@@ -236,6 +236,52 @@
 {#
     Skipped rendering blocks
 #}
+
+{% block datagrid_container_skipped_rendering_configure -%}
+    <h2 class="mb-1 text-lg font-medium">Change Datagrid display</h2>
+
+    <form action="" method="POST" class="mt-4 pt-4 border-t">
+        {% if message is defined %}
+            <div style="padding:10px; margin-bottom:2rem">{{ message }}</div>
+        {% endif %}
+
+        {% dump %}
+
+        <ul class="grid gap-2" id="{{ name }}_columns_config">
+            {% for column_name, column in columns %}
+                <li class="mb-4 border py-2 px-2 rounded-md bg-slate-200">
+                    <div class="grid gap-2 grid-cols-4">
+                        <span style="font-weight: bold">{{ (column.label|default(column_name))|trans }}</span>
+                            <input type="hidden" id="column_pos_{{ column_name }}" name="{{ name }}[_columns][]" value="{{ column_name }}" />
+                        <div style="display: flex; gap: 1rem; align-items: center">
+                            <input type="checkbox" id="column_show_{{ column_name }}" name="{{ name }}[_columns_show][{{ column_name }}]" value="1" {% if hide_columns[column_name] is not defined or hide_columns[column_name] != true %}checked="checked"{% endif %} />
+                            <label for="column_show_{{ column_name }}">Display</label>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+        <script>
+            sortable = Sortable.create(document.getElementById('{{ name }}_columns_config'), {
+                animation: 150,
+                swapThreshold: 0.60,
+            })
+        </script>
+
+        <noscript>
+            Please enable JavaScript to configure the columns order.
+        </noscript>
+
+        <input type="hidden" name="{{ name }}[_token]" value="{{ csrf_token|default('empty') }}" />
+
+        <div class="mt-2 gap-4 flex justify-end">
+            <button type="submit" name="{{ name }}[_change]" value="1" class="rounded-md px-4 py-2 font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{{ 'Change'|trans({}, 'Lifthill') }}</button>
+            <button type="submit" name="{{ name }}[_reset]" value="1" class="rounded-md px-4 py-2 font-medium bg-white text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white">{{ 'Reset'|trans({}, 'Lifthill') }}</button>
+        </div>
+    </form>
+{%- endblock %}
 
 {% block datagrid_container_skipped_rendering_form_action -%}
     <div class="mb-5 py-5 px-5 bg-white rounded-md">
